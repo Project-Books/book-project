@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.model;
+package com.karankumar.bookproject.backend.model;
 
 import java.util.Set;
 
