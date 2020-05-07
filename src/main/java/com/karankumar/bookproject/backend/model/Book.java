@@ -30,6 +30,14 @@ public class Book {
         Five,
     }
 
+    public Book() {
+    }
+
+    public Book(String title, Set<Author> authors) {
+        this.title = title;
+        this.authors = authors;
+    }
+
     public String getTitle() {
         return title;
     }

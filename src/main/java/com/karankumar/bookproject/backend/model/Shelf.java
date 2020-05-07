@@ -10,6 +10,13 @@ public class Shelf {
     private String name;
     private Set<Book> books;
 
+    public Shelf() {
+    }
+
+    public Shelf(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
