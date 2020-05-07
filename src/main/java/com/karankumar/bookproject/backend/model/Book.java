@@ -1,19 +1,27 @@
 package com.karankumar.bookproject.backend.model;
 
+import javax.persistence.*;
 import java.util.Set;
 
 /**
  * @author karan on 06/05/2020
  */
+@Entity
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String title;
 
     private RatingScale rating;
     private String favouriteQuote;
+
+    @ManyToMany
     private Set<Author> authors;
+
+    @OneToMany
     private Set<Shelf> shelves;
 
     private enum RatingScale {
@@ -76,5 +84,20 @@ public class Book {
 
     public void setShelves(Set<Shelf> shelves) {
         this.shelves = shelves;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        return id != null ? id.equals(book.id) : book.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
