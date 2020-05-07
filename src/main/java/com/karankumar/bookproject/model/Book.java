@@ -8,8 +8,10 @@ import java.util.Set;
 public class Book {
 
     private Long id;
+
     private String title;
-    private float rating;
+
+    private RatingScale rating;
     private String favouriteQuote;
     private Set<Author> authors;
     private Set<Shelf> shelves;
@@ -36,45 +38,12 @@ public class Book {
         this.title = title;
     }
 
-    public float getRating() {
+    public RatingScale getRating() {
         return rating;
     }
 
-    public void setRating(RatingScale ratingScale) {
-        switch (ratingScale) {
-            case Zero:
-                rating = 0;
-                break;
-            case ZeroPointFive:
-                rating = 0.5f;
-                break;
-            case One:
-                rating = 1;
-                break;
-            case OnePointFive:
-                rating = 1.5f;
-                break;
-            case Two:
-                rating = 2;
-            case TwoPointFive:
-                rating = 2.5f;
-                break;
-            case Three:
-                rating = 3f;
-                break;
-            case ThreePointFive:
-                rating = 3.5f;
-                break;
-            case Four:
-                rating = 4;
-                break;
-            case FourPointFive:
-                rating = 4.5f;
-                break;
-            case Five:
-                rating = 5f;
-                break;
-        }
+    public void setRating(RatingScale rating) {
+        this.rating = rating;
     }
 
     public String getFavouriteQuote() {
