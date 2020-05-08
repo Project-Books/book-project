@@ -1,6 +1,7 @@
 package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
@@ -15,17 +16,20 @@ public class Book {
 
     private String title;
 
-    private RatingScale rating;
-    private String favouriteQuote;
     private int numberOfPages;
     private Genre genre;
+
+    // For books that have been read
+    private RatingScale rating;
+    private String favouriteQuote;
+    private LocalDate dateStartedReading;
+    private LocalDate dateFinishedReading;
 
     @ManyToMany
     private Set<Author> authors;
 
     @OneToMany
     private Set<Shelf> shelves;
-
 
     private enum Genre {
     }
@@ -94,6 +98,21 @@ public class Book {
         this.numberOfPages = numberOfPages;
     }
 
+    public LocalDate getDateStartedReading() {
+        return dateStartedReading;
+    }
+
+    public void setDateStartedReading(LocalDate dateStartedReading) {
+        this.dateStartedReading = dateStartedReading;
+    }
+
+    public LocalDate getDateFinishedReading() {
+        return dateFinishedReading;
+    }
+
+    public void setDateFinishedReading(LocalDate dateFinishedReading) {
+        this.dateFinishedReading = dateFinishedReading;
+    }
 
     @Override
     public boolean equals(Object o) {
