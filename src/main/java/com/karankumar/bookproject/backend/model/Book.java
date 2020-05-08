@@ -1,7 +1,6 @@
 package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -27,19 +26,6 @@ public class Book {
     @OneToMany
     private Set<Shelf> shelves;
 
-    private enum RatingScale {
-        Zero,
-        ZeroPointFive,
-        One,
-        OnePointFive,
-        Two,
-        TwoPointFive,
-        Three,
-        ThreePointFive,
-        Four,
-        FourPointFive,
-        Five,
-    }
 
     private enum Genre {
     }
