@@ -1,6 +1,7 @@
 package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -17,6 +18,8 @@ public class Book {
 
     private RatingScale rating;
     private String favouriteQuote;
+    private int numberOfPages;
+    private Genre genre;
 
     @ManyToMany
     private Set<Author> authors;
@@ -36,6 +39,9 @@ public class Book {
         Four,
         FourPointFive,
         Five,
+    }
+
+    private enum Genre {
     }
 
     public Book() {
@@ -85,6 +91,23 @@ public class Book {
     public void setShelves(Set<Shelf> shelves) {
         this.shelves = shelves;
     }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public int getNumberOfPages() {
+        return numberOfPages;
+    }
+
+    public void setNumberOfPages(int numberOfPages) {
+        this.numberOfPages = numberOfPages;
+    }
+
 
     @Override
     public boolean equals(Object o) {
