@@ -1,6 +1,8 @@
 package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -13,7 +15,12 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotNull
+    @NotEmpty
     private String firstName;
+
+    @NotNull
+    @NotEmpty
     private String lastName;
 
     @ManyToMany

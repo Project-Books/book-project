@@ -1,6 +1,8 @@
 package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -13,6 +15,8 @@ public class Shelf {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotNull
+    @NotEmpty
     private String name;
 
     @ManyToMany

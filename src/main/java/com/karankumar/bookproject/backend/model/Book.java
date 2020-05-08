@@ -1,6 +1,8 @@
 package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -14,6 +16,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotNull
+    @NotEmpty
     private String title;
 
     private int numberOfPages;
