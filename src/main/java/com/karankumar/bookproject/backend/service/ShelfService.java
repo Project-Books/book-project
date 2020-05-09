@@ -1,16 +1,32 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.repository.ShelfRepository;
+import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author karan on 08/05/2020
  */
-public interface ShelfService {
-    Shelf findById(Long id);
+@Service
+public class ShelfService {
 
-    Shelf save(Shelf shelf);
+    private ShelfRepository shelfRepository;
 
-    Set<Shelf> findAll();
+    public ShelfService(ShelfRepository shelfRepository) {
+        this.shelfRepository = shelfRepository;
+    }
+
+    public Shelf findById(Long id) {
+        return shelfRepository.getOne(id);
+    }
+
+    public void save(Shelf shelf) {
+        return shelfRepository.save(shelf)
+    }
+
+    public List<Shelf> findAll() {
+        return shelfRepository.findAll();
+    }
 }
