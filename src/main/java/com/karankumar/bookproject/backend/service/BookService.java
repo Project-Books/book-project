@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class BookService {
+public class BookService extends BaseService<Book, Long> {
 
     private BookRepository bookRepository;
 
@@ -17,10 +17,12 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
+    @Override
     public Book findById(Long id) {
         return bookRepository.getOne(id);
     }
 
+    @Override
     public void save(Book book) {
         if (book != null) {
             bookRepository.save(book);
@@ -31,6 +33,7 @@ public class BookService {
         return bookRepository.count();
     }
 
+    @Override
     public void delete(Book book) {
         bookRepository.delete(book);
     }
