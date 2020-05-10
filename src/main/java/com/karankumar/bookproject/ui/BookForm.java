@@ -1,6 +1,8 @@
 package com.karankumar.bookproject.ui;
 
 import com.karankumar.bookproject.backend.model.Genre;
+import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.service.ShelfService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -11,12 +13,17 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author karan on 10/05/2020
  */
 public class BookForm extends VerticalLayout {
     private TextField bookTitle;
     private TextField bookAuthor;
+    private ComboBox<String> shelf;
     private ComboBox<Genre> bookGenre;
     private IntegerField pageCount;
     private DatePicker dateStartedReading;
@@ -24,15 +31,17 @@ public class BookForm extends VerticalLayout {
     private TextArea favouriteQuote;
     private NumberField rating;
 
-    public BookForm() {
+    public BookForm(ShelfService shelfService) {
         addBookTitle();
         addBookAuthor();
+        addShelf(shelfService);
         addBookGenre();
         addPageCount();
         addDateStartedReading();
         addDateFinishedReading();
         addFavouriteQuote();
         addRating();
+
 
         Button addBook = new Button();
         addBook.setText("Add book");
@@ -42,9 +51,11 @@ public class BookForm extends VerticalLayout {
 
         HorizontalLayout buttons = new HorizontalLayout(addBook, reset);
 
-        add(bookTitle, bookAuthor, bookGenre, pageCount, dateStartedReading, dateFinishedReading, favouriteQuote,
+        add(bookTitle, bookAuthor, shelf, bookGenre, pageCount, dateStartedReading, dateFinishedReading, favouriteQuote,
                 rating, buttons);
     }
+
+
 
     private void addRating() {
         rating = new NumberField("Rating out of 10");
@@ -81,6 +92,16 @@ public class BookForm extends VerticalLayout {
         pageCount.setHasControls(true);
         pageCount.setMinWidth("150px");
         pageCount.setClearButtonVisible(true);
+    }
+
+    private void addShelf(ShelfService shelfService) {
+        shelf = new ComboBox<String>("Book shelf");
+        shelf.setPlaceholder("Choose shelf");
+        shelf.setRequired(true);
+
+        List<Shelf> shelves = shelfService.findAll();
+        Collection<String> shelfNames = shelves.stream().map(Shelf::getName).collect(Collectors.toList());
+        shelf.setItems(shelfNames);
     }
 
     private void addBookGenre() {

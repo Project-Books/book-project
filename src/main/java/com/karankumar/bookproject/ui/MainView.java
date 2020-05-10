@@ -1,5 +1,6 @@
 package com.karankumar.bookproject.ui;
 
+import com.karankumar.bookproject.backend.service.ShelfService;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
@@ -10,7 +11,9 @@ import com.vaadin.flow.router.Route;
 @Route("")
 public class MainView extends VerticalLayout {
 
-    public MainView() {
-        add(new BookForm());
+    public MainView(ShelfService shelfService) {
+        add(new BookForm(shelfService));
+
+//        add(new ShelfList(shelfService));
     }
 }
