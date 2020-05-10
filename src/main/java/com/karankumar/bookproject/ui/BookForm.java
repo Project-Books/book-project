@@ -3,6 +3,7 @@ package com.karankumar.bookproject.ui;
 import com.karankumar.bookproject.backend.model.Genre;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
@@ -60,10 +61,17 @@ public class BookForm extends VerticalLayout {
         rating.setClearButtonVisible(true);
         rating.setMinWidth("150px");
 
+
         Button addBook = new Button();
         addBook.setText("Add book");
 
-        add(bookTitle, bookAuthor, bookGenre, pageCount, dateStartedReading, dateFinishedReading, favouriteQuote, rating, addBook);
+        Button reset = new Button();
+        reset.setText("Reset");
+
+        HorizontalLayout buttons = new HorizontalLayout(addBook, reset);
+
+        add(bookTitle, bookAuthor, bookGenre, pageCount, dateStartedReading, dateFinishedReading, favouriteQuote,
+                rating, buttons);
 
     }
 }
