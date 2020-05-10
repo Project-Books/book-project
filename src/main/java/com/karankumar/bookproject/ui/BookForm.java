@@ -6,7 +6,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -26,52 +25,14 @@ public class BookForm extends VerticalLayout {
     private NumberField rating;
 
     public BookForm() {
-        bookTitle = new TextField("Book title");
-        bookTitle.setPlaceholder("Enter book title");
-        bookTitle.setClearButtonVisible(true);
-        bookTitle.setRequired(true);
-        bookTitle.setRequiredIndicatorVisible(true);
-        bookTitle.setMinWidth("325px");
-
-        bookAuthor = new TextField("Book author");
-        bookAuthor.setPlaceholder("Enter book author");
-        bookAuthor.setClearButtonVisible(true);
-        bookAuthor.setRequired(true);
-        bookAuthor.setRequiredIndicatorVisible(true);
-
-//        bookGenre = new ComboBox<>(Genre.values());
-        bookGenre = new ComboBox<Genre>();
-        bookGenre.setItems(Genre.values());
-        bookGenre.setLabel("Book genre");
-        bookGenre.setPlaceholder("Choose book genre");
-        bookGenre.setMinWidth("225px");
-
-        pageCount = new IntegerField("Number of pages");
-        pageCount.setMin(1);
-        pageCount.setHasControls(true);
-        pageCount.setMinWidth("150px");
-        pageCount.setClearButtonVisible(true);
-
-        dateStartedReading = new DatePicker("Date started");
-        dateStartedReading.setClearButtonVisible(true);
-        dateStartedReading.setPlaceholder("Enter date");
-
-        dateFinishedReading = new DatePicker("Date finished");
-        dateFinishedReading.setClearButtonVisible(true);
-        dateFinishedReading.setPlaceholder("Enter date");
-
-        favouriteQuote = new TextArea("Favourite quote");
-        favouriteQuote.setPlaceholder("Enter favourite quote");
-        favouriteQuote.setClearButtonVisible(true);
-        favouriteQuote.setMinWidth("325px");
-
-        rating = new NumberField("Rating out of 10");
-        rating.setHasControls(true);
-        rating.setMin(0);
-        rating.setMax(10);
-        rating.setStep(0.5f);
-        rating.setClearButtonVisible(true);
-        rating.setMinWidth("150px");
+        addBookTitle();
+        addBookAuthor();
+        addBookGenre();
+        addPageCount();
+        addDateStartedReading();
+        addDateFinishedReading();
+        addFavouriteQuote();
+        addRating();
 
         Button addBook = new Button();
         addBook.setText("Add book");
@@ -83,7 +44,68 @@ public class BookForm extends VerticalLayout {
 
         add(bookTitle, bookAuthor, bookGenre, pageCount, dateStartedReading, dateFinishedReading, favouriteQuote,
                 rating, buttons);
+    }
 
+    private void addRating() {
+        rating = new NumberField("Rating out of 10");
+        rating.setHasControls(true);
+        rating.setMin(0);
+        rating.setMax(10);
+        rating.setStep(0.5f);
+        rating.setClearButtonVisible(true);
+        rating.setMinWidth("150px");
+    }
+
+    private void addFavouriteQuote() {
+        favouriteQuote = new TextArea("Favourite quote");
+        favouriteQuote.setPlaceholder("Enter favourite quote");
+        favouriteQuote.setClearButtonVisible(true);
+        favouriteQuote.setMinWidth("325px");
+    }
+
+    private void addDateFinishedReading() {
+        dateFinishedReading = new DatePicker("Date finished");
+        dateFinishedReading.setClearButtonVisible(true);
+        dateFinishedReading.setPlaceholder("Enter date");
+    }
+
+    private void addDateStartedReading() {
+        dateStartedReading = new DatePicker("Date started");
+        dateStartedReading.setClearButtonVisible(true);
+        dateStartedReading.setPlaceholder("Enter date");
+    }
+
+    private void addPageCount() {
+        pageCount = new IntegerField("Number of pages");
+        pageCount.setMin(1);
+        pageCount.setHasControls(true);
+        pageCount.setMinWidth("150px");
+        pageCount.setClearButtonVisible(true);
+    }
+
+    private void addBookGenre() {
+        bookGenre = new ComboBox<Genre>();
+        bookGenre.setItems(Genre.values());
+        bookGenre.setLabel("Book genre");
+        bookGenre.setPlaceholder("Choose book genre");
+        bookGenre.setMinWidth("225px");
+    }
+
+    private void addBookAuthor() {
+        bookAuthor = new TextField("Book author");
+        bookAuthor.setPlaceholder("Enter book author");
+        bookAuthor.setClearButtonVisible(true);
+        bookAuthor.setRequired(true);
+        bookAuthor.setRequiredIndicatorVisible(true);
+    }
+
+    private void addBookTitle() {
+        bookTitle = new TextField("Book title");
+        bookTitle.setPlaceholder("Enter book title");
+        bookTitle.setClearButtonVisible(true);
+        bookTitle.setRequired(true);
+        bookTitle.setRequiredIndicatorVisible(true);
+        bookTitle.setMinWidth("325px");
     }
 
     private void clearForm() {
