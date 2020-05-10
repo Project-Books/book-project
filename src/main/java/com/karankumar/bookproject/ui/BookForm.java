@@ -15,45 +15,54 @@ import com.vaadin.flow.component.textfield.TextField;
  * @author karan on 10/05/2020
  */
 public class BookForm extends VerticalLayout {
+    private TextField bookTitle;
+    private TextField bookAuthor;
+    private Select<Genre> bookGenre;
+    private IntegerField pageCount;
+    private DatePicker dateStartedReading;
+    private DatePicker dateFinishedReading;
+    private TextArea favouriteQuote;
+    private NumberField rating;
+
     public BookForm() {
-        TextField bookTitle = new TextField("Book title");
+        bookTitle = new TextField("Book title");
         bookTitle.setPlaceholder("Enter book title");
         bookTitle.setClearButtonVisible(true);
         bookTitle.setRequired(true);
         bookTitle.setRequiredIndicatorVisible(true);
         bookTitle.setMinWidth("325px");
 
-        TextField bookAuthor = new TextField("Book author");
+        bookAuthor = new TextField("Book author");
         bookAuthor.setPlaceholder("Enter book author");
         bookAuthor.setClearButtonVisible(true);
         bookAuthor.setRequired(true);
         bookAuthor.setRequiredIndicatorVisible(true);
 
-        Select<Genre> bookGenre = new Select(Genre.values());
+        bookGenre = new Select(Genre.values());
         bookGenre.setLabel("Book genre");
         bookGenre.setPlaceholder("Choose book genre");
         bookGenre.setMinWidth("225px");
 
-        IntegerField pageCount = new IntegerField("Number of pages");
+        pageCount = new IntegerField("Number of pages");
         pageCount.setMin(1);
         pageCount.setHasControls(true);
         pageCount.setMinWidth("150px");
         pageCount.setClearButtonVisible(true);
 
-        DatePicker dateStartedReading = new DatePicker("Date started");
+        dateStartedReading = new DatePicker("Date started");
         dateStartedReading.setClearButtonVisible(true);
         dateStartedReading.setPlaceholder("Enter date");
 
-        DatePicker dateFinishedReading = new DatePicker("Date finished");
+        dateFinishedReading = new DatePicker("Date finished");
         dateFinishedReading.setClearButtonVisible(true);
         dateFinishedReading.setPlaceholder("Enter date");
 
-        TextArea favouriteQuote = new TextArea("Favourite quote");
+        favouriteQuote = new TextArea("Favourite quote");
         favouriteQuote.setPlaceholder("Enter favourite quote");
         favouriteQuote.setClearButtonVisible(true);
         favouriteQuote.setMinWidth("325px");
 
-        NumberField rating = new NumberField("Rating out of 10");
+        rating = new NumberField("Rating out of 10");
         rating.setHasControls(true);
         rating.setMin(0);
         rating.setMax(10);
@@ -61,17 +70,27 @@ public class BookForm extends VerticalLayout {
         rating.setClearButtonVisible(true);
         rating.setMinWidth("150px");
 
-
         Button addBook = new Button();
         addBook.setText("Add book");
-
         Button reset = new Button();
         reset.setText("Reset");
+        reset.addClickListener(event -> clearForm());
 
         HorizontalLayout buttons = new HorizontalLayout(addBook, reset);
 
         add(bookTitle, bookAuthor, bookGenre, pageCount, dateStartedReading, dateFinishedReading, favouriteQuote,
                 rating, buttons);
 
+    }
+
+    private void clearForm() {
+        bookTitle.clear();
+        bookAuthor.clear();
+        bookGenre.clear();
+        pageCount.clear();
+        dateStartedReading.clear();
+        dateFinishedReading.clear();
+        favouriteQuote.clear();
+        rating.clear();
     }
 }
