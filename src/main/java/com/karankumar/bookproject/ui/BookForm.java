@@ -13,9 +13,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author karan on 10/05/2020
@@ -100,8 +98,7 @@ public class BookForm extends VerticalLayout {
         shelf.setRequired(true);
 
         List<Shelf> shelves = shelfService.findAll();
-        Collection<String> shelfNames = shelves.stream().map(Shelf::getName).collect(Collectors.toList());
-        shelf.setItems(shelfNames);
+        shelf.setItems(shelves.stream().map(Shelf::getName));
     }
 
     private void addBookGenre() {
