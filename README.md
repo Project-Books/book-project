@@ -15,7 +15,7 @@ Currently, a H2 database is being used, but a MySQL database will later be used 
 
 # Setup
 
-Ensure you first have the JDK 11 installed.
+Prerequisites: JDK 11
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE
