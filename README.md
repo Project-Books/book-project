@@ -1,7 +1,3 @@
-<p align="center">
-    <img src="/media/book-project-wiki-footer.png" alt="Book project"/>
-</p>
-
 # Summary
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
@@ -27,3 +23,7 @@ Prerequisites: JDK 11
 2. Import the project as a maven project into your favourite IDE
 3. Run `BookProjectApplication.java`
 4. Go to `localhost:8080`
+
+<p align="center">
+    <img src="/media/book-project-wiki-footer.png" alt="Book project"/>
+</p>
