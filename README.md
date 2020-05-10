@@ -15,9 +15,9 @@ Currently, a H2 database is being used, but a MySQL database will later be used 
 
 # Setup
 
-This uses Java version 11, so ensure you first have the JDK 11 installed.
+Ensure you first have the JDK 11 installed.
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE
 3. Run `BookProjectApplication.java`
-4. Go to localhost:8080
+4. Go to `localhost:8080`
