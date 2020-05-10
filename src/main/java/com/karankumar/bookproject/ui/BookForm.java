@@ -132,6 +132,7 @@ public class BookForm extends VerticalLayout {
     private void clearForm() {
         bookTitle.clear();
         bookAuthor.clear();
+        shelf.clear();
         bookGenre.clear();
         pageCount.clear();
         dateStartedReading.clear();
