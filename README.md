@@ -1,4 +1,8 @@
-# Book project summary
+<p align="center">
+    <img src="/media/book-project-wiki-footer.png" alt="Book project"/>
+</p>
+
+# Summary
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
@@ -11,7 +15,9 @@ This app will let you:
 
 Currently, a H2 database is being used, but a MySQL database will later be used instead.
 
-![New book form](media/book-form.png)
+<p align="center">
+    <img src="/media/book-form.png" alt="New book form"/>
+</p>
 
 # Setup
 
