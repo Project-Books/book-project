@@ -12,6 +12,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import org.vaadin.gatanaso.MultiselectComboBox;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
 public class BookForm extends VerticalLayout {
     private TextField bookTitle;
     private TextField bookAuthor;
-    private ComboBox<String> shelf;
+    private MultiselectComboBox<String> shelf;
     private ComboBox<Genre> bookGenre;
     private IntegerField pageCount;
     private DatePicker dateStartedReading;
@@ -39,7 +40,6 @@ public class BookForm extends VerticalLayout {
         addDateFinishedReading();
         addFavouriteQuote();
         addRating();
-
 
         Button addBook = new Button();
         addBook.setText("Add book");
@@ -93,9 +93,11 @@ public class BookForm extends VerticalLayout {
     }
 
     private void addShelf(ShelfService shelfService) {
-        shelf = new ComboBox<String>("Book shelf");
-        shelf.setPlaceholder("Choose shelf");
+        shelf = new MultiselectComboBox<>();
+        shelf.setLabel("Book shelf");
         shelf.setRequired(true);
+        shelf.setPlaceholder("Choose a shelf");
+        shelf.setClearButtonVisible(true);
 
         List<Shelf> shelves = shelfService.findAll();
         shelf.setItems(shelves.stream().map(Shelf::getName));
