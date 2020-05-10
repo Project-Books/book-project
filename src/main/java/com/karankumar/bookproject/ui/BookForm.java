@@ -2,6 +2,7 @@ package com.karankumar.bookproject.ui;
 
 import com.karankumar.bookproject.backend.model.Genre;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -17,7 +18,7 @@ import com.vaadin.flow.component.textfield.TextField;
 public class BookForm extends VerticalLayout {
     private TextField bookTitle;
     private TextField bookAuthor;
-    private Select<Genre> bookGenre;
+    private ComboBox<Genre> bookGenre;
     private IntegerField pageCount;
     private DatePicker dateStartedReading;
     private DatePicker dateFinishedReading;
@@ -38,7 +39,9 @@ public class BookForm extends VerticalLayout {
         bookAuthor.setRequired(true);
         bookAuthor.setRequiredIndicatorVisible(true);
 
-        bookGenre = new Select(Genre.values());
+//        bookGenre = new ComboBox<>(Genre.values());
+        bookGenre = new ComboBox<Genre>();
+        bookGenre.setItems(Genre.values());
         bookGenre.setLabel("Book genre");
         bookGenre.setPlaceholder("Choose book genre");
         bookGenre.setMinWidth("225px");
