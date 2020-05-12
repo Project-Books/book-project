@@ -22,7 +22,7 @@ include:
 
 Examples of unacceptable behavior by participants include:
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
+* The use of sexualised language or imagery and unwelcome sexual attention or
  advances
 * Trolling, insulting/derogatory comments, and personal or political attacks
 * Public or private harassment
@@ -45,14 +45,7 @@ threatening, offensive, or harmful.
 
 ## Scope
 
-This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an appointed
-representative at an online or offline event. Representation of a project may be
-further defined and clarified by project maintainers.
-
-This includes anywhere on the repository: pull requests, the wiki, any documentation and code.
+This Code of Conduct applies in project spaces (e.g. the wiki, pull requests, any documentation and code) and in public spaces when an individual is representing the project or its community. 
 
 ## Enforcement
 
@@ -61,7 +54,7 @@ reported by contacting the project owner<sup>1</sup> at karan@karankumar.com. Al
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
-Further details of specific enforcement policies may be posted separately.
+Further details of specific enforcement policies will be posted in due course.
 
 Project maintainers who do not follow or enforce the Code of Conduct in good
 faith may face temporary or permanent repercussions as determined by other
@@ -80,4 +73,6 @@ https://www.contributor-covenant.org/faq
 ## Notes
 
 1. If the leadership expands to a team, this will be changed to email addresses of two different maintainers (in case the complaint is at the project owner)
+
+Thank you for reading the code of conduct. Please note that this will be updated over time as the project evolves.
 
