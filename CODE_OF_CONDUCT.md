@@ -50,7 +50,7 @@ This Code of Conduct applies in project spaces (e.g. the wiki, pull requests, an
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project owner<sup>1</sup> at karan@karankumar.com. All
+reported by contacting the project owner<sup>1</sup> at bookproject@madebykarankumar.com. All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
