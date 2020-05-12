@@ -79,5 +79,5 @@ https://www.contributor-covenant.org/faq
 
 ## Notes
 
-1. If the leadership expands to a team, this will be changed to email addresses of two different maintainers (in case the compliant is at the project owner)
+1. If the leadership expands to a team, this will be changed to email addresses of two different maintainers (in case the complaint is at the project owner)
 
