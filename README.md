@@ -1,21 +1,24 @@
-# Book project summary
+# Summary
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
 This app will let you:
-- Add books that you would have read to a 'read' shelf
+- Add books that you have read to a 'read' shelf
 - Add books that you are currently reading to a 'currently reading' shelf
 - Add books that you would like to read to a 'want to read' shelf
-
+- Add your own shelves
 - View books in your different shelves and make changes
+- And more!
 
-Currently, a H2 database is being used, but a MySQL database will later be used instead.
+<p align="center">
+    <img src="/media/book-form.png" alt="New book form"/>
+</p>
 
-![New book form](media/book-form.png)
+(The image above may look slightly different to the app. If major changes are made, the image will be updated to reflect this.)
 
 # Setup
 
-Prerequisites: JDK 11
+Prerequisites: JDK 11 and Node.js
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE

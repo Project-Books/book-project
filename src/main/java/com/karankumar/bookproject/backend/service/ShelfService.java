@@ -4,7 +4,10 @@ import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.ShelfRepository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author karan on 08/05/2020
@@ -37,5 +40,14 @@ public class ShelfService extends BaseService<Shelf, Long> {
     @Override
     public void delete(Shelf shelf) {
         shelfRepository.delete(shelf);
+    }
+
+    @PostConstruct
+    public void populateTestData() {
+        if (shelfRepository.count() == 0) {
+            shelfRepository.saveAll(
+                    Stream.of("Want to read", "Currently reading", "Read")
+                        .map(Shelf::new).collect(Collectors.toList()));
+        }
     }
 }
