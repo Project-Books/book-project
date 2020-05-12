@@ -16,7 +16,7 @@ This app will let you:
 
 # Setup
 
-Prerequisites: JDK 11
+Prerequisites: JDK 11 and Node.js
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE
