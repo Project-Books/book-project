@@ -3,6 +3,7 @@ package com.karankumar.bookproject.ui;
 import com.karankumar.bookproject.backend.model.Genre;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.ShelfService;
+import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -54,13 +55,26 @@ public class BookForm extends FormLayout {
 
         HorizontalLayout buttons = new HorizontalLayout(addBook, reset);
 
+        HasSize[] components = {
+                bookTitle,
+                bookAuthor,
+                dateStartedReading,
+                dateFinishedReading,
+                bookGenre,
+                shelf,
+                pageCount,
+                rating,
+                favouriteQuote,
+        };
+        setComponentMinWidth(components);
+
         setResponsiveSteps(new ResponsiveStep("0", 1));
         addFormItem(bookTitle, "Book title");
         addFormItem(bookAuthor, "Book author");
+        addFormItem(shelf, "Book shelf");
         addFormItem(dateStartedReading, ENTER_DATE);
         addFormItem(dateFinishedReading, ENTER_DATE);
         addFormItem(bookGenre, "Book genre");
-        addFormItem(shelf, "Book shelf");
         addFormItem(pageCount, "Page count");
         addFormItem(rating, "Book rating");
         addFormItem(favouriteQuote, "Favourite quote");
@@ -69,7 +83,7 @@ public class BookForm extends FormLayout {
 
     private void configureTitle() {
         bookTitle = new TextField();
-        bookTitle.setPlaceholder("Enter book title");
+        bookTitle.setPlaceholder("Enter a book title");
         bookTitle.setClearButtonVisible(true);
         bookTitle.setRequired(true);
         bookTitle.setRequiredIndicatorVisible(true);
@@ -77,7 +91,7 @@ public class BookForm extends FormLayout {
 
     private void configureAuthor() {
         bookAuthor = new TextField();
-        bookAuthor.setPlaceholder("Enter book author");
+        bookAuthor.setPlaceholder("Enter a book author");
         bookAuthor.setClearButtonVisible(true);
         bookAuthor.setRequired(true);
         bookAuthor.setRequiredIndicatorVisible(true);
@@ -143,5 +157,11 @@ public class BookForm extends FormLayout {
         dateFinishedReading.clear();
         favouriteQuote.clear();
         rating.clear();
+    }
+
+    private void setComponentMinWidth(HasSize[] components) {
+        for (HasSize h : components) {
+            h.setMinWidth("15em");
+        }
     }
 }
