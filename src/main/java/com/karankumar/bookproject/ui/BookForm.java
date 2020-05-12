@@ -69,9 +69,9 @@ public class BookForm extends FormLayout {
         setComponentMinWidth(components);
 
         setResponsiveSteps(new ResponsiveStep("0", 1));
-        addFormItem(bookTitle, "Book title");
-        addFormItem(bookAuthor, "Book author");
-        addFormItem(shelf, "Book shelf");
+        addFormItem(bookTitle, "Book title *");
+        addFormItem(bookAuthor, "Book author *");
+        addFormItem(shelf, "Book shelf *");
         addFormItem(dateStartedReading, ENTER_DATE);
         addFormItem(dateFinishedReading, ENTER_DATE);
         addFormItem(bookGenre, "Book genre");
