@@ -15,3 +15,7 @@ All suggestions and complaints are welcome and encouraged. If an issue already e
 This applies to both code and documentation changes.
 
 If an issue already exists for what you want to work and it is unassigned, feel free to assign yourself to it. If an issue doesn't already exist, please create one and assign yourself to it. This is so that work isn't duplicated.  
+
+## Code contributions
+
+Please create a new branch and submit a pull request into the branch that you want to merge into.
