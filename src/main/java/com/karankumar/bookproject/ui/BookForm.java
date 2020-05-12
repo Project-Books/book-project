@@ -32,7 +32,7 @@ public class BookForm extends FormLayout {
     private TextArea favouriteQuote;
     private NumberField rating;
 
-    public static final String ENTER_DATE = "Enter date";
+    public static final String ENTER_DATE = "Enter a date";
 
     public BookForm(ShelfService shelfService) {
         configureTitle();
@@ -72,8 +72,8 @@ public class BookForm extends FormLayout {
         addFormItem(bookTitle, "Book title *");
         addFormItem(bookAuthor, "Book author *");
         addFormItem(shelf, "Book shelf *");
-        addFormItem(dateStartedReading, ENTER_DATE);
-        addFormItem(dateFinishedReading, ENTER_DATE);
+        addFormItem(dateStartedReading, "Date started");
+        addFormItem(dateFinishedReading, "Date finished");
         addFormItem(bookGenre, "Book genre");
         addFormItem(pageCount, "Page count");
         addFormItem(rating, "Book rating");
