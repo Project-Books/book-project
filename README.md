@@ -25,6 +25,6 @@ Prerequisites: JDK 11 and Node.js
 3. Run `BookProjectApplication.java`
 4. Go to `localhost:8080`
 
-## Contributing
+# Contributing
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/contributing.md).
