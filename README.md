@@ -14,6 +14,8 @@ This app will let you:
     <img src="/media/book-form.png" alt="New book form"/>
 </p>
 
+(The image above may look slightly different to the app. If major changes are made, the image will be updated to reflect this.)
+
 # Setup
 
 Prerequisites: JDK 11 and Node.js
