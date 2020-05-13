@@ -11,11 +11,7 @@ import java.util.Set;
  * @author karan on 06/05/2020
  */
 @Entity
-public class Book {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class Book extends BaseEntity {
 
     @NotNull
     @NotEmpty
@@ -32,22 +28,13 @@ public class Book {
 
 
     @ManyToMany
-//    private Set<Author> authors;
     private List<Author> authors;
 
     @OneToMany
     private Set<Shelf> shelves;
 
-    private enum Genre {
-    }
-
     public Book() {
     }
-
-//    public Book(String title, Set<Author> authors) {
-//        this.title = title;
-//        this.authors = authors;
-//    }
 
     public Book(String title, List<Author> authors) {
         this.title = title;
@@ -78,17 +65,9 @@ public class Book {
         this.favouriteQuote = favouriteQuote;
     }
 
-//    public Set<Author> getAuthors() {
-//        return authors;
-//    }
-
     public List<Author> getAuthors() {
         return authors;
     }
-
-//    public void setAuthors(Set<Author> authors) {
-//        this.authors = authors;
-//    }
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
@@ -132,20 +111,5 @@ public class Book {
 
     public void setDateFinishedReading(LocalDate dateFinishedReading) {
         this.dateFinishedReading = dateFinishedReading;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Book book = (Book) o;
-
-        return id != null ? id.equals(book.id) : book.id == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
     }
 }
