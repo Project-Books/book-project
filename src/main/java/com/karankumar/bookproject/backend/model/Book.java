@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,8 +30,10 @@ public class Book {
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
+
     @ManyToMany
-    private Set<Author> authors;
+//    private Set<Author> authors;
+    private List<Author> authors;
 
     @OneToMany
     private Set<Shelf> shelves;
@@ -41,7 +44,12 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, Set<Author> authors) {
+//    public Book(String title, Set<Author> authors) {
+//        this.title = title;
+//        this.authors = authors;
+//    }
+
+    public Book(String title, List<Author> authors) {
         this.title = title;
         this.authors = authors;
     }
@@ -70,11 +78,19 @@ public class Book {
         this.favouriteQuote = favouriteQuote;
     }
 
-    public Set<Author> getAuthors() {
+//    public Set<Author> getAuthors() {
+//        return authors;
+//    }
+
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<Author> authors) {
+//    public void setAuthors(Set<Author> authors) {
+//        this.authors = authors;
+//    }
+
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 

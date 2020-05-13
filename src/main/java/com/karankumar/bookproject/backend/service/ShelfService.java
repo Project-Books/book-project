@@ -1,6 +1,8 @@
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.ShelfRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,11 @@ import java.util.stream.Stream;
 @Service
 public class ShelfService extends BaseService<Shelf, Long> {
 
+    private BookRepository bookRepository;
     private ShelfRepository shelfRepository;
 
-    public ShelfService(ShelfRepository shelfRepository) {
+    public ShelfService(BookRepository bookRepository, ShelfRepository shelfRepository) {
+        this.bookRepository = bookRepository;
         this.shelfRepository = shelfRepository;
     }
 
@@ -44,10 +48,31 @@ public class ShelfService extends BaseService<Shelf, Long> {
 
     @PostConstruct
     public void populateTestData() {
+        if (bookRepository.count() == 0) {
+            bookRepository.saveAll(
+                Stream.of("Harry Potter and the Philosopher's stone", "Harry Potter and the Order of Phoenix",
+                        "Harry Potter and the Deathly Hallows")
+                    .map(title -> {
+                        Book book = new Book();
+                        book.setTitle(title);
+
+                        return book;
+                    }).collect(Collectors.toList()));
+
+            System.out.println("Saved book");
+        }
+
+        System.out.println("Books: " + bookRepository.count());
+
         if (shelfRepository.count() == 0) {
+//            List<Book> books = bookRepository.findAll();
             shelfRepository.saveAll(
                     Stream.of("Want to read", "Currently reading", "Read")
-                        .map(Shelf::new).collect(Collectors.toList()));
+                        .map(name -> {
+                            Shelf shelf = new Shelf(name);
+//                            shelf.setBooks(books);
+                            return shelf;
+                    }).collect(Collectors.toList()));
         }
     }
 }

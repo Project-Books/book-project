@@ -3,7 +3,7 @@ package com.karankumar.bookproject.backend.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author karan on 06/05/2020
@@ -24,12 +24,12 @@ public class Author {
     private String lastName;
 
     @ManyToMany
-    private Set<Book> books;
+    private List<Book> books;
 
     public Author() {
     }
 
-    public Author(String firstName, String lastName, Set<Book> books) {
+    public Author(String firstName, String lastName, List<Book> books) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.books = books;
@@ -59,11 +59,19 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public Set<Book> getBooks() {
+//    public Set<Book> getBooks() {
+//        return books;
+//    }
+//
+//    public void setBooks(Set<Book> books) {
+//        this.books = books;
+//    }
+
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 

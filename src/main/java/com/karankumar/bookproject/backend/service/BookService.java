@@ -4,6 +4,8 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author karan on 08/05/2020
  */
@@ -33,9 +35,12 @@ public class BookService extends BaseService<Book, Long> {
         return bookRepository.count();
     }
 
+    public List<Book> findAll() {
+        return bookRepository.findAll();
+    }
+
     @Override
     public void delete(Book book) {
         bookRepository.delete(book);
     }
-
 }
