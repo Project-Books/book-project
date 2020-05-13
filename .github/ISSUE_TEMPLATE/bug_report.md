@@ -18,9 +18,11 @@ Steps to reproduce the behaviour:
 4. See error
 
 **Expected behaviour**
+
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
+
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information if applicable):**
@@ -35,4 +37,5 @@ If applicable, add screenshots to help explain your problem.
  - Version [e.g. 22]
 
 **Additional context**
+
 Add any other context about the problem here (e.g. branch name, commit hash, etc.).
