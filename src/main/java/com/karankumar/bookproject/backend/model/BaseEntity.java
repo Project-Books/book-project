@@ -5,9 +5,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-/**
- * @author karan on 13/05/2020
- */
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id

@@ -1,8 +1,5 @@
 package com.karankumar.bookproject.backend.model;
 
-/**
- * @author karan on 08/05/2020
- */
 public enum RatingScale {
     ZERO,
     ZERO_POINT_FIVE,

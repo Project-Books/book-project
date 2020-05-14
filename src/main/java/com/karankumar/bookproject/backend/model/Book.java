@@ -7,9 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author karan on 06/05/2020
- */
 @Entity
 public class Book extends BaseEntity {
 
@@ -30,7 +27,7 @@ public class Book extends BaseEntity {
     @ManyToMany
     private List<Author> authors;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Shelf> shelves;
 
     public Book() {

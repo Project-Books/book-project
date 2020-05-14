@@ -6,9 +6,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 
-/**
- * @author karan on 09/05/2020
- */
 @Route("")
 @PageTitle("Home | Book Project")
 public class MainView extends VerticalLayout {

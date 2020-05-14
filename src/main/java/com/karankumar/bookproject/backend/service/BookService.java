@@ -6,10 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @author karan on 08/05/2020
- */
-
 @Service
 public class BookService extends BaseService<Book, Long> {
 

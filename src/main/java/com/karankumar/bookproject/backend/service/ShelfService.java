@@ -1,21 +1,21 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.Genre;
+import com.karankumar.bookproject.backend.model.RatingScale;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.ShelfRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * @author karan on 08/05/2020
- */
 @Service
 public class ShelfService extends BaseService<Shelf, Long> {
     private static final Logger LOGGER = Logger.getLogger(ShelfService.class.getSimpleName());
@@ -60,6 +60,11 @@ public class ShelfService extends BaseService<Shelf, Long> {
                     .map(title -> {
                         Book book = new Book();
                         book.setTitle(title);
+                        book.setGenre(Genre.FANTASY);
+                        book.setNumberOfPages(300);
+                        book.setDateStartedReading(LocalDate.now());
+                        book.setDateFinishedReading(LocalDate.now());
+                        book.setRating(RatingScale.TEN);
 
                         return book;
                     }).collect(Collectors.toList()));

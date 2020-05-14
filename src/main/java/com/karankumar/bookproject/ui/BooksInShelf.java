@@ -9,9 +9,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import java.util.List;
 
-/**
- * @author karan on 12/05/2020
- */
 public class BooksInShelf extends VerticalLayout {
 
     private final Grid<Book> bookGrid = new Grid<>(Book.class);
@@ -23,9 +20,17 @@ public class BooksInShelf extends VerticalLayout {
         shelvesCombo.setItems(shelves.stream().map(Shelf::getName));
         add(shelvesCombo);
 
+        shelvesCombo.addValueChangeListener(event -> {
+            if (event.getValue() == null) {
+                System.out.println("No choice selected");
+            } else {
+                updateList(shelves, event.getValue());
+            }
+        });
+
         configureBookGrid();
         add(bookGrid);
-        updateList(shelves, shelvesCombo.getValue());
+//        updateList(shelves, shelvesCombo.getValue());
     }
 
     private void configureBookGrid() {
@@ -40,6 +45,7 @@ public class BooksInShelf extends VerticalLayout {
         Shelf selectedShelf = null;
         for (Shelf shelf : shelves) {
             if (shelf.getName().equals(shelfName)) {
+                System.out.println("found shelf: " + shelf.getName());
                 selectedShelf = shelf;
                 break;
             }

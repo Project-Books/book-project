@@ -5,16 +5,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-/**
- * @author karan on 06/05/2020
- */
 @Entity
 public class Shelf extends BaseEntity {
     @NotNull
     @NotEmpty
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Book> books;
 
     public Shelf() {

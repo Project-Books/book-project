@@ -5,9 +5,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-/**
- * @author karan on 06/05/2020
- */
 @Entity
 public class Author extends BaseEntity {
 
