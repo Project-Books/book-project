@@ -15,9 +15,10 @@ public class BooksInShelf extends VerticalLayout {
 
     public BooksInShelf(ShelfService shelfService) {
         List<Shelf> shelves = shelfService.findAll();
-        ComboBox<String> shelvesCombo = new ComboBox<>();
+        ComboBox<String> shelvesCombo = new ComboBox<>("Books in shelf");
         shelvesCombo.setPlaceholder("Select shelf");
         shelvesCombo.setItems(shelves.stream().map(Shelf::getName));
+        shelvesCombo.setRequired(true);
         add(shelvesCombo);
 
         shelvesCombo.addValueChangeListener(event -> {

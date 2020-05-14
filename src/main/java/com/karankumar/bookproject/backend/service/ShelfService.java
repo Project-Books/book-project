@@ -62,7 +62,7 @@ public class ShelfService extends BaseService<Shelf, Long> {
                         book.setTitle(title);
                         book.setGenre(Genre.FANTASY);
                         book.setNumberOfPages(300);
-                        book.setDateStartedReading(LocalDate.now());
+                        book.setDateStartedReading(LocalDate.now().minusDays(1));
                         book.setDateFinishedReading(LocalDate.now());
                         book.setRating(RatingScale.TEN);
 
