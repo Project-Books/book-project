@@ -6,6 +6,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ShelfService;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -26,14 +27,16 @@ public class BooksInShelf extends VerticalLayout {
         this.bookService = bookService;
         shelves = shelfService.findAll();
 
-        whichShelf = new ComboBox<>("Books in shelf");
+        whichShelf = new ComboBox<>();
         configureChosenShelf(shelves);
 
         filterByTitle = new TextField();
         configureFilter();
 
+        HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle);
+
         configureBookGrid();
-        add(whichShelf, filterByTitle, bookGrid);
+        add(horizontalLayout, bookGrid);
     }
 
     private void configureChosenShelf(List<Shelf> shelves) {
