@@ -18,7 +18,7 @@ This app will let you:
     <img src="/media/books_in_shelf.png" alt="Books in the specified shelf"/>
 </p>
 
-(The image above may look slightly different to the app. If major changes are made, the image will be updated to reflect this.)
+(The images above may look slightly different to the app. If major changes are made, the images will be updated to reflect this.)
 
 # Setup
 
