@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,6 +18,7 @@ import java.util.stream.Stream;
  */
 @Service
 public class ShelfService extends BaseService<Shelf, Long> {
+    private static final Logger LOGGER = Logger.getLogger(ShelfService.class.getSimpleName());
 
     private BookRepository bookRepository;
     private ShelfRepository shelfRepository;
@@ -34,6 +37,8 @@ public class ShelfService extends BaseService<Shelf, Long> {
     public void save(Shelf shelf) {
         if (shelf != null) {
             shelfRepository.save(shelf);
+        } else {
+            LOGGER.log(Level.SEVERE, "Null Shelf");
         }
     }
 
@@ -65,12 +70,12 @@ public class ShelfService extends BaseService<Shelf, Long> {
         System.out.println("Books: " + bookRepository.count());
 
         if (shelfRepository.count() == 0) {
-//            List<Book> books = bookRepository.findAll();
+            List<Book> books = bookRepository.findAll();
             shelfRepository.saveAll(
                     Stream.of("Want to read", "Currently reading", "Read")
                         .map(name -> {
                             Shelf shelf = new Shelf(name);
-//                            shelf.setBooks(books);
+                            shelf.setBooks(books);
                             return shelf;
                     }).collect(Collectors.toList()));
         }

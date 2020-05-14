@@ -10,7 +10,6 @@ import java.util.List;
  */
 @Entity
 public class Shelf extends BaseEntity {
-
     @NotNull
     @NotEmpty
     private String name;
