@@ -35,6 +35,13 @@ public class BookService extends BaseService<Book, Long> {
         return bookRepository.findAll();
     }
 
+    public List<Book> findAll(String filterText) {
+        if (filterText == null || filterText.isEmpty()) {
+            return bookRepository.findAll();
+        }
+        return bookRepository.search(filterText);
+    }
+
     @Override
     public void delete(Book book) {
         bookRepository.delete(book);

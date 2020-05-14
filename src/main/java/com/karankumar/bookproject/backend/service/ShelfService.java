@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -54,16 +55,36 @@ public class ShelfService extends BaseService<Shelf, Long> {
     @PostConstruct
     public void populateTestData() {
         if (bookRepository.count() == 0) {
+            Random random = new Random(0);
             bookRepository.saveAll(
-                Stream.of("Harry Potter and the Philosopher's stone", "Harry Potter and the Order of Phoenix",
+                Stream.of(
+                        "Harry Potter and the Philosopher's stone",
+                        "Harry Potter and the Chamber of Secrets",
+                        "Harry Potter and the Prisoner of Azkaban",
+                        "Harry Potter and the Goblet of Fire",
+                        "Harry Potter and the Order of Phoenix",
+                        "Harry Potter and the Half-Blood Prince",
                         "Harry Potter and the Deathly Hallows")
                     .map(title -> {
+                        int min = 300;
+                        int max = 1000;
+                        int range = (max-min) + 1;
+                        int pages = (int) (Math.random() * range);
+
                         Book book = new Book();
                         book.setTitle(title);
-                        book.setGenre(Genre.FANTASY);
-                        book.setNumberOfPages(300);
+
+                        Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
+
+//                        book.setGenre(Genre.FANTASY);
+                        book.setGenre(genre);
+                        book.setNumberOfPages(pages);
+
+//                        LocalDate today = LocalDate.parse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                         book.setDateStartedReading(LocalDate.now().minusDays(1));
+//                        book.setDateFinishedReading(today);
                         book.setDateFinishedReading(LocalDate.now());
+
                         book.setRating(RatingScale.TEN);
 
                         return book;
