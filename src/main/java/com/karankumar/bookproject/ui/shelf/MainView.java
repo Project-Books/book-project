@@ -74,7 +74,7 @@ public class MainView extends VerticalLayout {
         bookGrid.setColumns("title", "genre", "numberOfPages", "dateStartedReading", "dateFinishedReading", "rating");
     }
 
-    public void updateList() {
+    private void updateList() {
         if (chosenShelf == null || chosenShelf.isEmpty()) {
             return;
         }

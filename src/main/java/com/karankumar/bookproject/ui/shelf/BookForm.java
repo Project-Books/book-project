@@ -20,14 +20,14 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
-import org.vaadin.gatanaso.MultiselectComboBox;
 
 import java.util.List;
 
 public class BookForm extends FormLayout {
     private TextField bookTitle = new TextField();
     private TextField bookAuthor = new TextField();
-    private MultiselectComboBox<String> shelf = new MultiselectComboBox<>();
+//    private MultiselectComboBox<String> shelf = new MultiselectComboBox<>();
+    private ComboBox<String> shelf = new ComboBox<>();
     private ComboBox<Genre> bookGenre = new ComboBox<>();
     private IntegerField pageCount = new IntegerField();
     private DatePicker dateStartedReading = new DatePicker();
@@ -89,6 +89,7 @@ public class BookForm extends FormLayout {
 //        binder.forField(shelf)
 //                .withConverter(new StringToShelfConverter())
 //                .bind(Book::getShelves, Book::setShelves);
+//                .bind(Shelf::getName, Book::setShelf);
         binder.forField(dateStartedReading)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
