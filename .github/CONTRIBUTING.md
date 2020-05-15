@@ -18,4 +18,4 @@ If an issue already exists for what you want to work and it is unassigned, feel 
 
 ## Code contributions
 
-Please create a new branch and submit a pull request into the branch that you want to merge into.
+Please create a new branch off master. Once ready to be merged, please submit a pull request to merge into master.
