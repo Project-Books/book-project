@@ -70,8 +70,8 @@ public class MainView extends VerticalLayout {
 
     private void configureBookGrid() {
         addClassName("book-grid");
-//        bookGrid.setColumns("title", "authors", "genre", "dateStartedReading", "dateFinishedReading", "rating");
-        bookGrid.setColumns("title", "genre", "numberOfPages", "dateStartedReading", "dateFinishedReading", "rating");
+        bookGrid.setColumns("title", "author", "genre", "dateStartedReading", "dateFinishedReading", "rating",
+                "numberOfPages");
     }
 
     private void updateList() {

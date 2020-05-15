@@ -72,7 +72,7 @@ public class BookForm extends FormLayout {
 
         setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
         addFormItem(bookTitle, "Book title *");
-//        addFormItem(bookAuthor, "Book author *");
+        addFormItem(bookAuthor, "Book author *");
         addFormItem(shelf, "Book shelf *");
         addFormItem(dateStartedReading, "Date started");
         addFormItem(dateFinishedReading, "Date finished");
@@ -86,6 +86,9 @@ public class BookForm extends FormLayout {
     private void configureBinder() {
         binder.forField(bookTitle)
                 .bind(Book::getTitle, Book::setTitle);
+        binder.forField(bookAuthor)
+                .withConverter(new StringToAuthorConverter())
+                .bind(Book::getAuthor, Book::setAuthor);
 //        binder.forField(shelf)
 //                .withConverter(new StringToShelfConverter())
 //                .bind(Book::getShelves, Book::setShelves);

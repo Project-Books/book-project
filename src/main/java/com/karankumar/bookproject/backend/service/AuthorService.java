@@ -4,6 +4,8 @@ import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
  * @author karan on 08/05/2020
@@ -22,6 +24,10 @@ public class AuthorService extends BaseService<Author, Long> {
         return authorRepository.getOne(id);
     }
 
+    public List<Author> findAll() {
+        return authorRepository.findAll();
+    }
+
     @Override
     public void save(Author author) {
         if (author != null) {
@@ -33,4 +39,10 @@ public class AuthorService extends BaseService<Author, Long> {
     public void delete(Author author) {
         authorRepository.delete(author);
     }
+
+
+    public Long count() {
+        return authorRepository.count();
+    }
+
 }

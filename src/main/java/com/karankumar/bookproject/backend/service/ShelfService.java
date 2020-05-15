@@ -1,9 +1,7 @@
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Genre;
-import com.karankumar.bookproject.backend.model.RatingScale;
-import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.model.*;
+import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.ShelfRepository;
 import org.springframework.stereotype.Service;
@@ -23,10 +21,15 @@ public class ShelfService extends BaseService<Shelf, Long> {
 
     private BookRepository bookRepository;
     private ShelfRepository shelfRepository;
+    private AuthorRepository authorRepository;
 
-    public ShelfService(BookRepository bookRepository, ShelfRepository shelfRepository) {
+//    public ShelfService(BookRepository bookRepository, ShelfRepository shelfRepository) {
+    public ShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
+                        ShelfRepository shelfRepository ) {
         this.bookRepository = bookRepository;
         this.shelfRepository = shelfRepository;
+
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -54,8 +57,21 @@ public class ShelfService extends BaseService<Shelf, Long> {
 
     @PostConstruct
     public void populateTestData() {
+        if (authorRepository.count() == 0) {
+            authorRepository.saveAll(
+                    Stream.of("J.K. Rowling")
+                    .map(name ->{
+                        String[] fullName = name.split(" ");
+                        Author author = new Author();
+                        author.setFirstName(fullName[0]);
+                        author.setLastName(fullName[1]);
+                        return author;
+                    }).collect(Collectors.toList()));
+        }
+
         if (bookRepository.count() == 0) {
             Random random = new Random(0);
+            List<Author> authors = authorRepository.findAll();
             bookRepository.saveAll(
                 Stream.of(
                         "Harry Potter and the Philosopher's stone",
@@ -73,6 +89,8 @@ public class ShelfService extends BaseService<Shelf, Long> {
 
                         Book book = new Book();
                         book.setTitle(title);
+
+                        book.setAuthor(authors.get(0));
 
                         Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
 

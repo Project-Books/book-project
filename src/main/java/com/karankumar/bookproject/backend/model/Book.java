@@ -1,8 +1,6 @@
 package com.karankumar.bookproject.backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -29,6 +27,10 @@ public class Book extends BaseEntity {
     @ManyToMany
     private List<Author> authors;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Shelf> shelves;
 
@@ -46,6 +48,14 @@ public class Book extends BaseEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public RatingScale getRating() {
