@@ -1,8 +1,12 @@
 package com.karankumar.bookproject.ui;
 
+import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Genre;
 import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ShelfService;
+import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -10,28 +14,39 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.shared.Registration;
 import org.vaadin.gatanaso.MultiselectComboBox;
 
 import java.util.List;
 
-public class BookForm extends FormLayout {
-    private TextField bookTitle;
-    private TextField bookAuthor;
-    private MultiselectComboBox<String> shelf;
-    private ComboBox<Genre> bookGenre;
-    private IntegerField pageCount;
-    private DatePicker dateStartedReading;
-    private DatePicker dateFinishedReading;
-    private TextArea favouriteQuote;
-    private NumberField rating;
+public class BookForm extends VerticalLayout {
+    private TextField bookTitle = new TextField();
+    private TextField bookAuthor = new TextField();
+    private MultiselectComboBox<String> shelf = new MultiselectComboBox<>();
+    private ComboBox<Genre> bookGenre = new ComboBox<>();
+    private IntegerField pageCount = new IntegerField();
+    private DatePicker dateStartedReading = new DatePicker();
+    private DatePicker dateFinishedReading = new DatePicker();
+    private TextArea favouriteQuote = new TextArea();
+    private NumberField rating = new NumberField();
 
-    public static final String ENTER_DATE = "Enter a date";
+    private static final String ENTER_DATE = "Enter a date";
 
-    public BookForm(ShelfService shelfService) {
+    Binder<Book> binder = new BeanValidationBinder<>(Book.class);
+    private Button addBook;
+    private Button reset;
+
+    public BookForm(BookService bookService, ShelfService shelfService) {
+        configureBinder();
+//        binder.bindInstanceFields(this);
+
         configureTitle();
         configureAuthor();
         configureShelf(shelfService);
@@ -42,13 +57,7 @@ public class BookForm extends FormLayout {
         configureQuote();
         configureRating();
 
-        Button addBook = new Button();
-        addBook.setText("Add book");
-        addBook.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        Button reset = new Button();
-        reset.setText("Reset");
-        reset.addClickListener(event -> clearForm());
+        configureButtons();
 
         HorizontalLayout buttons = new HorizontalLayout(addBook, reset);
 
@@ -65,21 +74,58 @@ public class BookForm extends FormLayout {
         };
         setComponentMinWidth(components);
 
-        setResponsiveSteps(new ResponsiveStep("0", 1));
-        addFormItem(bookTitle, "Book title *");
-        addFormItem(bookAuthor, "Book author *");
-        addFormItem(shelf, "Book shelf *");
-        addFormItem(dateStartedReading, "Date started");
-        addFormItem(dateFinishedReading, "Date finished");
-        addFormItem(bookGenre, "Book genre");
-        addFormItem(pageCount, "Page count");
-        addFormItem(rating, "Book rating");
-        addFormItem(favouriteQuote, "Favourite quote");
-        add(buttons);
+        FormLayout form = new FormLayout();
+        form.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
+        form.addFormItem(bookTitle, "Book title *");
+        form.addFormItem(bookAuthor, "Book author *");
+        form.addFormItem(shelf, "Book shelf *");
+        form.addFormItem(dateStartedReading, "Date started");
+        form.addFormItem(dateFinishedReading, "Date finished");
+        form.addFormItem(bookGenre, "Book genre");
+        form.addFormItem(pageCount, "Page count");
+        form.addFormItem(rating, "Book rating");
+        form.addFormItem(favouriteQuote, "Favourite quote");
+        form.add(buttons);
+
+        VerticalLayout booksInShelf = new BooksInShelf(bookService, shelfService);
+
+        add(booksInShelf, form);
+    }
+
+    private void configureBinder() {
+        binder.forField(rating)
+                .withConverter(new DoubleToRatingScaleConverter())
+                .bind(Book::getRating, Book::setRating);
+    }
+
+    private void configureButtons() {
+        addBook = new Button();
+        addBook.setText("Add book");
+        addBook.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        reset = new Button();
+        reset.setText("Reset");
+        reset.addClickListener(event -> clearForm());
+
+        addBook.addClickListener(click -> validateOnSave());
+
+
+//        .addClickListener(click -> validateOnSave());
+
+//        binder.addStatusChangeListener(event -> addBook.setEnabled(binder.isValid()));
+    }
+
+    private void validateOnSave() {
+        if (binder.isValid()) {
+            fireEvent(new SaveEvent(this, binder.getBean()));
+        }
+    }
+
+    public void setBook(Book book) {
+        binder.setBean(book);
     }
 
     private void configureTitle() {
-        bookTitle = new TextField();
         bookTitle.setPlaceholder("Enter a book title");
         bookTitle.setClearButtonVisible(true);
         bookTitle.setRequired(true);
@@ -87,7 +133,6 @@ public class BookForm extends FormLayout {
     }
 
     private void configureAuthor() {
-        bookAuthor = new TextField();
         bookAuthor.setPlaceholder("Enter a book author");
         bookAuthor.setClearButtonVisible(true);
         bookAuthor.setRequired(true);
@@ -95,13 +140,11 @@ public class BookForm extends FormLayout {
     }
 
     private void configureGenre() {
-        bookGenre = new ComboBox<>();
         bookGenre.setItems(Genre.values());
         bookGenre.setPlaceholder("Choose a book genre");
     }
 
     private void configureShelf(ShelfService shelfService) {
-        shelf = new MultiselectComboBox<>();
         shelf.setRequired(true);
         shelf.setPlaceholder("Choose a shelf");
         shelf.setClearButtonVisible(true);
@@ -111,7 +154,6 @@ public class BookForm extends FormLayout {
     }
 
     private void configureRating() {
-        rating = new NumberField();
         rating.setHasControls(true);
         rating.setMin(0);
         rating.setMax(10);
@@ -120,26 +162,22 @@ public class BookForm extends FormLayout {
     }
 
     private void configureDateStarted() {
-        dateStartedReading = new DatePicker();
         dateStartedReading.setClearButtonVisible(true);
         dateStartedReading.setPlaceholder(ENTER_DATE);
     }
 
     private void configureDateFinished() {
-        dateFinishedReading = new DatePicker();
         dateFinishedReading.setClearButtonVisible(true);
         dateFinishedReading.setPlaceholder(ENTER_DATE);
     }
 
     private void configurePageCount() {
-        pageCount = new IntegerField();
         pageCount.setMin(1);
         pageCount.setHasControls(true);
         pageCount.setClearButtonVisible(true);
     }
 
     private void configureQuote() {
-        favouriteQuote = new TextArea();
         favouriteQuote.setPlaceholder("Enter favourite quote");
         favouriteQuote.setClearButtonVisible(true);
     }
@@ -160,5 +198,37 @@ public class BookForm extends FormLayout {
         for (HasSize h : components) {
             h.setMinWidth("15em");
         }
+    }
+
+
+    // Events
+    public static abstract class BookFormEvent extends ComponentEvent<BookForm> {
+        private Book book;
+
+        protected BookFormEvent(BookForm source, Book book) {
+            super(source, false);
+            this.book = book;
+        }
+
+        public Book getBook() {
+            return book;
+        }
+    }
+
+    public static class SaveEvent extends BookFormEvent {
+        SaveEvent(BookForm source, Book book) {
+            super(source, book);
+        }
+    }
+
+    public static class DeleteEvent extends BookFormEvent {
+        DeleteEvent(BookForm source, Book book) {
+            super(source, book);
+        }
+    }
+
+    public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
+                                                                  ComponentEventListener<T> listener) {
+        return getEventBus().addListener(eventType, listener);
     }
 }
