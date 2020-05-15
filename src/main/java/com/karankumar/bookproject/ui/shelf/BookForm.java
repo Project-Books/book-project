@@ -7,6 +7,7 @@ import com.karankumar.bookproject.backend.service.ShelfService;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -24,7 +25,8 @@ import java.util.List;
 
 public class BookForm extends FormLayout {
     private TextField bookTitle = new TextField();
-    private TextField bookAuthor = new TextField();
+    private TextField authorFirstName = new TextField();
+    private TextField authorLastName = new TextField();
 //    private MultiselectComboBox<String> shelf = new MultiselectComboBox<>();
     private ComboBox<String> shelf = new ComboBox<>();
     private ComboBox<Genre> bookGenre = new ComboBox<>();
@@ -58,7 +60,8 @@ public class BookForm extends FormLayout {
 
         HasSize[] components = {
                 bookTitle,
-                bookAuthor,
+                authorFirstName,
+                authorLastName,
                 dateStartedReading,
                 dateFinishedReading,
                 bookGenre,
@@ -71,7 +74,8 @@ public class BookForm extends FormLayout {
 
         setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
         addFormItem(bookTitle, "Book title *");
-        addFormItem(bookAuthor, "Book author *");
+        addFormItem(authorFirstName, "Author's first name *");
+        addFormItem(authorLastName, "Author's last name *");
         addFormItem(shelf, "Book shelf *");
         addFormItem(dateStartedReading, "Date started");
         addFormItem(dateFinishedReading, "Date finished");
@@ -86,8 +90,14 @@ public class BookForm extends FormLayout {
         binder.forField(bookTitle)
                 .asRequired("Please provide a book title")
                 .bind(Book::getTitle, Book::setTitle);
-        binder.forField(bookAuthor)
-                .withConverter(new StringToAuthorConverter())
+//        binder.forField(bookAuthor)
+//                .withConverter(new StringToAuthorConverter())
+//                .bind(Book::getAuthor, Book::setAuthor);
+        binder.forField(authorFirstName)
+                .withConverter(new StringToAuthorFirstNameConverter())
+                .bind(Book::getAuthor, Book::setAuthor);
+        binder.forField(authorLastName)
+                .withConverter(new StringToAuthorLastNameConverter())
                 .bind(Book::getAuthor, Book::setAuthor);
 //        binder.forField(shelf)
 //                .withConverter(new StringToShelfConverter())
@@ -143,10 +153,20 @@ public class BookForm extends FormLayout {
     }
 
     private void configureAuthor() {
-        bookAuthor.setPlaceholder("Enter a book author");
-        bookAuthor.setClearButtonVisible(true);
-        bookAuthor.setRequired(true);
-        bookAuthor.setRequiredIndicatorVisible(true);
+//        bookAuthor.setPlaceholder("Enter a book author");
+//        bookAuthor.setClearButtonVisible(true);
+//        bookAuthor.setRequired(true);
+//        bookAuthor.setRequiredIndicatorVisible(true);
+
+        authorFirstName.setPlaceholder("Enter the author's first name");
+        authorFirstName.setClearButtonVisible(true);
+        authorFirstName.setRequired(true);
+        authorFirstName.setRequiredIndicatorVisible(true);
+
+        authorLastName.setPlaceholder("Enter the author's last name");
+        authorLastName.setClearButtonVisible(true);
+        authorLastName.setRequired(true);
+        authorLastName.setRequiredIndicatorVisible(true);
     }
 
     private void configureGenre() {
@@ -195,15 +215,22 @@ public class BookForm extends FormLayout {
      */
 
     private void clearForm() {
-        bookTitle.clear();
-        bookAuthor.clear();
-        shelf.clear();
-        bookGenre.clear();
-        pageCount.clear();
-        dateStartedReading.clear();
-        dateFinishedReading.clear();
-//        favouriteQuote.clear();
-        rating.clear();
+        HasValue[] components = {
+                bookTitle,
+                authorFirstName,
+                authorLastName,
+                shelf,
+                bookGenre,
+                pageCount,
+                dateStartedReading,
+                dateFinishedReading,
+                rating,
+        };
+        for (HasValue component : components) {
+            if (component != null && !component.isEmpty()) {
+                component.clear();
+            }
+        }
     }
 
     private void setComponentMinWidth(HasSize[] components) {
