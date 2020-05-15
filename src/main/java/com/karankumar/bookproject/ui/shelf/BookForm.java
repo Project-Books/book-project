@@ -235,7 +235,7 @@ public class BookForm extends FormLayout {
 
     private void setComponentMinWidth(HasSize[] components) {
         for (HasSize h : components) {
-            h.setMinWidth("15em");
+            h.setMinWidth("23em");
         }
     }
 
