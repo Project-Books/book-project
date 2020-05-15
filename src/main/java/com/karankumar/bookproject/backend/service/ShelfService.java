@@ -59,8 +59,15 @@ public class ShelfService extends BaseService<Shelf, Long> {
     public void populateTestData() {
         if (authorRepository.count() == 0) {
             authorRepository.saveAll(
-                    Stream.of("J.K. Rowling")
-                    .map(name ->{
+                    Stream.of(
+                            "J.K. Rowling",
+                            "Neil Gaiman",
+                            "J.R.R Tolkien",
+                            "Roald Dahl",
+                            "Robert Galbraith",
+                            "Dan Brown"
+                    )
+                    .map(name -> {
                         String[] fullName = name.split(" ");
                         Author author = new Author();
                         author.setFirstName(fullName[0]);
@@ -94,29 +101,22 @@ public class ShelfService extends BaseService<Shelf, Long> {
 
                         Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
 
-//                        book.setGenre(Genre.FANTASY);
                         book.setGenre(genre);
                         book.setNumberOfPages(pages);
 
-//                        LocalDate today = LocalDate.parse(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                         book.setDateStartedReading(LocalDate.now().minusDays(1));
-//                        book.setDateFinishedReading(today);
                         book.setDateFinishedReading(LocalDate.now());
 
                         book.setRating(RatingScale.TEN);
 
                         return book;
                     }).collect(Collectors.toList()));
-
-            System.out.println("Saved book");
         }
-
-        System.out.println("Books: " + bookRepository.count());
 
         if (shelfRepository.count() == 0) {
             List<Book> books = bookRepository.findAll();
             shelfRepository.saveAll(
-                    Stream.of("Want to read", "Currently reading", "Read")
+                    Stream.of("To read", "Reading", "Read")
                         .map(name -> {
                             Shelf shelf = new Shelf(name);
                             shelf.setBooks(books);

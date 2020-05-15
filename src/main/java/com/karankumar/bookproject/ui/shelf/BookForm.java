@@ -15,7 +15,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -32,7 +31,7 @@ public class BookForm extends FormLayout {
     private IntegerField pageCount = new IntegerField();
     private DatePicker dateStartedReading = new DatePicker();
     private DatePicker dateFinishedReading = new DatePicker();
-    private TextArea favouriteQuote = new TextArea();
+//    private TextArea favouriteQuote = new TextArea();
     private NumberField rating = new NumberField();
 
     private static final String ENTER_DATE = "Enter a date";
@@ -52,7 +51,7 @@ public class BookForm extends FormLayout {
         configurePageCount();
         configureDateStarted();
         configureDateFinished();
-        configureQuote();
+//        configureQuote();
         configureRating();
 
         HorizontalLayout buttons = configureButtons();
@@ -66,7 +65,7 @@ public class BookForm extends FormLayout {
                 shelf,
                 pageCount,
                 rating,
-                favouriteQuote,
+//                favouriteQuote,
         };
         setComponentMinWidth(components);
 
@@ -85,6 +84,7 @@ public class BookForm extends FormLayout {
 
     private void configureBinder() {
         binder.forField(bookTitle)
+                .asRequired("Please provide a book title")
                 .bind(Book::getTitle, Book::setTitle);
         binder.forField(bookAuthor)
                 .withConverter(new StringToAuthorConverter())
@@ -104,8 +104,8 @@ public class BookForm extends FormLayout {
         binder.forField(rating)
                 .withConverter(new DoubleToRatingScaleConverter())
                 .bind(Book::getRating, Book::setRating);
-        binder.forField(favouriteQuote)
-                .bind(Book::getFavouriteQuote, Book::setFavouriteQuote);
+//        binder.forField(favouriteQuote)
+//                .bind(Book::getFavouriteQuote, Book::setFavouriteQuote);
     }
 
     private HorizontalLayout configureButtons() {
@@ -187,10 +187,12 @@ public class BookForm extends FormLayout {
         pageCount.setClearButtonVisible(true);
     }
 
+    /*
     private void configureQuote() {
         favouriteQuote.setPlaceholder("Enter favourite quote");
         favouriteQuote.setClearButtonVisible(true);
     }
+     */
 
     private void clearForm() {
         bookTitle.clear();
@@ -200,7 +202,7 @@ public class BookForm extends FormLayout {
         pageCount.clear();
         dateStartedReading.clear();
         dateFinishedReading.clear();
-        favouriteQuote.clear();
+//        favouriteQuote.clear();
         rating.clear();
     }
 
