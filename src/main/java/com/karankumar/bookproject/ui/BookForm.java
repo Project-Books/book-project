@@ -40,8 +40,9 @@ public class BookForm extends VerticalLayout {
     private static final String ENTER_DATE = "Enter a date";
 
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
-    private Button addBook;
-    private Button reset;
+    private Button addBook = new Button();
+    private Button reset  = new Button();
+    private Button delete = new Button();
 
     public BookForm(BookService bookService, ShelfService shelfService) {
         configureBinder();
@@ -57,9 +58,7 @@ public class BookForm extends VerticalLayout {
         configureQuote();
         configureRating();
 
-        configureButtons();
-
-        HorizontalLayout buttons = new HorizontalLayout(addBook, reset);
+        HorizontalLayout buttons = configureButtons();
 
         HasSize[] components = {
                 bookTitle,
@@ -93,26 +92,28 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureBinder() {
+        binder.forField(bookTitle)
+                .bind(Book::getTitle, Book::setTitle);
         binder.forField(rating)
                 .withConverter(new DoubleToRatingScaleConverter())
                 .bind(Book::getRating, Book::setRating);
     }
 
-    private void configureButtons() {
-        addBook = new Button();
+    private HorizontalLayout configureButtons() {
         addBook.setText("Add book");
         addBook.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addBook.addClickListener(click -> validateOnSave());
 
-        reset = new Button();
         reset.setText("Reset");
         reset.addClickListener(event -> clearForm());
 
-        addBook.addClickListener(click -> validateOnSave());
+        delete = new Button();
+        delete.setText("Delete");
+        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
+        binder.addStatusChangeListener(event -> addBook.setEnabled(binder.isValid()));
 
-//        .addClickListener(click -> validateOnSave());
-
-//        binder.addStatusChangeListener(event -> addBook.setEnabled(binder.isValid()));
+        return new HorizontalLayout(addBook, reset, delete);
     }
 
     private void validateOnSave() {
