@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.ui;
+package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.model.RatingScale;
 import com.vaadin.flow.data.binder.Result;

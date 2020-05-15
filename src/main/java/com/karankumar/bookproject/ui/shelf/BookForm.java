@@ -1,9 +1,8 @@
-package com.karankumar.bookproject.ui;
+package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Genre;
 import com.karankumar.bookproject.backend.model.Shelf;
-import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ShelfService;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -14,7 +13,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -26,7 +24,7 @@ import org.vaadin.gatanaso.MultiselectComboBox;
 
 import java.util.List;
 
-public class BookForm extends VerticalLayout {
+public class BookForm extends FormLayout {
     private TextField bookTitle = new TextField();
     private TextField bookAuthor = new TextField();
     private MultiselectComboBox<String> shelf = new MultiselectComboBox<>();
@@ -44,9 +42,8 @@ public class BookForm extends VerticalLayout {
     private Button reset  = new Button();
     private Button delete = new Button();
 
-    public BookForm(BookService bookService, ShelfService shelfService) {
+    public BookForm(ShelfService shelfService) {
         configureBinder();
-//        binder.bindInstanceFields(this);
 
         configureTitle();
         configureAuthor();
@@ -73,30 +70,38 @@ public class BookForm extends VerticalLayout {
         };
         setComponentMinWidth(components);
 
-        FormLayout form = new FormLayout();
-        form.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
-        form.addFormItem(bookTitle, "Book title *");
-        form.addFormItem(bookAuthor, "Book author *");
-        form.addFormItem(shelf, "Book shelf *");
-        form.addFormItem(dateStartedReading, "Date started");
-        form.addFormItem(dateFinishedReading, "Date finished");
-        form.addFormItem(bookGenre, "Book genre");
-        form.addFormItem(pageCount, "Page count");
-        form.addFormItem(rating, "Book rating");
-        form.addFormItem(favouriteQuote, "Favourite quote");
-        form.add(buttons);
-
-        VerticalLayout booksInShelf = new BooksInShelf(bookService, shelfService);
-
-        add(booksInShelf, form);
+        setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
+        addFormItem(bookTitle, "Book title *");
+//        addFormItem(bookAuthor, "Book author *");
+        addFormItem(shelf, "Book shelf *");
+        addFormItem(dateStartedReading, "Date started");
+        addFormItem(dateFinishedReading, "Date finished");
+        addFormItem(bookGenre, "Book genre");
+        addFormItem(pageCount, "Page count");
+        addFormItem(rating, "Book rating");
+//        addFormItem(favouriteQuote, "Favourite quote");
+        add(buttons);
     }
 
     private void configureBinder() {
         binder.forField(bookTitle)
                 .bind(Book::getTitle, Book::setTitle);
+//        binder.forField(shelf)
+//                .withConverter(new StringToShelfConverter())
+//                .bind(Book::getShelves, Book::setShelves);
+        binder.forField(dateStartedReading)
+                .bind(Book::getDateStartedReading, Book::setDateStartedReading);
+        binder.forField(dateFinishedReading)
+                .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
+        binder.forField(pageCount)
+                .bind(Book::getNumberOfPages, Book::setNumberOfPages);
+        binder.forField(bookGenre)
+                .bind(Book::getGenre, Book::setGenre);
         binder.forField(rating)
                 .withConverter(new DoubleToRatingScaleConverter())
                 .bind(Book::getRating, Book::setRating);
+        binder.forField(favouriteQuote)
+                .bind(Book::getFavouriteQuote, Book::setFavouriteQuote);
     }
 
     private HorizontalLayout configureButtons() {
@@ -200,7 +205,6 @@ public class BookForm extends VerticalLayout {
             h.setMinWidth("15em");
         }
     }
-
 
     // Events
     public static abstract class BookFormEvent extends ComponentEvent<BookForm> {

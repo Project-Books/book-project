@@ -1,8 +1,6 @@
 package com.karankumar.bookproject.backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -17,6 +15,7 @@ public class Book extends BaseEntity {
     private String title;
 
     private int numberOfPages;
+
     private Genre genre;
 
     // For books that have been read
@@ -24,7 +23,6 @@ public class Book extends BaseEntity {
     private String favouriteQuote;
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
-
 
     @ManyToMany
     private List<Author> authors;

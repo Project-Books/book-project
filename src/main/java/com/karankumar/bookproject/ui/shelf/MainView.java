@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.ui;
+package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Shelf;
@@ -10,20 +10,27 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
-public class BooksInShelf extends VerticalLayout {
 
-    private final Grid<Book> bookGrid = new Grid<>(Book.class);
+@Route("")
+@PageTitle("Home | Book Project")
+public class MainView extends VerticalLayout {
+
+    private BookForm bookForm;
+    private BookService bookService;
+
+    private Grid<Book> bookGrid = new Grid<>(Book.class);
     private final TextField filterByTitle;
     private final ComboBox<String> whichShelf;
     private final List<Shelf> shelves;
     private String chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
-    private BookService bookService;
 
-    public BooksInShelf(BookService bookService, ShelfService shelfService) {
+    public MainView(BookService bookService, ShelfService shelfService) {
         this.bookService = bookService;
         shelves = shelfService.findAll();
 
@@ -37,6 +44,14 @@ public class BooksInShelf extends VerticalLayout {
 
         configureBookGrid();
         add(horizontalLayout, bookGrid);
+
+        bookForm = new BookForm(shelfService);
+        add(bookForm);
+
+        bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
+        bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
+
+        bookGrid.asSingleSelect().addValueChangeListener(event -> editBook(event.getValue()));
     }
 
     private void configureChosenShelf(List<Shelf> shelves) {
@@ -59,7 +74,7 @@ public class BooksInShelf extends VerticalLayout {
         bookGrid.setColumns("title", "genre", "numberOfPages", "dateStartedReading", "dateFinishedReading", "rating");
     }
 
-    private void updateList() {
+    public void updateList() {
         if (chosenShelf == null || chosenShelf.isEmpty()) {
             return;
         }
@@ -94,4 +109,21 @@ public class BooksInShelf extends VerticalLayout {
             updateList();
         });
     }
+
+    private void editBook(Book book) {
+        if (book != null) {
+            bookForm.setBook(book);
+        }
+    }
+
+    private void deleteBook(BookForm.DeleteEvent event) {
+        bookService.delete(event.getBook());
+        updateList();
+    }
+
+    private void saveBook(BookForm.SaveEvent event) {
+        bookService.save(event.getBook());
+        updateList();
+    }
+
 }
