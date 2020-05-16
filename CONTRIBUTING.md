@@ -16,7 +16,7 @@ All suggestions and complaints are both welcome and encouraged. Please add to an
 
 If an issue already exists for what you want to work and it is unassigned, feel free to assign yourself to it. If an issue doesn't already exist, please create one and assign yourself to it. 
 
-Assigning issues before working on it ensures that work isn't duplicated.  
+Assigning yourself to an issue before working on it helps to minimise the chances of duplicated work.
 
 ## Git workflow
 
