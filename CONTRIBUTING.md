@@ -16,7 +16,7 @@ All suggestions and feedback are both welcome and encouraged. Please add to an e
 
 *This applies to both code and documentation changes.*
 
-If an issue already exists for what you want to work and it is unassigned, feel free to assign yourself to it. If an issue doesn't already exist, please create one and assign yourself to it. 
+If an issue already exists for what you want to work and it is unassigned, and it is not labelled as `blocked`, feel free to assign yourself to it. If an issue doesn't already exist, please create one and assign yourself to it. 
 
 Assigning yourself to an issue before working on it helps to minimise the chances of duplicated work.
 
@@ -38,3 +38,7 @@ Use the present tense (e.g. "add converter", not "added converter") for git comm
 ## Code contributions
 
 Please adhere to [Google's Java style guide](https://google.github.io/styleguide/javaguide.html).
+
+If you use IntelliJ, you can use the [google-java-format](https://plugins.jetbrains.com/plugin/8527-google-java-format) plugin. 
+
+If you use Eclipse, you can import [Google's Java XML file](https://github.com/google/styleguide/blob/gh-pages/eclipse-java-google-style.xml).
