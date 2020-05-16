@@ -2,7 +2,7 @@ Firstly, thank you for taking an interest in contributing!
 
 ## Code of Conduct
 
-By contributing to this project, you are expected to adhere to the [Book Project Code of Conduct](https://github.com/knjk04/book-project/blob/master/.github/CODE_OF_CONDUCT.md). 
+By contributing to this project, you are expected to adhere to the [Book Project Code of Conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md). 
 
 The code of conduct is updated from time to time, so please ensure you stay up-to-date.
 
