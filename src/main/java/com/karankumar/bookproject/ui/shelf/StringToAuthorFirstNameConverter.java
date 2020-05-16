@@ -9,15 +9,11 @@ public class StringToAuthorFirstNameConverter implements Converter<String, Autho
     @Override
     public Result<Author> convertToModel(String firstName, ValueContext valueContext) {
         if (firstName == null || firstName.isEmpty()) {
-            Result.error("Name not provided");
-        } else if (firstName.contains(" ")) {
-            String[] split = firstName.split(" ");
-            Author author = new Author();
-            author.setFirstName(split[0]);
-            author.setLastName(split[1]);
-            return Result.ok(author);
+            return Result.error("Please enter a first name");
         }
-        return Result.error("Please enter a first name");
+        Author author = new Author();
+        author.setFirstName(firstName);
+        return Result.ok(author);
     }
 
     @Override

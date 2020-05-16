@@ -8,7 +8,9 @@ import com.vaadin.flow.data.converter.Converter;
 class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     @Override
     public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
-        if (ratingVal == 0.0) {
+        if (ratingVal == null) {
+            return Result.error("Please provide a rating");
+        } else if (ratingVal == 0.0) {
             return Result.ok(RatingScale.ZERO);
         } else if (ratingVal == 0.5) {
             return Result.ok(RatingScale.ZERO_POINT_FIVE);
@@ -50,8 +52,9 @@ class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
             return Result.ok(RatingScale.NINE_POINT_FIVE);
         } else if (ratingVal == 10.0) {
             return Result.ok(RatingScale.ZERO);
+        } else {
+            return Result.error("Invalid rating");
         }
-        return Result.error("Invalid rating");
     }
 
     @Override
