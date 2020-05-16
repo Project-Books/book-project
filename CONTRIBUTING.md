@@ -18,7 +18,7 @@ If an issue already exists for what you want to work and it is unassigned, feel 
 
 Assigning issues before working on it ensures that work isn't duplicated.  
 
-## Code contributions
+## Git workflow
 
 Please follow the process below:
 
@@ -27,6 +27,4 @@ Please follow the process below:
 3. Create a new branch off master with a descriptive branch name
 4. Submit a pull request to merge into master
 
-## Git commit messages
-
-- Use the present tense (e.g. "add converter", not "added converter")
+Use the present tense (e.g. "add converter", not "added converter") for git commit messages.
