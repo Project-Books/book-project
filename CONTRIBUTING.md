@@ -28,3 +28,7 @@ Please follow the process below:
 4. Submit a pull request to merge into master
 
 Use the present tense (e.g. "add converter", not "added converter") for git commit messages.
+
+## Code contributions
+
+Please adhere to [Google's Java style guide](https://google.github.io/styleguide/javaguide.html).
