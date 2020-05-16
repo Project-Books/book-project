@@ -1,22 +1,28 @@
 Firstly, thank you for taking an interest in contributing!
 
+As with the code of conduct, this contributing document may change over time, so please ensure that you stay up-to-date with it.
+
 ## Code of Conduct
 
 By contributing to this project, you are expected to adhere to the [Book Project Code of Conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md). 
 
-The code of conduct is updated from time to time, so please ensure you stay up-to-date.
+## Suggestions and feedback
 
-## Suggestions and complaints
-
-All suggestions and complaints are both welcome and encouraged. Please add to an existing relevant issue or make a new one.
+All suggestions and feedback are both welcome and encouraged. Please add to an existing relevant issue or make a new one.
 
 ## Before contributing
+
+### Assign yourself to an issue
 
 *This applies to both code and documentation changes.*
 
 If an issue already exists for what you want to work and it is unassigned, feel free to assign yourself to it. If an issue doesn't already exist, please create one and assign yourself to it. 
 
 Assigning yourself to an issue before working on it helps to minimise the chances of duplicated work.
+
+### One problem per patch
+
+For every patch you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
 
 ## Git workflow
 
