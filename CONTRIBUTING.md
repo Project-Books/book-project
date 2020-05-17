@@ -1,6 +1,6 @@
 Firstly, thank you for taking an interest in contributing!
 
-As with the code of conduct, this contributing document may change over time, so please ensure that you stay up-to-date with it.
+As with the code of conduct, this contributing document may change over time, so please ensure that you stay up-to-date with it. Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/edit/master/CONTRIBUTING.md).
 
 ## Code of Conduct
 
