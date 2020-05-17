@@ -30,6 +30,11 @@ Examples of unacceptable behavior by participants include:
  address, without explicit permission
 * Other conduct which could reasonably be considered inappropriate in a
  professional setting
+ 
+ If someone has a problem with something that you said, please don't get defensive. Instead, stop doing what they 
+ complained about and just apologise, even if you don't think you did anything wrong or if what you said was
+ misinterpreted. It may be the case that you could have better communicated what you said. Ultimately, we're trying
+ to make this a place where we can all get along.
 
 ## Our Responsibilities
 
@@ -69,6 +74,9 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 
 For answers to common questions about this code of conduct, see
 https://www.contributor-covenant.org/faq
+
+A part of the The 'our standards' section has been adapted from the 
+[Rust code of conduct](https://www.rust-lang.org/policies/code-of-conduct).
 
 ## Notes
 
