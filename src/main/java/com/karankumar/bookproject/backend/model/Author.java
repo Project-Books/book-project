@@ -1,10 +1,8 @@
 package com.karankumar.bookproject.backend.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * A {@code Author} object represents a single Author with its corresponding metadata, such as a first name, last name
@@ -24,8 +22,8 @@ public class Author extends BaseEntity {
 //    @ManyToMany
 //    private List<Book> books;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
-    private List<Book> books = new LinkedList<>();
+//    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+//    private List<Book> books = new LinkedList<>();
 
     public Author() {
     }
@@ -57,13 +55,13 @@ public class Author extends BaseEntity {
         this.lastName = lastName;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
+//    public List<Book> getBooks() {
+//        return books;
+//    }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
+//    public void setBooks(List<Book> books) {
+//        this.books = books;
+//    }
 
     @Override
     public String toString() {

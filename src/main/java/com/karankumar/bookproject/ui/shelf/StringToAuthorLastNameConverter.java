@@ -21,6 +21,13 @@ public class StringToAuthorLastNameConverter implements Converter<String, Author
 
   @Override
   public String convertToPresentation(Author author, ValueContext valueContext) {
-    return author.getLastName();
+
+    if (author != null && author.getLastName() != null) {
+        return author.getLastName();
+    }
+    if (author.getLastName() == null) {
+      System.out.println("author's last name is null");
+    }
+    return "Invalid"; // TODO Change
   }
 }

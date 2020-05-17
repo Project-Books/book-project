@@ -27,7 +27,6 @@ public class ShelfService extends BaseService<Shelf, Long> {
     private ShelfRepository shelfRepository;
     private AuthorRepository authorRepository;
 
-//    public ShelfService(BookRepository bookRepository, ShelfRepository shelfRepository) {
     public ShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
                         ShelfRepository shelfRepository ) {
         this.bookRepository = bookRepository;
@@ -62,27 +61,31 @@ public class ShelfService extends BaseService<Shelf, Long> {
     @PostConstruct
     public void populateTestData() {
         if (authorRepository.count() == 0) {
-            authorRepository.saveAll(
-                    Stream.of(
-                            "J.K. Rowling",
-                            "Neil Gaiman",
-                            "J.R.R Tolkien",
-                            "Roald Dahl",
-                            "Robert Galbraith",
-                            "Dan Brown"
-                    )
-                    .map(name -> {
-                        String[] fullName = name.split(" ");
-                        Author author = new Author();
-                        author.setFirstName(fullName[0]);
-                        author.setLastName(fullName[1]);
-                        return author;
-                    }).collect(Collectors.toList()));
+          authorRepository.saveAll(
+          Stream.of(
+                  "J.K. Rowling",
+                  "Neil Gaiman",
+                  "J.R.R Tolkien",
+                  "Roald Dahl",
+                  "Robert Galbraith",
+                  "Dan Brown")
+              .map(
+                  name -> {
+                    String[] fullName = name.split(" ");
+
+
+                    Author author = new Author();
+                    author.setFirstName(fullName[0]);
+                    author.setLastName(fullName[1]);
+                    return author;
+                  })
+              .collect(Collectors.toList()));
         }
 
         if (bookRepository.count() == 0) {
             Random random = new Random(0);
             List<Author> authors = authorRepository.findAll();
+
             bookRepository.saveAll(
                 Stream.of(
                         "Harry Potter and the Philosopher's stone",
@@ -108,7 +111,7 @@ public class ShelfService extends BaseService<Shelf, Long> {
                         book.setGenre(genre);
                         book.setNumberOfPages(pages);
 
-                        book.setDateStartedReading(LocalDate.now().minusDays(1));
+                        book.setDateStartedReading(LocalDate.now().minusDays(2));
                         book.setDateFinishedReading(LocalDate.now());
 
                         book.setRating(RatingScale.values()[random.nextInt(RatingScale.values().length)]);

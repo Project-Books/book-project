@@ -21,6 +21,10 @@ public class StringToAuthorFirstNameConverter implements Converter<String, Autho
 
     @Override
     public String convertToPresentation(Author author, ValueContext valueContext) {
+        if (author == null || author.getFirstName() == null) {
+            System.out.println("Author's first name is null");
+            return "Error";
+        }
         return author.getFirstName();
     }
 }

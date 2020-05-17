@@ -96,14 +96,14 @@ public class BookForm extends FormLayout {
         binder.forField(authorFirstName)
                 .withConverter(new StringToAuthorFirstNameConverter())
                 .bind(Book::getAuthor, Book::setAuthor);
-//        binder.forField(authorLastName)
-//                .withConverter(new StringToAuthorLastNameConverter())
-//                .bind(Book::getAuthor, Book::setAuthor);
+        binder
+                .forField(authorLastName)
+                .withConverter(new StringToAuthorLastNameConverter())
+                .bind(Book::getAuthor, Book::setAuthor);
 
 //        binder.forField(shelf)
 //                .withConverter(new StringToShelfConverter())
 //                .bind(Book::getShelves, Book::setShelves);
-//                .bind(Shelf::getName, Book::setShelf);
         binder.forField(dateStartedReading)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)

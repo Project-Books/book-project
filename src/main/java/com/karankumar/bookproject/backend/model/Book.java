@@ -26,7 +26,6 @@ public class Book extends BaseEntity {
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
-    @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
 
