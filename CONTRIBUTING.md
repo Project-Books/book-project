@@ -42,3 +42,11 @@ Please adhere to [Google's Java style guide](https://google.github.io/styleguide
 If you use IntelliJ, you can use the [google-java-format](https://plugins.jetbrains.com/plugin/8527-google-java-format) plugin. 
 
 If you use Eclipse, you can import [Google's Java XML file](https://github.com/google/styleguide/blob/gh-pages/eclipse-java-google-style.xml).
+
+## Ways to contribute
+
+- Code: adding new features, fixing bugs and general refactoring to name a few
+
+- Documentation: improvements to files such as the README, any of the wiki pages, comments in source files, this document or the code of conduct
+
+- Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings) or code changes in Vaadin or CSS
