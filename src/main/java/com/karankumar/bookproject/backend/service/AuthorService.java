@@ -8,7 +8,8 @@ import java.util.List;
 
 
 /**
- * @author karan on 08/05/2020
+ * A Spring service that acts as the gateway to the {@code AuthorRepository} -- to use the {@code AuthorRepository},
+ * a consumer should go via this {@code AuthorService}
  */
 @Service
 public class AuthorService extends BaseService<Author, Long> {

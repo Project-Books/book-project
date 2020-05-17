@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * A Spring service that acts as the gateway to the {@code BookRepository} -- to use the {@code BookRepository},
+ * a consumer should go via this {@code BookService}
+ */
 @Service
 public class BookService extends BaseService<Book, Long> {
 

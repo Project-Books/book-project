@@ -23,6 +23,9 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
+/**
+ * A Vaadin form for adding a new {@code Book}
+ */
 public class BookForm extends FormLayout {
     private TextField bookTitle = new TextField();
     private TextField authorFirstName = new TextField();
@@ -90,15 +93,13 @@ public class BookForm extends FormLayout {
         binder.forField(bookTitle)
                 .asRequired("Please provide a book title")
                 .bind(Book::getTitle, Book::setTitle);
-//        binder.forField(bookAuthor)
-//                .withConverter(new StringToAuthorConverter())
-//                .bind(Book::getAuthor, Book::setAuthor);
         binder.forField(authorFirstName)
                 .withConverter(new StringToAuthorFirstNameConverter())
                 .bind(Book::getAuthor, Book::setAuthor);
-        binder.forField(authorLastName)
-                .withConverter(new StringToAuthorLastNameConverter())
-                .bind(Book::getAuthor, Book::setAuthor);
+//        binder.forField(authorLastName)
+//                .withConverter(new StringToAuthorLastNameConverter())
+//                .bind(Book::getAuthor, Book::setAuthor);
+
 //        binder.forField(shelf)
 //                .withConverter(new StringToShelfConverter())
 //                .bind(Book::getShelves, Book::setShelves);
@@ -114,6 +115,7 @@ public class BookForm extends FormLayout {
         binder.forField(rating)
                 .withConverter(new DoubleToRatingScaleConverter())
                 .bind(Book::getRating, Book::setRating);
+
 //        binder.forField(favouriteQuote)
 //                .bind(Book::getFavouriteQuote, Book::setFavouriteQuote);
     }
@@ -142,6 +144,13 @@ public class BookForm extends FormLayout {
     }
 
     public void setBook(Book book) {
+        System.out.println("is the book null? " + (book == null));
+        System.out.println("is the rating null? " + (book.getRating() == null));
+        System.out.println("is the author's first name null? " + (book.getAuthor().getFirstName() == null));
+        System.out.println("is the author's last name null? " + (book.getAuthor().getLastName() == null));
+        System.out.println("is the date started null? " + (book.getDateStartedReading() == null));
+        System.out.println("is the date finished null? " + (book.getDateFinishedReading() == null));
+        System.out.println("is the genre null? " + (book.getGenre() == null));
         binder.setBean(book);
     }
 
@@ -153,11 +162,6 @@ public class BookForm extends FormLayout {
     }
 
     private void configureAuthor() {
-//        bookAuthor.setPlaceholder("Enter a book author");
-//        bookAuthor.setClearButtonVisible(true);
-//        bookAuthor.setRequired(true);
-//        bookAuthor.setRequiredIndicatorVisible(true);
-
         authorFirstName.setPlaceholder("Enter the author's first name");
         authorFirstName.setClearButtonVisible(true);
         authorFirstName.setRequired(true);

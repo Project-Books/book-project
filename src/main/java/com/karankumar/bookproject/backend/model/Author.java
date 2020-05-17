@@ -6,6 +6,10 @@ import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A {@code Author} object represents a single Author with its corresponding metadata, such as a first name, last name
+ * and a list of books
+ */
 @Entity
 public class Author extends BaseEntity {
 

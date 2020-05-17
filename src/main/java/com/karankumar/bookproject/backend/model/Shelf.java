@@ -7,6 +7,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * Represents a shelf (or a list) of books (e.g. books in a 'to read' shelf)
+ */
+
 @Entity
 public class Shelf extends BaseEntity {
     @NotNull

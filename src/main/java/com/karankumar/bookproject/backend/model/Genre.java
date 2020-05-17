@@ -1,5 +1,9 @@
 package com.karankumar.bookproject.backend.model;
 
+/**
+ * A {@code Genre} represents a book genre
+ */
+
 // This should be kept in alphabetical order
 public enum Genre {
     ADVENTURE("Adventure"),

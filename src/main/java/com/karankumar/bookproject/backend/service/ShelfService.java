@@ -15,6 +15,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * A Spring service that acts as the gateway to the {@code ShelfRepository} -- to use the {@code ShelfRepository},
+ * a consumer should go via this {@code ShelfService}
+ */
 @Service
 public class ShelfService extends BaseService<Shelf, Long> {
     private static final Logger LOGGER = Logger.getLogger(ShelfService.class.getSimpleName());
@@ -107,7 +111,7 @@ public class ShelfService extends BaseService<Shelf, Long> {
                         book.setDateStartedReading(LocalDate.now().minusDays(1));
                         book.setDateFinishedReading(LocalDate.now());
 
-                        book.setRating(RatingScale.TEN);
+                        book.setRating(RatingScale.values()[random.nextInt(RatingScale.values().length)]);
 
                         return book;
                     }).collect(Collectors.toList()));

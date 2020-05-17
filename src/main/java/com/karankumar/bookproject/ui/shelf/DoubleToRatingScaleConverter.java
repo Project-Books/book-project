@@ -5,6 +5,9 @@ import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
+/**
+ * Converts a double from the Vaadin rating field to a {@code RatingScale} and visa versa
+ */
 class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     @Override
     public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {

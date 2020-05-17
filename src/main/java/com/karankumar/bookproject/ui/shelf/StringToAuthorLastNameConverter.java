@@ -5,6 +5,9 @@ import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
+/**
+ * Converts the last name field (a String) into an {@code Author}'s last name field and visa versa
+ */
 public class StringToAuthorLastNameConverter implements Converter<String, Author> {
   @Override
   public Result<Author> convertToModel(String lastName, ValueContext valueContext) {

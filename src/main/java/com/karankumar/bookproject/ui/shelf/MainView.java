@@ -15,6 +15,9 @@ import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
+/**
+ * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}
+ */
 
 @Route("")
 @PageTitle("Home | Book Project")
@@ -51,7 +54,18 @@ public class MainView extends VerticalLayout {
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
 
-        bookGrid.asSingleSelect().addValueChangeListener(event -> editBook(event.getValue()));
+    bookGrid
+        .asSingleSelect()
+        .addValueChangeListener(
+            event -> {
+              if (event == null) {
+                  System.out.println("event is null");
+              } else if (event.getValue() == null) {
+                  System.out.println("event value is null");
+              } else {
+                  editBook(event.getValue());
+              }
+            });
     }
 
     private void configureChosenShelf(List<Shelf> shelves) {
@@ -111,7 +125,7 @@ public class MainView extends VerticalLayout {
     }
 
     private void editBook(Book book) {
-        if (book != null) {
+        if (book != null && bookForm != null) {
             bookForm.setBook(book);
         }
     }

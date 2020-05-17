@@ -4,9 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
+/**
+ * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, genre and rating
+ */
 @Entity
 public class Book extends BaseEntity {
 
@@ -24,9 +26,6 @@ public class Book extends BaseEntity {
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
-    @ManyToMany
-    private List<Author> authors;
-
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
@@ -37,9 +36,9 @@ public class Book extends BaseEntity {
     public Book() {
     }
 
-    public Book(String title, List<Author> authors) {
+    public Book(String title, Author author) {
         this.title = title;
-        this.authors = authors;
+        this.author = author;
     }
 
     public String getTitle() {
@@ -72,14 +71,6 @@ public class Book extends BaseEntity {
 
     public void setFavouriteQuote(String favouriteQuote) {
         this.favouriteQuote = favouriteQuote;
-    }
-
-    public List<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
     }
 
     public Set<Shelf> getShelves() {
