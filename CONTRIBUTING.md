@@ -31,7 +31,7 @@ Please follow the process below:
 1. Assign yourself to the relevant issue (see the *Before contributing* section)
 2. Fork the repository
 3. Create a new branch off master with a descriptive branch name
-4. Submit a pull request to merge into master
+4. Submit a pull request to merge into master<sup>1</sup>
 
 Use the present tense (e.g. "add converter", not "added converter") for git commit messages.
 
@@ -50,3 +50,6 @@ If you use Eclipse, you can import [Google's Java XML file](https://github.com/g
 - Documentation: improvements to files such as the README, any of the wiki pages, comments in source files, this document or the code of conduct
 
 - Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings) or code changes in Vaadin or CSS
+
+## Notes
+1. Generally speaking. This may not be the case depending on the issue. Master may not contain the work that an issue is for, so a different branch may need to be targeted. The branch to merge into should be made clear from the issue. If in doubt, feel free to ask.
