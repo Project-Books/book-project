@@ -9,15 +9,14 @@ be updated, so please ensure you stay up-to-date with any changes.
 This is if we have concluded that there was no violation. 
 
 Alternatively, we could come to this decision if the person who violated the code of conduct has genuinely and voluntarily
-(i.e. without the project owner asking them to) apologised and pledged not to commit the violation again. A level 1 response
-be made if this is the first time that the individual involved has committed this offence.
+(i.e. without the project owner asking them to) apologised and pledged not to commit the violation again. In this case,
+the project owner will confirm that they have witnessed the violation and that no further action is required as the 
+offender has already apologised. This option is at the discretion of the project owner.
 
 ### Level 2: a public reprimand
 
-If an individual has committed a violation, this will be in a public place (e.g. a pull request, commit message or in
-an issue). A public reprimand may be issued. 
-
-In the event of a violation, a public reprimand will usually be the first point of call. Think of this as a warning.
+A public reprimand may be issued in response to a public violation. In the event of a violation, a public reprimand 
+will usually be the first point of call. Think of this as a warning.
 
 If the individual becomes hostile after a public reprimand, a temporary or permanent ban will be put in place.
 
@@ -26,14 +25,18 @@ If the individual becomes hostile after a public reprimand, a temporary or perma
 A temporary ban from the repository. This can be thought of giving the person some time to "cool off".
 
 An individual will be banned if they either:
+
 a) become hostile after receiving a public reprimand, or
-b) when a lower level response has already been made in the past, but the individual has reoffended
+
+b) when a lower level response has already been made in the past, but the individual has reoffended.
 
 ### Level 4: a permanent ban
 
 If an offender has, after first being temporarily banned, come back and committed yet another violation, they could
-be permanently banned from the repository. This is at the discretion of the project owner, as it is dependent on factors
-like whether it was thought to be intentional and whether the offender issued a genuine apology.
+be permanently banned from the repository. 
+
+This is at the discretion of the project owner, as it is dependent on factors such as whether it was thought to be 
+intentional and whether the offender issued a genuine apology.
 
 ## Complaints about bans
 
