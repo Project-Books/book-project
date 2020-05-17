@@ -1,5 +1,7 @@
 # Contributor Covenant Code of Conduct
 
+As multiple versions of this project's code conduct may exist, please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
+
 ## Our Pledge
 
 In the interest of fostering an open and welcoming environment, we as
