@@ -1,5 +1,6 @@
 This document details what and how possible code of conduct violations will be handled. 
-As with the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md),
+As with the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md), this may 
+be updated, so please ensure you stay up-to-date with any changes.
 
 ### Level 1: no further action
 
