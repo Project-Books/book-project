@@ -31,12 +31,6 @@ If applicable, add screenshots to help explain your problem.
  - Browser [e.g. firefox, chrome]
  - Version [e.g. 22]
 
-**Smartphone (please complete the following information if applicable):**
- - Device: [e.g. iPhone 11]
- - OS: [e.g. iOS 11]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
 **Additional context**
 
 Add any other context about the problem here (e.g. branch name, commit hash, etc.).
