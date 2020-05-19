@@ -28,3 +28,7 @@ Prerequisites: JDK 11 and Node.js
 # Contributing
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
+
+# Further information
+
+For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
