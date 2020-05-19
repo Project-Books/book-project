@@ -17,17 +17,16 @@
  */
 package com.karankumar.bookproject.backend.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
+/**
+ * A {@code Author} object represents a single Author with its corresponding metadata, such as a first name, last name
+ * and a list of books
+ */
 @Entity
-public class Author {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class Author extends BaseEntity {
 
     @NotNull
     @NotEmpty
@@ -37,24 +36,24 @@ public class Author {
     @NotEmpty
     private String lastName;
 
-    @ManyToMany
-    private Set<Book> books;
+//    @ManyToMany
+//    private List<Book> books;
+
+//    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+//    private List<Book> books = new LinkedList<>();
 
     public Author() {
     }
 
-    public Author(String firstName, String lastName, Set<Book> books) {
+//    public Author(String firstName, String lastName, List<Book> books) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.books = books;
+//    }
+
+    public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.books = books;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -73,26 +72,16 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public Set<Book> getBooks() {
-        return books;
-    }
+//    public List<Book> getBooks() {
+//        return books;
+//    }
 
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Author author = (Author) o;
-
-        return id != null ? id.equals(author.id) : author.id == null;
-    }
+//    public void setBooks(List<Book> books) {
+//        this.books = books;
+//    }
 
     @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+    public String toString() {
+        return firstName + " " + lastName;
     }
 }
