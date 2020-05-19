@@ -3,13 +3,16 @@
 *Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
 the version on the master branch should be followed, as this version should be the most up-to-date.*
 
+*Please also ensure that you remain familiar with this document as it may change from time to time*
+
 Good judgement should be followed. There may be times where it is more readable to not follow a particular guideline.
 Readable code is preferred over code that strictly follows this guide.
 
 A short summary explaining why the guideline is in place is included to help explain the rationale behind having it.
 
 The styleguide used is an extension of the [Google Java style guide](https://google.github.io/styleguide/javaguide.html). 
-Any differences are listed in this document. 
+Any differences are listed in this document. By contributing to this repository, you are expected to follow this style
+guide and, where it does not conflict with this style guide, Google's Java style guide.
 
 **Braces** 
 
