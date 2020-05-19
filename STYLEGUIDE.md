@@ -21,7 +21,7 @@ We use the [One true brace style (1TBS)](https://en.wikipedia.org/wiki/Indentati
 ```java
 // bad: braces should be used even where it is optional to do so in if, else if, while and do statements
 if (condition)
-    doSomethttps://discordapp.com/channels/@me/554760234095083521hing();
+    doSomething();
 
 // good
 if (condition) {
