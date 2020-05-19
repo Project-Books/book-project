@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * @author karan on 08/05/2020
- */
 @Service
 public class ShelfService extends BaseService<Shelf, Long> {
 

@@ -4,10 +4,6 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
-/**
- * @author karan on 08/05/2020
- */
-
 @Service
 public class BookService extends BaseService<Book, Long> {
 

@@ -18,9 +18,6 @@ import org.vaadin.gatanaso.MultiselectComboBox;
 
 import java.util.List;
 
-/**
- * @author karan on 10/05/2020
- */
 public class BookForm extends FormLayout {
     private TextField bookTitle;
     private TextField bookAuthor;

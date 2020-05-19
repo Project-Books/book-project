@@ -5,9 +5,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-/**
- * @author karan on 06/05/2020
- */
 @Entity
 public class Shelf {
 

@@ -6,9 +6,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
-/**
- * @author karan on 06/05/2020
- */
 @Entity
 public class Book {
 

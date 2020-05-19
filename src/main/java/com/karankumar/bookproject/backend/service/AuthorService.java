@@ -5,9 +5,6 @@ import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
 
-/**
- * @author karan on 08/05/2020
- */
 @Service
 public class AuthorService extends BaseService<Author, Long> {
 
