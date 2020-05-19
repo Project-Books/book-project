@@ -16,7 +16,7 @@ All suggestions and feedback are both welcome and encouraged. Please add to an e
 
 *This applies to both code and documentation changes.*
 
-If an issue already exists for what you want to work and it is unassigned, and it is not labelled as `blocked`, feel free to assign yourself to it. If an issue doesn't already exist, please create one and assign yourself to it. 
+If an issue already exists for what you want to work and it is unassigned, and it is not labelled as [blocked](https://github.com/knjk04/book-project/labels/blocked), feel free to assign yourself to it. If an issue doesn't already exist, please create one and assign yourself to it. 
 
 Assigning yourself to an issue before working on it helps to minimise the chances of duplicated work.
 
@@ -30,7 +30,7 @@ Please follow the process below:
 
 1. Assign yourself to the relevant issue (see the *Before contributing* section)
 2. Fork the repository
-3. Create a new branch off master with a descriptive branch name
+3. Create a new branch off master with a descriptive branch name that includes the issue number
 4. Submit a pull request to merge into master<sup>1</sup>
 
 Use the present tense (e.g. "add converter", not "added converter") for git commit messages.
@@ -43,9 +43,9 @@ Please adhere to [our Java style guide](https://github.com/knjk04/book-project/b
 
 - Code: adding new features, fixing bugs and general refactoring to name a few
 
-- Documentation: improvements to files such as the README, any of the wiki pages, comments in source files, this document or the code of conduct
+- Documentation: improvements to files such as the [README](https://github.com/knjk04/book-project/blob/master/README.md), any of the [wiki](https://github.com/knjk04/book-project/wiki) pages, the [style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md), comments in source files, this contributing document or the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
 
-- Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings) or code changes in Vaadin or CSS
+- Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings) or code changes in [Vaadin](https://vaadin.com/) or CSS
 
 ## Notes
 1. Generally speaking. This may not be the case depending on the issue. Master may not contain the work that an issue is for, so a different branch may need to be targeted. The branch to merge into should be made clear from the issue. If in doubt, feel free to ask.
