@@ -19,6 +19,7 @@
 package com.karankumar.bookproject.ui;
 
 import com.karankumar.bookproject.backend.model.Genre;
+import com.karankumar.bookproject.backend.model.RatingScale;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.ShelfService;
 import com.vaadin.flow.component.HasSize;
@@ -45,7 +46,7 @@ public class BookForm extends FormLayout {
     private DatePicker dateStartedReading;
     private DatePicker dateFinishedReading;
     private TextArea favouriteQuote;
-    private NumberField rating;
+    private ComboBox<RatingScale> rating;
 
     public static final String ENTER_DATE = "Enter date";
 
@@ -129,12 +130,9 @@ public class BookForm extends FormLayout {
     }
 
     private void configureRating() {
-        rating = new NumberField();
-        rating.setHasControls(true);
-        rating.setMin(0);
-        rating.setMax(10);
-        rating.setStep(0.5f);
-        rating.setClearButtonVisible(true);
+        rating = new ComboBox<>();
+        rating.setItems(RatingScale.values());
+        rating.setPlaceholder("Rating");
     }
 
     private void configureDateStarted() {
