@@ -39,8 +39,6 @@ Use the present tense (e.g. "add converter", not "added converter") for git comm
 
 Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
 
-If you use IntelliJ, you can use the [google-java-format](https://plugins.jetbrains.com/plugin/8527-google-java-format) plugin to auto-format your code. Alternatively, if you use Eclipse, you can import [Google's Java XML file](https://github.com/google/styleguide/blob/gh-pages/eclipse-java-google-style.xml).
-
 ## Ways to contribute
 
 - Code: adding new features, fixing bugs and general refactoring to name a few
