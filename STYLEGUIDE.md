@@ -61,9 +61,6 @@ at tracking changes.
 Wherever possible, the @Override annotation should be used for overriden methods. This is so that the compiler can run
 a check at compile-time to see whether the method annotated with @Override actually overrides a method.
 
-Adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
-[Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
-
 **StringBuilder over StringBuffer**
 
 StringBuilder should be used instead of a StringBuffer for single-threaded code.
@@ -97,3 +94,6 @@ public String toString() {
         + "]" ;
 }
 ```
+
+Adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
+[Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
