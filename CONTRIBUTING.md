@@ -6,7 +6,7 @@ As with the code of conduct, this contributing document may change over time, so
 
 By contributing to this project, you are expected to adhere to the [Book Project Code of Conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md). 
 
-## General questions, suggestions & feedback
+## Questions, suggestions & feedback
 
 All questions, suggestions and feedback are both welcome and encouraged. Please add to an existing relevant issue or make a new one.
 
