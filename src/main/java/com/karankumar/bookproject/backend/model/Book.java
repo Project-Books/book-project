@@ -43,7 +43,8 @@ public class Book extends BaseEntity {
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
-    @JoinColumn(name = "author_id")
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
     @ManyToMany(fetch = FetchType.EAGER)

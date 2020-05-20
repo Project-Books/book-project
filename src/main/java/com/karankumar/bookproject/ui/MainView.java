@@ -23,7 +23,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 
-@Route("")
+@Route("home")
 public class MainView extends VerticalLayout {
 
     public MainView(ShelfService shelfService) {
