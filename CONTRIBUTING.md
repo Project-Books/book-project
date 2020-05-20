@@ -28,7 +28,7 @@ For every patch you make, please ensure it solves one problem. If you want to so
 
 Please follow the process below:
 
-1. Assign yourself to the relevant issue (see the *Before contributing* section)
+1. [Assign yourself to the relevant issue](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#assign-yourself-to-an-issue)
 2. Fork the repository
 3. Create a new branch off the branch that the issue specifies to branch from with a descriptive branch name that includes the issue number
 4. Submit a pull request to merge into the branch specified on the issue
