@@ -32,14 +32,13 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-import org.vaadin.gatanaso.MultiselectComboBox;
 
 import java.util.List;
 
 public class BookForm extends FormLayout {
     private TextField bookTitle;
     private TextField bookAuthor;
-    private MultiselectComboBox<String> shelf;
+    private ComboBox<String> shelf;
     private ComboBox<Genre> bookGenre;
     private IntegerField pageCount;
     private DatePicker dateStartedReading;
@@ -119,7 +118,7 @@ public class BookForm extends FormLayout {
     }
 
     private void configureShelf(ShelfService shelfService) {
-        shelf = new MultiselectComboBox<>();
+        shelf = new ComboBox<>();
         shelf.setRequired(true);
         shelf.setPlaceholder("Choose a shelf");
         shelf.setClearButtonVisible(true);

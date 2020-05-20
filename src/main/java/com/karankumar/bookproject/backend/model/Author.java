@@ -36,20 +36,8 @@ public class Author extends BaseEntity {
     @NotEmpty
     private String lastName;
 
-//    @ManyToMany
-//    private List<Book> books;
-
-//    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
-//    private List<Book> books = new LinkedList<>();
-
     public Author() {
     }
-
-//    public Author(String firstName, String lastName, List<Book> books) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.books = books;
-//    }
 
     public Author(String firstName, String lastName) {
         this.firstName = firstName;
@@ -71,14 +59,6 @@ public class Author extends BaseEntity {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-//    public List<Book> getBooks() {
-//        return books;
-//    }
-
-//    public void setBooks(List<Book> books) {
-//        this.books = books;
-//    }
 
     @Override
     public String toString() {

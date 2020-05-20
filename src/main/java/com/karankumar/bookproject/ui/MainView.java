@@ -27,14 +27,6 @@ import com.vaadin.flow.router.Route;
 public class MainView extends VerticalLayout {
 
     public MainView(ShelfService shelfService) {
-//        add(new BookForm(shelfService));
-//        setAlignItems(Alignment.CENTER);
-//        setJustifyContentMode(JustifyContentMode.CENTER);
-
-//        VerticalLayout verticalLayout = new VerticalLayout(new BookForm(shelfService));
-//        verticalLayout.setAlignItems(Alignment.CENTER);
-//        verticalLayout.setJustifyContentMode(JustifyContentMode.CENTER);
-//        add(verticalLayout);
         add(new BookForm(shelfService));
     }
 }

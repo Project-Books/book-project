@@ -39,7 +39,6 @@ public class Book extends BaseEntity {
 
     // For books that have been read
     private RatingScale rating;
-    private String favouriteQuote;
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
@@ -80,14 +79,6 @@ public class Book extends BaseEntity {
 
     public void setRating(RatingScale rating) {
         this.rating = rating;
-    }
-
-    public String getFavouriteQuote() {
-        return favouriteQuote;
-    }
-
-    public void setFavouriteQuote(String favouriteQuote) {
-        this.favouriteQuote = favouriteQuote;
     }
 
     public Set<Shelf> getShelves() {

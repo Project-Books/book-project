@@ -53,7 +53,6 @@ public class BookForm extends FormLayout {
     private IntegerField pageCount = new IntegerField();
     private DatePicker dateStartedReading = new DatePicker();
     private DatePicker dateFinishedReading = new DatePicker();
-//    private TextArea favouriteQuote = new TextArea();
     private NumberField rating = new NumberField();
 
     private static final String ENTER_DATE = "Enter a date";
@@ -73,7 +72,6 @@ public class BookForm extends FormLayout {
         configurePageCount();
         configureDateStarted();
         configureDateFinished();
-//        configureQuote();
         configureRating();
 
         HorizontalLayout buttons = configureButtons();
@@ -88,7 +86,6 @@ public class BookForm extends FormLayout {
                 shelf,
                 pageCount,
                 rating,
-//                favouriteQuote,
         };
         setComponentMinWidth(components);
 
@@ -102,7 +99,6 @@ public class BookForm extends FormLayout {
         addFormItem(bookGenre, "Book genre");
         addFormItem(pageCount, "Page count");
         addFormItem(rating, "Book rating");
-//        addFormItem(favouriteQuote, "Favourite quote");
         add(buttons);
     }
 
@@ -132,9 +128,6 @@ public class BookForm extends FormLayout {
         binder.forField(rating)
                 .withConverter(new DoubleToRatingScaleConverter())
                 .bind(Book::getRating, Book::setRating);
-
-//        binder.forField(favouriteQuote)
-//                .bind(Book::getFavouriteQuote, Book::setFavouriteQuote);
     }
 
     private HorizontalLayout configureButtons() {
@@ -227,13 +220,6 @@ public class BookForm extends FormLayout {
         pageCount.setHasControls(true);
         pageCount.setClearButtonVisible(true);
     }
-
-    /*
-    private void configureQuote() {
-        favouriteQuote.setPlaceholder("Enter favourite quote");
-        favouriteQuote.setClearButtonVisible(true);
-    }
-     */
 
     private void clearForm() {
         HasValue[] components = {
