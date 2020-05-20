@@ -14,6 +14,8 @@ The styleguide used is an extension of the [Google Java style guide](https://goo
 Any differences are listed in this document. By contributing to this repository, you are expected to follow this style
 guide and, where it does not conflict with this style guide, Google's Java style guide.
 
+## Formatting
+
 **Braces** 
 
 We use the [One true brace style (1TBS)](https://en.wikipedia.org/wiki/Indentation_style#Variant:_1TBS_(OTBS)).
