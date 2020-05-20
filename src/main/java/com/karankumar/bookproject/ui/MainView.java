@@ -19,13 +19,13 @@
 package com.karankumar.bookproject.ui;
 
 import com.karankumar.bookproject.backend.service.ShelfService;
+import com.karankumar.bookproject.ui.shelf.BookForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 
 @Route("home")
 public class MainView extends VerticalLayout {
-
     public MainView(ShelfService shelfService) {
         add(new BookForm(shelfService));
     }
