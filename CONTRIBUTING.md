@@ -30,8 +30,8 @@ Please follow the process below:
 
 1. Assign yourself to the relevant issue (see the *Before contributing* section)
 2. Fork the repository
-3. Create a new branch off master with a descriptive branch name that includes the issue number
-4. Submit a pull request to merge into master<sup>1</sup>
+3. Create a new branch off the branch that the issue specifies to branch from with a descriptive branch name that includes the issue number
+4. Submit a pull request to merge into the branch specified on the issue
 
 Use the present tense (e.g. "add converter", not "added converter") for git commit messages.
 
@@ -46,6 +46,3 @@ Please adhere to [our Java style guide](https://github.com/knjk04/book-project/b
 - Documentation: improvements to files such as the [README](https://github.com/knjk04/book-project/blob/master/README.md), any of the [wiki](https://github.com/knjk04/book-project/wiki) pages, the [style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md), comments in source files, this contributing document or the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
 
 - Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings) or code changes in [Vaadin](https://vaadin.com/) or CSS
-
-## Notes
-1. Generally speaking. This may not be the case depending on the issue. Master may not contain the work that an issue is for, so a different branch may need to be targeted. The branch to merge into should be made clear from the issue. If in doubt, feel free to ask.
