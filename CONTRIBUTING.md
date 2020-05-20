@@ -14,7 +14,7 @@ By contributing to this project, you are expected to adhere to the [Book Project
 
 All questions, suggestions and feedback are both welcome and encouraged. Please add to an existing relevant issue or make a new one.
 
-## Before contributing
+## Before making changes
 
 ### Assign yourself to an issue
 
@@ -30,21 +30,25 @@ After assigning yourself to a ticket, please discuss your implementation approac
 
 This step can help to save both your time and our time in the long run :)
 
-### One problem per patch
-
-For every patch you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
-
 ## Workflow
 
 Please follow the process below:
 
-1. [Assign yourself to the relevant issue](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#assign-yourself-to-an-issue)
+1. Assign yourself to the relevant issue
 2. Discuss your implementation approach with us
 3. Fork the repository
 4. Create a new branch off the branch that the issue specifies to branch from with a descriptive branch name that includes the issue number
 5. Submit a pull request to merge into the branch specified on the issue
 
+### Commit messages
+
 Use the present tense (e.g. "add converter", not "added converter") for git commit messages.
+
+Please also ensure that your commit messages are descriptive.
+
+### One problem per patch
+
+For every patch you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
 
 ## Code contributions
 
