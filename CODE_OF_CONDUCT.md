@@ -2,6 +2,8 @@
 
 *As multiple versions of this project's code conduct may exist, please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).*
 
+*Please also ensure that you remain familiar with this document as it may change from time to time.*
+
 ## Our Pledge
 
 In the interest of fostering an open and welcoming environment, we as
@@ -85,6 +87,3 @@ A part of the 'our standards' section has been adapted from the
 ## Notes
 
 1. If the leadership expands to a team, this will be changed to email addresses of two different maintainers (in case the complaint is at the project owner)
-
-Thank you for reading the code of conduct. Please note that this will be updated over time as the project evolves.
-
