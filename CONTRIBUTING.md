@@ -1,6 +1,10 @@
-Firstly, thank you for taking an interest in contributing!
+# Contributing
 
-As with the code of conduct, this contributing document may change over time, so please ensure that you stay up-to-date with it. Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/edit/master/CONTRIBUTING.md).
+*Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/edit/master/CONTRIBUTING.md).*
+
+Thank you for taking an interest in contributing!
+
+As with the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md), this contributing document may change over time, so please ensure that you stay up-to-date with it. 
 
 ## Code of Conduct
 
@@ -20,18 +24,25 @@ If an issue already exists for what you want to work and it is unassigned, and i
 
 Assigning yourself to an issue before working on it helps to minimise the chances of duplicated work.
 
+### Discuss your implementation approach
+
+After assigning yourself to a ticket, please discuss your implementation approach with us first before working on it. It may be the case that you make a good change, but it isn't what we are looking for. Moreover, there may be a better way of doing something.
+
+This step can help to save both your time and our time in the long run :)
+
 ### One problem per patch
 
 For every patch you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
 
-## Git workflow
+## Workflow
 
 Please follow the process below:
 
 1. [Assign yourself to the relevant issue](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#assign-yourself-to-an-issue)
-2. Fork the repository
-3. Create a new branch off the branch that the issue specifies to branch from with a descriptive branch name that includes the issue number
-4. Submit a pull request to merge into the branch specified on the issue
+2. Discuss your implementation approach with us
+3. Fork the repository
+4. Create a new branch off the branch that the issue specifies to branch from with a descriptive branch name that includes the issue number
+5. Submit a pull request to merge into the branch specified on the issue
 
 Use the present tense (e.g. "add converter", not "added converter") for git commit messages.
 
