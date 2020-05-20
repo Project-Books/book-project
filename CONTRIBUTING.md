@@ -2,9 +2,9 @@
 
 *Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/edit/master/CONTRIBUTING.md).*
 
-Thank you for taking an interest in contributing!
+*Please also ensure that you remain familiar with this contributing document as it may change from time to time.*
 
-As with the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md), this contributing document may change over time, so please ensure that you stay up-to-date with it. 
+Thank you for taking an interest in contributing!
 
 ## Code of Conduct
 
