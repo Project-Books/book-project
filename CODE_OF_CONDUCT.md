@@ -1,6 +1,6 @@
 # Contributor Covenant Code of Conduct
 
-As multiple versions of this project's code conduct may exist, please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
+*As multiple versions of this project's code conduct may exist, please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).*
 
 ## Our Pledge
 
@@ -79,7 +79,7 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 For answers to common questions about this code of conduct, see
 https://www.contributor-covenant.org/faq
 
-A part of the The 'our standards' section has been adapted from the 
+A part of the 'our standards' section has been adapted from the 
 [Rust code of conduct](https://www.rust-lang.org/policies/code-of-conduct).
 
 ## Notes
