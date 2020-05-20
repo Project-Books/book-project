@@ -18,38 +18,31 @@
 
 package com.karankumar.bookproject.backend.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
+
+/**
+ * Represents a shelf (or a list) of books (e.g. books in a 'to read' shelf)
+ */
 
 @Entity
-public class Shelf {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Shelf extends BaseEntity {
     @NotNull
     @NotEmpty
     private String name;
 
-    @ManyToMany
-    private Set<Book> books;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Book> books;
 
     public Shelf() {
     }
 
     public Shelf(String name) {
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -60,26 +53,11 @@ public class Shelf {
         this.name = name;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Shelf shelf = (Shelf) o;
-
-        return id != null ? id.equals(shelf.id) : shelf.id == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
     }
 }

@@ -23,41 +23,38 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, genre and rating
+ */
 @Entity
-public class Book {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class Book extends BaseEntity {
 
     @NotNull
     @NotEmpty
     private String title;
 
     private int numberOfPages;
+
     private Genre genre;
 
     // For books that have been read
     private RatingScale rating;
-    private String favouriteQuote;
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
-    @ManyToMany
-    private Set<Author> authors;
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "ID")
+    private Author author;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Shelf> shelves;
-
-    private enum Genre {
-    }
 
     public Book() {
     }
 
-    public Book(String title, Set<Author> authors) {
+    public Book(String title, Author author) {
         this.title = title;
-        this.authors = authors;
+        this.author = author;
     }
 
     public String getTitle() {
@@ -68,28 +65,20 @@ public class Book {
         this.title = title;
     }
 
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
     public RatingScale getRating() {
         return rating;
     }
 
     public void setRating(RatingScale rating) {
         this.rating = rating;
-    }
-
-    public String getFavouriteQuote() {
-        return favouriteQuote;
-    }
-
-    public void setFavouriteQuote(String favouriteQuote) {
-        this.favouriteQuote = favouriteQuote;
-    }
-
-    public Set<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
     }
 
     public Set<Shelf> getShelves() {
@@ -130,20 +119,5 @@ public class Book {
 
     public void setDateFinishedReading(LocalDate dateFinishedReading) {
         this.dateFinishedReading = dateFinishedReading;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Book book = (Book) o;
-
-        return id != null ? id.equals(book.id) : book.id == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
     }
 }
