@@ -38,6 +38,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -119,8 +120,13 @@ public class BookForm extends FormLayout {
 //                .bind(Book::getShelves, Book::setShelves);
         binder.forField(dateStartedReading)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
-        binder.forField(dateFinishedReading)
-                .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
+        Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)
+                .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null && endDate
+                                .isBefore(dateStartedReading.getValue())),
+                        "Date finished cannot be earlier than the date started")
+                .bind(Book::getDateStartedReading, Book::setDateStartedReading);
+        dateStartedReading.addValueChangeListener(
+                event -> bindingEndDate.validate());
         binder.forField(pageCount)
                 .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(bookGenre)
