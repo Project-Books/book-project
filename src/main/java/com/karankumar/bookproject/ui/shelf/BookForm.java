@@ -123,7 +123,7 @@ public class BookForm extends FormLayout {
         Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)
                 .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null && endDate
                                 .isBefore(dateStartedReading.getValue())),
-                        "Date Finished cannot earlier than Date Started")
+                        "Date finished cannot be earlier than the date started")
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         dateStartedReading.addValueChangeListener(
                 event -> bindingEndDate.validate());
