@@ -22,10 +22,15 @@ import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Converts the first name field (a String) into an {@code Author}'s first name field and visa versa
  */
 public class StringToAuthorFirstNameConverter implements Converter<String, Author> {
+    private static Logger logger = Logger.getLogger(StringToAuthorFirstNameConverter.class.getName());
+
     @Override
     public Result<Author> convertToModel(String firstName, ValueContext valueContext) {
         if (firstName == null || firstName.isEmpty()) {
@@ -39,7 +44,11 @@ public class StringToAuthorFirstNameConverter implements Converter<String, Autho
     @Override
     public String convertToPresentation(Author author, ValueContext valueContext) {
         if (author == null || author.getFirstName() == null) {
-            System.out.println("Author's first name is null");
+            if (author == null) {
+                logger.log(Level.FINE, "Author is null");
+            } else if (author.getFirstName() == null) {
+                logger.log(Level.FINE, "Author's first name is null");
+            }
             return "Error";
         }
         return author.getFirstName();

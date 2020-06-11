@@ -31,6 +31,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}
@@ -49,6 +51,8 @@ public class MainView extends VerticalLayout {
     private final List<Shelf> shelves;
     private String chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
+
+    private static Logger logger = Logger.getLogger(MainView.class.getName());
 
     public MainView(BookService bookService, ShelfService shelfService) {
         this.bookService = bookService;
@@ -76,9 +80,9 @@ public class MainView extends VerticalLayout {
         .addValueChangeListener(
             event -> {
               if (event == null) {
-                  System.out.println("event is null");
+                  logger.log(Level.FINE, "Event is null");
               } else if (event.getValue() == null) {
-                  System.out.println("event value is null");
+                  logger.log(Level.FINE, "Event value is null");
               } else {
                   editBook(event.getValue());
               }
@@ -91,7 +95,7 @@ public class MainView extends VerticalLayout {
         whichShelf.setRequired(true);
         whichShelf.addValueChangeListener(event -> {
             if (event.getValue() == null) {
-                System.out.println("No choice selected");
+                logger.log(Level.FINE, "No choice selected");
             } else {
                 chosenShelf = event.getValue();
                 updateList();
@@ -156,5 +160,4 @@ public class MainView extends VerticalLayout {
         bookService.save(event.getBook());
         updateList();
     }
-
 }

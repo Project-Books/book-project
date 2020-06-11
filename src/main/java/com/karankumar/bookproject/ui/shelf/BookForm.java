@@ -50,7 +50,6 @@ public class BookForm extends FormLayout {
     private TextField bookTitle = new TextField();
     private TextField authorFirstName = new TextField();
     private TextField authorLastName = new TextField();
-//    private MultiselectComboBox<String> shelf = new MultiselectComboBox<>();
     private ComboBox<String> shelf = new ComboBox<>();
     private ComboBox<Genre> bookGenre = new ComboBox<>();
     private IntegerField pageCount = new IntegerField();
