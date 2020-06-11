@@ -40,6 +40,8 @@ import com.vaadin.flow.shared.Registration;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A Vaadin form for adding a new {@code Book}
@@ -62,6 +64,8 @@ public class BookForm extends FormLayout {
     private Button addBook = new Button();
     private Button reset  = new Button();
     private Button delete = new Button();
+
+    private static Logger logger = Logger.getLogger(BookForm.class.getName());
 
     public BookForm(ShelfService shelfService) {
         configureBinder();
@@ -160,13 +164,27 @@ public class BookForm extends FormLayout {
     }
 
     public void setBook(Book book) {
-        System.out.println("is the book null? " + (book == null));
-        System.out.println("is the rating null? " + (book.getRating() == null));
-        System.out.println("is the author's first name null? " + (book.getAuthor().getFirstName() == null));
-        System.out.println("is the author's last name null? " + (book.getAuthor().getLastName() == null));
-        System.out.println("is the date started null? " + (book.getDateStartedReading() == null));
-        System.out.println("is the date finished null? " + (book.getDateFinishedReading() == null));
-        System.out.println("is the genre null? " + (book.getGenre() == null));
+        if (book == null) {
+            logger.log(Level.FINE, "Book is null");
+        }
+        if (book.getRating() == null) {
+            logger.log(Level.FINE, "Rating is null");
+        }
+        if (book.getAuthor().getFirstName() == null) {
+            logger.log(Level.FINE, "Author's first name is null");
+        }
+        if (book.getAuthor().getLastName() == null) {
+            logger.log(Level.FINE, "Author's last name is null");
+        }
+        if (book.getDateStartedReading() == null) {
+            logger.log(Level.FINE, "Date started reading is null");
+        }
+        if (book.getDateFinishedReading() == null) {
+            logger.log(Level.FINE, "Date finished reading is null");
+        }
+        if (book.getGenre() == null) {
+            logger.log(Level.FINE, "Book genre is null");
+        }
         binder.setBean(book);
     }
 
