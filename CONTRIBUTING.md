@@ -16,17 +16,17 @@ All questions, suggestions and feedback are both welcome and encouraged. Please 
 
 ## Before making changes
 
-### Assign yourself to an issue
+### Tell us what issue you want to work on
 
 *This applies to both code and documentation changes.*
 
-If an issue already exists for what you want to work and it is unassigned, and it is not labelled as [blocked](https://github.com/knjk04/book-project/labels/blocked), feel free to assign yourself to it. If an issue doesn't already exist, please create one and assign yourself to it. 
+If an issue already exists for what you want to work and it is unassigned, and it is not labelled as [blocked](https://github.com/knjk04/book-project/labels/blocked), feel free to let us know that you want to work on it. We can then assign you to it. If an issue doesn't already exist, please create one and then let us know that you are happy to work on it.
 
-Assigning yourself to an issue before working on it helps to minimise the chances of duplicated work.
+Letting us know which issue you want to work on before working on it helps to minimise the chances of duplicated work.
 
 ### Discuss your implementation approach
 
-After assigning yourself to a ticket, please discuss your implementation approach with us first before working on it. It may be the case that you make a good change, but it isn't what we are looking for. Moreover, there may be a better way of doing something.
+After having been assigned to a ticket, please discuss your implementation approach with us first before working on it. It may be the case that you make a good change, but it isn't what we are looking for. Moreover, there may be a better way of doing something.
 
 This step can help to save both your time and our time in the long run :)
 
@@ -34,7 +34,7 @@ This step can help to save both your time and our time in the long run :)
 
 Please follow the process below:
 
-1. Assign yourself to the relevant issue
+1. Tell us which issue you want to work on
 2. Discuss your implementation approach with us
 3. Fork the repository
 4. Create a new branch off the branch that the issue specifies to branch from. Your branch should have a descriptive branch name (that corresponds to the relevant issue) and include the issue number (e.g. `iss1048-add-styleguide`)

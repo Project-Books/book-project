@@ -21,7 +21,7 @@ reflect this.*
 
 # Setup
 
-Prerequisites: JDK 11 and Node.js
+Prerequisites: JDK 11 (or higher), Node.js and npm
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE
