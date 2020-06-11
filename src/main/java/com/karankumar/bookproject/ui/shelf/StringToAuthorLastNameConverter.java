@@ -29,28 +29,29 @@ import java.util.logging.Logger;
  * Converts the last name field (a String) into an {@code Author}'s last name field and visa versa
  */
 public class StringToAuthorLastNameConverter implements Converter<String, Author> {
-  private Logger logger = Logger.getLogger(StringToAuthorLastNameConverter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StringToAuthorLastNameConverter.class.getName());
+    private static final String LOG_PREFIX = StringToAuthorLastNameConverter.class.getName() + ": ";
 
-  @Override
-  public Result<Author> convertToModel(String lastName, ValueContext valueContext) {
-    if (lastName == null || lastName.isEmpty()) {
-      return Result.error("Please enter a last name");
+    @Override
+    public Result<Author> convertToModel(String lastName, ValueContext valueContext) {
+        if (lastName == null || lastName.isEmpty()) {
+            return Result.error("Please enter a last name");
+        }
+        Author author = new Author();
+        author.setLastName(lastName);
+        return Result.ok(author);
     }
-    Author author = new Author();
-    author.setLastName(lastName);
-    return Result.ok(author);
-  }
 
-  @Override
-  public String convertToPresentation(Author author, ValueContext valueContext) {
+    @Override
+    public String convertToPresentation(Author author, ValueContext valueContext) {
 
-    if (author != null && author.getLastName() != null) {
-        return author.getLastName();
-    } else if (author == null) {
-      logger.log(Level.FINER, "Author is null");
-    } else {
-      logger.log(Level.FINER, "Author's last name is null");
+        if (author != null && author.getLastName() != null) {
+            return author.getLastName();
+        } else if (author == null) {
+            LOGGER.log(Level.SEVERE, LOG_PREFIX + "Author is null");
+        } else {
+            LOGGER.log(Level.SEVERE, LOG_PREFIX + "Author's last name is null");
+        }
+        return "Invalid"; // TODO Change
     }
-    return "Invalid"; // TODO Change
-  }
 }

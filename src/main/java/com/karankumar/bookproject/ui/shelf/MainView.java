@@ -52,7 +52,7 @@ public class MainView extends VerticalLayout {
     private String chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
 
-    private static Logger logger = Logger.getLogger(MainView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MainView.class.getName());
 
     public MainView(BookService bookService, ShelfService shelfService) {
         this.bookService = bookService;
@@ -80,9 +80,9 @@ public class MainView extends VerticalLayout {
         .addValueChangeListener(
             event -> {
               if (event == null) {
-                  logger.log(Level.FINE, "Event is null");
+                  LOGGER.log(Level.FINE, "Event is null");
               } else if (event.getValue() == null) {
-                  logger.log(Level.FINE, "Event value is null");
+                  LOGGER.log(Level.FINE, "Event value is null");
               } else {
                   editBook(event.getValue());
               }
@@ -95,7 +95,7 @@ public class MainView extends VerticalLayout {
         whichShelf.setRequired(true);
         whichShelf.addValueChangeListener(event -> {
             if (event.getValue() == null) {
-                logger.log(Level.FINE, "No choice selected");
+                LOGGER.log(Level.FINE, "No choice selected");
             } else {
                 chosenShelf = event.getValue();
                 updateList();

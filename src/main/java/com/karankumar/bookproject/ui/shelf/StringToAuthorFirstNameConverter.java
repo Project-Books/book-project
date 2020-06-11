@@ -29,7 +29,8 @@ import java.util.logging.Logger;
  * Converts the first name field (a String) into an {@code Author}'s first name field and visa versa
  */
 public class StringToAuthorFirstNameConverter implements Converter<String, Author> {
-    private static Logger logger = Logger.getLogger(StringToAuthorFirstNameConverter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StringToAuthorFirstNameConverter.class.getName());
+    private static final String LOG_PREFIX = StringToAuthorFirstNameConverter.class.getName() + ": ";
 
     @Override
     public Result<Author> convertToModel(String firstName, ValueContext valueContext) {
@@ -45,9 +46,10 @@ public class StringToAuthorFirstNameConverter implements Converter<String, Autho
     public String convertToPresentation(Author author, ValueContext valueContext) {
         if (author == null || author.getFirstName() == null) {
             if (author == null) {
-                logger.log(Level.FINE, "Author is null");
+                LOGGER.log(Level.SEVERE, LOG_PREFIX + "Author is null");
+                System.out.println("Author is null");
             } else if (author.getFirstName() == null) {
-                logger.log(Level.FINE, "Author's first name is null");
+                LOGGER.log(Level.SEVERE, LOG_PREFIX + "Author's first name is null");
             }
             return "Error";
         }
