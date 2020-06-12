@@ -46,8 +46,12 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Shelf> shelves;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    private Set<Shelf> shelves;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shelf_id")
+    private Shelf shelves;
 
     public Book() {
     }
@@ -81,11 +85,19 @@ public class Book extends BaseEntity {
         this.rating = rating;
     }
 
-    public Set<Shelf> getShelves() {
+//    public Set<Shelf> getShelves() {
+//        return shelves;
+//    }
+//
+//    public void setShelves(Set<Shelf> shelves) {
+//        this.shelves = shelves;
+//    }
+
+    public Shelf getShelves() {
         return shelves;
     }
 
-    public void setShelves(Set<Shelf> shelves) {
+    public void setShelves(Shelf shelves) {
         this.shelves = shelves;
     }
 

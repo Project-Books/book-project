@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -45,7 +46,7 @@ public class ShelfService extends BaseService<Shelf, Long> {
     private AuthorRepository authorRepository;
 
     public ShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
-                        ShelfRepository shelfRepository ) {
+                        ShelfRepository shelfRepository) {
         this.bookRepository = bookRepository;
         this.shelfRepository = shelfRepository;
 
@@ -78,25 +79,25 @@ public class ShelfService extends BaseService<Shelf, Long> {
     @PostConstruct
     public void populateTestData() {
         if (authorRepository.count() == 0) {
-          authorRepository.saveAll(
-          Stream.of(
-                  "J.K. Rowling",
-                  "Neil Gaiman",
-                  "J.R.R Tolkien",
-                  "Roald Dahl",
-                  "Robert Galbraith",
-                  "Dan Brown")
-              .map(
-                  name -> {
-                    String[] fullName = name.split(" ");
+            authorRepository.saveAll(
+                    Stream.of(
+                            "J.K. Rowling",
+                            "Neil Gaiman",
+                            "J.R.R Tolkien",
+                            "Roald Dahl",
+                            "Robert Galbraith",
+                            "Dan Brown")
+                            .map(
+                                    name -> {
+                                        String[] fullName = name.split(" ");
 
 
-                    Author author = new Author();
-                    author.setFirstName(fullName[0]);
-                    author.setLastName(fullName[1]);
-                    return author;
-                  })
-              .collect(Collectors.toList()));
+                                        Author author = new Author();
+                                        author.setFirstName(fullName[0]);
+                                        author.setLastName(fullName[1]);
+                                        return author;
+                                    })
+                            .collect(Collectors.toList()));
         }
 
         if (bookRepository.count() == 0) {
@@ -104,48 +105,63 @@ public class ShelfService extends BaseService<Shelf, Long> {
             List<Author> authors = authorRepository.findAll();
 
             bookRepository.saveAll(
-                Stream.of(
-                        "Harry Potter and the Philosopher's stone",
-                        "Harry Potter and the Chamber of Secrets",
-                        "Harry Potter and the Prisoner of Azkaban",
-                        "Harry Potter and the Goblet of Fire",
-                        "Harry Potter and the Order of Phoenix",
-                        "Harry Potter and the Half-Blood Prince",
-                        "Harry Potter and the Deathly Hallows")
-                    .map(title -> {
-                        int min = 300;
-                        int max = 1000;
-                        int range = (max-min) + 1;
-                        int pages = (int) (Math.random() * range);
+                    Stream.of(
+                            "Harry Potter and the Philosopher's stone",
+                            "Harry Potter and the Chamber of Secrets",
+                            "Harry Potter and the Prisoner of Azkaban",
+                            "Harry Potter and the Goblet of Fire",
+                            "Harry Potter and the Order of Phoenix",
+                            "Harry Potter and the Half-Blood Prince",
+                            "Harry Potter and the Deathly Hallows")
+                            .map(title -> {
+                                int min = 300;
+                                int max = 1000;
+                                int range = (max - min) + 1;
+                                int pages = (int) (Math.random() * range);
 
-                        Book book = new Book();
-                        book.setTitle(title);
+                                Book book = new Book();
+                                book.setTitle(title);
 
-                        book.setAuthor(authors.get(0));
+                                book.setAuthor(authors.get(0));
 
-                        Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
+                                Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
 
-                        book.setGenre(genre);
-                        book.setNumberOfPages(pages);
+                                book.setGenre(genre);
+                                book.setNumberOfPages(pages);
 
-                        book.setDateStartedReading(LocalDate.now().minusDays(2));
-                        book.setDateFinishedReading(LocalDate.now());
+                                book.setDateStartedReading(LocalDate.now().minusDays(2));
+                                book.setDateFinishedReading(LocalDate.now());
 
-                        book.setRating(RatingScale.values()[random.nextInt(RatingScale.values().length)]);
+                                book.setRating(RatingScale.values()[random.nextInt(RatingScale.values().length)]);
 
-                        return book;
-                    }).collect(Collectors.toList()));
+                                return book;
+                            }).collect(Collectors.toList()));
         }
 
         if (shelfRepository.count() == 0) {
             List<Book> books = bookRepository.findAll();
             shelfRepository.saveAll(
                     Stream.of("To read", "Reading", "Read")
-                        .map(name -> {
-                            Shelf shelf = new Shelf(name);
-                            shelf.setBooks(books);
-                            return shelf;
-                    }).collect(Collectors.toList()));
+                            .map(name -> {
+                                Shelf shelf = new Shelf(name);
+//                            shelf.setBooks(books);
+                                shelf.setBooks(new HashSet<>(books));
+                                return shelf;
+                            }).collect(Collectors.toList()));
         }
+
+        List<Book> books = bookRepository.findAll();
+        System.out.println("Books size = " + books.size());
+        List<Shelf> shelves = shelfRepository.findAll();
+        System.out.println("Shelf size = " + shelves.size());
+
+        Random random = new Random(0);
+
+        for (Book book : books) {
+            Shelf shelf = shelves.get(random.nextInt(shelves.size()));
+            book.setShelves(shelf);
+            System.out.println("Setting book " + book.getTitle() + " to shelf " + shelf.getName());
+        }
+        bookRepository.saveAll(books);
     }
 }
