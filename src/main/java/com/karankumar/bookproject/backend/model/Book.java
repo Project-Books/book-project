@@ -21,7 +21,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Set;
 
 /**
  * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, genre and rating
@@ -46,12 +45,9 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    private Set<Shelf> shelves;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shelf_id")
-    private Shelf shelves;
+    private Shelf shelf;
 
     public Book() {
     }
@@ -85,20 +81,12 @@ public class Book extends BaseEntity {
         this.rating = rating;
     }
 
-//    public Set<Shelf> getShelves() {
-//        return shelves;
-//    }
-//
-//    public void setShelves(Set<Shelf> shelves) {
-//        this.shelves = shelves;
-//    }
-
-    public Shelf getShelves() {
-        return shelves;
+    public Shelf getShelf() {
+        return shelf;
     }
 
-    public void setShelves(Shelf shelves) {
-        this.shelves = shelves;
+    public void setShelf(Shelf shelf) {
+        this.shelf = shelf;
     }
 
     public Genre getGenre() {

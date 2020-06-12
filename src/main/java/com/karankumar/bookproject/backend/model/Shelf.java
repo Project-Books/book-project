@@ -20,11 +20,9 @@ package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,19 +35,7 @@ public class Shelf extends BaseEntity {
     @NotEmpty
     private String name;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    private List<Book> books;
-
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelves")
-//    private List<Book> books;
-
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelves")
-//    private Set<Book> books;
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    private Set<Book> books;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelves")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
     private Set<Book> books;
 
     public Shelf() {
@@ -66,14 +52,6 @@ public class Shelf extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
-
-//    public List<Book> getBooks() {
-//        return books;
-//    }
-//
-//    public void setBooks(List<Book> books) {
-//        this.books = books;
-//    }
 
     public Set<Book> getBooks() {
         return books;

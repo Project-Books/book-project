@@ -124,11 +124,8 @@ public class BookForm extends FormLayout {
                 .bind("author.firstName");
         binder.forField(authorLastName)
                 .bind("author.lastName");
-//        binder.forField(shelf)
-//                .withConverter(new StringToShelfConverter())
-//                .bind(Book::getShelves, Book::setShelves);
         binder.forField(shelf)
-                .bind("shelves.name");
+                .bind("shelf.name");
         binder.forField(dateStartedReading)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)

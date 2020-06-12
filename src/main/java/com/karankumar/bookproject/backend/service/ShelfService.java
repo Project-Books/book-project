@@ -144,7 +144,6 @@ public class ShelfService extends BaseService<Shelf, Long> {
                     Stream.of("To read", "Reading", "Read")
                             .map(name -> {
                                 Shelf shelf = new Shelf(name);
-//                            shelf.setBooks(books);
                                 shelf.setBooks(new HashSet<>(books));
                                 return shelf;
                             }).collect(Collectors.toList()));
@@ -159,7 +158,7 @@ public class ShelfService extends BaseService<Shelf, Long> {
 
         for (Book book : books) {
             Shelf shelf = shelves.get(random.nextInt(shelves.size()));
-            book.setShelves(shelf);
+            book.setShelf(shelf);
             System.out.println("Setting book " + book.getTitle() + " to shelf " + shelf.getName());
         }
         bookRepository.saveAll(books);
