@@ -36,7 +36,6 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.binder.PropertyId;
 import com.vaadin.flow.shared.Registration;
 
 import java.time.LocalDate;
@@ -63,8 +62,11 @@ public class BookForm extends FormLayout {
 
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
     private Button addBook = new Button();
-    private Button reset  = new Button();
+    private Button reset = new Button();
     private Button delete = new Button();
+
+    private final FormItem started;
+    private final FormItem finished;
 
     private static Logger logger = Logger.getLogger(BookForm.class.getName());
 
@@ -100,12 +102,18 @@ public class BookForm extends FormLayout {
         addFormItem(authorFirstName, "Author's first name *");
         addFormItem(authorLastName, "Author's last name *");
         addFormItem(shelf, "Book shelf *");
-        addFormItem(dateStartedReading, "Date started");
-        addFormItem(dateFinishedReading, "Date finished");
+        started = addFormItem(dateStartedReading, "Date started");
+        finished = addFormItem(dateFinishedReading, "Date finished");
         addFormItem(bookGenre, "Book genre");
         addFormItem(pageCount, "Page count");
         addFormItem(rating, "Book rating");
         add(buttons);
+
+        shelf.addValueChangeListener(e -> {
+            if (e.getValue() != null) {
+                hideDates(shelf.getValue());
+            }
+        });
     }
 
     private void configureBinder() {
@@ -216,6 +224,34 @@ public class BookForm extends FormLayout {
 
         List<Shelf> shelves = shelfService.findAll();
         shelf.setItems(shelves.stream().map(Shelf::getName));
+    }
+
+    private void hideDates(String name) {
+        switch (name) {
+            case "To read":
+                started.setVisible(false);
+                finished.setVisible(false);
+                break;
+            case "Reading":
+                showStart();
+                break;
+            default:
+                showStart();
+                showFinish();
+                break;
+        }
+    }
+
+    private void showStart() {
+        if (!started.isVisible()) {
+            started.setVisible(true);
+        }
+    }
+
+    private void showFinish() {
+        if (!finished.isVisible()) {
+            finished.setVisible(true);
+        }
     }
 
     private void configureRating() {
