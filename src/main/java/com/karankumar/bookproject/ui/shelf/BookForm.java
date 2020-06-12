@@ -112,20 +112,10 @@ public class BookForm extends FormLayout {
         binder.forField(bookTitle)
                 .asRequired("Please provide a book title")
                 .bind(Book::getTitle, Book::setTitle);
-//        binder.forField(authorFirstName)
-//                .withConverter(new StringToAuthorFirstNameConverter())
-//                .bind(Book::getAuthor, Book::setAuthor);
-//        binder
-//                .forField(authorLastName)
-//                .withConverter(new StringToAuthorLastNameConverter())
-//                .bind(Book::getAuthor, Book::setAuthor);
-
         binder.forField(authorFirstName)
                 .bind("author.firstName");
-
         binder.forField(authorLastName)
                 .bind("author.lastName");
-
 //        binder.forField(shelf)
 //                .withConverter(new StringToShelfConverter())
 //                .bind(Book::getShelves, Book::setShelves);
