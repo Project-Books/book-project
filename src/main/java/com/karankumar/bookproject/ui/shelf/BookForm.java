@@ -36,6 +36,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.PropertyId;
 import com.vaadin.flow.shared.Registration;
 
 import java.time.LocalDate;
@@ -53,6 +54,7 @@ public class BookForm extends FormLayout {
     private ComboBox<String> shelf = new ComboBox<>();
     private ComboBox<Genre> bookGenre = new ComboBox<>();
     private IntegerField pageCount = new IntegerField();
+
     private DatePicker dateStartedReading = new DatePicker();
     private DatePicker dateFinishedReading = new DatePicker();
     private NumberField rating = new NumberField();
@@ -110,13 +112,19 @@ public class BookForm extends FormLayout {
         binder.forField(bookTitle)
                 .asRequired("Please provide a book title")
                 .bind(Book::getTitle, Book::setTitle);
+//        binder.forField(authorFirstName)
+//                .withConverter(new StringToAuthorFirstNameConverter())
+//                .bind(Book::getAuthor, Book::setAuthor);
+//        binder
+//                .forField(authorLastName)
+//                .withConverter(new StringToAuthorLastNameConverter())
+//                .bind(Book::getAuthor, Book::setAuthor);
+
         binder.forField(authorFirstName)
-                .withConverter(new StringToAuthorFirstNameConverter())
-                .bind(Book::getAuthor, Book::setAuthor);
-        binder
-                .forField(authorLastName)
-                .withConverter(new StringToAuthorLastNameConverter())
-                .bind(Book::getAuthor, Book::setAuthor);
+                .bind("author.firstName");
+
+        binder.forField(authorLastName)
+                .bind("author.lastName");
 
 //        binder.forField(shelf)
 //                .withConverter(new StringToShelfConverter())
