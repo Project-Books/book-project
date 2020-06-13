@@ -17,6 +17,9 @@
 */
 package com.karankumar.bookproject.backend.model;
 
+import com.karankumar.bookproject.backend.model.shelves.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.shelves.Shelf;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -47,7 +50,7 @@ public class Book extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shelf_id")
-    private Shelf shelf;
+    private PredefinedShelf shelf;
 
     public Book() {
     }

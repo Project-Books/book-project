@@ -16,10 +16,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.karankumar.bookproject.backend.model;
+package com.karankumar.bookproject.backend.model.shelves;
+
+import com.karankumar.bookproject.backend.model.BaseEntity;
+import com.karankumar.bookproject.backend.model.Book;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -29,29 +33,10 @@ import java.util.Set;
  * Represents a shelf (or a list) of books (e.g. books in a 'to read' shelf)
  */
 
-@Entity
-public class Shelf extends BaseEntity {
-    @NotNull
-    @NotEmpty
-    private String name;
-
+@MappedSuperclass
+public abstract class Shelf extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
     private Set<Book> books;
-
-    public Shelf() {
-    }
-
-    public Shelf(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Set<Book> getBooks() {
         return books;

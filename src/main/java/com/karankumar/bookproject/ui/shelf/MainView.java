@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.model.shelves.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ShelfService;
 import com.vaadin.flow.component.combobox.ComboBox;

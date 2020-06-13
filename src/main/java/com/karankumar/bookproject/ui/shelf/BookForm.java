@@ -19,7 +19,7 @@ package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Genre;
-import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.model.shelves.Shelf;
 import com.karankumar.bookproject.backend.service.ShelfService;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
