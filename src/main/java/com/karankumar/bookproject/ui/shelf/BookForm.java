@@ -65,6 +65,7 @@ public class BookForm extends FormLayout {
 
     private final FormItem started;
     private final FormItem finished;
+    private final FormItem ratingFormItem;
 
     private static Logger logger = Logger.getLogger(BookForm.class.getName());
 
@@ -104,12 +105,13 @@ public class BookForm extends FormLayout {
         finished = addFormItem(dateFinishedReading, "Date finished");
         addFormItem(bookGenre, "Book genre");
         addFormItem(pageCount, "Page count");
-        addFormItem(rating, "Book rating");
+        ratingFormItem = addFormItem(rating, "Book rating");
         add(buttons);
 
         shelf.addValueChangeListener(e -> {
             if (e.getValue() != null) {
                 hideDates(shelf.getValue());
+                showOrHideRating(shelf.getValue());
             }
         });
     }
@@ -242,24 +244,36 @@ public class BookForm extends FormLayout {
                 finished.setVisible(false);
                 break;
             case READING:
-                showStart();
+                showStartDate();
                 break;
             default:
-                showStart();
-                showFinish();
+                showStartDate();
+                showFinishDate();
                 break;
         }
     }
 
-    private void showStart() {
+    private void showStartDate() {
         if (!started.isVisible()) {
             started.setVisible(true);
         }
     }
 
-    private void showFinish() {
+    private void showFinishDate() {
         if (!finished.isVisible()) {
             finished.setVisible(true);
+        }
+    }
+
+    private void showOrHideRating(PredefinedShelf.ShelfName name) {
+        switch(name) {
+            case TO_READ:
+            case READING:
+                ratingFormItem.setVisible(false);
+                break;
+            case READ:
+                ratingFormItem.setVisible(true);
+                break;
         }
     }
 
