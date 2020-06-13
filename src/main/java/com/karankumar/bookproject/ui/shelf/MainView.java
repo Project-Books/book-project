@@ -18,9 +18,9 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.shelves.Shelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.service.ShelfService;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -47,14 +47,14 @@ public class MainView extends VerticalLayout {
 
     private Grid<Book> bookGrid = new Grid<>(Book.class);
     private final TextField filterByTitle;
-    private final ComboBox<String> whichShelf;
-    private final List<Shelf> shelves;
-    private String chosenShelf;
+    private final ComboBox<PredefinedShelf.ShelfName> whichShelf;
+    private final List<PredefinedShelf> shelves;
+    private PredefinedShelf.ShelfName chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
 
     private static final Logger LOGGER = Logger.getLogger(MainView.class.getName());
 
-    public MainView(BookService bookService, ShelfService shelfService) {
+    public MainView(BookService bookService, PredefinedShelfService shelfService) {
         this.bookService = bookService;
         shelves = shelfService.findAll();
 
@@ -69,7 +69,7 @@ public class MainView extends VerticalLayout {
         configureBookGrid();
         add(horizontalLayout, bookGrid);
 
-        bookForm = new BookForm(shelfService);
+        bookForm = new BookForm();
         add(bookForm);
 
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
@@ -89,9 +89,9 @@ public class MainView extends VerticalLayout {
             });
     }
 
-    private void configureChosenShelf(List<Shelf> shelves) {
+    private void configureChosenShelf(List<PredefinedShelf> shelves) {
         whichShelf.setPlaceholder("Select shelf");
-        whichShelf.setItems(shelves.stream().map(Shelf::getName));
+        whichShelf.setItems(PredefinedShelf.ShelfName.values());
         whichShelf.setRequired(true);
         whichShelf.addValueChangeListener(event -> {
             if (event.getValue() == null) {
@@ -110,14 +110,15 @@ public class MainView extends VerticalLayout {
     }
 
     private void updateList() {
-        if (chosenShelf == null || chosenShelf.isEmpty()) {
+        if (chosenShelf == null) {
             return;
         }
 
         // Find the shelf that matches the chosen shelf's name
-        Shelf selectedShelf = null;
-        for (Shelf shelf : shelves) {
-            if (shelf.getName().equals(chosenShelf)) {
+        PredefinedShelf selectedShelf = null;
+        for (PredefinedShelf shelf : shelves) {
+            PredefinedShelf predefinedShelf = shelf;
+            if (predefinedShelf.getShelfName().equals(chosenShelf)) {
                 selectedShelf = shelf;
                 break;
             }

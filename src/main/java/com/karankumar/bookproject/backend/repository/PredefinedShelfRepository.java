@@ -15,34 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+package com.karankumar.bookproject.backend.repository;
 
-package com.karankumar.bookproject.backend.model.shelves;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.karankumar.bookproject.backend.model.BaseEntity;
-import com.karankumar.bookproject.backend.model.Book;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.Set;
-
-/**
- * Represents a shelf (or a list) of books (e.g. books in a 'to read' shelf)
- */
-
-@MappedSuperclass
-public abstract class Shelf extends BaseEntity {
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
-    private Set<Book> books;
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
+public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf, Long> {
 }

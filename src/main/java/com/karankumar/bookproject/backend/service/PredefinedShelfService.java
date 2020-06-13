@@ -18,13 +18,9 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.*;
-import com.karankumar.bookproject.backend.model.shelves.ReadShelf;
-import com.karankumar.bookproject.backend.model.shelves.ReadingShelf;
-import com.karankumar.bookproject.backend.model.shelves.Shelf;
-import com.karankumar.bookproject.backend.model.shelves.ToReadShelf;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import com.karankumar.bookproject.backend.repository.ShelfRepository;
+import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -42,15 +38,15 @@ import java.util.stream.Stream;
  * a consumer should go via this {@code ShelfService}
  */
 @Service
-public class ShelfService extends BaseService<Shelf, Long> {
-    private static final Logger LOGGER = Logger.getLogger(ShelfService.class.getSimpleName());
+public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
+    private static final Logger LOGGER = Logger.getLogger(PredefinedShelfService.class.getSimpleName());
 
     private BookRepository bookRepository;
-    private ShelfRepository shelfRepository;
+    private PredefinedShelfRepository shelfRepository;
     private AuthorRepository authorRepository;
 
-    public ShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
-                        ShelfRepository shelfRepository) {
+    public PredefinedShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
+                                  PredefinedShelfRepository shelfRepository) {
         this.bookRepository = bookRepository;
         this.shelfRepository = shelfRepository;
 
@@ -58,12 +54,12 @@ public class ShelfService extends BaseService<Shelf, Long> {
     }
 
     @Override
-    public Shelf findById(Long id) {
+    public PredefinedShelf findById(Long id) {
         return shelfRepository.getOne(id);
     }
 
     @Override
-    public void save(Shelf shelf) {
+    public void save(PredefinedShelf shelf) {
         if (shelf != null) {
             shelfRepository.save(shelf);
         } else {
@@ -71,12 +67,12 @@ public class ShelfService extends BaseService<Shelf, Long> {
         }
     }
 
-    public List<Shelf> findAll() {
+    public List<PredefinedShelf> findAll() {
         return shelfRepository.findAll();
     }
 
     @Override
-    public void delete(Shelf shelf) {
+    public void delete(PredefinedShelf shelf) {
         shelfRepository.delete(shelf);
     }
 
@@ -149,13 +145,14 @@ public class ShelfService extends BaseService<Shelf, Long> {
                     Stream.of("a")
                             .map(b -> {
                                 int shelfNum = random.nextInt(3);
-                                Shelf shelf;
+                                System.out.println("Random shelf: " + shelfNum);
+                                PredefinedShelf shelf;
                                 if (shelfNum == 0) {
-                                    shelf = new ToReadShelf();
+                                    shelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
                                 } else if (shelfNum == 1) {
-                                    shelf = new ReadingShelf();
+                                    shelf = new PredefinedShelf(PredefinedShelf.ShelfName.READING);
                                 } else {
-                                    shelf = new ReadShelf();
+                                    shelf = new PredefinedShelf(PredefinedShelf.ShelfName.READ);
                                 }
 
                                 shelf.setBooks(new HashSet<>(books));
@@ -165,15 +162,15 @@ public class ShelfService extends BaseService<Shelf, Long> {
 
         List<Book> books = bookRepository.findAll();
         System.out.println("Books size = " + books.size());
-        List<Shelf> shelves = shelfRepository.findAll();
+        List<PredefinedShelf> shelves = shelfRepository.findAll();
         System.out.println("Shelf size = " + shelves.size());
 
         Random random = new Random(0);
 
         for (Book book : books) {
-            Shelf shelf = shelves.get(random.nextInt(shelves.size()));
+            PredefinedShelf shelf = shelves.get(random.nextInt(shelves.size()));
             book.setShelf(shelf);
-            System.out.println("Setting book " + book.getTitle() + " to shelf " + shelf.getName());
+            System.out.println("Setting book " + book.getTitle() + " to shelf " + shelf.getShelfName());
         }
         bookRepository.saveAll(books);
     }

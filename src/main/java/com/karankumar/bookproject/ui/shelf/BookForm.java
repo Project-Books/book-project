@@ -19,8 +19,7 @@ package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Genre;
-import com.karankumar.bookproject.backend.model.shelves.Shelf;
-import com.karankumar.bookproject.backend.service.ShelfService;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
@@ -39,7 +38,6 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,7 +48,7 @@ public class BookForm extends FormLayout {
     private TextField bookTitle = new TextField();
     private TextField authorFirstName = new TextField();
     private TextField authorLastName = new TextField();
-    private ComboBox<String> shelf = new ComboBox<>();
+    private ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
     private ComboBox<Genre> bookGenre = new ComboBox<>();
     private IntegerField pageCount = new IntegerField();
 
@@ -70,12 +68,12 @@ public class BookForm extends FormLayout {
 
     private static Logger logger = Logger.getLogger(BookForm.class.getName());
 
-    public BookForm(ShelfService shelfService) {
+    public BookForm() {
         configureBinder();
 
         configureTitle();
         configureAuthor();
-        configureShelf(shelfService);
+        configureShelf();
         configureGenre();
         configurePageCount();
         configureDateStarted();
@@ -125,7 +123,7 @@ public class BookForm extends FormLayout {
         binder.forField(authorLastName)
                 .bind("author.lastName");
         binder.forField(shelf)
-                .bind("shelf.name");
+                .bind("shelf.shelfName");
         binder.forField(dateStartedReading)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)
@@ -229,22 +227,21 @@ public class BookForm extends FormLayout {
         bookGenre.setPlaceholder("Choose a book genre");
     }
 
-    private void configureShelf(ShelfService shelfService) {
+    private void configureShelf() {
         shelf.setRequired(true);
         shelf.setPlaceholder("Choose a shelf");
         shelf.setClearButtonVisible(true);
 
-        List<Shelf> shelves = shelfService.findAll();
-        shelf.setItems(shelves.stream().map(Shelf::getName));
+        shelf.setItems(PredefinedShelf.ShelfName.values());
     }
 
-    private void hideDates(String name) {
+    private void hideDates(PredefinedShelf.ShelfName name) {
         switch (name) {
-            case "To read":
+            case TO_READ:
                 started.setVisible(false);
                 finished.setVisible(false);
                 break;
-            case "Reading":
+            case READING:
                 showStart();
                 break;
             default:

@@ -17,9 +17,6 @@
 */
 package com.karankumar.bookproject.backend.model;
 
-import com.karankumar.bookproject.backend.model.shelves.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.shelves.Shelf;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -84,11 +81,11 @@ public class Book extends BaseEntity {
         this.rating = rating;
     }
 
-    public Shelf getShelf() {
+    public PredefinedShelf getShelf() {
         return shelf;
     }
 
-    public void setShelf(Shelf shelf) {
+    public void setShelf(PredefinedShelf shelf) {
         this.shelf = shelf;
     }
 
