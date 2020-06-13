@@ -241,15 +241,22 @@ public class BookForm extends FormLayout {
         switch (name) {
             case TO_READ:
                 started.setVisible(false);
-                finished.setVisible(false);
+                hideFinishDate();
                 break;
             case READING:
                 showStartDate();
+                hideFinishDate();
                 break;
             default:
                 showStartDate();
                 showFinishDate();
                 break;
+        }
+    }
+
+    private void hideFinishDate() {
+        if (finished.isVisible()) {
+            finished.setVisible(false);
         }
     }
 

@@ -75,18 +75,18 @@ public class MainView extends VerticalLayout {
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
 
-    bookGrid
-        .asSingleSelect()
-        .addValueChangeListener(
-            event -> {
-              if (event == null) {
-                  LOGGER.log(Level.FINE, "Event is null");
-              } else if (event.getValue() == null) {
-                  LOGGER.log(Level.FINE, "Event value is null");
-              } else {
-                  editBook(event.getValue());
-              }
-            });
+        bookGrid
+            .asSingleSelect()
+            .addValueChangeListener(
+                event -> {
+                  if (event == null) {
+                      LOGGER.log(Level.FINE, "Event is null");
+                  } else if (event.getValue() == null) {
+                      LOGGER.log(Level.FINE, "Event value is null");
+                  } else {
+                      editBook(event.getValue());
+                  }
+                });
     }
 
     private void configureChosenShelf(List<PredefinedShelf> shelves) {
@@ -153,6 +153,7 @@ public class MainView extends VerticalLayout {
     }
 
     private void deleteBook(BookForm.DeleteEvent event) {
+        System.out.println("MainView: Deleting book...");
         bookService.delete(event.getBook());
         updateList();
     }

@@ -142,7 +142,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
             List<Book> books = bookRepository.findAll();
             Random random = new Random(0);
             shelfRepository.saveAll(
-                    Stream.of("a")
+                    Stream.of("a", "b", "c")
                             .map(b -> {
                                 int shelfNum = random.nextInt(3);
                                 System.out.println("Random shelf: " + shelfNum);

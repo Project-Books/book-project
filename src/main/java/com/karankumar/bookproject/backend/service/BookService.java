@@ -23,6 +23,8 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A Spring service that acts as the gateway to the {@code BookRepository} -- to use the {@code BookRepository},
@@ -32,6 +34,8 @@ import java.util.List;
 public class BookService extends BaseService<Book, Long> {
 
     private BookRepository bookRepository;
+
+    private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
 
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
@@ -66,6 +70,8 @@ public class BookService extends BaseService<Book, Long> {
 
     @Override
     public void delete(Book book) {
+        LOGGER.log(Level.INFO, "Deleting book");
+        System.out.println("Deleting book (BookService)");
         bookRepository.delete(book);
     }
 }
