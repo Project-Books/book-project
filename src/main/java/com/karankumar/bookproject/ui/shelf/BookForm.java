@@ -45,29 +45,29 @@ import java.util.logging.Logger;
  * A Vaadin form for adding a new {@code Book}
  */
 public class BookForm extends FormLayout {
-    private TextField bookTitle = new TextField();
-    private TextField authorFirstName = new TextField();
-    private TextField authorLastName = new TextField();
-    private ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
-    private ComboBox<Genre> bookGenre = new ComboBox<>();
-    private IntegerField pageCount = new IntegerField();
+    private final TextField bookTitle = new TextField();
+    private final TextField authorFirstName = new TextField();
+    private final TextField authorLastName = new TextField();
+    private final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
+    private final ComboBox<Genre> bookGenre = new ComboBox<>();
+    private final IntegerField pageCount = new IntegerField();
 
-    private DatePicker dateStartedReading = new DatePicker();
-    private DatePicker dateFinishedReading = new DatePicker();
-    private NumberField rating = new NumberField();
+    private final DatePicker dateStartedReading = new DatePicker();
+    private final DatePicker dateFinishedReading = new DatePicker();
+    private final NumberField rating = new NumberField();
 
     private static final String ENTER_DATE = "Enter a date";
 
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
-    private Button addBook = new Button();
-    private Button reset = new Button();
+    private final Button addBook = new Button();
+    private final Button reset = new Button();
     private Button delete = new Button();
 
     private final FormItem started;
     private final FormItem finished;
     private final FormItem ratingFormItem;
 
-    private static Logger logger = Logger.getLogger(BookForm.class.getName());
+    private static final Logger logger = Logger.getLogger(BookForm.class.getName());
 
     public BookForm() {
         configureBinder();

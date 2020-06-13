@@ -22,6 +22,7 @@ package com.karankumar.bookproject.backend.model;
  * A rating scale for a {@code Book} from 0 to 10 (inclusive) that goes up in increments of 0.5.
  */
 public enum RatingScale {
+    NO_RATING("No rating"),
     ZERO("0/10"),
     ZERO_POINT_FIVE("0.5/10"),
     ONE("1/10"),
