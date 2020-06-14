@@ -42,13 +42,15 @@ import java.util.logging.Logger;
 @PageTitle("Home | Book Project")
 public class BooksInShelfView extends VerticalLayout {
 
-    private BookForm bookForm;
-    private BookService bookService;
+    private final BookForm bookForm;
 
-    private Grid<Book> bookGrid = new Grid<>(Book.class);
+    private final BookService bookService;
+    private final PredefinedShelfService shelfService;
+
+    private final Grid<Book> bookGrid = new Grid<>(Book.class);
     private final TextField filterByTitle;
     private final ComboBox<PredefinedShelf.ShelfName> whichShelf;
-    private final List<PredefinedShelf> shelves;
+    private List<PredefinedShelf> shelves;
     private PredefinedShelf.ShelfName chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
 
@@ -56,7 +58,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
         this.bookService = bookService;
-        shelves = shelfService.findAll();
+        this.shelfService = shelfService;
 
         whichShelf = new ComboBox<>();
         configureChosenShelf();
@@ -114,6 +116,8 @@ public class BooksInShelfView extends VerticalLayout {
             return;
         }
 
+        updateShelves();
+
         // Find the shelf that matches the chosen shelf's name
         PredefinedShelf selectedShelf = null;
         for (PredefinedShelf shelf : shelves) {
@@ -127,11 +131,20 @@ public class BooksInShelfView extends VerticalLayout {
         // only set the grid if the book shelf name was matched
         if (selectedShelf != null) {
             if (bookTitle != null && !bookTitle.isEmpty()) {
+                LOGGER.log(Level.INFO, "Searching for the filter " + bookTitle);
                 bookGrid.setItems(bookService.findAll(bookTitle));
             } else {
+                LOGGER.log(Level.INFO, "Updating entire list");
                 bookGrid.setItems(selectedShelf.getBooks());
+                LOGGER.log(Level.INFO, "Updated list size = " + selectedShelf.getBooks().size());
             }
+        } else {
+            LOGGER.log(Level.SEVERE, "Could not find selected shelf");
         }
+    }
+
+    private void updateShelves() {
+        shelves = shelfService.findAll();
     }
 
     private void configureFilter() {
