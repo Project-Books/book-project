@@ -57,9 +57,11 @@ public class BookForm extends FormLayout {
     private final NumberField rating = new NumberField();
 
     private static final String ENTER_DATE = "Enter a date";
+    private static final String LABEL_ADD_BOOK = "Add book";
+    private static final String LABEL_UPDATE_BOOK = "Update book";
 
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
-    private final Button addBook = new Button();
+    private final Button saveButton = new Button();
     private final Button reset = new Button();
     private Button delete = new Button();
 
@@ -146,9 +148,9 @@ public class BookForm extends FormLayout {
     }
 
     private HorizontalLayout configureButtons() {
-        addBook.setText("Add book");
-        addBook.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        addBook.addClickListener(click -> validateOnSave());
+        saveButton.setText(LABEL_ADD_BOOK);
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        saveButton.addClickListener(click -> validateOnSave());
 
         reset.setText("Reset");
         reset.addClickListener(event -> clearForm());
@@ -157,10 +159,11 @@ public class BookForm extends FormLayout {
         delete.setText("Delete");
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         delete.addClickListener(click -> fireEvent(new DeleteEvent(this, binder.getBean())));
+        delete.addClickListener(v -> saveButton.setText(LABEL_ADD_BOOK));
 
-        binder.addStatusChangeListener(event -> addBook.setEnabled(binder.isValid()));
+        binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
 
-        return new HorizontalLayout(addBook, reset, delete);
+        return new HorizontalLayout(saveButton, reset, delete);
     }
 
     private void validateOnSave() {
@@ -195,6 +198,7 @@ public class BookForm extends FormLayout {
         if (binder == null) {
             logger.log(Level.SEVERE, "Binder is null");
         } else {
+            saveButton.setText(LABEL_UPDATE_BOOK);
             binder.setBean(book);
         }
     }
@@ -314,6 +318,7 @@ public class BookForm extends FormLayout {
                 dateFinishedReading,
                 rating,
         };
+        saveButton.setText(LABEL_ADD_BOOK);
         for (HasValue component : components) {
             if (component != null && !component.isEmpty()) {
                 component.clear();
