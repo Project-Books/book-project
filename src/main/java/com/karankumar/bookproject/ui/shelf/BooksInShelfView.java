@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 
 @Route("")
 @PageTitle("Home | Book Project")
-public class MainView extends VerticalLayout {
+public class BooksInShelfView extends VerticalLayout {
 
     private BookForm bookForm;
     private BookService bookService;
@@ -52,9 +52,9 @@ public class MainView extends VerticalLayout {
     private PredefinedShelf.ShelfName chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
 
-    private static final Logger LOGGER = Logger.getLogger(MainView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BooksInShelfView.class.getName());
 
-    public MainView(BookService bookService, PredefinedShelfService shelfService) {
+    public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
         this.bookService = bookService;
         shelves = shelfService.findAll();
 
@@ -153,7 +153,7 @@ public class MainView extends VerticalLayout {
     }
 
     private void deleteBook(BookForm.DeleteEvent event) {
-        System.out.println("MainView: Deleting book...");
+        LOGGER.log(Level.INFO, "MainView: Deleting book...");
         bookService.delete(event.getBook());
         updateList();
     }

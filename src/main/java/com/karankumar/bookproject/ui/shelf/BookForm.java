@@ -172,36 +172,28 @@ public class BookForm extends FormLayout {
     public void setBook(Book book) {
         if (book == null) {
             logger.log(Level.SEVERE, "Book is null");
-            System.out.println("Book is null");
         }
         if (book.getRating() == null) {
             logger.log(Level.FINE, "Rating is null");
-            System.out.println("Rating is null");
         }
         if (book.getAuthor().getFirstName() == null) {
             logger.log(Level.SEVERE, "Author's first name is null");
-            System.out.println("Author's first name is null");
         }
         if (book.getAuthor().getLastName() == null) {
             logger.log(Level.SEVERE, "Author's last name is null");
-            System.out.println("Author's last name is null");
         }
         if (book.getDateStartedReading() == null) {
             logger.log(Level.FINE, "Date started reading is null");
-            System.out.println("Date started reading is null");
         }
         if (book.getDateFinishedReading() == null) {
             logger.log(Level.FINE, "Date finished reading is null");
-            System.out.println("Date finished reading is null");
         }
         if (book.getGenre() == null) {
             logger.log(Level.FINE, "Book genre is null");
-            System.out.println("Book genre is null");
         }
 
         if (binder == null) {
             logger.log(Level.SEVERE, "Binder is null");
-            System.out.println("Binder is null");
         } else {
             binder.setBean(book);
         }

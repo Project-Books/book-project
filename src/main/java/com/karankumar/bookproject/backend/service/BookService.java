@@ -70,15 +70,19 @@ public class BookService extends BaseService<Book, Long> {
 
     @Override
     public void delete(Book book) {
-        LOGGER.log(Level.INFO, "Deleting book");
+        if (book == null) {
+            LOGGER.log(Level.SEVERE, "Cannot delete an null book.");
+            return;
+        }
+
+        LOGGER.log(Level.INFO, "Deleting book. Book repository size = " + bookRepository.count());
         bookRepository.delete(book);
 
         List<Book> books = bookRepository.findAll();
-        for (Book b : books) {
-            if (b.equals(book)) {
-                LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
-            }
+        if (books.contains(book)) {
+            LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
+        } else {
+            LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " + bookRepository.count());
         }
-
     }
 }
