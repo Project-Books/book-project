@@ -87,10 +87,8 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                             "Roald Dahl",
                             "Robert Galbraith",
                             "Dan Brown")
-                            .map(
-                                    name -> {
+                            .map(name -> {
                                         String[] fullName = name.split(" ");
-
 
                                         Author author = new Author();
                                         author.setFirstName(fullName[0]);

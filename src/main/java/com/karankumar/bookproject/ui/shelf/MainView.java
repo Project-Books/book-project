@@ -59,7 +59,7 @@ public class MainView extends VerticalLayout {
         shelves = shelfService.findAll();
 
         whichShelf = new ComboBox<>();
-        configureChosenShelf(shelves);
+        configureChosenShelf();
 
         filterByTitle = new TextField();
         configureFilter();
@@ -89,7 +89,7 @@ public class MainView extends VerticalLayout {
                 });
     }
 
-    private void configureChosenShelf(List<PredefinedShelf> shelves) {
+    private void configureChosenShelf() {
         whichShelf.setPlaceholder("Select shelf");
         whichShelf.setItems(PredefinedShelf.ShelfName.values());
         whichShelf.setRequired(true);

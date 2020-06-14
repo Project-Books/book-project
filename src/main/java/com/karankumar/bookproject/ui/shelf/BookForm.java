@@ -129,9 +129,10 @@ public class BookForm extends FormLayout {
         binder.forField(dateStartedReading)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)
-                .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null && endDate
-                                .isBefore(dateStartedReading.getValue())),
-                        "Date finished cannot be earlier than the date started")
+                .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null &&
+                                endDate.isBefore(dateStartedReading.getValue())),
+                        "The date you finished reading the book cannot be earlier than the date you started " +
+                                "reading the book")
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         dateStartedReading.addValueChangeListener(
                 event -> bindingEndDate.validate());
@@ -155,6 +156,7 @@ public class BookForm extends FormLayout {
         delete = new Button();
         delete.setText("Delete");
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        delete.addClickListener(click -> fireEvent(new DeleteEvent(this, binder.getBean())));
 
         binder.addStatusChangeListener(event -> addBook.setEnabled(binder.isValid()));
 

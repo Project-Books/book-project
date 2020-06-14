@@ -71,7 +71,14 @@ public class BookService extends BaseService<Book, Long> {
     @Override
     public void delete(Book book) {
         LOGGER.log(Level.INFO, "Deleting book");
-        System.out.println("Deleting book (BookService)");
         bookRepository.delete(book);
+
+        List<Book> books = bookRepository.findAll();
+        for (Book b : books) {
+            if (b.equals(book)) {
+                LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
+            }
+        }
+
     }
 }
