@@ -116,6 +116,9 @@ public class BookForm extends FormLayout {
     }
 
     private void configureBinder() {
+        final String AFTER_TODAY_PREFIX = "The date you";
+        final String AFTER_TODAY_SUFFIX = "reading the book cannot be after today's date.";
+
         binder.forField(bookTitle)
                 .asRequired("Please provide a book title")
                 .bind(Book::getTitle, Book::setTitle);
@@ -127,13 +130,15 @@ public class BookForm extends FormLayout {
                 .bind("shelf.shelfName");
         binder.forField(dateStartedReading)
                 .withValidator(startDate -> !startDate.isAfter(LocalDate.now()),
-                        "The date you started reading book cannot be after today's date.")
+                        AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)
                 .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null &&
                                 endDate.isBefore(dateStartedReading.getValue())),
                         "The date you finished reading the book cannot be earlier than the date you started " +
                                 "reading the book")
+                .withValidator(endDate -> !endDate.isAfter(LocalDate.now()),
+                        AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         dateStartedReading.addValueChangeListener(
                 event -> bindingEndDate.validate());
