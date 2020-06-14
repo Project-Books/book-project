@@ -127,11 +127,6 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                                 book.setGenre(genre);
                                 book.setNumberOfPages(pages);
 
-                                book.setDateStartedReading(LocalDate.now().minusDays(2));
-                                book.setDateFinishedReading(LocalDate.now());
-
-                                book.setRating(RatingScale.values()[random.nextInt(RatingScale.values().length)]);
-
                                 return book;
                             }).collect(Collectors.toList()));
         }
@@ -168,6 +163,24 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         for (Book book : books) {
             PredefinedShelf shelf = shelves.get(random.nextInt(shelves.size()));
             book.setShelf(shelf);
+            switch(shelf.shelfName) {
+                case TO_READ:
+                    book.setDateStartedReading(null);
+                    book.setDateFinishedReading(null);
+                    book.setRating(RatingScale.NO_RATING);
+                    break;
+                case READING:
+                    book.setDateStartedReading(LocalDate.now().minusDays(2));
+                    book.setDateFinishedReading(null);
+                    book.setRating(RatingScale.NO_RATING);
+                    break;
+                case READ:
+                    book.setRating(RatingScale.values()[random.nextInt(RatingScale.values().length)]);
+                    book.setDateStartedReading(LocalDate.now().minusDays(2));
+                    book.setDateFinishedReading(LocalDate.now());
+                    break;
+            }
+
             System.out.println("Setting book " + book.getTitle() + " to shelf " + shelf.getShelfName());
         }
         bookRepository.saveAll(books);

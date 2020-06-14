@@ -139,7 +139,7 @@ public class BooksInShelfView extends VerticalLayout {
                 LOGGER.log(Level.INFO, "Updated list size = " + selectedShelf.getBooks().size());
             }
         } else {
-            LOGGER.log(Level.SEVERE, "Could not find selected shelf");
+            LOGGER.log(Level.SEVERE, "Could not find " + chosenShelf + " shelf");
         }
     }
 
@@ -166,13 +166,19 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void deleteBook(BookForm.DeleteEvent event) {
-        LOGGER.log(Level.INFO, "MainView: Deleting book...");
+        LOGGER.log(Level.INFO, "Deleting book...");
         bookService.delete(event.getBook());
         updateList();
     }
 
     private void saveBook(BookForm.SaveEvent event) {
-        bookService.save(event.getBook());
-        updateList();
+        LOGGER.log(Level.INFO, "Saving book...");
+        if (event.getBook() == null) {
+            LOGGER.log(Level.SEVERE, "Retrieved book from event is null");
+        } else {
+            LOGGER.log(Level.INFO, "Book is not null");
+            bookService.save(event.getBook());
+            updateList();
+        }
     }
 }

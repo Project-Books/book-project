@@ -50,6 +50,9 @@ public class BookService extends BaseService<Book, Long> {
     public void save(Book book) {
         if (book != null) {
             bookRepository.save(book);
+            LOGGER.log(Level.INFO, book.getTitle() + " saved");
+        } else {
+            LOGGER.log(Level.SEVERE, "Null book");
         }
     }
 

@@ -67,11 +67,10 @@ public class BookForm extends FormLayout {
     private final FormItem finished;
     private final FormItem ratingFormItem;
 
-    private static final Logger logger = Logger.getLogger(BookForm.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BookForm.class.getName());
 
     public BookForm() {
         configureBinder();
-
         configureTitle();
         configureAuthor();
         configureShelf();
@@ -165,35 +164,43 @@ public class BookForm extends FormLayout {
 
     private void validateOnSave() {
         if (binder.isValid()) {
-            fireEvent(new SaveEvent(this, binder.getBean()));
+            LOGGER.log(Level.INFO, "Valid binder");
+
+            if (binder.getBean() == null) {
+                LOGGER.log(Level.SEVERE, "Binder book bean is null");
+            } else {
+                fireEvent(new SaveEvent(this, binder.getBean()));
+            }
+        } else {
+            LOGGER.log(Level.SEVERE, "Invalid binder");
         }
     }
 
     public void setBook(Book book) {
         if (book == null) {
-            logger.log(Level.SEVERE, "Book is null");
+            LOGGER.log(Level.SEVERE, "Book is null");
         }
         if (book.getRating() == null) {
-            logger.log(Level.FINE, "Rating is null");
+            LOGGER.log(Level.FINE, "Rating is null");
         }
         if (book.getAuthor().getFirstName() == null) {
-            logger.log(Level.SEVERE, "Author's first name is null");
+            LOGGER.log(Level.SEVERE, "Author's first name is null");
         }
         if (book.getAuthor().getLastName() == null) {
-            logger.log(Level.SEVERE, "Author's last name is null");
+            LOGGER.log(Level.SEVERE, "Author's last name is null");
         }
         if (book.getDateStartedReading() == null) {
-            logger.log(Level.FINE, "Date started reading is null");
+            LOGGER.log(Level.FINE, "Date started reading is null");
         }
         if (book.getDateFinishedReading() == null) {
-            logger.log(Level.FINE, "Date finished reading is null");
+            LOGGER.log(Level.FINE, "Date finished reading is null");
         }
         if (book.getGenre() == null) {
-            logger.log(Level.FINE, "Book genre is null");
+            LOGGER.log(Level.FINE, "Book genre is null");
         }
 
         if (binder == null) {
-            logger.log(Level.SEVERE, "Binder is null");
+            LOGGER.log(Level.SEVERE, "Binder is null");
         } else {
             binder.setBean(book);
         }
