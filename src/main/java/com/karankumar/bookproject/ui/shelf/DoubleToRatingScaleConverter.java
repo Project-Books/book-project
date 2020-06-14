@@ -29,7 +29,7 @@ class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     @Override
     public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
         if (ratingVal == null) {
-            return Result.error("Please provide a rating");
+            return Result.ok(RatingScale.NO_RATING);
         } else if (ratingVal == 0.0) {
             return Result.ok(RatingScale.ZERO);
         } else if (ratingVal == 0.5) {
