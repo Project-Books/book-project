@@ -126,6 +126,8 @@ public class BookForm extends FormLayout {
         binder.forField(shelf)
                 .bind("shelf.shelfName");
         binder.forField(dateStartedReading)
+                .withValidator(startDate -> !startDate.isAfter(LocalDate.now()),
+                        "The date you started reading book cannot be after today's date.")
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)
                 .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null &&
