@@ -17,6 +17,7 @@
 */
 package com.karankumar.bookproject.ui.shelf;
 
+import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Genre;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
@@ -35,7 +36,9 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import org.hibernate.event.spi.DeleteEvent;
 
 import java.time.LocalDate;
 import java.util.logging.Level;
@@ -175,6 +178,43 @@ public class BookForm extends FormLayout {
 
             if (binder.getBean() == null) {
                 LOGGER.log(Level.SEVERE, "Binder book bean is null");
+
+                if (bookTitle.getValue() != null) {
+                    Book book = new Book();
+                    book.setTitle(bookTitle.getValue());
+
+                    Author author = new Author();
+                    if (authorFirstName.getValue() != null) {
+                        author.setFirstName(authorFirstName.getValue());
+                    } else {
+                        LOGGER.log(Level.SEVERE, "Null first name");
+                    }
+                    if (authorLastName.getValue() != null) {
+                        author.setLastName(authorLastName.getValue());
+                    } else {
+                        LOGGER.log(Level.SEVERE, "Null last name");
+                    }
+                    book.setAuthor(author);
+
+                    if (shelf.getValue() != null) {
+                        PredefinedShelf shelf = new PredefinedShelf();
+                        shelf.setShelfName(shelf.shelfName);
+                        book.setShelf(shelf);
+                    } else {
+                        LOGGER.log(Level.SEVERE, "Null shelf");
+                    }
+
+                    try {
+                        binder.writeBean(book);
+                        fireEvent(new SaveEvent(this, binder.getBean()));
+                        LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
+                    } catch (ValidationException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    LOGGER.log(Level.SEVERE, "Book title is null");
+                }
+
             } else {
                 fireEvent(new SaveEvent(this, binder.getBean()));
             }

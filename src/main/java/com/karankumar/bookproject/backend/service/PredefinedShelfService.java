@@ -133,21 +133,10 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
         if (shelfRepository.count() == 0) {
             List<Book> books = bookRepository.findAll();
-            Random random = new Random(0);
             shelfRepository.saveAll(
-                    Stream.of("a", "b", "c")
+                    Stream.of(PredefinedShelf.ShelfName.values())
                             .map(b -> {
-                                int shelfNum = random.nextInt(3);
-                                System.out.println("Random shelf: " + shelfNum);
-                                PredefinedShelf shelf;
-                                if (shelfNum == 0) {
-                                    shelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
-                                } else if (shelfNum == 1) {
-                                    shelf = new PredefinedShelf(PredefinedShelf.ShelfName.READING);
-                                } else {
-                                    shelf = new PredefinedShelf(PredefinedShelf.ShelfName.READ);
-                                }
-
+                                PredefinedShelf shelf = new PredefinedShelf(b);
                                 shelf.setBooks(new HashSet<>(books));
                                 return shelf;
                             }).collect(Collectors.toList()));
