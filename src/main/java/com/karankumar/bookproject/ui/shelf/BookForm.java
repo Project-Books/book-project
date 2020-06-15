@@ -132,7 +132,7 @@ public class BookForm extends FormLayout {
         binder.forField(shelf)
                 .bind("shelf.shelfName");
         binder.forField(dateStartedReading)
-                .withValidator(startDate -> !startDate.isAfter(LocalDate.now()),
+                .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
                         AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)
@@ -140,7 +140,7 @@ public class BookForm extends FormLayout {
                                 endDate.isBefore(dateStartedReading.getValue())),
                         "The date you finished reading the book cannot be earlier than the date you started " +
                                 "reading the book")
-                .withValidator(endDate -> !endDate.isAfter(LocalDate.now()),
+                .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
                         AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         dateStartedReading.addValueChangeListener(
@@ -204,18 +204,17 @@ public class BookForm extends FormLayout {
                         LOGGER.log(Level.SEVERE, "Null shelf");
                     }
 
-                    try {
-                        binder.writeBean(book);
-                        fireEvent(new SaveEvent(this, binder.getBean()));
-                        LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
-                    } catch (ValidationException e) {
-                        e.printStackTrace();
-                    }
+                    // binder.writeBean(book);
+                    binder.setBean(book);
+                    LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
+                    fireEvent(new SaveEvent(this, binder.getBean()));
+                    LOGGER.log(Level.INFO, "Fired save event. Null? " + (binder.getBean() == null));
                 } else {
                     LOGGER.log(Level.SEVERE, "Book title is null");
                 }
 
             } else {
+                LOGGER.log(Level.INFO, "Binder.getBean() is not null");
                 fireEvent(new SaveEvent(this, binder.getBean()));
             }
         } else {
