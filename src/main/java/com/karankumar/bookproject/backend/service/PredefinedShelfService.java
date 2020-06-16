@@ -88,13 +88,9 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                             "Robert Galbraith",
                             "Dan Brown")
                             .map(name -> {
-                                        String[] fullName = name.split(" ");
-
-                                        Author author = new Author();
-                                        author.setFirstName(fullName[0]);
-                                        author.setLastName(fullName[1]);
-                                        return author;
-                                    })
+                                String[] fullName = name.split(" ");
+                                return new Author(fullName[0], fullName[1]);
+                            })
                             .collect(Collectors.toList()));
         }
 
@@ -105,11 +101,15 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
             bookRepository.saveAll(
                     Stream.of(
                             "Harry Potter and the Philosopher's stone",
+                            "Stardust",
                             "Harry Potter and the Chamber of Secrets",
                             "Harry Potter and the Prisoner of Azkaban",
+                            "Origin",
                             "Harry Potter and the Goblet of Fire",
                             "Harry Potter and the Order of Phoenix",
+                            "Matilda",
                             "Harry Potter and the Half-Blood Prince",
+                            "The Hobbit",
                             "Harry Potter and the Deathly Hallows")
                             .map(title -> {
                                 int min = 300;
@@ -120,7 +120,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                                 Book book = new Book();
                                 book.setTitle(title);
 
-                                book.setAuthor(authors.get(0));
+                                book.setAuthor(authors.get(random.nextInt(authors.size())));
 
                                 Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
 
@@ -143,16 +143,14 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         }
 
         List<Book> books = bookRepository.findAll();
-        System.out.println("Books size = " + books.size());
         List<PredefinedShelf> shelves = shelfRepository.findAll();
-        System.out.println("Shelf size = " + shelves.size());
 
         Random random = new Random(0);
 
         for (Book book : books) {
             PredefinedShelf shelf = shelves.get(random.nextInt(shelves.size()));
             book.setShelf(shelf);
-            switch(shelf.shelfName) {
+            switch (shelf.shelfName) {
                 case TO_READ:
                     book.setDateStartedReading(null);
                     book.setDateFinishedReading(null);
@@ -169,8 +167,6 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                     book.setDateFinishedReading(LocalDate.now());
                     break;
             }
-
-            System.out.println("Setting book " + book.getTitle() + " to shelf " + shelf.getShelfName());
         }
         bookRepository.saveAll(books);
     }
