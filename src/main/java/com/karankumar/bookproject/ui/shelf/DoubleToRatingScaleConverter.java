@@ -78,8 +78,14 @@ class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     }
 
     @Override
-    public Double convertToPresentation(RatingScale ratingScale, ValueContext valueContext) {
-        switch (ratingScale) {
+    public Double convertToPresentation(RatingScale rating, ValueContext valueContext) {
+        if (rating == null) {
+            return null;
+        }
+
+        switch (rating) {
+            case NO_RATING:
+                return null;
             case ZERO:
                 return 0.0;
             case ZERO_POINT_FIVE:
