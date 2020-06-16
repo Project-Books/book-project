@@ -19,9 +19,13 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,12 +37,14 @@ import java.util.logging.Logger;
 @Service
 public class BookService extends BaseService<Book, Long> {
 
+    private final AuthorRepository authorRepository;
     private BookRepository bookRepository;
 
     private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -49,7 +55,28 @@ public class BookService extends BaseService<Book, Long> {
     @Override
     public void save(Book book) {
         if (book != null) {
+            if (book.getAuthor() != null) {
+                authorRepository.save(book.getAuthor());
+                LOGGER.log(Level.INFO, "Saving author: " + book.getAuthor());
+            } else {
+                LOGGER.log(Level.SEVERE, "Author is null");
+            }
+
+            if (book.getShelf() != null) {
+                if (book.getShelf().getShelfName() == null) {
+                    LOGGER.log(Level.SEVERE, "Shelf name should not be null");
+                    book.getShelf().setShelfName(PredefinedShelf.ShelfName.READ);
+                } else {
+                    LOGGER.log(Level.INFO, "Shelf name is not null");
+                }
+            } else {
+                LOGGER.log(Level.SEVERE, "Shelf is null");
+            }
+
+            LOGGER.log(Level.INFO, "Book repository count before: " + bookRepository.count());
             bookRepository.save(book);
+            LOGGER.log(Level.INFO, "Book repository count after: " + bookRepository.count());
+
             LOGGER.log(Level.INFO, book.getTitle() + " saved");
         } else {
             LOGGER.log(Level.SEVERE, "Null book");

@@ -45,7 +45,7 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "shelf_id")
     private PredefinedShelf shelf;
 

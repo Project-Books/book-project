@@ -30,6 +30,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,17 +79,17 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
 
         bookGrid
-            .asSingleSelect()
-            .addValueChangeListener(
-                event -> {
-                  if (event == null) {
-                      LOGGER.log(Level.FINE, "Event is null");
-                  } else if (event.getValue() == null) {
-                      LOGGER.log(Level.FINE, "Event value is null");
-                  } else {
-                      editBook(event.getValue());
-                  }
-                });
+                .asSingleSelect()
+                .addValueChangeListener(
+                        event -> {
+                            if (event == null) {
+                                LOGGER.log(Level.FINE, "Event is null");
+                            } else if (event.getValue() == null) {
+                                LOGGER.log(Level.FINE, "Event value is null");
+                            } else {
+                                editBook(event.getValue());
+                            }
+                        });
     }
 
     private void configureChosenShelf() {
@@ -116,13 +117,15 @@ public class BooksInShelfView extends VerticalLayout {
             return;
         }
 
-        updateShelves();
+        shelves = shelfService.findAll(); // update shelves
+
+        // TODO: remove
+//        whichShelf.setItems(shelfService.findAll().stream().map(PredefinedShelf::getShelfName));
 
         // Find the shelf that matches the chosen shelf's name
         PredefinedShelf selectedShelf = null;
         for (PredefinedShelf shelf : shelves) {
-            PredefinedShelf predefinedShelf = shelf;
-            if (predefinedShelf.getShelfName().equals(chosenShelf)) {
+            if (shelf.getShelfName().equals(chosenShelf)) {
                 selectedShelf = shelf;
                 break;
             }
@@ -141,10 +144,6 @@ public class BooksInShelfView extends VerticalLayout {
         } else {
             LOGGER.log(Level.SEVERE, "Could not find " + chosenShelf + " shelf");
         }
-    }
-
-    private void updateShelves() {
-        shelves = shelfService.findAll();
     }
 
     private void configureFilter() {
