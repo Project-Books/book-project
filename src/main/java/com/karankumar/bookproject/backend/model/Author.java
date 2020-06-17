@@ -36,7 +36,7 @@ public class Author extends BaseEntity {
     @NotEmpty
     private String lastName;
 
-    public Author() {
+    protected Author() {
     }
 
     public Author(String firstName, String lastName) {

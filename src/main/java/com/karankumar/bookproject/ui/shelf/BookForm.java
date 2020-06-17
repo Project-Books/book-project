@@ -178,31 +178,29 @@ public class BookForm extends FormLayout {
                 LOGGER.log(Level.SEVERE, "Binder book bean is null");
 
                 if (bookTitle.getValue() != null) {
-                    Book book = new Book();
-                    book.setTitle(bookTitle.getValue());
+                    String firstName = "";
+                    String lastName = "";
 
-                    Author author = new Author();
                     if (authorFirstName.getValue() != null) {
-                        author.setFirstName(authorFirstName.getValue());
+                        firstName = authorFirstName.getValue();
                     } else {
                         LOGGER.log(Level.SEVERE, "Null first name");
                     }
                     if (authorLastName.getValue() != null) {
-                        author.setLastName(authorLastName.getValue());
+                        lastName = authorLastName.getValue();
                     } else {
                         LOGGER.log(Level.SEVERE, "Null last name");
                     }
-                    book.setAuthor(author);
+                    Author author = new Author(firstName, lastName);
+                    Book book = new Book(bookTitle.getValue(), author);
 
                     if (shelf.getValue() != null) {
-                        PredefinedShelf shelf = new PredefinedShelf();
-                        shelf.setShelfName(shelf.shelfName);
+                        PredefinedShelf shelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
                         book.setShelf(shelf);
                     } else {
                         LOGGER.log(Level.SEVERE, "Null shelf");
                     }
 
-                    // binder.writeBean(book);
                     binder.setBean(book);
                     LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
                     fireEvent(new SaveEvent(this, binder.getBean()));

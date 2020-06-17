@@ -117,13 +117,9 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                                 int range = (max - min) + 1;
                                 int pages = (int) (Math.random() * range);
 
-                                Book book = new Book();
-                                book.setTitle(title);
-
-                                book.setAuthor(authors.get(random.nextInt(authors.size())));
-
+                                Author author = authors.get(random.nextInt(authors.size()));
+                                Book book = new Book(title, author);
                                 Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
-
                                 book.setGenre(genre);
                                 book.setNumberOfPages(pages);
 

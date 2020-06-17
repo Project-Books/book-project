@@ -1,5 +1,6 @@
 package com.karankumar.bookproject.backend.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -28,7 +29,7 @@ public class PredefinedShelf extends BaseEntity {
     @NotNull
     public ShelfName shelfName;
 
-    public PredefinedShelf() {
+    protected PredefinedShelf() {
     }
 
     public PredefinedShelf(ShelfName shelfName) {
