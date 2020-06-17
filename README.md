@@ -33,7 +33,7 @@ To access the h2 database:
 ![H2](/media/h2.png)
 
 1. Go to `http://localhost:8080/h2-console`
-2. Ensure you have the settings as shown in the screenshot above
+2. Ensure you have the settings as shown in the screenshot above. The password field is intentionally left blank.
 3. Click on connect
 
 # Contributing
