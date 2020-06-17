@@ -24,9 +24,17 @@ reflect this.*
 Prerequisites: JDK 11 (or higher), Node.js and npm
 
 1. Clone the repository
-2. Import the project as a maven project into your favourite IDE
+2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Run `BookProjectApplication.java`
 4. Go to `localhost:8080`
+
+To access the h2 database:
+
+![H2](/media/h2.png)
+
+1. Go to `http://localhost:8080/h2-console`
+2. Ensure you have the settings as shown in the screenshot above
+3. Click on connect
 
 # Contributing
 
