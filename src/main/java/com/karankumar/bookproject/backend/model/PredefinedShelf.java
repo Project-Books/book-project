@@ -1,6 +1,5 @@
 package com.karankumar.bookproject.backend.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -29,6 +28,9 @@ public class PredefinedShelf extends BaseEntity {
     @NotNull
     public ShelfName shelfName;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
+    private Set<Book> books;
+
     protected PredefinedShelf() {
     }
 
@@ -44,14 +46,19 @@ public class PredefinedShelf extends BaseEntity {
         this.shelfName = shelfName;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
-    private Set<Book> books;
-
     public Set<Book> getBooks() {
         return books;
     }
 
     public void setBooks(Set<Book> books) {
         this.books = books;
+    }
+
+    @Override
+    public String toString() {
+        return "PredefinedShelf{" +
+                "shelfName=" + shelfName +
+                ", books=" + books +
+                '}';
     }
 }

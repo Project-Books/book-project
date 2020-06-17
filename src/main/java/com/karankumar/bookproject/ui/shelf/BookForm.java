@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Genre;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
@@ -39,6 +40,7 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +60,7 @@ public class BookForm extends FormLayout {
     private final NumberField rating = new NumberField();
 
     private static final String ENTER_DATE = "Enter a date";
+    private final PredefinedShelfService shelfService;
 
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
     private final Button addBook = new Button();
@@ -70,7 +73,9 @@ public class BookForm extends FormLayout {
 
     private static final Logger LOGGER = Logger.getLogger(BookForm.class.getName());
 
-    public BookForm() {
+    public BookForm(PredefinedShelfService shelfService) {
+        this.shelfService = shelfService;
+
         configureBinder();
         configureTitle();
         configureAuthor();
@@ -195,8 +200,17 @@ public class BookForm extends FormLayout {
                     Book book = new Book(bookTitle.getValue(), author);
 
                     if (shelf.getValue() != null) {
-                        PredefinedShelf shelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
-                        book.setShelf(shelf);
+//                        PredefinedShelf shelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
+//                        book.setShelf(shelf);
+
+                        List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
+                        if (shelves.size() == 1) {
+                            book.setShelf(shelves.get(0));
+                            LOGGER.log(Level.INFO, "Shelf: " + shelves.get(0));
+                        } else {
+                            LOGGER.log(Level.INFO, "Shelves count = " + shelves.size());
+                        }
+
                     } else {
                         LOGGER.log(Level.SEVERE, "Null shelf");
                     }

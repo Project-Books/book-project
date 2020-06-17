@@ -71,6 +71,14 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         return shelfRepository.findAll();
     }
 
+    public List<PredefinedShelf> findAll(PredefinedShelf.ShelfName shelfName) {
+        if (shelfName == null) {
+            return shelfRepository.findAll();
+        } else {
+            return shelfRepository.search(shelfName);
+        }
+    }
+
     @Override
     public void delete(PredefinedShelf shelf) {
         shelfRepository.delete(shelf);

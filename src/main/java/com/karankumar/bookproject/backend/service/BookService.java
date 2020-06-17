@@ -22,10 +22,8 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

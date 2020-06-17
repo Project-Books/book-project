@@ -30,7 +30,6 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,7 +71,7 @@ public class BooksInShelfView extends VerticalLayout {
         configureBookGrid();
         add(horizontalLayout, bookGrid);
 
-        bookForm = new BookForm();
+        bookForm = new BookForm(shelfService);
         add(bookForm);
 
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
