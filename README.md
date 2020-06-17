@@ -32,11 +32,11 @@ To access the h2 database:
 
 1. Go to `http://localhost:8080/h2-console`
 2. Ensure you log in with the settings below. The password field is intentionally left blank.
-    - Saved settings: Generic H2 (Embedded)
-    - Setting Name: Generic H2 (Embedded)
-    - Driver class: org.h2.Driver
-    - JDBC URL: jdbc:h2:mem:testdb
-    - User Name: sa
+    - Saved settings: `Generic H2 (Embedded)`
+    - Setting Name: `Generic H2 (Embedded)`
+    - Driver class: `org.h2.Driver`
+    - JDBC URL: `jdbc:h2:mem:testdb`
+    - User Name: `sa`
     - Password: 
 3. Click on connect
 
