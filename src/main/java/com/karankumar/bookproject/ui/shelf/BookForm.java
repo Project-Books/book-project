@@ -68,7 +68,6 @@ public class BookForm extends FormLayout {
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
     private final Button saveButton = new Button();
     private final Button reset = new Button();
-    private Button delete = new Button();
 
     private final FormItem started;
     private final FormItem finished;
@@ -168,7 +167,7 @@ public class BookForm extends FormLayout {
         reset.setText("Reset");
         reset.addClickListener(event -> clearForm());
 
-        delete = new Button();
+        Button delete = new Button();
         delete.setText("Delete");
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         delete.addClickListener(click -> fireEvent(new DeleteEvent(this, binder.getBean())));

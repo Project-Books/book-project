@@ -100,8 +100,31 @@ public class BooksInShelfView extends VerticalLayout {
             } else {
                 chosenShelf = event.getValue();
                 updateList();
+                showOrHideGridColumns(chosenShelf);
             }
         });
+    }
+
+    private void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) {
+        switch (shelfName) {
+            case TO_READ:
+                toggleColumn("rating", false);
+                toggleColumn("dateStartedReading", false);
+                toggleColumn("dateFinishedReading", false);
+                break;
+            case READING:
+                toggleColumn("rating", false);
+                toggleColumn("dateStartedReading", true);
+                toggleColumn("dateFinishedReading", false);
+                break;
+            case READ:
+                toggleColumn("rating", true);
+                break;
+        }
+    }
+
+    private void toggleColumn(String columnKey, boolean isOn) {
+        bookGrid.getColumnByKey(columnKey).setVisible(isOn);
     }
 
     private void configureBookGrid() {
