@@ -229,10 +229,23 @@ public class BookForm extends FormLayout {
 
             } else {
                 LOGGER.log(Level.INFO, "Binder.getBean() is not null");
+                moveBookToDifferentShelf();
                 fireEvent(new SaveEvent(this, binder.getBean()));
             }
         } else {
             LOGGER.log(Level.SEVERE, "Invalid binder");
+        }
+    }
+
+    private void moveBookToDifferentShelf() {
+        List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
+        if (shelves.size() == 1) {
+            Book book = binder.getBean();
+            book.setShelf(shelves.get(0));
+            LOGGER.log(Level.INFO, "2) Shelf: " + shelves.get(0));
+            binder.setBean(book);
+        } else {
+            LOGGER.log(Level.INFO, "2) Shelves count = " + shelves.size());
         }
     }
 
@@ -309,7 +322,7 @@ public class BookForm extends FormLayout {
                 showStartDate();
                 hideFinishDate();
                 break;
-            default:
+            case READ:
                 showStartDate();
                 showFinishDate();
                 break;
