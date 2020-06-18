@@ -204,9 +204,6 @@ public class BookForm extends FormLayout {
                     Book book = new Book(bookTitle.getValue(), author);
 
                     if (shelf.getValue() != null) {
-//                        PredefinedShelf shelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
-//                        book.setShelf(shelf);
-
                         List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
                         if (shelves.size() == 1) {
                             book.setShelf(shelves.get(0));
