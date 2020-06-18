@@ -50,7 +50,6 @@ public class BooksInShelfView extends VerticalLayout {
     private final Grid<Book> bookGrid = new Grid<>(Book.class);
     private final TextField filterByTitle;
     private final ComboBox<PredefinedShelf.ShelfName> whichShelf;
-    private List<PredefinedShelf> shelves;
     private PredefinedShelf.ShelfName chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
 
@@ -113,35 +112,26 @@ public class BooksInShelfView extends VerticalLayout {
 
     private void updateList() {
         if (chosenShelf == null) {
+            LOGGER.log(Level.FINEST, "Chosen shelf is null");
             return;
         }
 
-        shelves = shelfService.findAll(); // update shelves
-
-        // TODO: remove
-//        whichShelf.setItems(shelfService.findAll().stream().map(PredefinedShelf::getShelfName));
-
         // Find the shelf that matches the chosen shelf's name
-        PredefinedShelf selectedShelf = null;
-        for (PredefinedShelf shelf : shelves) {
-            if (shelf.getShelfName().equals(chosenShelf)) {
-                selectedShelf = shelf;
-                break;
-            }
-        }
+        List<PredefinedShelf> matchingShelves = shelfService.findAll(chosenShelf);
 
-        // only set the grid if the book shelf name was matched
-        if (selectedShelf != null) {
+        if (!matchingShelves.isEmpty()) {
             if (bookTitle != null && !bookTitle.isEmpty()) {
                 LOGGER.log(Level.INFO, "Searching for the filter " + bookTitle);
                 bookGrid.setItems(bookService.findAll(bookTitle));
-            } else {
-                LOGGER.log(Level.INFO, "Updating entire list");
+            } else if (matchingShelves.size() == 1) {
+                LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
+                PredefinedShelf selectedShelf = matchingShelves.get(0);
                 bookGrid.setItems(selectedShelf.getBooks());
-                LOGGER.log(Level.INFO, "Updated list size = " + selectedShelf.getBooks().size());
+            } else {
+                LOGGER.log(Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
             }
         } else {
-            LOGGER.log(Level.SEVERE, "Could not find " + chosenShelf + " shelf");
+            LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
         }
     }
 

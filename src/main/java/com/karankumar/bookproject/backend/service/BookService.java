@@ -19,7 +19,6 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -63,9 +62,11 @@ public class BookService extends BaseService<Book, Long> {
             if (book.getShelf() != null) {
                 if (book.getShelf().getShelfName() == null) {
                     LOGGER.log(Level.SEVERE, "Shelf name should not be null");
-                    book.getShelf().setShelfName(PredefinedShelf.ShelfName.READ);
                 } else {
-                    LOGGER.log(Level.INFO, "Shelf name is not null");
+                    LOGGER.log(Level.INFO, "Shelf name (" + book.getShelf().getShelfName() + ") is not null");
+
+
+
                 }
             } else {
                 LOGGER.log(Level.SEVERE, "Shelf is null");
