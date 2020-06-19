@@ -172,7 +172,7 @@ public class BookForm extends VerticalLayout {
                 .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
                         AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
-        Binder.Binding<Book, LocalDate> bindingEndDate = binder.forField(dateFinishedReading)
+        binder.forField(dateFinishedReading)
                 .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null &&
                                 endDate.isBefore(dateStartedReading.getValue())),
                         "The date you finished reading the book cannot be earlier than the date you started " +
@@ -180,8 +180,6 @@ public class BookForm extends VerticalLayout {
                 .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
                         AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
                 .bind(Book::getDateStartedReading, Book::setDateStartedReading);
-        dateStartedReading.addValueChangeListener(
-                event -> bindingEndDate.validate());
         binder.forField(pageCount)
                 .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(bookGenre)
