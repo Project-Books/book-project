@@ -21,6 +21,8 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
@@ -39,8 +41,8 @@ import java.util.logging.Logger;
  * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}
  */
 
-@Route("")
-@PageTitle("Home | Book Project")
+@Route(value = "", layout = MainView.class)
+@PageTitle("My Books | Book Project")
 public class BooksInShelfView extends VerticalLayout {
 
 //    private final BookForm bookForm;
