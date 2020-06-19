@@ -436,6 +436,11 @@ public class BookForm extends VerticalLayout {
         }
     }
 
+    public void addBook() {
+        clearForm();
+        openForm();
+    }
+
     // Events
     public static abstract class BookFormEvent extends ComponentEvent<BookForm> {
         private Book book;
