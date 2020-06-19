@@ -16,7 +16,8 @@ public class MainView extends AppLayout {
     public MainView() {
         Tabs tabs = new Tabs();
         Tab myBooks = createTab(VaadinIcon.BOOK, BooksInShelfView.class, "My books");
-        tabs.add(myBooks);
+        Tab readingChallenge = createTab(VaadinIcon.HOURGLASS, ReadingChallengeView.class, "Reading challenge");
+        tabs.add(myBooks, readingChallenge);
 
         FlexLayout centreTabs = new FlexLayout();
         centreTabs.setSizeFull();
