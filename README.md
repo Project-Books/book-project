@@ -9,9 +9,10 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - View books in your different shelves and make changes
 
 *Coming soon:*
+- Reading challenge: set yourself a goal of how many books you to read this year and track your progress towards accomplishing it
 - Add your own shelves
 - User registration and accounts
-- And much more! (see the wiki)
+- And much more!
 
 <p align="center">
     <img src="/media/book_form.png" alt="New book form"/>
