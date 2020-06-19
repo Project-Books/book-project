@@ -44,6 +44,7 @@ import com.vaadin.flow.shared.Registration;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -157,10 +158,15 @@ public class BookForm extends VerticalLayout {
                 .asRequired("Please provide a book title")
                 .bind(Book::getTitle, Book::setTitle);
         binder.forField(authorFirstName)
+                .withValidator(firstName -> (firstName != null && !firstName.isEmpty()),
+                        "Please enter the author's first name")
                 .bind("author.firstName");
         binder.forField(authorLastName)
+                .withValidator(lastName -> (lastName != null && !lastName.isEmpty()),
+                        "Please enter the author's last name")
                 .bind("author.lastName");
         binder.forField(shelf)
+                .withValidator(Objects::nonNull, "Please select a shelf")
                 .bind("shelf.shelfName");
         binder.forField(dateStartedReading)
                 .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
