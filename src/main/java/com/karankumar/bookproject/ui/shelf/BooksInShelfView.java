@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -42,7 +43,8 @@ import java.util.logging.Logger;
 @PageTitle("Home | Book Project")
 public class BooksInShelfView extends VerticalLayout {
 
-    private final BookForm bookForm;
+//    private final BookForm bookForm;
+    private final BookForm2 bookForm;
 
     private final BookService bookService;
     private final PredefinedShelfService shelfService;
@@ -65,12 +67,19 @@ public class BooksInShelfView extends VerticalLayout {
         filterByTitle = new TextField();
         configureFilter();
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle);
+        //        bookForm = new BookForm(shelfService);
+        bookForm = new BookForm2(shelfService);
+
+        Button addBook = new Button("Add book");
+        addBook.addClickListener(e -> {
+            bookForm.open();
+        });
+        HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle, addBook);
+        horizontalLayout.setAlignItems(Alignment.END);
 
         configureBookGrid();
         add(horizontalLayout, bookGrid);
 
-        bookForm = new BookForm(shelfService);
         add(bookForm);
 
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
@@ -173,6 +182,7 @@ public class BooksInShelfView extends VerticalLayout {
     private void editBook(Book book) {
         if (book != null && bookForm != null) {
             bookForm.setBook(book);
+            bookForm.open();
         }
     }
 
@@ -191,5 +201,10 @@ public class BooksInShelfView extends VerticalLayout {
             bookService.save(event.getBook());
             updateList();
         }
+    }
+
+    private void closeForm() {
+        bookForm.setBook(null);
+        bookForm.close();
     }
 }
