@@ -196,7 +196,10 @@ public class BookForm extends VerticalLayout {
         Button delete = new Button();
         delete.setText("Delete");
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        delete.addClickListener(click -> fireEvent(new DeleteEvent(this, binder.getBean())));
+        delete.addClickListener(click -> {
+            fireEvent(new DeleteEvent(this, binder.getBean()));
+            closeForm();
+        });
         delete.addClickListener(v -> saveButton.setText(LABEL_ADD_BOOK));
 
         binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
@@ -372,7 +375,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void showOrHideRating(PredefinedShelf.ShelfName name) {
-        switch(name) {
+        switch (name) {
             case TO_READ:
             case READING:
                 ratingFormItem.setVisible(false);
