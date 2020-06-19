@@ -30,6 +30,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -49,6 +50,10 @@ import java.util.logging.Logger;
 /**
  * A Vaadin form for adding a new {@code Book}
  */
+@CssImport(
+        value = "./styles/vaadin-dialog-overlay-styles.css",
+        themeFor = "vaadin-dialog-overlay"
+)
 public class BookForm extends VerticalLayout {
     private final TextField bookTitle = new TextField();
     private final TextField authorFirstName = new TextField();
@@ -83,6 +88,7 @@ public class BookForm extends VerticalLayout {
 
         dialog = new Dialog();
         dialog.setCloseOnOutsideClick(true);
+        dialog.setMaxWidth("10px");
 
         FormLayout formLayout = new FormLayout();
         dialog.add(formLayout);
@@ -136,10 +142,6 @@ public class BookForm extends VerticalLayout {
 
     public void open() {
         dialog.open();
-    }
-
-    public void close() {
-        dialog.close();
     }
 
     private void configureBinder() {

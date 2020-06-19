@@ -199,9 +199,4 @@ public class BooksInShelfView extends VerticalLayout {
             updateList();
         }
     }
-
-    private void closeForm() {
-        bookForm.setBook(null);
-        bookForm.close();
-    }
 }
