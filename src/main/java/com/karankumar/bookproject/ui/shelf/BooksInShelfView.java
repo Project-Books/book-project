@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 public class BooksInShelfView extends VerticalLayout {
 
 //    private final BookForm bookForm;
-    private final BookForm2 bookForm;
+    private final BookForm bookForm;
 
     private final BookService bookService;
     private final PredefinedShelfService shelfService;
@@ -67,13 +67,10 @@ public class BooksInShelfView extends VerticalLayout {
         filterByTitle = new TextField();
         configureFilter();
 
-        //        bookForm = new BookForm(shelfService);
-        bookForm = new BookForm2(shelfService);
+        bookForm = new BookForm(shelfService);
 
         Button addBook = new Button("Add book");
-        addBook.addClickListener(e -> {
-            bookForm.open();
-        });
+        addBook.addClickListener(e -> bookForm.open());
         HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle, addBook);
         horizontalLayout.setAlignItems(Alignment.END);
 

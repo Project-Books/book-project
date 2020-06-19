@@ -30,8 +30,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -47,7 +49,7 @@ import java.util.logging.Logger;
 /**
  * A Vaadin form for adding a new {@code Book}
  */
-public class BookForm extends FormLayout {
+public class BookForm extends VerticalLayout {
     private final TextField bookTitle = new TextField();
     private final TextField authorFirstName = new TextField();
     private final TextField authorLastName = new TextField();
@@ -69,14 +71,21 @@ public class BookForm extends FormLayout {
     private final Button saveButton = new Button();
     private final Button reset = new Button();
 
-    private final FormItem started;
-    private final FormItem finished;
-    private final FormItem ratingFormItem;
+    private final FormLayout.FormItem started;
+    private final FormLayout.FormItem finished;
+    private final FormLayout.FormItem ratingFormItem;
 
     private static final Logger LOGGER = Logger.getLogger(BookForm.class.getName());
+    private final Dialog dialog;
 
     public BookForm(PredefinedShelfService shelfService) {
         this.shelfService = shelfService;
+
+        dialog = new Dialog();
+        dialog.setCloseOnOutsideClick(true);
+
+        FormLayout formLayout = new FormLayout();
+        dialog.add(formLayout);
 
         configureBinder();
         configureTitle();
@@ -103,17 +112,17 @@ public class BookForm extends FormLayout {
         };
         setComponentMinWidth(components);
 
-        setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
-        addFormItem(bookTitle, "Book title *");
-        addFormItem(authorFirstName, "Author's first name *");
-        addFormItem(authorLastName, "Author's last name *");
-        addFormItem(shelf, "Book shelf *");
-        started = addFormItem(dateStartedReading, "Date started");
-        finished = addFormItem(dateFinishedReading, "Date finished");
-        addFormItem(bookGenre, "Book genre");
-        addFormItem(pageCount, "Page count");
-        ratingFormItem = addFormItem(rating, "Book rating");
-        add(buttons);
+        formLayout.setResponsiveSteps();
+        formLayout.addFormItem(bookTitle, "Book title *");
+        formLayout.addFormItem(shelf, "Book shelf *");
+        formLayout.addFormItem(authorFirstName, "Author's first name *");
+        formLayout.addFormItem(authorLastName, "Author's last name *");
+        started = formLayout.addFormItem(dateStartedReading, "Date started");
+        finished = formLayout.addFormItem(dateFinishedReading, "Date finished");
+        formLayout.addFormItem(bookGenre, "Book genre");
+        formLayout.addFormItem(pageCount, "Page count");
+        ratingFormItem = formLayout.addFormItem(rating, "Book rating");
+        formLayout.add(buttons, 3);
 
         shelf.addValueChangeListener(e -> {
             if (e.getValue() != null) {
@@ -121,6 +130,16 @@ public class BookForm extends FormLayout {
                 showOrHideRating(shelf.getValue());
             }
         });
+
+        add(dialog);
+    }
+
+    public void open() {
+        dialog.open();
+    }
+
+    public void close() {
+        dialog.close();
     }
 
     private void configureBinder() {
