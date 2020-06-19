@@ -70,7 +70,7 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm = new BookForm(shelfService);
 
         Button addBook = new Button("Add book");
-        addBook.addClickListener(e -> bookForm.open());
+        addBook.addClickListener(e -> bookForm.openForm());
         HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle, addBook);
         horizontalLayout.setAlignItems(Alignment.END);
 
@@ -179,7 +179,7 @@ public class BooksInShelfView extends VerticalLayout {
     private void editBook(Book book) {
         if (book != null && bookForm != null) {
             bookForm.setBook(book);
-            bookForm.open();
+            bookForm.openForm();
         }
     }
 

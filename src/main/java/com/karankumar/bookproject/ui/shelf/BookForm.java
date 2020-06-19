@@ -140,9 +140,14 @@ public class BookForm extends VerticalLayout {
         add(dialog);
     }
 
-    public void open() {
+    public void openForm() {
         dialog.open();
     }
+
+    private void closeForm() {
+        dialog.close();
+    }
+
 
     private void configureBinder() {
         final String AFTER_TODAY_PREFIX = "The date you";
@@ -240,6 +245,7 @@ public class BookForm extends VerticalLayout {
                     LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
                     fireEvent(new SaveEvent(this, binder.getBean()));
                     LOGGER.log(Level.INFO, "Fired save event. Null? " + (binder.getBean() == null));
+                    closeForm();
                 } else {
                     LOGGER.log(Level.SEVERE, "Book title is null");
                 }
@@ -248,6 +254,7 @@ public class BookForm extends VerticalLayout {
                 LOGGER.log(Level.INFO, "Binder.getBean() is not null");
                 moveBookToDifferentShelf();
                 fireEvent(new SaveEvent(this, binder.getBean()));
+                closeForm();
             }
         } else {
             LOGGER.log(Level.SEVERE, "Invalid binder");
