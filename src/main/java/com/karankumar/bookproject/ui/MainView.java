@@ -4,9 +4,11 @@ import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -19,13 +21,20 @@ public class MainView extends AppLayout {
         Tab readingChallenge = createTab(VaadinIcon.HOURGLASS, ReadingChallengeView.class, "Reading challenge");
         tabs.add(myBooks, readingChallenge);
 
+        Anchor logout = new Anchor("/logout", "Log out");
+
+        HorizontalLayout h = new HorizontalLayout();
+
         FlexLayout centreTabs = new FlexLayout();
         centreTabs.setSizeFull();
         centreTabs.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         centreTabs.setAlignItems(FlexComponent.Alignment.CENTER);
         centreTabs.add(tabs);
 
-        addToNavbar(true, centreTabs);
+        h.add(logout);
+        h.expand(logout);
+
+        addToNavbar(true, centreTabs, h);
     }
 
     private Tab createTab(VaadinIcon icon, Class<? extends Component> viewClass, String title) {
