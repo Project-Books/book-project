@@ -71,7 +71,7 @@ class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
         } else if (ratingVal == 9.5) {
             return Result.ok(RatingScale.NINE_POINT_FIVE);
         } else if (ratingVal == 10.0) {
-            return Result.ok(RatingScale.ZERO);
+            return Result.ok(RatingScale.TEN);
         } else {
             return Result.error("Invalid rating");
         }
