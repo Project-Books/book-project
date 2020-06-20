@@ -31,6 +31,9 @@ Prerequisites: JDK 11 (or higher), Node.js and npm
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Run `BookProjectApplication.java`
 4. Go to `localhost:8080`
+5. Log in with the details below:
+    - Username: `user`
+    - Password: `password`
 
 To access the h2 database:
 
