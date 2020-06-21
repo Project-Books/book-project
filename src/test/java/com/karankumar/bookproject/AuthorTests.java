@@ -2,7 +2,6 @@ package com.karankumar.bookproject;
 
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Genre;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -30,17 +29,10 @@ class AuthorTests {
         Author author = new Author("Steven", "Pinker");
 
         testBook1 = new Book("How the mind works", author);
-        testBook1.setGenre(Genre.SCIENCE);
-        testBook1.setNumberOfPages(565);
-
         testBook2 = new Book("The better angels of our nature", author);
-        testBook2.setGenre(Genre.SCIENCE);
-        testBook2.setNumberOfPages(605);
 
-        Assumptions.assumeTrue(shelfService != null);
+        Assumptions.assumeTrue(shelfService != null && bookService != null);
         AuthorTests.shelfService = shelfService;
-
-        Assumptions.assumeTrue(bookService != null);
         AuthorTests.bookService = bookService;
 
         List<PredefinedShelf> shelves = AuthorTests.shelfService.findAll();
@@ -64,40 +56,10 @@ class AuthorTests {
     public void updateAuthorAffectsOneRow() {
         Assumptions.assumeTrue(shelfService != null);
 
-        // TODO: remove
-        List<PredefinedShelf> shelves = shelfService.findAll();
-        PredefinedShelf toRead =
-                shelves.stream()
-                        .takeWhile(s -> s.getShelfName().equals(PredefinedShelf.ShelfName.TO_READ)).
-                        collect(Collectors.toList())
-                        .get(0);
-
-        for (Book b : toRead.getBooks()) {
-            System.out.println("Book title: " + b.getTitle() + ", Author: " + b.getAuthor());
-        }
-        System.out.println();
-        ///
-
         Author newAuthor = new Author("Matthew", "Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
 
-        // TODO: remove
-        List<PredefinedShelf> shelves2 = shelfService.findAll();
-        PredefinedShelf toRead2 =
-                shelves2.stream()
-                        .takeWhile(s -> s.getShelfName().equals(PredefinedShelf.ShelfName.TO_READ)).
-                        collect(Collectors.toList())
-                        .get(0);
-
-        for (Book b : toRead2.getBooks()) {
-            System.out.println("Book title: " + b.getTitle() + ", Author: " + b.getAuthor());
-        }
-        ///
-
-
-        System.out.println("Auth1: " + testBook1.getAuthor());
-        System.out.println("Auth2: " + testBook2.getAuthor());
         Assertions.assertNotEquals(testBook1.getAuthor(), testBook2.getAuthor());
     }
 }
