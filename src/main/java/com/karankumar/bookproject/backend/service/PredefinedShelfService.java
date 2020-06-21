@@ -174,6 +174,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                     book.setRating(RatingScale.NO_RATING);
                     break;
                 case READING:
+                case DNF:
                     book.setDateStartedReading(LocalDate.now().minusDays(2));
                     book.setDateFinishedReading(null);
                     book.setRating(RatingScale.NO_RATING);

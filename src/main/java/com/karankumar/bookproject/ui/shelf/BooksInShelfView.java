@@ -125,6 +125,7 @@ public class BooksInShelfView extends VerticalLayout {
                 toggleColumn("dateFinishedReading", false);
                 break;
             case READING:
+            case DNF:
                 toggleColumn("rating", false);
                 toggleColumn("dateStartedReading", true);
                 toggleColumn("dateFinishedReading", false);
@@ -132,6 +133,7 @@ public class BooksInShelfView extends VerticalLayout {
             case READ:
                 toggleColumn("rating", true);
                 break;
+
         }
     }
 
