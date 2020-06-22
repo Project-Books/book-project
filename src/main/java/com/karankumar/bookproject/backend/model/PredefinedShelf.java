@@ -9,8 +9,8 @@ public class PredefinedShelf extends BaseEntity {
     public enum ShelfName {
         TO_READ("To read"),
         READING("Reading"),
-        DNF("Did not finish"),
-        READ("Read");
+        READ("Read"),
+        DID_NOT_FINISH("Did not finish");
 
         private final String name;
 

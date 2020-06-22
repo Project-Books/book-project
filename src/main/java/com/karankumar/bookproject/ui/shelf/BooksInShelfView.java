@@ -125,7 +125,7 @@ public class BooksInShelfView extends VerticalLayout {
                 toggleColumn("dateFinishedReading", false);
                 break;
             case READING:
-            case DNF:
+            case DID_NOT_FINISH:
                 toggleColumn("rating", false);
                 toggleColumn("dateStartedReading", true);
                 toggleColumn("dateFinishedReading", false);

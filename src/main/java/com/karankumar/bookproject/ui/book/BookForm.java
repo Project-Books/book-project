@@ -350,7 +350,7 @@ public class BookForm extends VerticalLayout {
                 hideFinishDate();
                 break;
             case READING:
-            case DNF:
+            case DID_NOT_FINISH:
                 showStartDate();
                 hideFinishDate();
                 break;
@@ -383,7 +383,7 @@ public class BookForm extends VerticalLayout {
         switch (name) {
             case TO_READ:
             case READING:
-            case DNF:
+            case DID_NOT_FINISH:
                 ratingFormItem.setVisible(false);
                 break;
             case READ:

@@ -61,18 +61,6 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
     @Override
     public void save(PredefinedShelf shelf) {
         if (shelf != null) {
-
-//            List<PredefinedShelf> allShelves = findAll();
-//            for (PredefinedShelf s : allShelves) {
-//                if (s.getShelfName().equals(shelf.getShelfName())) {
-//                    // update
-//                   delete(s);
-//                   save(shelf);
-//                   LOGGER.log(Level.INFO, "Updating...");
-//                   return;
-//                }
-//            }
-
             LOGGER.log(Level.INFO, "Saving shelf: " + shelf);
             shelfRepository.save(shelf);
         } else {
@@ -174,7 +162,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                     book.setRating(RatingScale.NO_RATING);
                     break;
                 case READING:
-                case DNF:
+                case DID_NOT_FINISH:
                     book.setDateStartedReading(LocalDate.now().minusDays(2));
                     book.setDateFinishedReading(null);
                     book.setRating(RatingScale.NO_RATING);
