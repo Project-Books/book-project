@@ -1,0 +1,8 @@
+linter:
+  pmd_java:
+    dir: src
+    rulesets:
+      - category/java/errorprone.xml
+      - pmd/codestyle.xml
+    encoding: Shift_JIS
+    min_priority: 3
