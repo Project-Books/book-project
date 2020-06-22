@@ -3,9 +3,7 @@
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
 *Features:*
-- Add books that you have read to a 'read' shelf
-- Add books that you are currently reading to a 'currently reading' shelf
-- Add books that you would like to read to a 'want to read' shelf
+- Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf
 - View books in your different shelves and make changes
 
 *Coming soon:*
