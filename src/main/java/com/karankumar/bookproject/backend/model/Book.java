@@ -41,7 +41,7 @@ public class Book extends BaseEntity {
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
