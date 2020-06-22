@@ -14,11 +14,13 @@ By contributing to this project, you are expected to adhere to the [Book Project
 
 ## Questions, suggestions & feedback
 
-All questions, suggestions and feedback are both welcome and encouraged. Questions and feedback should be sent to bookproject@madebykarankumar.com. For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
+All questions, suggestions and feedback are both welcome and encouraged. 
+
+Questions and feedback should be discussed over [Gitter](https://gitter.im/book-project-community). This allows other to benefit from seeing the questions, too.
+
+For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
 
 If in doubt, feel free to send us an email over at bookproject@madebykarankumar.com so that we can assist you further.
-
-In the future, we hope to move questions and feedback to an open channel (e.g. a Gitter community).
 
 ## Before making changes
 
@@ -71,3 +73,5 @@ Please adhere to [our Java style guide](https://github.com/knjk04/book-project/b
 - Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings)
 
 - Feedback: we're eager to find new ways to improve, so please do let us know!
+
+- Translations: it would be good if we could support multiple languages. If you're able to help with this, feel free to get in touch with us over [Gitter](https://gitter.im/book-project-community).
