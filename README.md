@@ -1,4 +1,8 @@
-# Summary
+# Book Project
+
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](gitter.im/book-project-community/)
+
+## Summary
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
@@ -21,7 +25,7 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 *The images above may look slightly different to the app. If major changes are made, new images will be uploaded to 
 reflect this.*
 
-# Setup
+## Setup
 
 Prerequisites: JDK 11 (or higher), Node.js and npm
 
@@ -45,10 +49,10 @@ To access the h2 database:
     - Password: 
 3. Click on connect
 
-# Contributing
+## Contributing
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
 
-# Further information
+## Further information
 
 For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
