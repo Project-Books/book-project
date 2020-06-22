@@ -1,6 +1,6 @@
 # Book Project
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](gitter.im/book-project-community/)
+[![Gitter](https://badges.gitter.im/book-project-community/community.svg)](https://gitter.im/book-project-community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Summary
 
