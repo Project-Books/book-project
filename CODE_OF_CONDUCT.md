@@ -54,7 +54,7 @@ threatening, offensive, or harmful.
 
 ## Scope
 
-This Code of Conduct applies in project spaces (e.g. the wiki, pull requests, any documentation and code) and in public spaces when an individual is representing the project or its community. 
+This Code of Conduct applies in project spaces (e.g. the wiki, pull requests, any documentation and code) and in public spaces (such as the [Gitter community](https://gitter.im/book-project-community/)) when an individual is representing the project or its community. 
 
 ## Enforcement
 
