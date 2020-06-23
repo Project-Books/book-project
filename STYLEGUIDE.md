@@ -40,7 +40,7 @@ if (condition) {
 **One statement per line**
 
 
-**Underscores in numeric literals visual separation**
+**Underscores in numeric literals**
 
 For numeric literals that are one million or higher, underscores are recommended to separate digits by thousands:
 
