@@ -17,51 +17,33 @@
  */
 package com.karankumar.bookproject.backend.model;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
- * A {@code Author} object represents a single Author with its corresponding metadata, such as a first name, last name
- * and a list of books
+ * A {@code Author} object represents a single Author with its corresponding metadata, such as a
+ * first name, last name and a list of books
  */
 @Entity
+@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Author extends BaseEntity {
 
-    @NotNull
-    @NotEmpty
-    private String firstName;
+  @NotNull @NotEmpty private String firstName;
 
-    @NotNull
-    @NotEmpty
-    private String lastName;
+  @NotNull @NotEmpty private String lastName;
 
-    protected Author() {
-    }
-
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    public String toString() {
-        return firstName + " " + lastName;
-    }
+  @Override
+  public String toString() {
+    return firstName + " " + lastName;
+  }
 }

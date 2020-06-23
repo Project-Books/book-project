@@ -1,11 +1,31 @@
 package com.karankumar.bookproject.backend.model;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PredefinedShelf extends BaseEntity {
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    public ShelfName shelfName;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
+    private Set<Book> books;
+
+    public PredefinedShelf(ShelfName shelfName) {
+        this.shelfName = shelfName;
+    }
+
     public enum ShelfName {
         TO_READ("To read"),
         READING("Reading"),
@@ -18,47 +38,8 @@ public class PredefinedShelf extends BaseEntity {
             this.name = name;
         }
 
-        @Override
         public String toString() {
             return name;
         }
-    }
-
-    @NotNull
-    @Enumerated(value = EnumType.STRING)
-    public ShelfName shelfName;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
-    private Set<Book> books;
-
-    protected PredefinedShelf() {
-    }
-
-    public PredefinedShelf(ShelfName shelfName) {
-        this.shelfName = shelfName;
-    }
-
-    public ShelfName getShelfName() {
-        return shelfName;
-    }
-
-    public void setShelfName(ShelfName shelfName) {
-        this.shelfName = shelfName;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
-
-    @Override
-    public String toString() {
-        return "PredefinedShelf{" +
-                "shelfName=" + shelfName +
-                ", books=" + books +
-                '}';
     }
 }

@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.model.*;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -29,7 +30,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,8 +38,8 @@ import java.util.stream.Stream;
  * a consumer should go via this {@code ShelfService}
  */
 @Service
+@Log
 public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
-    private static final Logger LOGGER = Logger.getLogger(PredefinedShelfService.class.getSimpleName());
 
     private BookRepository bookRepository;
     private PredefinedShelfRepository shelfRepository;

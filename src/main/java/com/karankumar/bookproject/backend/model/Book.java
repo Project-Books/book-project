@@ -17,6 +17,8 @@
 */
 package com.karankumar.bookproject.backend.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -26,6 +28,9 @@ import java.time.LocalDate;
  * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, genre and rating
  */
 @Entity
+@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(callSuper = true)
 public class Book extends BaseEntity {
 
     @NotNull
@@ -49,75 +54,15 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "shelf_id")
     private PredefinedShelf shelf;
 
-    protected Book() {
-    }
-
     public Book(String title, Author author) {
         this.title = title;
         this.author = author;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
-    public RatingScale getRating() {
-        return rating;
-    }
-
-    public void setRating(RatingScale rating) {
-        this.rating = rating;
-    }
-
-    public PredefinedShelf getShelf() {
-        return shelf;
-    }
-
-    public void setShelf(PredefinedShelf shelf) {
-        this.shelf = shelf;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
-
-    public int getNumberOfPages() {
-        return numberOfPages;
-    }
-
-    public void setNumberOfPages(int numberOfPages) {
-        this.numberOfPages = numberOfPages;
-    }
-
-    public LocalDate getDateStartedReading() {
-        return dateStartedReading;
-    }
-
-    public void setDateStartedReading(LocalDate dateStartedReading) {
-        this.dateStartedReading = dateStartedReading;
-    }
-
-    public LocalDate getDateFinishedReading() {
-        return dateFinishedReading;
-    }
-
-    public void setDateFinishedReading(LocalDate dateFinishedReading) {
-        this.dateFinishedReading = dateFinishedReading;
+    @Override
+    public String toString() {
+        return Book.class.getSimpleName() + "{" +
+                "title='" + title + '\'' +
+                '}';
     }
 }

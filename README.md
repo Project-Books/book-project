@@ -37,6 +37,12 @@ Prerequisites: JDK 11 (or higher), Node.js and npm
 5. Log in with the details below:
     - Username: `user`
     - Password: `password`
+    
+In IntelliJ, you may find lots of errors for things like the log statements and the entities not having constructors.
+To remove the errors in IntelliJ, install the [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok) and enable annotation 
+processing. This can be done either in the popup window that appears after installing the Lombok plugin or by checking the
+'Enable annotation processing' checkbox in Settings > Build, Execution, Deployment > Compiler > Annotation Processors.
+Otherwise, you can safely ignore these flagged errors.
 
 To access the h2 database:
 

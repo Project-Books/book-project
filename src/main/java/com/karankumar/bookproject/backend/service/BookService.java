@@ -21,23 +21,22 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A Spring service that acts as the gateway to the {@code BookRepository} -- to use the {@code BookRepository},
  * a consumer should go via this {@code BookService}
  */
 @Service
+@Log
 public class BookService extends BaseService<Book, Long> {
 
     private final AuthorRepository authorRepository;
     private BookRepository bookRepository;
-
-    private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
 
     public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
