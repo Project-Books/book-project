@@ -17,10 +17,7 @@
 */
 package com.karankumar.bookproject.backend.model;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -60,5 +57,12 @@ public class Book extends BaseEntity {
     public Book(String title, Author author) {
         this.title = title;
         this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return Book.class.getSimpleName() + "{" +
+                "title='" + title + '\'' +
+                '}';
     }
 }
