@@ -41,6 +41,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
+import lombok.extern.java.Log;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,6 +56,7 @@ import java.util.logging.Logger;
         value = "./styles/vaadin-dialog-overlay-styles.css",
         themeFor = "vaadin-dialog-overlay"
 )
+@Log
 public class BookForm extends VerticalLayout {
     private final TextField bookTitle = new TextField();
     private final TextField authorFirstName = new TextField();
@@ -81,7 +83,6 @@ public class BookForm extends VerticalLayout {
     private final FormLayout.FormItem finished;
     private final FormLayout.FormItem ratingFormItem;
 
-    private static final Logger LOGGER = Logger.getLogger(BookForm.class.getName());
     private final Dialog dialog;
 
     public BookForm(PredefinedShelfService shelfService) {

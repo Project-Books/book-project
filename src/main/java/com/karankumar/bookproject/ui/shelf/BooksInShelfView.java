@@ -33,6 +33,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import lombok.extern.java.Log;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -45,6 +46,7 @@ import java.util.logging.Logger;
 @Route(value = "", layout = MainView.class)
 @RouteAlias(value = "myBooks", layout = MainView.class)
 @PageTitle("My Books | Book Project")
+@Log
 public class BooksInShelfView extends VerticalLayout {
 
 //    private final BookForm bookForm;
@@ -58,8 +60,6 @@ public class BooksInShelfView extends VerticalLayout {
     private final ComboBox<PredefinedShelf.ShelfName> whichShelf;
     private PredefinedShelf.ShelfName chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
-
-    private static final Logger LOGGER = Logger.getLogger(BooksInShelfView.class.getName());
 
     public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
         this.bookService = bookService;
