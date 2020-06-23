@@ -47,7 +47,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A Vaadin form for adding a new {@code Book}

@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A Spring service that acts as the gateway to the {@code BookRepository} -- to use the {@code BookRepository},

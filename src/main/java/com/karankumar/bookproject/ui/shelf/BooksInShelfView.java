@@ -37,7 +37,6 @@ import lombok.extern.java.Log;
 
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}
