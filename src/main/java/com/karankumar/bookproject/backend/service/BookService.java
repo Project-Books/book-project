@@ -37,11 +37,16 @@ public class BookService extends BaseService<Book, Long> {
     private final AuthorRepository authorRepository;
     private BookRepository bookRepository;
 
+    private final AuthorService authorService;
+
     private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, AuthorService authorService) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
+
+        this.authorService = authorService;
+
     }
 
     @Override
@@ -53,7 +58,9 @@ public class BookService extends BaseService<Book, Long> {
     public void save(Book book) {
         if (book != null) {
             if (book.getAuthor() != null) {
-                authorRepository.save(book.getAuthor());
+//                authorRepository.save(book.getAuthor());
+                authorService.save(book.getAuthor());
+
                 LOGGER.log(Level.INFO, "Saving author: " + book.getAuthor());
             } else {
                 LOGGER.log(Level.SEVERE, "Author is null");

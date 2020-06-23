@@ -49,6 +49,13 @@ public class AuthorService extends BaseService<Author, Long> {
     @Override
     public void save(Author author) {
         if (author != null) {
+            List<Author> allAuthors = findAll();
+            for (Author a : allAuthors) {
+                if (a.getId().equals(author.getId())) {
+                  System.out.println("A id: " + a.getId());
+                  System.out.println("Author id: " + author.getId());
+                }
+            }
             authorRepository.save(author);
         }
     }

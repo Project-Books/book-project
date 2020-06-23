@@ -120,4 +120,11 @@ public class Book extends BaseEntity {
     public void setDateFinishedReading(LocalDate dateFinishedReading) {
         this.dateFinishedReading = dateFinishedReading;
     }
+
+    @Override
+    public String toString() {
+        return Book.class.getSimpleName() + "{" +
+                "title='" + title + '\'' +
+                '}';
+    }
 }
