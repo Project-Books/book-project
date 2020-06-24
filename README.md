@@ -63,3 +63,7 @@ If you wish to contribute (thanks!), please first see the [contributing document
 ## Further information
 
 For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
+
+## Acknowledgements
+
+[Project Lombok](https://projectlombok.org/) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
