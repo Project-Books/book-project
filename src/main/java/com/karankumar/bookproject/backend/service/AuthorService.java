@@ -19,10 +19,14 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.BaseEntity;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * A Spring service that acts as the gateway to the {@code AuthorRepository} -- to use the {@code AuthorRepository},
@@ -32,6 +36,7 @@ import java.util.List;
 public class AuthorService extends BaseService<Author, Long> {
 
     private AuthorRepository authorRepository;
+    private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
 
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
@@ -49,6 +54,16 @@ public class AuthorService extends BaseService<Author, Long> {
     @Override
     public void save(Author author) {
         if (author != null) {
+            List<Long> matchingAuthors = findAll().stream()
+                    .map(BaseEntity::getId)
+                    .filter(id -> id.equals(author.getId())).collect(Collectors.toList());
+            if (matchingAuthors.size() == 1) {
+                // if an author with the same ID exists, set this incoming author ID to null so that a new row in the
+                // table is made rather than updating the row that has the same ID
+                LOGGER.log(Level.INFO, "Matching authorIds: " + matchingAuthors);
+                author.removeId();
+            }
+
             authorRepository.save(author);
         }
     }
@@ -61,4 +76,8 @@ public class AuthorService extends BaseService<Author, Long> {
     public Long count() {
         return authorRepository.count();
     }
+
+//    public void addNewAuthor(Author author) {
+//
+//    }
 }

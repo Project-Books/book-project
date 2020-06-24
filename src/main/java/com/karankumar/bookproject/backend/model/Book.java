@@ -65,4 +65,11 @@ public class Book extends BaseEntity {
                 "title='" + title + '\'' +
                 '}';
     }
+
+    @Override
+    public String toString() {
+        return Book.class.getSimpleName() + "{" +
+                "title='" + title + '\'' +
+                '}';
+    }
 }
