@@ -35,4 +35,11 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Getter
     private Long id;
+
+    /**
+     * To be used sparingly and cautiously
+     */
+    public void removeId() {
+        id = null;
+    }
 }
