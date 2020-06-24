@@ -80,6 +80,12 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
+
+		<dependency>
+			<groupId>org.webjars.bowergithub.polymerelements</groupId>
+			<artifactId>paper-toggle-button</artifactId>
+			<version>3.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

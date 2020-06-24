@@ -1,6 +1,7 @@
 package com.karankumar.bookproject.ui;
 
 import com.karankumar.bookproject.ui.challenge.ReadingChallengeView;
+import com.karankumar.bookproject.ui.settings.SettingsView;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
@@ -20,7 +21,8 @@ public class MainView extends AppLayout {
         Tabs tabs = new Tabs();
         Tab myBooks = createTab(VaadinIcon.BOOK, BooksInShelfView.class, "My books");
         Tab readingChallenge = createTab(VaadinIcon.HOURGLASS, ReadingChallengeView.class, "Reading challenge");
-        tabs.add(myBooks, readingChallenge);
+        Tab settings = createTab(VaadinIcon.COG_O, SettingsView.class, "Settings");
+        tabs.add(myBooks, readingChallenge, settings);
 
         Anchor logout = new Anchor("/logout", "Log out");
 
