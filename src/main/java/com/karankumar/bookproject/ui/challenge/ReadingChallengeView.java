@@ -1,5 +1,6 @@
-package com.karankumar.bookproject.ui;
+package com.karankumar.bookproject.ui.challenge;
 
+import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

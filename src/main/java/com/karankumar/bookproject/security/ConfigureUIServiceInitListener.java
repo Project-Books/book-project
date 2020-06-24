@@ -1,6 +1,6 @@
 package com.karankumar.bookproject.security;
 
-import com.karankumar.bookproject.ui.LoginView;
+import com.karankumar.bookproject.ui.login.LoginView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.server.ServiceInitEvent;

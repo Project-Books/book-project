@@ -1,5 +1,6 @@
 package com.karankumar.bookproject.ui;
 
+import com.karankumar.bookproject.ui.challenge.ReadingChallengeView;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;

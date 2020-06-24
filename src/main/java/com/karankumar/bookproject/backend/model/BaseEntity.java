@@ -35,6 +35,13 @@ public abstract class BaseEntity {
         return id;
     }
 
+    /**
+     * This should be used sparingly & cautiously
+     */
+    public void removeId() {
+        id = null;
+    }
+
     @Override
     public int hashCode() {
         if (getId() != null) {
