@@ -85,6 +85,11 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         shelfRepository.delete(shelf);
     }
 
+    @Override
+    public void deleteAll() {
+        // Don't want to delete the predefined shelves
+    }
+
     @PostConstruct
     public void populateTestData() {
         if (authorRepository.count() == 0) {

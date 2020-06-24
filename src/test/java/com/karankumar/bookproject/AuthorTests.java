@@ -3,6 +3,7 @@ package com.karankumar.bookproject;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,9 +25,11 @@ class AuthorTests {
 
     private static Book testBook1;
     private static Book testBook2;
+    private static AuthorService authorService;
 
     @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService shelfService, @Autowired BookService bookService) {
+    public static void setup(@Autowired PredefinedShelfService shelfService, @Autowired BookService bookService,
+                             @Autowired AuthorService authorService) {
         Author author = new Author("Steven", "Pinker");
 
         testBook1 = new Book("How the mind works", author);
@@ -34,6 +38,9 @@ class AuthorTests {
         Assumptions.assumeTrue(shelfService != null && bookService != null);
         AuthorTests.shelfService = shelfService;
         AuthorTests.bookService = bookService;
+        AuthorTests.authorService = authorService;
+
+        bookService.deleteAll(); // reset
 
         List<PredefinedShelf> shelves = AuthorTests.shelfService.findAll();
         PredefinedShelf toRead =
@@ -61,5 +68,27 @@ class AuthorTests {
         bookService.save(testBook1);
 
         Assertions.assertNotEquals(testBook1.getAuthor(), testBook2.getAuthor());
+    }
+
+    @Test
+    public void orphanAuthorsRemoved() {
+        Assumptions.assumeTrue(bookService != null);
+        bookService.deleteAll(); // reset
+
+		Author orphan = new Author("Jostein", "Gardner");
+		Book book = new Book("Sophie's World", orphan);
+        bookService.delete(book);
+
+        boolean idFound;
+        try {
+            Assertions.assertNull(authorService.findById(orphan.getId()));
+            idFound = true;
+        } catch (InvalidDataAccessApiUsageException e) {
+        	// If this exception is thrown, then the authorService could not find the id
+            idFound = false;
+        }
+
+        Assertions.assertFalse(idFound);
+        Assertions.assertTrue(authorService.findAll().isEmpty());
     }
 }

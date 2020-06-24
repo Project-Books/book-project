@@ -77,7 +77,8 @@ public class AuthorService extends BaseService<Author, Long> {
         return authorRepository.count();
     }
 
-//    public void addNewAuthor(Author author) {
-//
-//    }
+    @Override
+    public void deleteAll() {
+        authorRepository.deleteAll();
+    }
 }

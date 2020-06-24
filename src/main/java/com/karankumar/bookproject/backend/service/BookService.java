@@ -19,7 +19,6 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -112,4 +111,10 @@ public class BookService extends BaseService<Book, Long> {
           book.getTitle() + " deleted. Book repository size = " + bookRepository.count());
     }
   }
+
+    @Override
+    public void deleteAll() {
+      bookRepository.deleteAll();
+      authorService.deleteAll();
+    }
 }

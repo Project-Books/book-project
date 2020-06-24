@@ -31,4 +31,6 @@ public abstract class BaseService<T, ID> {
     public abstract void save(T obj);
 
     public abstract void delete(T obj);
+
+    public abstract void deleteAll();
 }
