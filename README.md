@@ -66,4 +66,4 @@ For more information, such as a roadmap and the underlying principles of the pro
 
 ## Acknowledgements
 
-- [Project Lombok](https://projectlombok.org/) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
+[Project Lombok](https://projectlombok.org/) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
