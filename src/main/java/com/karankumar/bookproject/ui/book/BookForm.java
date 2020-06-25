@@ -75,7 +75,7 @@ public class BookForm extends VerticalLayout {
     private final PredefinedShelfService shelfService;
 
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
-    private final Button saveButton = new Button();
+    public final Button saveButton = new Button();
     private final Button reset = new Button();
 
     private final FormLayout.FormItem started;
