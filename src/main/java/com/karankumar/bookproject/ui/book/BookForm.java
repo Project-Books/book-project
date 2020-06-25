@@ -57,16 +57,16 @@ import java.util.logging.Level;
 )
 @Log
 public class BookForm extends VerticalLayout {
-    private final TextField bookTitle = new TextField();
-    private final TextField authorFirstName = new TextField();
-    private final TextField authorLastName = new TextField();
-    private final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
-    private final ComboBox<Genre> bookGenre = new ComboBox<>();
-    private final IntegerField pageCount = new IntegerField();
+    public final TextField bookTitle = new TextField();
+    public final TextField authorFirstName = new TextField();
+    public final TextField authorLastName = new TextField();
+    public final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
+    public final ComboBox<Genre> bookGenre = new ComboBox<>();
+    public final IntegerField pageCount = new IntegerField();
 
-    private final DatePicker dateStartedReading = new DatePicker();
-    private final DatePicker dateFinishedReading = new DatePicker();
-    private final NumberField rating = new NumberField();
+    public final DatePicker dateStartedReading = new DatePicker();
+    public final DatePicker dateFinishedReading = new DatePicker();
+    public final NumberField rating = new NumberField();
 
     private static final String ENTER_DATE = "Enter a date";
     private static final String LABEL_ADD_BOOK = "Add book";
@@ -179,7 +179,7 @@ public class BookForm extends VerticalLayout {
                                 "reading the book")
                 .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
                         AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
-                .bind(Book::getDateStartedReading, Book::setDateStartedReading);
+                .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(pageCount)
                 .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(bookGenre)
