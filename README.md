@@ -67,3 +67,5 @@ For more information, such as a roadmap and the underlying principles of the pro
 ## Acknowledgements
 
 [Project Lombok](https://projectlombok.org/) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
+
+[Karibu Testing](https://github.com/mvysny/karibu-testing) - [Apache 2.0 Licnese](https://www.apache.org/licenses/LICENSE-2.0.html)
