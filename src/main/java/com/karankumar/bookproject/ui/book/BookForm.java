@@ -77,6 +77,7 @@ public class BookForm extends VerticalLayout {
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
     public final Button saveButton = new Button();
     private final Button reset = new Button();
+    public Button delete = new Button();
 
     private final FormLayout.FormItem started;
     private final FormLayout.FormItem finished;
@@ -197,7 +198,6 @@ public class BookForm extends VerticalLayout {
         reset.setText("Reset");
         reset.addClickListener(event -> clearForm());
 
-        Button delete = new Button();
         delete.setText("Delete");
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         delete.addClickListener(click -> {

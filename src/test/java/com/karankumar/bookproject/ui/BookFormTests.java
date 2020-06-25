@@ -7,7 +7,7 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Genre;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.RatingScale;
-import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.UI;
@@ -36,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class BookFormTests {
 
 	private static Routes routes;
+
 	private static final String firstName = "Nick";
 	private static final String lastName = "Bostrom";
 	private static final Author author = new Author(firstName, lastName);
@@ -59,13 +60,15 @@ public class BookFormTests {
 	private ApplicationContext ctx;
 
 	@Autowired
-	private BookRepository bookRepository;
+	private	BookService bookService;
 
 	@BeforeEach
 	public void setup(@Autowired PredefinedShelfService shelfService) {
 		final SpringServlet servlet = new MockSpringServlet(routes, ctx);
 		MockVaadin.setup(UI::new, servlet);
-		bookRepository.deleteAll();
+
+		Assumptions.assumeTrue(bookService != null);
+		bookService.deleteAll();
 
 		Assumptions.assumeTrue(shelfService != null);
 
@@ -101,15 +104,7 @@ public class BookFormTests {
 
 	@Test
 	public void saveEventPopulated() {
-		bookForm.authorFirstName.setValue(firstName);
-		bookForm.authorLastName.setValue(lastName);
-		bookForm.bookTitle.setValue(bookTitle);
-		bookForm.shelf.setValue(readShelf.getShelfName());
-		bookForm.bookGenre.setValue(genre);
-		bookForm.pageCount.setValue(pageCount);
-		bookForm.dateStartedReading.setValue(dateStarted);
-		bookForm.dateFinishedReading.setValue(dateFinished);
-		bookForm.rating.setValue(rating);
+		populateBookForm();
 
 		AtomicReference<Book> savedBookReference = new AtomicReference<>(null);
 		bookForm.addListener(BookForm.SaveEvent.class, event -> savedBookReference.set(event.getBook()));
@@ -125,5 +120,37 @@ public class BookFormTests {
 		Assertions.assertEquals(dateStarted, savedBook.getDateStartedReading());
 		Assertions.assertEquals(dateFinished, savedBook.getDateFinishedReading());
 		Assertions.assertEquals(ratingVal, savedBook.getRating());
+	}
+
+	private void populateBookForm() {
+		bookForm.authorFirstName.setValue(firstName);
+		bookForm.authorLastName.setValue(lastName);
+		bookForm.bookTitle.setValue(bookTitle);
+		bookForm.shelf.setValue(readShelf.getShelfName());
+		bookForm.bookGenre.setValue(genre);
+		bookForm.pageCount.setValue(pageCount);
+		bookForm.dateStartedReading.setValue(dateStarted);
+		bookForm.dateFinishedReading.setValue(dateFinished);
+		bookForm.rating.setValue(rating);
+	}
+
+	@Test
+	public void deleteEventPopulated() {
+		populateBookForm();
+
+		AtomicReference<Book> deletedBookReference = new AtomicReference<>(null);
+		bookForm.addListener(BookForm.DeleteEvent.class, event -> deletedBookReference.set(event.getBook()));
+		bookForm.delete.click();
+		Book deletedBook = deletedBookReference.get();
+
+		Assertions.assertEquals(bookTitle, deletedBook.getTitle());
+		Assertions.assertEquals(firstName, deletedBook.getAuthor().getFirstName());
+		Assertions.assertEquals(lastName, deletedBook.getAuthor().getLastName());
+		Assertions.assertEquals(readShelf.getShelfName(), deletedBook.getShelf().getShelfName());
+		Assertions.assertEquals(genre, deletedBook.getGenre());
+		Assertions.assertEquals(pageCount, deletedBook.getNumberOfPages());
+		Assertions.assertEquals(dateStarted, deletedBook.getDateStartedReading());
+		Assertions.assertEquals(dateFinished, deletedBook.getDateFinishedReading());
+		Assertions.assertEquals(ratingVal, deletedBook.getRating());
 	}
 }
