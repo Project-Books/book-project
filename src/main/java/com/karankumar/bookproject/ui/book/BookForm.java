@@ -90,7 +90,6 @@ public class BookForm extends VerticalLayout {
 
         dialog = new Dialog();
         dialog.setCloseOnOutsideClick(true);
-        dialog.setMaxWidth("10px");
 
         FormLayout formLayout = new FormLayout();
         dialog.add(formLayout);
