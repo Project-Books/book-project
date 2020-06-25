@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
-class MockSpringServlet extends SpringServlet {
+public class MockSpringServlet extends SpringServlet {
 	@NotNull
 	public final Routes routes;
 	@NotNull

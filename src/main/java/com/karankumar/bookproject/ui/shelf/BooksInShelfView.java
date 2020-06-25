@@ -54,11 +54,19 @@ public class BooksInShelfView extends VerticalLayout {
     private final BookService bookService;
     private final PredefinedShelfService shelfService;
 
-    private final Grid<Book> bookGrid = new Grid<>(Book.class);
+    public final Grid<Book> bookGrid = new Grid<>(Book.class);
     private final TextField filterByTitle;
-    private final ComboBox<PredefinedShelf.ShelfName> whichShelf;
+    public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
     private PredefinedShelf.ShelfName chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
+
+    public static final String TITLE_KEY = "title";
+    public static final String AUTHOR_KEY = "author";
+    public static final String GENRE_KEY = "genre";
+    public static final String PAGES_KEY = "numberOfPages";
+    public static final String RATING_KEY = "rating";
+    public static final String DATE_STARTED_KEY = "dateStartedReading";
+    public static final String DATE_FINISHED_KEY = "dateFinishedReading";
 
     public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
         this.bookService = bookService;
@@ -116,25 +124,24 @@ public class BooksInShelfView extends VerticalLayout {
         });
     }
 
-    private void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) {
+    void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) {
         switch (shelfName) {
             case TO_READ:
-                toggleColumn("rating", false);
-                toggleColumn("dateStartedReading", false);
-                toggleColumn("dateFinishedReading", false);
+                toggleColumn(RATING_KEY, false);
+                toggleColumn(DATE_STARTED_KEY, false);
+                toggleColumn(DATE_FINISHED_KEY, false);
                 break;
             case READING:
             case DID_NOT_FINISH:
-                toggleColumn("rating", false);
-                toggleColumn("dateStartedReading", true);
-                toggleColumn("dateFinishedReading", false);
+                toggleColumn(RATING_KEY, false);
+                toggleColumn(DATE_STARTED_KEY, true);
+                toggleColumn(DATE_FINISHED_KEY, false);
                 break;
             case READ:
-                toggleColumn("rating", true);
-                toggleColumn("dateStartedReading", true);
-                toggleColumn("dateFinishedReading", true);
+                toggleColumn(RATING_KEY, true);
+                toggleColumn(DATE_STARTED_KEY, true);
+                toggleColumn(DATE_FINISHED_KEY, true);
                 break;
-
         }
     }
 
@@ -144,8 +151,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     private void configureBookGrid() {
         addClassName("book-grid");
-        bookGrid.setColumns("title", "author", "genre", "dateStartedReading", "dateFinishedReading", "rating",
-                "numberOfPages");
+        bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY, DATE_STARTED_KEY, DATE_FINISHED_KEY, RATING_KEY, PAGES_KEY);
     }
 
     private void updateList() {
