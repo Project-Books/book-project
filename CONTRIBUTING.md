@@ -20,7 +20,7 @@ Questions and feedback should be discussed over [Gitter](https://gitter.im/book-
 
 For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
 
-If in doubt, feel free to send us an email over at bookproject@madebykarankumar.com so that we can assist you further.
+If in doubt, talk to us over [Gitter](https://gitter.im/book-project-community)!
 
 ## Before making changes
 
@@ -63,6 +63,8 @@ This makes it easier to keep track of what changes were made in what branch or p
 ## Code contributions
 
 Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
+
+Before submitting a pull request, please run the unit tests and ensure they pass. 
 
 ## Ways to contribute
 
