@@ -184,7 +184,7 @@ public class BooksInShelfView extends VerticalLayout {
         filterByTitle.setClearButtonVisible(true);
         filterByTitle.setValueChangeMode(ValueChangeMode.LAZY);
         filterByTitle.addValueChangeListener(event -> {
-            if (event.getValue() != null && !event.getValue().isEmpty()) {
+            if (event.getValue() != null) {
                 bookTitle = event.getValue();
             }
             updateList();
