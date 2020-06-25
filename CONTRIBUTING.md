@@ -64,7 +64,7 @@ This makes it easier to keep track of what changes were made in what branch or p
 
 Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
 
-Before submitting a pull request, please run the unit tests and ensure they pass. 
+Before submitting a pull request, please run the unit tests and ensure they pass. Please note that PredefinedShelfTests currently fail when all of the tests run collectively, but it passes when run individually (see issue #88). As long as that test still passes when you run it by itself, please submit your pull request.
 
 ## Ways to contribute
 
