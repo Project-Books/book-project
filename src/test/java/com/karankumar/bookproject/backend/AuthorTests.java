@@ -1,4 +1,4 @@
-package com.karankumar.bookproject;
+package com.karankumar.bookproject.backend;
 
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
