@@ -13,26 +13,30 @@ import com.vaadin.flow.theme.lumo.Lumo;
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
 public class SettingsView extends HorizontalLayout {
-    public SettingsView() {
-        final String enable = "Enable dark mode";
-        final String disable = "Disable dark mode";
+    private static boolean darkModeOn = false;
+    private static final String enable = "Enable dark mode";
+    private static final String disable = "Disable dark mode";
+    private static final Button toggle;
 
-        Button toggle = new Button(enable, click -> {
+    static {
+        toggle = new Button(enable, click -> {
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
-
 
             if (themeList.contains(Lumo.DARK)) {
                 themeList.remove(Lumo.DARK);
-                click.getSource().setText(enable);
+                darkModeOn = false;
             } else {
                 themeList.add(Lumo.DARK);
-                click.getSource().setText(disable);
+                darkModeOn = true;
             }
+            updateDarkModeButtonText();
         });
+    }
 
-//        toggle.addClickListener(click -> {
-//            clik
-//        });
+    public SettingsView() {
+        if (darkModeOn) {
+            updateDarkModeButtonText();
+        }
 
         VerticalLayout verticalLayout = new VerticalLayout(toggle);
         verticalLayout.setAlignItems(Alignment.CENTER);
@@ -40,5 +44,11 @@ public class SettingsView extends HorizontalLayout {
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+    }
+
+    private static void updateDarkModeButtonText() {
+        if (toggle != null) {
+            toggle.setText(darkModeOn ? disable : enable);
+        }
     }
 }
