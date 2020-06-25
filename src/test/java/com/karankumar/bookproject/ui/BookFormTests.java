@@ -19,6 +19,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -62,6 +64,11 @@ public class BookFormTests {
 	@Autowired
 	private	BookService bookService;
 
+	enum EventType {
+		SAVED,
+		DELETED
+	}
+
 	@BeforeEach
 	public void setup(@Autowired PredefinedShelfService shelfService) {
 		final SpringServlet servlet = new MockSpringServlet(routes, ctx);
@@ -102,24 +109,31 @@ public class BookFormTests {
 		Assertions.assertEquals(rating, bookForm.rating.getValue());
 	}
 
-	@Test
-	public void saveEventPopulated() {
+//	@Test
+	@ParameterizedTest
+	@EnumSource(EventType.class)
+	public void saveEventPopulated(EventType eventType) {
 		populateBookForm();
 
-		AtomicReference<Book> savedBookReference = new AtomicReference<>(null);
-		bookForm.addListener(BookForm.SaveEvent.class, event -> savedBookReference.set(event.getBook()));
-		bookForm.saveButton.click();
-		Book savedBook = savedBookReference.get();
+		AtomicReference<Book> bookReference = new AtomicReference<>(null);
+		if (eventType.equals(EventType.SAVED)) {
+			bookForm.addListener(BookForm.SaveEvent.class, event -> bookReference.set(event.getBook()));
+			bookForm.saveButton.click();
+		} else if (eventType.equals(EventType.DELETED)) {
+			bookForm.addListener(BookForm.DeleteEvent.class, event -> bookReference.set(event.getBook()));
+			bookForm.delete.click();
+		}
+		Book savedOrDeletedBook = bookReference.get();
 
-		Assertions.assertEquals(bookTitle, savedBook.getTitle());
-		Assertions.assertEquals(firstName, savedBook.getAuthor().getFirstName());
-		Assertions.assertEquals(lastName, savedBook.getAuthor().getLastName());
-		Assertions.assertEquals(readShelf.getShelfName(), savedBook.getShelf().getShelfName());
-		Assertions.assertEquals(genre, savedBook.getGenre());
-		Assertions.assertEquals(pageCount, savedBook.getNumberOfPages());
-		Assertions.assertEquals(dateStarted, savedBook.getDateStartedReading());
-		Assertions.assertEquals(dateFinished, savedBook.getDateFinishedReading());
-		Assertions.assertEquals(ratingVal, savedBook.getRating());
+		Assertions.assertEquals(bookTitle, savedOrDeletedBook.getTitle());
+		Assertions.assertEquals(firstName, savedOrDeletedBook.getAuthor().getFirstName());
+		Assertions.assertEquals(lastName, savedOrDeletedBook.getAuthor().getLastName());
+		Assertions.assertEquals(readShelf.getShelfName(), savedOrDeletedBook.getShelf().getShelfName());
+		Assertions.assertEquals(genre, savedOrDeletedBook.getGenre());
+		Assertions.assertEquals(pageCount, savedOrDeletedBook.getNumberOfPages());
+		Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
+		Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
+		Assertions.assertEquals(ratingVal, savedOrDeletedBook.getRating());
 	}
 
 	private void populateBookForm() {
@@ -132,25 +146,5 @@ public class BookFormTests {
 		bookForm.dateStartedReading.setValue(dateStarted);
 		bookForm.dateFinishedReading.setValue(dateFinished);
 		bookForm.rating.setValue(rating);
-	}
-
-	@Test
-	public void deleteEventPopulated() {
-		populateBookForm();
-
-		AtomicReference<Book> deletedBookReference = new AtomicReference<>(null);
-		bookForm.addListener(BookForm.DeleteEvent.class, event -> deletedBookReference.set(event.getBook()));
-		bookForm.delete.click();
-		Book deletedBook = deletedBookReference.get();
-
-		Assertions.assertEquals(bookTitle, deletedBook.getTitle());
-		Assertions.assertEquals(firstName, deletedBook.getAuthor().getFirstName());
-		Assertions.assertEquals(lastName, deletedBook.getAuthor().getLastName());
-		Assertions.assertEquals(readShelf.getShelfName(), deletedBook.getShelf().getShelfName());
-		Assertions.assertEquals(genre, deletedBook.getGenre());
-		Assertions.assertEquals(pageCount, deletedBook.getNumberOfPages());
-		Assertions.assertEquals(dateStarted, deletedBook.getDateStartedReading());
-		Assertions.assertEquals(dateFinished, deletedBook.getDateFinishedReading());
-		Assertions.assertEquals(ratingVal, deletedBook.getRating());
 	}
 }
