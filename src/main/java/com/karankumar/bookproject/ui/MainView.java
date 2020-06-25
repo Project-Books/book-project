@@ -1,6 +1,6 @@
 package com.karankumar.bookproject.ui;
 
-import com.karankumar.bookproject.ui.challenge.ReadingChallengeView;
+import com.karankumar.bookproject.ui.goal.GoalView;
 import com.karankumar.bookproject.ui.settings.SettingsView;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.Component;
@@ -20,7 +20,7 @@ public class MainView extends AppLayout {
     public MainView() {
         Tabs tabs = new Tabs();
         Tab myBooks = createTab(VaadinIcon.BOOK, BooksInShelfView.class, "My books");
-        Tab readingChallenge = createTab(VaadinIcon.HOURGLASS, ReadingChallengeView.class, "Reading challenge");
+        Tab readingChallenge = createTab(VaadinIcon.HOURGLASS, GoalView.class, "Goal");
         Tab settings = createTab(VaadinIcon.COG_O, SettingsView.class, "Settings");
         tabs.add(myBooks, readingChallenge, settings);
 
