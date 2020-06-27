@@ -57,6 +57,7 @@ import java.util.logging.Logger;
 )
 public class BookForm extends VerticalLayout {
     private final TextField bookTitle = new TextField();
+    private final IntegerField bookSeries = new IntegerField();
     private final TextField authorFirstName = new TextField();
     private final TextField authorLastName = new TextField();
     private final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
@@ -99,6 +100,7 @@ public class BookForm extends VerticalLayout {
         configureAuthor();
         configureShelf();
         configureGenre();
+        configureSeries();
         configurePageCount();
         configureDateStarted();
         configureDateFinished();
@@ -110,6 +112,7 @@ public class BookForm extends VerticalLayout {
                 bookTitle,
                 authorFirstName,
                 authorLastName,
+                bookSeries,
                 dateStartedReading,
                 dateFinishedReading,
                 bookGenre,
@@ -124,6 +127,7 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(shelf, "Book shelf *");
         formLayout.addFormItem(authorFirstName, "Author's first name *");
         formLayout.addFormItem(authorLastName, "Author's last name *");
+        formLayout.addFormItem(bookSeries, "Series number");
         started = formLayout.addFormItem(dateStartedReading, "Date started");
         finished = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
@@ -168,6 +172,7 @@ public class BookForm extends VerticalLayout {
         binder.forField(shelf)
                 .withValidator(Objects::nonNull, "Please select a shelf")
                 .bind("shelf.shelfName");
+        binder.forField(bookSeries).bind("series");
         binder.forField(dateStartedReading)
                 .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
                         AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
@@ -335,6 +340,10 @@ public class BookForm extends VerticalLayout {
         bookGenre.setPlaceholder("Choose a book genre");
     }
 
+    private void configureSeries(){
+        bookSeries.setPlaceholder("Enter the position of the book in its series");
+    }
+
     private void configureShelf() {
         shelf.setRequired(true);
         shelf.setPlaceholder("Choose a shelf");
@@ -422,6 +431,7 @@ public class BookForm extends VerticalLayout {
                 authorFirstName,
                 authorLastName,
                 shelf,
+                bookSeries,
                 bookGenre,
                 pageCount,
                 dateStartedReading,
