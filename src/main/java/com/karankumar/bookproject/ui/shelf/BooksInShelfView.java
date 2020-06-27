@@ -25,10 +25,13 @@ import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.grid.ColumnPathRenderer;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.Renderer;
+import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -143,7 +146,11 @@ public class BooksInShelfView extends VerticalLayout {
 
     private void configureBookGrid() {
         addClassName("book-grid");
-        bookGrid.setColumns("title", "author", "genre", "dateStartedReading", "dateFinishedReading", "rating",
+        bookGrid.setColumns();
+        bookGrid.addColumn(book -> String.format("%s (#%d)", book.getTitle(), book.getSeries()))
+                .setHeader("Title")
+                .setSortable(true);
+        bookGrid.addColumns("author", "genre", "dateStartedReading", "dateFinishedReading", "rating",
                 "numberOfPages");
     }
 
