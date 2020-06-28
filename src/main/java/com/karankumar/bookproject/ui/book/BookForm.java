@@ -172,7 +172,9 @@ public class BookForm extends VerticalLayout {
         binder.forField(shelf)
                 .withValidator(Objects::nonNull, "Please select a shelf")
                 .bind("shelf.shelfName");
-        binder.forField(bookSeries).bind("series");
+        binder.forField(bookSeries).withValidator(series -> (series == null || series > 0),
+                "Book series should not be negative")
+                .bind(Book::getSeries, Book::setSeries);
         binder.forField(dateStartedReading)
                 .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
                         AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
@@ -251,6 +253,13 @@ public class BookForm extends VerticalLayout {
 
                     } else {
                         LOGGER.log(Level.SEVERE, "Null shelf");
+                    }
+
+
+                    if(bookSeries.getValue() != null && bookSeries.getValue() > 0){
+                        book.setSeries(bookSeries.getValue());
+                    }else if(bookSeries.getValue() != null){
+                        LOGGER.log(Level.SEVERE, "Negative Series value");
                     }
 
                     binder.setBean(book);
@@ -342,6 +351,8 @@ public class BookForm extends VerticalLayout {
 
     private void configureSeries(){
         bookSeries.setPlaceholder("Enter the position of the book in its series");
+        bookSeries.setMin(1);
+        bookSeries.setHasControls(true);
     }
 
     private void configureShelf() {
