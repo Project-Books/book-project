@@ -14,6 +14,12 @@ The styleguide used is an extension of the [Google Java style guide](https://goo
 Any differences are listed in this document. By contributing to this repository, you are expected to follow this style
 guide and, where it does not conflict with this style guide, Google's Java style guide.
 
+We're currently using Checkstyle to check for style guide violations. To o check for any violations, you can run the following command in the root directory of the project:
+
+```
+$ ./mvnw validate
+```
+
 ## Formatting
 
 **Braces** 
