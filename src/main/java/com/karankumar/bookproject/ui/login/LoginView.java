@@ -7,7 +7,6 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
 import java.util.Collections;
 
 @Route("login")
@@ -27,18 +26,18 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         loginForm.setAction("login");
 
         add(
-                new H1("Book Project"),
-                loginForm
+            new H1("Book Project"),
+            loginForm
         );
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (!beforeEnterEvent.getLocation()
-                .getQueryParameters()
-                .getParameters()
-                .getOrDefault("error", Collections.emptyList())
-                .isEmpty()) {
+            .getQueryParameters()
+            .getParameters()
+            .getOrDefault("error", Collections.emptyList())
+            .isEmpty()) {
             loginForm.setError(true);
 
         }

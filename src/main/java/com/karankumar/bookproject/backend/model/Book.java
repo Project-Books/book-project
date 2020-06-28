@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify
@@ -15,17 +16,25 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
 package com.karankumar.bookproject.backend.model;
 
-import lombok.*;
-
-import javax.persistence.*;
+import java.time.LocalDate;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
- * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, genre and rating
+ * A {@code Book} object represents a single book with its corresponding metadata,
+ * such as an Author, genre and rating.
  */
 @Entity
 @Data
@@ -46,11 +55,13 @@ public class Book extends BaseEntity {
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
+        CascadeType.REMOVE})
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE,
+        CascadeType.REFRESH})
     @JoinColumn(name = "shelf_id")
     private PredefinedShelf shelf;
 
@@ -61,8 +72,8 @@ public class Book extends BaseEntity {
 
     @Override
     public String toString() {
-        return Book.class.getSimpleName() + "{" +
-                "title='" + title + '\'' +
-                '}';
+        return Book.class.getSimpleName() + "{"
+            + "title='" + title + '\''
+            + '}';
     }
 }

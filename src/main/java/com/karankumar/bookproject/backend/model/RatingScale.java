@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify

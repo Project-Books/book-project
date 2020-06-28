@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify
@@ -15,14 +16,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf, Long> {
     @Query("select s from PredefinedShelf s where s.shelfName = :shelfName")

@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify
@@ -15,18 +16,18 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.karankumar.bookproject.backend.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+package com.karankumar.bookproject.backend.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 /**
- * The entity that all other entities inherit from
+ * The entity that all other entities inherit from.
  */
 @MappedSuperclass
 @EqualsAndHashCode
@@ -37,7 +38,7 @@ public abstract class BaseEntity {
     private Long id;
 
     /**
-     * To be used sparingly and cautiously
+     * To be used sparingly and cautiously.
      */
     public void removeId() {
         id = null;

@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify
@@ -21,22 +22,22 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.BaseEntity;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
- * A Spring service that acts as the gateway to the {@code AuthorRepository} -- to use the {@code AuthorRepository},
- * a consumer should go via this {@code AuthorService}
+ * A Spring service that acts as the gateway to the {@code AuthorRepository}
+ * -- to use the {@code AuthorRepository},
+ * a consumer should go via this {@code AuthorService}.
  */
 @Service
 public class AuthorService extends BaseService<Author, Long> {
 
-    private AuthorRepository authorRepository;
     private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
+    private AuthorRepository authorRepository;
 
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
@@ -55,11 +56,12 @@ public class AuthorService extends BaseService<Author, Long> {
     public void save(Author author) {
         if (author != null) {
             List<Long> matchingAuthors = findAll().stream()
-                    .map(BaseEntity::getId)
-                    .filter(id -> id.equals(author.getId())).collect(Collectors.toList());
+                .map(BaseEntity::getId)
+                .filter(id -> id.equals(author.getId())).collect(Collectors.toList());
             if (matchingAuthors.size() == 1) {
-                // if an author with the same ID exists, set this incoming author ID to null so that a new row in the
-                // table is made rather than updating the row that has the same ID
+                // if an author with the same ID exists, set this incoming author ID to null so
+                // that a new row in the table is made rather than updating the row that has the
+                // same ID
                 LOGGER.log(Level.INFO, "Matching authorIds: " + matchingAuthors);
                 author.removeId();
             }

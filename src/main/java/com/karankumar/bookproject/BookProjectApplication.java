@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify
@@ -25,8 +26,8 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 @SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class)
 public class BookProjectApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BookProjectApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BookProjectApplication.class, args);
+    }
 
 }

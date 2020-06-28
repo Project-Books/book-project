@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify
@@ -19,14 +20,14 @@
 package com.karankumar.bookproject.backend.service;
 
 /**
- * All other Spring services inherit from this
+ * All other Spring services inherit from this.
  *
- * @param <T> an entity type (e.g. {@code Book})
- * @param <ID> the unique ID
+ * @param <T>  an entity type (e.g. {@code Book})
+ * @param <IdT> the unique ID
  */
-public abstract class BaseService<T, ID> {
+public abstract class BaseService<T, IdT> {
 
-    public abstract T findById(ID id);
+    public abstract T findById(IdT id);
 
     public abstract void save(T obj);
 

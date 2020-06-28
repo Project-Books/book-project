@@ -13,10 +13,10 @@ import com.vaadin.flow.theme.lumo.Lumo;
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
 public class SettingsView extends HorizontalLayout {
-    private static boolean darkModeOn = false;
     private static final String enable = "Enable dark mode";
     private static final String disable = "Disable dark mode";
     private static final Button toggle;
+    private static boolean darkModeOn = false;
 
     static {
         toggle = new Button(enable, click -> {

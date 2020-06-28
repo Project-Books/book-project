@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify
@@ -15,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
 package com.karankumar.bookproject.ui.book;
 
 import com.karankumar.bookproject.backend.model.RatingScale;
@@ -23,7 +25,7 @@ import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
 /**
- * Converts a double from the Vaadin rating field to a {@code RatingScale} and visa versa
+ * Converts a double from the Vaadin rating field to a {@code RatingScale} and visa versa.
  */
 class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     @Override

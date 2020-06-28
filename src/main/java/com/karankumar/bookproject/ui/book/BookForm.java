@@ -1,5 +1,6 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    The book project lets a user keep track of different books they've read,
+    are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify
@@ -15,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
 package com.karankumar.bookproject.ui.book;
 
 import com.karankumar.bookproject.backend.model.Author;
@@ -41,49 +43,42 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
-import lombok.extern.java.Log;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
+import lombok.extern.java.Log;
 
 /**
- * A Vaadin form for adding a new {@code Book}
+ * A Vaadin form for adding a new {@code Book}.
  */
 @CssImport(
-        value = "./styles/vaadin-dialog-overlay-styles.css",
-        themeFor = "vaadin-dialog-overlay"
+    value = "./styles/vaadin-dialog-overlay-styles.css",
+    themeFor = "vaadin-dialog-overlay"
 )
 @Log
 public class BookForm extends VerticalLayout {
+    private static final String ENTER_DATE = "Enter a date";
+    private static final String LABEL_ADD_BOOK = "Add book";
+    private static final String LABEL_UPDATE_BOOK = "Update book";
     public final TextField bookTitle = new TextField();
     public final TextField authorFirstName = new TextField();
     public final TextField authorLastName = new TextField();
     public final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
     public final ComboBox<Genre> bookGenre = new ComboBox<>();
     public final IntegerField pageCount = new IntegerField();
-
     public final DatePicker dateStartedReading = new DatePicker();
     public final DatePicker dateFinishedReading = new DatePicker();
     public final NumberField rating = new NumberField();
-
-    private static final String ENTER_DATE = "Enter a date";
-    private static final String LABEL_ADD_BOOK = "Add book";
-    private static final String LABEL_UPDATE_BOOK = "Update book";
-
-    private final PredefinedShelfService shelfService;
-
-    Binder<Book> binder = new BeanValidationBinder<>(Book.class);
     public final Button saveButton = new Button();
+    private final PredefinedShelfService shelfService;
     private final Button reset = new Button();
-    public Button delete = new Button();
-
     private final FormLayout.FormItem started;
     private final FormLayout.FormItem finished;
     private final FormLayout.FormItem ratingFormItem;
-
     private final Dialog dialog;
+    public Button delete = new Button();
+    Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
     public BookForm(PredefinedShelfService shelfService) {
         this.shelfService = shelfService;
@@ -107,15 +102,15 @@ public class BookForm extends VerticalLayout {
         HorizontalLayout buttons = configureButtons();
 
         HasSize[] components = {
-                bookTitle,
-                authorFirstName,
-                authorLastName,
-                dateStartedReading,
-                dateFinishedReading,
-                bookGenre,
-                shelf,
-                pageCount,
-                rating,
+            bookTitle,
+            authorFirstName,
+            authorLastName,
+            dateStartedReading,
+            dateFinishedReading,
+            bookGenre,
+            shelf,
+            pageCount,
+            rating,
         };
         setComponentMinWidth(components);
 
@@ -155,38 +150,38 @@ public class BookForm extends VerticalLayout {
         final String AFTER_TODAY_SUFFIX = "reading the book cannot be after today's date.";
 
         binder.forField(bookTitle)
-                .asRequired("Please provide a book title")
-                .bind(Book::getTitle, Book::setTitle);
+            .asRequired("Please provide a book title")
+            .bind(Book::getTitle, Book::setTitle);
         binder.forField(authorFirstName)
-                .withValidator(firstName -> (firstName != null && !firstName.isEmpty()),
-                        "Please enter the author's first name")
-                .bind("author.firstName");
+            .withValidator(firstName -> (firstName != null && !firstName.isEmpty()),
+                "Please enter the author's first name")
+            .bind("author.firstName");
         binder.forField(authorLastName)
-                .withValidator(lastName -> (lastName != null && !lastName.isEmpty()),
-                        "Please enter the author's last name")
-                .bind("author.lastName");
+            .withValidator(lastName -> (lastName != null && !lastName.isEmpty()),
+                "Please enter the author's last name")
+            .bind("author.lastName");
         binder.forField(shelf)
-                .withValidator(Objects::nonNull, "Please select a shelf")
-                .bind("shelf.shelfName");
+            .withValidator(Objects::nonNull, "Please select a shelf")
+            .bind("shelf.shelfName");
         binder.forField(dateStartedReading)
-                .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
-                        AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
-                .bind(Book::getDateStartedReading, Book::setDateStartedReading);
+            .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
+                AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
+            .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
-                .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null &&
-                                endDate.isBefore(dateStartedReading.getValue())),
-                        "The date you finished reading the book cannot be earlier than the date you started " +
-                                "reading the book")
-                .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
-                        AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
-                .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
+            .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null
+                    && endDate.isBefore(dateStartedReading.getValue())),
+                "The date you finished reading the book cannot be earlier than the date you"
+                    + " started reading the book")
+            .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
+                AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
+            .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(pageCount)
-                .bind(Book::getNumberOfPages, Book::setNumberOfPages);
+            .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(bookGenre)
-                .bind(Book::getGenre, Book::setGenre);
+            .bind(Book::getGenre, Book::setGenre);
         binder.forField(rating)
-                .withConverter(new DoubleToRatingScaleConverter())
-                .bind(Book::getRating, Book::setRating);
+            .withConverter(new DoubleToRatingScaleConverter())
+            .bind(Book::getRating, Book::setRating);
     }
 
     private HorizontalLayout configureButtons() {
@@ -357,6 +352,7 @@ public class BookForm extends VerticalLayout {
                 showStartDate();
                 showFinishDate();
                 break;
+            default:
         }
     }
 
@@ -388,6 +384,7 @@ public class BookForm extends VerticalLayout {
             case READ:
                 ratingFormItem.setVisible(true);
                 break;
+            default:
         }
     }
 
@@ -417,15 +414,15 @@ public class BookForm extends VerticalLayout {
 
     private void clearForm() {
         HasValue[] components = {
-                bookTitle,
-                authorFirstName,
-                authorLastName,
-                shelf,
-                bookGenre,
-                pageCount,
-                dateStartedReading,
-                dateFinishedReading,
-                rating,
+            bookTitle,
+            authorFirstName,
+            authorLastName,
+            shelf,
+            bookGenre,
+            pageCount,
+            dateStartedReading,
+            dateFinishedReading,
+            rating,
         };
         saveButton.setText(LABEL_ADD_BOOK);
         for (HasValue component : components) {
@@ -444,6 +441,11 @@ public class BookForm extends VerticalLayout {
     public void addBook() {
         clearForm();
         openForm();
+    }
+
+    public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
+                                                                  ComponentEventListener<T> listener) {
+        return getEventBus().addListener(eventType, listener);
     }
 
     // Events
@@ -470,10 +472,5 @@ public class BookForm extends VerticalLayout {
         DeleteEvent(BookForm source, Book book) {
             super(source, book);
         }
-    }
-
-    public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
-                                                                  ComponentEventListener<T> listener) {
-        return getEventBus().addListener(eventType, listener);
     }
 }
