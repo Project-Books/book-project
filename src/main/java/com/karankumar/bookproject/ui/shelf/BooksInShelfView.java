@@ -164,7 +164,6 @@ public class BooksInShelfView extends VerticalLayout {
     // Sort provided as setColumn provides default sort only for primitive Data types.
     sortColumn(AUTHOR_KEY);
   }
-
   /**
    * Sorts Column by Name of the Author
    *
