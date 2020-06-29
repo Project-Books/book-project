@@ -24,6 +24,7 @@ import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.Grid.Column;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -32,6 +33,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
 
@@ -147,7 +149,35 @@ public class BooksInShelfView extends VerticalLayout {
     private void configureBookGrid() {
         addClassName("book-grid");
         bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY, DATE_STARTED_KEY, DATE_FINISHED_KEY, RATING_KEY, PAGES_KEY);
+      // Sort provided as setColumn provides default sort only for primitive Data types.
+        sortColumn(AUTHOR_KEY);
     }
+    /**
+     * Sorts Column by Name of the Author
+     *
+     * @param columnName
+     */
+    private void sortColumn(final String columnName) {
+      switch (columnName) {
+        case AUTHOR_KEY:
+          Column<Book> authorNameColumn = bookGrid.getColumnByKey(columnName);
+          if (Objects.nonNull(authorNameColumn)) {
+            authorNameColumn.setComparator(
+                (author, otherAuthor) ->
+                author
+                .getAuthor()
+                .toString()
+                .compareToIgnoreCase(otherAuthor.getAuthor().toString()));
+          } else {
+            LOGGER.log(Level.SEVERE, "Column AuthorName cannot be Loaded");
+          }
+          break;
+          // Future implementation of comparator when required
+        default:
+          break;
+      }
+    }
+
 
     private void updateList() {
         if (chosenShelf == null) {
