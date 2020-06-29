@@ -1,21 +1,17 @@
 /*
-    The book project lets a user keep track of different books they've read,
-    are currently reading or would like to read
+    The book project lets a user keep track of different books they've read, are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    This program is free software: you can redistribute it and/or modify it under the terms of the
+    GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+    You should have received a copy of the GNU General Public License along with this program.
+    If not, see <https://www.gnu.org/licenses/>.
+ */
 
 package com.karankumar.bookproject.ui.book;
 
@@ -48,6 +44,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
+import org.hibernate.event.spi.DeleteEvent;
+
+import javax.transaction.NotSupportedException;
 
 /**
  * A Vaadin form for adding a new {@code Book}.
@@ -126,10 +125,14 @@ public class BookForm extends VerticalLayout {
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
         formLayout.add(buttons, 3);
 
-        shelf.addValueChangeListener(e -> {
-            if (e.getValue() != null) {
-                hideDates(shelf.getValue());
-                showOrHideRating(shelf.getValue());
+        shelf.addValueChangeListener(event -> {
+            if (event.getValue() != null) {
+            	try {
+                    hideDates(shelf.getValue());
+                    showOrHideRating(shelf.getValue());
+                } catch (IllegalArgumentException | NotSupportedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -277,24 +280,25 @@ public class BookForm extends VerticalLayout {
     public void setBook(Book book) {
         if (book == null) {
             LOGGER.log(Level.SEVERE, "Book is null");
-        }
-        if (book.getRating() == null) {
-            LOGGER.log(Level.FINE, "Rating is null");
-        }
-        if (book.getAuthor().getFirstName() == null) {
-            LOGGER.log(Level.SEVERE, "Author's first name is null");
-        }
-        if (book.getAuthor().getLastName() == null) {
-            LOGGER.log(Level.SEVERE, "Author's last name is null");
-        }
-        if (book.getDateStartedReading() == null) {
-            LOGGER.log(Level.FINE, "Date started reading is null");
-        }
-        if (book.getDateFinishedReading() == null) {
-            LOGGER.log(Level.FINE, "Date finished reading is null");
-        }
-        if (book.getGenre() == null) {
-            LOGGER.log(Level.FINE, "Book genre is null");
+        } else {
+            if (book.getRating() == null) {
+                LOGGER.log(Level.FINE, "Rating is null");
+            }
+            if (book.getAuthor().getFirstName() == null) {
+                LOGGER.log(Level.SEVERE, "Author's first name is null");
+            }
+            if (book.getAuthor().getLastName() == null) {
+                LOGGER.log(Level.SEVERE, "Author's last name is null");
+            }
+            if (book.getDateStartedReading() == null) {
+                LOGGER.log(Level.FINE, "Date started reading is null");
+            }
+            if (book.getDateFinishedReading() == null) {
+                LOGGER.log(Level.FINE, "Date finished reading is null");
+            }
+            if (book.getGenre() == null) {
+                LOGGER.log(Level.FINE, "Book genre is null");
+            }
         }
 
         if (binder == null) {
@@ -337,7 +341,10 @@ public class BookForm extends VerticalLayout {
         shelf.setItems(PredefinedShelf.ShelfName.values());
     }
 
-    private void hideDates(PredefinedShelf.ShelfName name) {
+    /**
+     * @throws NotSupportedException if an a shelf name is not yet supported
+     */
+    private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
             case TO_READ:
                 started.setVisible(false);
@@ -353,6 +360,7 @@ public class BookForm extends VerticalLayout {
                 showFinishDate();
                 break;
             default:
+                throw new NotSupportedException("Shelf " + name + " not yet supported");
         }
     }
 
@@ -374,7 +382,10 @@ public class BookForm extends VerticalLayout {
         }
     }
 
-    private void showOrHideRating(PredefinedShelf.ShelfName name) {
+    /**
+     * @throws NotSupportedException if an a shelf name is not yet supported
+     */
+    private void showOrHideRating(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
             case TO_READ:
             case READING:
@@ -385,6 +396,7 @@ public class BookForm extends VerticalLayout {
                 ratingFormItem.setVisible(true);
                 break;
             default:
+                throw new NotSupportedException("Shelf " + name + " not yet supported");
         }
     }
 

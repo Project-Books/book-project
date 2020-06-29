@@ -1,21 +1,17 @@
 /*
-    The book project lets a user keep track of different books they've read,
-    re currently reading or would like to read
+    The book project lets a user keep track of different books they've read, are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    This program is free software: you can redistribute it and/or modify it under the terms of the
+    GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+    You should have received a copy of the GNU General Public License along with this program.
+    If not, see <https://www.gnu.org/licenses/>.
+ */
 
 package com.karankumar.bookproject.ui.shelf;
 
@@ -58,7 +54,6 @@ public class BooksInShelfView extends VerticalLayout {
     public static final String DATE_FINISHED_KEY = "dateFinishedReading";
     public final Grid<Book> bookGrid = new Grid<>(Book.class);
     public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
-    //    private final BookForm bookForm;
     private final BookForm bookForm;
     private final BookService bookService;
     private final PredefinedShelfService shelfService;
@@ -151,8 +146,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     private void configureBookGrid() {
         addClassName("book-grid");
-        bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY, DATE_STARTED_KEY, DATE_FINISHED_KEY,
-            RATING_KEY, PAGES_KEY);
+        bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY, DATE_STARTED_KEY, DATE_FINISHED_KEY, RATING_KEY, PAGES_KEY);
     }
 
     private void updateList() {
@@ -173,8 +167,7 @@ public class BooksInShelfView extends VerticalLayout {
                 PredefinedShelf selectedShelf = matchingShelves.get(0);
                 bookGrid.setItems(selectedShelf.getBooks());
             } else {
-                LOGGER.log(Level.SEVERE,
-                    matchingShelves.size() + " matching shelves found for " + chosenShelf);
+                LOGGER.log(Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
             }
         } else {
             LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
