@@ -5,14 +5,20 @@
 
 ## Summary
 
+
+  <p align="center">
+	<img src="/media/book-project-logo.png" alt="Logo"/>
+  </p>
+
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
 *Features:*
 - Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf
 - View books in your different shelves and make changes
+- A rating scale from 0-10 that that goes up in steps of 0.5
 
 *Coming soon:*
-- Reading challenge: set yourself a goal of how many books you to read this year and track your progress towards accomplishing it
+- Track your progress towards a reading goal: the number of books or pages you want to have read by the end of the year
 - Add your own shelves
 - User registration and accounts
 - And much more!
@@ -37,6 +43,11 @@ Prerequisites: JDK 11 (or higher), Node.js and npm
 5. Log in with the details below:
     - Username: `user`
     - Password: `password`
+    
+In IntelliJ, you may find lots of errors for things like the log statements and the entities not having constructors.
+To remove the errors in IntelliJ, install the [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok) and enable annotation 
+processing. This can be done either in the popup window that appears after installing the Lombok plugin or by checking the
+'Enable annotation processing' checkbox in Settings > Build, Execution, Deployment > Compiler > Annotation Processors.
 
 To access the h2 database:
 
@@ -57,3 +68,9 @@ If you wish to contribute (thanks!), please first see the [contributing document
 ## Further information
 
 For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
+
+## Acknowledgements
+
+[Project Lombok](https://projectlombok.org/) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
+
+[Karibu Testing](https://github.com/mvysny/karibu-testing) - [Apache 2.0 Licnese](https://www.apache.org/licenses/LICENSE-2.0.html)
