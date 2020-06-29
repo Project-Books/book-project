@@ -2,15 +2,11 @@ package com.karankumar.bookproject.backend.repository;
 
 
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -33,7 +29,7 @@ class PredefinedShelfRepositoryTest {
     @Test
     void givenShelfExistsFindByShelfNameShouldReturnOneShelf() {
         List<PredefinedShelf> shelves =
-            repository.search(PredefinedShelf.ShelfName.TO_READ);
+            repository.findPredefinedShelfByShelfName(PredefinedShelf.ShelfName.TO_READ);
 
         Assertions.assertEquals(1, shelves.size());
         PredefinedShelf shelf = shelves.get(0);

@@ -25,6 +25,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf, Long> {
-    @Query("select s from PredefinedShelf s where s.shelfName = :shelfName")
-    List<PredefinedShelf> search(@Param("shelfName") PredefinedShelf.ShelfName shelfName);
+    List<PredefinedShelf> findPredefinedShelfByShelfName(PredefinedShelf.ShelfName shelfName);
 }
