@@ -14,12 +14,8 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+*/
 package com.karankumar.bookproject.ui.shelf;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.logging.Level;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
@@ -38,17 +34,23 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-
 import lombok.extern.java.Log;
 
-/** Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf} */
+import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
+
+/**
+ * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}
+ */
+
 @Route(value = "", layout = MainView.class)
 @RouteAlias(value = "myBooks", layout = MainView.class)
 @PageTitle("My Books | Book Project")
 @Log
 public class BooksInShelfView extends VerticalLayout {
 
-    //    private final BookForm bookForm;
+//    private final BookForm bookForm;
     private final BookForm bookForm;
 
     private final BookService bookService;
@@ -81,10 +83,9 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm = new BookForm(shelfService);
 
         Button addBook = new Button("Add book");
-        addBook.addClickListener(
-                e -> {
-                    bookForm.addBook();
-                });
+        addBook.addClickListener(e -> {
+            bookForm.addBook();
+        });
         HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle, addBook);
         horizontalLayout.setAlignItems(Alignment.END);
 
@@ -97,53 +98,52 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
 
         bookGrid
-        .asSingleSelect()
-        .addValueChangeListener(
-                event -> {
-                    if (event == null) {
-                        LOGGER.log(Level.FINE, "Event is null");
-                    } else if (event.getValue() == null) {
-                        LOGGER.log(Level.FINE, "Event value is null");
-                    } else {
-                        editBook(event.getValue());
-                    }
-                });
+                .asSingleSelect()
+                .addValueChangeListener(
+                        event -> {
+                            if (event == null) {
+                                LOGGER.log(Level.FINE, "Event is null");
+                            } else if (event.getValue() == null) {
+                                LOGGER.log(Level.FINE, "Event value is null");
+                            } else {
+                                editBook(event.getValue());
+                            }
+                        });
     }
 
     private void configureChosenShelf() {
         whichShelf.setPlaceholder("Select shelf");
         whichShelf.setItems(PredefinedShelf.ShelfName.values());
         whichShelf.setRequired(true);
-        whichShelf.addValueChangeListener(
-                event -> {
-                    if (event.getValue() == null) {
-                        LOGGER.log(Level.FINE, "No choice selected");
-                    } else {
-                        chosenShelf = event.getValue();
-                        updateList();
-                        showOrHideGridColumns(chosenShelf);
-                    }
-                });
+        whichShelf.addValueChangeListener(event -> {
+            if (event.getValue() == null) {
+                LOGGER.log(Level.FINE, "No choice selected");
+            } else {
+                chosenShelf = event.getValue();
+                updateList();
+                showOrHideGridColumns(chosenShelf);
+            }
+        });
     }
 
     void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) {
         switch (shelfName) {
-        case TO_READ:
-            toggleColumn(RATING_KEY, false);
-            toggleColumn(DATE_STARTED_KEY, false);
-            toggleColumn(DATE_FINISHED_KEY, false);
-            break;
-        case READING:
-        case DID_NOT_FINISH:
-            toggleColumn(RATING_KEY, false);
-            toggleColumn(DATE_STARTED_KEY, true);
-            toggleColumn(DATE_FINISHED_KEY, false);
-            break;
-        case READ:
-            toggleColumn(RATING_KEY, true);
-            toggleColumn(DATE_STARTED_KEY, true);
-            toggleColumn(DATE_FINISHED_KEY, true);
-            break;
+            case TO_READ:
+                toggleColumn(RATING_KEY, false);
+                toggleColumn(DATE_STARTED_KEY, false);
+                toggleColumn(DATE_FINISHED_KEY, false);
+                break;
+            case READING:
+            case DID_NOT_FINISH:
+                toggleColumn(RATING_KEY, false);
+                toggleColumn(DATE_STARTED_KEY, true);
+                toggleColumn(DATE_FINISHED_KEY, false);
+                break;
+            case READ:
+                toggleColumn(RATING_KEY, true);
+                toggleColumn(DATE_STARTED_KEY, true);
+                toggleColumn(DATE_FINISHED_KEY, true);
+                break;
         }
     }
 
@@ -153,14 +153,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     private void configureBookGrid() {
         addClassName("book-grid");
-        bookGrid.setColumns(
-                TITLE_KEY,
-                AUTHOR_KEY,
-                GENRE_KEY,
-                DATE_STARTED_KEY,
-                DATE_FINISHED_KEY,
-                RATING_KEY,
-                PAGES_KEY);
+        bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY, DATE_STARTED_KEY, DATE_FINISHED_KEY, RATING_KEY, PAGES_KEY);
         // Sort provided as setColumn provides default sort only for primitive Data types.
         sortColumn(AUTHOR_KEY);
     }
@@ -171,24 +164,24 @@ public class BooksInShelfView extends VerticalLayout {
      */
     private void sortColumn(final String columnName) {
         switch (columnName) {
-        case AUTHOR_KEY:
+          case AUTHOR_KEY:
             Column<Book> authorNameColumn = bookGrid.getColumnByKey(columnName);
             if (Objects.nonNull(authorNameColumn)) {
-                authorNameColumn.setComparator(
-                        (author, otherAuthor) ->
-                        author
-                        .getAuthor()
-                        .toString()
-                        .compareToIgnoreCase(otherAuthor.getAuthor().toString()));
+              authorNameColumn.setComparator(
+                  (author, otherAuthor) ->
+                  author
+                  .getAuthor()
+                  .toString()
+                  .compareToIgnoreCase(otherAuthor.getAuthor().toString()));
             } else {
-                LOGGER.log(Level.SEVERE, "Column AuthorName cannot be Loaded");
+              LOGGER.log(Level.SEVERE, "Column AuthorName cannot be Loaded");
             }
             break;
             // Future implementation of comparator when required
-        default:
+          default:
             break;
         }
-    }
+      }
 
     private void updateList() {
         if (chosenShelf == null) {
@@ -208,8 +201,7 @@ public class BooksInShelfView extends VerticalLayout {
                 PredefinedShelf selectedShelf = matchingShelves.get(0);
                 bookGrid.setItems(selectedShelf.getBooks());
             } else {
-                LOGGER.log(
-                        Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
+                LOGGER.log(Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
             }
         } else {
             LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
@@ -220,13 +212,12 @@ public class BooksInShelfView extends VerticalLayout {
         filterByTitle.setPlaceholder("Filter by book title");
         filterByTitle.setClearButtonVisible(true);
         filterByTitle.setValueChangeMode(ValueChangeMode.LAZY);
-        filterByTitle.addValueChangeListener(
-                event -> {
-                    if (event.getValue() != null) {
-                        bookTitle = event.getValue();
-                    }
-                    updateList();
-                });
+        filterByTitle.addValueChangeListener(event -> {
+            if (event.getValue() != null) {
+                bookTitle = event.getValue();
+            }
+            updateList();
+        });
     }
 
     private void editBook(Book book) {
