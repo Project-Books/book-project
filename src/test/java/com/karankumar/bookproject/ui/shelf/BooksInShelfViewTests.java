@@ -1,4 +1,28 @@
+/*
+    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    Copyright (C) 2020  Karan Kumar
+
+    This program is free software: you can redistribute it and/or modify it under the terms of the
+    GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with this program.
+    If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.karankumar.bookproject.ui.shelf;
+
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.AUTHOR_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_FINISHED_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_STARTED_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
+
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
@@ -10,6 +34,9 @@ import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.SpringServlet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -25,100 +52,87 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.AUTHOR_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_FINISHED_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_STARTED_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @WebAppConfiguration
 @DirtiesContext
 public class BooksInShelfViewTests {
 
-	private static Routes routes;
-	private BooksInShelfView shelfView;
+    private static Routes routes;
+    private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
+        TITLE_KEY,
+        AUTHOR_KEY,
+        GENRE_KEY,
+        PAGES_KEY
+    ));
+    private final ArrayList<String> expectedReadingColumns = new ArrayList<>(Arrays.asList(
+        TITLE_KEY,
+        AUTHOR_KEY,
+        GENRE_KEY,
+        DATE_STARTED_KEY,
+        PAGES_KEY
+    ));
+    private final ArrayList<String> expectedReadColumns = new ArrayList<>(Arrays.asList(
+        TITLE_KEY,
+        AUTHOR_KEY,
+        GENRE_KEY,
+        DATE_STARTED_KEY,
+        DATE_FINISHED_KEY,
+        RATING_KEY,
+        PAGES_KEY
+    ));
+    private BooksInShelfView shelfView;
+    @Autowired
+    private ApplicationContext ctx;
 
-	private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
-			TITLE_KEY,
-			AUTHOR_KEY,
-			GENRE_KEY,
-			PAGES_KEY
-	));
-	private final ArrayList<String> expectedReadingColumns = new ArrayList<>(Arrays.asList(
-			TITLE_KEY,
-			AUTHOR_KEY,
-			GENRE_KEY,
-			DATE_STARTED_KEY,
-			PAGES_KEY
-	));
-	private final ArrayList<String> expectedReadColumns = new ArrayList<>(Arrays.asList(
-			TITLE_KEY,
-			AUTHOR_KEY,
-			GENRE_KEY,
-			DATE_STARTED_KEY,
-			DATE_FINISHED_KEY,
-			RATING_KEY,
-			PAGES_KEY
-	));
+    @BeforeAll
+    public static void discoverRoutes() {
+        routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
+    }
 
-	@BeforeAll
-	public static void discoverRoutes() {
-		routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
-	}
+    @BeforeEach
+    public void setup(@Autowired BookService bookService,
+                      @Autowired PredefinedShelfService shelfService) {
+        final SpringServlet servlet = new MockSpringServlet(routes, ctx);
+        MockVaadin.setup(UI::new, servlet);
 
-	@Autowired
-	private ApplicationContext ctx;
+        Assumptions.assumeTrue(shelfService != null);
+        shelfView = new BooksInShelfView(bookService, shelfService);
+    }
 
-	@BeforeEach
-	public void setup(@Autowired BookService bookService, @Autowired PredefinedShelfService shelfService) {
-		final SpringServlet servlet = new MockSpringServlet(routes, ctx);
-		MockVaadin.setup(UI::new, servlet);
+    @AfterEach
+    public void tearDown() {
+        MockVaadin.tearDown();
+    }
 
-		Assumptions.assumeTrue(shelfService != null);
-		shelfView = new BooksInShelfView(bookService, shelfService);
-	}
+    @ParameterizedTest
+    @EnumSource(PredefinedShelf.ShelfName.class)
+    public void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
+        System.out.println("Shelf: " + shelfName);
 
-	@AfterEach
-	public void tearDown() {
-		MockVaadin.tearDown();
-	}
+        shelfView.showOrHideGridColumns(shelfName);
+        List<Grid.Column<Book>> columns = shelfView.bookGrid.getColumns();
 
-	@ParameterizedTest
-	@EnumSource(PredefinedShelf.ShelfName.class)
-	public void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
-		System.out.println("Shelf: " + shelfName);
+        ArrayList<String> expectedColumns = new ArrayList<>();
+        switch (shelfName) {
+            case TO_READ:
+                expectedColumns = expectedToReadColumns;
+                break;
+            case READING:
+            case DID_NOT_FINISH: // intentional
+                expectedColumns = expectedReadingColumns;
+                break;
+            case READ:
+                expectedColumns = expectedReadColumns;
+                break;
+        }
 
-		shelfView.showOrHideGridColumns(shelfName);
-		List<Grid.Column<Book>> columns = shelfView.bookGrid.getColumns();
-
-		ArrayList<String> expectedColumns = new ArrayList<>();
-		switch (shelfName) {
-			case TO_READ:
-				expectedColumns = expectedToReadColumns;
-				break;
-			case READING:
-			case DID_NOT_FINISH: // intentional
-				expectedColumns = expectedReadingColumns;
-				break;
-			case READ:
-				expectedColumns = expectedReadColumns;
-				break;
-		}
-
-		for (Grid.Column<Book> col : columns) {
-			if (expectedColumns.contains(col.getKey())) {
-				Assertions.assertTrue(col.isVisible(), col.getKey() + " column is not showing");
-			} else {
-				Assertions.assertFalse(col.isVisible(), col.getKey() + " column is showing");
-			}
-		}
-	}
+        for (Grid.Column<Book> col : columns) {
+            if (expectedColumns.contains(col.getKey())) {
+                Assertions.assertTrue(col.isVisible(), col.getKey() + " column is not showing");
+            } else {
+                Assertions.assertFalse(col.isVisible(), col.getKey() + " column is showing");
+            }
+        }
+    }
 }

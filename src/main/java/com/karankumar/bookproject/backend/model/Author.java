@@ -2,34 +2,31 @@
     The book project lets a user keep track of different books they've read, are currently reading or would like to read
     Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    This program is free software: you can redistribute it and/or modify it under the terms of the
+    GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License along with this program.
+    If not, see <https://www.gnu.org/licenses/>.
  */
+
 package com.karankumar.bookproject.backend.model;
 
+import javax.persistence.Entity;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 /**
  * A {@code Author} object represents a single Author with its corresponding metadata, such as a
- * first name, last name and a list of books
+ * first name, last name and a list of books.
  */
 @Entity
 @Data
@@ -38,12 +35,16 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 public class Author extends BaseEntity {
 
-  @NotNull @NotEmpty private String firstName;
+    @NotNull
+    @NotEmpty
+    private String firstName;
 
-  @NotNull @NotEmpty private String lastName;
+    @NotNull
+    @NotEmpty
+    private String lastName;
 
-  @Override
-  public String toString() {
-    return firstName + " " + lastName;
-  }
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }
