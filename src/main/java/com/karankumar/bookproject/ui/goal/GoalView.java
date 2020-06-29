@@ -13,30 +13,25 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.model;
+package com.karankumar.bookproject.ui.goal;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import com.karankumar.bookproject.ui.MainView;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 
-/**
- * The entity that all other entities inherit from.
- */
-@MappedSuperclass
-@EqualsAndHashCode
-public abstract class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Getter
-    private Long id;
+@Route(value = "goal", layout = MainView.class)
+@PageTitle("Goal | Book Project")
+public class GoalView extends HorizontalLayout {
+    public GoalView() {
+        H3 text = new H3("Coming soon");
+        VerticalLayout verticalLayout = new VerticalLayout(text);
+        verticalLayout.setAlignItems(Alignment.CENTER);
 
-    /**
-     * To be used sparingly and cautiously.
-     */
-    public void removeId() {
-        id = null;
+        add(verticalLayout);
+        setSizeFull();
+        setAlignItems(Alignment.CENTER);
     }
 }
