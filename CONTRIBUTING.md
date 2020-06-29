@@ -45,7 +45,7 @@ Please follow the process below:
 1. Tell us which issue you want to work on
 2. Discuss your implementation approach with us
 3. Fork the repository
-4. Create a new branch off master (unless the corresponding issue says otherwise). Your branch should have a descriptive branch name (that corresponds to the relevant issue) and include the issue number (e.g. `iss1048-add-styleguide`)
+4. Create a new branch off master (unless the corresponding issue says otherwise). Your branch should have a descriptive branch name (that corresponds to the relevant issue) and include the issue number (e.g. `add-styleguide-1048`)
 5. Submit a pull request to merge into the branch specified on the issue
 
 ### Commit messages
