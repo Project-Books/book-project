@@ -47,6 +47,12 @@ if (condition) {
 
 4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
 
+**120 character limit**
+
+A line should generally not exceed 120 characters (an IntelliJ default).
+
+Why 120 characters, not 100 characters (like the Google Java style guide)? You can have two files side by side that do not exceed 120 characters on a 1920x1080 display (at least in IntelliJ).
+
 **One statement per line**
 
 
