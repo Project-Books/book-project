@@ -36,6 +36,7 @@ import lombok.extern.java.Log;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
@@ -161,11 +162,13 @@ public class BooksInShelfView extends VerticalLayout {
         bookGrid.addColumn(new LocalDateRenderer<>(
                 Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
 				.setHeader("Date started reading")
+				.setComparator(Comparator.comparing(Book::getDateStartedReading))
                 .setKey(DATE_STARTED_KEY);
 
         bookGrid.addColumn(new LocalDateRenderer<>(
                 Book::getDateFinishedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
             .setHeader("Date finished reading")
+            .setComparator(Comparator.comparing(Book::getDateStartedReading))
 			.setSortable(true)
             .setKey(DATE_FINISHED_KEY);
 
