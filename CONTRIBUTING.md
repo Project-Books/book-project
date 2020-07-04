@@ -55,7 +55,7 @@ Please follow the process below:
 
 - Ensure your commit messages are descriptive (i.e. a commit message should effectively summarise what change(s) you made)
   - In line with this, you may want to break up your contribution into smaller commits
-  - Generally speaking, the default GitHub commit messages (e.g. `add [file]` or `update [file]` are not sufficient
+  - Generally speaking, the default GitHub commit messages (e.g. `add [file]` or `update [file]`) are not sufficient
 
 ### One problem per patch
 
