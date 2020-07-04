@@ -14,6 +14,16 @@ The styleguide used is an extension of the [Google Java style guide](https://goo
 Any differences are listed in this document. By contributing to this repository, you are expected to follow this style
 guide and, where it does not conflict with this style guide, Google's Java style guide.
 
+## Checking for violations
+
+We're currently using Checkstyle to check for style guide violations. To o check for any violations, you can run the following command in the root directory of the project:
+
+```
+$ ./mvnw validate
+```
+
+By using the maven wrapper, you don't need to have Maven installed. Alternatively, you could run `mvn validate` if you do have Maven installed.
+
 ## Formatting
 
 **Braces** 
@@ -36,6 +46,12 @@ if (condition) {
 **4 Spaces, no tabs**
 
 4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
+
+**120 character limit**
+
+A line should generally not exceed 120 characters (an IntelliJ default).
+
+Why 120 characters, not 100 characters (like the Google Java style guide)? You can have two files side by side that do not exceed 120 characters on a 1920x1080 display (at least in IntelliJ).
 
 **One statement per line**
 

@@ -5,6 +5,11 @@
 
 ## Summary
 
+
+  <p align="center">
+	<img src="/media/book-project-logo.png" alt="Logo"/>
+  </p>
+
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
 *Features:*
