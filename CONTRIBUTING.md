@@ -63,12 +63,9 @@ This makes it easier to keep track of what changes were made in what branch or p
 
 ## Code contributions
 
-Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md). As mentioned in our style guide, you can check for any violations by running `./mvnw validate`.
+Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
 
-Before submitting a pull request:
-- Ensure your patch branch on your fork is up-to-date with this repository's master branch
-- Run the unit tests and ensure they pass
-  - Please note that PredefinedShelfTests currently fail when all of the tests run collectively, but it passes when run individually (see issue #88). As long as that test still passes when you run it by itself, please submit your pull request.
+Before submitting a pull request, run the unit tests and ensure they pass. Please note that PredefinedShelfTests currently fail when all of the tests run collectively, but it passes when run individually (see issue #88). As long as that test still passes when you run it by itself, please submit your pull request.
   
 ## Stale issues & pull requests
 
