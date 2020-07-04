@@ -6,7 +6,7 @@
 
 *2) Please also ensure that you remain familiar with this contributing document as it may change from time to time.*
 
-Thank you for taking an interest in contributing!
+Thank you for taking an interest in contributing! Please note that by contributing to this project, you are expected to adhere to this contributing document.
 
 ## Code of Conduct
 
@@ -68,6 +68,15 @@ Before submitting a pull request:
 - Ensure your patch branch on your fork is up-to-date with this repository's master branch
 - Run the unit tests and ensure they pass
   - Please note that PredefinedShelfTests currently fail when all of the tests run collectively, but it passes when run individually (see issue #88). As long as that test still passes when you run it by itself, please submit your pull request.
+  
+## Stale issues & pull requests
+
+If you have been assigned to an issue and we have not heard back to you for 2 weeks (either through a message or seeing a pull request you made), we will send a friendly message asking whether everything is OK and whether you need a hand. If you need more time, the work is non-urgent and is not blocking anyone, that's completely fine, just let us know. 
+If possible, try to let us know how long it will take you to submit a ready-to-review pull request. If we have not heard back from you one week after our friendly reminder (i.e. 3 weeks after you were first assigned to the issue), we will unassign you from the issue. This is so that we can assign someone else to the issue. 
+
+Pull requests are similar. We will send a friendly reminder after two weeks of receiving the pull request or receiving your last message. If we don't hear back from you, we will close the pull request and label it as [stale](https://github.com/knjk04/book-project/labels/stale).
+
+For urgent work, such as fixing important bugs or work that is blocking others, a similar process will be followed but with shorter timescales. Exactly how long depends on the severity of the stale work. Where possible, we will inform you whether an issue is important so that you can know before picking it up. For high priority bugs, we recommend that you only take it up if you are able to commit to finishing it reasonably quickly.
 
 ## Ways to contribute
 
