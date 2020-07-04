@@ -56,7 +56,7 @@ Please also ensure that your commit messages are descriptive (i.e. a commit mess
 
 ### One problem per patch
 
-For every patch you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
+For every patch (i.e. pull request) you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
 
 This makes it easier to keep track of what changes were made in what branch or pull request when looking back.
 
