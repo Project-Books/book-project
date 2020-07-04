@@ -14,6 +14,18 @@ The styleguide used is an extension of the [Google Java style guide](https://goo
 Any differences are listed in this document. By contributing to this repository, you are expected to follow this style
 guide and, where it does not conflict with this style guide, Google's Java style guide.
 
+## IDE formatting
+
+IDE-specific code style files have been exported and can be imported into your IDE. The files are located in the
+[ide](https://github.com/knjk04/book-project/tree/master/ide) directory.
+
+For IntelliJ, you can use import the [code style file](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml).
+Go to File > Settings > Editor > Code Style > Java in Linux or Windows. Click on the settings cog and choose 
+Import Scheme > IntelliJ IDEA code style XML. 
+
+If you use Eclipse, you can import the formatter file by going to Window > Preferences > Java > Code Style > Formatter
+and selecting the import button to import the [Eclipse code style file](https://github.com/knjk04/book-project/blob/master/ide/eclipse/book_project_formatter_profile.xml).
+
 ## Checking for violations
 
 We're currently using Checkstyle to check for style guide violations. To o check for any violations, you can run the following command in the root directory of the project:
