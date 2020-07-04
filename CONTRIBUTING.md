@@ -2,7 +2,7 @@
 
 *Notes:*
 
-*1) Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/edit/master/CONTRIBUTING.md).*
+*1) Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/README.md).*
 
 *2) Please also ensure that you remain familiar with this contributing document as it may change from time to time.*
 
