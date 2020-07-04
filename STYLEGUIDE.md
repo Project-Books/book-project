@@ -19,9 +19,17 @@ guide and, where it does not conflict with this style guide, Google's Java style
 IDE-specific code style files have been exported and can be imported into your IDE. The files are located in the
 [ide](https://github.com/knjk04/book-project/tree/master/ide) directory.
 
+<p align="center">
+  <img src="/media/intellij_code_style.png" alt="Import IntelliJ code style file"/>
+</p>
+
 For IntelliJ, you can use import the [code style file](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml).
 Go to File > Settings > Editor > Code Style > Java in Linux or Windows. Click on the settings cog and choose 
 Import Scheme > IntelliJ IDEA code style XML. 
+
+<p align="center">
+  <img src="/media/eclipse_code_style.png" alt="Import Eclipse code style file"/>
+</p>
 
 If you use Eclipse, you can import the formatter file by going to Window > Preferences > Java > Code Style > Formatter
 and selecting the import button to import the [Eclipse code style file](https://github.com/knjk04/book-project/blob/master/ide/eclipse/book_project_formatter_profile.xml).
