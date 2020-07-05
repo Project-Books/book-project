@@ -57,6 +57,18 @@ import javax.transaction.NotSupportedException;
 )
 @Log
 public class BookForm extends VerticalLayout {
+    private final TextField bookTitle = new TextField();
+    private final IntegerField bookSeries = new IntegerField();
+    private final TextField authorFirstName = new TextField();
+    private final TextField authorLastName = new TextField();
+    private final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
+    private final ComboBox<Genre> bookGenre = new ComboBox<>();
+    private final IntegerField pageCount = new IntegerField();
+
+    private final DatePicker dateStartedReading = new DatePicker();
+    private final DatePicker dateFinishedReading = new DatePicker();
+    private final NumberField rating = new NumberField();
+
     private static final String ENTER_DATE = "Enter a date";
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
@@ -93,6 +105,7 @@ public class BookForm extends VerticalLayout {
         configureAuthor();
         configureShelf();
         configureGenre();
+        configureSeries();
         configurePageCount();
         configureDateStarted();
         configureDateFinished();
@@ -101,15 +114,16 @@ public class BookForm extends VerticalLayout {
         HorizontalLayout buttons = configureButtons();
 
         HasSize[] components = {
-            bookTitle,
-            authorFirstName,
-            authorLastName,
-            dateStartedReading,
-            dateFinishedReading,
-            bookGenre,
-            shelf,
-            pageCount,
-            rating,
+                bookTitle,
+                authorFirstName,
+                authorLastName,
+                bookSeries,
+                dateStartedReading,
+                dateFinishedReading,
+                bookGenre,
+                shelf,
+                pageCount,
+                rating,
         };
         setComponentMinWidth(components);
 
@@ -118,6 +132,7 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(shelf, "Book shelf *");
         formLayout.addFormItem(authorFirstName, "Author's first name *");
         formLayout.addFormItem(authorLastName, "Author's last name *");
+        formLayout.addFormItem(bookSeries, "Series number");
         started = formLayout.addFormItem(dateStartedReading, "Date started");
         finished = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
@@ -164,8 +179,11 @@ public class BookForm extends VerticalLayout {
                 "Please enter the author's last name")
             .bind("author.lastName");
         binder.forField(shelf)
-            .withValidator(Objects::nonNull, "Please select a shelf")
-            .bind("shelf.shelfName");
+                .withValidator(Objects::nonNull, "Please select a shelf")
+                .bind("shelf.shelfName");
+        binder.forField(bookSeries).withValidator(series -> (series == null || series > 0),
+                "Book series should not be negative")
+                .bind(Book::getSeries, Book::setSeries);
         binder.forField(dateStartedReading)
             .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
                 AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
@@ -243,6 +261,13 @@ public class BookForm extends VerticalLayout {
 
                     } else {
                         LOGGER.log(Level.SEVERE, "Null shelf");
+                    }
+
+
+                    if(bookSeries.getValue() != null && bookSeries.getValue() > 0){
+                        book.setSeries(bookSeries.getValue());
+                    }else if(bookSeries.getValue() != null){
+                        LOGGER.log(Level.SEVERE, "Negative Series value");
                     }
 
                     binder.setBean(book);
@@ -331,6 +356,12 @@ public class BookForm extends VerticalLayout {
     private void configureGenre() {
         bookGenre.setItems(Genre.values());
         bookGenre.setPlaceholder("Choose a book genre");
+    }
+
+    private void configureSeries(){
+        bookSeries.setPlaceholder("Enter the position of the book in its series");
+        bookSeries.setMin(1);
+        bookSeries.setHasControls(true);
     }
 
     private void configureShelf() {
@@ -426,15 +457,16 @@ public class BookForm extends VerticalLayout {
 
     private void clearForm() {
         HasValue[] components = {
-            bookTitle,
-            authorFirstName,
-            authorLastName,
-            shelf,
-            bookGenre,
-            pageCount,
-            dateStartedReading,
-            dateFinishedReading,
-            rating,
+                bookTitle,
+                authorFirstName,
+                authorLastName,
+                shelf,
+                bookSeries,
+                bookGenre,
+                pageCount,
+                dateStartedReading,
+                dateFinishedReading,
+                rating,
         };
         saveButton.setText(LABEL_ADD_BOOK);
         for (HasValue component : components) {

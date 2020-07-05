@@ -114,29 +114,30 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
             List<Author> authors = authorRepository.findAll();
 
             bookRepository.saveAll(
-                Stream.of(
-                    "Harry Potter and the Philosopher's stone",
-                    "Stardust",
-                    "Harry Potter and the Chamber of Secrets",
-                    "Harry Potter and the Prisoner of Azkaban",
-                    "Origin",
-                    "Harry Potter and the Goblet of Fire",
-                    "Harry Potter and the Order of Phoenix",
-                    "Matilda",
-                    "Harry Potter and the Half-Blood Prince",
-                    "The Hobbit",
-                    "Harry Potter and the Deathly Hallows")
-                    .map(title -> {
-                        int min = 300;
-                        int max = 1000;
-                        int range = (max - min) + 1;
-                        int pages = (int) (Math.random() * range);
-
-                        Author author = authors.get(random.nextInt(authors.size()));
-                        Book book = new Book(title, author);
-                        Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
-                        book.setGenre(genre);
-                        book.setNumberOfPages(pages);
+                    Stream.of(
+                            "Harry Potter and the Philosopher's stone",
+                            "Stardust",
+                            "Harry Potter and the Chamber of Secrets",
+                            "Harry Potter and the Prisoner of Azkaban",
+                            "Origin",
+                            "Harry Potter and the Goblet of Fire",
+                            "Harry Potter and the Order of Phoenix",
+                            "Matilda",
+                            "Harry Potter and the Half-Blood Prince",
+                            "The Hobbit",
+                            "Harry Potter and the Deathly Hallows")
+                            .map(title -> {
+                                int min = 300;
+                                int max = 1000;
+                                int range = (max - min) + 1;
+                                int pages = (int) (Math.random() * range);
+                                int series = (int) (1+Math.random()*10);
+                                Author author = authors.get(random.nextInt(authors.size()));
+                                Book book = new Book(title, author);
+                                Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
+                                book.setGenre(genre);
+                                book.setSeries(series);
+                                book.setNumberOfPages(pages);
 
                         return book;
                     }).collect(Collectors.toList()));

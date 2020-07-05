@@ -144,8 +144,24 @@ public class BooksInShelfView extends VerticalLayout {
         bookGrid.getColumnByKey(columnKey).setVisible(isOn);
     }
 
+    private String combineTitleAndSeries(Book book){
+        String result;
+        if(book.getSeries() != null && book.getSeries() > 0){
+            result = String.format("%s (#%d)", book.getTitle(), book.getSeries());
+        }else{
+            result = book.getTitle();
+        }
+        return result;
+    }
+
     private void configureBookGrid() {
         addClassName("book-grid");
+        bookGrid.setColumns();
+        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
+                .setHeader("Title").setKey("title")
+                .setSortable(true);
+        bookGrid.addColumns("author", "genre", "dateStartedReading", "dateFinishedReading", "rating",
+                "numberOfPages");
         bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY, DATE_STARTED_KEY, DATE_FINISHED_KEY, RATING_KEY, PAGES_KEY);
     }
 
