@@ -2,11 +2,11 @@
 
 *Notes:*
 
-*1) Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/edit/master/CONTRIBUTING.md).*
+*1) Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/README.md).*
 
 *2) Please also ensure that you remain familiar with this contributing document as it may change from time to time.*
 
-Thank you for taking an interest in contributing!
+Thank you for taking an interest in contributing! Please note that by contributing to this project, you are expected to adhere to this contributing document.
 
 ## Code of Conduct
 
@@ -46,34 +46,44 @@ Please follow the process below:
 2. Discuss your implementation approach with us
 3. Fork the repository
 4. Create a new branch off master (unless the corresponding issue says otherwise). Your branch should have a descriptive branch name (that corresponds to the relevant issue) and include the issue number (e.g. `add-styleguide-1048`)
-5. Submit a pull request to merge into the branch specified on the issue
+5. Bring your branch level with the branch you're going to be branching into before submitting a pull request (we recommend rebasing)
+6. Submit a pull request to merge into the branch specified on the issue (or master if a branch is not specified)
 
 ### Commit messages
 
-Use the present tense (e.g. "add converter", not "added converter") for git commit messages.
+- Use the present tense (e.g. "add converter", not "added converter")
 
-Please also ensure that your commit messages are descriptive (i.e. a commit message should effectively summarise what change(s) you made).
+- Ensure your commit messages are descriptive (i.e. a commit message should effectively summarise what change(s) you made)
+  - In line with this, you may want to break up your contribution into smaller commits
+  - Generally speaking, the default GitHub commit messages (e.g. `add [file]` or `update [file]`) are not sufficient
 
 ### One problem per patch
 
-For every patch you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
+For every patch (i.e. pull request) you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
 
 This makes it easier to keep track of what changes were made in what branch or pull request when looking back.
 
 ## Code contributions
 
-Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md). As mentioned in our style guide, you can check for any violations by running `./mvnw validate`.
+Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
 
-Before submitting a pull request:
-- Ensure your patch branch on your fork is up-to-date with this repository's master branch
-- Run the unit tests and ensure they pass
-  - Please note that PredefinedShelfTests currently fail when all of the tests run collectively, but it passes when run individually (see issue #88). As long as that test still passes when you run it by itself, please submit your pull request.
+Before submitting a pull request, run the unit tests and ensure they pass.
+  
+## Stale issues & pull requests
+
+If you have been assigned to an issue and we have not heard back to you for 2 weeks (either through a message or seeing a pull request you made), we will send a friendly message asking whether everything is OK and whether you need a hand. If you need more time, the work is non-urgent and is not blocking anyone, that's completely fine, just let us know. 
+If possible, try to let us know how long it will take you to submit a ready-to-review pull request. If we have not heard back from you one week after our friendly reminder (i.e. 3 weeks after you were first assigned to the issue), we will unassign you from the issue. This is so that we can assign someone else to the issue. 
+
+Pull requests are similar. We will send a friendly reminder after two weeks of receiving the pull request or receiving your last message. If we don't hear back from you, we will close the pull request and label it as [stale](https://github.com/knjk04/book-project/labels/stale).
+
+For urgent work, such as fixing important bugs or work that is blocking others, a similar process will be followed but with shorter timescales. Exactly how long depends on the severity of the stale work. Where possible, we will inform you whether an issue is important so that you can know before picking it up. For high priority bugs, we recommend that you only take it up if you are able to commit to finishing it reasonably quickly.
 
 ## Ways to contribute
 
 - Code: adding new features, fixing bugs and general refactoring to name a few
+  - Issues and pull requests labelled with [needs-repro](https://github.com/knjk04/book-project/labels/needs-repro) have yet to be reproduced. If you're able to reproduce it, letting us know would help a lot
 
-- Documentation: improvements to files such as the [README](https://github.com/knjk04/book-project/blob/master/README.md), any of the [wiki](https://github.com/knjk04/book-project/wiki) pages, the [style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md), comments in source files, this contributing document or the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
+- Documentation: improvements (including fixing typos!) to files such as the [README](https://github.com/knjk04/book-project/blob/master/README.md), any of the [wiki](https://github.com/knjk04/book-project/wiki) pages, the [style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md), comments in source files, this contributing document or the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
 
 - Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings)
 
