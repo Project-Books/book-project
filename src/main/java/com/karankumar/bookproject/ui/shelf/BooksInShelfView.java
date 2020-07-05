@@ -39,7 +39,6 @@ import java.time.format.FormatStyle;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
-import lombok.extern.java.Log;
 
 /**
  * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}.
@@ -157,9 +156,9 @@ public class BooksInShelfView extends VerticalLayout {
 
     private String combineTitleAndSeries(Book book){
         String result;
-        if(book.getSeries() != null && book.getSeries() > 0){
-            result = String.format("%s (#%d)", book.getTitle(), book.getSeries());
-        }else{
+        if (book.getSeriesPosition() != null && book.getSeriesPosition() > 0) {
+            result = String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
+        } else {
             result = book.getTitle();
         }
         return result;

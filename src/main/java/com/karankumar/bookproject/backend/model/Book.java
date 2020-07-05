@@ -45,7 +45,7 @@ public class Book extends BaseEntity {
 
     private Genre genre;
 
-    private Integer series;
+    private Integer seriesPosition;
 
     // For books that have been read
     private RatingScale rating;
@@ -72,11 +72,11 @@ public class Book extends BaseEntity {
             + '}';
     }
 
-    public Integer getSeries() {
-        return series;
+    public Integer getSeriesPosition() {
+        return seriesPosition;
     }
 
-    public void setSeries(Integer series) {
-        this.series = series;
+    public void setSeriesPosition(Integer series) {
+        this.seriesPosition = series;
     }
 }

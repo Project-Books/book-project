@@ -60,7 +60,7 @@ public class BookForm extends VerticalLayout {
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
     public final TextField bookTitle = new TextField();
-    public final IntegerField bookSeriesPosition = new IntegerField();
+    public final IntegerField seriesPosition = new IntegerField();
     public final TextField authorFirstName = new TextField();
     public final TextField authorLastName = new TextField();
     public final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
@@ -93,7 +93,7 @@ public class BookForm extends VerticalLayout {
         configureAuthor();
         configureShelf();
         configureGenre();
-        configureSeries();
+        configureSeriesPosition();
         configurePageCount();
         configureDateStarted();
         configureDateFinished();
@@ -105,7 +105,7 @@ public class BookForm extends VerticalLayout {
                 bookTitle,
                 authorFirstName,
                 authorLastName,
-                bookSeriesPosition,
+                seriesPosition,
                 dateStartedReading,
                 dateFinishedReading,
                 bookGenre,
@@ -120,7 +120,7 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(shelf, "Book shelf *");
         formLayout.addFormItem(authorFirstName, "Author's first name *");
         formLayout.addFormItem(authorLastName, "Author's last name *");
-        formLayout.addFormItem(bookSeriesPosition, "Series number");
+        formLayout.addFormItem(seriesPosition, "Series number");
         started = formLayout.addFormItem(dateStartedReading, "Date started");
         finished = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
@@ -169,9 +169,9 @@ public class BookForm extends VerticalLayout {
         binder.forField(shelf)
                 .withValidator(Objects::nonNull, "Please select a shelf")
                 .bind("shelf.shelfName");
-        binder.forField(bookSeriesPosition).withValidator(series -> (series == null || series > 0),
-                "Book series should not be negative")
-                .bind(Book::getSeries, Book::setSeries);
+        binder.forField(seriesPosition).withValidator(series -> (series == null || series > 0),
+                "Book series must be at least 1")
+                .bind(Book::getSeriesPosition, Book::setSeriesPosition);
         binder.forField(dateStartedReading)
             .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
                 AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
@@ -252,9 +252,9 @@ public class BookForm extends VerticalLayout {
                     }
 
 
-                    if(bookSeriesPosition.getValue() != null && bookSeriesPosition.getValue() > 0){
-                        book.setSeries(bookSeriesPosition.getValue());
-                    }else if(bookSeriesPosition.getValue() != null){
+                    if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
+                        book.setSeriesPosition(seriesPosition.getValue());
+                    } else if (seriesPosition.getValue() != null) {
                         LOGGER.log(Level.SEVERE, "Negative Series value");
                     }
 
@@ -346,10 +346,10 @@ public class BookForm extends VerticalLayout {
         bookGenre.setPlaceholder("Choose a book genre");
     }
 
-    private void configureSeries(){
-        bookSeriesPosition.setPlaceholder("Enter the position of the book in its series");
-        bookSeriesPosition.setMin(1);
-        bookSeriesPosition.setHasControls(true);
+    private void configureSeriesPosition(){
+        seriesPosition.setPlaceholder("Enter series position");
+        seriesPosition.setMin(1);
+        seriesPosition.setHasControls(true);
     }
 
     private void configureShelf() {
@@ -449,7 +449,7 @@ public class BookForm extends VerticalLayout {
                 authorFirstName,
                 authorLastName,
                 shelf,
-                bookSeriesPosition,
+                seriesPosition,
                 bookGenre,
                 pageCount,
                 dateStartedReading,
