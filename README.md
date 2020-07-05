@@ -5,7 +5,6 @@
 
 ## Summary
 
-
   <p align="center">
 	<img src="/media/book-project-logo.png" alt="Logo"/>
   </p>
@@ -43,6 +42,11 @@ Prerequisites: JDK 11 (or higher), Node.js and npm
 5. Log in with the details below:
     - Username: `user`
     - Password: `password`
+    
+    
+  <p align="center">
+	<img src="/media/intellij_annotation_processing.png" alt="Enable IntelliJ annotation processing"/>
+  </p>
     
 In IntelliJ, you may find lots of errors for things like the log statements and the entities not having constructors.
 To remove the errors in IntelliJ, install the [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok) and enable annotation 
