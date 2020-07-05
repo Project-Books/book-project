@@ -156,22 +156,22 @@ public class BookForm extends VerticalLayout {
         final String AFTER_TODAY_SUFFIX = "reading the book cannot be after today's date.";
 
         binder.forField(bookTitle)
-            .asRequired("Please provide a book title")
-            .bind(Book::getTitle, Book::setTitle);
+              .asRequired("Please provide a book title")
+              .bind(Book::getTitle, Book::setTitle);
         binder.forField(authorFirstName)
             .withValidator(firstName -> (firstName != null && !firstName.isEmpty()),
-                "Please enter the author's first name")
+                    "Please enter the author's first name")
             .bind("author.firstName");
         binder.forField(authorLastName)
-            .withValidator(lastName -> (lastName != null && !lastName.isEmpty()),
+              .withValidator(lastName -> (lastName != null && !lastName.isEmpty()),
                 "Please enter the author's last name")
-            .bind("author.lastName");
+              .bind("author.lastName");
         binder.forField(shelf)
-                .withValidator(Objects::nonNull, "Please select a shelf")
-                .bind("shelf.shelfName");
-        binder.forField(seriesPosition).withValidator(series -> (series == null || series > 0),
-                "Series position must be at least 1")
-                .bind(Book::getSeriesPosition, Book::setSeriesPosition);
+              .withValidator(Objects::nonNull, "Please select a shelf")
+              .bind("shelf.shelfName");
+        binder.forField(seriesPosition)
+              .withValidator(series -> (series == null || series > 0), "Series position must be at least 1")
+              .bind(Book::getSeriesPosition, Book::setSeriesPosition);
         binder.forField(dateStartedReading)
             .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
                 AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
@@ -185,12 +185,12 @@ public class BookForm extends VerticalLayout {
                 AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
             .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(pageCount)
-            .bind(Book::getNumberOfPages, Book::setNumberOfPages);
+              .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(bookGenre)
-            .bind(Book::getGenre, Book::setGenre);
+              .bind(Book::getGenre, Book::setGenre);
         binder.forField(rating)
-            .withConverter(new DoubleToRatingScaleConverter())
-            .bind(Book::getRating, Book::setRating);
+              .withConverter(new DoubleToRatingScaleConverter())
+              .bind(Book::getRating, Book::setRating);
     }
 
     private HorizontalLayout configureButtons() {
