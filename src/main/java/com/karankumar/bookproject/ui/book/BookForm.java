@@ -170,7 +170,7 @@ public class BookForm extends VerticalLayout {
                 .withValidator(Objects::nonNull, "Please select a shelf")
                 .bind("shelf.shelfName");
         binder.forField(seriesPosition).withValidator(series -> (series == null || series > 0),
-                "Book series must be at least 1")
+                "Series position must be at least 1")
                 .bind(Book::getSeriesPosition, Book::setSeriesPosition);
         binder.forField(dateStartedReading)
             .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
