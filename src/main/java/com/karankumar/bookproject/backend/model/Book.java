@@ -71,12 +71,4 @@ public class Book extends BaseEntity {
             + "title='" + title + '\''
             + '}';
     }
-
-    public Integer getSeriesPosition() {
-        return seriesPosition;
-    }
-
-    public void setSeriesPosition(Integer series) {
-        this.seriesPosition = series;
-    }
 }
