@@ -90,6 +90,10 @@ int booksSold = 1_000_000_000;
 
 ## Javadoc
 
+**Class comments**
+
+Every class should have a one sentence Javadoc summary explaining what the class is for.
+
 **No @author tag**
 
 Author tags can quickly become outdated as methods are updated or completely written by new authors. Git is far better
