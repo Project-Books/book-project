@@ -68,6 +68,12 @@ This makes it easier to keep track of what changes were made in what branch or p
 Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
 
 Before submitting a pull request, run the unit tests and ensure they pass.
+
+## Pull requests
+
+If you've opened a pull request but it is not yet ready for a review, please convert it to a draft. Otherwise, we may help you out by adding to your branch while you're also working on it if the changes needed are small or if the work needs to be completed quickly (e.g. if it is a high priority bug or if it is blocking other work). 
+
+The same applies for pull requests where we've request changes -- mark it as a draft until you're ready for another review. 
   
 ## Stale issues & pull requests
 
