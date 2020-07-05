@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
-import org.hibernate.event.spi.DeleteEvent;
 
 import javax.transaction.NotSupportedException;
 
@@ -57,22 +56,11 @@ import javax.transaction.NotSupportedException;
 )
 @Log
 public class BookForm extends VerticalLayout {
-    private final TextField bookTitle = new TextField();
-    private final IntegerField bookSeries = new IntegerField();
-    private final TextField authorFirstName = new TextField();
-    private final TextField authorLastName = new TextField();
-    private final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
-    private final ComboBox<Genre> bookGenre = new ComboBox<>();
-    private final IntegerField pageCount = new IntegerField();
-
-    private final DatePicker dateStartedReading = new DatePicker();
-    private final DatePicker dateFinishedReading = new DatePicker();
-    private final NumberField rating = new NumberField();
-
     private static final String ENTER_DATE = "Enter a date";
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
     public final TextField bookTitle = new TextField();
+    public final IntegerField bookSeriesPosition = new IntegerField();
     public final TextField authorFirstName = new TextField();
     public final TextField authorLastName = new TextField();
     public final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
@@ -117,7 +105,7 @@ public class BookForm extends VerticalLayout {
                 bookTitle,
                 authorFirstName,
                 authorLastName,
-                bookSeries,
+                bookSeriesPosition,
                 dateStartedReading,
                 dateFinishedReading,
                 bookGenre,
@@ -132,7 +120,7 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(shelf, "Book shelf *");
         formLayout.addFormItem(authorFirstName, "Author's first name *");
         formLayout.addFormItem(authorLastName, "Author's last name *");
-        formLayout.addFormItem(bookSeries, "Series number");
+        formLayout.addFormItem(bookSeriesPosition, "Series number");
         started = formLayout.addFormItem(dateStartedReading, "Date started");
         finished = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
@@ -181,7 +169,7 @@ public class BookForm extends VerticalLayout {
         binder.forField(shelf)
                 .withValidator(Objects::nonNull, "Please select a shelf")
                 .bind("shelf.shelfName");
-        binder.forField(bookSeries).withValidator(series -> (series == null || series > 0),
+        binder.forField(bookSeriesPosition).withValidator(series -> (series == null || series > 0),
                 "Book series should not be negative")
                 .bind(Book::getSeries, Book::setSeries);
         binder.forField(dateStartedReading)
@@ -264,9 +252,9 @@ public class BookForm extends VerticalLayout {
                     }
 
 
-                    if(bookSeries.getValue() != null && bookSeries.getValue() > 0){
-                        book.setSeries(bookSeries.getValue());
-                    }else if(bookSeries.getValue() != null){
+                    if(bookSeriesPosition.getValue() != null && bookSeriesPosition.getValue() > 0){
+                        book.setSeries(bookSeriesPosition.getValue());
+                    }else if(bookSeriesPosition.getValue() != null){
                         LOGGER.log(Level.SEVERE, "Negative Series value");
                     }
 
@@ -359,9 +347,9 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureSeries(){
-        bookSeries.setPlaceholder("Enter the position of the book in its series");
-        bookSeries.setMin(1);
-        bookSeries.setHasControls(true);
+        bookSeriesPosition.setPlaceholder("Enter the position of the book in its series");
+        bookSeriesPosition.setMin(1);
+        bookSeriesPosition.setHasControls(true);
     }
 
     private void configureShelf() {
@@ -461,7 +449,7 @@ public class BookForm extends VerticalLayout {
                 authorFirstName,
                 authorLastName,
                 shelf,
-                bookSeries,
+                bookSeriesPosition,
                 bookGenre,
                 pageCount,
                 dateStartedReading,
