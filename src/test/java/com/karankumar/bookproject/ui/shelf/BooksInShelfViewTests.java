@@ -55,7 +55,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @WebAppConfiguration
-@DirtiesContext
 public class BooksInShelfViewTests {
 
     private static Routes routes;
