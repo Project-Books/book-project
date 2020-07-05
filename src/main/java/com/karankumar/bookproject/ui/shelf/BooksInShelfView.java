@@ -42,7 +42,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
-
 import lombok.extern.java.Log;
 
 /**
@@ -159,6 +158,16 @@ public class BooksInShelfView extends VerticalLayout {
         }
     }
 
+    private String combineTitleAndSeries(Book book){
+        String result;
+        if (book.getSeriesPosition() != null && book.getSeriesPosition() > 0) {
+            result = String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
+        } else {
+            result = book.getTitle();
+        }
+        return result;
+    }
+
     private void configureBookGrid() {
         addClassName("book-grid");
 
@@ -198,8 +207,11 @@ public class BooksInShelfView extends VerticalLayout {
             default:
                 break;
         }
-
-        bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY);
+        bookGrid.setColumns();
+        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
+                .setHeader("Title").setKey(TITLE_KEY)
+                .setSortable(true);
+        bookGrid.addColumns(AUTHOR_KEY, GENRE_KEY);
 
         bookGrid.addColumn(new LocalDateRenderer<>(
                 Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))

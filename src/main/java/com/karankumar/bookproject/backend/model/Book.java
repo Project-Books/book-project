@@ -45,6 +45,8 @@ public class Book extends BaseEntity {
 
     private Genre genre;
 
+    private Integer seriesPosition;
+
     // For books that have been read
     private RatingScale rating;
     private LocalDate dateStartedReading;
