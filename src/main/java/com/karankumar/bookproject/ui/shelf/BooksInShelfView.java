@@ -1,17 +1,17 @@
 /*
-    The book project lets a user keep track of different books they've read, are currently reading or would like to read
-    Copyright (C) 2020  Karan Kumar
+   The book project lets a user keep track of different books they've read, are currently reading or would like to read
+   Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+   This program is free software: you can redistribute it and/or modify it under the terms of the
+   GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+   warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
- */
+   You should have received a copy of the GNU General Public License along with this program.
+   If not, see <https://www.gnu.org/licenses/>.
+*/
 
 package com.karankumar.bookproject.ui.shelf;
 
@@ -24,6 +24,7 @@ import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.Grid.Column;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -32,18 +33,20 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+
 import lombok.extern.java.Log;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
+import lombok.extern.java.Log;
 
 /**
  * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}.
  */
-
 @Route(value = "", layout = MainView.class)
 @RouteAlias(value = "myBooks", layout = MainView.class)
 @PageTitle("My Books | Book Project")
@@ -80,11 +83,11 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm = new BookForm(shelfService);
 
         Button addBook = new Button("Add book");
-        addBook.addClickListener(e -> {
-            bookForm.addBook();
-        });
-        HorizontalLayout horizontalLayout =
-            new HorizontalLayout(whichShelf, filterByTitle, addBook);
+        addBook.addClickListener(
+                e -> {
+                    bookForm.addBook();
+                });
+        HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle, addBook);
         horizontalLayout.setAlignItems(Alignment.END);
 
         configureBookGrid();
@@ -96,32 +99,33 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
 
         bookGrid
-            .asSingleSelect()
-            .addValueChangeListener(
-                event -> {
-                    if (event == null) {
-                        LOGGER.log(Level.FINE, "Event is null");
-                    } else if (event.getValue() == null) {
-                        LOGGER.log(Level.FINE, "Event value is null");
-                    } else {
-                        editBook(event.getValue());
-                    }
-                });
+                .asSingleSelect()
+                .addValueChangeListener(
+                        event -> {
+                            if (event == null) {
+                                LOGGER.log(Level.FINE, "Event is null");
+                            } else if (event.getValue() == null) {
+                                LOGGER.log(Level.FINE, "Event value is null");
+                            } else {
+                                editBook(event.getValue());
+                            }
+                        });
     }
 
     private void configureChosenShelf() {
         whichShelf.setPlaceholder("Select shelf");
         whichShelf.setItems(PredefinedShelf.ShelfName.values());
         whichShelf.setRequired(true);
-        whichShelf.addValueChangeListener(event -> {
-            if (event.getValue() == null) {
-                LOGGER.log(Level.FINE, "No choice selected");
-            } else {
-                chosenShelf = event.getValue();
-                updateList();
-                showOrHideGridColumns(chosenShelf);
-            }
-        });
+        whichShelf.addValueChangeListener(
+                event -> {
+                    if (event.getValue() == null) {
+                        LOGGER.log(Level.FINE, "No choice selected");
+                    } else {
+                        chosenShelf = event.getValue();
+                        updateList();
+                        showOrHideGridColumns(chosenShelf);
+                    }
+                });
     }
 
     void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) {
@@ -166,11 +170,48 @@ public class BooksInShelfView extends VerticalLayout {
 
     private void configureBookGrid() {
         addClassName("book-grid");
+
+        bookGrid.setColumns(
+                TITLE_KEY,
+                AUTHOR_KEY,
+                GENRE_KEY,
+                DATE_STARTED_KEY,
+                DATE_FINISHED_KEY,
+                RATING_KEY,
+                PAGES_KEY);
+        // Sort provided as setColumn provides default sort only for primitive Data types.
+        sortColumn(AUTHOR_KEY);
+    }
+
+    /**
+     * Sorts Column by Name of the Author
+     *
+     * @param columnName
+     */
+    private void sortColumn(final String columnName) {
+        switch (columnName) {
+            case AUTHOR_KEY:
+                Column<Book> authorNameColumn = bookGrid.getColumnByKey(columnName);
+                if (Objects.nonNull(authorNameColumn)) {
+                    authorNameColumn.setComparator(
+                            (author, otherAuthor) ->
+                                    author
+                                            .getAuthor()
+                                            .toString()
+                                            .compareToIgnoreCase(otherAuthor.getAuthor().toString()));
+                } else {
+                    LOGGER.log(Level.SEVERE, "Column AuthorName cannot be Loaded");
+                }
+                break;
+            // Future implementation of comparator when required
+            default:
+                break;
+        }
         bookGrid.setColumns();
         bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
                 .setHeader("Title").setKey(TITLE_KEY)
                 .setSortable(true);
-        bookGrid.addColumns(AUTHOR_KEY, GENRE_KEY);
+        bookGrid.setColumns(AUTHOR_KEY, GENRE_KEY);
 
         bookGrid.addColumn(new LocalDateRenderer<>(
                 Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
@@ -207,7 +248,8 @@ public class BooksInShelfView extends VerticalLayout {
                 PredefinedShelf selectedShelf = matchingShelves.get(0);
                 bookGrid.setItems(selectedShelf.getBooks());
             } else {
-                LOGGER.log(Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
+                LOGGER.log(
+                        Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
             }
         } else {
             LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
@@ -218,12 +260,13 @@ public class BooksInShelfView extends VerticalLayout {
         filterByTitle.setPlaceholder("Filter by book title");
         filterByTitle.setClearButtonVisible(true);
         filterByTitle.setValueChangeMode(ValueChangeMode.LAZY);
-        filterByTitle.addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-                bookTitle = event.getValue();
-            }
-            updateList();
-        });
+        filterByTitle.addValueChangeListener(
+                event -> {
+                    if (event.getValue() != null) {
+                        bookTitle = event.getValue();
+                    }
+                    updateList();
+                });
     }
 
     private void editBook(Book book) {
