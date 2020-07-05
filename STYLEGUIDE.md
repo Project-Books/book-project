@@ -76,23 +76,24 @@ Why 120 characters, not 100 characters (like the Google Java style guide)? You c
 **One statement per line**
 
 
+
 **Underscores in numeric literals**
 
-For numeric literals that are one million or higher, underscores are recommended to separate digits by thousands:
+For numeric literals that are ten thousand or higher, underscores are recommended to separate digits by thousands:
 
 ```java
 // bad
-int booksSold = 1000000000;
+int booksSold = 10000;
 
 // good
-int booksSold = 1_000_000_000;
+int booksSold = 10_000;
 ```
 
 ## Javadoc
 
-**Class comments**
+**Class, interface & enum comments**
 
-Every class should have a one sentence Javadoc summary explaining what the class is for.
+Every class, interface and enum should have a one sentence Javadoc summary explaining what the class is for.
 
 **No @author tag**
 
