@@ -77,7 +77,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         if (shelfName == null) {
             return shelfRepository.findAll();
         } else {
-            return shelfRepository.search(shelfName);
+            return shelfRepository.findPredefinedShelfByShelfName(shelfName);
         }
     }
 

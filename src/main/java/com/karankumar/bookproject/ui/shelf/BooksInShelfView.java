@@ -27,10 +27,16 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.LocalDateRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import lombok.extern.java.Log;
+
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
@@ -44,6 +50,7 @@ import lombok.extern.java.Log;
 @PageTitle("My Books | Book Project")
 @Log
 public class BooksInShelfView extends VerticalLayout {
+
 
     public static final String TITLE_KEY = "title";
     public static final String AUTHOR_KEY = "author";
@@ -141,12 +148,32 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void toggleColumn(String columnKey, boolean isOn) {
-        bookGrid.getColumnByKey(columnKey).setVisible(isOn);
+        if (bookGrid.getColumnByKey(columnKey) == null) {
+            LOGGER.log(Level.SEVERE, "Key is null:" + columnKey);
+        } else {
+          bookGrid.getColumnByKey(columnKey).setVisible(isOn);
+        }
     }
 
     private void configureBookGrid() {
         addClassName("book-grid");
-        bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY, DATE_STARTED_KEY, DATE_FINISHED_KEY, RATING_KEY, PAGES_KEY);
+        bookGrid.setColumns(TITLE_KEY, AUTHOR_KEY, GENRE_KEY);
+
+        bookGrid.addColumn(new LocalDateRenderer<>(
+                Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+				.setHeader("Date started reading")
+				.setComparator(Comparator.comparing(Book::getDateStartedReading))
+                .setKey(DATE_STARTED_KEY);
+
+        bookGrid.addColumn(new LocalDateRenderer<>(
+                Book::getDateFinishedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+            .setHeader("Date finished reading")
+            .setComparator(Comparator.comparing(Book::getDateStartedReading))
+			.setSortable(true)
+            .setKey(DATE_FINISHED_KEY);
+
+        bookGrid.addColumn(RATING_KEY);
+        bookGrid.addColumn(PAGES_KEY);
     }
 
     private void updateList() {

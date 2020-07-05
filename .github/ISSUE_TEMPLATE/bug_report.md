@@ -26,11 +26,6 @@ A clear and concise description of what you expected to happen.
 
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information if applicable):**
- - OS: [e.g. Linux, macOS, Windows]
- - Browser [e.g. firefox, chrome]
- - Version [e.g. 22]
-
 **Additional context**
 
-Add any other context about the problem here (e.g. branch name, commit hash, etc.).
+Add any other context about the problem here (e.g. stack trace, branch name, commit hash, etc.).
