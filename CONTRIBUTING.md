@@ -61,7 +61,7 @@ Please follow the process below:
 
 For every patch (i.e. pull request) you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
 
-This makes it easier to keep track of what changes were made in what branch or pull request when looking back.
+This makes it easier to keep track of what changes were made in what branch or pull request when looking back. Additionally, it makes code reviews go a lot quicker and smoother.
 
 ## Code contributions
 
