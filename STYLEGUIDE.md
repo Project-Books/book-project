@@ -11,10 +11,13 @@ guide and, where it does not conflict with this style guide, Google's Java style
 
 ## Notes
 
-*Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
-the version on the master branch should be followed, as this version should be the most up-to-date.*
+1. Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
+the version on the master branch should be followed, as this version should be the most up-to-date.
 
-*Please also ensure that you remain familiar with this document as it may change from time to time*
+2. Please also ensure that you remain familiar with this document as it may change from time to time
+
+This style guide has been dapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
+[Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
 
 ## IDE formatting
 
@@ -143,5 +146,10 @@ public String toString() {
 }
 ```
 
-Adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
-[Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
+## Updates to this document
+
+If you are considering making changes to any of the recommended styles in this guide, please note that the following may also need to be changed:
+
+- [Checkstyle configuration](https://github.com/knjk04/book-project/blob/master/src/main/resources/checkstyle.xml)
+- [IntelliJ formatter](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml)
+- [Eclipse formatter](https://github.com/knjk04/book-project/blob/master/ide/eclipse/book_project_formatter_profile.xml)
