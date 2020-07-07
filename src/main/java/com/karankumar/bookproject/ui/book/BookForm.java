@@ -48,7 +48,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 
 /**
- * A Vaadin form for adding a new {@code Book}.
+ * A Vaadin form for adding a new @see Book.
  */
 @CssImport(
     value = "./styles/vaadin-dialog-overlay-styles.css",

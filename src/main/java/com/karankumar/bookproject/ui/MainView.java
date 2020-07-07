@@ -31,6 +31,9 @@ import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 
+/**
+ * Vaadin view that defines the app navigation bar
+ */
 public class MainView extends AppLayout {
     public MainView() {
         Tabs tabs = new Tabs();

@@ -44,7 +44,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 
 /**
- * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}.
+ * Contains a @see BookForm and a grid containing a list of books in a given shelf.
  */
 @Route(value = "", layout = MainView.class)
 @RouteAlias(value = "myBooks", layout = MainView.class)

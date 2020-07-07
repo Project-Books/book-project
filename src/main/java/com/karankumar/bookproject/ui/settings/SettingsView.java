@@ -25,6 +25,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.Lumo;
 
+/**
+ * Vaadin view for the settings page
+ */
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
 public class SettingsView extends HorizontalLayout {
