@@ -59,6 +59,7 @@ public class BookForm extends VerticalLayout {
     private static final String ENTER_DATE = "Enter a date";
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
+
     public final TextField bookTitle = new TextField();
     public final IntegerField seriesPosition = new IntegerField();
     public final TextField authorFirstName = new TextField();
@@ -70,12 +71,14 @@ public class BookForm extends VerticalLayout {
     public final DatePicker dateFinishedReading = new DatePicker();
     public final NumberField rating = new NumberField();
     public final Button saveButton = new Button();
+
     private final PredefinedShelfService shelfService;
     private final Button reset = new Button();
     private final FormLayout.FormItem started;
     private final FormLayout.FormItem finished;
     private final FormLayout.FormItem ratingFormItem;
     private final Dialog dialog;
+
     public Button delete = new Button();
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
@@ -150,7 +153,9 @@ public class BookForm extends VerticalLayout {
         dialog.close();
     }
 
-
+    /**
+     * Binds the form fields and defines custom validators where necessary
+     */
     private void configureBinder() {
         final String AFTER_TODAY_PREFIX = "The date you";
         final String AFTER_TODAY_SUFFIX = "reading the book cannot be after today's date.";
@@ -193,6 +198,10 @@ public class BookForm extends VerticalLayout {
               .bind(Book::getRating, Book::setRating);
     }
 
+    /**
+     * Sets up the save, reset and delete buttons
+     * @return a HorizontalLayout containing the save, reset & delete buttons
+     */
     private HorizontalLayout configureButtons() {
         saveButton.setText(LABEL_ADD_BOOK);
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -214,6 +223,9 @@ public class BookForm extends VerticalLayout {
         return new HorizontalLayout(saveButton, reset, delete);
     }
 
+    /**
+     * Defines the behaviour once the form is in a valid state and the save button was pressed
+     */
     private void validateOnSave() {
         if (binder.isValid()) {
             LOGGER.log(Level.INFO, "Valid binder");
@@ -322,6 +334,9 @@ public class BookForm extends VerticalLayout {
         }
     }
 
+    /**
+     * Sets up the the book title form field
+     */
     private void configureTitle() {
         bookTitle.setPlaceholder("Enter a book title");
         bookTitle.setClearButtonVisible(true);
@@ -329,6 +344,9 @@ public class BookForm extends VerticalLayout {
         bookTitle.setRequiredIndicatorVisible(true);
     }
 
+    /**
+     * Set up the form fields for an author's first and last name
+     */
     private void configureAuthor() {
         authorFirstName.setPlaceholder("Enter the author's first name");
         authorFirstName.setClearButtonVisible(true);
@@ -341,17 +359,26 @@ public class BookForm extends VerticalLayout {
         authorLastName.setRequiredIndicatorVisible(true);
     }
 
+    /**
+     * Sets up the form field for adding a book genre
+     */
     private void configureGenre() {
         bookGenre.setItems(Genre.values());
         bookGenre.setPlaceholder("Choose a book genre");
     }
 
-    private void configureSeriesPosition(){
+    /**
+     * Sets up the form field for adding the position of the book in a series
+     */
+    private void configureSeriesPosition() {
         seriesPosition.setPlaceholder("Enter series position");
         seriesPosition.setMin(1);
         seriesPosition.setHasControls(true);
     }
 
+    /**
+     * Sets up the form field for choosing which shelf a book should go into
+     */
     private void configureShelf() {
         shelf.setRequired(true);
         shelf.setPlaceholder("Choose a shelf");
@@ -361,7 +388,9 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * @throws NotSupportedException if an a shelf name is not yet supported
+     * Toggles whether the date started reading and date finished reading form fields should show
+     * @param name the name of the @see PredefinedShelf that was chosen in the book form
+     * @throws NotSupportedException if the shelf name parameter does not match the name of a @see PredefinedShelf
      */
     private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
@@ -402,7 +431,9 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * @throws NotSupportedException if an a shelf name is not yet supported
+     * Toggles showing the rating depending on which shelf this new book is going into
+     * @param name the name of the shelf that was selected in this book form
+     * @throws NotSupportedException if the shelf name parameter does not match the name of a @see PredefinedShelf
      */
     private void showOrHideRating(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
@@ -419,6 +450,9 @@ public class BookForm extends VerticalLayout {
         }
     }
 
+    /**
+     * Sets up the rating form field
+     */
     private void configureRating() {
         rating.setHasControls(true);
         rating.setMin(0);
@@ -427,22 +461,34 @@ public class BookForm extends VerticalLayout {
         rating.setClearButtonVisible(true);
     }
 
+    /**
+     * Sets up the date started reading form field
+     */
     private void configureDateStarted() {
         dateStartedReading.setClearButtonVisible(true);
         dateStartedReading.setPlaceholder(ENTER_DATE);
     }
 
+    /**
+     * Sets up the date finished reading form field
+     */
     private void configureDateFinished() {
         dateFinishedReading.setClearButtonVisible(true);
         dateFinishedReading.setPlaceholder(ENTER_DATE);
     }
 
+    /**
+     * Sets up the form field for the number of pages in the book
+     */
     private void configurePageCount() {
         pageCount.setMin(1);
         pageCount.setHasControls(true);
         pageCount.setClearButtonVisible(true);
     }
 
+    /**
+     * Clears all of the form fields
+     */
     private void clearForm() {
         HasValue[] components = {
                 bookTitle,
@@ -464,6 +510,10 @@ public class BookForm extends VerticalLayout {
         }
     }
 
+    /**
+     * Sets the minimum width for all of the form fields
+     * @param components all of the form fields
+     */
     private void setComponentMinWidth(HasSize[] components) {
         for (HasSize h : components) {
             h.setMinWidth("23em");
