@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * A Spring service that acts as the gateway to the {@code AuthorRepository} -- to use the {@code AuthorRepository},
- * a consumer should go via this {@code AuthorService}.
+ * A Spring service that acts as the gateway to the @see AuthorRepository -- to use the AuthorRepository, you should go
+ * via this AuthorService.
  */
 @Service
 public class AuthorService extends BaseService<Author, Long> {

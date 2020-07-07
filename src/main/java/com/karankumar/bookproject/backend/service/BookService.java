@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * A Spring service that acts as the gateway to the {@code BookRepository} -- to use the {@code BookRepository},
- * a consumer should go via this {@code BookService}.
+ * A Spring service that acts as the gateway to the @see BookRepository -- to use the BookRepository, you should go
+ * via this BookService.
  */
 @Service
 @Log

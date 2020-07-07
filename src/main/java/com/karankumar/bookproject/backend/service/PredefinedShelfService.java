@@ -36,8 +36,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A Spring service that acts as the gateway to the {@code ShelfRepository} -- to use the {@code ShelfRepository},
- * a consumer should go via this {@code ShelfService}.
+ * A Spring service that acts as the gateway to the @see PredefinedShelfRepository -- to use the
+ * PredefinedShelfRepository, you should go via this PredefinedShelfService.
  */
 @Service
 @Log
