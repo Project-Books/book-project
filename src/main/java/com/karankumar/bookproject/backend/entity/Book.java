@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
- * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, genre and rating.
+ * Represents a single book
  */
 @Entity
 @Data

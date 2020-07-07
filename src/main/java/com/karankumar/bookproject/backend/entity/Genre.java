@@ -16,7 +16,7 @@
 package com.karankumar.bookproject.backend.entity;
 
 /**
- * A {@code Genre} represents a book genre.
+ * Represents a book genre.
  */
 // This should be kept in alphabetical order
 public enum Genre {

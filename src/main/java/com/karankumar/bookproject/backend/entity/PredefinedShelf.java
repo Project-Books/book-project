@@ -29,6 +29,9 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+/**
+ * A predefined shelf is a shelf that is created by the app and will always exist (cannot be deleted or renamed)
+ */
 @Entity
 @Getter
 @Setter

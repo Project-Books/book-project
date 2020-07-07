@@ -26,8 +26,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
- * A {@code Author} object represents a single Author with its corresponding metadata, such as a
- * first name, last name and a list of books.
+ * Represents a single Author
  */
 @Entity
 @Data
