@@ -13,7 +13,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui;
+package com.karankumar.bookproject.ui.book;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
@@ -24,6 +24,7 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
