@@ -16,7 +16,8 @@
 package com.karankumar.bookproject.ui.goal;
 
 import com.karankumar.bookproject.ui.MainView;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -24,18 +25,32 @@ import com.vaadin.flow.router.Route;
 
 /**
  * Vaadin view that represents the reading goal page (the number of books or pages a user wants to have read by the end
- * of the year
+ * of the year)
  */
 @Route(value = "goal", layout = MainView.class)
 @PageTitle("Goal | Book Project")
 public class GoalView extends HorizontalLayout {
+
+    private final Button setGoal;
+
     public GoalView() {
-        H3 text = new H3("Coming soon");
-        VerticalLayout verticalLayout = new VerticalLayout(text);
+        H1 booksRead = new H1("books");
+        setGoal = new Button("Set goal");
+        configureSetGoal();
+
+        VerticalLayout verticalLayout = new VerticalLayout(booksRead, setGoal);
         verticalLayout.setAlignItems(Alignment.CENTER);
 
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+    }
+
+    private void configureSetGoal() {
+        setGoal.addClickListener(event -> {
+            NewGoalForm newGoalForm = new NewGoalForm();
+            add(newGoalForm);
+            newGoalForm.openForm();
+        });
     }
 }
