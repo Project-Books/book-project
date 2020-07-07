@@ -15,8 +15,8 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MainView;
@@ -42,7 +42,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
-import lombok.extern.java.Log;
 
 /**
  * Contains a {@code BookForm} and a Grid containing a list of books in a given {@code Shelf}.

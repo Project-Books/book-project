@@ -13,9 +13,8 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend;
+package com.karankumar.bookproject.backend.entity;
 
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import java.util.List;
@@ -39,7 +38,7 @@ class PredefinedShelfTests {
     }
 
     /**
-     * A {@link com.karankumar.bookproject.backend.model.PredefinedShelf} without any books should still exist
+     * A {@link com.karankumar.bookproject.backend.entity.PredefinedShelf} without any books should still exist
      */
     @Test
     public void orphanShelfExists() {

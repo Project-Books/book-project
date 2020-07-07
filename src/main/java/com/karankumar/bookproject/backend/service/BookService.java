@@ -15,12 +15,13 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import java.util.List;
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * A Spring service that acts as the gateway to the {@code BookRepository} -- to use the {@code BookRepository},

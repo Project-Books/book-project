@@ -17,11 +17,11 @@ package com.karankumar.bookproject.ui;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
-import com.karankumar.bookproject.backend.model.Author;
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Genre;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.RatingScale;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.book.BookForm;

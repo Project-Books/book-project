@@ -13,11 +13,8 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend;
+package com.karankumar.bookproject.backend.entity;
 
-import com.karankumar.bookproject.backend.model.Author;
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;

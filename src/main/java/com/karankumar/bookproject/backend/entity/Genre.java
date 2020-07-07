@@ -13,7 +13,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.model;
+package com.karankumar.bookproject.backend.entity;
 
 /**
  * A {@code Genre} represents a book genre.

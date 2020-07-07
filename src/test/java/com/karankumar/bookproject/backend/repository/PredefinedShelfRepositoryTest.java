@@ -1,7 +1,7 @@
 package com.karankumar.bookproject.backend.repository;
 
 
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

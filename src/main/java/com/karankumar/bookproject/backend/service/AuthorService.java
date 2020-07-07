@@ -15,14 +15,15 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.model.Author;
-import com.karankumar.bookproject.backend.model.BaseEntity;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.BaseEntity;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
 
 /**
  * A Spring service that acts as the gateway to the {@code AuthorRepository} -- to use the {@code AuthorRepository},

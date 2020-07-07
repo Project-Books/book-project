@@ -15,14 +15,18 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.model.Author;
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Genre;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.RatingScale;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
+import lombok.extern.java.Log;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -30,9 +34,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.PostConstruct;
-import lombok.extern.java.Log;
-import org.springframework.stereotype.Service;
 
 /**
  * A Spring service that acts as the gateway to the {@code ShelfRepository} -- to use the {@code ShelfRepository},

@@ -26,8 +26,8 @@ import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;

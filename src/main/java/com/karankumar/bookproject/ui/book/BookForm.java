@@ -15,10 +15,10 @@
 
 package com.karankumar.bookproject.ui.book;
 
-import com.karankumar.bookproject.backend.model.Author;
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Genre;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -39,13 +39,13 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
+import lombok.extern.java.Log;
+
+import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
-import lombok.extern.java.Log;
-
-import javax.transaction.NotSupportedException;
 
 /**
  * A Vaadin form for adding a new {@code Book}.

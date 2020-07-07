@@ -15,7 +15,7 @@
 
 package com.karankumar.bookproject.ui.book;
 
-import com.karankumar.bookproject.backend.model.RatingScale;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;

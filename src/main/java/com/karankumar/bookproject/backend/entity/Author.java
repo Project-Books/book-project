@@ -13,30 +13,39 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.model;
+package com.karankumar.bookproject.backend.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
- * The entity that all other entities inherit from.
+ * A {@code Author} object represents a single Author with its corresponding metadata, such as a
+ * first name, last name and a list of books.
  */
-@MappedSuperclass
-@EqualsAndHashCode
-public abstract class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Getter
-    private Long id;
+@Entity
+@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class Author extends BaseEntity {
 
-    /**
-     * To be used sparingly and cautiously.
-     */
-    public void removeId() {
-        id = null;
+    @NotNull
+    @NotEmpty
+    private String firstName;
+
+    @NotNull
+    @NotEmpty
+    private String lastName;
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
     }
 }
