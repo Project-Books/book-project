@@ -17,6 +17,7 @@ package com.karankumar.bookproject.ui.goal;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.service.GoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MainView;
@@ -28,6 +29,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,13 +53,11 @@ public class GoalView extends VerticalLayout {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
 
-        readingGoal = new H1("Reading goal not set");
-
+        readingGoal = new H1();
         booksRead = new H3();
-        booksRead();
-
-        setGoal = new Button("Set goal");
+        setGoal = new Button();
         configureSetGoal();
+        getCurrentGoal();
 
         add(readingGoal, booksRead, setGoal);
         setSizeFull();
@@ -74,6 +74,17 @@ public class GoalView extends VerticalLayout {
         });
     }
 
+    private void getCurrentGoal() {
+        List<ReadingGoal> goals = goalService.findAll();
+        if (goals.size() == 0) {
+            readingGoal.setText("Reading goal not set");
+            setGoal.setText("Set goal");
+        } else {
+            updateReadingGoal(goals.get(0).getBooksToRead());
+            setGoal.setText("Update goal");
+        }
+    }
+
     private void saveGoal(GoalForm.SaveEvent event) {
         if (event.getReadingGoal() != null) {
             LOGGER.log(Level.INFO, "Book is not null");
@@ -85,10 +96,6 @@ public class GoalView extends VerticalLayout {
     }
 
     private void updateReadingGoal(int booksToRead) {
-        readingGoal.setText("Reading goal: " + booksToRead + " books");
-    }
-
-    private void booksRead() {
         PredefinedShelf readShelf = null;
         for (PredefinedShelf p : predefinedShelfService.findAll()) {
             if (p.getShelfName().equals(PredefinedShelf.ShelfName.READ)) {
@@ -106,6 +113,7 @@ public class GoalView extends VerticalLayout {
                 }
             }
         }
-        booksRead.setText("Books read this year so far: " + booksReadThisYear);
+
+        readingGoal.setText("You have read " + booksReadThisYear + " books out of " + booksToRead);
     }
 }
