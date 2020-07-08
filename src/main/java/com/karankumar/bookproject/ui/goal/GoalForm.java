@@ -38,6 +38,7 @@ public class GoalForm extends VerticalLayout {
         VerticalLayout verticalLayout = new VerticalLayout(booksToRead, saveButton);
         newGoalDialog = new Dialog();
         newGoalDialog.add(verticalLayout);
+        newGoalDialog.setCloseOnOutsideClick(true);
 
         add(newGoalDialog);
 

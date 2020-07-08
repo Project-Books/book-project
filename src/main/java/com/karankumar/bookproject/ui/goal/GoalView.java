@@ -22,8 +22,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -38,7 +37,7 @@ import java.util.logging.Logger;
  */
 @Route(value = "goal", layout = MainView.class)
 @PageTitle("Goal | Book Project")
-public class GoalView extends HorizontalLayout {
+public class GoalView extends VerticalLayout {
 
     private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
     private final Button setGoal;
@@ -46,7 +45,7 @@ public class GoalView extends HorizontalLayout {
 
     private GoalService goalService;
     private H1 readingGoal;
-    private H2 booksRead;
+    private H3 booksRead;
 
     public GoalView(GoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
@@ -54,16 +53,13 @@ public class GoalView extends HorizontalLayout {
 
         readingGoal = new H1("Reading goal not set");
 
-        booksRead = new H2();
+        booksRead = new H3();
         booksRead();
 
         setGoal = new Button("Set goal");
         configureSetGoal();
 
-        VerticalLayout verticalLayout = new VerticalLayout(readingGoal, booksRead, setGoal);
-        verticalLayout.setAlignItems(Alignment.CENTER);
-
-        add(verticalLayout);
+        add(readingGoal, booksRead, setGoal);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
