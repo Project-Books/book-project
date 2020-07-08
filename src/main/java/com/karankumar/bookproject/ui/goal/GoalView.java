@@ -15,6 +15,7 @@
 
 package com.karankumar.bookproject.ui.goal;
 
+import com.karankumar.bookproject.backend.service.GoalService;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -22,6 +23,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Vaadin view that represents the reading goal page (the number of books or pages a user wants to have read by the end
@@ -31,9 +35,14 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Goal | Book Project")
 public class GoalView extends HorizontalLayout {
 
+    private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
     private final Button setGoal;
 
-    public GoalView() {
+    private GoalService goalService;
+
+    public GoalView(GoalService goalService) {
+        this.goalService = goalService;
+
         H1 booksRead = new H1("books");
         setGoal = new Button("Set goal");
         configureSetGoal();
@@ -48,9 +57,21 @@ public class GoalView extends HorizontalLayout {
 
     private void configureSetGoal() {
         setGoal.addClickListener(event -> {
-            NewGoalForm newGoalForm = new NewGoalForm();
-            add(newGoalForm);
-            newGoalForm.openForm();
+            GoalForm goalForm = new GoalForm();
+            add(goalForm);
+            goalForm.openForm();
+
+            goalForm.addListener(GoalForm.SaveEvent.class, this::saveGoal);
+
         });
+    }
+
+    private void saveGoal(GoalForm.SaveEvent event) {
+        if (event.getReadingGoal() != null) {
+            LOGGER.log(Level.INFO, "Book is not null");
+            goalService.save(event.getReadingGoal());
+        } else {
+            LOGGER.log(Level.SEVERE, "Retrieved goal from event is null");
+        }
     }
 }
