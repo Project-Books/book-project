@@ -15,9 +15,10 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf
 - View books in your different shelves and make changes
 - A rating scale from 0-10 that that goes up in steps of 0.5
+- Track your progress towards a reading goal: the number of books you hope to read by the end of the year
 
 *Coming soon:*
-- Track your progress towards a reading goal: the number of books or pages you want to have read by the end of the year
+- A reading goal for the number of pages (as an alternative to the number of books) to read by the end of the year
 - Add your own shelves
 - User registration and accounts
 - And much more!
