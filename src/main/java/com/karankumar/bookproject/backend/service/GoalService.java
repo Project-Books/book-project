@@ -15,15 +15,12 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.BaseEntity;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.repository.GoalRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * A Spring service that acts as the gateway to the @see GoalRepository -- to use the GoalRepository, you should go
@@ -51,15 +48,8 @@ public class GoalService extends BaseService<ReadingGoal, Long> {
     @Override
     public void save(ReadingGoal goal) {
         if (goal != null) {
-            List<Long> matchingGoals = findAll().stream()
-                .map(BaseEntity::getId)
-                .filter(id -> id.equals(goal.getId())).collect(Collectors.toList());
-            if (matchingGoals.size() == 1) {
-                // if a goal with the same ID exists, set this incoming goal ID to null so that a new row in the
-                // table is made rather than updating the row that has the same ID
-                LOGGER.log(Level.INFO, "Matching goal IDs: " + matchingGoals);
-                goal.removeId();
-            }
+            // this goal overwrites any previously set goals for this year)
+            goalRepository.deleteAll();
             goalRepository.save(goal);
         }
     }
