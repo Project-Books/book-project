@@ -15,15 +15,20 @@
 
 package com.karankumar.bookproject.ui.goal;
 
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.GoalService;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,18 +42,25 @@ public class GoalView extends HorizontalLayout {
 
     private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
     private final Button setGoal;
+    private final PredefinedShelfService predefinedShelfService;
 
     private GoalService goalService;
-    private H1 booksRead;
+    private H1 readingGoal;
+    private H2 booksRead;
 
-    public GoalView(GoalService goalService) {
+    public GoalView(GoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
+        this.predefinedShelfService = predefinedShelfService;
 
-        booksRead = new H1("Reading goal not set");
+        readingGoal = new H1("Reading goal not set");
+
+        booksRead = new H2();
+        booksRead();
+
         setGoal = new Button("Set goal");
         configureSetGoal();
 
-        VerticalLayout verticalLayout = new VerticalLayout(booksRead, setGoal);
+        VerticalLayout verticalLayout = new VerticalLayout(readingGoal, booksRead, setGoal);
         verticalLayout.setAlignItems(Alignment.CENTER);
 
         add(verticalLayout);
@@ -77,6 +89,27 @@ public class GoalView extends HorizontalLayout {
     }
 
     private void updateReadingGoal(int booksToRead) {
-        booksRead.setText("Reading goal: " + booksToRead + " books");
+        readingGoal.setText("Reading goal: " + booksToRead + " books");
+    }
+
+    private void booksRead() {
+        PredefinedShelf readShelf = null;
+        for (PredefinedShelf p : predefinedShelfService.findAll()) {
+            if (p.getShelfName().equals(PredefinedShelf.ShelfName.READ)) {
+                readShelf = p;
+                break;
+            }
+        }
+        LOGGER.log(Level.INFO, "Read shelf: " + readShelf);
+
+        int booksReadThisYear = 0;
+        for (Book b : readShelf.getBooks()) {
+            if (b != null && b.getDateFinishedReading() != null) {
+                if (b.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
+                    booksReadThisYear++;
+                }
+            }
+        }
+        booksRead.setText("Books read this year so far: " + booksReadThisYear);
     }
 }
