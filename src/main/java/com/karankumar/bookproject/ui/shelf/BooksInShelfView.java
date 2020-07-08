@@ -82,10 +82,7 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm = new BookForm(shelfService);
 
         Button addBook = new Button("Add book");
-        addBook.addClickListener(
-                e -> {
-                    bookForm.addBook();
-                });
+        addBook.addClickListener(e -> bookForm.addBook());
         HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle, addBook);
         horizontalLayout.setAlignItems(Alignment.END);
 
@@ -97,8 +94,7 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
 
-        bookGrid
-                .asSingleSelect()
+        bookGrid.asSingleSelect()
                 .addValueChangeListener(
                         event -> {
                             if (event == null) {
@@ -108,7 +104,7 @@ public class BooksInShelfView extends VerticalLayout {
                             } else {
                                 editBook(event.getValue());
                             }
-                        });
+                });
     }
 
     private void configureChosenShelf() {
