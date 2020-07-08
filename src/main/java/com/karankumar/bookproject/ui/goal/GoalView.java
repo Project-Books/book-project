@@ -29,7 +29,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,19 +49,26 @@ public class GoalView extends VerticalLayout {
 
     private GoalService goalService;
     private H1 readingGoal;
-    private H3 booksRead;
+
+    /**
+     * Displays whether a user has met the goal, is ahead or is behind the goal
+     */
+    private H3 goalProgress;
+
+    private H3 booksToRead;
 
     public GoalView(GoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
 
         readingGoal = new H1();
-        booksRead = new H3();
         setGoal = new Button();
+        goalProgress = new H3();
+        booksToRead = new H3();
         configureSetGoal();
         getCurrentGoal();
 
-        add(readingGoal, booksRead, setGoal);
+        add(readingGoal, goalProgress, booksToRead, setGoal);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
@@ -81,8 +90,11 @@ public class GoalView extends VerticalLayout {
             setGoal.setText("Set goal");
         } else {
             updateReadingGoal(goals.get(0).getBooksToRead());
-            setGoal.setText("Update goal");
         }
+    }
+
+    private void updateSetGoalText() {
+        setGoal.setText("Update goal");
     }
 
     private void saveGoal(GoalForm.SaveEvent event) {
@@ -103,6 +115,10 @@ public class GoalView extends VerticalLayout {
                 break;
             }
         }
+        if (readShelf == null || readShelf.getBooks() == null) {
+            return;
+        }
+
         LOGGER.log(Level.INFO, "Read shelf: " + readShelf);
 
         int booksReadThisYear = 0;
@@ -114,6 +130,49 @@ public class GoalView extends VerticalLayout {
             }
         }
 
-        readingGoal.setText("You have read " + booksReadThisYear + " books out of " + booksToRead);
+        readingGoal.setText("You have read " + booksReadThisYear + " out of " + booksToRead + " books");
+        goalProgress.setText(calculateProgress(booksToRead, booksReadThisYear));
+
+        updateSetGoalText();
+    }
+
+    private String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
+        LOGGER.log(Level.INFO, "\nBooks to read this year: " + booksToReadThisYear);
+        LOGGER.log(Level.INFO, "Books read this year: " + booksReadThisYear);
+
+        String schedule = "";
+        int booksStillToRead = booksToReadThisYear - booksReadThisYear;
+        LOGGER.log(Level.INFO, "Books still to read: " + booksStillToRead);
+
+        if (booksStillToRead <= 0) {
+            schedule = "Congratulations for reaching your target!";
+        } else {
+
+            LocalDate now = LocalDate.now();
+            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+            int weekOfYear = now.get(weekFields.weekOfWeekBasedYear());
+            LOGGER.log(Level.INFO, "Week of year: " + weekOfYear);
+            int weeksLeftInYear = 52 - weekOfYear;
+            LOGGER.log(Level.INFO, "Weeks left in year: " + weeksLeftInYear);
+
+            double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
+            booksToRead.setText("You need to read " + booksStillToReadAWeek +
+                    " books a week on average to achieve your goal");
+
+            int booksToReadAWeekFromStartOfYear = (int) Math.ceil(booksToReadThisYear / 52);
+            LOGGER.log(Level.INFO, "Books to read a week from the start of the year: " + booksToReadAWeekFromStartOfYear);
+
+//            int shouldHaveRead = booksToReadThisYear / weekOfYear;
+            int shouldHaveRead = booksToReadAWeekFromStartOfYear * weekOfYear;
+            LOGGER.log(Level.INFO, "Should have read: " + shouldHaveRead);
+
+            boolean behindSchedule = booksReadThisYear < shouldHaveRead;
+            String behindOrAhead = behindSchedule ? "behind" : "ahead of ";
+            int howManyBehindOrAhead = Math.abs(shouldHaveRead - booksReadThisYear);
+
+            schedule = String.format("You are %d books %s schedule", howManyBehindOrAhead, behindOrAhead);
+        }
+
+        return schedule;
     }
 }
