@@ -25,6 +25,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -46,6 +47,7 @@ public class GoalView extends VerticalLayout {
     private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
     private final Button setGoal;
     private final PredefinedShelfService predefinedShelfService;
+    private final ProgressBar progressBar;
 
     private GoalService goalService;
     private H1 readingGoal;
@@ -65,10 +67,11 @@ public class GoalView extends VerticalLayout {
         setGoal = new Button();
         goalProgress = new H3();
         booksToRead = new H3();
+        progressBar = new ProgressBar();
         configureSetGoal();
         getCurrentGoal();
 
-        add(readingGoal, goalProgress, booksToRead, setGoal);
+        add(readingGoal, progressBar, goalProgress, booksToRead, setGoal);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
@@ -134,6 +137,7 @@ public class GoalView extends VerticalLayout {
         goalProgress.setText(calculateProgress(booksToRead, booksReadThisYear));
 
         updateSetGoalText();
+        updateProgressBarValue(booksToRead, booksReadThisYear);
     }
 
     private String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
@@ -162,7 +166,6 @@ public class GoalView extends VerticalLayout {
             int booksToReadAWeekFromStartOfYear = (int) Math.ceil(booksToReadThisYear / 52);
             LOGGER.log(Level.INFO, "Books to read a week from the start of the year: " + booksToReadAWeekFromStartOfYear);
 
-//            int shouldHaveRead = booksToReadThisYear / weekOfYear;
             int shouldHaveRead = booksToReadAWeekFromStartOfYear * weekOfYear;
             LOGGER.log(Level.INFO, "Should have read: " + shouldHaveRead);
 
@@ -174,5 +177,11 @@ public class GoalView extends VerticalLayout {
         }
 
         return schedule;
+    }
+
+    private void updateProgressBarValue(int booksToRead, int booksRead) {
+        double progress = ((double) booksRead / booksToRead);
+        progress = Math.min(progress, 1.0);
+        progressBar.setValue(progress);
     }
 }
