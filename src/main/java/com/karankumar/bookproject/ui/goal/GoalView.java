@@ -39,11 +39,12 @@ public class GoalView extends HorizontalLayout {
     private final Button setGoal;
 
     private GoalService goalService;
+    private H1 booksRead;
 
     public GoalView(GoalService goalService) {
         this.goalService = goalService;
 
-        H1 booksRead = new H1("books");
+        booksRead = new H1("Reading goal not set");
         setGoal = new Button("Set goal");
         configureSetGoal();
 
@@ -62,7 +63,6 @@ public class GoalView extends HorizontalLayout {
             goalForm.openForm();
 
             goalForm.addListener(GoalForm.SaveEvent.class, this::saveGoal);
-
         });
     }
 
@@ -70,8 +70,13 @@ public class GoalView extends HorizontalLayout {
         if (event.getReadingGoal() != null) {
             LOGGER.log(Level.INFO, "Book is not null");
             goalService.save(event.getReadingGoal());
+            updateReadingGoal(event.getReadingGoal().getBooksToRead());
         } else {
             LOGGER.log(Level.SEVERE, "Retrieved goal from event is null");
         }
+    }
+
+    private void updateReadingGoal(int booksToRead) {
+        booksRead.setText("Reading goal: " + booksToRead + " books");
     }
 }
