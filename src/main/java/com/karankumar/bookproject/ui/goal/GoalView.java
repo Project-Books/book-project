@@ -69,6 +69,7 @@ public class GoalView extends VerticalLayout {
         goalProgress = new H3();
         booksToRead = new Span();
         progressBar = new ProgressBar();
+        progressBar.setMaxWidth("500px");
         configureSetGoal();
         getCurrentGoal();
 
