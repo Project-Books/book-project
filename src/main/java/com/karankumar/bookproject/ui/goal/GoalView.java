@@ -58,6 +58,8 @@ public class GoalView extends VerticalLayout {
      */
     private H3 goalProgress;
 
+    private Span progressPercentage;
+
     private Span booksToRead;
 
     public GoalView(GoalService goalService, PredefinedShelfService predefinedShelfService) {
@@ -70,10 +72,13 @@ public class GoalView extends VerticalLayout {
         booksToRead = new Span();
         progressBar = new ProgressBar();
         progressBar.setMaxWidth("500px");
+        progressPercentage = new Span();
+        progressPercentage.getElement().getStyle().set("font-style", "italic");
+
         configureSetGoal();
         getCurrentGoal();
 
-        add(readingGoal, progressBar, goalProgress, booksToRead, setGoal);
+        add(readingGoal, progressBar, progressPercentage, goalProgress, booksToRead, setGoal);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
@@ -185,5 +190,8 @@ public class GoalView extends VerticalLayout {
         double progress = ((double) booksRead / booksToRead);
         progress = Math.min(progress, 1.0);
         progressBar.setValue(progress);
+
+        double percentage = progress * 100;
+        progressPercentage.setText(String.format("%.2f%% completed", percentage));
     }
 }
