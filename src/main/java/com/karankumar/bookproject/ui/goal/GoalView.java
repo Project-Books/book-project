@@ -24,6 +24,7 @@ import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.router.PageTitle;
@@ -57,7 +58,7 @@ public class GoalView extends VerticalLayout {
      */
     private H3 goalProgress;
 
-    private H3 booksToRead;
+    private Span booksToRead;
 
     public GoalView(GoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
@@ -66,7 +67,7 @@ public class GoalView extends VerticalLayout {
         readingGoal = new H1();
         setGoal = new Button();
         goalProgress = new H3();
-        booksToRead = new H3();
+        booksToRead = new Span();
         progressBar = new ProgressBar();
         configureSetGoal();
         getCurrentGoal();
