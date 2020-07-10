@@ -48,6 +48,8 @@ public class Book extends BaseEntity {
 
     private Integer seriesPosition;
 
+    private String bookRecommendedBy;
+
     // For books that have been read
     private RatingScale rating;
     private LocalDate dateStartedReading;
