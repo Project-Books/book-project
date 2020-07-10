@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * Represents a reading goal: the number of books or pages a user wants to have read by the end of the year
@@ -16,18 +17,33 @@ import javax.validation.constraints.Min;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 public class ReadingGoal extends BaseEntity {
+    public enum GoalType {
+        PAGES("Pages"),
+        BOOKS("Books");
 
-    @Min(value = 1)
-    private int booksToRead;
+        private String goalType;
 
-    @Min(value = 1)
-    private Integer pagesToRead; // an Integer instead of an int so that the constructor overloading works
+        GoalType(String goalType) {
+            this.goalType = goalType;
+        }
 
-    public ReadingGoal(int booksToRead) {
-        this.booksToRead = booksToRead;
+        @Override
+        public String toString() {
+            return goalType;
+        }
     }
 
-    public ReadingGoal(@Min(value = 1) Integer pagesToRead) {
-        this.pagesToRead = pagesToRead;
+    /**
+     * Target represents either the number of pages or books the user wants to read
+     */
+    @Min(value = 1)
+    private int target;
+
+    @NotNull
+    private GoalType goalType;
+
+    public ReadingGoal(@Min(value = 1) int target, @NotNull GoalType goalType) {
+        this.target = target;
+        this.goalType = goalType;
     }
 }
