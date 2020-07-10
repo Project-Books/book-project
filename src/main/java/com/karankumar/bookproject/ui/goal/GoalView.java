@@ -53,6 +53,9 @@ public class GoalView extends VerticalLayout {
     private GoalService goalService;
     private H1 readingGoal;
 
+    private static final String BOOKS = "books";
+    private static final String PAGES = "pages";
+
     /**
      * Displays whether a user has met the goal, is ahead or is behind the goal
      */
@@ -99,7 +102,7 @@ public class GoalView extends VerticalLayout {
             readingGoal.setText("Reading goal not set");
             setGoal.setText("Set goal");
         } else {
-            updateReadingGoal(goals.get(0).getBooksToRead());
+            updateReadingGoal(goals.get(0).getTarget(), goals.get(0).getGoalType());
         }
     }
 
@@ -109,16 +112,17 @@ public class GoalView extends VerticalLayout {
 
     private void saveGoal(GoalForm.SaveEvent event) {
         if (event.getReadingGoal() != null) {
-            LOGGER.log(Level.INFO, "Book is not null");
+            LOGGER.log(Level.INFO, "Retrieved goal from form is not null");
             goalService.save(event.getReadingGoal());
-            updateReadingGoal(event.getReadingGoal().getBooksToRead());
+            updateReadingGoal(event.getReadingGoal().getTarget(), event.getReadingGoal().getGoalType());
         } else {
-            LOGGER.log(Level.SEVERE, "Retrieved goal from event is null");
+            LOGGER.log(Level.SEVERE, "Retrieved goal from form is null");
         }
     }
 
-    private void updateReadingGoal(int booksToRead) {
+    private void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
         PredefinedShelf readShelf = null;
+        // only books in the read shelf count towards the goal
         for (PredefinedShelf p : predefinedShelfService.findAll()) {
             if (p.getShelfName().equals(PredefinedShelf.ShelfName.READ)) {
                 readShelf = p;
@@ -132,21 +136,39 @@ public class GoalView extends VerticalLayout {
         LOGGER.log(Level.INFO, "Read shelf: " + readShelf);
 
         int booksReadThisYear = 0;
-        for (Book b : readShelf.getBooks()) {
-            if (b != null && b.getDateFinishedReading() != null) {
-                if (b.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
+        int pagesReadThisYear = 0;
+        boolean lookingForBooks = goalType.equals(ReadingGoal.GoalType.BOOKS);
+        for (Book book : readShelf.getBooks()) {
+            if (book != null) {
+                if (lookingForBooks && book.getDateFinishedReading() != null &&
+                        book.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
                     booksReadThisYear++;
+                } else {
+                    pagesReadThisYear += book.getNumberOfPages();
                 }
             }
         }
 
-        readingGoal.setText("You have read " + booksReadThisYear + " out of " + booksToRead + " books");
-        goalProgress.setText(calculateProgress(booksToRead, booksReadThisYear));
+        String haveRead = "You have read ";
+        String outOf = " out of ";
+        if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
+            readingGoal.setText(haveRead + booksReadThisYear + outOf + + targetToRead + " books");
+            goalProgress.setText(calculateProgress(targetToRead, booksReadThisYear));
+            updateProgressBarValue(targetToRead, booksReadThisYear);
+        } else {
+            readingGoal.setText(haveRead + pagesReadThisYear + outOf + targetToRead + " pages");
+            updateProgressBarValue(targetToRead, pagesReadThisYear);
+        }
 
         updateSetGoalText();
-        updateProgressBarValue(booksToRead, booksReadThisYear);
     }
 
+    /**
+     * Calculates the reading progress for the books goal only
+     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
+     * @param booksReadThisYear the number of books that have already been read by th end of the year
+     * @return a String that displays whether the goal was met, or whether the user is ahead or behind schedule
+     */
     private String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
         LOGGER.log(Level.INFO, "\nBooks to read this year: " + booksToReadThisYear);
         LOGGER.log(Level.INFO, "Books read this year: " + booksReadThisYear);
@@ -186,8 +208,8 @@ public class GoalView extends VerticalLayout {
         return schedule;
     }
 
-    private void updateProgressBarValue(int booksToRead, int booksRead) {
-        double progress = ((double) booksRead / booksToRead);
+    private void updateProgressBarValue(int toRead, int read) {
+        double progress = ((double) read / toRead);
         progress = Math.min(progress, 1.0);
         progressBar.setValue(progress);
 
