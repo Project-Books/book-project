@@ -41,7 +41,9 @@ import java.time.format.FormatStyle;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Contains a @see BookForm and a grid containing a list of books in a given shelf.
@@ -235,13 +237,16 @@ public class BooksInShelfView extends VerticalLayout {
         List<PredefinedShelf> matchingShelves = shelfService.findAll(chosenShelf);
 
         if (!matchingShelves.isEmpty()) {
-            if (bookTitle != null && !bookTitle.isEmpty()) {
-                LOGGER.log(Level.INFO, "Searching for the filter " + bookTitle);
-                bookGrid.setItems(bookService.findAll(bookTitle));
-            } else if (matchingShelves.size() == 1) {
+            if (matchingShelves.size() == 1) {
                 LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
                 PredefinedShelf selectedShelf = matchingShelves.get(0);
-                bookGrid.setItems(selectedShelf.getBooks());
+                Predicate<Book> caseInsensitiveBookTitleFilter = book -> bookTitle == null
+                        || book.getTitle().toLowerCase().contains(bookTitle.toLowerCase());
+                bookGrid.setItems(
+                        selectedShelf.getBooks().stream()
+                                .filter(caseInsensitiveBookTitleFilter)
+                                .collect(Collectors.toList())
+                );
             } else {
                 LOGGER.log(
                         Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
