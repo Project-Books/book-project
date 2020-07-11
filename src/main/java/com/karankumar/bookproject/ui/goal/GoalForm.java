@@ -14,6 +14,7 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.shared.Registration;
 
 import java.util.logging.Level;
@@ -85,7 +86,29 @@ public class GoalForm extends VerticalLayout {
     private void configureSaveButton(Button save) {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setMinWidth("13em");
-        save.addClickListener(click -> validateOnSave());
+        save.addClickListener(click -> {
+            bindIntegerFields();
+            validateOnSave();
+        });
+    }
+
+    private void bindIntegerFields() {
+        if (goalTypeRadioButtonGroup.getValue() != null) {
+            ReadingGoal.GoalType goalType = goalTypeRadioButtonGroup.getValue();
+            if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
+                LOGGER.log(Level.INFO, "Radio group option chosen: books");
+                binder.forField(booksToRead)
+                      .asRequired("Please enter in a books goal")
+                      .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
+            } else {
+                LOGGER.log(Level.INFO, "Radio group option chosen: pages");
+                binder.forField(pagesToRead)
+                      .asRequired("Please enter in a pages goal")
+                      .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
+            }
+        } else {
+            LOGGER.log(Level.INFO, "Radio group option not chosen");
+        }
     }
 
     private void validateOnSave() {
@@ -111,7 +134,12 @@ public class GoalForm extends VerticalLayout {
             fireEvent(new SaveEvent(this, binder.getBean()));
             confirmSavedGoal();
         } else {
-            LOGGER.log(Level.SEVERE, "Invalid binder");
+            BinderValidationStatus<ReadingGoal> status = binder.validate();
+            if (status.hasErrors()) {
+                LOGGER.log(Level.SEVERE, "Invalid binder: " + status.getValidationErrors());
+            } else {
+                LOGGER.log(Level.SEVERE, "Invalid binder. No status errors");
+            }
         }
     }
 
@@ -129,10 +157,6 @@ public class GoalForm extends VerticalLayout {
         binder.forField(goalTypeRadioButtonGroup)
               .asRequired("Please select a goal type")
               .bind(ReadingGoal::getGoalType, ReadingGoal::setGoalType);
-        binder.forField(booksToRead)
-              .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
-        binder.forField(pagesToRead)
-              .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
