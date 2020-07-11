@@ -45,15 +45,23 @@ Prerequisites: JDK 11 (or higher), Node.js and npm
     - Username: `user`
     - Password: `password`
     
+You may find lots of errors for things like the log statements, or the entities not having constructors. Below, you can find instructions on how to fix this for IntelliJ and Eclipse.
+
+### IntelliJ
     
   <p align="center">
 	<img src="/media/intellij_annotation_processing.png" alt="Enable IntelliJ annotation processing"/>
   </p>
     
-In IntelliJ, you may find lots of errors for things like the log statements and the entities not having constructors.
 To remove the errors in IntelliJ, install the [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok) and enable annotation 
 processing. This can be done either in the popup window that appears after installing the Lombok plugin or by checking the
 'Enable annotation processing' checkbox in Settings > Build, Execution, Deployment > Compiler > Annotation Processors.
+
+### Eclipse
+
+In Eclipse, you will need to run Maven install before running the project (right click anywhere in the pom.xml and select Run as > Maven install.
+
+### Access database
 
 To access the h2 database:
 
@@ -74,6 +82,10 @@ If you wish to contribute (thanks!), please first see the [contributing document
 ## Further information
 
 For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
+
+### Help
+
+If you need help with anything, we'll be happy to help you in our [Gitter Channel](https://gitter.im/book-project-community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge).
 
 ## Acknowledgements
 
