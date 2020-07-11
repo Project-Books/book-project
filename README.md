@@ -1,6 +1,9 @@
   <p align="center">
-	<img src="/media/book-project-logo.png" alt="Logo"/>
+	<img src="/media/book_project_logo_banner.png" alt="Logo"/>
   </p>
+  
+[![Build Status](https://travis-ci.com/knjk04/book-project.svg?branch=master)](https://travis-ci.com/knjk04/book-project)
+[![Gitter](https://badges.gitter.im/book-project-community/community.svg)](https://gitter.im/book-project-community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 [![Build Status](https://travis-ci.com/knjk04/book-project.svg?branch=master)](https://travis-ci.com/knjk04/book-project)
 [![Gitter](https://badges.gitter.im/book-project-community/community.svg)](https://gitter.im/book-project-community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -31,7 +34,10 @@ reflect this.*
 
 ## Setup
 
-Prerequisites: JDK 11 (or higher), Node.js and npm
+- Prerequisites: JDK 11 (or higher) 
+- If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
+  - If you do have Node.js installed, please ensure it is at least version 10.0
+
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
