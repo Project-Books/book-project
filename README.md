@@ -59,7 +59,7 @@ processing. This can be done either in the popup window that appears after insta
 
 ### Eclipse
 
-In Eclipse, you will need to run Maven install before running the project (right click anywhere in the pom.xml and select Run as > Maven install.
+In Eclipse, you will need to run Maven install before running the project (right click anywhere in the pom.xml and select Run as > Maven install).
 
 ### Access database
 
