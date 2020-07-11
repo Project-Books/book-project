@@ -137,7 +137,8 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                                 Author author = authors.get(random.nextInt(authors.size()));
                                 Book book = new Book(title, author);
                                 Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
-                                List<String> recommendedBy = Arrays.asList(new String[] {"John", "Thomas", "Christina", "Luke", "Sally"});
+                                List<String> recommendedBy =
+                                        Arrays.asList(new String[] {"John", "Thomas", "Christina", "Luke", "Sally"});
                                 String recommender = recommendedBy.get(random.nextInt(recommendedBy.size()));
                                 book.setGenre(genre);
                                 book.setSeriesPosition(series);
