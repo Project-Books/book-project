@@ -20,22 +20,31 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
- * Represents a single book
+ * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, Tags, genre and
+ * rating.
  */
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
 
     @NotNull
@@ -55,13 +64,24 @@ public class Book extends BaseEntity {
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE })
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
     @JoinColumn(name = "shelf_id")
     private PredefinedShelf shelf;
+
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            cascade = { CascadeType.MERGE, CascadeType.REFRESH }
+    )
+    @JoinTable(
+            name = "book_tag",
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    )
+    private Set<Tag> tags;
 
     public Book(String title, Author author) {
         this.title = title;
@@ -71,7 +91,7 @@ public class Book extends BaseEntity {
     @Override
     public String toString() {
         return Book.class.getSimpleName() + "{"
-            + "title='" + title + '\''
-            + '}';
+                + "title='" + title + '\''
+                + '}';
     }
 }
