@@ -47,6 +47,9 @@ public class Book extends BaseEntity {
     private Genre genre;
 
     private Integer seriesPosition;
+    
+    @NotNull
+    private int edition;
 
     private String bookRecommendedBy;
 
@@ -66,6 +69,28 @@ public class Book extends BaseEntity {
     public Book(String title, Author author) {
         this.title = title;
         this.author = author;
+        this.edition = 1;
+    }
+    
+    public String getTextEdition() {
+        String edition = "";
+        int lastDigit = getEdition() % 10;
+        switch (lastDigit) {
+            case 1:
+                edition = getEdition() + "st edition";
+                break;
+            case 2:
+                edition = getEdition() + "nd edition";
+                break;
+            case 3:
+                edition = getEdition() + "rd edition";
+                break;
+
+            default:
+                edition = getEdition() + "th edition";
+                break;
+        }
+        return edition;
     }
 
     @Override
