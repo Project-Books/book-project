@@ -31,7 +31,10 @@ reflect this.*
 
 ## Setup
 
-Prerequisites: JDK 11 (or higher), Node.js and npm
+- Prerequisites: JDK 11 (or higher) 
+- If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
+  - If you do have Node.js installed, please ensure it is at least version 10.0
+
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
