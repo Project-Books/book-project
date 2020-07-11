@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -136,10 +137,13 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                                 Author author = authors.get(random.nextInt(authors.size()));
                                 Book book = new Book(title, author);
                                 Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
+                                List<String> recommendedBy =
+                                        Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
+                                String recommender = recommendedBy.get(random.nextInt(recommendedBy.size()));
                                 book.setGenre(genre);
                                 book.setSeriesPosition(series);
                                 book.setNumberOfPages(pages);
-
+                                book.setBookRecommendedBy(recommender);
                         return book;
                     }).collect(Collectors.toList()));
         }
