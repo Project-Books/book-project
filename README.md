@@ -5,9 +5,6 @@
 [![Build Status](https://travis-ci.com/knjk04/book-project.svg?branch=master)](https://travis-ci.com/knjk04/book-project)
 [![Gitter](https://badges.gitter.im/book-project-community/community.svg)](https://gitter.im/book-project-community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build Status](https://travis-ci.com/knjk04/book-project.svg?branch=master)](https://travis-ci.com/knjk04/book-project)
-[![Gitter](https://badges.gitter.im/book-project-community/community.svg)](https://gitter.im/book-project-community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
 *Features:*
