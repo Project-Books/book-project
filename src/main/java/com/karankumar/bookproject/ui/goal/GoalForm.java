@@ -35,6 +35,8 @@ public class GoalForm extends VerticalLayout {
     private final Button saveButton;
 
     public GoalForm() {
+        LOGGER.log(Level.INFO, "In GoalForm()");
+
         booksToRead = new IntegerField();
         booksToRead.setPlaceholder("Books to read");
         configureGoalField(booksToRead);

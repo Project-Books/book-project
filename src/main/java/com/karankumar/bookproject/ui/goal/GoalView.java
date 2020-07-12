@@ -149,15 +149,24 @@ public class GoalView extends VerticalLayout {
         String haveRead = "You have read ";
         String outOf = " out of ";
         if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
+            toggleBooksGoalInfo(true);
+
             readingGoal.setText(haveRead + booksReadThisYear + outOf + + targetToRead + " books");
             goalProgress.setText(calculateProgress(targetToRead, booksReadThisYear));
             updateProgressBarValue(targetToRead, booksReadThisYear);
         } else {
+            toggleBooksGoalInfo(false);
+
             readingGoal.setText(haveRead + pagesReadThisYear + outOf + targetToRead + " pages");
             updateProgressBarValue(targetToRead, pagesReadThisYear);
         }
 
         updateSetGoalText();
+    }
+
+    private void toggleBooksGoalInfo(boolean isOn) {
+        goalProgress.setVisible(isOn);
+        booksToRead.setVisible(isOn);
     }
 
     /**
