@@ -35,6 +35,8 @@ public class GoalForm extends VerticalLayout {
     private final Button saveButton;
 
     public GoalForm() {
+        LOGGER.log(Level.INFO, "In GoalForm()");
+
         booksToRead = new IntegerField();
         booksToRead.setPlaceholder("Books to read");
         configureGoalField(booksToRead);
@@ -145,8 +147,7 @@ public class GoalForm extends VerticalLayout {
 
     private void confirmSavedGoal() {
         newGoalDialog.close();
-        Notification notification = new Notification("Set your reading goal", 3000);
-        notification.open();
+        new Notification("Set your reading goal", 3000).open();
     }
 
     public void openForm() {
