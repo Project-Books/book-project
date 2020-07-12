@@ -74,10 +74,11 @@ public class BookForm extends VerticalLayout {
 
     private final PredefinedShelfService shelfService;
     private final Button reset = new Button();
-    private final FormLayout.FormItem started;
-    private final FormLayout.FormItem finished;
-    private final FormLayout.FormItem ratingFormItem;
     private final Dialog dialog;
+
+    private FormLayout.FormItem started;
+    private FormLayout.FormItem finished;
+    private FormLayout.FormItem ratingFormItem;
 
     public Button delete = new Button();
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
@@ -118,18 +119,7 @@ public class BookForm extends VerticalLayout {
         };
         setComponentMinWidth(components);
 
-        formLayout.setResponsiveSteps();
-        formLayout.addFormItem(bookTitle, "Book title *");
-        formLayout.addFormItem(shelf, "Book shelf *");
-        formLayout.addFormItem(authorFirstName, "Author's first name *");
-        formLayout.addFormItem(authorLastName, "Author's last name *");
-        formLayout.addFormItem(seriesPosition, "Series number");
-        started = formLayout.addFormItem(dateStartedReading, "Date started");
-        finished = formLayout.addFormItem(dateFinishedReading, "Date finished");
-        formLayout.addFormItem(bookGenre, "Book genre");
-        formLayout.addFormItem(pageCount, "Page count");
-        ratingFormItem = formLayout.addFormItem(rating, "Book rating");
-        formLayout.add(buttons, 3);
+        configureFormLayout(formLayout, buttons);
 
         shelf.addValueChangeListener(event -> {
             if (event.getValue() != null) {
@@ -143,6 +133,21 @@ public class BookForm extends VerticalLayout {
         });
 
         add(dialog);
+    }
+
+    private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
+        formLayout.setResponsiveSteps();
+        formLayout.addFormItem(bookTitle, "Book title *");
+        formLayout.addFormItem(shelf, "Book shelf *");
+        formLayout.addFormItem(authorFirstName, "Author's first name *");
+        formLayout.addFormItem(authorLastName, "Author's last name *");
+        formLayout.addFormItem(seriesPosition, "Series number");
+        started = formLayout.addFormItem(dateStartedReading, "Date started");
+        finished = formLayout.addFormItem(dateFinishedReading, "Date finished");
+        formLayout.addFormItem(bookGenre, "Book genre");
+        formLayout.addFormItem(pageCount, "Page count");
+        ratingFormItem = formLayout.addFormItem(rating, "Book rating");
+        formLayout.add(buttonLayout, 3);
     }
 
     public void openForm() {
