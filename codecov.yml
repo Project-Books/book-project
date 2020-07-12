@@ -4,3 +4,5 @@ coverage:
       default:
         target: 40%
         threshold: 10%
+ignore:
+  - "src/main/java/com/karankumar/bookproject/BookProjectApplication.java"
