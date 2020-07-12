@@ -88,6 +88,7 @@ For urgent work, such as fixing important bugs or work that is blocking others, 
 
 - Code: adding new features, fixing bugs and general refactoring to name a few
   - Issues and pull requests labelled with [needs-repro](https://github.com/knjk04/book-project/labels/needs-repro) have yet to be reproduced. If you're able to reproduce it, letting us know would help a lot
+  - Our test coverage is low, so we need a lot more tests, particularly the areas that are undertested or not covered at all
 
 - Documentation: improvements (including fixing typos!) to files such as the [README](https://github.com/knjk04/book-project/blob/master/README.md), any of the [wiki](https://github.com/knjk04/book-project/wiki) pages, the [style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md), comments in source files, this contributing document or the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
 
