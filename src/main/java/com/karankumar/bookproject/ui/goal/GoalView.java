@@ -190,7 +190,6 @@ public class GoalView extends VerticalLayout {
         if (booksStillToRead <= 0) {
             schedule = "Congratulations for reaching your target!";
         } else {
-
             LocalDate now = LocalDate.now();
             WeekFields weekFields = WeekFields.of(Locale.getDefault());
             int weekOfYear = now.get(weekFields.weekOfWeekBasedYear());
@@ -212,7 +211,6 @@ public class GoalView extends VerticalLayout {
             schedule = String.format("You are %d books %s schedule", howManyBehindOrAhead,
                     behindOrAheadSchedule(booksReadThisYear, shouldHaveRead));
         }
-
         return schedule;
     }
 
@@ -223,11 +221,7 @@ public class GoalView extends VerticalLayout {
      * @return a String denoting that the user is ahead or behind schedule
      */
     public String behindOrAheadSchedule(int booksReadThisYear, int shouldHaveRead) {
-        if (booksReadThisYear < shouldHaveRead) {
-            return BEHIND;
-        } else {
-            return AHEAD_OF;
-        }
+        return (booksReadThisYear < shouldHaveRead) ? BEHIND : AHEAD_OF;
     }
 
     /**
