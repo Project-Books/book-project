@@ -53,9 +53,6 @@ public class GoalView extends VerticalLayout {
     private GoalService goalService;
     private H1 readingGoal;
 
-    private static final String BOOKS = "books";
-    private static final String PAGES = "pages";
-
     /**
      * Displays whether a user has met the goal, is ahead or is behind the goal
      */
