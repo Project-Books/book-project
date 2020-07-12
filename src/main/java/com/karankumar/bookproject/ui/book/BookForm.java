@@ -88,7 +88,6 @@ public class BookForm extends VerticalLayout {
 
         dialog = new Dialog();
         dialog.setCloseOnOutsideClick(true);
-
         FormLayout formLayout = new FormLayout();
         dialog.add(formLayout);
 
@@ -102,9 +101,7 @@ public class BookForm extends VerticalLayout {
         configureDateStarted();
         configureDateFinished();
         configureRating();
-
         HorizontalLayout buttons = configureButtons();
-
         HasSize[] components = {
                 bookTitle,
                 authorFirstName,
@@ -118,12 +115,16 @@ public class BookForm extends VerticalLayout {
                 rating,
         };
         setComponentMinWidth(components);
-
         configureFormLayout(formLayout, buttons);
 
         add(dialog);
     }
 
+    /**
+     * Sets up the form layout
+     * @param formLayout the form layout to configure
+     * @param buttonLayout a layout consisting of buttons
+     */
     private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
         formLayout.setResponsiveSteps();
         formLayout.addFormItem(bookTitle, "Book title *");
