@@ -384,7 +384,7 @@ public class BookForm extends VerticalLayout {
                 try {
                     hideDates(shelf.getValue());
                     showOrHideRating(shelf.getValue());
-                } catch (IllegalArgumentException | NotSupportedException e) {
+                } catch (NotSupportedException e) {
                     e.printStackTrace();
                 }
             }
