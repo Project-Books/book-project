@@ -148,18 +148,19 @@ public class GoalView extends VerticalLayout {
 
         String haveRead = "You have read ";
         String outOf = " out of ";
+        double progress;
         if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
             toggleBooksGoalInfo(true);
-
             readingGoal.setText(haveRead + booksReadThisYear + outOf + + targetToRead + " books");
             goalProgress.setText(calculateProgress(targetToRead, booksReadThisYear));
-            updateProgressBarValue(targetToRead, booksReadThisYear);
+            progress = getProgress(targetToRead, booksReadThisYear);
         } else {
             toggleBooksGoalInfo(false);
-
             readingGoal.setText(haveRead + pagesReadThisYear + outOf + targetToRead + " pages");
-            updateProgressBarValue(targetToRead, pagesReadThisYear);
+            progress = getProgress(targetToRead, pagesReadThisYear);
         }
+        progressBar.setValue(progress);
+        progressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
 
         updateSetGoalText();
     }
@@ -214,12 +215,8 @@ public class GoalView extends VerticalLayout {
         return schedule;
     }
 
-    private void updateProgressBarValue(int toRead, int read) {
+    public static double getProgress(int toRead, int read) {
         double progress = ((double) read / toRead);
-        progress = Math.min(progress, 1.0);
-        progressBar.setValue(progress);
-
-        double percentage = progress * 100;
-        progressPercentage.setText(String.format("%.2f%% completed", percentage));
+        return Math.min(progress, 1.0);
     }
 }

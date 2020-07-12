@@ -32,6 +32,7 @@ public class GoalServiceTest {
         ReadingGoal readingGoal2 = new ReadingGoal(240, ReadingGoal.GoalType.PAGES);
         goalService.save(readingGoal2);
         Assertions.assertEquals(1, (long) goalService.count());
+        // check reading goal 2 overwrote reading goal 1
         Assertions.assertEquals(readingGoal2, goalService.findAll().get(0));
     }
 }
