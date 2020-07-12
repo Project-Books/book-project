@@ -46,6 +46,9 @@ import java.util.logging.Logger;
 public class GoalView extends VerticalLayout {
 
     private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
+    private static final String BEHIND = "behind";
+    private static final String AHEAD_OF = "ahead of";
+
     private final Button setGoal;
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
@@ -205,16 +208,34 @@ public class GoalView extends VerticalLayout {
             int shouldHaveRead = booksToReadAWeekFromStartOfYear * weekOfYear;
             LOGGER.log(Level.INFO, "Should have read: " + shouldHaveRead);
 
-            boolean behindSchedule = booksReadThisYear < shouldHaveRead;
-            String behindOrAhead = behindSchedule ? "behind" : "ahead of ";
             int howManyBehindOrAhead = Math.abs(shouldHaveRead - booksReadThisYear);
-
-            schedule = String.format("You are %d books %s schedule", howManyBehindOrAhead, behindOrAhead);
+            schedule = String.format("You are %d books %s schedule", howManyBehindOrAhead,
+                    behindOrAheadSchedule(booksReadThisYear, shouldHaveRead));
         }
 
         return schedule;
     }
 
+    /**
+     * Note that this method assumes that the user is behind or ahead of schedule (and that they haven't met their goal)
+     * @param booksReadThisYear the number of books read so far
+     * @param shouldHaveRead the number of books that should have been ready by this point to be on schedule
+     * @return a String denoting that the user is ahead or behind schedule
+     */
+    public String behindOrAheadSchedule(int booksReadThisYear, int shouldHaveRead) {
+        if (booksReadThisYear < shouldHaveRead) {
+            return BEHIND;
+        } else {
+            return AHEAD_OF;
+        }
+    }
+
+    /**
+     * Calculates a user's progress towards their reading goal
+     * @param toRead the number of books to read by the end of the year (the goal)
+     * @param read the number of books that the user has read so far
+     * @return a fraction of the number of books to read over the books read. If greater than 1, 1.0 is returned
+     */
     public static double getProgress(int toRead, int read) {
         double progress = ((double) read / toRead);
         return Math.min(progress, 1.0);
