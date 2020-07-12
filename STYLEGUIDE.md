@@ -146,6 +146,10 @@ public String toString() {
 }
 ```
 
+**Short methods**
+
+Wherever possible, try to keep methods short (under 15 lines). This makes it easier to test, comprehend and reuse.
+
 ## Updates to this document
 
 If you are considering making changes to any of the recommended styles in this guide, please note that the following may also need to be changed:
