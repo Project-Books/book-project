@@ -121,17 +121,6 @@ public class BookForm extends VerticalLayout {
 
         configureFormLayout(formLayout, buttons);
 
-        shelf.addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-            	try {
-                    hideDates(shelf.getValue());
-                    showOrHideRating(shelf.getValue());
-                } catch (IllegalArgumentException | NotSupportedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         add(dialog);
     }
 
@@ -388,8 +377,17 @@ public class BookForm extends VerticalLayout {
         shelf.setRequired(true);
         shelf.setPlaceholder("Choose a shelf");
         shelf.setClearButtonVisible(true);
-
         shelf.setItems(PredefinedShelf.ShelfName.values());
+        shelf.addValueChangeListener(event -> {
+            if (event.getValue() != null) {
+                try {
+                    hideDates(shelf.getValue());
+                    showOrHideRating(shelf.getValue());
+                } catch (IllegalArgumentException | NotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
