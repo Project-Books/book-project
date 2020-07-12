@@ -48,6 +48,7 @@ public class GoalView extends VerticalLayout {
     private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
+    private static final int WEEKS_IN_YEAR = 52;
 
     private final Button setGoal;
     private final PredefinedShelfService predefinedShelfService;
@@ -168,6 +169,9 @@ public class GoalView extends VerticalLayout {
         updateSetGoalText();
     }
 
+    /**
+     * @param isOn if true, set the visibility of the book goal-specific text to true. Otherwise, set them to false
+     */
     private void toggleBooksGoalInfo(boolean isOn) {
         goalProgress.setVisible(isOn);
         booksToRead.setVisible(isOn);
@@ -190,28 +194,60 @@ public class GoalView extends VerticalLayout {
         if (booksStillToRead <= 0) {
             schedule = "Congratulations for reaching your target!";
         } else {
-            LocalDate now = LocalDate.now();
-            WeekFields weekFields = WeekFields.of(Locale.getDefault());
-            int weekOfYear = now.get(weekFields.weekOfWeekBasedYear());
-            LOGGER.log(Level.INFO, "Week of year: " + weekOfYear);
-            int weeksLeftInYear = 52 - weekOfYear;
-            LOGGER.log(Level.INFO, "Weeks left in year: " + weeksLeftInYear);
-
+            int weekOfYear = getWeekOfYear();
+            int weeksLeftInYear = weeksLeftInYear(weekOfYear);
             double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
             booksToRead.setText("You need to read " + booksStillToReadAWeek +
                     " books a week on average to achieve your goal");
 
-            int booksToReadAWeekFromStartOfYear = (int) Math.ceil(booksToReadThisYear / 52);
-            LOGGER.log(Level.INFO, "Books to read a week from the start of the year: " + booksToReadAWeekFromStartOfYear);
-
-            int shouldHaveRead = booksToReadAWeekFromStartOfYear * weekOfYear;
-            LOGGER.log(Level.INFO, "Should have read: " + shouldHaveRead);
-
-            int howManyBehindOrAhead = Math.abs(shouldHaveRead - booksReadThisYear);
+            int howManyBehindOrAhead = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
             schedule = String.format("You are %d books %s schedule", howManyBehindOrAhead,
-                    behindOrAheadSchedule(booksReadThisYear, shouldHaveRead));
+                    behindOrAheadSchedule(booksReadThisYear, shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;
+    }
+
+    /**
+     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
+     * @param booksReadThisYear the number of books read so far
+     * @return the number of books that the user is ahead or behind schedule by
+     */
+    private int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {
+        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) * getWeekOfYear();
+        return Math.abs(shouldHaveRead - booksReadThisYear);
+    }
+
+    /**
+     * @return the current week number of the year
+     */
+    private int getWeekOfYear() {
+        LocalDate now = LocalDate.now();
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        return now.get(weekFields.weekOfWeekBasedYear());
+    }
+
+    /**
+     * @param weekOfYear the current week number of the year
+     * @return the number of weeks left in the year from the current week
+     */
+    private static int weeksLeftInYear(int weekOfYear) {
+        return (WEEKS_IN_YEAR - weekOfYear);
+    }
+
+    /**
+     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
+     * @return the number of books that should have been read a week (on average) from the start of the year
+     */
+    public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
+        return ((int) Math.ceil(booksToReadThisYear / WEEKS_IN_YEAR));
+    }
+
+    /**
+     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
+     * @return the number of books that the user should have ready by this point in the year in order to be on target
+     */
+    public int shouldHaveRead(int booksToReadThisYear) {
+        return booksToReadFromStartOfYear(booksToReadThisYear) * getWeekOfYear();
     }
 
     /**
@@ -220,7 +256,7 @@ public class GoalView extends VerticalLayout {
      * @param shouldHaveRead the number of books that should have been ready by this point to be on schedule
      * @return a String denoting that the user is ahead or behind schedule
      */
-    public String behindOrAheadSchedule(int booksReadThisYear, int shouldHaveRead) {
+    public static String behindOrAheadSchedule(int booksReadThisYear, int shouldHaveRead) {
         return (booksReadThisYear < shouldHaveRead) ? BEHIND : AHEAD_OF;
     }
 
