@@ -173,13 +173,10 @@ public class GoalView extends VerticalLayout {
         int readThisYear = 0;
         boolean lookingForBooks = goalType.equals(ReadingGoal.GoalType.BOOKS);
         for (Book book : readShelf.getBooks()) {
-            if (book != null) {
-                if (lookingForBooks && book.getDateFinishedReading() != null &&
-                        book.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
-                    readThisYear++;
-                } else {
-                    readThisYear += book.getNumberOfPages();
-                }
+            // only books that have been given a finish date can count towards the reading goal
+            if (book != null && book.getDateFinishedReading() != null
+                    && book.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
+                readThisYear += (lookingForBooks ? (1) : book.getNumberOfPages());
             }
         }
         return readThisYear;
