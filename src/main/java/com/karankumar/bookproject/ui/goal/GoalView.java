@@ -30,6 +30,7 @@ import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.List;
@@ -127,35 +128,19 @@ public class GoalView extends VerticalLayout {
             return;
         }
 
-        LOGGER.log(Level.INFO, "Read shelf: " + readShelf);
-
-        int booksReadThisYear = 0;
-        int pagesReadThisYear = 0;
-        boolean lookingForBooks = goalType.equals(ReadingGoal.GoalType.BOOKS);
-        for (Book book : readShelf.getBooks()) {
-            if (book != null) {
-                if (lookingForBooks && book.getDateFinishedReading() != null &&
-                        book.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
-                    booksReadThisYear++;
-                } else {
-                    pagesReadThisYear += book.getNumberOfPages();
-                }
-            }
-        }
-
+        int howManyReadThisYear = howManyReadThisYear(goalType, readShelf);
         String haveRead = "You have read ";
         String outOf = " out of ";
-        double progress;
         if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
             toggleBooksGoalInfo(true);
-            readingGoal.setText(haveRead + booksReadThisYear + outOf + + targetToRead + " books");
-            goalProgress.setText(calculateProgress(targetToRead, booksReadThisYear));
-            progress = getProgress(targetToRead, booksReadThisYear);
+            readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + " books");
+            goalProgress.setText(calculateProgress(targetToRead, howManyReadThisYear));
         } else {
             toggleBooksGoalInfo(false);
-            readingGoal.setText(haveRead + pagesReadThisYear + outOf + targetToRead + " pages");
-            progress = getProgress(targetToRead, pagesReadThisYear);
+            readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + " pages");
         }
+
+        double progress = getProgress(targetToRead, howManyReadThisYear);
         progressBar.setValue(progress);
         progressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
 
@@ -176,6 +161,28 @@ public class GoalView extends VerticalLayout {
             }
         }
         return readShelf;
+    }
+
+    /**
+     * Find how many books or pages have been read this year
+     * @param goalType either books or pages
+     * @param readShelf the predefined read shelf
+     * @return the number of books or pages read this year
+     */
+    private int howManyReadThisYear(ReadingGoal.GoalType goalType, @NotNull PredefinedShelf readShelf) {
+        int readThisYear = 0;
+        boolean lookingForBooks = goalType.equals(ReadingGoal.GoalType.BOOKS);
+        for (Book book : readShelf.getBooks()) {
+            if (book != null) {
+                if (lookingForBooks && book.getDateFinishedReading() != null &&
+                        book.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
+                    readThisYear++;
+                } else {
+                    readThisYear += book.getNumberOfPages();
+                }
+            }
+        }
+        return readThisYear;
     }
 
     /**
