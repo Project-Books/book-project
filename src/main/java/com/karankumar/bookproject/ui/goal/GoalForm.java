@@ -150,7 +150,7 @@ public class GoalForm extends VerticalLayout {
             }
 
             fireEvent(new SaveEvent(this, binder.getBean()));
-            confirmSavedGoal();
+            confirmSavedGoal(binder.getBean().getTarget(), binder.getBean().getGoalType());
         } else {
             BinderValidationStatus<ReadingGoal> status = binder.validate();
             if (status.hasErrors()) {
@@ -164,9 +164,11 @@ public class GoalForm extends VerticalLayout {
     /**
      * Displays a confirmation message when the reading goal has been successfully set
      */
-    private void confirmSavedGoal() {
+    private void confirmSavedGoal(int target, ReadingGoal.GoalType goalType) {
         newGoalDialog.close();
-        new Notification("Set your reading goal", 3000).open();
+        String notificationMessage =
+                String.format("Set your reading goal of %d %s", target, goalType.toString().toLowerCase());
+        new Notification(notificationMessage, 3000).open();
     }
 
     public void openForm() {
