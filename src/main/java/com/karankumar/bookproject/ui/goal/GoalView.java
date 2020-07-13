@@ -48,6 +48,7 @@ public class GoalView extends VerticalLayout {
 
     public static final String SET_GOAL = "Set goal";
     public static final String UPDATE_GOAL = "Update goal";
+    public static final String TARGET_MET = "Congratulations for reaching your target!";
 
     private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
     private static final String BEHIND = "behind";
@@ -200,7 +201,7 @@ public class GoalView extends VerticalLayout {
      * @param booksReadThisYear the number of books that have already been read by th end of the year
      * @return a String that displays whether the goal was met, or whether the user is ahead or behind schedule
      */
-    private String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
+    public String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
         LOGGER.log(Level.INFO, "\nBooks to read this year: " + booksToReadThisYear);
         LOGGER.log(Level.INFO, "Books read this year: " + booksReadThisYear);
 
@@ -209,7 +210,7 @@ public class GoalView extends VerticalLayout {
         LOGGER.log(Level.INFO, "Books still to read: " + booksStillToRead);
 
         if (booksStillToRead <= 0) {
-            schedule = "Congratulations for reaching your target!";
+            schedule = TARGET_MET;
         } else {
             int weekOfYear = getWeekOfYear();
             int weeksLeftInYear = weeksLeftInYear(weekOfYear);

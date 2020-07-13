@@ -74,13 +74,32 @@ public class GoalViewTests {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         Assertions.assertEquals(goalView.setGoalButton.getText(), GoalView.SET_GOAL);
 
-        ReadingGoal.GoalType[] goalTypes = ReadingGoal.GoalType.values();
-        ReadingGoal.GoalType randomGoalType = goalTypes[new Random().nextInt(goalTypes.length)];
-        int randomGoalTarget = ThreadLocalRandom.current().nextInt(0, 10_000);
-
-        ReadingGoal goal = new ReadingGoal(randomGoalTarget, randomGoalType);
+        ReadingGoal goal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
         goalView.updateReadingGoal(goal.getTarget(), goal.getGoalType());
         Assertions.assertEquals(goalView.setGoalButton.getText(), GoalView.UPDATE_GOAL);
+    }
+
+    private ReadingGoal.GoalType getRandomGoalType() {
+        ReadingGoal.GoalType[] goalTypes = ReadingGoal.GoalType.values();
+        return goalTypes[new Random().nextInt(goalTypes.length)];
+    }
+
+    private int getRandomGoalTarget() {
+        return ThreadLocalRandom.current().nextInt(0, 10_000);
+    }
+
+    @Test
+    public void targetMetMessageShown() {
+        Assumptions.assumeTrue(goalService.findAll().size() == 0);
+        int randomGoalTarget = getRandomGoalTarget();
+
+        // target met:
+        Assertions.assertEquals(GoalView.TARGET_MET, goalView.calculateProgress(randomGoalTarget, randomGoalTarget));
+        Assertions.assertEquals(GoalView.TARGET_MET,
+                goalView.calculateProgress(randomGoalTarget, randomGoalTarget + 1));
+        // target not met:
+        Assertions.assertNotEquals(GoalView.TARGET_MET,
+                goalView.calculateProgress(randomGoalTarget, randomGoalTarget - 1));
     }
 
     @AfterEach
