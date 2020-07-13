@@ -19,9 +19,13 @@ public class GoalViewTests {
     public void progressValueCorrect() {
         int booksToRead = new Random().nextInt(100);
 
+        Assertions.assertEquals(GoalView.getProgress(5, 0), 0); // == 0%
         Assertions.assertEquals(GoalView.getProgress(25, 5), 0.2); // < 100%
         Assertions.assertEquals(GoalView.getProgress(booksToRead, booksToRead), 1.0); // == 100%
         Assertions.assertEquals(GoalView.getProgress(booksToRead, (booksToRead + 1)), 1.0); // > 100%
+
+        // ensure 0, and not an arithmetic exception is returned
+        Assertions.assertEquals(GoalView.getProgress(0, 5), 0);
     }
 
     @AfterEach

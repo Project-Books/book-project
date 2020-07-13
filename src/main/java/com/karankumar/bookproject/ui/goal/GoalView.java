@@ -267,7 +267,7 @@ public class GoalView extends VerticalLayout {
      * @return a fraction of the number of books to read over the books read. If greater than 1, 1.0 is returned
      */
     public static double getProgress(int toRead, int read) {
-        double progress = ((double) read / toRead);
+        double progress = (toRead == 0) ? 0 : ((double) read / toRead);
         return Math.min(progress, 1.0);
     }
 }
