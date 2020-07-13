@@ -122,14 +122,7 @@ public class GoalView extends VerticalLayout {
     }
 
     private void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
-        PredefinedShelf readShelf = null;
-        // only books in the read shelf count towards the goal
-        for (PredefinedShelf p : predefinedShelfService.findAll()) {
-            if (p.getShelfName().equals(PredefinedShelf.ShelfName.READ)) {
-                readShelf = p;
-                break;
-            }
-        }
+        PredefinedShelf readShelf = findReadShelf();
         if (readShelf == null || readShelf.getBooks() == null) {
             return;
         }
@@ -167,6 +160,22 @@ public class GoalView extends VerticalLayout {
         progressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
 
         updateSetGoalText();
+    }
+
+    /**
+     * Only books in the read shelf count towards the goal
+     * @return the read shelf if it can be found, null otherwise.
+     */
+    private PredefinedShelf findReadShelf() {
+        PredefinedShelf readShelf = null;
+
+        for (PredefinedShelf p : predefinedShelfService.findAll()) {
+            if (p.getShelfName().equals(PredefinedShelf.ShelfName.READ)) {
+                readShelf = p;
+                break;
+            }
+        }
+        return readShelf;
     }
 
     /**

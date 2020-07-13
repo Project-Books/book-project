@@ -24,7 +24,7 @@ public class GoalViewTests {
         Assertions.assertEquals(GoalView.getProgress(booksToRead, booksToRead), 1.0); // == 100%
         Assertions.assertEquals(GoalView.getProgress(booksToRead, (booksToRead + 1)), 1.0); // > 100%
 
-        // ensure 0, and not an arithmetic exception is returned
+        // ensure 0, and not an arithmetic exception, is returned
         Assertions.assertEquals(GoalView.getProgress(0, 5), 0);
     }
 
