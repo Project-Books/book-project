@@ -70,8 +70,10 @@ public class GoalViewTests {
 
         Assertions.assertEquals(GoalView.getProgress(5, 0), 0); // == 0%
         Assertions.assertEquals(GoalView.getProgress(25, 5), 0.2); // < 100%
-        Assertions.assertEquals(GoalView.getProgress(booksToRead, booksToRead), 1.0); // == 100%
-        Assertions.assertEquals(GoalView.getProgress(booksToRead, (booksToRead + 1)), 1.0); // > 100%
+        Assertions.assertEquals(GoalView.getProgress(booksToRead, booksToRead), 1.0,
+                "Books to read = " + booksToRead); // == 100%
+        Assertions.assertEquals(GoalView.getProgress(booksToRead, (booksToRead + 1)), 1.0,
+                "Books to read = " + booksToRead); // > 100%
 
         // ensure 0, and not an arithmetic exception, is returned
         Assertions.assertEquals(GoalView.getProgress(0, 5), 0);
@@ -121,8 +123,7 @@ public class GoalViewTests {
     }
 
     /**
-     * Only books that in the read shelf should count towards the reading goal
-     * Note; this test assumes that all read books have a non-null date finished that is in the current year
+     * Only books that in the read shelf that have a date finished (which will always be this year) should count towards the reading goal
      * @param bookService an Autowired book service to access the book repository
      */
     @Test
@@ -147,8 +148,13 @@ public class GoalViewTests {
                 book = createBook(PredefinedShelf.ShelfName.READING);
             } else if (random == 2) {
                 book = createBook(PredefinedShelf.ShelfName.READ);
-                booksInReadShelf++;
-                pagesReadInReadShelf += book.getNumberOfPages();
+                if (ThreadLocalRandom.current().nextInt(0, (1 + 1)) == 0) {
+                    // disregard this book in the goal count as it has no finish date
+                    book.setDateFinishedReading(null);
+                } else {
+                    booksInReadShelf++;
+                    pagesReadInReadShelf += book.getNumberOfPages();
+                }
             } else {
                 book = createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH);
             }
@@ -156,8 +162,7 @@ public class GoalViewTests {
         }
 
         PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
-        Assumptions.assumeTrue(readShelf != null && readShelf.getBooks().size() == booksInReadShelf);
-
+        Assumptions.assumeTrue(readShelf != null);
         Assertions.assertEquals(booksInReadShelf, GoalView.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
         Assertions.assertEquals(pagesReadInReadShelf, GoalView.howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
     }
