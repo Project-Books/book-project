@@ -57,6 +57,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class BooksInShelfViewTests {
 
     private static Routes routes;
+
+    @Autowired
+    private ApplicationContext ctx;
+
     private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
         TITLE_KEY,
         AUTHOR_KEY,
@@ -80,8 +84,6 @@ public class BooksInShelfViewTests {
         PAGES_KEY
     ));
     private BooksInShelfView shelfView;
-    @Autowired
-    private ApplicationContext ctx;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -96,11 +98,6 @@ public class BooksInShelfViewTests {
 
         Assumptions.assumeTrue(shelfService != null);
         shelfView = new BooksInShelfView(bookService, shelfService);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        MockVaadin.tearDown();
     }
 
     @ParameterizedTest
@@ -132,5 +129,10 @@ public class BooksInShelfViewTests {
                 Assertions.assertFalse(col.isVisible(), col.getKey() + " column is showing");
             }
         }
+    }
+
+    @AfterEach
+    public void tearDown() {
+        MockVaadin.tearDown();
     }
 }
