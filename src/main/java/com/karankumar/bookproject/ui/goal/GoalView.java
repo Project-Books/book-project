@@ -46,12 +46,15 @@ import java.util.logging.Logger;
 @PageTitle("Goal | Book Project")
 public class GoalView extends VerticalLayout {
 
+    public static final String SET_GOAL = "Set goal";
+    public static final String UPDATE_GOAL = "Update goal";
+
     private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
     private static final int WEEKS_IN_YEAR = 52;
 
-    private final Button setGoal;
+    public final Button setGoalButton;
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
 
@@ -72,7 +75,7 @@ public class GoalView extends VerticalLayout {
         this.predefinedShelfService = predefinedShelfService;
 
         readingGoal = new H1();
-        setGoal = new Button();
+        setGoalButton = new Button();
         goalProgress = new H3();
         booksToRead = new Span();
         progressBar = new ProgressBar();
@@ -83,13 +86,13 @@ public class GoalView extends VerticalLayout {
         configureSetGoal();
         getCurrentGoal();
 
-        add(readingGoal, progressBar, progressPercentage, goalProgress, booksToRead, setGoal);
+        add(readingGoal, progressBar, progressPercentage, goalProgress, booksToRead, setGoalButton);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
 
     private void configureSetGoal() {
-        setGoal.addClickListener(event -> {
+        setGoalButton.addClickListener(event -> {
             GoalForm goalForm = new GoalForm();
             add(goalForm);
             goalForm.openForm();
@@ -102,14 +105,14 @@ public class GoalView extends VerticalLayout {
         List<ReadingGoal> goals = goalService.findAll();
         if (goals.size() == 0) {
             readingGoal.setText("Reading goal not set");
-            setGoal.setText("Set goal");
+            setGoalButton.setText(SET_GOAL);
         } else {
             updateReadingGoal(goals.get(0).getTarget(), goals.get(0).getGoalType());
         }
     }
 
     private void updateSetGoalText() {
-        setGoal.setText("Update goal");
+        setGoalButton.setText(UPDATE_GOAL);
     }
 
     private void saveGoal(GoalForm.SaveEvent event) {
@@ -122,7 +125,7 @@ public class GoalView extends VerticalLayout {
         }
     }
 
-    private void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
+    public void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
         PredefinedShelf readShelf = findReadShelf();
         if (readShelf == null || readShelf.getBooks() == null) {
             return;
