@@ -47,8 +47,7 @@ public class GoalForm extends VerticalLayout {
         newGoalDialog.setCloseOnOutsideClick(true);
         add(newGoalDialog);
 
-        goalTypeRadioButtonGroup = new RadioButtonGroup<>();
-        goalTypeRadioButtonGroup.setItems(ReadingGoal.GoalType.values());
+        goalTypeRadioButtonGroup = createGoalTypeRadioGroup();
 
         formLayout.addFormItem(goalTypeRadioButtonGroup, "Goal type");
         FormLayout.FormItem booksFormItem = formLayout.addFormItem(booksToRead, BOOKS_TO_READ);
@@ -56,9 +55,6 @@ public class GoalForm extends VerticalLayout {
 
         // Set goal type to books by default
         pagesFormItem.setVisible(false);
-
-        formLayout.add(new HorizontalLayout(saveButton));
-
         goalTypeRadioButtonGroup.addValueChangeListener(event -> {
             if (event.getValue().equals(ReadingGoal.GoalType.PAGES)) {
                 booksFormItem.setVisible(false);
@@ -69,9 +65,15 @@ public class GoalForm extends VerticalLayout {
             }
         });
 
+        formLayout.add(new HorizontalLayout(saveButton));
+
         configureBinder();
     }
 
+    /**
+     * @param goalType either pages or books
+     * @return an IntegerField representing the number of pages or books to read
+     */
     private IntegerField createGoalField(ReadingGoal.GoalType goalType) {
         IntegerField field = new IntegerField();
         field.setPlaceholder((goalType.equals(ReadingGoal.GoalType.BOOKS) ? BOOKS_TO_READ : PAGES_TO_READ));
@@ -82,6 +84,9 @@ public class GoalForm extends VerticalLayout {
         return field;
     }
 
+    /**
+     * @return a save button
+     */
     private Button createSaveButton() {
         Button save = new Button("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -91,6 +96,15 @@ public class GoalForm extends VerticalLayout {
             validateOnSave();
         });
         return save;
+    }
+
+    /**
+     * @return a radio button group for the goal type
+     */
+    private RadioButtonGroup<ReadingGoal.GoalType> createGoalTypeRadioGroup() {
+        RadioButtonGroup<ReadingGoal.GoalType> goalTypeRadioButtonGroup = new RadioButtonGroup<>();
+        goalTypeRadioButtonGroup.setItems(ReadingGoal.GoalType.values());
+        return goalTypeRadioButtonGroup;
     }
 
     private void bindIntegerFields() {
@@ -112,6 +126,9 @@ public class GoalForm extends VerticalLayout {
         }
     }
 
+    /**
+     * Fires a save event if the binder is valid and the bean from the binder is not null
+     */
     private void validateOnSave() {
         if (binder.isValid()) {
 
@@ -144,6 +161,9 @@ public class GoalForm extends VerticalLayout {
         }
     }
 
+    /**
+     * Displays a confirmation message when the reading goal has been successfully set
+     */
     private void confirmSavedGoal() {
         newGoalDialog.close();
         new Notification("Set your reading goal", 3000).open();
