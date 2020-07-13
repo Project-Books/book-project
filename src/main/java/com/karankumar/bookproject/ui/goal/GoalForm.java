@@ -39,9 +39,7 @@ public class GoalForm extends VerticalLayout {
     public GoalForm() {
         booksToRead = createGoalField(ReadingGoal.GoalType.BOOKS);
         pagesToRead = createGoalField(ReadingGoal.GoalType.PAGES);
-
-        saveButton = new Button("Save");
-        configureSaveButton(saveButton);
+        saveButton = createSaveButton();
 
         FormLayout formLayout = new FormLayout();
         newGoalDialog = new Dialog();
@@ -84,13 +82,15 @@ public class GoalForm extends VerticalLayout {
         return field;
     }
 
-    private void configureSaveButton(Button save) {
+    private Button createSaveButton() {
+        Button save = new Button("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setMinWidth("13em");
         save.addClickListener(click -> {
             bindIntegerFields();
             validateOnSave();
         });
+        return save;
     }
 
     private void bindIntegerFields() {
