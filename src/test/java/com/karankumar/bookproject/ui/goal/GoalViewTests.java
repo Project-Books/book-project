@@ -22,6 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -75,8 +76,9 @@ public class GoalViewTests {
 
         ReadingGoal.GoalType[] goalTypes = ReadingGoal.GoalType.values();
         ReadingGoal.GoalType randomGoalType = goalTypes[new Random().nextInt(goalTypes.length)];
+        int randomGoalTarget = ThreadLocalRandom.current().nextInt(0, 10_000);
 
-        ReadingGoal goal = new ReadingGoal(24, randomGoalType);
+        ReadingGoal goal = new ReadingGoal(randomGoalTarget, randomGoalType);
         goalView.updateReadingGoal(goal.getTarget(), goal.getGoalType());
         Assertions.assertEquals(goalView.setGoalButton.getText(), GoalView.UPDATE_GOAL);
     }
