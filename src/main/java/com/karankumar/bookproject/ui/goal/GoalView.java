@@ -102,7 +102,7 @@ public class GoalView extends VerticalLayout {
         });
     }
 
-    private void getCurrentGoal() {
+    public void getCurrentGoal() {
         List<ReadingGoal> goals = goalService.findAll();
         if (goals.size() == 0) {
             readingGoal.setText("Reading goal not set");
@@ -126,7 +126,7 @@ public class GoalView extends VerticalLayout {
         }
     }
 
-    public void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
+    private void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
         PredefinedShelf readShelf = findReadShelf();
         if (readShelf == null || readShelf.getBooks() == null) {
             return;

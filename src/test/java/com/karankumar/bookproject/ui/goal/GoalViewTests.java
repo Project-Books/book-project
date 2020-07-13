@@ -74,8 +74,8 @@ public class GoalViewTests {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         Assertions.assertEquals(goalView.setGoalButton.getText(), GoalView.SET_GOAL);
 
-        ReadingGoal goal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
-        goalView.updateReadingGoal(goal.getTarget(), goal.getGoalType());
+        goalService.save(new ReadingGoal(getRandomGoalTarget(), getRandomGoalType()));
+        goalView.getCurrentGoal();
         Assertions.assertEquals(goalView.setGoalButton.getText(), GoalView.UPDATE_GOAL);
     }
 
