@@ -61,16 +61,26 @@ public class GoalView extends VerticalLayout {
     private final ProgressBar progressBar;
 
     private GoalService goalService;
-    private H1 readingGoal;
+
+    /**
+     * Displays what the reading goal is and how many books/pages the user has read
+     */
+    H1 readingGoal;
 
     /**
      * Displays whether a user has met the goal, is ahead or is behind the goal
      */
-    private H3 goalProgress;
+    H3 goalProgress;
 
-    private Span progressPercentage;
+    /**
+     * Displays the user's progress towards their goal as a percentage
+     */
+    Span progressPercentage;
 
-    private Span booksToRead;
+    /**
+     * Displays how many books a user needs to read on average to meet their goal
+     */
+    Span booksToRead;
 
     public GoalView(GoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
@@ -103,7 +113,7 @@ public class GoalView extends VerticalLayout {
         });
     }
 
-    public void getCurrentGoal() {
+    void getCurrentGoal() {
         List<ReadingGoal> goals = goalService.findAll();
         if (goals.size() == 0) {
             readingGoal.setText("Reading goal not set");

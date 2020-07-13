@@ -202,6 +202,27 @@ public class GoalViewTests {
         return LocalDate.of(year, month, day);
     }
 
+    /**
+     * Checks whether the right information is shown depending on whether the goal type is set to pages or books
+     */
+    @Test
+    public void correctInformationShownForGoalType() {
+        Assumptions.assumeTrue(goalService.findAll().size() == 0);
+
+        ReadingGoal booksGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
+        goalService.save(booksGoal);
+        goalView.getCurrentGoal();
+        // should be visible for both a book or pages goal
+        Assertions.assertTrue(goalView.readingGoal.isVisible());
+        Assertions.assertTrue(goalView.progressPercentage.isVisible());
+
+        if (booksGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
+            // Additional components that should be visible for a books goal
+            Assertions.assertTrue(goalView.goalProgress.isVisible());
+            Assertions.assertTrue(goalView.booksToRead.isVisible());
+        }
+    }
+
     @AfterEach
     public void tearDown() {
         MockVaadin.tearDown();
