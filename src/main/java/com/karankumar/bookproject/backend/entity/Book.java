@@ -42,7 +42,7 @@ public class Book extends BaseEntity {
     @NotEmpty
     private String title;
 
-    private int numberOfPages;
+    private Integer numberOfPages;
 
     private Genre genre;
 

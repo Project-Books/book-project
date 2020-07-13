@@ -176,7 +176,8 @@ public class GoalView extends VerticalLayout {
             // only books that have been given a finish date can count towards the reading goal
             if (book != null && book.getDateFinishedReading() != null
                     && book.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
-                readThisYear += (lookingForBooks ? (1) : book.getNumberOfPages());
+                int pages = (book.getNumberOfPages() == null) ? 0 : book.getNumberOfPages();
+                readThisYear += (lookingForBooks ? (1) : pages);
             }
         }
         return readThisYear;
