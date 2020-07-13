@@ -126,7 +126,7 @@ public class GoalViewTests {
      * @param bookService an Autowired book service to access the book repository
      */
     @Test
-    public void onlyReadBooksCountTowardsBooksGoal(@Autowired BookService bookService) {
+    public void onlyReadBooksCountTowardsGoal(@Autowired BookService bookService) {
         int numberOfShelves = predefinedShelfService.findAll().size();
         Assumptions.assumeTrue(numberOfShelves == 4);
         Assumptions.assumeFalse(bookService == null);
@@ -137,24 +137,29 @@ public class GoalViewTests {
         // Add books to all shelves (books in the read shelf must have a non-null finish date)
         int booksToAdd = ThreadLocalRandom.current().nextInt(10, (100 + 1));
         int booksInReadShelf = 0;
+        int pagesReadInReadShelf = 0;
         for (int i = 0; i < booksToAdd; i++) {
             int random = ThreadLocalRandom.current().nextInt(0, numberOfShelves);
+            Book book;
             if (random == 0) {
-                bookService.save(createBook(PredefinedShelf.ShelfName.TO_READ));
+                book = createBook(PredefinedShelf.ShelfName.TO_READ);
             } else if (random == 1) {
-                bookService.save(createBook(PredefinedShelf.ShelfName.READING));
+                book = createBook(PredefinedShelf.ShelfName.READING);
             } else if (random == 2) {
-                bookService.save(createBook(PredefinedShelf.ShelfName.READ));
+                book = createBook(PredefinedShelf.ShelfName.READ);
                 booksInReadShelf++;
-            } else if (random == 3) {
-                bookService.save(createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH));
+                pagesReadInReadShelf += book.getNumberOfPages();
+            } else {
+                book = createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH);
             }
+            bookService.save(book);
         }
 
         PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
         Assumptions.assumeTrue(readShelf != null && readShelf.getBooks().size() == booksInReadShelf);
 
         Assertions.assertEquals(booksInReadShelf, GoalView.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
+        Assertions.assertEquals(pagesReadInReadShelf, GoalView.howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
     }
 
     /**

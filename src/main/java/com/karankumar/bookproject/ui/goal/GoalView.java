@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Vaadin view that represents the reading goal page (the number of books or pages a user wants to have read by the end
@@ -156,15 +157,11 @@ public class GoalView extends VerticalLayout {
      * @return the read shelf if it can be found, null otherwise.
      */
     private PredefinedShelf findReadShelf() {
-        PredefinedShelf readShelf = null;
-
-        for (PredefinedShelf p : predefinedShelfService.findAll()) {
-            if (p.getShelfName().equals(PredefinedShelf.ShelfName.READ)) {
-                readShelf = p;
-                break;
-            }
-        }
-        return readShelf;
+        return predefinedShelfService.findAll()
+                                     .stream()
+                                     .filter(shelf -> shelf.getShelfName().equals(PredefinedShelf.ShelfName.READ))
+                                     .collect(Collectors.toList())
+                                     .get(0); // there should only be one
     }
 
     /**
