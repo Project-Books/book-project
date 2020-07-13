@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 public class GoalForm extends VerticalLayout {
 
     private static final Logger LOGGER = Logger.getLogger(GoalForm.class.getName());
+    private static final String BOOKS_TO_READ = "Books to read";
+    private static final String PAGES_TO_READ = "Pages to read";
 
     private final Dialog newGoalDialog;
     private final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
@@ -35,14 +37,8 @@ public class GoalForm extends VerticalLayout {
     private final Button saveButton;
 
     public GoalForm() {
-        LOGGER.log(Level.INFO, "In GoalForm()");
-
-        booksToRead = new IntegerField();
-        booksToRead.setPlaceholder("Books to read");
-        configureGoalField(booksToRead);
-        pagesToRead = new IntegerField();
-        pagesToRead.setPlaceholder("Pages to read");
-        configureGoalField(pagesToRead);
+        booksToRead = createGoalField(ReadingGoal.GoalType.BOOKS);
+        pagesToRead = createGoalField(ReadingGoal.GoalType.PAGES);
 
         saveButton = new Button("Save");
         configureSaveButton(saveButton);
@@ -57,8 +53,8 @@ public class GoalForm extends VerticalLayout {
         goalTypeRadioButtonGroup.setItems(ReadingGoal.GoalType.values());
 
         formLayout.addFormItem(goalTypeRadioButtonGroup, "Goal type");
-        FormLayout.FormItem booksFormItem = formLayout.addFormItem(booksToRead, "Books to read");
-        FormLayout.FormItem pagesFormItem = formLayout.addFormItem(this.pagesToRead, "Pages to read");
+        FormLayout.FormItem booksFormItem = formLayout.addFormItem(booksToRead, BOOKS_TO_READ);
+        FormLayout.FormItem pagesFormItem = formLayout.addFormItem(this.pagesToRead, PAGES_TO_READ);
 
         // Set goal type to books by default
         pagesFormItem.setVisible(false);
@@ -78,11 +74,14 @@ public class GoalForm extends VerticalLayout {
         configureBinder();
     }
 
-    private void configureGoalField(IntegerField field) {
+    private IntegerField createGoalField(ReadingGoal.GoalType goalType) {
+        IntegerField field = new IntegerField();
+        field.setPlaceholder((goalType.equals(ReadingGoal.GoalType.BOOKS) ? BOOKS_TO_READ : PAGES_TO_READ));
         field.setClearButtonVisible(true);
         field.setMin(1);
         field.setHasControls(true);
         field.setMinWidth("13em");
+        return field;
     }
 
     private void configureSaveButton(Button save) {
