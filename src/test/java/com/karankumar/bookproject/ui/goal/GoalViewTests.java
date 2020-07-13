@@ -88,6 +88,9 @@ public class GoalViewTests {
         return ThreadLocalRandom.current().nextInt(0, 10_000);
     }
 
+    /**
+     * Tests whether the target message is shown when the goal target has been met
+     */
     @Test
     public void targetMetMessageShown() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);

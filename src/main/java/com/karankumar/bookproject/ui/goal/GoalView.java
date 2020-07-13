@@ -201,7 +201,7 @@ public class GoalView extends VerticalLayout {
      * @param booksReadThisYear the number of books that have already been read by th end of the year
      * @return a String that displays whether the goal was met, or whether the user is ahead or behind schedule
      */
-    public String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
+    String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
         LOGGER.log(Level.INFO, "\nBooks to read this year: " + booksToReadThisYear);
         LOGGER.log(Level.INFO, "Books read this year: " + booksReadThisYear);
 
