@@ -2,7 +2,11 @@ package com.karankumar.bookproject.ui.goal;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
+import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.GoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
@@ -21,8 +25,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.time.LocalDate;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -34,6 +40,7 @@ public class GoalViewTests {
     private ApplicationContext ctx;
 
     private GoalService goalService;
+    private PredefinedShelfService predefinedShelfService;
     private GoalView goalView;
 
     @BeforeAll
@@ -50,9 +57,13 @@ public class GoalViewTests {
         goalService.deleteAll(); // reset
 
         this.goalService = goalService;
+        this.predefinedShelfService = predefinedShelfService;
         goalView = new GoalView(goalService, predefinedShelfService);
     }
 
+    /**
+     * Tests whether the progress value calculation is correct
+     */
     @Test
     public void progressValueCorrect() {
         int booksToRead = new Random().nextInt(100);
@@ -84,6 +95,10 @@ public class GoalViewTests {
         return goalTypes[new Random().nextInt(goalTypes.length)];
     }
 
+    /**
+     * Generates a random goal
+     * @return an integer that represents the goal target
+     */
     private int getRandomGoalTarget() {
         return ThreadLocalRandom.current().nextInt(0, 10_000);
     }
@@ -103,6 +118,83 @@ public class GoalViewTests {
         // target not met:
         Assertions.assertNotEquals(GoalView.TARGET_MET,
                 goalView.calculateProgress(randomGoalTarget, randomGoalTarget - 1));
+    }
+
+    /**
+     * Only books that in the read shelf should count towards the reading goal
+     * Note; this test assumes that all read books have a non-null date finished that is in the current year
+     * @param bookService an Autowired book service to access the book repository
+     */
+    @Test
+    public void onlyReadBooksCountTowardsBooksGoal(@Autowired BookService bookService) {
+        int numberOfShelves = predefinedShelfService.findAll().size();
+        Assumptions.assumeTrue(numberOfShelves == 4);
+        Assumptions.assumeFalse(bookService == null);
+
+        bookService.deleteAll(); // reset
+        Assumptions.assumeTrue(bookService.findAll().size() == 0);
+
+        // Add books to all shelves (books in the read shelf must have a non-null finish date)
+        int booksToAdd = ThreadLocalRandom.current().nextInt(10, (100 + 1));
+        int booksInReadShelf = 0;
+        for (int i = 0; i < booksToAdd; i++) {
+            int random = ThreadLocalRandom.current().nextInt(0, numberOfShelves);
+            if (random == 0) {
+                bookService.save(createBook(PredefinedShelf.ShelfName.TO_READ));
+            } else if (random == 1) {
+                bookService.save(createBook(PredefinedShelf.ShelfName.READING));
+            } else if (random == 2) {
+                bookService.save(createBook(PredefinedShelf.ShelfName.READ));
+                booksInReadShelf++;
+            } else if (random == 3) {
+                bookService.save(createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH));
+            }
+        }
+
+        PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
+        Assumptions.assumeTrue(readShelf != null && readShelf.getBooks().size() == booksInReadShelf);
+
+        Assertions.assertEquals(booksInReadShelf, GoalView.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
+    }
+
+    /**
+     * Helper method that find a shelf with a particular name
+     * @param shelfName the name of the shelf to look for
+     * @return the shelf that matches the shelf name provided
+     */
+    private PredefinedShelf findShelf(PredefinedShelf.ShelfName shelfName) {
+        return predefinedShelfService.findAll()
+                                     .stream()
+                                     .filter(shelf -> shelf.getShelfName().equals(shelfName))
+                                     .collect(Collectors.toList())
+                                     .get(0); // there should only be one
+    }
+
+    /**
+     * Creates a book in the specified shelf
+     * @param shelfName the name of the shelf to place the book in
+     * @return a new Book
+     */
+    private Book createBook(PredefinedShelf.ShelfName shelfName) {
+        Book book = new Book("Title", new Author("Joe", "Bloggs"));
+        book.setShelf(findShelf(shelfName)); // important not to create a new predefined shelf
+        if (shelfName.equals(PredefinedShelf.ShelfName.READ)) {
+            book.setDateFinishedReading(generateRandomDate());
+        }
+        book.setNumberOfPages(ThreadLocalRandom.current().nextInt(300, (1000 + 1)));
+        return book;
+    }
+
+    /**
+     * Generates a new random date that is in the same year as the current year
+     * @return a new random LocalDate
+     */
+    private LocalDate generateRandomDate() {
+        // important to get the current year for the reading goal to work
+        int year = LocalDate.now().getYear();
+        int day = ThreadLocalRandom.current().nextInt(1, (27 + 1));
+        int month = ThreadLocalRandom.current().nextInt(1, (12 + 1));
+        return LocalDate.of(year, month, day);
     }
 
     @AfterEach

@@ -173,7 +173,7 @@ public class GoalView extends VerticalLayout {
      * @param readShelf the predefined read shelf
      * @return the number of books or pages read this year
      */
-    private int howManyReadThisYear(ReadingGoal.GoalType goalType, @NotNull PredefinedShelf readShelf) {
+    public static int howManyReadThisYear(ReadingGoal.GoalType goalType, @NotNull PredefinedShelf readShelf) {
         int readThisYear = 0;
         boolean lookingForBooks = goalType.equals(ReadingGoal.GoalType.BOOKS);
         for (Book book : readShelf.getBooks()) {
