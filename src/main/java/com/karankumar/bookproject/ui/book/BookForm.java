@@ -73,7 +73,7 @@ public class BookForm extends VerticalLayout {
     public final Button saveButton = new Button();
 
     private final PredefinedShelfService shelfService;
-    private final Button reset = new Button();
+    final Button reset = new Button();
     private final Dialog dialog;
 
     private FormLayout.FormItem started;

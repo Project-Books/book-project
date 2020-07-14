@@ -96,11 +96,6 @@ public class BookFormTests {
         bookForm.setBook(book);
     }
 
-    @AfterEach
-    public void tearDown() {
-        MockVaadin.tearDown();
-    }
-
     @Test
     public void formFieldsPopulated() {
         Assertions.assertEquals(bookTitle, bookForm.bookTitle.getValue());
@@ -114,7 +109,11 @@ public class BookFormTests {
         Assertions.assertEquals(rating, bookForm.rating.getValue());
     }
 
-    //	@Test
+    enum EventType {
+        SAVED,
+        DELETED
+    }
+
     @ParameterizedTest
     @EnumSource(EventType.class)
     public void saveEventPopulated(EventType eventType) {
@@ -155,8 +154,34 @@ public class BookFormTests {
         bookForm.rating.setValue(rating);
     }
 
-    enum EventType {
-        SAVED,
-        DELETED
+    @Test
+    public void formCanBeCleared() {
+        populateBookForm();
+        // Assume that all form fields are non empty
+        Assumptions.assumeFalse(bookForm.authorFirstName.isEmpty(), "Author first name not populated");
+        Assumptions.assumeFalse(bookForm.authorLastName.isEmpty(), "Author last name not populated");
+        Assumptions.assumeFalse(bookForm.bookTitle.isEmpty(), "Book title not populated");
+        Assumptions.assumeFalse(bookForm.shelf.isEmpty(), "Shelf not populated");
+        Assumptions.assumeFalse(bookForm.bookGenre.isEmpty(), "Book genre not populated");
+        Assumptions.assumeFalse(bookForm.pageCount.isEmpty(), "Page count not populated");
+        Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty(), "Date started populated");
+        Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty(), "Date finished populated");
+
+        bookForm.reset.click();
+
+        Assertions.assertTrue(bookForm.authorFirstName.isEmpty(), "Author first name not cleared");
+        Assertions.assertTrue(bookForm.authorLastName.isEmpty(), "Author last name not cleared");
+        Assertions.assertTrue(bookForm.bookTitle.isEmpty(), "Book title not cleared");
+        Assertions.assertTrue(bookForm.shelf.isEmpty(), "Shelf not cleared");
+        Assertions.assertTrue(bookForm.bookGenre.isEmpty(), "Book genre not cleared");
+        Assertions.assertTrue(bookForm.pageCount.isEmpty(), "Page count not cleared");
+        Assertions.assertTrue(bookForm.dateStartedReading.isEmpty(), "Date started not cleared");
+        Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty(), "Date finished not cleared");
+        Assertions.assertTrue(bookForm.rating.isEmpty(), "Rating not cleared");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        MockVaadin.tearDown();
     }
 }
