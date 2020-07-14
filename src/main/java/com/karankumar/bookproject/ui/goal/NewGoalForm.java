@@ -15,6 +15,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 
 import java.util.logging.Level;
@@ -82,10 +83,7 @@ public class NewGoalForm extends VerticalLayout {
         Button save = new Button("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setMinWidth("13em");
-        save.addClickListener(click -> {
-            bindIntegerFields();
-            validateOnSave();
-        });
+        save.addClickListener(click -> validateOnSave());
         return save;
     }
 
@@ -98,52 +96,22 @@ public class NewGoalForm extends VerticalLayout {
         return goalTypeRadioButtonGroup;
     }
 
-    private void bindIntegerFields() {
-        if (chooseGoalType.getValue() != null) {
-            ReadingGoal.GoalType goalType = this.chooseGoalType.getValue();
-            if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
-                LOGGER.log(Level.INFO, "Radio group option chosen: books");
-                binder.forField(targetToRead)
-                      .asRequired("Please enter in a books goal")
-                      .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
-            } else {
-                LOGGER.log(Level.INFO, "Radio group option chosen: pages");
-                binder.forField(targetToRead)
-                      .asRequired("Please enter in a pages goal")
-                      .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
-            }
-        }
-    }
-
     /**
      * Fires a save event if the binder is valid and the bean from the binder is not null
      */
     private void validateOnSave() {
         if (binder.isValid()) {
-
-            if (binder.getBean() == null) {
-                LOGGER.log(Level.SEVERE, "Binder reading goal bean is null");
-                ReadingGoal.GoalType goalType = this.chooseGoalType.getValue();
-                if (goalType == null) {
-                    LOGGER.log(Level.SEVERE, "Goal type not set");
-                    return;
-                } else if (targetToRead.getValue() != null) {
-                    binder.setBean(new ReadingGoal(targetToRead.getValue(), goalType));
-                }
-
+            ReadingGoal.GoalType goalType = this.chooseGoalType.getValue();
+            if (goalType != null && targetToRead.getValue() != null) {
+                binder.setBean(new ReadingGoal(targetToRead.getValue(), goalType));
                 LOGGER.log(Level.INFO, "Setting the bean");
-            } else {
-                LOGGER.log(Level.INFO, "Binder reading goal bean is not null");
+                fireEvent(new SaveEvent(this, binder.getBean()));
+                confirmSavedGoal(binder.getBean().getTarget(), binder.getBean().getGoalType());
             }
-
-            fireEvent(new SaveEvent(this, binder.getBean()));
-            confirmSavedGoal(binder.getBean().getTarget(), binder.getBean().getGoalType());
         } else {
             BinderValidationStatus<ReadingGoal> status = binder.validate();
             if (status.hasErrors()) {
-                LOGGER.log(Level.SEVERE, "Invalid binder: " + status.getValidationErrors());
-            } else {
-                LOGGER.log(Level.SEVERE, "Invalid binder. No status errors");
+                LOGGER.log(Level.SEVERE, "Invalid binder");
             }
         }
     }
@@ -166,6 +134,10 @@ public class NewGoalForm extends VerticalLayout {
         binder.forField(chooseGoalType)
               .asRequired("Please select a goal type")
               .bind(ReadingGoal::getGoalType, ReadingGoal::setGoalType);
+
+        binder.forField(targetToRead)
+              .asRequired("Please enter in a target goal")
+              .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
