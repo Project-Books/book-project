@@ -96,6 +96,9 @@ public class BookFormTests {
         bookForm.setBook(book);
     }
 
+    /**
+     * Tests whether the form fields are correctly populated
+     */
     @Test
     public void formFieldsPopulated() {
         Assertions.assertEquals(bookTitle, bookForm.bookTitle.getValue());
@@ -114,6 +117,11 @@ public class BookFormTests {
         DELETED
     }
 
+    /**
+     * Tests whether the event is populated with the values from the form
+     * @param eventType represents a saved event (when the user presses the save button) or a delete event (when the
+     *                  user presses the delete event)
+     */
     @ParameterizedTest
     @EnumSource(EventType.class)
     public void saveEventPopulated(EventType eventType) {
@@ -154,6 +162,9 @@ public class BookFormTests {
         bookForm.rating.setValue(rating);
     }
 
+    /**
+     * Tests whether the reset button correctly clears all fields when clicked
+     */
     @Test
     public void formCanBeCleared() {
         populateBookForm();
