@@ -31,15 +31,12 @@ public class GoalForm extends VerticalLayout {
 
     private final Dialog newGoalDialog;
     private final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
-    private final RadioButtonGroup<ReadingGoal.GoalType> goalTypeRadioButtonGroup;
-    private final IntegerField booksToRead;
-    private final IntegerField pagesToRead;
-    private final Button saveButton;
+    private final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
+    private final IntegerField targetToRead;
 
     public GoalForm() {
-        booksToRead = createGoalField(ReadingGoal.GoalType.BOOKS);
-        pagesToRead = createGoalField(ReadingGoal.GoalType.PAGES);
-        saveButton = createSaveButton();
+        targetToRead = createBooksGoalField();
+        Button saveButton = createSaveButton();
 
         FormLayout formLayout = new FormLayout();
         newGoalDialog = new Dialog();
@@ -47,36 +44,30 @@ public class GoalForm extends VerticalLayout {
         newGoalDialog.setCloseOnOutsideClick(true);
         add(newGoalDialog);
 
-        goalTypeRadioButtonGroup = createGoalTypeRadioGroup();
+        chooseGoalType = createGoalTypeRadioGroup();
 
-        formLayout.addFormItem(goalTypeRadioButtonGroup, "Goal type");
-        FormLayout.FormItem booksFormItem = formLayout.addFormItem(booksToRead, BOOKS_TO_READ);
-        FormLayout.FormItem pagesFormItem = formLayout.addFormItem(this.pagesToRead, PAGES_TO_READ);
-
-        // Set goal type to books by default
-        pagesFormItem.setVisible(false);
-        goalTypeRadioButtonGroup.addValueChangeListener(event -> {
-            if (event.getValue().equals(ReadingGoal.GoalType.PAGES)) {
-                booksFormItem.setVisible(false);
-                pagesFormItem.setVisible(true);
+        formLayout.addFormItem(chooseGoalType, "Goal type");
+        formLayout.addFormItem(targetToRead, "To read");
+        formLayout.add(new HorizontalLayout(saveButton));
+        chooseGoalType.addValueChangeListener(event -> {
+            if (event.getValue() == null) {
+                return;
+            } else if (event.getValue().equals(ReadingGoal.GoalType.BOOKS)) {
+                targetToRead.setPlaceholder(BOOKS_TO_READ);
             } else {
-                booksFormItem.setVisible(true);
-                pagesFormItem.setVisible(false);
+                targetToRead.setPlaceholder(PAGES_TO_READ);
             }
         });
-
-        formLayout.add(new HorizontalLayout(saveButton));
 
         configureBinder();
     }
 
     /**
-     * @param goalType either pages or books
-     * @return an IntegerField representing the number of pages or books to read
+     * @return an IntegerField representing the number of books to read
      */
-    private IntegerField createGoalField(ReadingGoal.GoalType goalType) {
+    private IntegerField createBooksGoalField() {
         IntegerField field = new IntegerField();
-        field.setPlaceholder((goalType.equals(ReadingGoal.GoalType.BOOKS) ? BOOKS_TO_READ : PAGES_TO_READ));
+        field.setPlaceholder(BOOKS_TO_READ);
         field.setClearButtonVisible(true);
         field.setMin(1);
         field.setHasControls(true);
@@ -108,21 +99,19 @@ public class GoalForm extends VerticalLayout {
     }
 
     private void bindIntegerFields() {
-        if (goalTypeRadioButtonGroup.getValue() != null) {
-            ReadingGoal.GoalType goalType = goalTypeRadioButtonGroup.getValue();
+        if (chooseGoalType.getValue() != null) {
+            ReadingGoal.GoalType goalType = this.chooseGoalType.getValue();
             if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
                 LOGGER.log(Level.INFO, "Radio group option chosen: books");
-                binder.forField(booksToRead)
+                binder.forField(targetToRead)
                       .asRequired("Please enter in a books goal")
                       .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
             } else {
                 LOGGER.log(Level.INFO, "Radio group option chosen: pages");
-                binder.forField(pagesToRead)
+                binder.forField(targetToRead)
                       .asRequired("Please enter in a pages goal")
                       .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
             }
-        } else {
-            LOGGER.log(Level.INFO, "Radio group option not chosen");
         }
     }
 
@@ -134,16 +123,14 @@ public class GoalForm extends VerticalLayout {
 
             if (binder.getBean() == null) {
                 LOGGER.log(Level.SEVERE, "Binder reading goal bean is null");
-                ReadingGoal.GoalType goalType = goalTypeRadioButtonGroup.getValue();
+                ReadingGoal.GoalType goalType = this.chooseGoalType.getValue();
                 if (goalType == null) {
                     LOGGER.log(Level.SEVERE, "Goal type not set");
                     return;
+                } else if (targetToRead.getValue() != null) {
+                    binder.setBean(new ReadingGoal(targetToRead.getValue(), goalType));
                 }
-                if (booksToRead.getValue() != null && goalType.equals(ReadingGoal.GoalType.BOOKS)) {
-                    binder.setBean(new ReadingGoal(booksToRead.getValue(), goalType));
-                } else if (pagesToRead.getValue() != null) {
-                    binder.setBean(new ReadingGoal(pagesToRead.getValue(), goalType));
-                }
+
                 LOGGER.log(Level.INFO, "Setting the bean");
             } else {
                 LOGGER.log(Level.INFO, "Binder reading goal bean is not null");
@@ -176,7 +163,7 @@ public class GoalForm extends VerticalLayout {
     }
 
     private void configureBinder() {
-        binder.forField(goalTypeRadioButtonGroup)
+        binder.forField(chooseGoalType)
               .asRequired("Please select a goal type")
               .bind(ReadingGoal::getGoalType, ReadingGoal::setGoalType);
     }
