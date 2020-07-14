@@ -137,6 +137,7 @@ public class NewGoalForm extends VerticalLayout {
 
         binder.forField(targetToRead)
               .asRequired("Please enter in a target goal")
+              .withValidator(target -> target > 1, "Target must be at least 1")
               .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
     }
 
