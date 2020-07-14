@@ -16,7 +16,7 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
-import com.karankumar.bookproject.backend.repository.GoalRepository;
+import com.karankumar.bookproject.backend.repository.ReadingGoalRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,12 +27,12 @@ import java.util.logging.Logger;
  * via this GoalService.
  */
 @Service
-public class GoalService extends BaseService<ReadingGoal, Long> {
+public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
 
-    private static final Logger LOGGER = Logger.getLogger(GoalService.class.getName());
-    private GoalRepository goalRepository;
+    private static final Logger LOGGER = Logger.getLogger(ReadingGoalService.class.getName());
+    private ReadingGoalRepository goalRepository;
 
-    public GoalService(GoalRepository goalRepository) {
+    public ReadingGoalService(ReadingGoalRepository goalRepository) {
         this.goalRepository = goalRepository;
     }
 

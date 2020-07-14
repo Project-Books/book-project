@@ -7,7 +7,7 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.service.GoalService;
+import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
@@ -33,13 +33,13 @@ import java.util.stream.Collectors;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @WebAppConfiguration
-public class GoalViewTests {
+public class ReadingGoalViewTests {
     private static Routes routes;
 
     @Autowired
     private ApplicationContext ctx;
 
-    private GoalService goalService;
+    private ReadingGoalService goalService;
     private PredefinedShelfService predefinedShelfService;
     private GoalView goalView;
 
@@ -49,7 +49,7 @@ public class GoalViewTests {
     }
 
     @BeforeEach
-    public void setup(@Autowired GoalService goalService, @Autowired PredefinedShelfService predefinedShelfService) {
+    public void setup(@Autowired ReadingGoalService goalService, @Autowired PredefinedShelfService predefinedShelfService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 

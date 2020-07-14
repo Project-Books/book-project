@@ -18,7 +18,7 @@ package com.karankumar.bookproject.ui.goal;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
-import com.karankumar.bookproject.backend.service.GoalService;
+import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
@@ -60,7 +60,7 @@ public class GoalView extends VerticalLayout {
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
 
-    private GoalService goalService;
+    private ReadingGoalService goalService;
 
     /**
      * Displays what the reading goal is and how many books/pages the user has read
@@ -82,7 +82,7 @@ public class GoalView extends VerticalLayout {
      */
     Span booksToRead;
 
-    public GoalView(GoalService goalService, PredefinedShelfService predefinedShelfService) {
+    public GoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
 
@@ -105,11 +105,11 @@ public class GoalView extends VerticalLayout {
 
     private void configureSetGoal() {
         setGoalButton.addClickListener(event -> {
-            GoalForm goalForm = new GoalForm();
+            NewGoalForm goalForm = new NewGoalForm();
             add(goalForm);
             goalForm.openForm();
 
-            goalForm.addListener(GoalForm.SaveEvent.class, this::saveGoal);
+            goalForm.addListener(NewGoalForm.SaveEvent.class, this::saveGoal);
         });
     }
 
@@ -127,7 +127,7 @@ public class GoalView extends VerticalLayout {
         setGoalButton.setText(UPDATE_GOAL);
     }
 
-    private void saveGoal(GoalForm.SaveEvent event) {
+    private void saveGoal(NewGoalForm.SaveEvent event) {
         if (event.getReadingGoal() != null) {
             LOGGER.log(Level.INFO, "Retrieved goal from form is not null");
             goalService.save(event.getReadingGoal());

@@ -23,9 +23,9 @@ import java.util.logging.Logger;
 /**
  * A Vaadin view that contains a form for setting a new reading goal
  */
-public class GoalForm extends VerticalLayout {
+public class NewGoalForm extends VerticalLayout {
 
-    private static final Logger LOGGER = Logger.getLogger(GoalForm.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NewGoalForm.class.getName());
     private static final String BOOKS_TO_READ = "Books to read";
     private static final String PAGES_TO_READ = "Pages to read";
 
@@ -34,7 +34,7 @@ public class GoalForm extends VerticalLayout {
     private final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
     private final IntegerField targetToRead;
 
-    public GoalForm() {
+    public NewGoalForm() {
         targetToRead = createBooksGoalField();
         Button saveButton = createSaveButton();
 
@@ -176,10 +176,10 @@ public class GoalForm extends VerticalLayout {
     /**
      * Vaadin's event bus system. A registered listener can be notified when a save or delete event is fired
      */
-    public static abstract class GoalFormEvent extends ComponentEvent<GoalForm> {
+    public static abstract class GoalFormEvent extends ComponentEvent<NewGoalForm> {
         private ReadingGoal readingGoal;
 
-        protected GoalFormEvent(GoalForm source, ReadingGoal readingGoal) {
+        protected GoalFormEvent(NewGoalForm source, ReadingGoal readingGoal) {
             super(source, false);
             this.readingGoal = readingGoal;
         }
@@ -190,13 +190,13 @@ public class GoalForm extends VerticalLayout {
     }
 
     public static class SaveEvent extends GoalFormEvent {
-        SaveEvent(GoalForm source, ReadingGoal readingGoal) {
+        SaveEvent(NewGoalForm source, ReadingGoal readingGoal) {
             super(source, readingGoal);
         }
     }
 
     public static class DeleteEvent extends GoalFormEvent {
-        DeleteEvent(GoalForm source, ReadingGoal readingGoal) {
+        DeleteEvent(NewGoalForm source, ReadingGoal readingGoal) {
             super(source, readingGoal);
         }
     }

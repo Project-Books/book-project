@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class GoalServiceTest {
-    private GoalService goalService;
+public class ReadingGoalServiceTest {
+    private ReadingGoalService goalService;
     @BeforeEach
-    public void setup(@Autowired GoalService goalService) {
+    public void setup(@Autowired ReadingGoalService goalService) {
         Assumptions.assumeTrue(goalService != null);
         this.goalService = goalService;
         goalService.deleteAll(); // reset
