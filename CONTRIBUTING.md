@@ -69,9 +69,9 @@ Please adhere to [our Java style guide](https://github.com/knjk04/book-project/b
 
 Before submitting a pull request, run the unit tests and ensure they pass.
 
-## New features
+### Writing tests
 
-If you're working on a new feature (any issue with the [enhancement label](https://github.com/knjk04/book-project/labels/enhancement)), please also write tests. If you need a hand with this, we can help.
+Generally speaking, if you're working on a new feature (any issue with the [enhancement label](https://github.com/knjk04/book-project/labels/enhancement)) or fixing a [bug](https://github.com/knjk04/book-project/labels/bug), please also write tests. If you need a hand with this, we can help.
 
 ## Pull requests
 
