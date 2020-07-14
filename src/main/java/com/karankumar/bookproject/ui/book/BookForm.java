@@ -51,8 +51,8 @@ import java.util.logging.Level;
  * A Vaadin form for adding a new @see Book.
  */
 @CssImport(
-    value = "./styles/vaadin-dialog-overlay-styles.css",
-    themeFor = "vaadin-dialog-overlay"
+        value = "./styles/vaadin-dialog-overlay-styles.css",
+        themeFor = "vaadin-dialog-overlay"
 )
 @Log
 public class BookForm extends VerticalLayout {
@@ -122,7 +122,8 @@ public class BookForm extends VerticalLayout {
 
     /**
      * Sets up the form layout
-     * @param formLayout the form layout to configure
+     *
+     * @param formLayout   the form layout to configure
      * @param buttonLayout a layout consisting of buttons
      */
     private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
@@ -159,12 +160,12 @@ public class BookForm extends VerticalLayout {
               .asRequired("Please provide a book title")
               .bind(Book::getTitle, Book::setTitle);
         binder.forField(authorFirstName)
-            .withValidator(firstName -> (firstName != null && !firstName.isEmpty()),
-                    "Please enter the author's first name")
-            .bind("author.firstName");
+              .withValidator(firstName -> (firstName != null && !firstName.isEmpty()),
+                      "Please enter the author's first name")
+              .bind("author.firstName");
         binder.forField(authorLastName)
               .withValidator(lastName -> (lastName != null && !lastName.isEmpty()),
-                "Please enter the author's last name")
+                      "Please enter the author's last name")
               .bind("author.lastName");
         binder.forField(shelf)
               .withValidator(Objects::nonNull, "Please select a shelf")
@@ -173,17 +174,17 @@ public class BookForm extends VerticalLayout {
               .withValidator(series -> (series == null || series > 0), "Series position must be at least 1")
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
         binder.forField(dateStartedReading)
-            .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
-                AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
-            .bind(Book::getDateStartedReading, Book::setDateStartedReading);
+              .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
+                      AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
+              .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
-            .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null
-                    && endDate.isBefore(dateStartedReading.getValue())),
-                "The date you finished reading the book cannot be earlier than the date you"
-                    + " started reading the book")
-            .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
-                AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
-            .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
+              .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null
+                              && endDate.isBefore(dateStartedReading.getValue())),
+                      "The date you finished reading the book cannot be earlier than the date you"
+                              + " started reading the book")
+              .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
+                      AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
+              .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(pageCount)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(bookGenre)
@@ -195,6 +196,7 @@ public class BookForm extends VerticalLayout {
 
     /**
      * Sets up the save, reset and delete buttons
+     *
      * @return a HorizontalLayout containing the save, reset & delete buttons
      */
     private HorizontalLayout configureButtons() {
@@ -258,7 +260,6 @@ public class BookForm extends VerticalLayout {
                         LOGGER.log(Level.SEVERE, "Null shelf");
                     }
 
-
                     if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
                         book.setSeriesPosition(seriesPosition.getValue());
                     } else if (seriesPosition.getValue() != null) {
@@ -300,33 +301,10 @@ public class BookForm extends VerticalLayout {
     public void setBook(Book book) {
         if (book == null) {
             LOGGER.log(Level.SEVERE, "Book is null");
-        } else {
-            if (book.getRating() == null) {
-                LOGGER.log(Level.FINE, "Rating is null");
-            }
-            if (book.getAuthor().getFirstName() == null) {
-                LOGGER.log(Level.SEVERE, "Author's first name is null");
-            }
-            if (book.getAuthor().getLastName() == null) {
-                LOGGER.log(Level.SEVERE, "Author's last name is null");
-            }
-            if (book.getDateStartedReading() == null) {
-                LOGGER.log(Level.FINE, "Date started reading is null");
-            }
-            if (book.getDateFinishedReading() == null) {
-                LOGGER.log(Level.FINE, "Date finished reading is null");
-            }
-            if (book.getGenre() == null) {
-                LOGGER.log(Level.FINE, "Book genre is null");
-            }
+            return;
         }
-
-        if (binder == null) {
-            LOGGER.log(Level.SEVERE, "Binder is null");
-        } else {
-            saveButton.setText(LABEL_UPDATE_BOOK);
-            binder.setBean(book);
-        }
+        saveButton.setText(LABEL_UPDATE_BOOK);
+        binder.setBean(book);
     }
 
     /**
@@ -393,6 +371,7 @@ public class BookForm extends VerticalLayout {
 
     /**
      * Toggles whether the date started reading and date finished reading form fields should show
+     *
      * @param name the name of the @see PredefinedShelf that was chosen in the book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of a @see PredefinedShelf
      */
@@ -436,6 +415,7 @@ public class BookForm extends VerticalLayout {
 
     /**
      * Toggles showing the rating depending on which shelf this new book is going into
+     *
      * @param name the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of a @see PredefinedShelf
      */
@@ -516,6 +496,7 @@ public class BookForm extends VerticalLayout {
 
     /**
      * Sets the minimum width for all of the form fields
+     *
      * @param components all of the form fields
      */
     private void setComponentMinWidth(HasSize[] components) {
