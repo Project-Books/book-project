@@ -82,6 +82,11 @@ public class GoalView extends VerticalLayout {
      */
     Span booksToRead;
 
+    /**
+     * Displays how many books a user needs to read on average to meet their goal
+     */
+    Span pagesToRead;
+
     public GoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
@@ -90,6 +95,7 @@ public class GoalView extends VerticalLayout {
         setGoalButton = new Button();
         goalProgress = new H3();
         booksToRead = new Span();
+        pagesToRead = new Span();
         progressBar = new ProgressBar();
         progressBar.setMaxWidth("500px");
         progressPercentage = new Span();
@@ -98,7 +104,7 @@ public class GoalView extends VerticalLayout {
         configureSetGoal();
         getCurrentGoal();
 
-        add(readingGoal, progressBar, progressPercentage, goalProgress, booksToRead, setGoalButton);
+        add(readingGoal, progressBar, progressPercentage, goalProgress, booksToRead, pagesToRead, setGoalButton);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
@@ -146,19 +152,27 @@ public class GoalView extends VerticalLayout {
         int howManyReadThisYear = howManyReadThisYear(goalType, readShelf);
         String haveRead = "You have read ";
         String outOf = " out of ";
-        if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
-            toggleBooksGoalInfo(true);
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + " books");
-            goalProgress.setText(calculateProgress(targetToRead, howManyReadThisYear));
-        } else {
-            toggleBooksGoalInfo(false);
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + " pages");
+
+        switch (goalType) {
+            case BOOKS: togglePagesGoalInfo(false);
+                toggleBooksGoalInfo(true);
+                readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + " books");
+                goalProgress.setText(calculateProgressBooks(targetToRead, howManyReadThisYear));
+                break;
+
+            case PAGES: toggleBooksGoalInfo(false);
+                togglePagesGoalInfo(true);
+                readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + " pages");
+                goalProgress.setText(calculateProgressPages(targetToRead, howManyReadThisYear));
+                break;
+
+            default: toggleBooksGoalInfo(false);
+                togglePagesGoalInfo(false);
         }
 
         double progress = getProgress(targetToRead, howManyReadThisYear);
         progressBar.setValue(progress);
         progressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
-
         updateSetGoalText();
     }
 
@@ -203,12 +217,20 @@ public class GoalView extends VerticalLayout {
     }
 
     /**
+     * @param isOn if true, set the visibility of the book goal-specific text to true. Otherwise, set them to false
+     */
+    private void togglePagesGoalInfo(boolean isOn) {
+        goalProgress.setVisible(isOn);
+        pagesToRead.setVisible(isOn);
+    }
+
+    /**
      * Calculates the reading progress for the books goal only
      * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
      * @param booksReadThisYear the number of books that have already been read by th end of the year
      * @return a String that displays whether the goal was met, or whether the user is ahead or behind schedule
      */
-    String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
+    String calculateProgressBooks(int booksToReadThisYear, int booksReadThisYear) {
         LOGGER.log(Level.INFO, "\nBooks to read this year: " + booksToReadThisYear);
         LOGGER.log(Level.INFO, "Books read this year: " + booksReadThisYear);
 
@@ -218,6 +240,7 @@ public class GoalView extends VerticalLayout {
 
         if (booksStillToRead <= 0) {
             schedule = TARGET_MET;
+            booksToRead.setText("");
         } else {
             int weekOfYear = getWeekOfYear();
             int weeksLeftInYear = weeksLeftInYear(weekOfYear);
@@ -233,13 +256,44 @@ public class GoalView extends VerticalLayout {
     }
 
     /**
-     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
-     * @param booksReadThisYear the number of books read so far
-     * @return the number of books that the user is ahead or behind schedule by
+     * Calculates the reading progress for the pages goal only
+     * @param pagesToReadThisYear the number of pages to read by the end of the year (the goal)
+     * @param pagesReadThisYear the number of pages that have already been read by th end of the year
+     * @return a String that displays whether the goal was met, or whether the user is ahead or behind schedule
      */
-    private int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {
-        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) * getWeekOfYear();
-        return Math.abs(shouldHaveRead - booksReadThisYear);
+    String calculateProgressPages(int pagesToReadThisYear, int pagesReadThisYear) {
+        LOGGER.log(Level.INFO, "\nPages to read this year: " + pagesToReadThisYear);
+        LOGGER.log(Level.INFO, "Pages read this year: " + pagesReadThisYear);
+
+        String schedule = "";
+        int pagesStillToRead = pagesToReadThisYear - pagesReadThisYear;
+        LOGGER.log(Level.INFO, "Pages still to read: " + pagesStillToRead);
+
+        if (pagesStillToRead <= 0) {
+            schedule = TARGET_MET;
+            pagesToRead.setText("");
+        } else {
+            int weekOfYear = getWeekOfYear();
+            int weeksLeftInYear = weeksLeftInYear(weekOfYear);
+            double pagesStillToReadAWeek = Math.ceil((double) pagesStillToRead / weeksLeftInYear);
+            pagesToRead.setText("You need to read " + pagesStillToReadAWeek +
+                    " pages a week on average to achieve your goal");
+
+            int howManyBehindOrAhead = howFarAheadOrBehindSchedule(pagesToReadThisYear, pagesReadThisYear);
+            schedule = String.format("You are %d pages %s schedule", howManyBehindOrAhead,
+                    behindOrAheadSchedule(pagesReadThisYear, shouldHaveRead(pagesToReadThisYear)));
+        }
+        return schedule;
+    }
+
+    /**
+     * @param ToReadThisYear the number of books/pages to read by the end of the year (the goal)
+     * @param ReadThisYear the number books/pages read so far
+     * @return the number of books/pages that the user is ahead or behind schedule by
+     */
+    private int howFarAheadOrBehindSchedule (int ToReadThisYear, int ReadThisYear) {
+        int shouldHaveRead = ToReadFromStartOfYear(ToReadThisYear) * getWeekOfYear();
+        return Math.abs(shouldHaveRead - ReadThisYear);
     }
 
     /**
@@ -260,36 +314,36 @@ public class GoalView extends VerticalLayout {
     }
 
     /**
-     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
+     * @param ToReadThisYear the number of books/pages to read by the end of the year (the goal)
      * @return the number of books that should have been read a week (on average) from the start of the year
      */
-    public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
-        return ((int) Math.ceil(booksToReadThisYear / WEEKS_IN_YEAR));
+    public static int ToReadFromStartOfYear(int ToReadThisYear) {
+        return ((int) Math.ceil(ToReadThisYear / WEEKS_IN_YEAR));
     }
 
     /**
-     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
-     * @return the number of books that the user should have ready by this point in the year in order to be on target
+     * @param ToReadThisYear the number of books/pages to read by the end of the year (the goal)
+     * @return the number of books/pages that the user should have ready by this point in the year in order to be on target
      */
-    public int shouldHaveRead(int booksToReadThisYear) {
-        return booksToReadFromStartOfYear(booksToReadThisYear) * getWeekOfYear();
+    public int shouldHaveRead(int ToReadThisYear) {
+        return ToReadFromStartOfYear(ToReadThisYear) * getWeekOfYear();
     }
 
     /**
      * Note that this method assumes that the user is behind or ahead of schedule (and that they haven't met their goal)
-     * @param booksReadThisYear the number of books read so far
-     * @param shouldHaveRead the number of books that should have been ready by this point to be on schedule
+     * @param ReadThisYear the number of books/pages read so far
+     * @param shouldHaveRead the number of books/pages that should have been ready by this point to be on schedule
      * @return a String denoting that the user is ahead or behind schedule
      */
-    public static String behindOrAheadSchedule(int booksReadThisYear, int shouldHaveRead) {
-        return (booksReadThisYear < shouldHaveRead) ? BEHIND : AHEAD_OF;
+    public static String behindOrAheadSchedule(int ReadThisYear, int shouldHaveRead) {
+        return (ReadThisYear < shouldHaveRead) ? BEHIND : AHEAD_OF;
     }
 
     /**
      * Calculates a user's progress towards their reading goal
-     * @param toRead the number of books to read by the end of the year (the goal)
-     * @param read the number of books that the user has read so far
-     * @return a fraction of the number of books to read over the books read. If greater than 1, 1.0 is returned
+     * @param toRead the number of books/pages to read by the end of the year (the goal)
+     * @param read the number of books/pages that the user has read so far
+     * @return a fraction of the number of books/pages to read over the books/pages read. If greater than 1, 1.0 is returned
      */
     public static double getProgress(int toRead, int read) {
         double progress = (toRead == 0) ? 0 : ((double) read / toRead);
