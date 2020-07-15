@@ -41,7 +41,7 @@ public class ReadingGoalViewTests {
 
     private ReadingGoalService goalService;
     private PredefinedShelfService predefinedShelfService;
-    private GoalView goalView;
+    private ReadingGoalView goalView;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -58,7 +58,7 @@ public class ReadingGoalViewTests {
 
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
-        goalView = new GoalView(goalService, predefinedShelfService);
+        goalView = new ReadingGoalView(goalService, predefinedShelfService);
     }
 
     /**
@@ -68,15 +68,15 @@ public class ReadingGoalViewTests {
     public void progressValueCorrect() {
         int booksToRead = new Random().nextInt(100);
 
-        Assertions.assertEquals(GoalView.getProgress(5, 0), 0); // == 0%
-        Assertions.assertEquals(GoalView.getProgress(25, 5), 0.2); // < 100%
-        Assertions.assertEquals(GoalView.getProgress(booksToRead, booksToRead), 1.0,
+        Assertions.assertEquals(ReadingGoalView.getProgress(5, 0), 0); // == 0%
+        Assertions.assertEquals(ReadingGoalView.getProgress(25, 5), 0.2); // < 100%
+        Assertions.assertEquals(ReadingGoalView.getProgress(booksToRead, booksToRead), 1.0,
                 "Books to read = " + booksToRead); // == 100%
-        Assertions.assertEquals(GoalView.getProgress(booksToRead, (booksToRead + 1)), 1.0,
+        Assertions.assertEquals(ReadingGoalView.getProgress(booksToRead, (booksToRead + 1)), 1.0,
                 "Books to read = " + booksToRead); // > 100%
 
         // ensure 0, and not an arithmetic exception, is returned
-        Assertions.assertEquals(GoalView.getProgress(0, 5), 0);
+        Assertions.assertEquals(ReadingGoalView.getProgress(0, 5), 0);
     }
 
     /**
@@ -85,11 +85,11 @@ public class ReadingGoalViewTests {
     @Test
     public void setGoalButtonTextIsCorrect() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
-        Assertions.assertEquals(goalView.setGoalButton.getText(), GoalView.SET_GOAL);
+        Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
 
         goalService.save(new ReadingGoal(getRandomGoalTarget(), getRandomGoalType()));
         goalView.getCurrentGoal();
-        Assertions.assertEquals(goalView.setGoalButton.getText(), GoalView.UPDATE_GOAL);
+        Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.UPDATE_GOAL);
     }
 
     private ReadingGoal.GoalType getRandomGoalType() {
@@ -114,11 +114,12 @@ public class ReadingGoalViewTests {
         int randomGoalTarget = getRandomGoalTarget();
 
         // target met:
-        Assertions.assertEquals(GoalView.TARGET_MET, goalView.calculateProgress(randomGoalTarget, randomGoalTarget));
-        Assertions.assertEquals(GoalView.TARGET_MET,
+        Assertions.assertEquals(
+                ReadingGoalView.TARGET_MET, goalView.calculateProgress(randomGoalTarget, randomGoalTarget));
+        Assertions.assertEquals(ReadingGoalView.TARGET_MET,
                 goalView.calculateProgress(randomGoalTarget, randomGoalTarget + 1));
         // target not met:
-        Assertions.assertNotEquals(GoalView.TARGET_MET,
+        Assertions.assertNotEquals(ReadingGoalView.TARGET_MET,
                 goalView.calculateProgress(randomGoalTarget, randomGoalTarget - 1));
     }
 
@@ -163,8 +164,10 @@ public class ReadingGoalViewTests {
 
         PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
         Assumptions.assumeTrue(readShelf != null);
-        Assertions.assertEquals(booksInReadShelf, GoalView.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
-        Assertions.assertEquals(pagesReadInReadShelf, GoalView.howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
+        Assertions.assertEquals(booksInReadShelf, ReadingGoalView
+                .howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
+        Assertions.assertEquals(pagesReadInReadShelf, ReadingGoalView
+                .howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
     }
 
     /**

@@ -22,9 +22,9 @@ import java.util.logging.Logger;
 /**
  * A Vaadin view that contains a form for setting a new reading goal
  */
-public class NewGoalForm extends VerticalLayout {
+public class ReadingGoalForm extends VerticalLayout {
 
-    private static final Logger LOGGER = Logger.getLogger(NewGoalForm.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReadingGoalForm.class.getName());
     private static final String BOOKS_TO_READ = "Books to read";
     private static final String PAGES_TO_READ = "Pages to read";
 
@@ -33,7 +33,7 @@ public class NewGoalForm extends VerticalLayout {
     private final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
     private final IntegerField targetToRead;
 
-    public NewGoalForm() {
+    public ReadingGoalForm() {
         targetToRead = createBooksGoalField();
         Button saveButton = createSaveButton();
 
@@ -147,10 +147,10 @@ public class NewGoalForm extends VerticalLayout {
     /**
      * Vaadin's event bus system. A registered listener can be notified when a save or delete event is fired
      */
-    public static abstract class GoalFormEvent extends ComponentEvent<NewGoalForm> {
+    public static abstract class GoalFormEvent extends ComponentEvent<ReadingGoalForm> {
         private ReadingGoal readingGoal;
 
-        protected GoalFormEvent(NewGoalForm source, ReadingGoal readingGoal) {
+        protected GoalFormEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
             super(source, false);
             this.readingGoal = readingGoal;
         }
@@ -161,13 +161,13 @@ public class NewGoalForm extends VerticalLayout {
     }
 
     public static class SaveEvent extends GoalFormEvent {
-        SaveEvent(NewGoalForm source, ReadingGoal readingGoal) {
+        SaveEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
             super(source, readingGoal);
         }
     }
 
     public static class DeleteEvent extends GoalFormEvent {
-        DeleteEvent(NewGoalForm source, ReadingGoal readingGoal) {
+        DeleteEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
             super(source, readingGoal);
         }
     }

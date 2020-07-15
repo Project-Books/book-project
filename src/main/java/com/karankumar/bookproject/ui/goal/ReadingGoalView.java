@@ -45,13 +45,13 @@ import java.util.stream.Collectors;
  */
 @Route(value = "goal", layout = MainView.class)
 @PageTitle("Goal | Book Project")
-public class GoalView extends VerticalLayout {
+public class ReadingGoalView extends VerticalLayout {
 
     public static final String SET_GOAL = "Set goal";
     public static final String UPDATE_GOAL = "Update goal";
     public static final String TARGET_MET = "Congratulations for reaching your target!";
 
-    private static final Logger LOGGER = Logger.getLogger(GoalView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReadingGoalView.class.getName());
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
     private static final int WEEKS_IN_YEAR = 52;
@@ -82,7 +82,7 @@ public class GoalView extends VerticalLayout {
      */
     Span booksToRead;
 
-    public GoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
+    public ReadingGoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
 
@@ -105,11 +105,11 @@ public class GoalView extends VerticalLayout {
 
     private void configureSetGoal() {
         setGoalButton.addClickListener(event -> {
-            NewGoalForm goalForm = new NewGoalForm();
+            ReadingGoalForm goalForm = new ReadingGoalForm();
             add(goalForm);
             goalForm.openForm();
 
-            goalForm.addListener(NewGoalForm.SaveEvent.class, this::saveGoal);
+            goalForm.addListener(ReadingGoalForm.SaveEvent.class, this::saveGoal);
         });
     }
 
@@ -127,7 +127,7 @@ public class GoalView extends VerticalLayout {
         setGoalButton.setText(UPDATE_GOAL);
     }
 
-    private void saveGoal(NewGoalForm.SaveEvent event) {
+    private void saveGoal(ReadingGoalForm.SaveEvent event) {
         if (event.getReadingGoal() != null) {
             LOGGER.log(Level.INFO, "Retrieved goal from form is not null");
             goalService.save(event.getReadingGoal());
