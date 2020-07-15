@@ -106,7 +106,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         if (shelfRepository.count() == 0) {
             populateShelfRepository();
         }
-        setShelfAllBooks();
+        setShelfForAllBooks();
     }
 
     private void populateAuthorRepository() {
@@ -176,7 +176,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
     /**
      * Assigns a shelf to every book in the book repository
      */
-    private void setShelfAllBooks() {
+    private void setShelfForAllBooks() {
         List<Book> books = bookRepository.findAll();
         List<PredefinedShelf> shelves = shelfRepository.findAll();
 
