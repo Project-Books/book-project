@@ -17,13 +17,14 @@ package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 class PredefinedShelfTests {
@@ -46,9 +47,9 @@ class PredefinedShelfTests {
         List<PredefinedShelf> shelves = PredefinedShelfTests.shelfService.findAll();
 
         Assertions.assertEquals(4, shelves.size());
-        Assertions.assertEquals(shelves.get(0).getShelfName(), PredefinedShelf.ShelfName.TO_READ);
-        Assertions.assertEquals(shelves.get(1).getShelfName(), PredefinedShelf.ShelfName.READING);
-        Assertions.assertEquals(shelves.get(2).getShelfName(), PredefinedShelf.ShelfName.READ);
-        Assertions.assertEquals(shelves.get(3).getShelfName(), PredefinedShelf.ShelfName.DID_NOT_FINISH);
+        Assertions.assertEquals(shelves.get(0).getPredefinedShelfName(), PredefinedShelf.ShelfName.TO_READ);
+        Assertions.assertEquals(shelves.get(1).getPredefinedShelfName(), PredefinedShelf.ShelfName.READING);
+        Assertions.assertEquals(shelves.get(2).getPredefinedShelfName(), PredefinedShelf.ShelfName.READ);
+        Assertions.assertEquals(shelves.get(3).getPredefinedShelfName(), PredefinedShelf.ShelfName.DID_NOT_FINISH);
     }
 }

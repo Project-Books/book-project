@@ -37,7 +37,7 @@ class PredefinedShelfRepositoryTest {
         PredefinedShelf shelf = shelves.get(0);
         Assertions.assertNotNull(shelf);
         Assertions.assertAll(
-            () -> Assertions.assertEquals(PredefinedShelf.ShelfName.TO_READ, shelf.getShelfName()),
+            () -> Assertions.assertEquals(PredefinedShelf.ShelfName.TO_READ, shelf.getPredefinedShelfName()),
             () -> Assertions.assertNull(shelf.getBooks())
         );
     }

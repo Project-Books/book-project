@@ -169,7 +169,7 @@ public class ReadingGoalView extends VerticalLayout {
     private PredefinedShelf findReadShelf() {
         return predefinedShelfService.findAll()
                                      .stream()
-                                     .filter(shelf -> shelf.getShelfName().equals(PredefinedShelf.ShelfName.READ))
+                                     .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.READ))
                                      .collect(Collectors.toList())
                                      .get(0); // there should only be one
     }

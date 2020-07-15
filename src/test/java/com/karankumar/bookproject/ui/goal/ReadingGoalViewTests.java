@@ -178,7 +178,7 @@ public class ReadingGoalViewTests {
     private PredefinedShelf findShelf(PredefinedShelf.ShelfName shelfName) {
         return predefinedShelfService.findAll()
                                      .stream()
-                                     .filter(shelf -> shelf.getShelfName().equals(shelfName))
+                                     .filter(shelf -> shelf.getPredefinedShelfName().equals(shelfName))
                                      .collect(Collectors.toList())
                                      .get(0); // there should only be one
     }

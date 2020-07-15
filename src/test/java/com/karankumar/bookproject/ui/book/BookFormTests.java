@@ -104,7 +104,7 @@ public class BookFormTests {
         Assertions.assertEquals(bookTitle, bookForm.bookTitle.getValue());
         Assertions.assertEquals(firstName, bookForm.authorFirstName.getValue());
         Assertions.assertEquals(lastName, bookForm.authorLastName.getValue());
-        Assertions.assertEquals(readShelf.getShelfName(), bookForm.shelf.getValue());
+        Assertions.assertEquals(readShelf.getPredefinedShelfName(), bookForm.shelf.getValue());
         Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
         Assertions.assertEquals(pageCount, bookForm.pageCount.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());

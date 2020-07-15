@@ -169,7 +169,6 @@ public class BookForm extends VerticalLayout {
               .bind("author.lastName");
         binder.forField(shelf)
               .withValidator(Objects::nonNull, "Please select a shelf")
-//              .bind("shelf.shelfName");
               .bind("shelf.predefinedShelfName");
         binder.forField(seriesPosition)
               .withValidator(series -> (series == null || series > 0), "Series position must be at least 1")
