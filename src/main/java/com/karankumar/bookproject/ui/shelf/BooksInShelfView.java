@@ -208,7 +208,9 @@ public class BooksInShelfView extends VerticalLayout {
         bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
                 .setHeader("Title").setKey(TITLE_KEY)
                 .setSortable(true);
-        bookGrid.addColumns(AUTHOR_KEY, GENRE_KEY);
+        bookGrid.addColumn(AUTHOR_KEY)
+                .setSortable(true);
+        bookGrid.addColumn(GENRE_KEY);
 
         bookGrid.addColumn(new LocalDateRenderer<>(
                 Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
