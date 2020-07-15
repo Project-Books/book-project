@@ -27,8 +27,6 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
-import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -43,6 +41,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicReference;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -153,7 +154,7 @@ public class BookFormTests {
         bookForm.authorFirstName.setValue(firstName);
         bookForm.authorLastName.setValue(lastName);
         bookForm.bookTitle.setValue(bookTitle);
-        bookForm.shelf.setValue(readShelf.getShelfName());
+        bookForm.shelf.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.setValue(genre);
         bookForm.pageCount.setValue(pageCount);
         bookForm.dateStartedReading.setValue(dateStarted);

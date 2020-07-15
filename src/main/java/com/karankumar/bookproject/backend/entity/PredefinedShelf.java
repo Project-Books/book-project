@@ -18,34 +18,22 @@ package com.karankumar.bookproject.backend.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 /**
  * A predefined shelf is a shelf that is created by the app and will always exist (cannot be deleted or renamed)
  */
 @Entity
-@Getter
-@Setter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PredefinedShelf extends BaseEntity {
-    @NotNull
-    @Enumerated(value = EnumType.STRING)
-    public ShelfName shelfName;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shelf")
-    private Set<Book> books;
+public class PredefinedShelf extends Shelf {
+    // This field must not have a setter as it should not be possible to rename a PredefinedShelf
+    @Getter
+    private ShelfName predefinedShelfName;
 
-    public PredefinedShelf(ShelfName shelfName) {
-        this.shelfName = shelfName;
+    public PredefinedShelf(ShelfName predefinedShelfName) {
+        super(predefinedShelfName.toString());
+        this.predefinedShelfName = predefinedShelfName;
     }
 
     public enum ShelfName {

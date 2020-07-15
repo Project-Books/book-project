@@ -79,7 +79,8 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         if (shelfName == null) {
             return shelfRepository.findAll();
         } else {
-            return shelfRepository.findPredefinedShelfByShelfName(shelfName);
+//            return shelfRepository.findPredefinedShelfByShelfName(shelfName);
+            return shelfRepository.findByPredefinedShelfName(shelfName);
         }
     }
 
@@ -184,8 +185,9 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
         for (Book book : books) {
             PredefinedShelf shelf = shelves.get(random.nextInt(shelves.size()));
+            PredefinedShelf.ShelfName predefinedShelfName = shelf.getPredefinedShelfName();
             book.setShelf(shelf);
-            switch (shelf.shelfName) {
+            switch (predefinedShelfName) {
                 case TO_READ:
                     book.setDateStartedReading(null);
                     book.setDateFinishedReading(null);
