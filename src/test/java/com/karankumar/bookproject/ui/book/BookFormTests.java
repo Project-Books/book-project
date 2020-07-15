@@ -25,7 +25,6 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
-import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
 import java.time.LocalDate;
@@ -189,6 +188,54 @@ public class BookFormTests {
         Assertions.assertTrue(bookForm.dateStartedReading.isEmpty(), "Date started not cleared");
         Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty(), "Date finished not cleared");
         Assertions.assertTrue(bookForm.rating.isEmpty(), "Rating not cleared");
+    }
+
+    @ParameterizedTest
+    @EnumSource(PredefinedShelf.ShelfName.class)
+    public void correctFormFieldsShownForGivenShelf(PredefinedShelf.ShelfName shelfName) {
+        populateBookForm();
+        bookForm.shelf.setValue(shelfName); // shelf chosen may have changed
+
+        boolean shouldShowStarted = false;
+        boolean shouldShowFinished = false;
+        boolean shouldShowRating = false;
+        switch (shelfName) {
+            case TO_READ:
+                break; // all fields already set to false
+            case READING:
+            case DID_NOT_FINISH:
+                shouldShowStarted = true;
+                // finished and rating already set to false
+                break;
+            case READ:
+                shouldShowStarted = true;
+                shouldShowFinished = true;
+                shouldShowRating = true;
+                break;
+        }
+
+        final String dateStarted = "Date started ";
+        final String dateFinished = "Date finished ";
+        final String rating = "Rating ";
+        final String shown = String.format("shown for a book in the %s shelf", shelfName);
+        final String notShown = String.format("not shown for a book in the %s shelf", shelfName);
+        if (shouldShowStarted) {
+            Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible(), dateStarted + notShown);
+        } else {
+            Assertions.assertFalse(bookForm.dateStartedReadingFormItem.isVisible(), dateStarted + shown);
+        }
+
+        if (shouldShowFinished) {
+            Assertions.assertTrue(bookForm.dateFinishedReadingFormItem.isVisible(), dateFinished + notShown);
+        } else {
+            Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible(), dateFinished + shown);
+        }
+
+        if (shouldShowRating) {
+            Assertions.assertTrue(bookForm.ratingFormItem.isVisible(), rating + notShown);
+        } else {
+            Assertions.assertFalse(bookForm.ratingFormItem.isVisible(), rating + shown);
+        }
     }
 
     @AfterEach

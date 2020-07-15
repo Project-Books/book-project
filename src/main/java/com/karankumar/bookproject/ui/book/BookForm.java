@@ -60,27 +60,27 @@ public class BookForm extends VerticalLayout {
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
 
-    public final TextField bookTitle = new TextField();
-    public final IntegerField seriesPosition = new IntegerField();
-    public final TextField authorFirstName = new TextField();
-    public final TextField authorLastName = new TextField();
-    public final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
-    public final ComboBox<Genre> bookGenre = new ComboBox<>();
-    public final IntegerField pageCount = new IntegerField();
-    public final DatePicker dateStartedReading = new DatePicker();
-    public final DatePicker dateFinishedReading = new DatePicker();
-    public final NumberField rating = new NumberField();
-    public final Button saveButton = new Button();
+    final TextField bookTitle = new TextField();
+    final IntegerField seriesPosition = new IntegerField();
+    final TextField authorFirstName = new TextField();
+    final TextField authorLastName = new TextField();
+    final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
+    final ComboBox<Genre> bookGenre = new ComboBox<>();
+    final IntegerField pageCount = new IntegerField();
+    final DatePicker dateStartedReading = new DatePicker();
+    final DatePicker dateFinishedReading = new DatePicker();
+    final NumberField rating = new NumberField();
+    final Button saveButton = new Button();
 
     private final PredefinedShelfService shelfService;
     final Button reset = new Button();
     private final Dialog dialog;
 
-    private FormLayout.FormItem started;
-    private FormLayout.FormItem finished;
-    private FormLayout.FormItem ratingFormItem;
+    FormLayout.FormItem dateStartedReadingFormItem;
+    FormLayout.FormItem dateFinishedReadingFormItem;
+    FormLayout.FormItem ratingFormItem;
 
-    public Button delete = new Button();
+    Button delete = new Button();
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
     public BookForm(PredefinedShelfService shelfService) {
@@ -133,8 +133,8 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(authorFirstName, "Author's first name *");
         formLayout.addFormItem(authorLastName, "Author's last name *");
         formLayout.addFormItem(seriesPosition, "Series number");
-        started = formLayout.addFormItem(dateStartedReading, "Date started");
-        finished = formLayout.addFormItem(dateFinishedReading, "Date finished");
+        dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
+        dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
         formLayout.addFormItem(pageCount, "Page count");
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
@@ -378,7 +378,7 @@ public class BookForm extends VerticalLayout {
     private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
             case TO_READ:
-                started.setVisible(false);
+                dateStartedReadingFormItem.setVisible(false);
                 hideFinishDate();
                 break;
             case READING:
@@ -396,20 +396,20 @@ public class BookForm extends VerticalLayout {
     }
 
     private void hideFinishDate() {
-        if (finished.isVisible()) {
-            finished.setVisible(false);
+        if (dateFinishedReadingFormItem.isVisible()) {
+            dateFinishedReadingFormItem.setVisible(false);
         }
     }
 
     private void showStartDate() {
-        if (!started.isVisible()) {
-            started.setVisible(true);
+        if (!dateStartedReadingFormItem.isVisible()) {
+            dateStartedReadingFormItem.setVisible(true);
         }
     }
 
     private void showFinishDate() {
-        if (!finished.isVisible()) {
-            finished.setVisible(true);
+        if (!dateFinishedReadingFormItem.isVisible()) {
+            dateFinishedReadingFormItem.setVisible(true);
         }
     }
 
