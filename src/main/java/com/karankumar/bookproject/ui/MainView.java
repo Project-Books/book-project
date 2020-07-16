@@ -21,6 +21,7 @@ import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -34,6 +35,7 @@ import com.vaadin.flow.router.RouterLink;
 /**
  * Vaadin view that defines the app navigation bar
  */
+@CssImport("./styles/shared-styles.css")
 public class MainView extends AppLayout {
     public MainView() {
         Tabs tabs = new Tabs();
@@ -43,6 +45,7 @@ public class MainView extends AppLayout {
         tabs.add(myBooks, readingChallenge, settings);
 
         Anchor logout = new Anchor("/logout", "Log out");
+        logout.addClassName("logout");
 
         HorizontalLayout h = new HorizontalLayout();
 
