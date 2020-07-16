@@ -164,7 +164,8 @@ public class ReadingGoalView extends VerticalLayout {
 
     /**
      * Determine if a String should be singular or plural and return correct String
-     * @param num number of book or pages
+     * @param num the number of book or pages
+     * @param itemStr the String that will be pluralized
      * @return either the original String or the original string with an "s" concatenated to it
      */
     public static String getPluralized(String itemStr, int num){
