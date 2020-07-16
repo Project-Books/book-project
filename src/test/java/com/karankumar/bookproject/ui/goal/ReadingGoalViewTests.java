@@ -240,14 +240,15 @@ public class ReadingGoalViewTests {
      * Check to ensure that isPlural method is returning the correct String
      */
     @Test
-    public void pluralCheck() {
+    public void getPluralizedCheck() {
         int numTest = 2;
-        String pluralTest = ReadingGoalView.isPlural(numTest);
-        Assertions.assertEquals("s", pluralTest);
+        String stringTest = "book";
+        String pluralTest = ReadingGoalView.getPluralized(stringTest, numTest);
+        Assertions.assertEquals("books", pluralTest);
 
         numTest = 1;
-        pluralTest = ReadingGoalView.isPlural(numTest);
-        Assertions.assertEquals("", pluralTest);
+        pluralTest = ReadingGoalView.getPluralized(stringTest,numTest);
+        Assertions.assertEquals("book", pluralTest);
     }
 
 }
