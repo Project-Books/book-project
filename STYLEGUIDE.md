@@ -94,6 +94,8 @@ int booksSold = 10_000;
 
 4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
 
+This also applies to CSS.
+
 **Aligning method calls**
 
 An exception to the above 4 spaces indentation rule is aligning method calls (see below). This can improve readability.
