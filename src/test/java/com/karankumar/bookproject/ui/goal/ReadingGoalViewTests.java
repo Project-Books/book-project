@@ -235,4 +235,19 @@ public class ReadingGoalViewTests {
     public void tearDown() {
         MockVaadin.tearDown();
     }
+
+    /**
+     * Check to ensure that isPlural method is returning the correct String
+     */
+    @Test
+    public void pluralCheck() {
+        int numTest = 2;
+        String pluralTest = ReadingGoalView.isPlural(numTest);
+        Assertions.assertEquals("s", pluralTest);
+
+        numTest = 1;
+        pluralTest = ReadingGoalView.isPlural(numTest);
+        Assertions.assertEquals("", pluralTest);
+    }
+
 }

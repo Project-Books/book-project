@@ -146,13 +146,14 @@ public class ReadingGoalView extends VerticalLayout {
         int howManyReadThisYear = howManyReadThisYear(goalType, readShelf);
         String haveRead = "You have read ";
         String outOf = " out of ";
+        String plural = isPlural(targetToRead);
         if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
             toggleBooksGoalInfo(true);
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + " books");
+            readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + " book" + plural);
             goalProgress.setText(calculateProgress(targetToRead, howManyReadThisYear));
         } else {
             toggleBooksGoalInfo(false);
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + " pages");
+            readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + " page"+ plural);
         }
 
         double progress = getProgress(targetToRead, howManyReadThisYear);
@@ -160,6 +161,15 @@ public class ReadingGoalView extends VerticalLayout {
         progressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
 
         updateSetGoalText();
+    }
+
+    /**
+     * Determine if books/pages text should be singular or plural
+     * @param num number of book or pages
+     * @return either a blank string or an "s" depending on if num is greater than 1
+     */
+    public static String isPlural(int num){
+        return (num > 1) ? ("s") : ("");
     }
 
     /**
@@ -222,11 +232,13 @@ public class ReadingGoalView extends VerticalLayout {
             int weekOfYear = getWeekOfYear();
             int weeksLeftInYear = weeksLeftInYear(weekOfYear);
             double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
+            String plural = isPlural((int)booksStillToReadAWeek);
             booksToRead.setText("You need to read " + booksStillToReadAWeek +
-                    " books a week on average to achieve your goal");
+                    " book" + plural + " a week on average to achieve your goal");
 
             int howManyBehindOrAhead = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
-            schedule = String.format("You are %d books %s schedule", howManyBehindOrAhead,
+            String newPlural = isPlural(howManyBehindOrAhead);
+            schedule = String.format("You are %d book" + newPlural + " %s schedule", howManyBehindOrAhead,
                     behindOrAheadSchedule(booksReadThisYear, shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;
