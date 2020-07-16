@@ -91,7 +91,7 @@ public class BookForm extends VerticalLayout {
         FormLayout formLayout = new FormLayout();
         dialog.add(formLayout);
 
-        configureBinder();
+        bindFormFields();
         configureTitle();
         configureAuthor();
         configureShelf();
@@ -152,7 +152,7 @@ public class BookForm extends VerticalLayout {
     /**
      * Binds the form fields and defines custom validators where necessary
      */
-    private void configureBinder() {
+    private void bindFormFields() {
         final String AFTER_TODAY_PREFIX = "The date you";
         final String AFTER_TODAY_SUFFIX = "reading the book cannot be after today's date.";
 
