@@ -65,7 +65,7 @@ This makes it easier to keep track of what changes were made in what branch or p
 
 ## Code contributions
 
-Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
+Please adhere to [our code style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
 
 Before submitting a pull request, run the unit tests and ensure they pass.
 
