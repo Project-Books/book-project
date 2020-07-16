@@ -68,10 +68,6 @@ if (condition) {
 }
 ```
 
-**4 Spaces, no tabs**
-
-4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
-
 **120 character limit**
 
 A line should generally not exceed 120 characters (an IntelliJ default).
@@ -79,8 +75,6 @@ A line should generally not exceed 120 characters (an IntelliJ default).
 Why 120 characters, not 100 characters (like the Google Java style guide)? You can have two files side by side that do not exceed 120 characters on a 1920x1080 display (at least in IntelliJ).
 
 **One statement per line**
-
-
 
 **Underscores in numeric literals**
 
@@ -92,6 +86,26 @@ int booksSold = 10000;
 
 // good
 int booksSold = 10_000;
+```
+
+### Indentation
+
+**4 Spaces, no tabs**
+
+4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
+
+**Aligning method calls**
+
+An exception to the above 4 spaces indentation rule is aligning method calls (see below). This can improve readability.
+
+```java
+// good
+bookGrid.addColumn(AUTHOR_KEY)
+        .setSortable(true);
+
+// bad
+bookGrid.addColumn(AUTHOR_KEY)
+    .setSortable(true);
 ```
 
 ## Javadoc
