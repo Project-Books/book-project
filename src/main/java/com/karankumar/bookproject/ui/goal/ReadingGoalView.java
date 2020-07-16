@@ -218,6 +218,7 @@ public class ReadingGoalView extends VerticalLayout {
 
         if (booksStillToRead <= 0) {
             schedule = TARGET_MET;
+            booksToRead.setText("");
         } else {
             int weekOfYear = getWeekOfYear();
             int weeksLeftInYear = weeksLeftInYear(weekOfYear);
