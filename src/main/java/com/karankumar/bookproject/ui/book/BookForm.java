@@ -101,7 +101,7 @@ public class BookForm extends VerticalLayout {
         configureDateStarted();
         configureDateFinished();
         configureRating();
-        HorizontalLayout buttons = configureButtons();
+        HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
                 bookTitle,
                 authorFirstName,
@@ -199,14 +199,28 @@ public class BookForm extends VerticalLayout {
      *
      * @return a HorizontalLayout containing the save, reset & delete buttons
      */
-    private HorizontalLayout configureButtons() {
+    private HorizontalLayout configureFormButtons() {
+        configureSaveFormButton();
+        configureResetFormButton();
+        configureDeleteButton();
+
+        binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
+
+        return new HorizontalLayout(saveButton, reset, delete);
+    }
+
+    private void configureSaveFormButton() {
         saveButton.setText(LABEL_ADD_BOOK);
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         saveButton.addClickListener(click -> validateOnSave());
+    }
 
+    private void configureResetFormButton() {
         reset.setText("Reset");
         reset.addClickListener(event -> clearForm());
+    }
 
+    private void configureDeleteButton() {
         delete.setText("Delete");
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         delete.addClickListener(click -> {
@@ -214,10 +228,6 @@ public class BookForm extends VerticalLayout {
             closeForm();
         });
         delete.addClickListener(v -> saveButton.setText(LABEL_ADD_BOOK));
-
-        binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
-
-        return new HorizontalLayout(saveButton, reset, delete);
     }
 
     /**
