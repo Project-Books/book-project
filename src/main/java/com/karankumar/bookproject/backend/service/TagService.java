@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.karankumar.bookproject.backend.model.BaseEntity;
-import com.karankumar.bookproject.backend.model.Tag;
+import com.karankumar.bookproject.backend.entity.BaseEntity;
+import com.karankumar.bookproject.backend.entity.Tag;
 import com.karankumar.bookproject.backend.repository.TagRepository;
 
 import lombok.extern.java.Log;
