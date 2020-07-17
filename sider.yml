@@ -6,3 +6,6 @@ linter:
       - pmd/codestyle.xml
     encoding: Shift_JIS
     min_priority: 3
+  checkstyle:
+    config: /src/main/resources/checkstyle.xml
+    dir: src
