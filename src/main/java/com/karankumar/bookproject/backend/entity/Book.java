@@ -48,8 +48,7 @@ public class Book extends BaseEntity {
 
     private Integer seriesPosition;
     
-    @NotNull
-    private int edition;
+    private Integer edition;
 
     private String bookRecommendedBy;
 
