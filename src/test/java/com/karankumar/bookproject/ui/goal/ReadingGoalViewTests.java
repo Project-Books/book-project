@@ -211,6 +211,15 @@ public class ReadingGoalViewTests {
     }
 
     /**
+     * Check to ensure that isPlural method is returning the correct String
+     */
+    @Test
+    public void getPluralizedCheck() {
+        Assertions.assertEquals("books", ReadingGoalView.getPluralized("book", 2));
+        Assertions.assertEquals("book", ReadingGoalView.getPluralized("book", 1));
+    }
+
+    /**
      * Checks whether the right information is shown depending on whether the goal type is set to pages or books
      */
     @Test
@@ -234,21 +243,6 @@ public class ReadingGoalViewTests {
     @AfterEach
     public void tearDown() {
         MockVaadin.tearDown();
-    }
-
-    /**
-     * Check to ensure that isPlural method is returning the correct String
-     */
-    @Test
-    public void getPluralizedCheck() {
-        int numTest = 2;
-        String stringTest = "book";
-        String pluralTest = ReadingGoalView.getPluralized(stringTest, numTest);
-        Assertions.assertEquals("books", pluralTest);
-
-        numTest = 1;
-        pluralTest = ReadingGoalView.getPluralized(stringTest,numTest);
-        Assertions.assertEquals("book", pluralTest);
     }
 
 }

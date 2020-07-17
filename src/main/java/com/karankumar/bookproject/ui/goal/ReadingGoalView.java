@@ -236,8 +236,8 @@ public class ReadingGoalView extends VerticalLayout {
                     getPluralized(" book", (int)booksStillToReadAWeek) + " a week on average to achieve your goal");
 
             int howManyBehindOrAhead = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
-            schedule = String.format("You are %d "+ getPluralized("book", howManyBehindOrAhead) + " %s schedule", howManyBehindOrAhead,
-                    behindOrAheadSchedule(booksReadThisYear, shouldHaveRead(booksToReadThisYear)));
+            schedule = String.format("You are %d "+ getPluralized("book", howManyBehindOrAhead) + " %s schedule",
+                    howManyBehindOrAhead, behindOrAheadSchedule(booksReadThisYear, shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;
     }
