@@ -244,5 +244,4 @@ public class ReadingGoalViewTests {
     public void tearDown() {
         MockVaadin.tearDown();
     }
-
 }
