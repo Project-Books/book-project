@@ -239,52 +239,7 @@ public class BookForm extends VerticalLayout {
 
             if (binder.getBean() == null) {
                 LOGGER.log(Level.SEVERE, "Binder book bean is null");
-
-                if (bookTitle.getValue() != null) {
-                    String firstName = "";
-                    String lastName = "";
-
-                    if (authorFirstName.getValue() != null) {
-                        firstName = authorFirstName.getValue();
-                    } else {
-                        LOGGER.log(Level.SEVERE, "Null first name");
-                    }
-                    if (authorLastName.getValue() != null) {
-                        lastName = authorLastName.getValue();
-                    } else {
-                        LOGGER.log(Level.SEVERE, "Null last name");
-                    }
-                    Author author = new Author(firstName, lastName);
-                    Book book = new Book(bookTitle.getValue(), author);
-
-                    if (shelf.getValue() != null) {
-                        List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
-                        if (shelves.size() == 1) {
-                            book.setShelf(shelves.get(0));
-                            LOGGER.log(Level.INFO, "Shelf: " + shelves.get(0));
-                        } else {
-                            LOGGER.log(Level.INFO, "Shelves count = " + shelves.size());
-                        }
-
-                    } else {
-                        LOGGER.log(Level.SEVERE, "Null shelf");
-                    }
-
-                    if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-                        book.setSeriesPosition(seriesPosition.getValue());
-                    } else if (seriesPosition.getValue() != null) {
-                        LOGGER.log(Level.SEVERE, "Negative Series value");
-                    }
-
-                    binder.setBean(book);
-                    LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
-                    fireEvent(new SaveEvent(this, binder.getBean()));
-                    LOGGER.log(Level.INFO, "Fired save event. Null? " + (binder.getBean() == null));
-                    closeForm();
-                } else {
-                    LOGGER.log(Level.SEVERE, "Book title is null");
-                }
-
+                setBookBean();
             } else {
                 LOGGER.log(Level.INFO, "Binder.getBean() is not null");
                 moveBookToDifferentShelf();
@@ -293,6 +248,53 @@ public class BookForm extends VerticalLayout {
             }
         } else {
             LOGGER.log(Level.SEVERE, "Invalid binder");
+        }
+    }
+
+    private void setBookBean() {
+        if (bookTitle.getValue() != null) {
+            String firstName = "";
+            String lastName = "";
+
+            if (authorFirstName.getValue() != null) {
+                firstName = authorFirstName.getValue();
+            } else {
+                LOGGER.log(Level.SEVERE, "Null first name");
+            }
+            if (authorLastName.getValue() != null) {
+                lastName = authorLastName.getValue();
+            } else {
+                LOGGER.log(Level.SEVERE, "Null last name");
+            }
+            Author author = new Author(firstName, lastName);
+            Book book = new Book(bookTitle.getValue(), author);
+
+            if (shelf.getValue() != null) {
+                List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
+                if (shelves.size() == 1) {
+                    book.setShelf(shelves.get(0));
+                    LOGGER.log(Level.INFO, "Shelf: " + shelves.get(0));
+                } else {
+                    LOGGER.log(Level.INFO, "Shelves count = " + shelves.size());
+                }
+
+            } else {
+                LOGGER.log(Level.SEVERE, "Null shelf");
+            }
+
+            if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
+                book.setSeriesPosition(seriesPosition.getValue());
+            } else if (seriesPosition.getValue() != null) {
+                LOGGER.log(Level.SEVERE, "Negative Series value");
+            }
+
+            binder.setBean(book);
+            LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
+            fireEvent(new SaveEvent(this, binder.getBean()));
+            LOGGER.log(Level.INFO, "Fired save event. Null? " + (binder.getBean() == null));
+            closeForm();
+        } else {
+            LOGGER.log(Level.SEVERE, "Book title is null");
         }
     }
 
