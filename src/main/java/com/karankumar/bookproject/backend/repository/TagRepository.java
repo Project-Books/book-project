@@ -7,5 +7,4 @@ import com.karankumar.bookproject.backend.entity.Tag;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
-
 }
