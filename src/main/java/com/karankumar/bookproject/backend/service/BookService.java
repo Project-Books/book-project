@@ -50,11 +50,11 @@ public class BookService extends BaseService<Book, Long> {
             LOGGER.log(Level.SEVERE,"Cannot save the null book");
             return;
         }
-        if(book.getAuthor()==null){
+        if (book.getAuthor() == null) {
             LOGGER.log(Level.SEVERE,"Without author book cannot be saved.");
             return;
         }
-        if(book.getShelf() == null || book.getShelf().getShelfName() == null){
+        if (book.getShelf() == null || book.getShelf().getShelfName() == null) {
             LOGGER.log(Level.SEVERE,"Shelf not assigned to book, cannot be saved");
             return;
         }
