@@ -46,16 +46,16 @@ public class BookService extends BaseService<Book, Long> {
 
     @Override
     public void save(Book book) {
-        if (book == null ) {
-            LOGGER.log(Level.SEVERE,"Cannot save the null book");
+        if (book == null) {
+            LOGGER.log(Level.SEVERE, "Cannot save the null book");
             return;
         }
         if (book.getAuthor() == null) {
-            LOGGER.log(Level.SEVERE,"Without author book cannot be saved.");
+            LOGGER.log(Level.SEVERE, "Without author book cannot be saved.");
             return;
         }
         if (book.getShelf() == null || book.getShelf().getShelfName() == null) {
-            LOGGER.log(Level.SEVERE,"Shelf not assigned to book, cannot be saved");
+            LOGGER.log(Level.SEVERE, "Shelf not assigned to book, cannot be saved");
             return;
         }
         authorService.save(book.getAuthor());

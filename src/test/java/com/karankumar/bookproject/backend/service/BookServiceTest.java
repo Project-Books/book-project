@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,8 +81,8 @@ public class BookServiceTest {
         Assertions.assertEquals(0, goalService.count());
         goalService.save(validBook);
         Assertions.assertEquals(1, goalService.count());
-        Assertions.assertEquals(1,goalService.findAll(validBook.getTitle()).size());
-        Assertions.assertEquals(validBook,goalService.findAll(validBook.getTitle()).get(0));
-        Assertions.assertEquals(validBook.getAuthor(),goalService.findAll(validBook.getTitle()).get(0).getAuthor());
+        Assertions.assertEquals(1, goalService.findAll(validBook.getTitle()).size());
+        Assertions.assertEquals(validBook, goalService.findAll(validBook.getTitle()).get(0));
+        Assertions.assertEquals(validBook.getAuthor(), goalService.findAll(validBook.getTitle()).get(0).getAuthor());
     }
 }
