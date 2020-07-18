@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 @SpringBootTest
 public class BookServiceTest {
 
-    private static PredefinedShelfService shelfService;
-
     private static AuthorService authorService;
     private static BookService goalService;
 
@@ -26,7 +24,8 @@ public class BookServiceTest {
     private Author author;
 
     @BeforeEach
-    public void setup(@Autowired BookService goalService, @Autowired AuthorService authorService,@Autowired PredefinedShelfService shelfService) {
+    public void setup(@Autowired BookService goalService, @Autowired AuthorService authorService,
+                      @Autowired PredefinedShelfService shelfService) {
 
         List<PredefinedShelf> shelves = shelfService.findAll();
         PredefinedShelf toRead = shelves.stream()
@@ -34,25 +33,23 @@ public class BookServiceTest {
                 .collect(Collectors.toList())
                 .get(0);
 
-
-        this.goalService = goalService;
+        BookServiceTest.goalService = goalService;
         goalService.deleteAll();
-        this.authorService = authorService;
+        BookServiceTest.authorService = authorService;
         authorService.deleteAll();
 
-        author = new Author("Test First Name","Test Last Name");
+        author = new Author("Test First Name", "Test Last Name");
         bookWithoutShelf = new Book("Test Title", author);
-        bookWithoutAuthor = new Book("Book without Author",null);
-        validBook = new Book("Book Name",author);
+        bookWithoutAuthor = new Book("Book without Author", null);
+        validBook = new Book("Book Name", author);
         validBook.setShelf(toRead);
     }
-
 
     /**
      * Tests whether the null book is  can be saved
      */
     @Test
-    public void whenTryingToSaveNullBook_ExpectNoSave() {
+    public void whenTryingToSaveNullBookExpectNoSave() {
         goalService.save(null);
         Assertions.assertEquals(0, goalService.count());
     }
@@ -61,7 +58,7 @@ public class BookServiceTest {
      * Tests whether the book without author can be saved
      */
     @Test
-    public void whenTryingToWithoutAuthorBook_ExpectNoSave() {
+    public void whenTryingToWithoutAuthorBookExpectNoSave() {
         goalService.save(bookWithoutAuthor);
         Assertions.assertEquals(0, authorService.count());
         Assertions.assertEquals(0, goalService.count());
@@ -71,7 +68,7 @@ public class BookServiceTest {
      * Tests whether the book without shelf can be saved
      */
     @Test
-    public void whenTryingToWithoutShelfBook_ExpectNoSave() {
+    public void whenTryingToSaveWithoutShelfBookExpectNoSave() {
         goalService.save(bookWithoutShelf);
         Assertions.assertEquals(0, authorService.count());
         Assertions.assertEquals(0, goalService.count());
@@ -81,7 +78,7 @@ public class BookServiceTest {
      * Tests whether the book with author and shelf can be saved
      */
     @Test
-    public void whenTryingToSaveMultipleBooks_expectSave() {
+    public void whenTryingToSaveMultipleBooksExpectSave() {
         Assertions.assertEquals(0, goalService.count());
         goalService.save(validBook);
         Assertions.assertEquals(1, goalService.count());
@@ -89,5 +86,4 @@ public class BookServiceTest {
         Assertions.assertEquals(validBook,goalService.findAll(validBook.getTitle()).get(0));
         Assertions.assertEquals(validBook.getAuthor(),goalService.findAll(validBook.getTitle()).get(0).getAuthor());
     }
-
 }
