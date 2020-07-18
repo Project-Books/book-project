@@ -114,13 +114,15 @@ public class ReadingGoalViewTests {
         int randomGoalTarget = getRandomGoalTarget();
 
         // target met:
-        Assertions.assertEquals(
-                ReadingGoalView.TARGET_MET, goalView.calculateProgress(randomGoalTarget, randomGoalTarget));
         Assertions.assertEquals(ReadingGoalView.TARGET_MET,
-                goalView.calculateProgress(randomGoalTarget, randomGoalTarget + 1));
+                goalView.calculateProgress(randomGoalTarget, randomGoalTarget, ReadingGoal.GoalType.BOOKS));
+        Assertions.assertEquals(ReadingGoalView.TARGET_MET,
+                goalView.calculateProgress(randomGoalTarget, randomGoalTarget + 1, ReadingGoal.GoalType.PAGES));
         // target not met:
         Assertions.assertNotEquals(ReadingGoalView.TARGET_MET,
-                goalView.calculateProgress(randomGoalTarget, randomGoalTarget - 1));
+                goalView.calculateProgress(randomGoalTarget, randomGoalTarget - 1, ReadingGoal.GoalType.BOOKS));
+        Assertions.assertNotEquals(ReadingGoalView.TARGET_MET,
+                goalView.calculateProgress(randomGoalTarget, randomGoalTarget - 1, ReadingGoal.GoalType.PAGES));
     }
 
     /**
