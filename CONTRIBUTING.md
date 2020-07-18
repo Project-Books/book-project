@@ -88,6 +88,14 @@ Pull requests are similar. We will send a friendly reminder after one week of re
 
 For urgent work, such as fixing important bugs or work that is blocking others, a similar process will be followed but with shorter timescales. Exactly how long depends on the severity of the stale work. Where possible, we will inform you whether an issue is important so that you can know before picking it up. For high priority bugs, we recommend that you only take it up if you are able to commit to finishing it reasonably quickly.
 
+## Unassigning yourself
+
+If you no longer wish to work an issue, that's fine. All we ask is that you let us know. If you unassign yourself from the issue, we don't get notified, so a quick message (no explanation required) will do. This allows to easily manage issues. We can then assign it to someone else. 
+
+Where possible, please let us know as soon as possible if you no longer wish to work on an issue. 
+
+Please also consider that you're finding something difficult on the issue you're assigned to, we're here to help on [Gitter](https://gitter.im/book-project-community/community).
+
 ## Ways to contribute
 
 - Code: adding new features, fixing bugs and general refactoring to name a few
