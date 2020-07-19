@@ -108,7 +108,7 @@ public class BooksInShelfView extends VerticalLayout {
                         LOGGER.log(Level.FINE, "No choice selected");
                     } else {
                         chosenShelf = event.getValue();
-                        updateList();
+                        updateGrid();
                         showOrHideGridColumns(chosenShelf);
                     }
                 });
@@ -219,7 +219,7 @@ public class BooksInShelfView extends VerticalLayout {
         bookGrid.setColumns();
     }
 
-    private void updateList() {
+    private void updateGrid() {
         if (chosenShelf == null) {
             LOGGER.log(Level.FINEST, "Chosen shelf is null");
             return;
@@ -257,7 +257,7 @@ public class BooksInShelfView extends VerticalLayout {
                     if (event.getValue() != null) {
                         bookTitle = event.getValue();
                     }
-                    updateList();
+                    updateGrid();
                 });
     }
 
@@ -271,7 +271,7 @@ public class BooksInShelfView extends VerticalLayout {
     private void deleteBook(BookForm.DeleteEvent event) {
         LOGGER.log(Level.INFO, "Deleting book...");
         bookService.delete(event.getBook());
-        updateList();
+        updateGrid();
     }
 
     private void saveBook(BookForm.SaveEvent event) {
@@ -281,7 +281,7 @@ public class BooksInShelfView extends VerticalLayout {
         } else {
             LOGGER.log(Level.INFO, "Book is not null");
             bookService.save(event.getBook());
-            updateList();
+            updateGrid();
         }
     }
 }
