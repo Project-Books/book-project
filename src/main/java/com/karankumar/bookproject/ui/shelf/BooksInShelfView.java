@@ -24,7 +24,6 @@ import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.Grid.Column;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -33,14 +32,12 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-
 import lombok.extern.java.Log;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -165,42 +162,60 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void configureBookGrid() {
-        makeAuthorColumnSortable();
         resetGridColumns();
-        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
-                .setHeader("Title").setKey(TITLE_KEY)
-                .setSortable(true);
-        bookGrid.addColumn(AUTHOR_KEY)
-                .setSortable(true);
-        bookGrid.addColumn(GENRE_KEY);
 
-        bookGrid.addColumn(new LocalDateRenderer<>(
-                Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-                .setHeader("Date started reading")
-                .setComparator(Comparator.comparing(Book::getDateStartedReading))
-                .setKey(DATE_STARTED_KEY);
+        addTitleColumn();
+        addAuthorColumn();
+        addGenreColumn();
+        addDateStartedColumn();
+        addDateFinishedColumn();
+        addRatingColumn();
+        addPagesColumn();
+    }
 
+    private void addPagesColumn() {
+        bookGrid.addColumn(PAGES_KEY);
+    }
+
+    private void addRatingColumn() {
+        bookGrid.addColumn(RATING_KEY);
+    }
+
+    private void addDateFinishedColumn() {
         bookGrid.addColumn(new LocalDateRenderer<>(
                 Book::getDateFinishedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
                 .setHeader("Date finished reading")
                 .setComparator(Comparator.comparing(Book::getDateStartedReading))
                 .setSortable(true)
                 .setKey(DATE_FINISHED_KEY);
+    }
 
-        bookGrid.addColumns(RATING_KEY, PAGES_KEY);
+    private void addDateStartedColumn() {
+        bookGrid.addColumn(new LocalDateRenderer<>(
+                Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+                .setHeader("Date started reading")
+                .setComparator(Comparator.comparing(Book::getDateStartedReading))
+                .setKey(DATE_STARTED_KEY);
+    }
+
+    private void addGenreColumn() {
+        bookGrid.addColumn(GENRE_KEY);
+    }
+
+    private void addAuthorColumn() {
+        bookGrid.addColumn(AUTHOR_KEY)
+                .setComparator(Comparator.comparing(author -> author.getAuthor().toString()))
+                .setSortable(true);
+    }
+
+    private void addTitleColumn() {
+        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
+                .setHeader("Title").setKey(TITLE_KEY)
+                .setSortable(true);
     }
 
     private void resetGridColumns() {
         bookGrid.setColumns();
-    }
-
-    private void makeAuthorColumnSortable() {
-        Column<Book> authorNameColumn = bookGrid.getColumnByKey(BooksInShelfView.AUTHOR_KEY);
-        if (Objects.nonNull(authorNameColumn)) {
-            authorNameColumn.setComparator(
-                    (author, otherAuthor) -> author.getAuthor().toString()
-                                                   .compareToIgnoreCase(otherAuthor.getAuthor().toString()));
-        }
     }
 
     private void updateList() {
