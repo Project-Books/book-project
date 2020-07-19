@@ -65,26 +65,26 @@ public class BooksInShelfViewTests {
     private ApplicationContext ctx;
 
     private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
-            TITLE_KEY,
-            AUTHOR_KEY,
-            GENRE_KEY,
-            PAGES_KEY
+        TITLE_KEY,
+        AUTHOR_KEY,
+        GENRE_KEY,
+        PAGES_KEY
     ));
     private final ArrayList<String> expectedReadingColumns = new ArrayList<>(Arrays.asList(
-            TITLE_KEY,
-            AUTHOR_KEY,
-            GENRE_KEY,
-            DATE_STARTED_KEY,
-            PAGES_KEY
+        TITLE_KEY,
+        AUTHOR_KEY,
+        GENRE_KEY,
+        DATE_STARTED_KEY,
+        PAGES_KEY
     ));
     private final ArrayList<String> expectedReadColumns = new ArrayList<>(Arrays.asList(
-            TITLE_KEY,
-            AUTHOR_KEY,
-            GENRE_KEY,
-            DATE_STARTED_KEY,
-            DATE_FINISHED_KEY,
-            RATING_KEY,
-            PAGES_KEY
+        TITLE_KEY,
+        AUTHOR_KEY,
+        GENRE_KEY,
+        DATE_STARTED_KEY,
+        DATE_FINISHED_KEY,
+        RATING_KEY,
+        PAGES_KEY
     ));
     private BooksInShelfView shelfView;
 
