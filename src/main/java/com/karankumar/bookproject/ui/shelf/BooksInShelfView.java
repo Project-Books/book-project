@@ -34,6 +34,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import lombok.extern.java.Log;
 
+import javax.transaction.NotSupportedException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Comparator;
@@ -109,31 +110,38 @@ public class BooksInShelfView extends VerticalLayout {
                     } else {
                         chosenShelf = event.getValue();
                         updateGrid();
-                        showOrHideGridColumns(chosenShelf);
+                        try {
+                            showOrHideGridColumns(chosenShelf);
+                        } catch (NotSupportedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
 
-    void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) {
+    /**
+     * @throws NotSupportedException if a shelf is not supported.
+     */
+    void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
         switch (shelfName) {
             case TO_READ:
                 toggleColumnVisibility(RATING_KEY, false);
                 toggleColumnVisibility(DATE_STARTED_KEY, false);
                 toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                break;
+                return;
             case READING:
             case DID_NOT_FINISH:
                 toggleColumnVisibility(RATING_KEY, false);
                 toggleColumnVisibility(DATE_STARTED_KEY, true);
                 toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                break;
+                return;
             case READ:
                 toggleColumnVisibility(RATING_KEY, true);
                 toggleColumnVisibility(DATE_STARTED_KEY, true);
                 toggleColumnVisibility(DATE_FINISHED_KEY, true);
-                break;
-            default:
+                return;
         }
+        throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
     }
 
     private void toggleColumnVisibility(String columnKey, boolean showColumn) {
