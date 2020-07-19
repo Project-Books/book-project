@@ -58,18 +58,23 @@ public class BooksInShelfView extends VerticalLayout {
     public static final String RATING_KEY = "rating";
     public static final String DATE_STARTED_KEY = "dateStartedReading";
     public static final String DATE_FINISHED_KEY = "dateFinishedReading";
-    public final Grid<Book> bookGrid = new Grid<>(Book.class);
+
+    public final Grid<Book> bookGrid;
     public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
+
     private final BookForm bookForm;
     private final BookService bookService;
     private final PredefinedShelfService shelfService;
     private final TextField filterByTitle;
+
     private PredefinedShelf.ShelfName chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
 
     public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
         this.bookService = bookService;
         this.shelfService = shelfService;
+
+        bookGrid = new Grid<>(Book.class);
 
         whichShelf = new ComboBox<>();
         configureChosenShelf();
@@ -91,18 +96,6 @@ public class BooksInShelfView extends VerticalLayout {
 
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
-
-        bookGrid.asSingleSelect()
-                .addValueChangeListener(
-                        event -> {
-                            if (event == null) {
-                                LOGGER.log(Level.FINE, "Event is null");
-                            } else if (event.getValue() == null) {
-                                LOGGER.log(Level.FINE, "Event value is null");
-                            } else {
-                                editBook(event.getValue());
-                            }
-                        });
     }
 
     private void configureChosenShelf() {
@@ -162,6 +155,13 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void configureBookGrid() {
+        bookGrid.asSingleSelect()
+                .addValueChangeListener(event -> {
+                    if (event.getValue() != null) {
+                        editBook(event.getValue());
+                    }
+                });
+
         resetGridColumns();
 
         addTitleColumn();
@@ -210,7 +210,8 @@ public class BooksInShelfView extends VerticalLayout {
 
     private void addTitleColumn() {
         bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
-                .setHeader("Title").setKey(TITLE_KEY)
+                .setHeader("Title")
+                .setKey(TITLE_KEY)
                 .setSortable(true);
     }
 
