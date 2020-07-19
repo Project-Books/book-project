@@ -124,30 +124,30 @@ public class BooksInShelfView extends VerticalLayout {
     void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) {
         switch (shelfName) {
             case TO_READ:
-                toggleColumn(RATING_KEY, false);
-                toggleColumn(DATE_STARTED_KEY, false);
-                toggleColumn(DATE_FINISHED_KEY, false);
+                toggleColumnVisibility(RATING_KEY, false);
+                toggleColumnVisibility(DATE_STARTED_KEY, false);
+                toggleColumnVisibility(DATE_FINISHED_KEY, false);
                 break;
             case READING:
             case DID_NOT_FINISH:
-                toggleColumn(RATING_KEY, false);
-                toggleColumn(DATE_STARTED_KEY, true);
-                toggleColumn(DATE_FINISHED_KEY, false);
+                toggleColumnVisibility(RATING_KEY, false);
+                toggleColumnVisibility(DATE_STARTED_KEY, true);
+                toggleColumnVisibility(DATE_FINISHED_KEY, false);
                 break;
             case READ:
-                toggleColumn(RATING_KEY, true);
-                toggleColumn(DATE_STARTED_KEY, true);
-                toggleColumn(DATE_FINISHED_KEY, true);
+                toggleColumnVisibility(RATING_KEY, true);
+                toggleColumnVisibility(DATE_STARTED_KEY, true);
+                toggleColumnVisibility(DATE_FINISHED_KEY, true);
                 break;
             default:
         }
     }
 
-    private void toggleColumn(String columnKey, boolean isOn) {
+    private void toggleColumnVisibility(String columnKey, boolean showColumn) {
         if (bookGrid.getColumnByKey(columnKey) == null) {
             LOGGER.log(Level.SEVERE, "Key is null:" + columnKey);
         } else {
-            bookGrid.getColumnByKey(columnKey).setVisible(isOn);
+            bookGrid.getColumnByKey(columnKey).setVisible(showColumn);
         }
     }
 
