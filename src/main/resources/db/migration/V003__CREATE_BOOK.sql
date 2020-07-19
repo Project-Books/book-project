@@ -9,6 +9,7 @@ CREATE TABLE book
     number_of_pages       INTEGER,
     rating                INTEGER,
     series_position       INTEGER,
+    book_review           VARCHAR(1500),
     title                 VARCHAR(255) NOT NULL,
     author_id             BIGINT,
     shelf_id              BIGINT,
