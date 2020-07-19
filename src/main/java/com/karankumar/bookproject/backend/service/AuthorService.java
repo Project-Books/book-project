@@ -18,11 +18,11 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.BaseEntity;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -30,9 +30,9 @@ import java.util.stream.Collectors;
  * via this AuthorService.
  */
 @Service
+@Log
 public class AuthorService extends BaseService<Author, Long> {
 
-    private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
     private AuthorRepository authorRepository;
 
     public AuthorService(AuthorRepository authorRepository) {

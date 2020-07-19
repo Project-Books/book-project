@@ -16,15 +16,16 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.shared.Registration;
+import lombok.extern.java.Log;
+
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A Vaadin view that contains a form for setting a new reading goal
  */
+@Log
 public class ReadingGoalForm extends VerticalLayout {
 
-    private static final Logger LOGGER = Logger.getLogger(ReadingGoalForm.class.getName());
     private static final String BOOKS_TO_READ = "Books to read";
     private static final String PAGES_TO_READ = "Pages to read";
 

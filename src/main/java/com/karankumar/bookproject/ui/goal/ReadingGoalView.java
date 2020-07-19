@@ -18,8 +18,8 @@ package com.karankumar.bookproject.ui.goal;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
-import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -29,6 +29,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import lombok.extern.java.Log;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -36,7 +37,6 @@ import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -45,13 +45,13 @@ import java.util.stream.Collectors;
  */
 @Route(value = "goal", layout = MainView.class)
 @PageTitle("Goal | Book Project")
+@Log
 public class ReadingGoalView extends VerticalLayout {
 
     public static final String SET_GOAL = "Set goal";
     public static final String UPDATE_GOAL = "Update goal";
     public static final String TARGET_MET = "Congratulations for reaching your target!";
 
-    private static final Logger LOGGER = Logger.getLogger(ReadingGoalView.class.getName());
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
     private static final int WEEKS_IN_YEAR = 52;
