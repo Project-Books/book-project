@@ -157,6 +157,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                           String recommender = recommendedBy.get(random.nextInt(recommendedBy.size()));
                           book.setGenre(genre);
                           book.setSeriesPosition(series);
+                          book.setBookReview("Must Read Book. Really Enjoyed it");
                           book.setNumberOfPages(pages);
                           book.setBookRecommendedBy(recommender);
                           return book;
