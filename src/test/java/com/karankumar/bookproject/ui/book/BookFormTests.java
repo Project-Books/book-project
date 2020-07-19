@@ -43,6 +43,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.time.LocalDate;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
 @ExtendWith(SpringExtension.class)
@@ -52,15 +53,16 @@ public class BookFormTests {
 
     private static final String firstName = "Nick";
     private static final String lastName = "Bostrom";
-    private static final Author author = new Author(firstName, lastName);
     private static final String bookTitle = "Superintelligence: Paths, Dangers, Strategies";
-    private static final Book book = new Book(bookTitle, author);
     private static final Genre genre = Genre.SCIENCE;
-    private static final int pageCount = 300;
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
+
+    // if either the RatingScale or the double rating is changed, then the other has to also be changed accordingly
     private static final RatingScale ratingVal = RatingScale.NINE;
-    private static final double rating = 9;
+    private static double rating = 9.0;
+
+    private static int pageCount;
     private static Routes routes;
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
@@ -83,8 +85,17 @@ public class BookFormTests {
         bookService.deleteAll();
 
         Assumptions.assumeTrue(shelfService != null);
+        bookForm = new BookForm(shelfService);
+        bookForm.setBook(createBook(shelfService));
+    }
 
-        readShelf = shelfService.findAll().get(2);
+    private Book createBook(PredefinedShelfService predefinedShelfService) {
+        Author author = new Author(firstName, lastName);
+        Book book = new Book(bookTitle, author);
+
+        readShelf = predefinedShelfService.findAll().get(2);
+        pageCount = generateRandomPageCount();
+
         book.setShelf(readShelf);
         book.setGenre(genre);
         book.setNumberOfPages(pageCount);
@@ -92,8 +103,11 @@ public class BookFormTests {
         book.setDateFinishedReading(dateFinished);
         book.setRating(ratingVal);
 
-        bookForm = new BookForm(shelfService);
-        bookForm.setBook(book);
+        return book;
+    }
+
+    private int generateRandomPageCount() {
+        return ThreadLocalRandom.current().nextInt(300, (2000 + 1));
     }
 
     /**
