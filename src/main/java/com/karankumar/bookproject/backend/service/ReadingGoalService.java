@@ -17,19 +17,19 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.repository.ReadingGoalRepository;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * A Spring service that acts as the gateway to the @see GoalRepository -- to use the GoalRepository, you should go
  * via this GoalService.
  */
 @Service
+@Log
 public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
 
-    private static final Logger LOGGER = Logger.getLogger(ReadingGoalService.class.getName());
     private ReadingGoalRepository goalRepository;
 
     public ReadingGoalService(ReadingGoalRepository goalRepository) {

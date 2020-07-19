@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @SpringBootTest
 public class ReadingGoalServiceTest {
     private ReadingGoalService goalService;
@@ -25,14 +27,18 @@ public class ReadingGoalServiceTest {
     public void onlyOneReadingGoalExists() {
         Assumptions.assumeTrue(goalService.count() == 0);
 
-        ReadingGoal readingGoal1 = new ReadingGoal(24, ReadingGoal.GoalType.BOOKS);
+        ReadingGoal readingGoal1 = new ReadingGoal(generateRandomTarget(), ReadingGoal.GoalType.BOOKS);
         goalService.save(readingGoal1);
         Assertions.assertEquals(1, (long) goalService.count());
 
-        ReadingGoal readingGoal2 = new ReadingGoal(240, ReadingGoal.GoalType.PAGES);
+        ReadingGoal readingGoal2 = new ReadingGoal(generateRandomTarget(), ReadingGoal.GoalType.PAGES);
         goalService.save(readingGoal2);
         Assertions.assertEquals(1, (long) goalService.count());
         // check reading goal 2 overwrote reading goal 1
         Assertions.assertEquals(readingGoal2, goalService.findAll().get(0));
+    }
+
+    private int generateRandomTarget() {
+        return ThreadLocalRandom.current().nextInt(1, 1000);
     }
 }

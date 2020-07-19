@@ -24,7 +24,6 @@ import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.Grid.Column;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -33,14 +32,12 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-
 import lombok.extern.java.Log;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -61,18 +58,23 @@ public class BooksInShelfView extends VerticalLayout {
     public static final String RATING_KEY = "rating";
     public static final String DATE_STARTED_KEY = "dateStartedReading";
     public static final String DATE_FINISHED_KEY = "dateFinishedReading";
-    public final Grid<Book> bookGrid = new Grid<>(Book.class);
+
+    public final Grid<Book> bookGrid;
     public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
+
     private final BookForm bookForm;
     private final BookService bookService;
     private final PredefinedShelfService shelfService;
     private final TextField filterByTitle;
+
     private PredefinedShelf.ShelfName chosenShelf;
     private String bookTitle; // the book to filter by (if specified)
 
     public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
         this.bookService = bookService;
         this.shelfService = shelfService;
+
+        bookGrid = new Grid<>(Book.class);
 
         whichShelf = new ComboBox<>();
         configureChosenShelf();
@@ -94,18 +96,6 @@ public class BooksInShelfView extends VerticalLayout {
 
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
-
-        bookGrid.asSingleSelect()
-                .addValueChangeListener(
-                        event -> {
-                            if (event == null) {
-                                LOGGER.log(Level.FINE, "Event is null");
-                            } else if (event.getValue() == null) {
-                                LOGGER.log(Level.FINE, "Event value is null");
-                            } else {
-                                editBook(event.getValue());
-                            }
-                        });
     }
 
     private void configureChosenShelf() {
@@ -118,7 +108,7 @@ public class BooksInShelfView extends VerticalLayout {
                         LOGGER.log(Level.FINE, "No choice selected");
                     } else {
                         chosenShelf = event.getValue();
-                        updateList();
+                        updateGrid();
                         showOrHideGridColumns(chosenShelf);
                     }
                 });
@@ -127,30 +117,30 @@ public class BooksInShelfView extends VerticalLayout {
     void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) {
         switch (shelfName) {
             case TO_READ:
-                toggleColumn(RATING_KEY, false);
-                toggleColumn(DATE_STARTED_KEY, false);
-                toggleColumn(DATE_FINISHED_KEY, false);
+                toggleColumnVisibility(RATING_KEY, false);
+                toggleColumnVisibility(DATE_STARTED_KEY, false);
+                toggleColumnVisibility(DATE_FINISHED_KEY, false);
                 break;
             case READING:
             case DID_NOT_FINISH:
-                toggleColumn(RATING_KEY, false);
-                toggleColumn(DATE_STARTED_KEY, true);
-                toggleColumn(DATE_FINISHED_KEY, false);
+                toggleColumnVisibility(RATING_KEY, false);
+                toggleColumnVisibility(DATE_STARTED_KEY, true);
+                toggleColumnVisibility(DATE_FINISHED_KEY, false);
                 break;
             case READ:
-                toggleColumn(RATING_KEY, true);
-                toggleColumn(DATE_STARTED_KEY, true);
-                toggleColumn(DATE_FINISHED_KEY, true);
+                toggleColumnVisibility(RATING_KEY, true);
+                toggleColumnVisibility(DATE_STARTED_KEY, true);
+                toggleColumnVisibility(DATE_FINISHED_KEY, true);
                 break;
             default:
         }
     }
 
-    private void toggleColumn(String columnKey, boolean isOn) {
+    private void toggleColumnVisibility(String columnKey, boolean showColumn) {
         if (bookGrid.getColumnByKey(columnKey) == null) {
             LOGGER.log(Level.SEVERE, "Key is null:" + columnKey);
         } else {
-            bookGrid.getColumnByKey(columnKey).setVisible(isOn);
+            bookGrid.getColumnByKey(columnKey).setVisible(showColumn);
         }
     }
 
@@ -165,45 +155,71 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void configureBookGrid() {
-        makeAuthorColumnSortable();
+        bookGrid.asSingleSelect()
+                .addValueChangeListener(event -> {
+                    if (event.getValue() != null) {
+                        editBook(event.getValue());
+                    }
+                });
+
         resetGridColumns();
-        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
-                .setHeader("Title").setKey(TITLE_KEY)
-                .setSortable(true);
-        bookGrid.addColumn(AUTHOR_KEY)
-                .setSortable(true);
-        bookGrid.addColumn(GENRE_KEY);
 
-        bookGrid.addColumn(new LocalDateRenderer<>(
-                Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-                .setHeader("Date started reading")
-                .setComparator(Comparator.comparing(Book::getDateStartedReading))
-                .setKey(DATE_STARTED_KEY);
+        addTitleColumn();
+        addAuthorColumn();
+        addGenreColumn();
+        addDateStartedColumn();
+        addDateFinishedColumn();
+        addRatingColumn();
+        addPagesColumn();
+    }
 
+    private void addPagesColumn() {
+        bookGrid.addColumn(PAGES_KEY);
+    }
+
+    private void addRatingColumn() {
+        bookGrid.addColumn(RATING_KEY);
+    }
+
+    private void addDateFinishedColumn() {
         bookGrid.addColumn(new LocalDateRenderer<>(
                 Book::getDateFinishedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
                 .setHeader("Date finished reading")
                 .setComparator(Comparator.comparing(Book::getDateStartedReading))
                 .setSortable(true)
                 .setKey(DATE_FINISHED_KEY);
+    }
 
-        bookGrid.addColumns(RATING_KEY, PAGES_KEY);
+    private void addDateStartedColumn() {
+        bookGrid.addColumn(new LocalDateRenderer<>(
+                Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+                .setHeader("Date started reading")
+                .setComparator(Comparator.comparing(Book::getDateStartedReading))
+                .setKey(DATE_STARTED_KEY);
+    }
+
+    private void addGenreColumn() {
+        bookGrid.addColumn(GENRE_KEY);
+    }
+
+    private void addAuthorColumn() {
+        bookGrid.addColumn(AUTHOR_KEY)
+                .setComparator(Comparator.comparing(author -> author.getAuthor().toString()))
+                .setSortable(true);
+    }
+
+    private void addTitleColumn() {
+        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
+                .setHeader("Title")
+                .setKey(TITLE_KEY)
+                .setSortable(true);
     }
 
     private void resetGridColumns() {
         bookGrid.setColumns();
     }
 
-    private void makeAuthorColumnSortable() {
-        Column<Book> authorNameColumn = bookGrid.getColumnByKey(BooksInShelfView.AUTHOR_KEY);
-        if (Objects.nonNull(authorNameColumn)) {
-            authorNameColumn.setComparator(
-                    (author, otherAuthor) -> author.getAuthor().toString()
-                                                   .compareToIgnoreCase(otherAuthor.getAuthor().toString()));
-        }
-    }
-
-    private void updateList() {
+    private void updateGrid() {
         if (chosenShelf == null) {
             LOGGER.log(Level.FINEST, "Chosen shelf is null");
             return;
@@ -241,7 +257,7 @@ public class BooksInShelfView extends VerticalLayout {
                     if (event.getValue() != null) {
                         bookTitle = event.getValue();
                     }
-                    updateList();
+                    updateGrid();
                 });
     }
 
@@ -255,7 +271,7 @@ public class BooksInShelfView extends VerticalLayout {
     private void deleteBook(BookForm.DeleteEvent event) {
         LOGGER.log(Level.INFO, "Deleting book...");
         bookService.delete(event.getBook());
-        updateList();
+        updateGrid();
     }
 
     private void saveBook(BookForm.SaveEvent event) {
@@ -265,7 +281,7 @@ public class BooksInShelfView extends VerticalLayout {
         } else {
             LOGGER.log(Level.INFO, "Book is not null");
             bookService.save(event.getBook());
-            updateList();
+            updateGrid();
         }
     }
 }

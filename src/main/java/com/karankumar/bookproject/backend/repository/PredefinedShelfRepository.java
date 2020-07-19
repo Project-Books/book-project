@@ -21,7 +21,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf, Long> {
-//    List<PredefinedShelf> findPredefinedShelfByShelfName(PredefinedShelf.ShelfName shelfName);
-
     List<PredefinedShelf> findByPredefinedShelfName(PredefinedShelf.ShelfName shelfName);
 }

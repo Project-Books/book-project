@@ -20,7 +20,6 @@ public class BookServiceTest {
     private Book bookWithoutShelf;
     private Book bookWithoutAuthor;
     private Book validBook;
-    private Author author;
 
     @BeforeEach
     public void setup(@Autowired BookService goalService, @Autowired AuthorService authorService,
@@ -37,7 +36,7 @@ public class BookServiceTest {
         BookServiceTest.authorService = authorService;
         authorService.deleteAll();
 
-        author = new Author("Test First Name", "Test Last Name");
+        Author author = new Author("Test First Name", "Test Last Name");
         bookWithoutShelf = new Book("Test Title", author);
         bookWithoutAuthor = new Book("Book without Author", null);
         validBook = new Book("Book Name", author);

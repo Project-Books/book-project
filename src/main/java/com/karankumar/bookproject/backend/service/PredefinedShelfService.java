@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -79,7 +79,6 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         if (shelfName == null) {
             return shelfRepository.findAll();
         } else {
-//            return shelfRepository.findPredefinedShelfByShelfName(shelfName);
             return shelfRepository.findByPredefinedShelfName(shelfName);
         }
     }
@@ -92,6 +91,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
     @Override
     public void deleteAll() {
         // Don't want to delete the predefined shelves
+        LOGGER.log(Level.INFO, "deleteAll() should not be called");
     }
 
     @PostConstruct
@@ -127,7 +127,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
     }
 
     private void populateBookRepository() {
-        Random random = new Random(0);
+        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
         List<Author> authors = authorRepository.findAll();
 
         bookRepository.saveAll(
@@ -146,15 +146,14 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                       .map(title -> {
                           int min = 300;
                           int max = 1000;
-                          int range = (max - min) + 1;
-                          int pages = (int) (Math.random() * range);
-                          int series = (int) (1 + Math.random() * 10);
-                          Author author = authors.get(random.nextInt(authors.size()));
+                          int pages = (threadLocalRandom.nextInt(min, max + 1));
+                          int series = (threadLocalRandom.nextInt(1, 10 + 1));
+                          Author author = authors.get(threadLocalRandom.nextInt(authors.size()));
                           Book book = new Book(title, author);
-                          Genre genre = Genre.values()[random.nextInt(Genre.values().length)];
+                          Genre genre = Genre.values()[threadLocalRandom.nextInt(Genre.values().length)];
                           List<String> recommendedBy =
                                   Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
-                          String recommender = recommendedBy.get(random.nextInt(recommendedBy.size()));
+                          String recommender = recommendedBy.get(threadLocalRandom.nextInt(recommendedBy.size()));
                           book.setGenre(genre);
                           book.setSeriesPosition(series);
                           book.setBookReview("Must Read Book. Really Enjoyed it");
@@ -168,8 +167,8 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         List<Book> books = bookRepository.findAll();
         shelfRepository.saveAll(
                 Stream.of(PredefinedShelf.ShelfName.values())
-                      .map(b -> {
-                          PredefinedShelf shelf = new PredefinedShelf(b);
+                      .map(book -> {
+                          PredefinedShelf shelf = new PredefinedShelf(book);
                           shelf.setBooks(new HashSet<>(books));
                           return shelf;
                       }).collect(Collectors.toList()));
@@ -182,10 +181,10 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         List<Book> books = bookRepository.findAll();
         List<PredefinedShelf> shelves = shelfRepository.findAll();
 
-        Random random = new Random(0);
+        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
 
         for (Book book : books) {
-            PredefinedShelf shelf = shelves.get(random.nextInt(shelves.size()));
+            PredefinedShelf shelf = shelves.get(threadLocalRandom.nextInt(shelves.size()));
             PredefinedShelf.ShelfName predefinedShelfName = shelf.getPredefinedShelfName();
             book.setShelf(shelf);
             switch (predefinedShelfName) {
@@ -201,8 +200,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                     book.setRating(RatingScale.NO_RATING);
                     break;
                 case READ:
-                    book.setRating(
-                            RatingScale.values()[random.nextInt(RatingScale.values().length)]);
+                    book.setRating(RatingScale.values()[threadLocalRandom.nextInt(RatingScale.values().length)]);
                     book.setDateStartedReading(LocalDate.now().minusDays(2));
                     book.setDateFinishedReading(LocalDate.now());
                     break;

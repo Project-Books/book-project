@@ -25,5 +25,4 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select b from Book b " + "where lower(b.title) like lower(concat('%', :filterText, '%'))")
     List<Book> search(@Param("filterText") String filterText);
-
 }
