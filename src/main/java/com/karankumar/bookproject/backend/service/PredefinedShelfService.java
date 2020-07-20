@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -181,7 +180,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                           List<String> recommendedBy =
                                   Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
                           String recommender = recommendedBy.get(threadLocalRandom.nextInt(recommendedBy.size()));
-                          Tag tag = tags.get(random.nextInt(tags.size()));
+                          Tag tag = tags.get(threadLocalRandom.nextInt(tags.size()));
                           book.setTags(new HashSet<>(Collections.singletonList(tag)));
                           book.setGenre(genre);
                           book.setSeriesPosition(series);
