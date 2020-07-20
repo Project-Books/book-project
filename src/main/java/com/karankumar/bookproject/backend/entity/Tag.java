@@ -14,6 +14,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * A Tag represents a user-defined identifier for a particular book (e.g. 'all-time-favourites')
+ */
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
