@@ -52,6 +52,8 @@ public class Book extends BaseEntity {
     private Genre genre;
 
     private Integer seriesPosition;
+    
+    private String edition;
 
     private String bookRecommendedBy;
 
@@ -59,6 +61,8 @@ public class Book extends BaseEntity {
     private RatingScale rating;
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
+
+    private String bookReview;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
@@ -79,6 +83,29 @@ public class Book extends BaseEntity {
     public Book(String title, Author author) {
         this.title = title;
         this.author = author;
+    }
+    
+    public void setEdition(Integer edition) {
+        if (edition == null) {
+            return;
+        }
+        String bookEdition = "";
+        int lastDigit = edition % 10;
+        switch (lastDigit) {
+            case 1:
+                bookEdition = getEdition() + "st edition";
+                break;
+            case 2:
+                bookEdition = getEdition() + "nd edition";
+                break;
+            case 3:
+                bookEdition = getEdition() + "rd edition";
+                break;
+            default:
+                bookEdition = getEdition() + "th edition";
+                break;
+        }
+        this.edition = bookEdition;
     }
 
     @Override

@@ -23,7 +23,6 @@ import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
 
-
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.backend.entity.Book;
@@ -34,9 +33,11 @@ import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.SpringServlet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -50,6 +51,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import javax.transaction.NotSupportedException;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -104,8 +107,12 @@ public class BooksInShelfViewTests {
     @EnumSource(PredefinedShelf.ShelfName.class)
     public void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
         System.out.println("Shelf: " + shelfName);
+        try {
+            shelfView.showOrHideGridColumns(shelfName);
+        } catch (NotSupportedException e) {
+            e.printStackTrace();
+        }
 
-        shelfView.showOrHideGridColumns(shelfName);
         List<Grid.Column<Book>> columns = shelfView.bookGrid.getColumns();
 
         ArrayList<String> expectedColumns = new ArrayList<>();
