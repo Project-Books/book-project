@@ -222,36 +222,6 @@ public class ReadingGoalViewTests {
     }
 
     /**
-     * Checks whether the right information is shown depending on whether the goal type is set to pages or books
-     */
-    @Test
-    public void correctInformationShownForGoalType() {
-        Assumptions.assumeTrue(goalService.findAll().size() == 0);
-
-        ReadingGoal booksGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
-        goalService.save(booksGoal);
-        goalView.getCurrentGoal();
-        // should be visible for both a book or pages goal
-        Assertions.assertTrue(goalView.readingGoal.isVisible());
-        Assertions.assertTrue(goalView.progressPercentage.isVisible());
-
-        PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
-        int howManyReadThisYear = ReadingGoalView.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
-        int targetToRead = booksGoal.getTarget();
-        boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
-
-        if (booksGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
-            // Additional components that should be visible for a books goal
-            Assertions.assertTrue(goalView.goalProgress.isVisible());
-            if(hasReachedGoal) {
-                Assertions.assertFalse(goalView.booksToRead.isVisible());
-            } else {
-                Assertions.assertTrue(goalView.booksToRead.isVisible());
-            }
-        }
-    }
-
-    /**
      * Checks whether the right information is shown when a goal is set/updated.
      */
     @Test
@@ -273,10 +243,20 @@ public class ReadingGoalViewTests {
         if (readingGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
             // Additional components that should be visible for a books goal
             Assertions.assertTrue(goalView.goalProgress.isVisible());
-            if(hasReachedGoal) {
+            if (hasReachedGoal) {
                 Assertions.assertFalse(goalView.booksToRead.isVisible());
             } else {
                 Assertions.assertTrue(goalView.booksToRead.isVisible());
+            }
+        }
+
+        if (readingGoal.getGoalType().equals(ReadingGoal.GoalType.PAGES)) {
+            // Additional components that should be visible for a pages goal
+            Assertions.assertTrue(goalView.goalProgress.isVisible());
+            if (hasReachedGoal) {
+                Assertions.assertFalse(goalView.pagesToRead.isVisible());
+            } else {
+                Assertions.assertTrue(goalView.pagesToRead.isVisible());
             }
         }
     }
