@@ -18,6 +18,7 @@ package com.karankumar.bookproject.backend.service;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -171,7 +172,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                             List<String> recommendedBy = Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
                             String recommender = recommendedBy.get(random.nextInt(recommendedBy.size()));
                             Tag tag = tags.get(random.nextInt(tags.size()));
-                            book.setTags(new HashSet<>(Arrays.asList(tag)));
+                            book.setTags(new HashSet<>(Collections.singletonList(tag)));
                             book.setGenre(genre);
                             book.setSeriesPosition(series);
                             book.setNumberOfPages(pages);
@@ -200,9 +201,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                         "Interesting",
                         "Tolkien",
                         "Pokemon"
-                ).map(name -> {
-                    return new Tag(name);
-                }).collect(Collectors.toList())
+                ).map(Tag::new).collect(Collectors.toList())
         );
     }
 
