@@ -39,3 +39,4 @@ build/
 
 ### VS Code ###
 .vscode/
+pnpm-lock.yaml
