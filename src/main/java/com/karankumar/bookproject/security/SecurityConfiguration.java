@@ -61,7 +61,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/images/**",
             "/styles/**",
             "/frontend/**",
-            "/h2-console/**",
             "/frontend-es5/**", "/frontend-es6/**");
     }
 
