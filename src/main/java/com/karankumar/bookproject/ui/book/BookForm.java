@@ -66,7 +66,7 @@ public class BookForm extends VerticalLayout {
     final TextField authorLastName = new TextField();
     final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
     final ComboBox<Genre> bookGenre = new ComboBox<>();
-    final IntegerField pageCount = new IntegerField();
+    final IntegerField numberOfPages = new IntegerField();
     final DatePicker dateStartedReading = new DatePicker();
     final DatePicker dateFinishedReading = new DatePicker();
     final NumberField rating = new NumberField();
@@ -97,7 +97,7 @@ public class BookForm extends VerticalLayout {
         configureShelf();
         configureGenre();
         configureSeriesPosition();
-        configurePageCount();
+        configureNumberOfPages();
         configureDateStarted();
         configureDateFinished();
         configureRating();
@@ -111,7 +111,7 @@ public class BookForm extends VerticalLayout {
                 dateFinishedReading,
                 bookGenre,
                 shelf,
-                pageCount,
+                numberOfPages,
                 rating,
         };
         setComponentMinWidth(components);
@@ -136,7 +136,7 @@ public class BookForm extends VerticalLayout {
         dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
-        formLayout.addFormItem(pageCount, "Page count");
+        formLayout.addFormItem(numberOfPages, "Number of pages");
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
         formLayout.add(buttonLayout, 3);
     }
@@ -185,7 +185,7 @@ public class BookForm extends VerticalLayout {
               .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
                       AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
-        binder.forField(pageCount)
+        binder.forField(numberOfPages)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(bookGenre)
               .bind(Book::getGenre, Book::setGenre);
@@ -477,10 +477,11 @@ public class BookForm extends VerticalLayout {
     /**
      * Sets up the form field for the number of pages in the book
      */
-    private void configurePageCount() {
-        pageCount.setMin(1);
-        pageCount.setHasControls(true);
-        pageCount.setClearButtonVisible(true);
+    private void configureNumberOfPages() {
+        numberOfPages.setPlaceholder("Enter number of pages");
+        numberOfPages.setMin(1);
+        numberOfPages.setHasControls(true);
+        numberOfPages.setClearButtonVisible(true);
     }
 
     /**
@@ -494,7 +495,7 @@ public class BookForm extends VerticalLayout {
                 shelf,
                 seriesPosition,
                 bookGenre,
-                pageCount,
+                numberOfPages,
                 dateStartedReading,
                 dateFinishedReading,
                 rating,
