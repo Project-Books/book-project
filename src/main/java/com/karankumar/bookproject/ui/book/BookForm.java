@@ -451,6 +451,7 @@ public class BookForm extends VerticalLayout {
      */
     private void configureRating() {
         rating.setHasControls(true);
+        rating.setPlaceholder("Enter a rating");
         rating.setMin(0);
         rating.setMax(10);
         rating.setStep(0.5f);
