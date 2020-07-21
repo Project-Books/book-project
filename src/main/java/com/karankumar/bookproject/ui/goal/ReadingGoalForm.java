@@ -128,6 +128,9 @@ public class ReadingGoalForm extends VerticalLayout {
         newGoalDialog.open();
     }
 
+    /**
+     * Asks user to choose a goal type, and makes sure the target goal is valid
+     */
     private void configureBinder() {
         binder.forField(chooseGoalType)
               .asRequired("Please select a goal type")
@@ -135,7 +138,7 @@ public class ReadingGoalForm extends VerticalLayout {
 
         binder.forField(targetToRead)
               .asRequired("Please enter in a target goal")
-              .withValidator(target -> target > 1, "Target must be at least 1")
+              .withValidator(target -> target >= 1, "Target must be at least 1")
               .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
     }
 

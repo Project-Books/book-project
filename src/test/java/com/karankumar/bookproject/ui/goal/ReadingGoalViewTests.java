@@ -10,7 +10,10 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
+import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -229,6 +232,26 @@ public class ReadingGoalViewTests {
             Assertions.assertTrue(goalView.goalProgress.isVisible());
             Assertions.assertTrue(goalView.booksToRead.isVisible());
         }
+    }
+
+    /**
+     * Checks......
+     */
+    @Test
+    public void isValidGoal(){
+        ReadingGoalForm readingGoalForm = new ReadingGoalForm();
+        ReadingGoal readingGoal = new ReadingGoal(1, getRandomGoalType());
+        ReadingGoalForm.SaveEvent saveEvent = new ReadingGoalForm.SaveEvent(readingGoalForm, readingGoal);
+        //saveEvent.getReadingGoal();
+        Assertions.assertEquals(1,saveEvent.getReadingGoal().getTarget());
+
+
+
+
+
+
+
+
     }
 
     @AfterEach
