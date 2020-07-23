@@ -17,7 +17,6 @@ package com.karankumar.bookproject.ui.settings;
 
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.dom.ThemeList;
@@ -33,40 +32,55 @@ import com.vaadin.flow.theme.lumo.Lumo;
 public class SettingsView extends HorizontalLayout {
     private static final String enable = "Enable dark mode";
     private static final String disable = "Disable dark mode";
-    private static final Button toggle;
+//    private static final Button toggle;
     private static boolean darkModeOn = false;
+    private static PaperToggle paperToggle;
 
     static {
-        toggle = new Button(enable, click -> {
+        paperToggle = new PaperToggle();
+
+        paperToggle.addClickListener( e -> {
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
 
             if (themeList.contains(Lumo.DARK)) {
                 themeList.remove(Lumo.DARK);
-                darkModeOn = false;
+//                darkModeOn = false;
             } else {
                 themeList.add(Lumo.DARK);
-                darkModeOn = true;
+//                darkModeOn = true;
             }
-            updateDarkModeButtonText();
         });
+//        toggle = new Button(enable, click -> {
+//            ThemeList themeList = UI.getCurrent().getElement().getThemeList();
+//
+//            if (themeList.contains(Lumo.DARK)) {
+//                themeList.remove(Lumo.DARK);
+//                darkModeOn = false;
+//            } else {
+//                themeList.add(Lumo.DARK);
+//                darkModeOn = true;
+//            }
+//            updateDarkModeButtonText();
+//        });
     }
 
     public SettingsView() {
-        if (darkModeOn) {
-            updateDarkModeButtonText();
-        }
+//        if (darkModeOn) {
+//            updateDarkModeButtonText();
+//        }
 
-        VerticalLayout verticalLayout = new VerticalLayout(toggle);
+        VerticalLayout verticalLayout = new VerticalLayout(paperToggle);
         verticalLayout.setAlignItems(Alignment.CENTER);
+
 
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
 
-    private static void updateDarkModeButtonText() {
-        if (toggle != null) {
-            toggle.setText(darkModeOn ? disable : enable);
-        }
-    }
+//    private static void updateDarkModeButtonText() {
+//        if (toggle != null) {
+//            toggle.setText(darkModeOn ? disable : enable);
+//        }
+//    }
 }

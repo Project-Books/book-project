@@ -1,6 +1,7 @@
 dependencies:
   '@polymer/iron-icon': 3.0.1
   '@polymer/iron-list': 3.1.0
+  '@polymer/paper-toggle-button': 3.0.1
   '@polymer/polymer': 3.2.0
   '@vaadin/vaadin-accordion': 1.1.0
   '@vaadin/vaadin-app-layout': 2.1.0
@@ -957,6 +958,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-ixV66KWfCI6GKoA/2H9v6bQdbfXEwwpOdQ8cRvb4F+eyvhlaHxWFMQB4+3d9QFJXZsiiiqVrewNV0DFEQpyT4Q==
+  /@polymer/font-roboto/3.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-tx5TauYSmzsIvmSqepUPDYbs4/Ejz2XbZ1IkD7JEGqkdNUJlh+9KU85G56Tfdk/xjEZ8zorFfN09OSwiMrIQWA==
   /@polymer/iron-a11y-announcer/3.0.2:
     dependencies:
       '@polymer/polymer': 3.2.0
@@ -969,6 +974,21 @@ packages:
     dev: false
     resolution:
       integrity: sha512-lnrjKq3ysbBPT/74l0Fj0U9H9C35Tpw2C/tpJ8a+5g8Y3YJs1WSZYnEl1yOkw6sEyaxOq/1DkzH0+60gGu5/PQ==
+  /@polymer/iron-behaviors/3.0.1:
+    dependencies:
+      '@polymer/iron-a11y-keys-behavior': 3.0.1
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-IMEwcv1lhf1HSQxuyWOUIL0lOBwmeaoSTpgCJeP9IBYnuB1SPQngmfRuHKgK6/m9LQ9F9miC7p3HeQQUdKAE0w==
+  /@polymer/iron-checked-element-behavior/3.0.1:
+    dependencies:
+      '@polymer/iron-form-element-behavior': 3.0.1
+      '@polymer/iron-validatable-behavior': 3.0.1
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-aDr0cbCNVq49q+pOqa6CZutFh+wWpwPMLpEth9swx+GkAj+gCURhuQkaUYhIo5f2egDbEioR1aeHMnPlU9dQZA==
   /@polymer/iron-fit-behavior/3.0.1:
     dependencies:
       '@polymer/polymer': 3.2.0
@@ -981,6 +1001,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-7gB869czArF+HZcPTVSgvA7tXYFze9EKckvM95NB7SqYF+NnsQyhoXgKnpFwGyo95lUjUW9TFDLUwDXnCYFtkw==
+  /@polymer/iron-form-element-behavior/3.0.1:
+    dependencies:
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-G/e2KXyL5AY7mMjmomHkGpgS0uAf4ovNpKhkuUTRnMuMJuf589bKqE85KN4ovE1Tzhv2hJoh/igyD6ekHiYU1A==
   /@polymer/iron-icon/3.0.1:
     dependencies:
       '@polymer/iron-flex-layout': 3.0.1
@@ -1038,6 +1064,46 @@ packages:
     dev: false
     resolution:
       integrity: sha512-xg1WanG25BIkQE8rhuReqY9zx1K5M7F+YAIYpswEp5eyDIaZ1Y3vUmVeQ3KG+hiSugzI1M752azXN7kvyhOBcQ==
+  /@polymer/iron-validatable-behavior/3.0.1:
+    dependencies:
+      '@polymer/iron-meta': 3.0.1
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-wwpYh6wOa4fNI+jH5EYKC7TVPYQ2OfgQqocWat7GsNWcsblKYhLYbwsvEY5nO0n2xKqNfZzDLrUom5INJN7msQ==
+  /@polymer/paper-behaviors/3.0.1:
+    dependencies:
+      '@polymer/iron-behaviors': 3.0.1
+      '@polymer/iron-checked-element-behavior': 3.0.1
+      '@polymer/paper-ripple': 3.0.2
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-6knhj69fPJejv8qR0kCSUY+Q0XjaUf0OSnkjRjmTJPAwSrRYtgqE+l6P1FfA+py1X/cUjgne9EF5rMZAKJIg1g==
+  /@polymer/paper-ripple/3.0.2:
+    dependencies:
+      '@polymer/iron-a11y-keys-behavior': 3.0.1
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-DnLNvYIMsiayeICroYxx6Q6Hg1cUU8HN2sbutXazlemAlGqdq80qz3TIaVdbpbt/pvjcFGX2HtntMlPstCge8Q==
+  /@polymer/paper-styles/3.0.1:
+    dependencies:
+      '@polymer/font-roboto': 3.0.2
+      '@polymer/iron-flex-layout': 3.0.1
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-y6hmObLqlCx602TQiSBKHqjwkE7xmDiFkoxdYGaNjtv4xcysOTdVJsDR/R9UHwIaxJ7gHlthMSykir1nv78++g==
+  /@polymer/paper-toggle-button/3.0.1:
+    dependencies:
+      '@polymer/iron-checked-element-behavior': 3.0.1
+      '@polymer/paper-behaviors': 3.0.1
+      '@polymer/paper-styles': 3.0.1
+      '@polymer/polymer': 3.2.0
+    dev: false
+    resolution:
+      integrity: sha512-jadZB60fycT7YnSAH0H23LYo6/2HYmMZTtNr9LpdSIRFPLX6mqqxewex92cFz019bMKaRJgORn308hRlJo2u6A==
   /@polymer/polymer/3.2.0:
     dependencies:
       '@webcomponents/shadycss': 1.8.0
@@ -6344,6 +6410,7 @@ packages:
 specifiers:
   '@polymer/iron-icon': 3.0.1
   '@polymer/iron-list': 3.1.0
+  '@polymer/paper-toggle-button': 3.0.1
   '@polymer/polymer': 3.2.0
   '@vaadin/vaadin-accordion': 1.1.0
   '@vaadin/vaadin-app-layout': 2.1.0
