@@ -18,8 +18,8 @@ package com.karankumar.bookproject.ui.goal;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
-import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.util.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
@@ -30,12 +30,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import lombok.extern.java.Log;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -44,13 +44,13 @@ import java.util.stream.Collectors;
  */
 @Route(value = "goal", layout = MainView.class)
 @PageTitle("Goal | Book Project")
+@Log
 public class ReadingGoalView extends VerticalLayout {
 
     public static final String SET_GOAL = "Set goal";
     public static final String UPDATE_GOAL = "Update goal";
     public static final String TARGET_MET = "Congratulations for reaching your target!";
 
-    private static final Logger LOGGER = Logger.getLogger(ReadingGoalView.class.getName());
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
 
@@ -149,11 +149,11 @@ public class ReadingGoalView extends VerticalLayout {
         String outOf = " out of ";
         if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
             toggleBooksGoalInfo(true);
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + " books");
+            readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + getPluralized(" book", targetToRead));
             goalProgress.setText(calculateProgress(targetToRead, howManyReadThisYear));
         } else {
             toggleBooksGoalInfo(false);
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + " pages");
+            readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + getPluralized(" page", targetToRead));
         }
 
         double progress = getProgress(targetToRead, howManyReadThisYear);
@@ -161,6 +161,16 @@ public class ReadingGoalView extends VerticalLayout {
         progressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
 
         updateSetGoalText();
+    }
+
+    /**
+     * Determine if a String should be singular or plural and return correct String
+     * @param num the number of book or pages
+     * @param itemStr the String that will be pluralized
+     * @return either the original String or the original string with an "s" concatenated to it
+     */
+    public static String getPluralized(String itemStr, int num){
+        return (num > 1) ? (itemStr + "s") : (itemStr);
     }
 
     /**
@@ -224,11 +234,11 @@ public class ReadingGoalView extends VerticalLayout {
             int weeksLeftInYear = dateUtils.getWeeksLeftInYear(weekOfYear);
             double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
             booksToRead.setText("You need to read " + booksStillToReadAWeek +
-                    " books a week on average to achieve your goal");
+                    getPluralized(" book", (int)booksStillToReadAWeek) + " a week on average to achieve your goal");
 
             int howManyBehindOrAhead = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
-            schedule = String.format("You are %d books %s schedule", howManyBehindOrAhead,
-                    behindOrAheadSchedule(booksReadThisYear, shouldHaveRead(booksToReadThisYear)));
+            schedule = String.format("You are %d "+ getPluralized("book", howManyBehindOrAhead) + " %s schedule",
+                    howManyBehindOrAhead, behindOrAheadSchedule(booksReadThisYear, shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;
     }

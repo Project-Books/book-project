@@ -66,7 +66,7 @@ public class BookForm extends VerticalLayout {
     final TextField authorLastName = new TextField();
     final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
     final ComboBox<Genre> bookGenre = new ComboBox<>();
-    final IntegerField pageCount = new IntegerField();
+    final IntegerField numberOfPages = new IntegerField();
     final DatePicker dateStartedReading = new DatePicker();
     final DatePicker dateFinishedReading = new DatePicker();
     final NumberField rating = new NumberField();
@@ -97,11 +97,11 @@ public class BookForm extends VerticalLayout {
         configureShelf();
         configureGenre();
         configureSeriesPosition();
-        configurePageCount();
+        configureNumberOfPages();
         configureDateStarted();
         configureDateFinished();
         configureRating();
-        HorizontalLayout buttons = configureButtons();
+        HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
                 bookTitle,
                 authorFirstName,
@@ -111,7 +111,7 @@ public class BookForm extends VerticalLayout {
                 dateFinishedReading,
                 bookGenre,
                 shelf,
-                pageCount,
+                numberOfPages,
                 rating,
         };
         setComponentMinWidth(components);
@@ -136,7 +136,7 @@ public class BookForm extends VerticalLayout {
         dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
-        formLayout.addFormItem(pageCount, "Page count");
+        formLayout.addFormItem(numberOfPages, "Number of pages");
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
         formLayout.add(buttonLayout, 3);
     }
@@ -185,7 +185,7 @@ public class BookForm extends VerticalLayout {
               .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
                       AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
-        binder.forField(pageCount)
+        binder.forField(numberOfPages)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(bookGenre)
               .bind(Book::getGenre, Book::setGenre);
@@ -199,14 +199,28 @@ public class BookForm extends VerticalLayout {
      *
      * @return a HorizontalLayout containing the save, reset & delete buttons
      */
-    private HorizontalLayout configureButtons() {
+    private HorizontalLayout configureFormButtons() {
+        configureSaveFormButton();
+        configureResetFormButton();
+        configureDeleteButton();
+
+        binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
+
+        return new HorizontalLayout(saveButton, reset, delete);
+    }
+
+    private void configureSaveFormButton() {
         saveButton.setText(LABEL_ADD_BOOK);
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         saveButton.addClickListener(click -> validateOnSave());
+    }
 
+    private void configureResetFormButton() {
         reset.setText("Reset");
         reset.addClickListener(event -> clearForm());
+    }
 
+    private void configureDeleteButton() {
         delete.setText("Delete");
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         delete.addClickListener(click -> {
@@ -214,10 +228,6 @@ public class BookForm extends VerticalLayout {
             closeForm();
         });
         delete.addClickListener(v -> saveButton.setText(LABEL_ADD_BOOK));
-
-        binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
-
-        return new HorizontalLayout(saveButton, reset, delete);
     }
 
     /**
@@ -229,52 +239,7 @@ public class BookForm extends VerticalLayout {
 
             if (binder.getBean() == null) {
                 LOGGER.log(Level.SEVERE, "Binder book bean is null");
-
-                if (bookTitle.getValue() != null) {
-                    String firstName = "";
-                    String lastName = "";
-
-                    if (authorFirstName.getValue() != null) {
-                        firstName = authorFirstName.getValue();
-                    } else {
-                        LOGGER.log(Level.SEVERE, "Null first name");
-                    }
-                    if (authorLastName.getValue() != null) {
-                        lastName = authorLastName.getValue();
-                    } else {
-                        LOGGER.log(Level.SEVERE, "Null last name");
-                    }
-                    Author author = new Author(firstName, lastName);
-                    Book book = new Book(bookTitle.getValue(), author);
-
-                    if (shelf.getValue() != null) {
-                        List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
-                        if (shelves.size() == 1) {
-                            book.setShelf(shelves.get(0));
-                            LOGGER.log(Level.INFO, "Shelf: " + shelves.get(0));
-                        } else {
-                            LOGGER.log(Level.INFO, "Shelves count = " + shelves.size());
-                        }
-
-                    } else {
-                        LOGGER.log(Level.SEVERE, "Null shelf");
-                    }
-
-                    if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-                        book.setSeriesPosition(seriesPosition.getValue());
-                    } else if (seriesPosition.getValue() != null) {
-                        LOGGER.log(Level.SEVERE, "Negative Series value");
-                    }
-
-                    binder.setBean(book);
-                    LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
-                    fireEvent(new SaveEvent(this, binder.getBean()));
-                    LOGGER.log(Level.INFO, "Fired save event. Null? " + (binder.getBean() == null));
-                    closeForm();
-                } else {
-                    LOGGER.log(Level.SEVERE, "Book title is null");
-                }
-
+                setBookBean();
             } else {
                 LOGGER.log(Level.INFO, "Binder.getBean() is not null");
                 moveBookToDifferentShelf();
@@ -283,6 +248,53 @@ public class BookForm extends VerticalLayout {
             }
         } else {
             LOGGER.log(Level.SEVERE, "Invalid binder");
+        }
+    }
+
+    private void setBookBean() {
+        if (bookTitle.getValue() != null) {
+            String firstName = "";
+            String lastName = "";
+
+            if (authorFirstName.getValue() != null) {
+                firstName = authorFirstName.getValue();
+            } else {
+                LOGGER.log(Level.SEVERE, "Null first name");
+            }
+            if (authorLastName.getValue() != null) {
+                lastName = authorLastName.getValue();
+            } else {
+                LOGGER.log(Level.SEVERE, "Null last name");
+            }
+            Author author = new Author(firstName, lastName);
+            Book book = new Book(bookTitle.getValue(), author);
+
+            if (shelf.getValue() != null) {
+                List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
+                if (shelves.size() == 1) {
+                    book.setShelf(shelves.get(0));
+                    LOGGER.log(Level.INFO, "Shelf: " + shelves.get(0));
+                } else {
+                    LOGGER.log(Level.INFO, "Shelves count = " + shelves.size());
+                }
+
+            } else {
+                LOGGER.log(Level.SEVERE, "Null shelf");
+            }
+
+            if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
+                book.setSeriesPosition(seriesPosition.getValue());
+            } else if (seriesPosition.getValue() != null) {
+                LOGGER.log(Level.SEVERE, "Negative Series value");
+            }
+
+            binder.setBean(book);
+            LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
+            fireEvent(new SaveEvent(this, binder.getBean()));
+            LOGGER.log(Level.INFO, "Fired save event. Null? " + (binder.getBean() == null));
+            closeForm();
+        } else {
+            LOGGER.log(Level.SEVERE, "Book title is null");
         }
     }
 
@@ -439,6 +451,7 @@ public class BookForm extends VerticalLayout {
      */
     private void configureRating() {
         rating.setHasControls(true);
+        rating.setPlaceholder("Enter a rating");
         rating.setMin(0);
         rating.setMax(10);
         rating.setStep(0.5f);
@@ -464,10 +477,11 @@ public class BookForm extends VerticalLayout {
     /**
      * Sets up the form field for the number of pages in the book
      */
-    private void configurePageCount() {
-        pageCount.setMin(1);
-        pageCount.setHasControls(true);
-        pageCount.setClearButtonVisible(true);
+    private void configureNumberOfPages() {
+        numberOfPages.setPlaceholder("Enter number of pages");
+        numberOfPages.setMin(1);
+        numberOfPages.setHasControls(true);
+        numberOfPages.setClearButtonVisible(true);
     }
 
     /**
@@ -481,7 +495,7 @@ public class BookForm extends VerticalLayout {
                 shelf,
                 seriesPosition,
                 bookGenre,
-                pageCount,
+                numberOfPages,
                 dateStartedReading,
                 dateFinishedReading,
                 rating,

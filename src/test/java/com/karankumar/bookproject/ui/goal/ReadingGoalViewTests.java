@@ -218,6 +218,15 @@ public class ReadingGoalViewTests {
     }
 
     /**
+     * Check to ensure that isPlural method is returning the correct String
+     */
+    @Test
+    public void getPluralizedCheck() {
+        Assertions.assertEquals("books", ReadingGoalView.getPluralized("book", 2));
+        Assertions.assertEquals("book", ReadingGoalView.getPluralized("book", 1));
+    }
+
+    /**
      * Checks whether the right information is shown depending on whether the goal type is set to pages or books
      */
     @Test
