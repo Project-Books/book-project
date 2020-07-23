@@ -249,9 +249,7 @@ public class ReadingGoalView extends VerticalLayout {
      * @return the number of books that the user is ahead or behind schedule by
      */
     public int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {
-        int booksToReadFromStartOfYear = booksToReadFromStartOfYear(booksToReadThisYear);
-        int weekOfYear = dateUtils.getWeekOfYear();
-        int shouldHaveRead =  booksToReadFromStartOfYear * weekOfYear;
+        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) * dateUtils.getWeekOfYear();
         return Math.abs(shouldHaveRead - booksReadThisYear);
     }
 
@@ -261,8 +259,7 @@ public class ReadingGoalView extends VerticalLayout {
      * @return the number of books that should have been read a week (on average) from the start of the year
      */
     public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
-        int weeksInYear = dateUtils.getWeeksInYear();
-        return ((int) Math.ceil(booksToReadThisYear / weeksInYear));
+        return ((int) Math.ceil(booksToReadThisYear / dateUtils.getWeeksInYear()));
     }
 
     /**

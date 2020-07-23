@@ -247,8 +247,11 @@ public class ReadingGoalViewTests {
         }
     }
 
+    /**
+     * Checks whether ahead or behind with reading goal
+     */
     @Test
-    public void testHowFarAheadOrBehindSchedule(){
+    public void checkHowFarAheadOrBehindSchedule(){
         Mockito.when(dateUtils.getWeekOfYear()).thenReturn(1);
         Assertions.assertEquals(0, goalView.howFarAheadOrBehindSchedule(52,1));
         Assertions.assertEquals(1, goalView.howFarAheadOrBehindSchedule(52,0));
