@@ -224,10 +224,19 @@ public class ReadingGoalViewTests {
         Assertions.assertTrue(goalView.readingGoal.isVisible());
         Assertions.assertTrue(goalView.progressPercentage.isVisible());
 
+        PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
+        int howManyReadThisYear = ReadingGoalView.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
+        int targetToRead = booksGoal.getTarget();
+        boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
+
         if (booksGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
             // Additional components that should be visible for a books goal
             Assertions.assertTrue(goalView.goalProgress.isVisible());
-            Assertions.assertTrue(goalView.booksToRead.isVisible());
+            if(hasReachedGoal) {
+                Assertions.assertFalse(goalView.booksToRead.isVisible());
+            } else {
+                Assertions.assertTrue(goalView.booksToRead.isVisible());
+            }
         }
     }
 

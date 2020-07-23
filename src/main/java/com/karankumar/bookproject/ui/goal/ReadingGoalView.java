@@ -144,15 +144,18 @@ public class ReadingGoalView extends VerticalLayout {
         }
 
         int howManyReadThisYear = howManyReadThisYear(goalType, readShelf);
+        boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
         String haveRead = "You have read ";
         String outOf = " out of ";
+
         if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
-            toggleBooksGoalInfo(true);
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + " books");
             goalProgress.setText(calculateProgress(targetToRead, howManyReadThisYear));
+            booksToRead.setText(calculateBooksToRead(targetToRead, howManyReadThisYear));
+            readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + " books");
+            toggleBooksGoalInfo(true, hasReachedGoal);    // show book goal-specific information
         } else {
-            toggleBooksGoalInfo(false);
             readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + " pages");
+            toggleBooksGoalInfo(false, hasReachedGoal);
         }
 
         double progress = getProgress(targetToRead, howManyReadThisYear);
@@ -196,10 +199,11 @@ public class ReadingGoalView extends VerticalLayout {
 
     /**
      * @param isOn if true, set the visibility of the book goal-specific text to true. Otherwise, set them to false
+     * @param hasReachedGoal if true, set the visibility of the "books to read on average" text to false.
      */
-    private void toggleBooksGoalInfo(boolean isOn) {
+    private void toggleBooksGoalInfo(boolean isOn, boolean hasReachedGoal) {
         goalProgress.setVisible(isOn);
-        booksToRead.setVisible(isOn);
+        booksToRead.setVisible(isOn && !hasReachedGoal);
     }
 
     /**
@@ -218,19 +222,34 @@ public class ReadingGoalView extends VerticalLayout {
 
         if (booksStillToRead <= 0) {
             schedule = TARGET_MET;
-            booksToRead.setText("");
         } else {
-            int weekOfYear = getWeekOfYear();
-            int weeksLeftInYear = weeksLeftInYear(weekOfYear);
-            double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
-            booksToRead.setText("You need to read " + booksStillToReadAWeek +
-                    " books a week on average to achieve your goal");
-
             int howManyBehindOrAhead = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
             schedule = String.format("You are %d books %s schedule", howManyBehindOrAhead,
                     behindOrAheadSchedule(booksReadThisYear, shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;
+    }
+
+
+    /**
+     * Calculates how many books a user needs to read on average to meet their goal for the books goal only
+     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
+     * @param booksReadThisYear the number of books that have already been read till date
+     * @return a String that displays the number of books user needs to read on average to meet their goal(if not met).
+     */
+    String calculateBooksToRead(int booksToReadThisYear, int booksReadThisYear) {
+        int booksStillToRead = booksToReadThisYear - booksReadThisYear;
+        int weekOfYear = getWeekOfYear();
+        int weeksLeftInYear = weeksLeftInYear(weekOfYear);
+        double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
+
+        String bookReadingRate = "";
+        if(booksStillToRead > 0) {
+            bookReadingRate = "You need to read " + booksStillToReadAWeek +
+                              " books a week on average to achieve your goal";
+        }
+
+        return bookReadingRate;
     }
 
     /**
