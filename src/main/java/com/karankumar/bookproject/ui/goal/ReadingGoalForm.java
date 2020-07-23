@@ -69,7 +69,7 @@ public class ReadingGoalForm extends VerticalLayout {
         IntegerField field = new IntegerField();
         field.setPlaceholder(BOOKS_TO_READ);
         field.setClearButtonVisible(true);
-        field.setMin(1);
+        field.setMin(0);
         field.setHasControls(true);
         field.setMinWidth("13em");
         return field;
@@ -136,7 +136,7 @@ public class ReadingGoalForm extends VerticalLayout {
 
         binder.forField(targetToRead)
               .asRequired("Please enter in a target goal")
-              .withValidator(target -> target > 1, "Target must be at least 1")
+              .withValidator(target -> target > 0, "Target must be at least 1")
               .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
     }
 
