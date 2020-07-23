@@ -20,6 +20,7 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.util.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -32,9 +33,7 @@ import com.vaadin.flow.router.Route;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.temporal.WeekFields;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -54,13 +53,14 @@ public class ReadingGoalView extends VerticalLayout {
     private static final Logger LOGGER = Logger.getLogger(ReadingGoalView.class.getName());
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
-    private static final int WEEKS_IN_YEAR = 52;
 
     public final Button setGoalButton;
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
 
     private ReadingGoalService goalService;
+
+    private static DateUtils dateUtils;
 
     /**
      * Displays what the reading goal is and how many books/pages the user has read
@@ -82,9 +82,10 @@ public class ReadingGoalView extends VerticalLayout {
      */
     Span booksToRead;
 
-    public ReadingGoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
+    public ReadingGoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService, DateUtils dateUtils) {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
+        this.dateUtils = dateUtils;
 
         readingGoal = new H1();
         setGoalButton = new Button();
@@ -219,8 +220,8 @@ public class ReadingGoalView extends VerticalLayout {
         if (booksStillToRead <= 0) {
             schedule = TARGET_MET;
         } else {
-            int weekOfYear = getWeekOfYear();
-            int weeksLeftInYear = weeksLeftInYear(weekOfYear);
+            int weekOfYear = dateUtils.getWeekOfYear();
+            int weeksLeftInYear = dateUtils.getWeeksLeftInYear(weekOfYear);
             double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
             booksToRead.setText("You need to read " + booksStillToReadAWeek +
                     " books a week on average to achieve your goal");
@@ -237,34 +238,21 @@ public class ReadingGoalView extends VerticalLayout {
      * @param booksReadThisYear the number of books read so far
      * @return the number of books that the user is ahead or behind schedule by
      */
-    private int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {
-        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) * getWeekOfYear();
+    public int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {
+        int booksToReadFromStartOfYear = booksToReadFromStartOfYear(booksToReadThisYear);
+        int weekOfYear = dateUtils.getWeekOfYear();
+        int shouldHaveRead =  booksToReadFromStartOfYear * weekOfYear;
         return Math.abs(shouldHaveRead - booksReadThisYear);
     }
 
-    /**
-     * @return the current week number of the year
-     */
-    private int getWeekOfYear() {
-        LocalDate now = LocalDate.now();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        return now.get(weekFields.weekOfWeekBasedYear());
-    }
-
-    /**
-     * @param weekOfYear the current week number of the year
-     * @return the number of weeks left in the year from the current week
-     */
-    private static int weeksLeftInYear(int weekOfYear) {
-        return (WEEKS_IN_YEAR - weekOfYear);
-    }
 
     /**
      * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
      * @return the number of books that should have been read a week (on average) from the start of the year
      */
     public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
-        return ((int) Math.ceil(booksToReadThisYear / WEEKS_IN_YEAR));
+        int weeksInYear = dateUtils.getWeeksInYear();
+        return ((int) Math.ceil(booksToReadThisYear / weeksInYear));
     }
 
     /**
@@ -272,7 +260,7 @@ public class ReadingGoalView extends VerticalLayout {
      * @return the number of books that the user should have ready by this point in the year in order to be on target
      */
     public int shouldHaveRead(int booksToReadThisYear) {
-        return booksToReadFromStartOfYear(booksToReadThisYear) * getWeekOfYear();
+        return booksToReadFromStartOfYear(booksToReadThisYear) * dateUtils.getWeekOfYear();
     }
 
     /**
