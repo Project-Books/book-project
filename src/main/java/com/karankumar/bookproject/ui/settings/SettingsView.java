@@ -50,7 +50,6 @@ public class SettingsView extends HorizontalLayout {
         VerticalLayout verticalLayout = new VerticalLayout(paperToggle);
         verticalLayout.setAlignItems(Alignment.CENTER);
 
-
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
