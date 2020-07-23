@@ -249,6 +249,36 @@ public class ReadingGoalViewTests {
         }
     }
 
+    /**
+     * Checks whether the right information is shown when a goal is set/updated.
+     */
+    @Test
+    public void correctInformationShownWhenGoalIsUpdated() {
+        Assumptions.assumeTrue(goalService.findAll().size() == 0);
+
+        ReadingGoal readingGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
+        goalService.save(readingGoal);
+        goalView.getCurrentGoal();
+        // should be visible for both a book or pages goal
+        Assertions.assertTrue(goalView.readingGoal.isVisible());
+        Assertions.assertTrue(goalView.progressPercentage.isVisible());
+
+        PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
+        int howManyReadThisYear = ReadingGoalView.howManyReadThisYear(readingGoal.getGoalType(), readShelf);
+        int targetToRead = readingGoal.getTarget();
+        boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
+
+        if (readingGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
+            // Additional components that should be visible for a books goal
+            Assertions.assertTrue(goalView.goalProgress.isVisible());
+            if(hasReachedGoal) {
+                Assertions.assertFalse(goalView.booksToRead.isVisible());
+            } else {
+                Assertions.assertTrue(goalView.booksToRead.isVisible());
+            }
+        }
+    }
+
     @AfterEach
     public void tearDown() {
         MockVaadin.tearDown();
