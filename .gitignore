@@ -21,6 +21,7 @@ target/
 
 # file generated or updated by the vaadin-maven plugin
 node_modules/
+pnpmfile.js
 
 # Browser drivers for local integration tests
 drivers/

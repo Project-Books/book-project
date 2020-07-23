@@ -19,10 +19,14 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
+import lombok.extern.java.Log;
+
+import java.util.logging.Level;
 
 /**
  * Converts a double from the Vaadin rating field to a @see RatingScale and visa versa.
  */
+@Log
 class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     @Override
     public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
@@ -78,6 +82,7 @@ class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     @Override
     public Double convertToPresentation(RatingScale rating, ValueContext valueContext) {
         if (rating == null) {
+            LOGGER.log(Level.INFO, "Returning null as rating was null");
             return null;
         }
 

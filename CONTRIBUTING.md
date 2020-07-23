@@ -47,6 +47,7 @@ Please follow the process below:
 3. Fork the repository
 4. Create a new branch off master (unless the corresponding issue says otherwise). Your branch should have a descriptive branch name (that corresponds to the relevant issue) and include the issue number (e.g. `add-styleguide-1048`)
 5. Bring your branch level with the branch you're going to be branching into before submitting a pull request (we recommend rebasing)
+  - i.e. if you're going to be branch off `master`, then rebase new changes from master onto your branch
 6. Submit a pull request to merge into the branch specified on the issue (or master if a branch is not specified)
 
 ### Commit messages
@@ -65,7 +66,7 @@ This makes it easier to keep track of what changes were made in what branch or p
 
 ## Code contributions
 
-Please adhere to [our Java style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
+Please adhere to [our code style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
 
 Before submitting a pull request, run the unit tests and ensure they pass.
 
@@ -87,6 +88,14 @@ If possible, try to let us know how long it will take you to submit a ready-to-r
 Pull requests are similar. We will send a friendly reminder after one week of receiving the pull request or receiving your last message. If we don't hear back from you, we will close the pull request and label it as [stale](https://github.com/knjk04/book-project/labels/stale).
 
 For urgent work, such as fixing important bugs or work that is blocking others, a similar process will be followed but with shorter timescales. Exactly how long depends on the severity of the stale work. Where possible, we will inform you whether an issue is important so that you can know before picking it up. For high priority bugs, we recommend that you only take it up if you are able to commit to finishing it reasonably quickly.
+
+## Unassigning yourself
+
+If you no longer wish to work an issue, that's fine. All we ask is that you let us know. If you unassign yourself from the issue, we don't get notified, so a quick message (no explanation required) will do. This allows to easily manage issues. We can then assign it to someone else. 
+
+Where possible, please let us know as soon as possible if you no longer wish to work on an issue. 
+
+Please also consider that you're finding something difficult on the issue you're assigned to, we're here to help on [Gitter](https://gitter.im/book-project-community/community).
 
 ## Ways to contribute
 

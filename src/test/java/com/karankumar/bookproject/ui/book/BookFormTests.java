@@ -43,6 +43,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.time.LocalDate;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
 @ExtendWith(SpringExtension.class)
@@ -52,15 +53,16 @@ public class BookFormTests {
 
     private static final String firstName = "Nick";
     private static final String lastName = "Bostrom";
-    private static final Author author = new Author(firstName, lastName);
     private static final String bookTitle = "Superintelligence: Paths, Dangers, Strategies";
-    private static final Book book = new Book(bookTitle, author);
     private static final Genre genre = Genre.SCIENCE;
-    private static final int pageCount = 300;
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
+
+    // if either the RatingScale or the double rating is changed, then the other has to also be changed accordingly
     private static final RatingScale ratingVal = RatingScale.NINE;
-    private static final double rating = 9;
+    private static double rating = 9.0;
+
+    private static int numberOfPages;
     private static Routes routes;
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
@@ -83,17 +85,29 @@ public class BookFormTests {
         bookService.deleteAll();
 
         Assumptions.assumeTrue(shelfService != null);
+        bookForm = new BookForm(shelfService);
+        bookForm.setBook(createBook(shelfService));
+    }
 
-        readShelf = shelfService.findAll().get(2);
+    private Book createBook(PredefinedShelfService predefinedShelfService) {
+        Author author = new Author(firstName, lastName);
+        Book book = new Book(bookTitle, author);
+
+        readShelf = predefinedShelfService.findAll().get(2);
+        numberOfPages = generateRandomNumberOfPages();
+
         book.setShelf(readShelf);
         book.setGenre(genre);
-        book.setNumberOfPages(pageCount);
+        book.setNumberOfPages(numberOfPages);
         book.setDateStartedReading(dateStarted);
         book.setDateFinishedReading(dateFinished);
         book.setRating(ratingVal);
 
-        bookForm = new BookForm(shelfService);
-        bookForm.setBook(book);
+        return book;
+    }
+
+    private int generateRandomNumberOfPages() {
+        return ThreadLocalRandom.current().nextInt(300, (2000 + 1));
     }
 
     /**
@@ -106,7 +120,7 @@ public class BookFormTests {
         Assertions.assertEquals(lastName, bookForm.authorLastName.getValue());
         Assertions.assertEquals(readShelf.getPredefinedShelfName(), bookForm.shelf.getValue());
         Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
-        Assertions.assertEquals(pageCount, bookForm.pageCount.getValue());
+        Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
         Assertions.assertEquals(rating, bookForm.rating.getValue());
@@ -144,7 +158,7 @@ public class BookFormTests {
         Assertions.assertEquals(lastName, savedOrDeletedBook.getAuthor().getLastName());
         Assertions.assertEquals(readShelf.getShelfName(), savedOrDeletedBook.getShelf().getShelfName());
         Assertions.assertEquals(genre, savedOrDeletedBook.getGenre());
-        Assertions.assertEquals(pageCount, savedOrDeletedBook.getNumberOfPages());
+        Assertions.assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());
         Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
         Assertions.assertEquals(ratingVal, savedOrDeletedBook.getRating());
@@ -156,7 +170,7 @@ public class BookFormTests {
         bookForm.bookTitle.setValue(bookTitle);
         bookForm.shelf.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.setValue(genre);
-        bookForm.pageCount.setValue(pageCount);
+        bookForm.numberOfPages.setValue(numberOfPages);
         bookForm.dateStartedReading.setValue(dateStarted);
         bookForm.dateFinishedReading.setValue(dateFinished);
         bookForm.rating.setValue(rating);
@@ -174,7 +188,7 @@ public class BookFormTests {
         Assumptions.assumeFalse(bookForm.bookTitle.isEmpty(), "Book title not populated");
         Assumptions.assumeFalse(bookForm.shelf.isEmpty(), "Shelf not populated");
         Assumptions.assumeFalse(bookForm.bookGenre.isEmpty(), "Book genre not populated");
-        Assumptions.assumeFalse(bookForm.pageCount.isEmpty(), "Page count not populated");
+        Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty(), "Number of pages not populated");
         Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty(), "Date started populated");
         Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty(), "Date finished populated");
 
@@ -185,7 +199,7 @@ public class BookFormTests {
         Assertions.assertTrue(bookForm.bookTitle.isEmpty(), "Book title not cleared");
         Assertions.assertTrue(bookForm.shelf.isEmpty(), "Shelf not cleared");
         Assertions.assertTrue(bookForm.bookGenre.isEmpty(), "Book genre not cleared");
-        Assertions.assertTrue(bookForm.pageCount.isEmpty(), "Page count not cleared");
+        Assertions.assertTrue(bookForm.numberOfPages.isEmpty(), "Number of pages not cleared");
         Assertions.assertTrue(bookForm.dateStartedReading.isEmpty(), "Date started not cleared");
         Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty(), "Date finished not cleared");
         Assertions.assertTrue(bookForm.rating.isEmpty(), "Rating not cleared");

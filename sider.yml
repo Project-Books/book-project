@@ -3,6 +3,6 @@ linter:
     dir: src
     rulesets:
       - category/java/codestyle.xml
-      - /pmd/codestyle.xml
+      - pmd/codestyle.xml
     encoding: Shift_JIS
     min_priority: 3

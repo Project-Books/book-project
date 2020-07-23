@@ -36,6 +36,17 @@ public class PredefinedShelf extends Shelf {
         this.predefinedShelfName = predefinedShelfName;
     }
 
+    /**
+     * This setter must only set the predefinedShelfName if it has not already been set (e.g. via a Vaadin binder)
+     * as a predefined shelf should not be renamed
+     * @param predefinedShelfName the name of the shelf
+     */
+    public void setPredefinedShelfName(ShelfName predefinedShelfName) {
+        if (this.predefinedShelfName == null) {
+            this.predefinedShelfName = predefinedShelfName;
+        }
+    }
+
     public enum ShelfName {
         TO_READ("To read"),
         READING("Reading"),
