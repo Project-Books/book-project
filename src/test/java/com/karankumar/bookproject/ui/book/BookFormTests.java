@@ -63,6 +63,7 @@ public class BookFormTests {
     private static double rating = 9.0;
 
     private static int pageCount;
+    private static int pagesRead;
     private static Routes routes;
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
@@ -95,10 +96,12 @@ public class BookFormTests {
 
         readShelf = predefinedShelfService.findAll().get(2);
         pageCount = generateRandomPageCount();
+        pagesRead = generateRandomPageCount();
 
         book.setShelf(readShelf);
         book.setGenre(genre);
         book.setNumberOfPages(pageCount);
+        book.setPagesRead(pagesRead);
         book.setDateStartedReading(dateStarted);
         book.setDateFinishedReading(dateFinished);
         book.setRating(ratingVal);
@@ -121,6 +124,7 @@ public class BookFormTests {
         Assertions.assertEquals(readShelf.getPredefinedShelfName(), bookForm.shelf.getValue());
         Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
         Assertions.assertEquals(pageCount, bookForm.pageCount.getValue());
+        Assertions.assertEquals(pagesRead, bookForm.pagesRead.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
         Assertions.assertEquals(rating, bookForm.rating.getValue());
@@ -159,6 +163,7 @@ public class BookFormTests {
         Assertions.assertEquals(readShelf.getShelfName(), savedOrDeletedBook.getShelf().getShelfName());
         Assertions.assertEquals(genre, savedOrDeletedBook.getGenre());
         Assertions.assertEquals(pageCount, savedOrDeletedBook.getNumberOfPages());
+        Assertions.assertEquals(pagesRead, savedOrDeletedBook.getPagesRead());
         Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
         Assertions.assertEquals(ratingVal, savedOrDeletedBook.getRating());
@@ -171,6 +176,7 @@ public class BookFormTests {
         bookForm.shelf.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.setValue(genre);
         bookForm.pageCount.setValue(pageCount);
+        bookForm.pagesRead.setValue(pagesRead);
         bookForm.dateStartedReading.setValue(dateStarted);
         bookForm.dateFinishedReading.setValue(dateFinished);
         bookForm.rating.setValue(rating);
@@ -189,6 +195,7 @@ public class BookFormTests {
         Assumptions.assumeFalse(bookForm.shelf.isEmpty(), "Shelf not populated");
         Assumptions.assumeFalse(bookForm.bookGenre.isEmpty(), "Book genre not populated");
         Assumptions.assumeFalse(bookForm.pageCount.isEmpty(), "Page count not populated");
+        Assumptions.assumeFalse(bookForm.pagesRead.isEmpty(), "Pages read not populated");
         Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty(), "Date started populated");
         Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty(), "Date finished populated");
 
@@ -200,6 +207,7 @@ public class BookFormTests {
         Assertions.assertTrue(bookForm.shelf.isEmpty(), "Shelf not cleared");
         Assertions.assertTrue(bookForm.bookGenre.isEmpty(), "Book genre not cleared");
         Assertions.assertTrue(bookForm.pageCount.isEmpty(), "Page count not cleared");
+        Assertions.assertTrue(bookForm.pagesRead.isEmpty(), "Pages read not cleared");
         Assertions.assertTrue(bookForm.dateStartedReading.isEmpty(), "Date started not cleared");
         Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty(), "Date finished not cleared");
         Assertions.assertTrue(bookForm.rating.isEmpty(), "Rating not cleared");
@@ -214,24 +222,31 @@ public class BookFormTests {
         boolean shouldShowStarted = false;
         boolean shouldShowFinished = false;
         boolean shouldShowRating = false;
+        boolean shouldShowPagesRead = false;
+
         switch (shelfName) {
             case TO_READ:
                 break; // all fields already set to false
             case READING:
+                shouldShowStarted = true;
+                break;
             case DID_NOT_FINISH:
                 shouldShowStarted = true;
+                shouldShowPagesRead = true;
                 // finished and rating already set to false
                 break;
             case READ:
                 shouldShowStarted = true;
                 shouldShowFinished = true;
                 shouldShowRating = true;
+                shouldShowPagesRead= false;
                 break;
         }
 
         final String dateStarted = "Date started ";
         final String dateFinished = "Date finished ";
         final String rating = "Rating ";
+        final String pagesRead = "Pages read ";
         final String shown = String.format("shown for a book in the %s shelf", shelfName);
         final String notShown = String.format("not shown for a book in the %s shelf", shelfName);
         if (shouldShowStarted) {
@@ -250,6 +265,12 @@ public class BookFormTests {
             Assertions.assertTrue(bookForm.ratingFormItem.isVisible(), rating + notShown);
         } else {
             Assertions.assertFalse(bookForm.ratingFormItem.isVisible(), rating + shown);
+        }
+
+        if (shouldShowPagesRead) {
+            Assertions.assertTrue(bookForm.pagesReadFormItem.isVisible(), pagesRead + notShown);
+        } else {
+            Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible(), pagesRead + shown);
         }
     }
 
