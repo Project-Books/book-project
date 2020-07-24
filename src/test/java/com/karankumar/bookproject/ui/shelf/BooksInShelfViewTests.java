@@ -22,6 +22,7 @@ import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_READ_KEY;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
@@ -53,8 +54,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.NotSupportedException;
-
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
