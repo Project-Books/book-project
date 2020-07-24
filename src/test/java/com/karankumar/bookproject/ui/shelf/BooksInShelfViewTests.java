@@ -15,6 +15,14 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.AUTHOR_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_FINISHED_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_STARTED_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
+
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.backend.entity.Book;
