@@ -29,13 +29,14 @@ public class ReadingGoalForm extends VerticalLayout {
     private static final String PAGES_TO_READ = "Pages to read";
 
     private final Dialog newGoalDialog;
-    private final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
-    private final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
-    private final IntegerField targetToRead;
+    static final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
+    final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
+    final IntegerField targetToRead;
+    Button saveButton;
 
     public ReadingGoalForm() {
         targetToRead = createBooksGoalField();
-        Button saveButton = createSaveButton();
+        saveButton = createSaveButton();
 
         FormLayout formLayout = new FormLayout();
         newGoalDialog = new Dialog();
@@ -77,7 +78,7 @@ public class ReadingGoalForm extends VerticalLayout {
     /**
      * @return a save button
      */
-    private Button createSaveButton() {
+    private Button createSaveButton(){
         Button save = new Button("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setMinWidth("13em");

@@ -234,26 +234,6 @@ public class ReadingGoalViewTests {
         }
     }
 
-    /**
-     * Checks......
-     */
-    @Test
-    public void isValidGoal(){
-        ReadingGoalForm readingGoalForm = new ReadingGoalForm();
-        ReadingGoal readingGoal = new ReadingGoal(1, getRandomGoalType());
-        ReadingGoalForm.SaveEvent saveEvent = new ReadingGoalForm.SaveEvent(readingGoalForm, readingGoal);
-        //saveEvent.getReadingGoal();
-        Assertions.assertEquals(1,saveEvent.getReadingGoal().getTarget());
-
-
-
-
-
-
-
-
-    }
-
     @AfterEach
     public void tearDown() {
         MockVaadin.tearDown();
