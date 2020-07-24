@@ -33,14 +33,6 @@ public class ReadingGoalFormTests {
     @Autowired
     private ApplicationContext ctx;
 
-    private ReadingGoalView goalView;
-
-
-
-
-    //final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
-
-
     @BeforeAll
     public static void discoverRoutes() {
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");

@@ -10,10 +10,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
-import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -81,7 +78,6 @@ public class ReadingGoalViewTests {
         // ensure 0, and not an arithmetic exception, is returned
         Assertions.assertEquals(ReadingGoalView.getProgress(0, 5), 0);
     }
-
     /**
      * Check whether the set goal button text correctly updates when the goal has been updated
      */
