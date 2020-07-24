@@ -21,24 +21,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Random;
 
-/*
-Instead, we need to test the binder validation:
-
-Instead of putting the test in ReadingGoalViewTests, make a new class called ReadingGoalFormTests
-Make whichever fields you need package-private
-Since the package structure in the test directory is the same as the source,
-you'll be able to access these variables with package access level
-
-Simulate button presses with click() (e.g. readingGoalForm.saveButton().click())
-Pass in 0 to the targetToRead form field. Assert that the binder is invalid
-Pass in to the targetToRead` form field. Assert that the binder is now valid
-I've missed out some details intentionally, but this is the main idea
-
-
-There's some boilerplate code you'll need for Karibu.
-You can take a look at the other ui test classes to try to figure out what you need.
-Let me know if you get stuck on this step
- */
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
