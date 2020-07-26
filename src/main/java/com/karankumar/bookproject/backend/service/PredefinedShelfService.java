@@ -144,7 +144,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                 )
                         .map(name -> {
                             String[] fullName = name.split(" ");
-                            return new Author(fullName[0], fullName[1]);
+                            return new Author(fullName[0], fullName[1], null);
                         })
                         .collect(Collectors.toList())
         );

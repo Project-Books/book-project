@@ -266,7 +266,7 @@ public class BookForm extends VerticalLayout {
             } else {
                 LOGGER.log(Level.SEVERE, "Null last name");
             }
-            Author author = new Author(firstName, lastName);
+            Author author = new Author(firstName, lastName, null);
             Book book = new Book(bookTitle.getValue(), author);
 
             if (shelf.getValue() != null) {

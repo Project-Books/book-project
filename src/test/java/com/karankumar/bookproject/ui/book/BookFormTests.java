@@ -90,7 +90,7 @@ public class BookFormTests {
     }
 
     private Book createBook(PredefinedShelfService predefinedShelfService) {
-        Author author = new Author(firstName, lastName);
+        Author author = new Author(firstName, lastName, null);
         Book book = new Book(bookTitle, author);
 
         readShelf = predefinedShelfService.findAll().get(2);
