@@ -101,7 +101,7 @@ public class BookForm extends VerticalLayout {
         configureSeriesPosition();
         configurePagesRead();
         configureNumberOfPages();
-        configurDateStarted();
+        configureDateStarted();
         configureDateFinished();
         configureRating();
         HorizontalLayout buttons = configureFormButtons();

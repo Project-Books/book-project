@@ -96,11 +96,12 @@ public class BookFormTests {
 
         readShelf = predefinedShelfService.findAll().get(2);
       
-        pagesRead = generateRandomPageCount();
+        pagesRead = generateRandomNumberOfPages();
         numberOfPages = generateRandomNumberOfPages();
 
         book.setShelf(readShelf);
         book.setGenre(genre);
+        book.setPagesRead(pagesRead);
         book.setNumberOfPages(numberOfPages);
         book.setDateStartedReading(dateStarted);
         book.setDateFinishedReading(dateFinished);
