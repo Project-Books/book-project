@@ -66,6 +66,7 @@ public class ReadingGoalViewTests {
         this.predefinedShelfService = predefinedShelfService;
         MockitoAnnotations.initMocks(dateUtils);
         goalView = new ReadingGoalView(goalService, predefinedShelfService, dateUtils);
+        Mockito.when(dateUtils.getWeeksInYear()).thenReturn(52);
     }
 
     /**
@@ -93,7 +94,6 @@ public class ReadingGoalViewTests {
     public void setGoalButtonTextIsCorrect() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
-
         goalService.save(new ReadingGoal(getRandomGoalTarget(), getRandomGoalType()));
         goalView.getCurrentGoal();
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.UPDATE_GOAL);
