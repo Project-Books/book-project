@@ -78,6 +78,7 @@ public class ReadingGoalViewTests {
         // ensure 0, and not an arithmetic exception, is returned
         Assertions.assertEquals(ReadingGoalView.getProgress(0, 5), 0);
     }
+
     /**
      * Check whether the set goal button text correctly updates when the goal has been updated
      */

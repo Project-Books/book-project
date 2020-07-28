@@ -1,6 +1,5 @@
 package com.karankumar.bookproject.ui.goal;
 
-
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
@@ -18,9 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
-
 import java.util.Random;
-
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -28,7 +25,6 @@ import java.util.Random;
 
 public class ReadingGoalFormTests {
      static Routes routes;
-
 
     @Autowired
     private ApplicationContext ctx;
@@ -45,16 +41,12 @@ public class ReadingGoalFormTests {
 
         Assumptions.assumeTrue(goalService != null);
         goalService.deleteAll(); // reset
-
     }
-
 
     private ReadingGoal.GoalType getRandomGoalType() {
         ReadingGoal.GoalType[] goalTypes = ReadingGoal.GoalType.values();
         return goalTypes[new Random().nextInt(goalTypes.length)];
     }
-
-
 
     /**
      * Tests that only a target >= 1 is valid
@@ -70,13 +62,10 @@ public class ReadingGoalFormTests {
 
             goalForm.targetToRead.setValue(0);
             Assertions.assertFalse(goalForm.binder.isValid());
-
-
         }
 
         @AfterEach
         public void tearDown () {
             MockVaadin.tearDown();
         }
-
 }
