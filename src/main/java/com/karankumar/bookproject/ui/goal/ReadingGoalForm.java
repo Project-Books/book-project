@@ -78,7 +78,7 @@ public class ReadingGoalForm extends VerticalLayout {
     /**
      * @return a save button
      */
-    private Button createSaveButton(){
+    private Button createSaveButton() {
         Button save = new Button("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setMinWidth("13em");
