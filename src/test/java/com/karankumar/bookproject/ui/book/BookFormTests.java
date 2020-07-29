@@ -240,7 +240,7 @@ public class BookFormTests {
                 shouldShowStarted = true;
                 shouldShowFinished = true;
                 shouldShowRating = true;
-                shouldShowPagesRead= false;
+                shouldShowPagesRead = false;
                 break;
         }
 

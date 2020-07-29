@@ -517,6 +517,7 @@ public class BookForm extends VerticalLayout {
      * Sets up the form field for the number of pages read
      */
     private void configurePagesRead() {
+        pagesRead.setPlaceholder("Enter number of pages read");
         pagesRead.setMin(1);
         pagesRead.setHasControls(true);
         pagesRead.setClearButtonVisible(true);
