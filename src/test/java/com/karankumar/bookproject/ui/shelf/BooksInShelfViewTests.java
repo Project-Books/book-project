@@ -22,6 +22,7 @@ import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_READ_KEY;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
@@ -77,6 +78,16 @@ public class BooksInShelfViewTests {
         DATE_STARTED_KEY,
         PAGES_KEY
     ));
+
+    private final ArrayList<String> expectedDidNotFinishColumns = new ArrayList<>(Arrays.asList(
+            TITLE_KEY,
+            AUTHOR_KEY,
+            GENRE_KEY,
+            DATE_STARTED_KEY,
+            PAGES_KEY,
+            PAGES_READ_KEY
+    ));
+
     private final ArrayList<String> expectedReadColumns = new ArrayList<>(Arrays.asList(
         TITLE_KEY,
         AUTHOR_KEY,
@@ -121,8 +132,10 @@ public class BooksInShelfViewTests {
                 expectedColumns = expectedToReadColumns;
                 break;
             case READING:
-            case DID_NOT_FINISH: // intentional
                 expectedColumns = expectedReadingColumns;
+                break;
+            case DID_NOT_FINISH: // intentional
+                expectedColumns = expectedDidNotFinishColumns;
                 break;
             case READ:
                 expectedColumns = expectedReadColumns;
