@@ -39,6 +39,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
 
@@ -47,6 +48,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
+
+import static com.karankumar.bookproject.ui.book.BookFormErrors.AFTER_TODAY_ERROR;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.BOOK_TITLE_ERROR;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.FINISH_DATE_ERROR;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.FIRST_NAME_ERROR;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.LAST_NAME_ERROR;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.PAGE_NUMBER_ERROR;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.SERIES_POSITION_ERROR;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.SHELF_ERROR;
 
 /**
  * A Vaadin form for adding a new @see Book.
@@ -181,42 +191,33 @@ public class BookForm extends VerticalLayout {
      * Binds the form fields and defines custom validators where necessary
      */
     private void bindFormFields() {
-        final String AFTER_TODAY_PREFIX = "The date you";
-        final String AFTER_TODAY_SUFFIX = "reading the book cannot be after today's date.";
-
         binder.forField(bookTitle)
-              .asRequired("Please provide a book title")
+              .asRequired(BOOK_TITLE_ERROR)
               .bind(Book::getTitle, Book::setTitle);
         binder.forField(authorFirstName)
-              .withValidator(firstName -> (firstName != null && !firstName.isEmpty()),
-                      "Please enter the author's first name")
+              .withValidator(authorPredicate(), FIRST_NAME_ERROR)
               .bind("author.firstName");
         binder.forField(authorLastName)
-              .withValidator(lastName -> (lastName != null && !lastName.isEmpty()),
-                      "Please enter the author's last name")
+              .withValidator(authorPredicate(), LAST_NAME_ERROR)
               .bind("author.lastName");
         binder.forField(shelf)
-              .withValidator(Objects::nonNull, "Please select a shelf")
+              .withValidator(Objects::nonNull, SHELF_ERROR)
               .bind("shelf.predefinedShelfName");
         binder.forField(seriesPosition)
-              .withValidator(series -> (series == null || series > 0), "Series position must be at least 1")
+              .withValidator(positiveNumberPredicate(), SERIES_POSITION_ERROR)
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
         binder.forField(dateStartedReading)
-              .withValidator(startDate -> !(startDate != null && startDate.isAfter(LocalDate.now())),
-                      AFTER_TODAY_PREFIX + " started " + AFTER_TODAY_SUFFIX)
+              .withValidator(datePredicate(), String.format(AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
-              .withValidator(endDate -> !(endDate != null && dateStartedReading.getValue() != null
-                              && endDate.isBefore(dateStartedReading.getValue())),
-                      "The date you finished reading the book cannot be earlier than the date you"
-                              + " started reading the book")
-              .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
-                      AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
+              .withValidator(endDatePredicate(), FINISH_DATE_ERROR)
+              .withValidator(datePredicate(), String.format(AFTER_TODAY_ERROR, "finished"))
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(numberOfPages)
+              .withValidator(positiveNumberPredicate(), PAGE_NUMBER_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(pagesRead)
-                .bind(Book::getPagesRead, Book::setPagesRead);
+              .bind(Book::getPagesRead, Book::setPagesRead);
         binder.forField(bookGenre)
               .bind(Book::getGenre, Book::setGenre);
         binder.forField(rating)
@@ -580,6 +581,23 @@ public class BookForm extends VerticalLayout {
         for (HasSize h : components) {
             h.setMinWidth("23em");
         }
+    }
+
+    private SerializablePredicate<LocalDate> endDatePredicate() {
+        return endDate -> !(endDate != null && dateStartedReading.getValue() != null
+                && endDate.isBefore(dateStartedReading.getValue()));
+    }
+
+    private SerializablePredicate<LocalDate> datePredicate() {
+        return startDate -> !(startDate != null && startDate.isAfter(LocalDate.now()));
+    }
+
+    private SerializablePredicate<Integer> positiveNumberPredicate() {
+        return series -> (series == null || series > 0);
+    }
+
+    private SerializablePredicate<String> authorPredicate() {
+        return firstName -> (firstName != null && !firstName.isEmpty());
     }
 
     public void addBook() {
