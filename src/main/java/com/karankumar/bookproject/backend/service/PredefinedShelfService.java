@@ -173,6 +173,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                           int min = 300;
                           int max = 1000;
                           int pages = (threadLocalRandom.nextInt(min, max + 1));
+                          int pagesRead = (threadLocalRandom.nextInt(min, max + 1));
                           int series = (threadLocalRandom.nextInt(1, 10 + 1));
                           Author author = authors.get(threadLocalRandom.nextInt(authors.size()));
                           Book book = new Book(title, author);
@@ -186,6 +187,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                           book.setSeriesPosition(series);
                           book.setBookReview("Must Read Book. Really Enjoyed it");
                           book.setNumberOfPages(pages);
+                          book.setPagesRead(pagesRead);
                           book.setBookRecommendedBy(recommender);
                           return book;
                       }).collect(Collectors.toList()));
