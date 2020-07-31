@@ -30,33 +30,36 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.tags.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.SpringServlet;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.NotSupportedException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.AUTHOR_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_FINISHED_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_STARTED_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
+
+@IntegrationTest
 @WebAppConfiguration
 public class BooksInShelfViewTests {
 

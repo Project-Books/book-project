@@ -36,13 +36,15 @@ Prerequisites:
 - JDK 11 (or higher) 
 - If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
   - If you do have Node.js installed, please ensure it is at least version 10.0
+- MySQL 8.0.* or (better) Docker
 
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Run `BookProjectApplication.java`
-4. Go to `localhost:8080`
-5. Log in with the details below:
+3. Start the MySQL Database or run the docker-compose file `docker-compose up`
+4. Run `BookProjectApplication.java`
+5. Go to `localhost:8080`
+6. Log in with the details below:
     - Username: `user`
     - Password: `password`
     
@@ -64,16 +66,12 @@ In Eclipse, you will need to run Maven install before running the project (right
 
 ### Access database
 
-To access the h2 database:
+To access the MySQL database when docker-compose is running:
 
-1. Go to `http://localhost:8080/h2-console`
-2. Ensure you log in with the settings below. The password field is intentionally left blank.
-    - Saved settings: `Generic H2 (Embedded)`
-    - Setting Name: `Generic H2 (Embedded)`
-    - Driver class: `org.h2.Driver`
-    - JDBC URL: `jdbc:h2:mem:testdb`
-    - User Name: `sa`
-    - Password: 
+1. Go to `http://localhost:8081/`
+2. Log in with the settings below.
+    - User Name: `root`
+    - Password: `rootpassword`
 3. Click on connect
 
 ## Contributing

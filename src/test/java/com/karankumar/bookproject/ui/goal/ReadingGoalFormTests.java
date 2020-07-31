@@ -5,24 +5,18 @@ import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.tags.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.Random;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@IntegrationTest
 @WebAppConfiguration
-
 public class ReadingGoalFormTests {
      static Routes routes;
 
