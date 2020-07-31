@@ -66,7 +66,8 @@ public class BookForm extends VerticalLayout {
     final TextField authorLastName = new TextField();
     final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
     final ComboBox<Genre> bookGenre = new ComboBox<>();
-    final IntegerField pageCount = new IntegerField();
+    final IntegerField pagesRead = new IntegerField();
+    final IntegerField numberOfPages = new IntegerField();
     final DatePicker dateStartedReading = new DatePicker();
     final DatePicker dateFinishedReading = new DatePicker();
     final NumberField rating = new NumberField();
@@ -79,6 +80,7 @@ public class BookForm extends VerticalLayout {
     FormLayout.FormItem dateStartedReadingFormItem;
     FormLayout.FormItem dateFinishedReadingFormItem;
     FormLayout.FormItem ratingFormItem;
+    FormLayout.FormItem pagesReadFormItem;
 
     Button delete = new Button();
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
@@ -97,7 +99,8 @@ public class BookForm extends VerticalLayout {
         configureShelf();
         configureGenre();
         configureSeriesPosition();
-        configurePageCount();
+        configurePagesRead();
+        configureNumberOfPages();
         configureDateStarted();
         configureDateFinished();
         configureRating();
@@ -111,7 +114,8 @@ public class BookForm extends VerticalLayout {
                 dateFinishedReading,
                 bookGenre,
                 shelf,
-                pageCount,
+                pagesRead,
+                numberOfPages,
                 rating,
         };
         setComponentMinWidth(components);
@@ -136,7 +140,8 @@ public class BookForm extends VerticalLayout {
         dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
-        formLayout.addFormItem(pageCount, "Page count");
+        pagesReadFormItem = formLayout.addFormItem(pagesRead, "Pages read");
+        formLayout.addFormItem(numberOfPages, "Number of pages");
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
         formLayout.add(buttonLayout, 3);
     }
@@ -185,8 +190,10 @@ public class BookForm extends VerticalLayout {
               .withValidator(endDate -> !(endDate != null && endDate.isAfter(LocalDate.now())),
                       AFTER_TODAY_PREFIX + " finished " + AFTER_TODAY_SUFFIX)
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
-        binder.forField(pageCount)
+        binder.forField(numberOfPages)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
+        binder.forField(pagesRead)
+                .bind(Book::getPagesRead, Book::setPagesRead);
         binder.forField(bookGenre)
               .bind(Book::getGenre, Book::setGenre);
         binder.forField(rating)
@@ -374,6 +381,7 @@ public class BookForm extends VerticalLayout {
                 try {
                     hideDates(shelf.getValue());
                     showOrHideRating(shelf.getValue());
+                    showOrHidePagesRead(shelf.getValue());
                 } catch (NotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -426,6 +434,27 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
+     * Toggles showing the pages read depending on which shelf this new book is going into
+     *
+     * @param name the name of the shelf that was selected in this book form
+     * @throws NotSupportedException if the shelf name parameter does not match the name of a @see PredefinedShelf
+     */
+    private void showOrHidePagesRead(PredefinedShelf.ShelfName name) throws NotSupportedException {
+        switch (name) {
+            case TO_READ:
+            case READING:
+            case READ:
+                pagesReadFormItem.setVisible(false);
+                break;
+            case DID_NOT_FINISH:
+                pagesReadFormItem.setVisible(true);
+                break;
+            default:
+                throw new NotSupportedException("Shelf " + name + " not yet supported");
+        }
+    }
+
+    /**
      * Toggles showing the rating depending on which shelf this new book is going into
      *
      * @param name the name of the shelf that was selected in this book form
@@ -451,6 +480,7 @@ public class BookForm extends VerticalLayout {
      */
     private void configureRating() {
         rating.setHasControls(true);
+        rating.setPlaceholder("Enter a rating");
         rating.setMin(0);
         rating.setMax(10);
         rating.setStep(0.5f);
@@ -476,10 +506,21 @@ public class BookForm extends VerticalLayout {
     /**
      * Sets up the form field for the number of pages in the book
      */
-    private void configurePageCount() {
-        pageCount.setMin(1);
-        pageCount.setHasControls(true);
-        pageCount.setClearButtonVisible(true);
+    private void configureNumberOfPages() {
+        numberOfPages.setPlaceholder("Enter number of pages");
+        numberOfPages.setMin(1);
+        numberOfPages.setHasControls(true);
+        numberOfPages.setClearButtonVisible(true);
+    }
+
+    /**
+     * Sets up the form field for the number of pages read
+     */
+    private void configurePagesRead() {
+        pagesRead.setPlaceholder("Enter number of pages read");
+        pagesRead.setMin(1);
+        pagesRead.setHasControls(true);
+        pagesRead.setClearButtonVisible(true);
     }
 
     /**
@@ -493,7 +534,8 @@ public class BookForm extends VerticalLayout {
                 shelf,
                 seriesPosition,
                 bookGenre,
-                pageCount,
+                pagesRead,
+                numberOfPages,
                 dateStartedReading,
                 dateFinishedReading,
                 rating,

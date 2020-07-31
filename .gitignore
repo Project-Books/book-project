@@ -39,3 +39,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+pnpm-lock.yaml
+package.json
