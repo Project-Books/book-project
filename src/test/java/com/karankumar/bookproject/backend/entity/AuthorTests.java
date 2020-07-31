@@ -70,10 +70,9 @@ class AuthorTests {
 
         List<PredefinedShelf> shelves = AuthorTests.shelfService.findAll();
         PredefinedShelf toRead = shelves.stream()
-                                        .takeWhile(s -> s.getPredefinedShelfName()
-                                                         .equals(PredefinedShelf.ShelfName.TO_READ))
-                                        .collect(Collectors.toList())
-                                        .get(0);
+                .takeWhile(s -> s.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.TO_READ))
+                .collect(Collectors.toList())
+                .get(0);
 
         testBook1.setShelf(toRead);
         testBook2.setShelf(toRead);

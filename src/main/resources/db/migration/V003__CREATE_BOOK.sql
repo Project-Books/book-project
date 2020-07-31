@@ -7,6 +7,7 @@ CREATE TABLE book
     edition               VARCHAR(255),
     genre                 INTEGER,
     number_of_pages       INTEGER,
+    pages_read            INTEGER,
     rating                INTEGER,
     series_position       INTEGER,
     book_review           VARCHAR(1500),
