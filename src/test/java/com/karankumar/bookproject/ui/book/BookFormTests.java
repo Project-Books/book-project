@@ -57,17 +57,24 @@ public class BookFormTests {
 
     // if either the RatingScale or the double rating is changed, then the other has to also be changed accordingly
     private static final RatingScale ratingVal = RatingScale.NINE;
+    private static final int SERIES_POSITION = 10;
     private static double rating = 9.0;
 
     private static int pagesRead;
     private static int numberOfPages;
+    private static int seriesPosition;
     private static Routes routes;
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
+
     @Autowired
     private ApplicationContext ctx;
+
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private PredefinedShelfService shelfService;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -75,7 +82,7 @@ public class BookFormTests {
     }
 
     @BeforeEach
-    public void setup(@Autowired PredefinedShelfService shelfService) {
+    public void setup() {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
@@ -83,18 +90,25 @@ public class BookFormTests {
         bookService.deleteAll();
 
         Assumptions.assumeTrue(shelfService != null);
-        bookForm = new BookForm(shelfService);
-        bookForm.setBook(createBook(shelfService));
+        bookForm = createBookForm(true);
     }
 
-    private Book createBook(PredefinedShelfService predefinedShelfService) {
+    private BookForm createBookForm(boolean isInSeries) {
+        BookForm bookForm = new BookForm(shelfService);
+        bookForm.setBook(createBook(shelfService, isInSeries));
+        return bookForm;
+
+    }
+
+    private Book createBook(PredefinedShelfService predefinedShelfService, boolean isInSeries) {
         Author author = new Author(firstName, lastName);
         Book book = new Book(bookTitle, author);
 
         readShelf = predefinedShelfService.findAll().get(2);
-      
+
         pagesRead = generateRandomNumberOfPages();
         numberOfPages = generateRandomNumberOfPages();
+        seriesPosition = SERIES_POSITION;
 
         book.setShelf(readShelf);
         book.setGenre(genre);
@@ -103,12 +117,18 @@ public class BookFormTests {
         book.setDateStartedReading(dateStarted);
         book.setDateFinishedReading(dateFinished);
         book.setRating(ratingVal);
+        if (isInSeries) {
+            book.setSeriesPosition(seriesPosition);
+        }
 
         return book;
     }
 
     private int generateRandomNumberOfPages() {
         return ThreadLocalRandom.current().nextInt(300, (2000 + 1));
+    }
+    private int generateRandomSeriesPosition() {
+        return ThreadLocalRandom.current().nextInt(1, (10 + 1));
     }
 
     /**
@@ -126,6 +146,7 @@ public class BookFormTests {
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
         Assertions.assertEquals(rating, bookForm.rating.getValue());
+        Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
     }
 
     enum EventType {
@@ -165,6 +186,7 @@ public class BookFormTests {
         Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
         Assertions.assertEquals(ratingVal, savedOrDeletedBook.getRating());
+        Assertions.assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
     }
 
     private void populateBookForm() {
@@ -270,6 +292,66 @@ public class BookFormTests {
         } else {
             Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible(), pagesRead + shown);
         }
+    }
+
+    @Test
+    void shouldDisplaySeriesPositionForm_whenIsInSeriesCheckboxOn() {
+        // given
+        bookForm.inSeriesCheckbox.setValue(true);
+
+        // then
+        Assertions.assertTrue(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertTrue(bookForm.seriesPosition.isVisible());
+        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
+    }
+
+    @Test
+    void shouldNotDisplaySeriesPositionForm_whenIsInSeriesCheckboxOff() {
+        // given
+        bookForm.inSeriesCheckbox.setValue(false);
+
+        // then
+        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+    }
+
+    @Test
+    void shouldClearSeriesPositionValue_whenSeriesPositionCheckboxIsFirstEnabled_andThenDisabled() {
+        // given
+        bookForm.inSeriesCheckbox.setValue(true);
+
+        // when
+        bookForm.inSeriesCheckbox.setValue(false);
+
+        // then
+        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertNull(bookForm.seriesPosition.getValue());
+    }
+
+    @Test
+    void shouldDisplaySeriesPositionForm_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
+        // given
+        populateBookForm();
+
+        // when
+        bookForm.openForm();
+
+        // then
+        Assertions.assertTrue(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertTrue(bookForm.seriesPosition.isVisible());
+        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
+    }
+
+    @Test
+    void shouldNotDisplaySeriesPositionForm_withSeriesPositionPopulated_whenBookDoesNotHaveSeriesPosition() {
+        // given
+        bookForm = createBookForm(false);
+
+        // when
+        bookForm.openForm();
+
+        // then
+        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertNull(bookForm.seriesPosition.getValue());
     }
 
     @AfterEach

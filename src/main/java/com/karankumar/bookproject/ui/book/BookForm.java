@@ -26,6 +26,7 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -72,6 +73,7 @@ public class BookForm extends VerticalLayout {
     final DatePicker dateFinishedReading = new DatePicker();
     final NumberField rating = new NumberField();
     final Button saveButton = new Button();
+    final Checkbox inSeriesCheckbox = new Checkbox();
 
     private final PredefinedShelfService shelfService;
     final Button reset = new Button();
@@ -80,6 +82,7 @@ public class BookForm extends VerticalLayout {
     FormLayout.FormItem dateStartedReadingFormItem;
     FormLayout.FormItem dateFinishedReadingFormItem;
     FormLayout.FormItem ratingFormItem;
+    FormLayout.FormItem seriesPositionFormItem;
     FormLayout.FormItem pagesReadFormItem;
 
     Button delete = new Button();
@@ -104,6 +107,7 @@ public class BookForm extends VerticalLayout {
         configureDateStarted();
         configureDateFinished();
         configureRating();
+        configureInSeriesCheckbox();
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
                 bookTitle,
@@ -124,6 +128,16 @@ public class BookForm extends VerticalLayout {
         add(dialog);
     }
 
+    private void configureInSeriesCheckbox() {
+        inSeriesCheckbox.setValue(false);
+        inSeriesCheckbox.addValueChangeListener(event -> {
+            seriesPositionFormItem.setVisible(event.getValue());
+            if (!event.getValue()) {
+                seriesPosition.clear();
+            }
+        });
+    }
+
     /**
      * Sets up the form layout
      *
@@ -136,18 +150,27 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(shelf, "Book shelf *");
         formLayout.addFormItem(authorFirstName, "Author's first name *");
         formLayout.addFormItem(authorLastName, "Author's last name *");
-        formLayout.addFormItem(seriesPosition, "Series number");
         dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
         pagesReadFormItem = formLayout.addFormItem(pagesRead, "Pages read");
         formLayout.addFormItem(numberOfPages, "Number of pages");
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
+        formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
+        seriesPositionFormItem = formLayout.addFormItem(seriesPosition, "Series number");
         formLayout.add(buttonLayout, 3);
+        seriesPositionFormItem.setVisible(false);
     }
 
     public void openForm() {
         dialog.open();
+        showSeriesPositionFormIfSeriesPositionAvailable();
+    }
+
+    private void showSeriesPositionFormIfSeriesPositionAvailable() {
+        boolean isInSeries = binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
+        inSeriesCheckbox.setValue(isInSeries);
+        seriesPositionFormItem.setVisible(isInSeries);
     }
 
     private void closeForm() {
