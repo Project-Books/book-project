@@ -31,10 +31,4 @@ public abstract class BaseEntity {
     @Getter
     private Long id;
 
-    /**
-     * To be used sparingly and cautiously.
-     */
-    public void removeId() {
-        id = null;
-    }
 }

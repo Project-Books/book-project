@@ -16,11 +16,11 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.BaseEntity;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -47,18 +47,22 @@ public class AuthorService extends BaseService<Author, Long> {
     @Override
     public void save(Author author) {
         if (author != null) {
-            List<Long> matchingAuthors = findAll().stream()
-                .map(BaseEntity::getId)
-                .filter(id -> id.equals(author.getId())).collect(Collectors.toList());
-            if (matchingAuthors.size() == 1) {
-                // if an author with the same ID exists, set this incoming author ID to null so that a new row in the
+            List<Author> matchingAuthors = isMatchingAuthorsPresent(author);
+            if (!matchingAuthors.isEmpty()) {
+                // if an author with the same ID exists, then create a new Author so that a new row in the
                 // table is made rather than updating the row that has the same ID
-                LOGGER.log(Level.INFO, "Matching authorIds: " + matchingAuthors);
-                author.removeId();
+                LOGGER.log(Level.INFO, "Matching authors: " + matchingAuthors);
+                author = new Author(author.getFirstName(), author.getLastName());
             }
 
             authorRepository.save(author);
         }
+    }
+
+    public List<Author> isMatchingAuthorsPresent(@NotNull Author author) {
+        return findAll().stream()
+                        .filter(existingAuthor -> existingAuthor.toString().equals(author.toString()))
+                        .collect(Collectors.toList());
     }
 
     @Override
