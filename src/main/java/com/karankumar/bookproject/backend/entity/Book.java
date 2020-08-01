@@ -33,10 +33,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * A {@code Book} object represents a single book with its corresponding metadata, such as an Author, Tags, genre and
- * rating.
- */
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -63,7 +59,6 @@ public class Book extends BaseEntity {
     private RatingScale rating;
     private LocalDate dateStartedReading;
     private LocalDate dateFinishedReading;
-
     private String bookReview;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})

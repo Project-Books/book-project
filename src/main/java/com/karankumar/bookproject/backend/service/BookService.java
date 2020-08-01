@@ -23,10 +23,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.logging.Level;
 
-/**
- * A Spring service that acts as the gateway to the @see BookRepository -- to use the BookRepository, you should go
- * via this BookService.
- */
 @Service
 @Log
 public class BookService extends BaseService<Book, Long> {

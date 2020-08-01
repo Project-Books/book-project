@@ -52,10 +52,6 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * A Spring service that acts as the gateway to the @see PredefinedShelfRepository -- to use the
- * PredefinedShelfRepository, you should go via this PredefinedShelfService.
- */
 @Service
 @Log
 public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {

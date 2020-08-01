@@ -9,9 +9,6 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-/**
- * Represents a reading goal: the number of books or pages a user wants to have read by the end of the year
- */
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
