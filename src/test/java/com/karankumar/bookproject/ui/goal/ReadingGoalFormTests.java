@@ -13,12 +13,13 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
+
 import java.util.Random;
 
 @IntegrationTest
 @WebAppConfiguration
 public class ReadingGoalFormTests {
-     static Routes routes;
+    static Routes routes;
 
     @Autowired
     private ApplicationContext ctx;
@@ -29,7 +30,7 @@ public class ReadingGoalFormTests {
     }
 
     @BeforeEach
-    public void setup(@Autowired ReadingGoalService goalService, @Autowired PredefinedShelfService predefinedShelfService) {
+    public void setup(@Autowired ReadingGoalService goalService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
@@ -42,24 +43,21 @@ public class ReadingGoalFormTests {
         return goalTypes[new Random().nextInt(goalTypes.length)];
     }
 
-    /**
-     * Tests that only a target >= 1 is valid
-     */
     @Test
-    public void isValidGoal () {
-            ReadingGoalForm goalForm = new ReadingGoalForm();
+    public void onlyTargetGoalOfAtLeastOneIsValid() {
+        ReadingGoalForm goalForm = new ReadingGoalForm();
 
-            goalForm.targetToRead.setValue(1);
-            goalForm.chooseGoalType.setValue(getRandomGoalType());
-            goalForm.saveButton.click();
-            Assertions.assertTrue(goalForm.binder.isValid());
+        goalForm.targetToRead.setValue(1);
+        goalForm.chooseGoalType.setValue(getRandomGoalType());
+        goalForm.saveButton.click();
+        Assertions.assertTrue(goalForm.binder.isValid());
 
-            goalForm.targetToRead.setValue(0);
-            Assertions.assertFalse(goalForm.binder.isValid());
-        }
+        goalForm.targetToRead.setValue(0);
+        Assertions.assertFalse(goalForm.binder.isValid());
+    }
 
-        @AfterEach
-        public void tearDown () {
-            MockVaadin.tearDown();
-        }
+    @AfterEach
+    public void tearDown() {
+        MockVaadin.tearDown();
+    }
 }
