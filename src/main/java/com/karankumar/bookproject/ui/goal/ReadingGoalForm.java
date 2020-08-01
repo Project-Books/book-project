@@ -30,13 +30,14 @@ public class ReadingGoalForm extends VerticalLayout {
     private static final String PAGES_TO_READ = "Pages to read";
 
     private final Dialog newGoalDialog;
-    private final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
-    private final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
-    private final IntegerField targetToRead;
+    final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
+    final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
+    final IntegerField targetToRead;
+    Button saveButton;
 
     public ReadingGoalForm() {
         targetToRead = createBooksGoalField();
-        Button saveButton = createSaveButton();
+        saveButton = createSaveButton();
 
         FormLayout formLayout = new FormLayout();
         newGoalDialog = new Dialog();
@@ -129,6 +130,9 @@ public class ReadingGoalForm extends VerticalLayout {
         newGoalDialog.open();
     }
 
+    /**
+     * Asks user to choose a goal type, and makes sure the target goal is valid
+     */
     private void configureBinder() {
         binder.forField(chooseGoalType)
               .asRequired("Please select a goal type")

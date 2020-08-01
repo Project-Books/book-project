@@ -25,9 +25,6 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-/**
- * Represents a single Author
- */
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -17,6 +17,7 @@ package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.tags.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,7 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-@SpringBootTest
+@IntegrationTest
 class PredefinedShelfTests {
 
     private static PredefinedShelfService shelfService;

@@ -39,10 +39,6 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-/**
- * Vaadin view that represents the reading goal page (the number of books or pages a user wants to have read by the end
- * of the year)
- */
 @Route(value = "goal", layout = MainView.class)
 @PageTitle("Goal | Book Project")
 @Log

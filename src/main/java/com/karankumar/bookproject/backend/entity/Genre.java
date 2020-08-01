@@ -15,11 +15,8 @@
 
 package com.karankumar.bookproject.backend.entity;
 
-/**
- * Represents a book genre.
- */
-// This should be kept in alphabetical order
 public enum Genre {
+    // This should be kept in alphabetical order
     ADVENTURE("Adventure"),
     ANTHOLOGY("Anthology"),
     ART("Art"),

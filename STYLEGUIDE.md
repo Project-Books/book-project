@@ -112,10 +112,6 @@ bookGrid.addColumn(AUTHOR_KEY)
 
 ## Javadoc
 
-**Class, interface & enum comments**
-
-Every class, interface and enum should have a one sentence Javadoc summary explaining what the class is for.
-
 **No @author tag**
 
 Author tags can quickly become outdated as methods are updated or completely written by new authors. Git is far better

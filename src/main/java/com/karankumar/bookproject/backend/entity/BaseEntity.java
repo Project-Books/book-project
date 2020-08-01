@@ -23,9 +23,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-/**
- * The entity that all other entities inherit from.
- */
 @MappedSuperclass
 @EqualsAndHashCode
 public abstract class BaseEntity {

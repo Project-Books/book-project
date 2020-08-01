@@ -1,6 +1,7 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
+import com.karankumar.bookproject.tags.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@SpringBootTest
+@IntegrationTest
 public class ReadingGoalServiceTest {
     private ReadingGoalService goalService;
     @BeforeEach

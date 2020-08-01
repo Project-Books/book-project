@@ -22,10 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * A Spring service that acts as the gateway to the @see GoalRepository -- to use the GoalRepository, you should go
- * via this GoalService.
- */
 @Service
 @Log
 public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
