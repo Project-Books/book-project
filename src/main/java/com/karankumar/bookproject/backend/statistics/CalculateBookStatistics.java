@@ -1,6 +1,7 @@
 package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -10,6 +11,7 @@ import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Set;
 
 @Log
@@ -70,9 +72,7 @@ public class CalculateBookStatistics {
     }
 
     public Book findMostLikedBook() {
-
         Book mostLikedBook = null;
-
         for (Book book : readShelfBooks) {
             if (book.getRating() != null) {
                 if (mostLikedBook == null) {
@@ -84,7 +84,6 @@ public class CalculateBookStatistics {
                 }
             }
         }
-
         return mostLikedBook;
     }
 
@@ -93,15 +92,57 @@ public class CalculateBookStatistics {
         return ratings.indexOf(rating);
     }
 
-    public void findLeastLikedBook() {
-        // TODO
+    public Book findLeastLikedBook() {
+        Book leastLikedBook = null;
+        for (Book book : readShelfBooks) {
+            if (book.getRating() != null) {
+                if (leastLikedBook == null) {
+                    leastLikedBook = book;
+                } else {
+                    leastLikedBook =
+                            getRatingEnumPosition(book.getRating()) <
+                                    getRatingEnumPosition(leastLikedBook.getRating()) ?
+                                    book : leastLikedBook;
+                }
+            }
+        }
+        return leastLikedBook;
     }
 
-    public void findMostLikedGenres() {
-        // TODO
+    public Genre findMostLikedGenre() {
+        HashMap<Genre, Double> genresTotalRating = populateEmptyGenres();
+        for (Book book : readShelfBooks) {
+            if (book.getGenre() != null && book.getRating() != null) {
+                double totalRatingForGenre = genresTotalRating.get(book.getGenre()) +
+                        converter.convertToPresentation(book.getRating(), null);
+                genresTotalRating.replace(book.getGenre(), totalRatingForGenre);
+            }
+        }
+
+        Genre mostLikedGenre = null;
+        double mostLikedGenreRating = 0.0;
+        for (Genre genre : genresTotalRating.keySet()) {
+            double genreRating = genresTotalRating.get(genre);
+            if (mostLikedGenre == null) {
+                mostLikedGenre = genre;
+                mostLikedGenreRating = genreRating;
+            } else if (mostLikedGenreRating < genreRating) {
+                mostLikedGenre = genre;
+                mostLikedGenreRating = genreRating;
+            }
+        }
+        return mostLikedGenre;
     }
 
-    public void findLeastLikedGenres() {
+    private HashMap<Genre, Double> populateEmptyGenres() {
+        HashMap<Genre, Double> genreMap = new HashMap<>();
+        for (Genre genre : Genre.values()) {
+            genreMap.put(genre, 0.0);
+        }
+        return genreMap;
+    }
+
+    public void findLeastLikedGenre() {
         // TODO
     }
 }
