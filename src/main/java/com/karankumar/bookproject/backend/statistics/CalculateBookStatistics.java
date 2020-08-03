@@ -2,20 +2,26 @@ package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 import lombok.extern.java.Log;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
-import java.util.logging.Level;
 
 @Log
 public class CalculateBookStatistics {
     private final Set<Book> readShelfBooks;
+    private final DoubleToRatingScaleConverter converter;
 
     public CalculateBookStatistics(PredefinedShelfService predefinedShelfService) {
         PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
         readShelfBooks = readShelf.getBooks();
+
+        converter = new DoubleToRatingScaleConverter();
     }
 
     public Book findBookWithMostPages() {
@@ -36,28 +42,55 @@ public class CalculateBookStatistics {
     // This average only includes books that have a page length specified
     public int calculateAveragePageLength() {
         int totalNumberOfPages = 0;
-        int numberOfBooks = 0;
+        int booksWithPagesSpecified = 0;
         for (Book book : readShelfBooks) {
             if (book.getNumberOfPages() != null) {
                 totalNumberOfPages += book.getNumberOfPages();
-                numberOfBooks++;
+                booksWithPagesSpecified++;
             }
         }
-        LOGGER.log(Level.INFO, "Pages: " + totalNumberOfPages);
-        LOGGER.log(Level.INFO, "Books: " + numberOfBooks);
-        return (int) Math.ceil(totalNumberOfPages / numberOfBooks);
+        return (booksWithPagesSpecified == 0) ? 0 : (int) Math.ceil(totalNumberOfPages / booksWithPagesSpecified);
     }
 
     public void calculateMostReadGenres() {
         // TODO
     }
 
-    public void calculateAverageRatingGiven() {
-        // TODO
+    public double calculateAverageRatingGiven() {
+        double totalRating = 0;
+        int numberOfRatings = 0;
+        for (Book book : readShelfBooks) {
+            if (book.getRating() != null) {
+                totalRating += converter.convertToPresentation(book.getRating(), null);
+                numberOfRatings++;
+            }
+        }
+
+        return (totalRating / numberOfRatings);
     }
 
-    public void findMostLikedBook() {
-        // TODO
+    public Book findMostLikedBook() {
+
+        Book mostLikedBook = null;
+
+        for (Book book : readShelfBooks) {
+            if (book.getRating() != null) {
+                if (mostLikedBook == null) {
+                    mostLikedBook = book;
+                } else {
+                    mostLikedBook =
+                            getRatingEnumPosition(book.getRating()) > getRatingEnumPosition(mostLikedBook.getRating()) ?
+                                    book : mostLikedBook;
+                }
+            }
+        }
+
+        return mostLikedBook;
+    }
+
+    private int getRatingEnumPosition(RatingScale rating) {
+        ArrayList<RatingScale> ratings = new ArrayList<>(Arrays.asList(RatingScale.values()));
+        return ratings.indexOf(rating);
     }
 
     public void findLeastLikedBook() {
