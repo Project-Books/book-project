@@ -16,6 +16,7 @@
 package com.karankumar.bookproject.ui.settings;
 
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.PaperToggle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

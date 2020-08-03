@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.ui.settings;
+package com.karankumar.bookproject.ui.components;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.JsModule;
@@ -17,8 +17,6 @@ public class PaperToggle extends Component {
     public Registration addClickListener(ComponentEventListener<PaperToggleClickEvent> listener) {
         return addListener(PaperToggleClickEvent.class, listener);
     }
-
-
 }
 
 
