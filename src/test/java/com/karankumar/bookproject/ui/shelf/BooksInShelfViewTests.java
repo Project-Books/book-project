@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.*;
 import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.*;
 
 @IntegrationTest

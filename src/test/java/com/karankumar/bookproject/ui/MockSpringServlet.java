@@ -23,10 +23,11 @@ import com.vaadin.flow.server.VaadinServletService;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.spring.SpringServlet;
 import com.vaadin.flow.spring.SpringVaadinServletService;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationContext;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 
 public class MockSpringServlet extends SpringServlet {
     @NotNull

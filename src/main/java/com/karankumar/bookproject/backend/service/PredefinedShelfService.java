@@ -16,35 +16,18 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.stereotype.Service;
-
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.Genre;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.karankumar.bookproject.backend.entity.Tag;
+import com.karankumar.bookproject.backend.entity.*;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.repository.TagRepository;
-
-
 import lombok.extern.java.Log;
+import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;

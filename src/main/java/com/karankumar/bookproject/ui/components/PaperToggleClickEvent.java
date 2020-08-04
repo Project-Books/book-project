@@ -1,6 +1,5 @@
 package com.karankumar.bookproject.ui.components;
 
-import com.karankumar.bookproject.ui.components.PaperToggle;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.DomEvent;
 import com.vaadin.flow.component.EventData;

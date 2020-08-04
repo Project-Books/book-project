@@ -2,7 +2,7 @@ package com.karankumar.bookproject.ui.shelf.visibility;
 
 import com.karankumar.bookproject.ui.shelf.BookGrid;
 
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.*;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.*;
 
 public class ToReadBookVisibility implements BookVisibilityStrategy {
 

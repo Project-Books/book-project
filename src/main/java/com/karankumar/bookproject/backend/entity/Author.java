@@ -15,11 +15,7 @@
 
 package com.karankumar.bookproject.backend.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;

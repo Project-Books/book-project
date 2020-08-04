@@ -134,7 +134,7 @@ public class BooksInShelfView extends VerticalLayout {
      */
     // TODO: 3.08.2020 this should be moved BookShelfListener. But it's also invoked in the test.
     public void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
-        if (visibilityStrategies.containsKey(shelfName)) {
+        if (!visibilityStrategies.containsKey(shelfName)) {
             throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
         }
 
