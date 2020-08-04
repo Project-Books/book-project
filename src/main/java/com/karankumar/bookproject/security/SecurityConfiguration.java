@@ -17,14 +17,13 @@ package com.karankumar.bookproject.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 // From https://vaadin.com/learn/tutorials/modern-web-apps-with-spring-boot-and-vaadin/adding-a-login-screen-to-a-vaadin-app-with-spring-security
 @EnableWebSecurity
@@ -36,32 +35,41 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_URL = "/login";
     private static final String LOGOUT_SUCCESS_URL = "/login";
 
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user =
-            User.withUsername("user")
-                .password("{noop}password")
-                .roles("USER")
-                .build();
+    private final DatabaseUserDetailsService databaseUserDetailsService;
+    private final DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService;
 
-        return new InMemoryUserDetailsManager(user);
+    public SecurityConfiguration(DatabaseUserDetailsService databaseUserDetailsService,
+                                 DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService) {
+        this.databaseUserDetailsService = databaseUserDetailsService;
+        this.databaseUserDetailsPasswordService = databaseUserDetailsPasswordService;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(databaseUserDetailsService)
+            .userDetailsPasswordManager(databaseUserDetailsPasswordService)
+            .passwordEncoder(passwordEncoder());
     }
 
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
-            "/VAADIN/**",
-            "/favicon.ico",
-            "/robots.txt",
-            "/manifest.webmanifest",
-            "/sw.js",
-            "/offline.html",
-            "/icons/**",
-            "/images/**",
-            "/styles/**",
-            "/frontend/**",
-            "/frontend-es5/**", "/frontend-es6/**");
+                "/VAADIN/**",
+                "/favicon.ico",
+                "/robots.txt",
+                "/manifest.webmanifest",
+                "/sw.js",
+                "/offline.html",
+                "/icons/**",
+                "/images/**",
+                "/styles/**",
+                "/frontend/**",
+                "/frontend-es5/**", "/frontend-es6/**");
     }
 
     @Override
