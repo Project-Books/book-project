@@ -1,6 +1,8 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.shelf.listener.BookGridListener;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.renderer.LocalDateRenderer;
@@ -9,7 +11,9 @@ import lombok.extern.java.Log;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.*;
 
@@ -94,5 +98,34 @@ public class BookGrid {
 
     public Grid<Book> get() {
         return bookGrid;
+    }
+
+    void update(PredefinedShelf.ShelfName chosenShelf, PredefinedShelfService shelfService, BookFilters bookFilters) {
+        if (chosenShelf == null) {
+            LOGGER.log(Level.FINEST, "Chosen shelf is null");
+            return;
+        }
+
+        // Find the shelf that matches the chosen shelf's name
+        List<PredefinedShelf> matchingShelves = shelfService.findAll(chosenShelf);
+
+        if (matchingShelves.isEmpty()) {
+            LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
+            return;
+        }
+
+        if (matchingShelves.size() != 1) {
+            LOGGER.log(Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
+            return;
+        }
+
+        LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
+        bookGrid.setItems(filterShelf(matchingShelves.get(0), bookFilters));
+    }
+
+    private List<Book> filterShelf(PredefinedShelf selectedShelf, BookFilters bookFilters) {
+        return selectedShelf.getBooks().stream()
+                .filter(book -> bookFilters.apply(book))
+                .collect(Collectors.toList());
     }
 }

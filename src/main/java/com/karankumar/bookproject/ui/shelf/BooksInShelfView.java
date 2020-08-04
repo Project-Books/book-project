@@ -176,32 +176,7 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     public void updateGrid() {
-        if (chosenShelf == null) {
-            LOGGER.log(Level.FINEST, "Chosen shelf is null");
-            return;
-        }
-
-        // Find the shelf that matches the chosen shelf's name
-        List<PredefinedShelf> matchingShelves = shelfService.findAll(chosenShelf);
-
-        if (matchingShelves.isEmpty()) {
-            LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
-            return;
-        }
-
-        if (matchingShelves.size() != 1) {
-            LOGGER.log(Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
-            return;
-        }
-
-        LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
-        bookGrid.setItems(filterShelf(matchingShelves.get(0)));
-    }
-
-    private List<Book> filterShelf(PredefinedShelf selectedShelf) {
-        return selectedShelf.getBooks().stream()
-                .filter(book -> bookFilters.apply(book))
-                .collect(Collectors.toList());
+        new BookGrid(this.bookGrid).update(chosenShelf, shelfService, bookFilters);
     }
 
     public void chooseShelf(PredefinedShelf.ShelfName chosenShelf) {
