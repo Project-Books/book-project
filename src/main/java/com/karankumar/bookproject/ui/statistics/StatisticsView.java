@@ -8,15 +8,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import lombok.extern.java.Log;
 
-import java.util.logging.Level;
-
 @Route(value = "statistics", layout = MainView.class)
 @PageTitle("Statistics | Book Project")
 @Log
 public class StatisticsView extends HorizontalLayout {
     public StatisticsView(PredefinedShelfService predefinedShelfService) {
         GenreStatistics bookStatistics = new GenreStatistics(predefinedShelfService);
-        LOGGER.log(Level.INFO, "Avg page length: " + bookStatistics.calculateAveragePageLength());
     }
 
 }
