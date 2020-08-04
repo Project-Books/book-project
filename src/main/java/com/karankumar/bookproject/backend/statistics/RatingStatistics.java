@@ -22,6 +22,10 @@ public class RatingStatistics {
         readBooksRated = findReadBooksWithRatings();
     }
 
+    /**
+     * @return the Book in the 'read' shelf with the highest rating
+     * If there are multiple books with the same highest rating, the first one found will be returned
+     */
     public Book findMostLikedBook() {
         readBooksRated.sort(Comparator.comparing(Book::getRating));
         return readBooksRated.get(readBooksRated.size() - 1);
@@ -36,15 +40,23 @@ public class RatingStatistics {
         return readBooksRated;
     }
 
+    /**
+     * @return the Book in the 'read' shelf with the lowest rating
+     * If there are multiple books with the same lowest rating, the first one found will be returned
+     */
     public Book findLeastLikedBook() {
         readBooksRated.sort(Comparator.comparing(Book::getRating));
         return readBooksRated.get(0);
     }
 
+    /**
+     * @return the average rating given to all books in the 'read'
+     * If a book in the 'read' shelf does not have a rating, it is not included in the sum
+     */
     public double calculateAverageRatingGiven() {
         int numberOfRatings = readBooksRated.size();
         double totalRating = readBooksRated.stream()
-                                           .mapToDouble(book -> converter.convertToPresentation(book.getRating(), null))
+                                           .mapToDouble(book -> converter.convertToPresentation(book.getRating(),null))
                                            .sum();
         return (totalRating / numberOfRatings);
     }
