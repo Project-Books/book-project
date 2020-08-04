@@ -15,6 +15,7 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -28,6 +29,7 @@ import com.karankumar.bookproject.ui.shelf.listener.BookSaveListener;
 import com.karankumar.bookproject.ui.shelf.visibility.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -37,6 +39,7 @@ import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
 import java.util.EnumMap;
+import java.util.List;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
 
@@ -152,5 +155,9 @@ public class BooksInShelfView extends VerticalLayout {
 
     public void setBookFilterTitle(String title) {
         bookFilters.setBookTitle(title);
+    }
+
+    List<Grid.Column<Book>> getColumns() {
+        return bookGrid.get().getColumns();
     }
 }

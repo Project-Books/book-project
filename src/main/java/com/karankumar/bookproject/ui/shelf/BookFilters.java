@@ -22,11 +22,11 @@ class BookFilters {
         this.bookAuthor = bookAuthor;
     }
 
-    boolean isBookTitleNull() {
+    private boolean isBookTitleNull() {
         return bookTitle == null;
     }
 
-    boolean isBookAuthorNull() {
+    private boolean isBookAuthorNull() {
         return bookAuthor == null;
     }
 
