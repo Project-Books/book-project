@@ -3,7 +3,7 @@ package com.karankumar.bookproject.ui.shelf;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.ui.shelf.listener.BookGridListener;
+import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.renderer.LocalDateRenderer;
 import lombok.extern.java.Log;
@@ -22,13 +22,12 @@ import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.*;
 public class BookGrid {
     private final Grid<Book> bookGrid;
 
-    BookGrid(Grid<Book> bookGrid) {
-        this.bookGrid = bookGrid;
+    BookGrid() {
+        this.bookGrid = new Grid<>(Book.class);
+        configure();
     }
 
-    public void configure(BookGridListener listener) {
-        addListener(listener);
-
+    public void configure() {
         resetGridColumns();
 
         addTitleColumn();
@@ -41,8 +40,15 @@ public class BookGrid {
         bookGrid.addColumn(PAGES_READ_KEY);
     }
 
-    private void addListener(BookGridListener listener) {
-        bookGrid.asSingleSelect().addValueChangeListener(listener.getListener());
+    void bind(BookForm bookForm) {
+        bookGrid.asSingleSelect().addValueChangeListener(event -> {
+            Book book = event.getValue();
+
+            if (book != null && bookForm != null) {
+                bookForm.setBook(book);
+                bookForm.openForm();
+            }
+        });
     }
 
     private void resetGridColumns() {
@@ -50,8 +56,7 @@ public class BookGrid {
     }
 
     private void addDateFinishedColumn() {
-        bookGrid.addColumn(new LocalDateRenderer<>(
-                Book::getDateFinishedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+        bookGrid.addColumn(new LocalDateRenderer<>(Book::getDateFinishedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
                 .setHeader("Date finished reading")
                 .setComparator(Comparator.comparing(Book::getDateStartedReading))
                 .setSortable(true)
@@ -59,8 +64,7 @@ public class BookGrid {
     }
 
     private void addDateStartedColumn() {
-        bookGrid.addColumn(new LocalDateRenderer<>(
-                Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+        bookGrid.addColumn(new LocalDateRenderer<>(Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
                 .setHeader("Date started reading")
                 .setComparator(Comparator.comparing(Book::getDateStartedReading))
                 .setKey(DATE_STARTED_KEY);
