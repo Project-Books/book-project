@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.ui.shelf;
+package com.karankumar.bookproject.ui.shelf.listener;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.BookForm;
