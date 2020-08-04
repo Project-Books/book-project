@@ -17,6 +17,10 @@ public class PaperToggle extends Component {
     public Registration addClickListener(ComponentEventListener<PaperToggleClickEvent> listener) {
         return addListener(PaperToggleClickEvent.class, listener);
     }
+
+    public void setChecked(boolean checked){
+        getElement().setProperty("checked", checked);
+    }
 }
 
 

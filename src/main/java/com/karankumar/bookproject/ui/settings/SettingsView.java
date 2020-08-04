@@ -58,6 +58,9 @@ public class SettingsView extends HorizontalLayout {
     public SettingsView() {
         if (darkModeOn) {
             updateDarkModeLabel();
+            paperToggle.setChecked(true);
+        } else {
+            paperToggle.setChecked(false);
         }
         VerticalLayout verticalLayout = new VerticalLayout(paperToggle);
         verticalLayout.setAlignItems(Alignment.CENTER);
