@@ -12,11 +12,11 @@ import java.util.HashMap;
 import java.util.Set;
 
 @Log
-public class CalculateBookStatistics {
+public class GenreStatistics {
     private final Set<Book> readShelfBooks;
     private final DoubleToRatingScaleConverter converter;
 
-    public CalculateBookStatistics(PredefinedShelfService predefinedShelfService) {
+    public GenreStatistics(PredefinedShelfService predefinedShelfService) {
         PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
         readShelfBooks = readShelf.getBooks();
 

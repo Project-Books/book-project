@@ -1,7 +1,7 @@
 package com.karankumar.bookproject.ui.statistics;
 
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.statistics.CalculateBookStatistics;
+import com.karankumar.bookproject.backend.statistics.GenreStatistics;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -15,7 +15,7 @@ import java.util.logging.Level;
 @Log
 public class StatisticsView extends HorizontalLayout {
     public StatisticsView(PredefinedShelfService predefinedShelfService) {
-        CalculateBookStatistics bookStatistics = new CalculateBookStatistics(predefinedShelfService);
+        GenreStatistics bookStatistics = new GenreStatistics(predefinedShelfService);
         LOGGER.log(Level.INFO, "Avg page length: " + bookStatistics.calculateAveragePageLength());
     }
 
