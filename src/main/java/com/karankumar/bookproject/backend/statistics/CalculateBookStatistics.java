@@ -8,12 +8,8 @@ import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 import lombok.extern.java.Log;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 @Log
 public class CalculateBookStatistics {
@@ -25,9 +21,6 @@ public class CalculateBookStatistics {
         readShelfBooks = readShelf.getBooks();
 
         converter = new DoubleToRatingScaleConverter();
-
-        LOGGER.log(Level.INFO, "Most liked book: " + findMostLikedBook());
-        LOGGER.log(Level.INFO, "Least liked book: " + findLeastLikedBook());
     }
 
     public Book findBookWithMostPages() {
@@ -83,41 +76,6 @@ public class CalculateBookStatistics {
             genreMap.put(genre, 0);
         }
         return genreMap;
-    }
-
-    public double calculateAverageRatingGiven() {
-        double totalRating = 0;
-        int numberOfRatings = 0;
-        for (Book book : readShelfBooks) {
-            if (book.getRating() != null) {
-                totalRating += converter.convertToPresentation(book.getRating(), null);
-                numberOfRatings++;
-            }
-        }
-
-        return (totalRating / numberOfRatings);
-    }
-
-    public Book findMostLikedBook() {
-        List<Book> readBooksRated = findReadBooksWithRatings();
-        readBooksRated.sort(Comparator.comparing(Book::getRating));
-        return readBooksRated.get(readBooksRated.size() - 1);
-    }
-
-    private List<Book> findReadBooksWithRatings() {
-        List<Book> readBooksRated = new ArrayList<>();
-        for (Book book : readShelfBooks) {
-            if (book.getRating() != null) {
-                readBooksRated.add(book);
-            }
-        }
-        return readBooksRated;
-    }
-
-    public Book findLeastLikedBook() {
-        List<Book> readBooksRated = findReadBooksWithRatings();
-        readBooksRated.sort(Comparator.comparing(Book::getRating));
-        return readBooksRated.get(0);
     }
 
     public Genre findMostLikedGenre() {
