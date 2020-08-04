@@ -3,15 +3,15 @@ package com.karankumar.bookproject.backend.statistics;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 import lombok.extern.java.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -26,7 +26,8 @@ public class CalculateBookStatistics {
 
         converter = new DoubleToRatingScaleConverter();
 
-        LOGGER.log(Level.INFO, "Most read genre: " + findMostReadGenre());
+        LOGGER.log(Level.INFO, "Most liked book: " + findMostLikedBook());
+        LOGGER.log(Level.INFO, "Least liked book: " + findLeastLikedBook());
     }
 
     public Book findBookWithMostPages() {
@@ -98,41 +99,25 @@ public class CalculateBookStatistics {
     }
 
     public Book findMostLikedBook() {
-        Book mostLikedBook = null;
-        for (Book book : readShelfBooks) {
-            if (book.getRating() != null) {
-                if (mostLikedBook == null) {
-                    mostLikedBook = book;
-                } else {
-                    mostLikedBook =
-                            getRatingEnumPosition(book.getRating()) > getRatingEnumPosition(mostLikedBook.getRating()) ?
-                                    book : mostLikedBook;
-                }
-            }
-        }
-        return mostLikedBook;
+        List<Book> readBooksRated = findReadBooksWithRatings();
+        readBooksRated.sort(Comparator.comparing(Book::getRating));
+        return readBooksRated.get(readBooksRated.size() - 1);
     }
 
-    private int getRatingEnumPosition(RatingScale rating) {
-        ArrayList<RatingScale> ratings = new ArrayList<>(Arrays.asList(RatingScale.values()));
-        return ratings.indexOf(rating);
+    private List<Book> findReadBooksWithRatings() {
+        List<Book> readBooksRated = new ArrayList<>();
+        for (Book book : readShelfBooks) {
+            if (book.getRating() != null) {
+                readBooksRated.add(book);
+            }
+        }
+        return readBooksRated;
     }
 
     public Book findLeastLikedBook() {
-        Book leastLikedBook = null;
-        for (Book book : readShelfBooks) {
-            if (book.getRating() != null) {
-                if (leastLikedBook == null) {
-                    leastLikedBook = book;
-                } else {
-                    leastLikedBook =
-                            getRatingEnumPosition(book.getRating()) <
-                                    getRatingEnumPosition(leastLikedBook.getRating()) ?
-                                    book : leastLikedBook;
-                }
-            }
-        }
-        return leastLikedBook;
+        List<Book> readBooksRated = findReadBooksWithRatings();
+        readBooksRated.sort(Comparator.comparing(Book::getRating));
+        return readBooksRated.get(0);
     }
 
     public Genre findMostLikedGenre() {
