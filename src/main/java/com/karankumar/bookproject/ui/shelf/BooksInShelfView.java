@@ -310,10 +310,12 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void editBook(Book book) {
-        if (book != null && bookForm != null) {
-            bookForm.setBook(book);
-            bookForm.openForm();
+        if (book == null || bookForm == null) {
+            return;
         }
+
+        bookForm.setBook(book);
+        bookForm.openForm();
     }
 
     private void deleteBook(BookForm.DeleteEvent event) {
