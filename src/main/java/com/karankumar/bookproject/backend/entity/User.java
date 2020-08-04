@@ -36,6 +36,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 /**
@@ -65,6 +66,11 @@ public class User {
 
     @NotNull
     @NotEmpty
+    // For the RegExp see https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation/3802238#3802238
+    @Pattern(
+            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
+            message = "The password must be at least 8 characters long and including at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+="
+    )
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
