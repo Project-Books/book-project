@@ -87,21 +87,15 @@ public class BooksInShelfView extends VerticalLayout {
         this.bookGrid = new Grid<>(Book.class);
         this.bookFilters = new BookFilters();
 
-        whichShelf = new ComboBox<>();
-        configureChosenShelf();
-
-        filterByTitle = initializeFilterByTitle();
-        filterByAuthorName = initializeFilterByAuthorName();
+        this.whichShelf = initializeChosenShelf();
+        this.filterByTitle = initializeFilterByTitle();
+        this.filterByAuthorName = initializeFilterByAuthorName();
+        HorizontalLayout layout = initializeLayout(whichShelf, filterByTitle, filterByAuthorName);
+        add(layout, bookGrid);
 
         bookForm = new BookForm(shelfService);
 
-        Button addBook = new Button("Add book");
-        addBook.addClickListener(e -> bookForm.addBook());
-        HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle, filterByAuthorName, addBook);
-        horizontalLayout.setAlignItems(Alignment.END);
-
         configureBookGrid();
-        add(horizontalLayout, bookGrid);
 
         add(bookForm);
 
@@ -151,7 +145,19 @@ public class BooksInShelfView extends VerticalLayout {
         return filterByTitle;
     }
 
-    private void configureChosenShelf() {
+    private HorizontalLayout initializeLayout(ComboBox<PredefinedShelf.ShelfName> whichShelf, TextField filterByTitle, TextField filterByAuthorName) {
+        Button addBook = new Button("Add book");
+        addBook.addClickListener(e -> bookForm.addBook());
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout(whichShelf, filterByTitle, filterByAuthorName, addBook);
+        horizontalLayout.setAlignItems(Alignment.END);
+
+        return horizontalLayout;
+    }
+
+    private ComboBox<PredefinedShelf.ShelfName> initializeChosenShelf() {
+        ComboBox<PredefinedShelf.ShelfName> whichShelf = new ComboBox<>();
+
         whichShelf.setPlaceholder("Select shelf");
         whichShelf.setItems(PredefinedShelf.ShelfName.values());
         whichShelf.setRequired(true);
@@ -169,12 +175,14 @@ public class BooksInShelfView extends VerticalLayout {
                         }
                     }
                 });
+
+        return whichShelf;
     }
 
     /**
      * @throws NotSupportedException if a shelf is not supported.
      */
-    // TODO: 3.08.2020 Burayı strategy pattern ile çözelim
+    // TODO: 3.08.2020 this should be moved BookShelfListener. But it's also invoked in the test.
     void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
         BookGrid bookGrid = new BookGrid(this.bookGrid);
 
