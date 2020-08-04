@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 @PageTitle("My Books | Book Project")
 @Log
 public class BooksInShelfView extends VerticalLayout {
-
+    // TODO: 3.08.2020 Encapsulate these variables. visibility should be package-access
     public static final String TITLE_KEY = "title";
     public static final String AUTHOR_KEY = "author";
     public static final String GENRE_KEY = "genre";
@@ -127,43 +127,39 @@ public class BooksInShelfView extends VerticalLayout {
     /**
      * @throws NotSupportedException if a shelf is not supported.
      */
+    // TODO: 3.08.2020 Burayı strategy pattern ile çözelim
     void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
+        BookGrid bookGrid = new BookGrid(this.bookGrid);
+
         switch (shelfName) {
             case TO_READ:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, false);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
+                bookGrid.toggleColumnVisibility(RATING_KEY, false);
+                bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, false);
+                bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, false);
+                bookGrid.toggleColumnVisibility(PAGES_READ_KEY, false);
                 return;
             case READING:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
+                bookGrid.toggleColumnVisibility(RATING_KEY, false);
+                bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, true);
+                bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, false);
+                bookGrid.toggleColumnVisibility(PAGES_READ_KEY, false);
                 return;
             case DID_NOT_FINISH:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, true);
+                bookGrid.toggleColumnVisibility(RATING_KEY, false);
+                bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, true);
+                bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, false);
+                bookGrid.toggleColumnVisibility(PAGES_READ_KEY, true);
                 return;
             case READ:
-                toggleColumnVisibility(RATING_KEY, true);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, true);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
+                bookGrid.toggleColumnVisibility(RATING_KEY, true);
+                bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, true);
+                bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, true);
+                bookGrid.toggleColumnVisibility(PAGES_READ_KEY, false);
                 return;
         }
         throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
     }
 
-    private void toggleColumnVisibility(String columnKey, boolean showColumn) {
-        if (bookGrid.getColumnByKey(columnKey) == null) {
-            LOGGER.log(Level.SEVERE, "Key is null:" + columnKey);
-        } else {
-            bookGrid.getColumnByKey(columnKey).setVisible(showColumn);
-        }
-    }
 
     private String combineTitleAndSeries(Book book) {
         if (book.existsSeriesPosition()) {
@@ -253,7 +249,7 @@ public class BooksInShelfView extends VerticalLayout {
         List<PredefinedShelf> matchingShelves = shelfService.findAll(chosenShelf);
 
         if (!matchingShelves.isEmpty()) {
-            if (matchingShelves.size() == 1) {
+            if (matchingShelves.size() == 1) {// TODO: 3.08.2020 what the fucking is going on here !?
                 LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
                 PredefinedShelf selectedShelf = matchingShelves.get(0);
                 Predicate<Book> caseInsensitiveBookTitleFilter = book -> bookTitle == null
