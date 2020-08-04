@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Level;
 
 @Log
 public class CalculateBookStatistics {
@@ -24,6 +25,8 @@ public class CalculateBookStatistics {
         readShelfBooks = readShelf.getBooks();
 
         converter = new DoubleToRatingScaleConverter();
+
+        LOGGER.log(Level.INFO, "Most read genre: " + findMostReadGenre());
     }
 
     public Book findBookWithMostPages() {
@@ -54,8 +57,31 @@ public class CalculateBookStatistics {
         return (booksWithPagesSpecified == 0) ? 0 : (int) Math.ceil(totalNumberOfPages / booksWithPagesSpecified);
     }
 
-    public void calculateMostReadGenres() {
-        // TODO
+    public Genre findMostReadGenre() {
+        HashMap<Genre, Integer> genresCount = populateEmptyGenreCount();
+        for (Book book : readShelfBooks) {
+            if (book.getGenre() != null) {
+                int previousCount = genresCount.get(book.getGenre());
+                genresCount.replace(book.getGenre(), previousCount + 1);
+            }
+        }
+
+        Genre mostReadGenre = null;
+        for (Genre genre : genresCount.keySet()) {
+            double genreCount = genresCount.get(genre);
+            if (mostReadGenre == null || genresCount.get(mostReadGenre) < genreCount) {
+                mostReadGenre = genre;
+            }
+        }
+        return mostReadGenre;
+    }
+
+    private HashMap<Genre, Integer> populateEmptyGenreCount() {
+        HashMap<Genre, Integer> genreMap = new HashMap<>();
+        for (Genre genre : Genre.values()) {
+            genreMap.put(genre, 0);
+        }
+        return genreMap;
     }
 
     public double calculateAverageRatingGiven() {
@@ -110,7 +136,7 @@ public class CalculateBookStatistics {
     }
 
     public Genre findMostLikedGenre() {
-        HashMap<Genre, Double> genresTotalRating = populateEmptyGenres();
+        HashMap<Genre, Double> genresTotalRating = populateEmptyGenreRatings();
         for (Book book : readShelfBooks) {
             if (book.getGenre() != null && book.getRating() != null) {
                 double totalRatingForGenre = genresTotalRating.get(book.getGenre()) +
@@ -134,7 +160,7 @@ public class CalculateBookStatistics {
         return mostLikedGenre;
     }
 
-    private HashMap<Genre, Double> populateEmptyGenres() {
+    private HashMap<Genre, Double> populateEmptyGenreRatings() {
         HashMap<Genre, Double> genreMap = new HashMap<>();
         for (Genre genre : Genre.values()) {
             genreMap.put(genre, 0.0);
@@ -142,7 +168,28 @@ public class CalculateBookStatistics {
         return genreMap;
     }
 
-    public void findLeastLikedGenre() {
-        // TODO
+    public Genre findLeastLikedGenre() {
+        HashMap<Genre, Double> genresTotalRating = populateEmptyGenreRatings();
+        for (Book book : readShelfBooks) {
+            if (book.getGenre() != null && book.getRating() != null) {
+                double totalRatingForGenre = genresTotalRating.get(book.getGenre()) +
+                        converter.convertToPresentation(book.getRating(), null);
+                genresTotalRating.replace(book.getGenre(), totalRatingForGenre);
+            }
+        }
+
+        Genre leastLikedGenre = null;
+        double leastLikedGenreRating = 0.0;
+        for (Genre genre : genresTotalRating.keySet()) {
+            double genreRating = genresTotalRating.get(genre);
+            if (leastLikedGenre == null) {
+                leastLikedGenre = genre;
+                leastLikedGenreRating = genreRating;
+            } else if (leastLikedGenreRating > genreRating) {
+                leastLikedGenre = genre;
+                leastLikedGenreRating = genreRating;
+            }
+        }
+        return leastLikedGenre;
     }
 }
