@@ -23,34 +23,6 @@ public class CalculateBookStatistics {
         converter = new DoubleToRatingScaleConverter();
     }
 
-    public Book findBookWithMostPages() {
-        Book bookWithMostPages = null;
-        for (Book book : readShelfBooks) {
-            if (book.getNumberOfPages() != null) {
-                if (bookWithMostPages == null) {
-                    bookWithMostPages = book;
-                } else {
-                    bookWithMostPages =
-                            (book.getNumberOfPages() > bookWithMostPages.getNumberOfPages()) ? book : bookWithMostPages;
-                }
-            }
-        }
-        return bookWithMostPages;
-    }
-
-    // This average only includes books that have a page length specified
-    public int calculateAveragePageLength() {
-        int totalNumberOfPages = 0;
-        int booksWithPagesSpecified = 0;
-        for (Book book : readShelfBooks) {
-            if (book.getNumberOfPages() != null) {
-                totalNumberOfPages += book.getNumberOfPages();
-                booksWithPagesSpecified++;
-            }
-        }
-        return (booksWithPagesSpecified == 0) ? 0 : (int) Math.ceil(totalNumberOfPages / booksWithPagesSpecified);
-    }
-
     public Genre findMostReadGenre() {
         HashMap<Genre, Integer> genresCount = populateEmptyGenreCount();
         for (Book book : readShelfBooks) {
