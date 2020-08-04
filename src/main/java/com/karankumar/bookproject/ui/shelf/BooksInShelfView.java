@@ -24,6 +24,10 @@ import com.karankumar.bookproject.ui.book.BookForm;
 import com.karankumar.bookproject.ui.shelf.listener.BookDeleteListener;
 import com.karankumar.bookproject.ui.shelf.listener.BookGridListener;
 import com.karankumar.bookproject.ui.shelf.listener.BookSaveListener;
+import com.karankumar.bookproject.ui.shelf.visibility.DidntFinishBookVisibility;
+import com.karankumar.bookproject.ui.shelf.visibility.ReadBookVisibility;
+import com.karankumar.bookproject.ui.shelf.visibility.ReadingBookVisibility;
+import com.karankumar.bookproject.ui.shelf.visibility.ToReadBookVisibility;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
@@ -132,28 +136,16 @@ public class BooksInShelfView extends VerticalLayout {
 
         switch (shelfName) {
             case TO_READ:
-                bookGrid.toggleColumnVisibility(RATING_KEY, false);
-                bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, false);
-                bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                bookGrid.toggleColumnVisibility(PAGES_READ_KEY, false);
+                new ToReadBookVisibility().toggleColumnVisibility(bookGrid);
                 return;
             case READING:
-                bookGrid.toggleColumnVisibility(RATING_KEY, false);
-                bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, true);
-                bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                bookGrid.toggleColumnVisibility(PAGES_READ_KEY, false);
+                new ReadingBookVisibility().toggleColumnVisibility(bookGrid);
                 return;
             case DID_NOT_FINISH:
-                bookGrid.toggleColumnVisibility(RATING_KEY, false);
-                bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, true);
-                bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                bookGrid.toggleColumnVisibility(PAGES_READ_KEY, true);
+                new DidntFinishBookVisibility().toggleColumnVisibility(bookGrid);
                 return;
             case READ:
-                bookGrid.toggleColumnVisibility(RATING_KEY, true);
-                bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, true);
-                bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, true);
-                bookGrid.toggleColumnVisibility(PAGES_READ_KEY, false);
+                new ReadBookVisibility().toggleColumnVisibility(bookGrid);
                 return;
         }
         throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
