@@ -166,13 +166,11 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private String combineTitleAndSeries(Book book) {
-        String result;
-        if (book.getSeriesPosition() != null && book.getSeriesPosition() > 0) {
-            result = String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
-        } else {
-            result = book.getTitle();
+        if (book.existsSeriesPosition()) {
+            return String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
         }
-        return result;
+
+        return book.getTitle();
     }
 
     private void configureBookGrid() {
@@ -270,9 +268,9 @@ public class BooksInShelfView extends VerticalLayout {
                                         .contains(authorName.toLowerCase());
                 bookGrid.setItems(
                         selectedShelf.getBooks().stream()
-                                     .filter(caseInsensitiveBookTitleFilter)
-                                     .filter(caseInsensitiveAuthorFilter)
-                                     .collect(Collectors.toList()));
+                                .filter(caseInsensitiveBookTitleFilter)
+                                .filter(caseInsensitiveAuthorFilter)
+                                .collect(Collectors.toList()));
             } else {
                 LOGGER.log(
                         Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);

@@ -50,7 +50,7 @@ public class Book extends BaseEntity {
     private Genre genre;
 
     private Integer seriesPosition;
-    
+
     private String edition;
 
     private String bookRecommendedBy;
@@ -81,7 +81,7 @@ public class Book extends BaseEntity {
         this.title = title;
         this.author = author;
     }
-    
+
     public void setEdition(Integer edition) {
         if (edition == null) {
             return;
@@ -110,5 +110,9 @@ public class Book extends BaseEntity {
         return Book.class.getSimpleName() + "{"
             + "title='" + title + '\''
             + '}';
+    }
+
+    public boolean existsSeriesPosition() {
+        return seriesPosition != null && seriesPosition > 0;
     }
 }
