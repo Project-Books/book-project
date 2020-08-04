@@ -21,9 +21,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.book.BookForm;
-import com.karankumar.bookproject.ui.shelf.listener.BookDeleteListener;
-import com.karankumar.bookproject.ui.shelf.listener.BookGridListener;
-import com.karankumar.bookproject.ui.shelf.listener.BookSaveListener;
+import com.karankumar.bookproject.ui.shelf.listener.*;
 import com.karankumar.bookproject.ui.shelf.visibility.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -99,8 +97,14 @@ public class BooksInShelfView extends VerticalLayout {
 
         add(bookForm);
 
+        bindListeners(bookService);
+    }
+
+    private void bindListeners(BookService bookService) {
         new BookSaveListener(bookService, this).bind(bookForm);
         new BookDeleteListener(bookService, this).bind(bookForm);
+        new BookShelfListener(this).bind(whichShelf);
+        new BookFilterListener(this).bind(filterByTitle, filterByAuthorName);
     }
 
     private EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> initVisibilityStrategies() {
@@ -119,12 +123,6 @@ public class BooksInShelfView extends VerticalLayout {
         filterByAuthorName.setPlaceholder("Filter by Author Name");
         filterByAuthorName.setClearButtonVisible(true);
         filterByAuthorName.setValueChangeMode(ValueChangeMode.LAZY);
-        filterByAuthorName.addValueChangeListener(eventFilterAuthorName -> {
-            if (eventFilterAuthorName.getValue() != null) {
-                bookFilters.setBookAuthor(eventFilterAuthorName.getValue());
-            }
-            updateGrid();
-        });
 
         return filterByAuthorName;
     }
@@ -135,12 +133,6 @@ public class BooksInShelfView extends VerticalLayout {
         filterByTitle.setPlaceholder("Filter by book title");
         filterByTitle.setClearButtonVisible(true);
         filterByTitle.setValueChangeMode(ValueChangeMode.LAZY);
-        filterByTitle.addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-                bookFilters.setBookTitle(event.getValue());
-            }
-            updateGrid();
-        });
 
         return filterByTitle;
     }
@@ -161,20 +153,6 @@ public class BooksInShelfView extends VerticalLayout {
         whichShelf.setPlaceholder("Select shelf");
         whichShelf.setItems(PredefinedShelf.ShelfName.values());
         whichShelf.setRequired(true);
-        whichShelf.addValueChangeListener(
-                event -> {
-                    if (event.getValue() == null) {
-                        LOGGER.log(Level.FINE, "No choice selected");
-                    } else {
-                        chosenShelf = event.getValue();
-                        updateGrid();
-                        try {
-                            showOrHideGridColumns(chosenShelf);
-                        } catch (NotSupportedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
 
         return whichShelf;
     }
@@ -183,7 +161,7 @@ public class BooksInShelfView extends VerticalLayout {
      * @throws NotSupportedException if a shelf is not supported.
      */
     // TODO: 3.08.2020 this should be moved BookShelfListener. But it's also invoked in the test.
-    void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
+    public void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
         BookGrid bookGrid = new BookGrid(this.bookGrid);
 
         if (visibilityStrategies.containsKey(shelfName)) {
@@ -224,5 +202,17 @@ public class BooksInShelfView extends VerticalLayout {
         return selectedShelf.getBooks().stream()
                 .filter(book -> bookFilters.apply(book))
                 .collect(Collectors.toList());
+    }
+
+    public void chooseShelf(PredefinedShelf.ShelfName chosenShelf) {
+        this.chosenShelf = chosenShelf;
+    }
+
+    public void setBookFilterAuthor(String author) {
+        bookFilters.setBookAuthor(author);
+    }
+
+    public void setBookFilterTitle(String title) {
+        bookFilters.setBookTitle(title);
     }
 }
