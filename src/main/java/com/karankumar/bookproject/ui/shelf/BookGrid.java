@@ -73,8 +73,9 @@ public class BookGrid {
     }
 
     private List<Book> filterShelf(PredefinedShelf selectedShelf, BookFilters bookFilters) {
-        return selectedShelf.getBooks().stream()
-                .filter(book -> bookFilters.apply(book))
-                .collect(Collectors.toList());
+        return selectedShelf.getBooks()
+                            .stream()
+                            .filter(book -> bookFilters.apply(book))
+                            .collect(Collectors.toList());
     }
 }

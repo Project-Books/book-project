@@ -3,9 +3,11 @@ package com.karankumar.bookproject.ui.shelf.component;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.renderer.LocalDateRenderer;
+import com.vaadin.flow.function.ValueProvider;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.LocalDate;
 import java.util.Comparator;
 
 public class BookGridColumn {
@@ -66,19 +68,22 @@ public class BookGridColumn {
     }
 
     private void addDateStartedColumn() {
-        bookGrid.addColumn(new LocalDateRenderer<>(
-                Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+        bookGrid.addColumn(createLocalDateRenderer(Book::getDateStartedReading))
                 .setHeader("Date started reading")
                 .setComparator(Comparator.comparing(Book::getDateStartedReading))
                 .setKey(DATE_STARTED_KEY);
     }
 
     private void addDateFinishedColumn() {
-        bookGrid.addColumn(new LocalDateRenderer<>(Book::getDateFinishedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+        bookGrid.addColumn(createLocalDateRenderer(Book::getDateFinishedReading))
                 .setHeader("Date finished reading")
                 .setComparator(Comparator.comparing(Book::getDateStartedReading))
                 .setSortable(true)
                 .setKey(DATE_FINISHED_KEY);
+    }
+
+    private LocalDateRenderer createLocalDateRenderer(ValueProvider<Book, LocalDate> provider) {
+        return new LocalDateRenderer(provider, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
     }
 
     private void addRatingColumn() {
