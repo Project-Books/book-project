@@ -16,8 +16,9 @@
 package com.karankumar.bookproject.ui.settings;
 
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.PaperToggle;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.dom.ThemeList;
@@ -30,11 +31,14 @@ import com.vaadin.flow.theme.lumo.Lumo;
 public class SettingsView extends HorizontalLayout {
     private static final String enable = "Enable dark mode";
     private static final String disable = "Disable dark mode";
-    private static final Button toggle;
+    private static PaperToggle paperToggle;
+    private static Label darkModeLabel = new Label(enable);
     private static boolean darkModeOn = false;
 
     static {
-        toggle = new Button(enable, click -> {
+        paperToggle = new PaperToggle();
+
+        paperToggle.addClickListener( e -> {
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
 
             if (themeList.contains(Lumo.DARK)) {
@@ -44,26 +48,29 @@ public class SettingsView extends HorizontalLayout {
                 themeList.add(Lumo.DARK);
                 darkModeOn = true;
             }
-            updateDarkModeButtonText();
+            updateDarkModeLabel();
         });
     }
 
     public SettingsView() {
         if (darkModeOn) {
-            updateDarkModeButtonText();
+            updateDarkModeLabel();
+            paperToggle.setChecked(true);
+        } else {
+            paperToggle.setChecked(false);
         }
-
-        VerticalLayout verticalLayout = new VerticalLayout(toggle);
+        VerticalLayout verticalLayout = new VerticalLayout(paperToggle);
         verticalLayout.setAlignItems(Alignment.CENTER);
+        verticalLayout.add(darkModeLabel);
 
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
 
-    private static void updateDarkModeButtonText() {
-        if (toggle != null) {
-            toggle.setText(darkModeOn ? disable : enable);
+    private static void updateDarkModeLabel() {
+        if (darkModeLabel != null) {
+            darkModeLabel.setText(darkModeOn ? disable : enable);
         }
     }
 }
