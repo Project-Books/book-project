@@ -157,12 +157,7 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void configureBookGrid() {
-        BookGrid bookGrid = new BookGrid(this.bookGrid);
-        bookGrid.configure(event -> {
-            if (event.getValue() != null) {
-                editBook(event.getValue());
-            }
-        });
+        new BookGrid(this.bookGrid).configure(new BookGridListener(bookForm));
     }
 
     private void updateGrid() {
@@ -229,15 +224,6 @@ public class BooksInShelfView extends VerticalLayout {
             }
             updateGrid();
         });
-    }
-
-    private void editBook(Book book) {
-        if (book == null || bookForm == null) {
-            return;
-        }
-
-        bookForm.setBook(book);
-        bookForm.openForm();
     }
 
     private void deleteBook(BookForm.DeleteEvent event) {

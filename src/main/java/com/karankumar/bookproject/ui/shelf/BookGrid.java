@@ -1,8 +1,6 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.renderer.LocalDateRenderer;
 import lombok.extern.java.Log;
@@ -23,7 +21,7 @@ public class BookGrid {
         this.bookGrid = bookGrid;
     }
 
-    public void configure(HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<Grid<Book>, Book>> listener) {
+    public void configure(BookGridListener listener) {
         addListener(listener);
 
         resetGridColumns();
@@ -38,8 +36,8 @@ public class BookGrid {
         bookGrid.addColumn(PAGES_READ_KEY);
     }
 
-    private void addListener(HasValue.ValueChangeListener listener) {
-        bookGrid.asSingleSelect().addValueChangeListener(listener);
+    private void addListener(BookGridListener listener) {
+        bookGrid.asSingleSelect().addValueChangeListener(listener.getListener());
     }
 
     private void resetGridColumns() {
