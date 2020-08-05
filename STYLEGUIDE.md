@@ -24,9 +24,19 @@ This style guide has been dapted from [Google's Java style guide](https://google
 1. [IDE formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#ide-formatting)
 1. [Checking for violations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#checking-for-violations)
 1. [Formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#formatting)
+   1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces)
+   1. [120 character column limit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#120-character-column-limit)
+   1. [One statement per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#120-character-column-limit)
+   1. [Underscores in numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#underscores-in-numeric-literals)
    1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
 1. [Javadoc](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#javadoc)
+   1. [No @author tag](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-author-tag)
 1. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
+   1. [Use @Override](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-override)
+   1. [StringBuilder over StringBuffer](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#stringbuilder-over-stringbuffer)
+   1. [Overriding hashCode() and equals()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-hashcode-and-equals)
+   1. [Overriding toString()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-tostring)
+   1. [Short methods](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#short-methods)
 1. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
 
 ## IDE formatting
@@ -110,7 +120,7 @@ int booksSold = 10000;
 int booksSold = 10_000;
 ```
 
-### Indentation
+## Indentation
 
 ### 4 Spaces, no tabs
 
@@ -191,3 +201,5 @@ If you are considering making changes to any of the recommended styles in this g
 - [Checkstyle configuration](https://github.com/knjk04/book-project/blob/master/src/main/resources/checkstyle.xml)
 - [IntelliJ formatter](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml)
 - [Eclipse formatter](https://github.com/knjk04/book-project/blob/master/ide/eclipse/book_project_formatter_profile.xml)
+
+In addition, please update the [table of contents](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#contents).
