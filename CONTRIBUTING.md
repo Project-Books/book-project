@@ -16,7 +16,7 @@ By contributing to this project, you are expected to adhere to the [Book Project
 
 1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
 1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
-   1. [Tell us which issue you want to work on]()
+   1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
    1. [Discuss your implementation approach](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#discuss-your-implementation-approach)
 1. [Workflow](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#workflow)
    1. [Commit messages](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#commit-messages)
