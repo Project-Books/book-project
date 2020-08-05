@@ -1,4 +1,4 @@
-# Java style guide
+# Style guide
 
 Good judgement should be followed. There may be times where it is more readable to not follow a particular guideline.
 Readable code is preferred over code that strictly follows this guide.
@@ -18,6 +18,16 @@ the version on the master branch should be followed, as this version should be t
 
 This style guide has been dapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
 [Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
+
+## Contents
+
+1. [IDE formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#ide-formatting)
+2. [Checking for violations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#checking-for-violations)
+3. [Formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#formatting)
+4. [Javadoc](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#javadoc)
+5. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
+6. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
+
 
 ## IDE formatting
 
