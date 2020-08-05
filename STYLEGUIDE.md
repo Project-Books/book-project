@@ -29,7 +29,6 @@ This style guide has been dapted from [Google's Java style guide](https://google
 1. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
 1. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
 
-
 ## IDE formatting
 
 IDE-specific code style files have been exported and can be imported into your IDE. The files are located in the
@@ -60,9 +59,15 @@ $ ./mvnw validate
 
 By using the maven wrapper, you don't need to have Maven installed. Alternatively, you could run `mvn validate` if you do have Maven installed.
 
+## Source files
+
+Every source file should have one blank line at the end of it.
+
 ## Formatting
 
-**Braces** 
+### Braces
+
+#### One true brace style (1TBS)
 
 We use the [One true brace style (1TBS)](https://en.wikipedia.org/wiki/Indentation_style#Variant:_1TBS_(OTBS)).
 
@@ -79,15 +84,21 @@ if (condition) {
 }
 ```
 
-**120 character limit**
+### 120 character column limit
 
 A line should generally not exceed 120 characters (an IntelliJ default).
 
 Why 120 characters, not 100 characters (like the Google Java style guide)? You can have two files side by side that do not exceed 120 characters on a 1920x1080 display (at least in IntelliJ).
 
-**One statement per line**
+Exceptions to this rule:
+- `package` and `import` statements
+- Long URL in Javadoc
 
-**Underscores in numeric literals**
+### One statement per line
+
+Every statement should be followed by a line break. This includes variable declarations.
+
+### Underscores in numeric literals
 
 For numeric literals that are ten thousand or higher, underscores are recommended to separate digits by thousands:
 
@@ -101,13 +112,13 @@ int booksSold = 10_000;
 
 ### Indentation
 
-**4 Spaces, no tabs**
+### 4 Spaces, no tabs
 
 4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
 
 This also applies to CSS.
 
-**Aligning method calls**
+### Aligning method calls
 
 An exception to the above 4 spaces indentation rule is aligning method calls (see below). This can improve readability.
 
@@ -123,30 +134,30 @@ bookGrid.addColumn(AUTHOR_KEY)
 
 ## Javadoc
 
-**No @author tag**
+### No @author tag
 
 Author tags can quickly become outdated as methods are updated or completely written by new authors. Git is far better
 at tracking changes.
 
 ## Programming practices
 
-**Use @Override**
+### Use @Override
 
-Wherever possible, the @Override annotation should be used for overriden methods. This is so that the compiler can run
+The @Override annotation should be used for overriden methods. This is so that the compiler can run
 a check at compile-time to see whether the method annotated with @Override actually overrides a method.
 
-**StringBuilder over StringBuffer**
+### StringBuilder over StringBuffer
 
 StringBuilder should be used instead of a StringBuffer for single-threaded code.
 
-**Overriding hashCode() and equals()**
+### Overriding hashCode() and equals()
 
 If you override `hashCode()`, it is good practice to also override `equals()`.
 
 The overrides of `equals()` and `hashCode()` should be equivalent; if `x.equals(y)` is true, then `x.hashCode()` should have
 the same value as `y.hashCode()`.
 
-**Overriding toString()**
+### Overriding toString()
 
 It is sometimes worthwhile overriding `toString()` for logging purposes.
 
@@ -169,7 +180,7 @@ public String toString() {
 }
 ```
 
-**Short methods**
+### Short methods
 
 Wherever possible, try to keep methods short (under 15 lines). This makes it easier to test, comprehend and reuse.
 
