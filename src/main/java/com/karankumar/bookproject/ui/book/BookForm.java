@@ -243,6 +243,7 @@ public class BookForm extends VerticalLayout {
         saveButton.setText(LABEL_ADD_BOOK);
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         saveButton.addClickListener(click -> validateOnSave());
+        saveButton.setDisableOnClick(true);
     }
 
     private void configureResetFormButton() {
@@ -266,7 +267,6 @@ public class BookForm extends VerticalLayout {
     private void validateOnSave() {
         if (binder.isValid()) {
             LOGGER.log(Level.INFO, "Valid binder");
-
             if (binder.getBean() == null) {
                 LOGGER.log(Level.SEVERE, "Binder book bean is null");
                 setBookBean();
