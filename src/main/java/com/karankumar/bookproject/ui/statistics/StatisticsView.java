@@ -10,8 +10,6 @@ import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -26,8 +24,9 @@ public class StatisticsView extends VerticalLayout {
         GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
         PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
 
-//        double averageRating = ratingStatistics.calculateAverageRatingGiven();
-//        add(configureAverageRating(averageRating));
+        double averageRating = ratingStatistics.calculateAverageRatingGiven();
+        String averageRatingOutOf10 = String.format("%s/10", averageRating);
+        add(configureStatistic("Average rating given", averageRatingOutOf10));
 
         Book mostLikedBook = ratingStatistics.findMostLikedBook();
         String mostLikedBookStatistic =
@@ -46,7 +45,7 @@ public class StatisticsView extends VerticalLayout {
         add(configureStatistic("Least liked genre read", leastLikedGenre.toString()));
 
         int averagePageLength = pageStatistics.calculateAveragePageLength();
-        add(configureStatistic("Average page length", String.valueOf(averagePageLength)));
+        add(configureStatistic("Average page length", String.format("%d pages", averagePageLength)));
 
         Book longestBook = pageStatistics.findBookWithMostPages();
         String longestBookStatistic =
