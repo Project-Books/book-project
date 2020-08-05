@@ -5,16 +5,21 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
+import lombok.extern.java.Log;
+import org.springframework.boot.logging.LoggerGroup;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
+@Log
 public class RatingStatistics {
 
     private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
     private final Set<Book> readShelfBooks;
-    private List<Book> readBooksRated;
+    private List<Book> readBooksRated = new ArrayList<>();
 
     public RatingStatistics(PredefinedShelfService predefinedShelfService) {
         PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
