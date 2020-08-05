@@ -16,7 +16,7 @@ the version on the master branch should be followed, as this version should be t
 
 2. Please also ensure that you remain familiar with this document as it may change from time to time
 
-This style guide has been dapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
+This style guide has been adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
 [Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
 
 ## Contents
