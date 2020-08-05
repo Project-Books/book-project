@@ -23,6 +23,7 @@ This style guide has been dapted from [Google's Java style guide](https://google
 
 1. [IDE formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#ide-formatting)
 1. [Checking for violations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#checking-for-violations)
+1. [Source files](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-files)
 1. [Formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#formatting)
    1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces)
    1. [120 character column limit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#120-character-column-limit)
@@ -71,7 +72,36 @@ By using the maven wrapper, you don't need to have Maven installed. Alternativel
 
 ## Source files
 
-Every source file should have one blank line at the end of it.
+### Source file structure
+
+A source file should contain the following in order:
+
+1. License notice and copyright information
+2. Package statement
+3. Import statements
+4. Exactly one top-level class
+
+There should be exactly one blank line to separate every section.
+
+#### No wildcard imports
+
+Wildcard imports, regardless of whether they are static, should not be used:
+```java
+// good
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+
+// bad
+import com.vaadin.flow.component.*;
+```
+
+#### No line-wrapping for package and import statements
+
+The package statement and import statements should not be line-wrapped.
+
+### Newline at end of file
+
+Every source file should have one newline at the end of the file.
 
 ## Formatting
 
