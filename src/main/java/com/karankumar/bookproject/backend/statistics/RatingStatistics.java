@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 @Log
 public class RatingStatistics {
@@ -71,11 +70,7 @@ public class RatingStatistics {
         }
 
         double totalRating = readBooksRated.stream()
-                                           .mapToDouble(book -> {
-                                               Double d = converter.convertToPresentation(book.getRating(), null);
-                                               LOGGER.log(Level.INFO, "Null double " + (d == null));
-                                               return d;
-                                           })
+                                           .mapToDouble(book -> converter.convertToPresentation(book.getRating(), null))
                                            .sum();
         return (totalRating / numberOfRatings);
     }

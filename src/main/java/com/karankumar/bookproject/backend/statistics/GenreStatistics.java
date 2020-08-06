@@ -67,8 +67,6 @@ public class GenreStatistics {
     }
 
     public Genre findLeastLikedGenre() {
-        List<Book> readBooksWithGenresAndRatings = findReadBooksWithGenresAndRatings();
-
         Genre leastLikedGenre = null;
         double leastLikedGenreRating = 0.0;
         for (Book book : readBooksWithGenresAndRatings) {
