@@ -8,7 +8,7 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +52,12 @@ public class RatingStatisticsTest {
 
     @Test
     public void lowestRatedBookExistsAndIsFound() {
-        Assert.assertEquals(bookWithNoRating.getId(), ratingStatistics.findLeastLikedBook().getId());
+        Assertions.assertEquals(bookWithNoRating.getId(), ratingStatistics.findLeastLikedBook().getId());
     }
 
     @Test
     public void highestRatedBookExistsAndIsFound() {
-        Assert.assertEquals(bookWithHighestRating.getId(), ratingStatistics.findMostLikedBook().getId());
+        Assertions.assertEquals(bookWithHighestRating.getId(), ratingStatistics.findMostLikedBook().getId());
     }
 
     @Test
