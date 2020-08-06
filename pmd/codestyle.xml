@@ -9,6 +9,12 @@
         Rules which enforce a specific coding style.
     </description>
 
+    <rule ref="category/plsql/codestyle.xml/CodeFormat">
+        <properties>
+            <property name="indentation" value="4" />
+        </properties>
+    </rule>
+
     <rule name="AvoidDollarSigns"
           since="1.5"
           message="Avoid using dollar signs in variable/method/class/interface names"
