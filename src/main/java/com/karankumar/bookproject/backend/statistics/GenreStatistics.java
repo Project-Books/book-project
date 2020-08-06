@@ -6,7 +6,6 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
-import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-@Log
 public class GenreStatistics {
     private final Set<Book> readShelfBooks;
     private final DoubleToRatingScaleConverter converter;
@@ -52,7 +50,7 @@ public class GenreStatistics {
         return genreMap;
     }
 
-    private Genre findMostLikedGenre() {
+    public Genre findMostLikedGenre() {
         Genre mostLikedGenre = null;
         double mostLikedGenreRating = 0.0;
         for (Book book : readBooksWithGenresAndRatings) {

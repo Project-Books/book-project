@@ -25,8 +25,12 @@ public class PageStatistics {
      * @return the Book in the 'read' shelf with the highest number of pages
      */
     public Book findBookWithMostPages() {
-        booksWithPageCount.sort(Comparator.comparing(Book::getNumberOfPages));
-        return booksWithPageCount.get(booksWithPageCount.size() - 1);
+        Book bookWithMostPages = null;
+        if (!booksWithPageCount.isEmpty()) {
+            booksWithPageCount.sort(Comparator.comparing(Book::getNumberOfPages));
+            bookWithMostPages = booksWithPageCount.get(booksWithPageCount.size() - 1);
+        }
+        return bookWithMostPages;
     }
 
     private List<Book> findBooksWithPageCountSpecified() {
