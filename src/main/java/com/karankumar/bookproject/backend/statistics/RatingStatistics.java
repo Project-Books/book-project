@@ -6,7 +6,6 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 import lombok.extern.java.Log;
-import org.springframework.boot.logging.LoggerGroup;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -64,10 +63,19 @@ public class RatingStatistics {
      * @return the average rating given to all books in the 'read'
      * If a book in the 'read' shelf does not have a rating, it is not included in the sum
      */
-    public double calculateAverageRatingGiven() {
+    public Double calculateAverageRatingGiven() {
         int numberOfRatings = readBooksRated.size();
+
+        if (numberOfRatings == 0) {
+            return null;
+        }
+
         double totalRating = readBooksRated.stream()
-                                           .mapToDouble(book -> converter.convertToPresentation(book.getRating(),null))
+                                           .mapToDouble(book -> {
+                                               Double d = converter.convertToPresentation(book.getRating(), null);
+                                               LOGGER.log(Level.INFO, "Null double " + (d == null));
+                                               return d;
+                                           })
                                            .sum();
         return (totalRating / numberOfRatings);
     }
