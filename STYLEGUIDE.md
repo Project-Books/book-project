@@ -16,6 +16,8 @@ the version on the master branch should be followed, as this version should be t
    1. [Source file structure](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-file-structure)
       1. [No wildcard imports](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-wildcard-imports)
       1. [No line-wrapping for package & import statements](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-line-wrapping-for-package-and-import-statements)
+   1. [Fields at the top](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fields-at-the-top)
+   1. [Overloads together](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overloads-together)
    1. [Newline at end of file](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#newline-at-end-of-file)
 1. [Formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#formatting)
    1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces)
