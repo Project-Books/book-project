@@ -1,16 +1,9 @@
 # Style guide
 
-By contributing to this repository, you are expected to follow this style guide.
+By contributing to this repository, you are expected to follow this style guide. Please also ensure that you remain familiar with this document as it may change from time to time.
 
-## Notes
-
-1. Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
+Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
 the version on the master branch should be followed, as this version should be the most up-to-date.
-
-2. Please also ensure that you remain familiar with this document as it may change from time to time
-
-This style guide has been adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
-[Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
 
 ## Table of Contents
 
@@ -259,3 +252,8 @@ If you are considering making changes to any of the recommended styles in this g
 - [Eclipse formatter](https://github.com/knjk04/book-project/blob/master/ide/eclipse/book_project_formatter_profile.xml)
 
 In addition, please update the [table of contents](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#contents).
+
+## Acknowledgements
+
+This style guide has been adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
+[Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
