@@ -29,6 +29,10 @@ public class GenreStatistics {
         readBooksWithGenresAndRatings = findReadBooksWithGenresAndRatings();
     }
 
+    /**
+     * @return the Genre that has been read the most (of all time)
+     * If no such genre exists, null is returned
+     */
     public Genre findMostReadGenre() {
         HashMap<Genre, Integer> genresReadCount = countGenreReadOccurrences();
         Genre mostReadGenre = null;
@@ -66,6 +70,10 @@ public class GenreStatistics {
                              .collect(Collectors.toList());
     }
 
+    /**
+     * @return the Genre with the highest total rating across all books in the read shelf
+     * If no such genre exists, null is returned
+     */
     public Genre findMostLikedGenre() {
         Genre mostLikedGenre = null;
         List<Map.Entry<Genre, Double>> genreRatings = totalRatingForReadGenre().entrySet().stream()
@@ -100,6 +108,10 @@ public class GenreStatistics {
         return genreMap;
     }
 
+    /**
+     * @return the Genre with the lowest total rating across all books in the read shelf
+     * If no such genre exists, null is returned
+     */
     public Genre findLeastLikedGenre() {
         Genre leastLikedGenre = null;
         double leastLikedGenreRating = 0.0;
