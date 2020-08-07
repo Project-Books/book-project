@@ -33,7 +33,7 @@ public class GenreStatisticsTest {
 
     @Test
     public void mostReadGenreExistsAndIsFound() {
-        Assertions.assertEquals(genreStatistics.findMostReadGenre(), StatisticTestUtils.mostPopularGenre);
+        Assertions.assertEquals(genreStatistics.findMostReadGenre(), StatisticTestUtils.mostReadGenre);
     }
 
     @Test
@@ -43,6 +43,6 @@ public class GenreStatisticsTest {
 
     @Test
     public void leastLikedGenreExistsAndIsFound() {
-        // TODO
+        Assertions.assertEquals(genreStatistics.findLeastLikedGenre(), StatisticTestUtils.leastLikedGenre);
     }
 }
