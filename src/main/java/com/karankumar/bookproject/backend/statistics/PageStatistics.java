@@ -36,7 +36,7 @@ public class PageStatistics {
     private List<Book> findBooksWithPageCountSpecified() {
         List<Book> booksWithPageCount = new ArrayList<>();
         for (Book book : readShelfBooks) {
-            if (book.getPagesRead() != null) {
+            if (book.getNumberOfPages() != null) {
                 booksWithPageCount.add(book);
             }
         }
