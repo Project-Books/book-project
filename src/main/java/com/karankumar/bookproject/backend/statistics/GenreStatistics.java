@@ -29,14 +29,16 @@ public class GenreStatistics {
     public Genre findMostReadGenre() {
         HashMap<Genre, Integer> genresCount = populateEmptyGenreCount();
         for (Genre genre : genresCount.keySet()) {
-            genresCount.replace(genre, Collections.frequency(readBooksWithGenresAndRatings, genre));
+            genresCount.replace(genre, Collections.frequency(readShelfBooks, genre));
         }
 
         Genre mostReadGenre = null;
         for (Genre genre : genresCount.keySet()) {
-            double genreCount = genresCount.get(genre);
-            if (mostReadGenre == null || genresCount.get(mostReadGenre) < genreCount) {
-                mostReadGenre = genre;
+            int genreCount = genresCount.get(genre);
+            if (genreCount != 0) {
+                if (mostReadGenre == null || genresCount.get(mostReadGenre) < genreCount) {
+                    mostReadGenre = genre;
+                }
             }
         }
         return mostReadGenre;
