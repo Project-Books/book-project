@@ -28,6 +28,7 @@ the version on the master branch should be followed, as this version should be t
    1. [Whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#whitespace)
       1. [Vertical whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#vertical-whitespace)
       1. [No horizontal alignment](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-horizontal-alignment)
+   1. [Optional grouping parentheses: recommended](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#optional-grouping-parentheses-recommended)
 1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
    1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
    1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
