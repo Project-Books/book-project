@@ -235,6 +235,24 @@ If an enum class has no methods, it can be written as an array initialiser:
 private enum EventType { SAVED, DELETED }
 ```
 
+### Variable declarations
+
+#### One variable declaration per line
+
+A variable declaration should appear on its own line. There should not be multiple declarations on one line:
+```java
+// good
+private String authorFirstName;
+private String authorLastName;
+
+// bad
+private String authorFirstName, authorLastName;
+```
+
+#### Declare as close as possible to use
+
+Local variables should be declared as close as reasonably possible to where it is used. This can help limit scope and improve readability. Local variables should not be declared at the top of a method for the sake of it.
+
 ## Indentation
 
 ### 4 Spaces, no tabs
