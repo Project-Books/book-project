@@ -190,6 +190,26 @@ if (condition) {
 
 This applies to `if/else` and `try/catch/finally` blocks.
 
+### Whitespace
+
+#### Vertical whitespace
+
+*Where there should be one blank line*
+
+- Between the end of one method (the closing brace) and the start of another
+
+- Between groups of logical statements. This could be a group of related imports, fields, or statements within a method.
+
+Generally speaking, there should not be more than one blank line.
+
+*Where there should not be one blank line*
+
+- Between the class name and the first field declaration (or method declaration or defintion)
+
+#### No horizontal alignment
+
+There should be no horizontal alignment. While it looks nice and improves readability, it is can be harder to maintain.
+
 ## Indentation
 
 ### 4 Spaces, no tabs
