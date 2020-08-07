@@ -228,6 +228,13 @@ There should be no horizontal alignment. While it looks nice and improves readab
 
 Optional grouping parentheses are recommended as they can improve readability. It can help when not everyone is clear with certain precedence rules.
 
+### Enum classes
+
+If an enum class has no methods, it can be written as an array initialiser:
+```java
+private enum EventType { SAVED, DELETED }
+```
+
 ## Indentation
 
 ### 4 Spaces, no tabs
