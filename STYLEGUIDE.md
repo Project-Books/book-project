@@ -1,13 +1,6 @@
 # Style guide
 
-Good judgement should be followed. There may be times where it is more readable to not follow a particular guideline.
-Readable code is preferred over code that strictly follows this guide.
-
-A short summary explaining why the guideline is in place is included to help explain the rationale behind having it.
-
-The styleguide used is an extension of the [Google Java style guide](https://google.github.io/styleguide/javaguide.html). 
-Any differences are listed in this document. By contributing to this repository, you are expected to follow this style
-guide and, where it does not conflict with this style guide, Google's Java style guide.
+By contributing to this repository, you are expected to follow this style guide.
 
 ## Notes
 
@@ -50,6 +43,13 @@ This style guide has been adapted from [Google's Java style guide](https://googl
       1. [Fewest number of assertions in every test](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fewest-number-of-assertions-in-every-test)
 1. [Recommended reading](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#recommended-reading)
 1. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
+
+## Introduction
+
+Good judgement should be followed. There may be times where it is more readable to not follow a particular guideline.
+Readable code is preferred over code that strictly follows this guide.
+
+A short summary explaining why the guideline is in place is included to help explain the rationale behind having it.
 
 ## IDE formatting
 
