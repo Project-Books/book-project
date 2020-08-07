@@ -223,6 +223,10 @@ private Strring authorFirstName;
 
 There should be no horizontal alignment. While it looks nice and improves readability, it is can be harder to maintain.
 
+### Optional grouping parentheses: recommended
+
+Optional grouping parentheses are recommended as they can improve readability. It can help when not everyone is clear with certain precedence rules.
+
 ## Indentation
 
 ### 4 Spaces, no tabs
