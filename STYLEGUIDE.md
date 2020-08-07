@@ -211,6 +211,16 @@ Generally speaking, there should not be more than one blank line.
 
 #### No horizontal alignment
 
+```java
+// acceptable
+private int numberOfPages;
+private String authorFirstName;
+
+// unacceptable
+private int     numberOfPages;
+private Strring authorFirstName;
+```
+
 There should be no horizontal alignment. While it looks nice and improves readability, it is can be harder to maintain.
 
 ## Indentation
