@@ -11,20 +11,21 @@ import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 
 public class StatisticTestUtils {
 
-    private static PredefinedShelfService predefinedShelfService;
+    public static final Genre mostReadGenre = Genre.ADVENTURE;
+    public static final Genre mostLikedGenre = Genre.SCIENCE;
+    public static final Genre leastLikedGenre = Genre.YOUNG_ADULT;
+
     private static Book bookWithLowestRating;
     private static Book bookWithHighestRating;
     private static Book bookWithMostPages;
 
-    public static final Genre mostReadGenre = Genre.ADVENTURE;
-    public static final Genre mostLikedGenre = Genre.SCIENCE;
-    public static final Genre leastLikedGenre = Genre.YOUNG_ADULT;
+    private static PredefinedShelfUtils predefinedShelfUtils;
 
     private StatisticTestUtils() {}
 
     public static void populateReadBooks(BookService bookService, PredefinedShelfService predefinedShelfService) {
         bookService.deleteAll();
-        StatisticTestUtils.predefinedShelfService = predefinedShelfService;
+        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
 
         bookWithLowestRating = createReadBook("Book1", RatingScale.NO_RATING, Genre.BUSINESS, 100);
         bookService.save(bookWithLowestRating);
@@ -39,17 +40,25 @@ public class StatisticTestUtils {
     }
 
     private static Book createReadBook(String bookTitle, RatingScale rating, Genre genre, int pages) {
-        PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
 
-        Author author = new Author("Joe", "Bloggs");
-
-        Book book = new Book(bookTitle, author);
+        Book book = createBook(bookTitle, readShelf, genre, pages);
         book.setRating(rating);
-        book.setShelf(readShelf);
+        return book;
+    }
+
+    private static Book createBook(String bookTitle, PredefinedShelf shelf, Genre genre, int pages) {
+        Author author = new Author("Joe", "Bloggs");
+        Book book = new Book(bookTitle, author);
+        book.setShelf(shelf);
         book.setGenre(genre);
         book.setNumberOfPages(pages);
         return book;
+    }
+
+    private static Book createReadingBook(String bookTitle, Genre genre, int pages) {
+        PredefinedShelf readingShelf = predefinedShelfUtils.findReadingShelf();
+        return createBook(bookTitle, readingShelf, genre, pages);
     }
 
     public static Book getBookWithLowestRating() {

@@ -13,13 +13,23 @@ public class PredefinedShelfUtils {
     }
 
     /**
-     * Only books in the read shelf count towards the goal
      * @return the read shelf if it can be found, null otherwise.
      */
     public PredefinedShelf findReadShelf() {
         return predefinedShelfService.findAll()
                                      .stream()
                                      .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.READ))
+                                     .collect(Collectors.toList())
+                                     .get(0); // there should only be one
+    }
+
+    /**
+     * @return the reading shelf if it can be found, null otherwise.
+     */
+    public PredefinedShelf findReadingShelf() {
+        return predefinedShelfService.findAll()
+                                     .stream()
+                                     .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.READING))
                                      .collect(Collectors.toList())
                                      .get(0); // there should only be one
     }
