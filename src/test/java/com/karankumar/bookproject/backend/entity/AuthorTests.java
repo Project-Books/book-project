@@ -43,7 +43,7 @@ class AuthorTests {
     public static void setup(@Autowired PredefinedShelfService shelfService,
                              @Autowired BookService bookService,
                              @Autowired AuthorService authorService) {
-        Author author = new Author("Steven", "Pinker", null);
+        Author author = new Author("Steven", "Pinker");
 
         testBook1 = new Book("How the mind works", author);
         testBook2 = new Book("The better angels of our nature", author);
@@ -76,7 +76,7 @@ class AuthorTests {
     public void updateAuthorAffectsOneRow() {
         Assumptions.assumeTrue(shelfService != null);
 
-        Author newAuthor = new Author("Matthew", "Walker", null);
+        Author newAuthor = new Author("Matthew", "Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
 
@@ -88,7 +88,7 @@ class AuthorTests {
         Assumptions.assumeTrue(bookService != null);
         bookService.deleteAll(); // reset
 
-        Author orphan = new Author("Jostein", "Gardner", null);
+        Author orphan = new Author("Jostein", "Gardner");
         Book book = new Book("Sophie's World", orphan);
         bookService.delete(book);
 

@@ -36,7 +36,7 @@ public class BookServiceTest {
         BookServiceTest.authorService = authorService;
         authorService.deleteAll();
 
-        Author author = new Author("Test First Name", "Test Last Name", null);
+        Author author = new Author("Test First Name", "Test Last Name");
         bookWithoutShelf = new Book("Test Title", author);
         bookWithoutAuthor = new Book("Book without Author", null);
         validBook = new Book("Book Name", author);
