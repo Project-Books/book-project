@@ -45,7 +45,9 @@ public class StatisticsView extends VerticalLayout {
         }
 
         Genre mostReadGenre = genreStatistics.findMostReadGenre();
-        add(configureStatistic("Most read genre", mostReadGenre.toString()));
+        if (mostReadGenre != null) {
+            add(configureStatistic("Most read genre", mostReadGenre.toString()));
+        }
 
         Genre mostLikedGenre = genreStatistics.findMostLikedGenre();
         if (mostLikedGenre != null) {
@@ -57,8 +59,10 @@ public class StatisticsView extends VerticalLayout {
             add(configureStatistic("Least liked genre read", leastLikedGenre.toString()));
         }
 
-        int averagePageLength = pageStatistics.calculateAveragePageLength();
-        add(configureStatistic("Average page length", String.format("%d pages", averagePageLength)));
+        Integer averagePageLength = pageStatistics.calculateAveragePageLength();
+        if (averagePageLength != null) {
+            add(configureStatistic("Average page length", String.format("%d pages", averagePageLength)));
+        }
 
         Book longestBook = pageStatistics.findBookWithMostPages();
         if (longestBook != null) {
