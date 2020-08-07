@@ -27,6 +27,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.tags.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -292,6 +293,112 @@ public class BookFormTests {
         } else {
             Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible(), pagesRead + shown);
         }
+    }
+
+    @Test
+    void shouldNotAllowNegativeSeriesPosition() {
+        // given
+        bookForm.seriesPosition.setValue(-1);
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals("Series position must be at least 1", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+    }
+
+    @Test
+    void shouldNotAllowNegativePageNumbers() {
+        // given
+        bookForm.numberOfPages.setValue(-1);
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals("There must be at least one page in the book", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+    }
+
+    @Test
+    void shouldNotAllowEmptyBookTitle() {
+        // given
+        bookForm.bookTitle.setValue("");
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals("Please provide a book title", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+    }
+
+    @Test
+    void shouldNotAllowEmptyAuthorFirstName() {
+        // given
+        bookForm.authorFirstName.setValue("");
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals("Please enter the author's first name", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+    }
+
+    @Test
+    void shouldNotAllowEmptyAuthorLastName() {
+        // given
+        bookForm.authorLastName.setValue("");
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals("Please enter the author's last name", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+    }
+
+    @Test
+    void shouldNotAllowEmptyShelf() {
+        // given
+        bookForm.shelf.setValue(null);
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals("Please select a shelf", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+    }
+
+    @Test
+    void shouldNotAllowFutureStartDate() {
+        // given
+        bookForm.dateStartedReading.setValue(LocalDate.now().plusDays(5));
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(2, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals("The date you started reading the book cannot be after today's date.", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+        Assertions.assertEquals("The date you finished reading the book cannot be earlier than the date you started reading the book", validationStatus.getFieldValidationErrors().get(1).getMessage().orElseThrow());
     }
 
     @Test
