@@ -56,11 +56,6 @@ public class StatisticTestUtils {
         return book;
     }
 
-    private static Book createReadingBook(String bookTitle, Genre genre, int pages) {
-        PredefinedShelf readingShelf = predefinedShelfUtils.findReadingShelf();
-        return createBook(bookTitle, readingShelf, genre, pages);
-    }
-
     public static Book getBookWithLowestRating() {
         return bookWithLowestRating;
     }

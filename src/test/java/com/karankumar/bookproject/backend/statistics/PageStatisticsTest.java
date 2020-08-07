@@ -1,5 +1,7 @@
 package com.karankumar.bookproject.backend.statistics;
 
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
@@ -36,6 +38,15 @@ public class PageStatisticsTest {
     }
 
     @Test
+    public void onlyReadBooksCountTowardsMostPagesStatistics() {
+        Book readingBook = new Book("More pages than any read book", new Author("Joe", "Bloggs"));
+        readingBook.setNumberOfPages(StatisticTestUtils.getBookWithMostPages().getNumberOfPages() + 50);
+        bookService.save(readingBook);
+
+        Assertions.assertEquals(StatisticTestUtils.getBookWithMostPages(), pageStatistics.findBookWithMostPages());
+    }
+
+    @Test
     public void testAveragePageLengthDivideByZero() {
         resetPageStatistics();
         Assertions.assertNull(pageStatistics.calculateAveragePageLength());
@@ -44,10 +55,5 @@ public class PageStatisticsTest {
     private void resetPageStatistics() {
         bookService.deleteAll();
         pageStatistics = new PageStatistics(predefinedShelfService);
-    }
-
-    @Test
-    public void onlyReadBooksCountTowardsStatistics() {
-        // TODO
     }
 }
