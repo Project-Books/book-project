@@ -3,6 +3,7 @@ package com.karankumar.bookproject.backend.statistics;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,18 +68,36 @@ public class GenreStatistics {
 
     public Genre findMostLikedGenre() {
         Genre mostLikedGenre = null;
-        double mostLikedGenreRating = 0.0;
-        for (Book book : readBooksWithGenresAndRatings) {
-            double rating = converter.convertToPresentation(book.getRating(), null);
-            if (mostLikedGenre == null) {
-                mostLikedGenre = book.getGenre();
-                mostLikedGenreRating = rating;
-            } else if (rating > mostLikedGenreRating) {
-                mostLikedGenre = book.getGenre();
-                mostLikedGenreRating = rating;
-            }
+        List<Map.Entry<Genre, Double>> genreRatings = totalRatingForReadGenre().entrySet().stream()
+                                                                               .sorted(Map.Entry.comparingByValue())
+                                                                               .collect(Collectors.toList());
+        if (genreRatings.size() > 0) {
+            mostLikedGenre = genreRatings.get(genreRatings.size() - 1)
+                                         .getKey();
         }
         return mostLikedGenre;
+    }
+
+    private Map<Genre, Double> totalRatingForReadGenre() {
+        Map<Genre, Double> totalRatingForReadGenre = populateEmptyGenreRatings();
+
+        for (Book book : readBooksWithGenresAndRatings) {
+            Genre genre = book.getGenre();
+            double totalGenreRating = totalRatingForReadGenre.get(genre);
+            double genreRating = converter.convertToPresentation(book.getRating(), null);
+            totalGenreRating += genreRating;
+            totalRatingForReadGenre.replace(genre, totalGenreRating);
+        }
+
+        return totalRatingForReadGenre;
+    }
+
+    private HashMap<Genre, Double> populateEmptyGenreRatings() {
+        HashMap<Genre, Double> genreMap = new HashMap<>();
+        for (Genre genre : Genre.values()) {
+            genreMap.put(genre, 0.0);
+        }
+        return genreMap;
     }
 
     public Genre findLeastLikedGenre() {
@@ -97,12 +117,12 @@ public class GenreStatistics {
     }
 
     private List<Book> findReadBooksWithGenresAndRatings() {
-        List<Book> booksWithGenres = new ArrayList<>();
+        List<Book> booksWithGenresAndRatings = new ArrayList<>();
         for (Book book : readShelfBooks) {
-            if (book.getGenre() != null && book.getRating() != null) {
-                booksWithGenres.add(book);
+            if (book.getGenre() != null && book.getRating() != null && book.getRating() != RatingScale.NO_RATING) {
+                booksWithGenresAndRatings.add(book);
             }
         }
-        return booksWithGenres;
+        return booksWithGenresAndRatings;
     }
 }

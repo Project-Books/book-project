@@ -16,6 +16,7 @@ public class StatisticTestUtils {
     private static Book bookWithHighestRating;
 
     public static final Genre mostPopularGenre = Genre.ADVENTURE;
+    public static final Genre mostLikedGenre = Genre.SCIENCE;
 
     private StatisticTestUtils() {}
 
@@ -28,6 +29,9 @@ public class StatisticTestUtils {
         bookWithHighestRating = createReadBook("Book2", RatingScale.NINE_POINT_FIVE, mostPopularGenre);
         bookService.save(bookWithHighestRating);
         bookService.save(createReadBook("Book3", RatingScale.SIX, mostPopularGenre));
+        bookService.save(createReadBook("Book4", RatingScale.ONE, mostPopularGenre));
+        bookService.save(createReadBook("Book5", RatingScale.NINE, mostLikedGenre));
+        bookService.save(createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, mostLikedGenre));
     }
 
     private static Book createReadBook(String bookTitle, RatingScale rating, Genre genre) {
