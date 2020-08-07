@@ -169,6 +169,26 @@ int booksSold = 10000;
 int booksSold = 10_000;
 ```
 
+### Empty blocks can be concise
+
+Empty blocks can be concise providing they do not form a part of a multi-block statement.
+
+```java
+// fine
+void foo() {}
+
+// also fine
+void bar() {
+}
+
+// not fine
+if (condition) {
+  foo();
+} else { }
+```
+
+This applies to `if/else` and `try/catch/finally` blocks.
+
 ## Indentation
 
 ### 4 Spaces, no tabs
