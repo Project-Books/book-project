@@ -1,5 +1,5 @@
   <p align="center">
-	<img src="/media/banner/book_project_banner.png" alt="Logo"/>
+	<img src="/media/banner/book_project_banner_dark.png" alt="Logo"/>
   </p>
   
 [![Build Status](https://travis-ci.com/knjk04/book-project.svg?branch=master)](https://travis-ci.com/knjk04/book-project)
