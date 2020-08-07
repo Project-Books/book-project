@@ -41,7 +41,7 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true, exclude= "books")
 public class Author extends BaseEntity {
 
-    public Author(String firstName, String lastName){
+    public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
