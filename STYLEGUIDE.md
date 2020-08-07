@@ -41,6 +41,7 @@ This style guide has been adapted from [Google's Java style guide](https://googl
    1. [Overriding hashCode() and equals()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-hashcode-and-equals)
    1. [Overriding toString()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-tostring)
    1. [Short methods](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#short-methods)
+1. [Recommended reading](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#recommended-reading)
 1. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
 
 ## IDE formatting
