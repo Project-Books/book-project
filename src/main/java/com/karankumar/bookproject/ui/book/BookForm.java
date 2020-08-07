@@ -15,6 +15,7 @@
 
 package com.karankumar.bookproject.ui.book;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
@@ -71,31 +72,52 @@ public class BookForm extends VerticalLayout {
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
 
+    @VisibleForTesting
     final TextField bookTitle = new TextField();
+    @VisibleForTesting
     final IntegerField seriesPosition = new IntegerField();
+    @VisibleForTesting
     final TextField authorFirstName = new TextField();
+    @VisibleForTesting
     final TextField authorLastName = new TextField();
+    @VisibleForTesting
     final ComboBox<PredefinedShelf.ShelfName> shelf = new ComboBox<>();
+    @VisibleForTesting
     final ComboBox<Genre> bookGenre = new ComboBox<>();
+    @VisibleForTesting
     final IntegerField pagesRead = new IntegerField();
+    @VisibleForTesting
     final IntegerField numberOfPages = new IntegerField();
+    @VisibleForTesting
     final DatePicker dateStartedReading = new DatePicker();
+    @VisibleForTesting
     final DatePicker dateFinishedReading = new DatePicker();
+    @VisibleForTesting
     final NumberField rating = new NumberField();
+    @VisibleForTesting
     final Button saveButton = new Button();
+    @VisibleForTesting
     final Checkbox inSeriesCheckbox = new Checkbox();
 
     private final PredefinedShelfService shelfService;
+    @VisibleForTesting
     final Button reset = new Button();
     private final Dialog dialog;
 
+    @VisibleForTesting
     FormLayout.FormItem dateStartedReadingFormItem;
+    @VisibleForTesting
     FormLayout.FormItem dateFinishedReadingFormItem;
+    @VisibleForTesting
     FormLayout.FormItem ratingFormItem;
+    @VisibleForTesting
     FormLayout.FormItem seriesPositionFormItem;
+    @VisibleForTesting
     FormLayout.FormItem pagesReadFormItem;
 
+    @VisibleForTesting
     Button delete = new Button();
+    @VisibleForTesting
     Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
     public BookForm(PredefinedShelfService shelfService) {
