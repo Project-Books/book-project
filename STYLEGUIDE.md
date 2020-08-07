@@ -228,6 +228,12 @@ public String toString() {
 
 Wherever possible, try to keep methods short (under 15 lines). This makes it easier to test, comprehend and reuse.
 
+## JUnit
+
+### Fewest number of assertions in every test
+
+In every test method, try to minimise the number of assertions. Generally speaking, ideally there should only be one.
+
 ## Recommended reading
 
 - Clean code, Robert C. Martin
