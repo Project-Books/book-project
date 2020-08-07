@@ -20,6 +20,7 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -134,7 +135,7 @@ public class ReadingGoalView extends VerticalLayout {
     }
 
     private void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
-        PredefinedShelf readShelf = findReadShelf();
+        PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
         if (readShelf == null || readShelf.getBooks() == null) {
             return;
         }
@@ -169,18 +170,6 @@ public class ReadingGoalView extends VerticalLayout {
      */
     public static String getPluralized(String itemStr, int num){
         return (num > 1) ? (itemStr + "s") : (itemStr);
-    }
-
-    /**
-     * Only books in the read shelf count towards the goal
-     * @return the read shelf if it can be found, null otherwise.
-     */
-    private PredefinedShelf findReadShelf() {
-        return predefinedShelfService.findAll()
-                                     .stream()
-                                     .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.READ))
-                                     .collect(Collectors.toList())
-                                     .get(0); // there should only be one
     }
 
     /**
