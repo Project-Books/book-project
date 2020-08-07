@@ -108,6 +108,14 @@ import com.vaadin.flow.component.*;
 
 The package statement and import statements should not be line-wrapped.
 
+### Fields at the top
+
+All fields should appear at the top of the class before any constructors. Fields should not be interspersed between methods.
+
+### Overloads together
+
+Overloaded methods, including constructors, should appear together with nothing in between. 
+
 ### Newline at end of file
 
 Every source file should have one newline at the end of the file.
