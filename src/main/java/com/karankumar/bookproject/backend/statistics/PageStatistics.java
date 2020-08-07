@@ -47,11 +47,14 @@ public class PageStatistics {
      * @return the average page length for all books in the 'read' shelf
      * This average only includes books that have a page length specified
      */
-    public int calculateAveragePageLength() {
+    public Integer calculateAveragePageLength() {
         int totalNumberOfPages = booksWithPageCount.stream()
                                                    .mapToInt(Book::getNumberOfPages)
                                                    .sum();
         int booksWithPagesSpecified = booksWithPageCount.size();
+        if (booksWithPagesSpecified == 0) {
+            return null;
+        }
         return (booksWithPagesSpecified == 0) ? 0 : (int) Math.ceil(totalNumberOfPages / booksWithPagesSpecified);
     }
 }
