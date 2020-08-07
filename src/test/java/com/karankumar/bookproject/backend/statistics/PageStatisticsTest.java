@@ -32,7 +32,7 @@ public class PageStatisticsTest {
 
     @Test
     public void bookWithMostPagesExistsAndIsFound() {
-        // TODO
+        Assertions.assertEquals(StatisticTestUtils.getBookWithMostPages(), pageStatistics.findBookWithMostPages());
     }
 
     @Test

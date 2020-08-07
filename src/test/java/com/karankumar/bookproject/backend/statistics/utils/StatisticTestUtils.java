@@ -14,6 +14,7 @@ public class StatisticTestUtils {
     private static PredefinedShelfService predefinedShelfService;
     private static Book bookWithLowestRating;
     private static Book bookWithHighestRating;
+    private static Book bookWithMostPages;
 
     public static final Genre mostReadGenre = Genre.ADVENTURE;
     public static final Genre mostLikedGenre = Genre.SCIENCE;
@@ -25,18 +26,19 @@ public class StatisticTestUtils {
         bookService.deleteAll();
         StatisticTestUtils.predefinedShelfService = predefinedShelfService;
 
-        bookWithLowestRating = createReadBook("Book1", RatingScale.NO_RATING, Genre.BUSINESS);
+        bookWithLowestRating = createReadBook("Book1", RatingScale.NO_RATING, Genre.BUSINESS, 100);
         bookService.save(bookWithLowestRating);
-        bookWithHighestRating = createReadBook("Book2", RatingScale.NINE_POINT_FIVE, mostReadGenre);
+        bookWithHighestRating = createReadBook("Book2", RatingScale.NINE_POINT_FIVE, mostReadGenre, 150);
         bookService.save(bookWithHighestRating);
-        bookService.save(createReadBook("Book3", RatingScale.SIX, mostReadGenre));
-        bookService.save(createReadBook("Book4", RatingScale.ONE, mostReadGenre));
-        bookService.save(createReadBook("Book5", RatingScale.NINE, mostLikedGenre));
-        bookService.save(createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, mostLikedGenre));
-        bookService.save(createReadBook("Book7", RatingScale.ZERO, leastLikedGenre));
+        bookService.save(createReadBook("Book3", RatingScale.SIX, mostReadGenre, 200));
+        bookService.save(createReadBook("Book4", RatingScale.ONE, mostReadGenre, 250));
+        bookService.save(createReadBook("Book5", RatingScale.NINE, mostLikedGenre,300));
+        bookService.save(createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, mostLikedGenre, 350));
+        bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, leastLikedGenre, 400);
+        bookService.save(bookWithMostPages);
     }
 
-    private static Book createReadBook(String bookTitle, RatingScale rating, Genre genre) {
+    private static Book createReadBook(String bookTitle, RatingScale rating, Genre genre, int pages) {
         PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
 
@@ -46,6 +48,7 @@ public class StatisticTestUtils {
         book.setRating(rating);
         book.setShelf(readShelf);
         book.setGenre(genre);
+        book.setNumberOfPages(pages);
         return book;
     }
 
@@ -55,5 +58,9 @@ public class StatisticTestUtils {
 
     public static Book getBookWithHighestRating() {
         return bookWithHighestRating;
+    }
+
+    public static Book getBookWithMostPages() {
+        return bookWithMostPages;
     }
 }
