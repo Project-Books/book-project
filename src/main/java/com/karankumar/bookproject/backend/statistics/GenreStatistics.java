@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GenreStatistics {
     private final Set<Book> readShelfBooks;
@@ -27,16 +28,12 @@ public class GenreStatistics {
     }
 
     public Genre findMostReadGenre() {
-        HashMap<Genre, Integer> genresCount = populateEmptyGenreCount();
-        for (Genre genre : genresCount.keySet()) {
-            genresCount.replace(genre, Collections.frequency(readShelfBooks, genre));
-        }
-
+        HashMap<Genre, Integer> genresReadCount = countGenreReadOccurrences();
         Genre mostReadGenre = null;
-        for (Genre genre : genresCount.keySet()) {
-            int genreCount = genresCount.get(genre);
+        for (Genre genre : genresReadCount.keySet()) {
+            int genreCount = genresReadCount.get(genre);
             if (genreCount != 0) {
-                if (mostReadGenre == null || genresCount.get(mostReadGenre) < genreCount) {
+                if (mostReadGenre == null || genresReadCount.get(mostReadGenre) < genreCount) {
                     mostReadGenre = genre;
                 }
             }
@@ -50,6 +47,21 @@ public class GenreStatistics {
             genreMap.put(genre, 0);
         }
         return genreMap;
+    }
+
+    private HashMap<Genre, Integer> countGenreReadOccurrences() {
+        HashMap<Genre, Integer> genresReadCount = populateEmptyGenreCount();
+        for (Genre genre : genresReadCount.keySet()) {
+            genresReadCount.replace(genre, Collections.frequency(genresRead(), genre));
+        }
+        return genresReadCount;
+    }
+
+    private List<Genre> genresRead() {
+        return readShelfBooks.stream()
+                             .takeWhile(book -> book.getGenre() != null)
+                             .map(Book::getGenre)
+                             .collect(Collectors.toList());
     }
 
     public Genre findMostLikedGenre() {
