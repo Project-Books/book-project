@@ -30,7 +30,7 @@ public class RatingStatisticsTest {
     @BeforeEach
     public void beforeEachSetup() {
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
-        bookWithNoRating = StatisticTestUtils.getBookWithNoRating();
+        bookWithNoRating = StatisticTestUtils.getBookWithLowestRating();
         bookWithHighestRating = StatisticTestUtils.getBookWithHighestRating();
 
         ratingStatistics = new RatingStatistics(predefinedShelfService);
