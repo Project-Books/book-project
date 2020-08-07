@@ -36,6 +36,8 @@ This style guide has been adapted from [Google's Java style guide](https://googl
    1. [One statement per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#120-character-column-limit)
    1. [Underscores in numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#underscores-in-numeric-literals)
    1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
+      1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
+      1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
 1. [Javadoc](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#javadoc)
    1. [No @author tag](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-author-tag)
 1. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
