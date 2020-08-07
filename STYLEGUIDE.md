@@ -253,6 +253,20 @@ private String authorFirstName, authorLastName;
 
 Local variables should be declared as close as reasonably possible to where it is used. This can help limit scope and improve readability. Local variables should not be declared at the top of a method for the sake of it.
 
+### Arrays
+
+#### No C-style array declarations
+
+The square brackets should be next to the type name, not the variable name. This is because they a part of the type.
+
+```java
+// good
+String[] args
+
+// bad
+String args[]
+```
+
 ## Indentation
 
 ### 4 Spaces, no tabs
