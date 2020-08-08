@@ -87,9 +87,7 @@ public class BookService extends BaseService<Book, Long> {
         if (books.contains(book)) {
             LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
         } else {
-            LOGGER.log(
-                Level.INFO,
-                book.getTitle() + " deleted. Book repository size = " + bookRepository.count());
+            LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " + bookRepository.count());
         }
     }
 
