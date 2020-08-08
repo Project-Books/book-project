@@ -2,10 +2,8 @@ package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 
 import java.util.ArrayList;
@@ -13,18 +11,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-public class GenreStatistics {
-    private final Set<Book> readShelfBooks;
+public class GenreStatistics extends Statistics {
     private final DoubleToRatingScaleConverter converter;
     private final List<Book> readBooksWithGenresAndRatings;
 
     public GenreStatistics(PredefinedShelfService predefinedShelfService) {
-        PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
-        readShelfBooks = readShelf.getBooks();
-
+        super(predefinedShelfService);
         converter = new DoubleToRatingScaleConverter();
         readBooksWithGenresAndRatings = findReadBooksWithGenresAndRatings();
     }

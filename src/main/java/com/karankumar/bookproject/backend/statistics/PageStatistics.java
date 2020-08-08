@@ -1,23 +1,17 @@
 package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
-public class PageStatistics {
-
-    private final Set<Book> readShelfBooks;
+public class PageStatistics extends Statistics {
     private final List<Book> booksWithPageCount;
 
     public PageStatistics(PredefinedShelfService predefinedShelfService) {
-        PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
-        readShelfBooks = readShelf.getBooks();
+        super(predefinedShelfService);
         booksWithPageCount = findBooksWithPageCountSpecified();
     }
 

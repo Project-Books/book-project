@@ -1,27 +1,21 @@
 package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 @Log
-public class RatingStatistics {
-
+public class RatingStatistics extends Statistics {
     private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
-    private final Set<Book> readShelfBooks;
     private List<Book> readBooksRated = new ArrayList<>();
 
     public RatingStatistics(PredefinedShelfService predefinedShelfService) {
-        PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
-        readShelfBooks = readShelf.getBooks();
+        super(predefinedShelfService);
         readBooksRated = findReadBooksWithRatings();
     }
 
