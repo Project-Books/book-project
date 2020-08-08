@@ -129,17 +129,17 @@ public class BookForm extends VerticalLayout {
         dialog.add(formLayout);
 
         bindFormFields();
-        configureTitle();
-        configureAuthor();
-        configureShelf();
-        configureGenre();
-        configureSeriesPosition();
-        configurePagesRead();
-        configureNumberOfPages();
-        configureDateStarted();
-        configureDateFinished();
-        configureRating();
-        configureInSeriesCheckbox();
+        configureTitleFormField();
+        configureAuthorFormField();
+        configureShelfFormField();
+        configureGenreFormField();
+        configureSeriesPositionFormField();
+        configurePagesReadFormField();
+        configureNumberOfPagesFormField();
+        configureDateStartedFormField();
+        configureDateFinishedFormField();
+        configureRatingFormField();
+        configureInSeriesFormField();
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
                 bookTitle,
@@ -160,7 +160,7 @@ public class BookForm extends VerticalLayout {
         add(dialog);
     }
 
-    private void configureInSeriesCheckbox() {
+    private void configureInSeriesFormField() {
         inSeriesCheckbox.setValue(false);
         inSeriesCheckbox.addValueChangeListener(event -> {
             seriesPositionFormItem.setVisible(event.getValue());
@@ -171,9 +171,7 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * Sets up the form layout
-     *
-     * @param formLayout   the form layout to configure
+     * @param formLayout the form layout to configure
      * @param buttonLayout a layout consisting of buttons
      */
     private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
@@ -209,9 +207,6 @@ public class BookForm extends VerticalLayout {
         dialog.close();
     }
 
-    /**
-     * Binds the form fields and defines custom validators where necessary
-     */
     private void bindFormFields() {
         binder.forField(bookTitle)
               .asRequired(BOOK_TITLE_ERROR)
@@ -248,8 +243,6 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * Sets up the save, reset and delete buttons
-     *
      * @return a HorizontalLayout containing the save, reset & delete buttons
      */
     private HorizontalLayout configureFormButtons() {
@@ -271,7 +264,7 @@ public class BookForm extends VerticalLayout {
 
     private void configureResetFormButton() {
         reset.setText("Reset");
-        reset.addClickListener(event -> clearForm());
+        reset.addClickListener(event -> clearFormFields());
     }
 
     private void configureDeleteButton() {
@@ -284,9 +277,6 @@ public class BookForm extends VerticalLayout {
         delete.addClickListener(v -> saveButton.setText(LABEL_ADD_BOOK));
     }
 
-    /**
-     * Defines the behaviour once the form is in a valid state and the save button was pressed
-     */
     private void validateOnSave() {
         if (binder.isValid()) {
             LOGGER.log(Level.INFO, "Valid binder");
@@ -372,20 +362,14 @@ public class BookForm extends VerticalLayout {
         binder.setBean(book);
     }
 
-    /**
-     * Sets up the the book title form field
-     */
-    private void configureTitle() {
+    private void configureTitleFormField() {
         bookTitle.setPlaceholder("Enter a book title");
         bookTitle.setClearButtonVisible(true);
         bookTitle.setRequired(true);
         bookTitle.setRequiredIndicatorVisible(true);
     }
 
-    /**
-     * Set up the form fields for an author's first and last name
-     */
-    private void configureAuthor() {
+    private void configureAuthorFormField() {
         authorFirstName.setPlaceholder("Enter the author's first name");
         authorFirstName.setClearButtonVisible(true);
         authorFirstName.setRequired(true);
@@ -397,27 +381,18 @@ public class BookForm extends VerticalLayout {
         authorLastName.setRequiredIndicatorVisible(true);
     }
 
-    /**
-     * Sets up the form field for adding a book genre
-     */
-    private void configureGenre() {
+    private void configureGenreFormField() {
         bookGenre.setItems(Genre.values());
         bookGenre.setPlaceholder("Choose a book genre");
     }
 
-    /**
-     * Sets up the form field for adding the position of the book in a series
-     */
-    private void configureSeriesPosition() {
+    private void configureSeriesPositionFormField() {
         seriesPosition.setPlaceholder("Enter series position");
         seriesPosition.setMin(1);
         seriesPosition.setHasControls(true);
     }
 
-    /**
-     * Sets up the form field for choosing which shelf a book should go into
-     */
-    private void configureShelf() {
+    private void configureShelfFormField() {
         shelf.setRequired(true);
         shelf.setPlaceholder("Choose a shelf");
         shelf.setClearButtonVisible(true);
@@ -521,10 +496,7 @@ public class BookForm extends VerticalLayout {
         }
     }
 
-    /**
-     * Sets up the rating form field
-     */
-    private void configureRating() {
+    private void configureRatingFormField() {
         rating.setHasControls(true);
         rating.setPlaceholder("Enter a rating");
         rating.setMin(0);
@@ -533,46 +505,31 @@ public class BookForm extends VerticalLayout {
         rating.setClearButtonVisible(true);
     }
 
-    /**
-     * Sets up the date started reading form field
-     */
-    private void configureDateStarted() {
+    private void configureDateStartedFormField() {
         dateStartedReading.setClearButtonVisible(true);
         dateStartedReading.setPlaceholder(ENTER_DATE);
     }
 
-    /**
-     * Sets up the date finished reading form field
-     */
-    private void configureDateFinished() {
+    private void configureDateFinishedFormField() {
         dateFinishedReading.setClearButtonVisible(true);
         dateFinishedReading.setPlaceholder(ENTER_DATE);
     }
 
-    /**
-     * Sets up the form field for the number of pages in the book
-     */
-    private void configureNumberOfPages() {
+    private void configureNumberOfPagesFormField() {
         numberOfPages.setPlaceholder("Enter number of pages");
         numberOfPages.setMin(1);
         numberOfPages.setHasControls(true);
         numberOfPages.setClearButtonVisible(true);
     }
 
-    /**
-     * Sets up the form field for the number of pages read
-     */
-    private void configurePagesRead() {
+    private void configurePagesReadFormField() {
         pagesRead.setPlaceholder("Enter number of pages read");
         pagesRead.setMin(1);
         pagesRead.setHasControls(true);
         pagesRead.setClearButtonVisible(true);
     }
 
-    /**
-     * Clears all of the form fields
-     */
-    private void clearForm() {
+    private void clearFormFields() {
         HasValue[] components = {
                 bookTitle,
                 authorFirstName,
@@ -594,11 +551,6 @@ public class BookForm extends VerticalLayout {
         }
     }
 
-    /**
-     * Sets the minimum width for all of the form fields
-     *
-     * @param components all of the form fields
-     */
     private void setComponentMinWidth(HasSize[] components) {
         for (HasSize h : components) {
             h.setMinWidth("23em");
@@ -623,7 +575,7 @@ public class BookForm extends VerticalLayout {
     }
 
     public void addBook() {
-        clearForm();
+        clearFormFields();
         openForm();
     }
 
