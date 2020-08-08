@@ -160,8 +160,10 @@ public class BookFormTests {
     @ParameterizedTest
     @EnumSource(EventType.class)
     public void saveEventPopulated(EventType eventType) {
+        // given
         populateBookForm();
 
+        // when
         AtomicReference<Book> bookReference = new AtomicReference<>(null);
         if (eventType.equals(EventType.SAVED)) {
             bookForm
@@ -174,6 +176,7 @@ public class BookFormTests {
         }
         Book savedOrDeletedBook = bookReference.get();
 
+        // then
         Assertions.assertEquals(bookTitle, savedOrDeletedBook.getTitle());
         Assertions.assertEquals(firstName, savedOrDeletedBook.getAuthor().getFirstName());
         Assertions.assertEquals(lastName, savedOrDeletedBook.getAuthor().getLastName());
@@ -205,20 +208,14 @@ public class BookFormTests {
      */
     @Test
     public void formCanBeCleared() {
+        // given
         populateBookForm();
-        // Assume that all form fields are non empty
-        Assumptions.assumeFalse(bookForm.authorFirstName.isEmpty(), "Author first name not populated");
-        Assumptions.assumeFalse(bookForm.authorLastName.isEmpty(), "Author last name not populated");
-        Assumptions.assumeFalse(bookForm.bookTitle.isEmpty(), "Book title not populated");
-        Assumptions.assumeFalse(bookForm.shelf.isEmpty(), "Shelf not populated");
-        Assumptions.assumeFalse(bookForm.bookGenre.isEmpty(), "Book genre not populated");
-        Assumptions.assumeFalse(bookForm.pagesRead.isEmpty(), "Pages read not populated");
-        Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty(), "Number of pages not populated");
-        Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty(), "Date started populated");
-        Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty(), "Date finished populated");
+        assumeAllFormFieldsArePopulated();
 
+        // when
         bookForm.reset.click();
 
+        // then
         Assertions.assertTrue(bookForm.authorFirstName.isEmpty(), "Author first name not cleared");
         Assertions.assertTrue(bookForm.authorLastName.isEmpty(), "Author last name not cleared");
         Assertions.assertTrue(bookForm.bookTitle.isEmpty(), "Book title not cleared");
@@ -231,69 +228,56 @@ public class BookFormTests {
         Assertions.assertTrue(bookForm.rating.isEmpty(), "Rating not cleared");
     }
 
-    @ParameterizedTest
-    @EnumSource(PredefinedShelf.ShelfName.class)
-    public void correctFormFieldsShownForGivenShelf(PredefinedShelf.ShelfName shelfName) {
-        populateBookForm();
-        bookForm.shelf.setValue(shelfName); // shelf chosen may have changed
-
-        boolean shouldShowStarted = false;
-        boolean shouldShowFinished = false;
-        boolean shouldShowRating = false;
-        boolean shouldShowPagesRead = false;
-
-        switch (shelfName) {
-            case TO_READ:
-                break; // all fields already set to false
-            case READING:
-                shouldShowStarted = true;
-                break;
-            case DID_NOT_FINISH:
-                shouldShowStarted = true;
-                shouldShowPagesRead = true;
-                // finished and rating already set to false
-                break;
-            case READ:
-                shouldShowStarted = true;
-                shouldShowFinished = true;
-                shouldShowRating = true;
-                shouldShowPagesRead = false;
-                break;
-        }
-
-        final String dateStarted = "Date started ";
-        final String dateFinished = "Date finished ";
-        final String rating = "Rating ";
-        final String pagesRead = "Pages read ";
-        final String shown = String.format("shown for a book in the %s shelf", shelfName);
-        final String notShown = String.format("not shown for a book in the %s shelf", shelfName);
-        if (shouldShowStarted) {
-            Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible(), dateStarted + notShown);
-        } else {
-            Assertions.assertFalse(bookForm.dateStartedReadingFormItem.isVisible(), dateStarted + shown);
-        }
-
-        if (shouldShowFinished) {
-            Assertions.assertTrue(bookForm.dateFinishedReadingFormItem.isVisible(), dateFinished + notShown);
-        } else {
-            Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible(), dateFinished + shown);
-        }
-
-        if (shouldShowRating) {
-            Assertions.assertTrue(bookForm.ratingFormItem.isVisible(), rating + notShown);
-        } else {
-            Assertions.assertFalse(bookForm.ratingFormItem.isVisible(), rating + shown);
-        }
-
-        if (shouldShowPagesRead) {
-            Assertions.assertTrue(bookForm.pagesReadFormItem.isVisible(), pagesRead + notShown);
-        } else {
-            Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible(), pagesRead + shown);
-        }
+    private void assumeAllFormFieldsArePopulated() {
+        Assumptions.assumeFalse(bookForm.authorFirstName.isEmpty(), "Author first name not populated");
+        Assumptions.assumeFalse(bookForm.authorLastName.isEmpty(), "Author last name not populated");
+        Assumptions.assumeFalse(bookForm.bookTitle.isEmpty(), "Book title not populated");
+        Assumptions.assumeFalse(bookForm.shelf.isEmpty(), "Shelf not populated");
+        Assumptions.assumeFalse(bookForm.bookGenre.isEmpty(), "Book genre not populated");
+        Assumptions.assumeFalse(bookForm.pagesRead.isEmpty(), "Pages read not populated");
+        Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty(), "Number of pages not populated");
+        Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty(), "Date started populated");
+        Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty(), "Date finished populated");
     }
 
     @Test
-    void shouldNotAllowNegativeSeriesPosition() {
+    public void correctFormFieldsShowForToReadShelf() {
+        bookForm.shelf.setValue(PredefinedShelf.ShelfName.TO_READ);
+        Assertions.assertFalse(bookForm.dateStartedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible());
+    }
+
+    @Test
+    public void correctFormFieldsShowForReadingShelf() {
+        bookForm.shelf.setValue(PredefinedShelf.ShelfName.READING);
+        Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible());
+    }
+
+    @Test
+    public void correctFormFieldsShowForReadShelf() {
+        bookForm.shelf.setValue(PredefinedShelf.ShelfName.READ);
+        Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
+        Assertions.assertTrue(bookForm.dateFinishedReadingFormItem.isVisible());
+        Assertions.assertTrue(bookForm.ratingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible());
+    }
+
+    @Test
+    public void correctFormFieldsShowForDidNotFinishShelf() {
+        bookForm.shelf.setValue(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+        Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
+        Assertions.assertTrue(bookForm.pagesReadFormItem.isVisible());
+    }
+
+    @Test
+    public void shouldNotAllowNegativeSeriesPosition() {
         // given
         bookForm.seriesPosition.setValue(-1);
 
