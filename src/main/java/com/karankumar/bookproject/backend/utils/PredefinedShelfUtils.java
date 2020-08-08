@@ -15,6 +15,13 @@ public class PredefinedShelfUtils {
     /**
      * Convenience method for accessing the read shelf
      */
+    public PredefinedShelf findToReadShelf() {
+        return findPredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
+    }
+
+    /**
+     * Convenience method for accessing the read shelf
+     */
     public PredefinedShelf findReadShelf() {
         return findPredefinedShelf(PredefinedShelf.ShelfName.READ);
     }
