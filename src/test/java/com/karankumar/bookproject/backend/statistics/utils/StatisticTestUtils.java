@@ -90,8 +90,14 @@ public class StatisticTestUtils {
     }
 
     public static int getNumberOfBooks() {
-        System.out.println("Number of books: " + savedBooks.size());
-        System.out.println("Saved books: " + savedBooks);
         return savedBooks.size();
+    }
+
+    public static int getTotalNumberOfPages() {
+        int pages = 0;
+        for (Book book : savedBooks) {
+            pages += book.getNumberOfPages();
+        }
+        return pages;
     }
 }

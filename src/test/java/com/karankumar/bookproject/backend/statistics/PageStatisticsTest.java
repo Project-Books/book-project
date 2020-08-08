@@ -56,6 +56,12 @@ public class PageStatisticsTest {
         Assertions.assertNull(pageStatistics.calculateAveragePageLength());
     }
 
+    @Test
+    public void averagePageLengthExistsAndIsCorrect() {
+        int averagePageLength = StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
+        Assertions.assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
+    }
+
     private void resetPageStatistics() {
         bookService.deleteAll();
         pageStatistics = new PageStatistics(predefinedShelfService);
