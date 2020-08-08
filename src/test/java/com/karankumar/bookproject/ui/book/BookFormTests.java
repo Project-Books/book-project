@@ -133,7 +133,7 @@ public class BookFormTests {
      * Tests whether the form fields are correctly populated
      */
     @Test
-    public void formFieldsPopulated() {
+    void formFieldsPopulated() {
         Assertions.assertEquals(bookTitle, bookForm.bookTitle.getValue());
         Assertions.assertEquals(firstName, bookForm.authorFirstName.getValue());
         Assertions.assertEquals(lastName, bookForm.authorLastName.getValue());
@@ -147,10 +147,7 @@ public class BookFormTests {
         Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
     }
 
-    enum EventType {
-        SAVED,
-        DELETED
-    }
+    enum EventType { SAVED, DELETED }
 
     /**
      * Tests whether the event is populated with the values from the form
@@ -159,7 +156,7 @@ public class BookFormTests {
      */
     @ParameterizedTest
     @EnumSource(EventType.class)
-    public void saveEventPopulated(EventType eventType) {
+    void saveEventPopulated(EventType eventType) {
         // given
         populateBookForm();
 
@@ -207,7 +204,7 @@ public class BookFormTests {
      * Tests whether the reset button correctly clears all fields when clicked
      */
     @Test
-    public void formCanBeCleared() {
+    void formCanBeCleared() {
         // given
         populateBookForm();
         assumeAllFormFieldsArePopulated();
@@ -216,32 +213,32 @@ public class BookFormTests {
         bookForm.reset.click();
 
         // then
-        Assertions.assertTrue(bookForm.authorFirstName.isEmpty(), "Author first name not cleared");
-        Assertions.assertTrue(bookForm.authorLastName.isEmpty(), "Author last name not cleared");
-        Assertions.assertTrue(bookForm.bookTitle.isEmpty(), "Book title not cleared");
-        Assertions.assertTrue(bookForm.shelf.isEmpty(), "Shelf not cleared");
-        Assertions.assertTrue(bookForm.bookGenre.isEmpty(), "Book genre not cleared");
-        Assertions.assertTrue(bookForm.pagesRead.isEmpty(), "Pages read not cleared");
-        Assertions.assertTrue(bookForm.numberOfPages.isEmpty(), "Number of pages not cleared");
-        Assertions.assertTrue(bookForm.dateStartedReading.isEmpty(), "Date started not cleared");
-        Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty(), "Date finished not cleared");
-        Assertions.assertTrue(bookForm.rating.isEmpty(), "Rating not cleared");
+        Assertions.assertTrue(bookForm.authorFirstName.isEmpty());
+        Assertions.assertTrue(bookForm.authorLastName.isEmpty());
+        Assertions.assertTrue(bookForm.bookTitle.isEmpty());
+        Assertions.assertTrue(bookForm.shelf.isEmpty());
+        Assertions.assertTrue(bookForm.bookGenre.isEmpty());
+        Assertions.assertTrue(bookForm.pagesRead.isEmpty());
+        Assertions.assertTrue(bookForm.numberOfPages.isEmpty());
+        Assertions.assertTrue(bookForm.dateStartedReading.isEmpty());
+        Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty());
+        Assertions.assertTrue(bookForm.rating.isEmpty());
     }
 
     private void assumeAllFormFieldsArePopulated() {
-        Assumptions.assumeFalse(bookForm.authorFirstName.isEmpty(), "Author first name not populated");
-        Assumptions.assumeFalse(bookForm.authorLastName.isEmpty(), "Author last name not populated");
-        Assumptions.assumeFalse(bookForm.bookTitle.isEmpty(), "Book title not populated");
-        Assumptions.assumeFalse(bookForm.shelf.isEmpty(), "Shelf not populated");
-        Assumptions.assumeFalse(bookForm.bookGenre.isEmpty(), "Book genre not populated");
-        Assumptions.assumeFalse(bookForm.pagesRead.isEmpty(), "Pages read not populated");
-        Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty(), "Number of pages not populated");
-        Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty(), "Date started populated");
-        Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty(), "Date finished populated");
+        Assumptions.assumeFalse(bookForm.authorFirstName.isEmpty());
+        Assumptions.assumeFalse(bookForm.authorLastName.isEmpty());
+        Assumptions.assumeFalse(bookForm.bookTitle.isEmpty());
+        Assumptions.assumeFalse(bookForm.shelf.isEmpty());
+        Assumptions.assumeFalse(bookForm.bookGenre.isEmpty());
+        Assumptions.assumeFalse(bookForm.pagesRead.isEmpty());
+        Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty());
+        Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty());
+        Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty());
     }
 
     @Test
-    public void correctFormFieldsShowForToReadShelf() {
+    void correctFormFieldsShowForToReadShelf() {
         bookForm.shelf.setValue(PredefinedShelf.ShelfName.TO_READ);
         Assertions.assertFalse(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
@@ -250,7 +247,7 @@ public class BookFormTests {
     }
 
     @Test
-    public void correctFormFieldsShowForReadingShelf() {
+    void correctFormFieldsShowForReadingShelf() {
         bookForm.shelf.setValue(PredefinedShelf.ShelfName.READING);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
@@ -259,7 +256,7 @@ public class BookFormTests {
     }
 
     @Test
-    public void correctFormFieldsShowForReadShelf() {
+    void correctFormFieldsShowForReadShelf() {
         bookForm.shelf.setValue(PredefinedShelf.ShelfName.READ);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertTrue(bookForm.dateFinishedReadingFormItem.isVisible());
@@ -268,7 +265,7 @@ public class BookFormTests {
     }
 
     @Test
-    public void correctFormFieldsShowForDidNotFinishShelf() {
+    void correctFormFieldsShowForDidNotFinishShelf() {
         bookForm.shelf.setValue(PredefinedShelf.ShelfName.DID_NOT_FINISH);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
@@ -277,7 +274,7 @@ public class BookFormTests {
     }
 
     @Test
-    public void shouldNotAllowNegativeSeriesPosition() {
+    void shouldNotAllowNegativeSeriesPosition() {
         // given
         bookForm.seriesPosition.setValue(-1);
 
