@@ -15,6 +15,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import lombok.extern.java.Log;
 
+import java.text.DecimalFormat;
+
 @Route(value = "statistics", layout = MainView.class)
 @PageTitle("Statistics | Book Project")
 @Log
@@ -26,7 +28,7 @@ public class StatisticsView extends VerticalLayout {
 
         Double averageRating = ratingStatistics.calculateAverageRatingGiven();
         if (averageRating != null) {
-            String averageRatingOutOf10 = String.format("%s/10", averageRating);
+            String averageRatingOutOf10 = String.format("%s/10", new DecimalFormat("#.00").format(averageRating));
             add(configureStatistic("Average rating given", averageRatingOutOf10));
         }
 
