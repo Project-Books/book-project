@@ -8,6 +8,7 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 
 import java.util.ArrayList;
 
@@ -17,14 +18,16 @@ public class StatisticTestUtils {
     public static final Genre mostLikedGenre = Genre.SCIENCE;
     public static final Genre leastLikedGenre = Genre.YOUNG_ADULT;
 
-    public static ArrayList<Book> savedBooks = new ArrayList<>();
-
     private static Book bookWithLowestRating;
     private static Book bookWithHighestRating;
     private static Book bookWithMostPages;
+    private static ArrayList<Book> savedBooks = new ArrayList<>();
 
     private static BookService bookService;
     private static PredefinedShelfUtils predefinedShelfUtils;
+
+    private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
+    public static double totalRating = 0.0;
 
     private StatisticTestUtils() {}
 
@@ -46,7 +49,10 @@ public class StatisticTestUtils {
         PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
         Book book = createBook(bookTitle, readShelf, genre, pages);
         book.setRating(rating);
+
         saveBook(book); // this should be called here & not in createBook()
+        updateTotalRating(rating);
+
         return book;
     }
 
@@ -64,6 +70,13 @@ public class StatisticTestUtils {
         savedBooks.add(bookToSave);
     }
 
+    private static void updateTotalRating(RatingScale ratingScale) {
+        Double rating = converter.convertToPresentation(ratingScale, null);
+        if (rating != null) {
+            totalRating += rating;
+        }
+    }
+
     public static Book getBookWithLowestRating() {
         return bookWithLowestRating;
     }
@@ -74,5 +87,11 @@ public class StatisticTestUtils {
 
     public static Book getBookWithMostPages() {
         return bookWithMostPages;
+    }
+
+    public static int getNumberOfBooks() {
+        System.out.println("Number of books: " + savedBooks.size());
+        System.out.println("Saved books: " + savedBooks);
+        return savedBooks.size();
     }
 }

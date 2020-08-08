@@ -29,6 +29,7 @@ public class RatingStatisticsTest {
 
     @BeforeEach
     public void beforeEachSetup() {
+        bookService.deleteAll(); // reset
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         bookWithNoRating = StatisticTestUtils.getBookWithLowestRating();
         bookWithHighestRating = StatisticTestUtils.getBookWithHighestRating();
@@ -59,8 +60,11 @@ public class RatingStatisticsTest {
     }
 
     @Test
-    public void testAverageRatingIsCorrect() {
-
+    public void averageRatingExistsAndIsCorrect() {
+        int numberOfBooks = StatisticTestUtils.getNumberOfBooks();
+        double totalRating = StatisticTestUtils.totalRating;
+        double average = totalRating / numberOfBooks;
+        Assertions.assertEquals(average, ratingStatistics.calculateAverageRatingGiven());
     }
 
     @Test

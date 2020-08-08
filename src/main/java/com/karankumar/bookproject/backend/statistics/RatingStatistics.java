@@ -58,14 +58,19 @@ public class RatingStatistics extends Statistics {
      */
     public Double calculateAverageRatingGiven() {
         int numberOfRatings = readBooksRated.size();
-
         if (numberOfRatings == 0) {
             return null;
         }
+        return (calculateTotalRating() / numberOfRatings);
+    }
 
-        double totalRating = readBooksRated.stream()
-                                           .mapToDouble(book -> converter.convertToPresentation(book.getRating(), null))
-                                           .sum();
-        return (totalRating / numberOfRatings);
+    private double calculateTotalRating() {
+        return readBooksRated.stream()
+                             .mapToDouble(book -> {
+                                 Double rating = converter.convertToPresentation(book.getRating(), null);
+                                 rating = (rating == null) ? 0.0 : rating;
+                                 return rating;
+                             })
+                             .sum();
     }
 }
