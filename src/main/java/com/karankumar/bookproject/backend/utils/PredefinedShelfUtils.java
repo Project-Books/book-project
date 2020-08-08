@@ -2,9 +2,12 @@ package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import lombok.extern.java.Log;
 
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+@Log
 public class PredefinedShelfUtils {
     private final PredefinedShelfService predefinedShelfService;
 
@@ -27,6 +30,7 @@ public class PredefinedShelfUtils {
     }
 
     private PredefinedShelf findPredefinedShelf(PredefinedShelf.ShelfName shelfName) {
+        LOGGER.log(Level.INFO, "Shelves: " + predefinedShelfService.findAll());
         return predefinedShelfService.findAll()
                                      .stream()
                                      .filter(shelf -> shelf.getPredefinedShelfName().equals(shelfName))

@@ -29,7 +29,6 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 @IntegrationTest
 class AuthorTests {
-    private static PredefinedShelfService shelfService;
     private static BookService bookService;
 
     private static Book testBook1;
@@ -37,27 +36,29 @@ class AuthorTests {
     private static AuthorService authorService;
 
     @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService shelfService,
+    public static void setup(@Autowired PredefinedShelfService predefinedShelfService,
                              @Autowired BookService bookService,
                              @Autowired AuthorService authorService) {
-        Author author = new Author("Steven", "Pinker");
 
-        testBook1 = new Book("How the mind works", author);
-        testBook2 = new Book("The better angels of our nature", author);
+        PredefinedShelf toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
+        testBook1 = createBook("How the mind works", toRead);
+        testBook2 = createBook("The better angels of our nature", toRead);
 
-        Assumptions.assumeTrue(shelfService != null && bookService != null);
-        AuthorTests.shelfService = shelfService;
+        Assumptions.assumeTrue(predefinedShelfService != null && bookService != null);
         AuthorTests.bookService = bookService;
         AuthorTests.authorService = authorService;
 
         bookService.deleteAll(); // reset
 
-        PredefinedShelf toRead = new PredefinedShelfUtils(shelfService).findToReadShelf();
-        testBook1.setShelf(toRead);
-        testBook2.setShelf(toRead);
-
         AuthorTests.bookService.save(testBook1);
         AuthorTests.bookService.save(testBook2);
+    }
+
+    private static Book createBook(String title, PredefinedShelf shelf) {
+        Author author = new Author("Steven", "Pinker");
+        Book book = new Book(title, author);
+        book.setShelf(shelf);
+        return book;
     }
 
     /**
@@ -66,8 +67,6 @@ class AuthorTests {
      */
     @Test
     public void updateAuthorAffectsOneRow() {
-        Assumptions.assumeTrue(shelfService != null);
-
         Author newAuthor = new Author("Matthew", "Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
