@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.goal.CalculateReadingGoal;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.backend.utils.StringUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -131,13 +132,14 @@ public class ReadingGoalView extends VerticalLayout {
         String outOf = " out of ";
 
         if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
-            readingGoalSummary.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + getPluralized(" book", targetToRead));
+            readingGoalSummary.setText(haveRead + howManyReadThisYear + outOf + + targetToRead +
+                    StringUtils.pluralize(" book", targetToRead));
             goalProgress.setText(calculateProgress(targetToRead, howManyReadThisYear));
             booksToReadOnAverageToMeetGoal.setText(calculateBooksToRead(targetToRead, howManyReadThisYear));
             toggleBooksGoalInfo(true, hasReachedGoal);    // show book goal-specific information
         } else {
-            readingGoalSummary
-                    .setText(haveRead + howManyReadThisYear + outOf + targetToRead + getPluralized(" page", targetToRead));
+            readingGoalSummary.setText(haveRead + howManyReadThisYear + outOf + targetToRead +
+                            StringUtils.pluralize(" page", targetToRead));
             toggleBooksGoalInfo(false, hasReachedGoal);
         }
 
@@ -146,16 +148,6 @@ public class ReadingGoalView extends VerticalLayout {
         goalProgressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
 
         updateSetGoalText();
-    }
-
-    /**
-     * Determine if a String should be singular or plural and return correct String
-     * @param num the number of book or pages
-     * @param itemStr the String that will be pluralized
-     * @return either the original String or the original string with an "s" concatenated to it
-     */
-    public static String getPluralized(String itemStr, int num){
-        return (num > 1) ? (itemStr + "s") : (itemStr);
     }
 
     /**
@@ -186,7 +178,8 @@ public class ReadingGoalView extends VerticalLayout {
             schedule = TARGET_MET;
         } else {
             int howManyBehindOrAhead = CalculateReadingGoal.howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
-            schedule = String.format("You are %d "+ getPluralized("book", howManyBehindOrAhead) + " %s schedule",
+            schedule = String.format("You are %d "+ StringUtils.pluralize("book", howManyBehindOrAhead) +
+                            " %s schedule",
                     howManyBehindOrAhead, CalculateReadingGoal.behindOrAheadSchedule(booksReadThisYear,
                             CalculateReadingGoal.shouldHaveRead(booksToReadThisYear)));
         }
@@ -209,7 +202,7 @@ public class ReadingGoalView extends VerticalLayout {
         String bookReadingRate = "";
         if (booksStillToRead > 0) {
             bookReadingRate = "You need to read " + booksStillToReadAWeek +
-                    getPluralized(" book", (int) booksStillToReadAWeek) +
+                    StringUtils.pluralize(" book", (int) booksStillToReadAWeek) +
                     " a week on average to achieve your goal";
         }
 
