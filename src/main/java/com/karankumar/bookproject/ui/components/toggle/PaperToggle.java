@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.ui.components;
+package com.karankumar.bookproject.ui.components.toggle;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.JsModule;
