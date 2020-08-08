@@ -144,7 +144,7 @@ public class ReadingGoalViewTests {
             bookService.save(book);
         }
 
-        PredefinedShelf readShelf = predefinedShelfUtils.findPredefinedShelf(PredefinedShelf.ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
         Assumptions.assumeTrue(readShelf != null);
         Assertions.assertEquals(booksInReadShelf,
                 CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
@@ -159,7 +159,7 @@ public class ReadingGoalViewTests {
      */
     private Book createBook(PredefinedShelf.ShelfName shelfName) {
         Book book = new Book("Title", new Author("Joe", "Bloggs"));
-        book.setShelf(predefinedShelfUtils.findPredefinedShelf(shelfName)); // important not to create a new predefined shelf
+        book.setShelf(predefinedShelfUtils.findReadShelf()); // important not to create a new predefined shelf
         if (shelfName.equals(PredefinedShelf.ShelfName.READ)) {
             book.setDateFinishedReading(generateRandomDate());
         }
@@ -193,7 +193,7 @@ public class ReadingGoalViewTests {
         Assertions.assertTrue(goalView.readingGoalSummary.isVisible());
         Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
 
-        PredefinedShelf readShelf = predefinedShelfUtils.findPredefinedShelf(PredefinedShelf.ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
         int howManyReadThisYear = CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
         int targetToRead = booksGoal.getTarget();
         boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
@@ -223,7 +223,7 @@ public class ReadingGoalViewTests {
         Assertions.assertTrue(goalView.readingGoalSummary.isVisible());
         Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
 
-        PredefinedShelf readShelf = predefinedShelfUtils.findPredefinedShelf(PredefinedShelf.ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
         int howManyReadThisYear = CalculateReadingGoal.howManyReadThisYear(readingGoal.getGoalType(), readShelf);
         int targetToRead = readingGoal.getTarget();
         boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
