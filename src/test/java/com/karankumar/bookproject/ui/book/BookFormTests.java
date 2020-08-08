@@ -304,7 +304,7 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Series position must be at least 1",
+        Assertions.assertEquals(BookFormErrors.SERIES_POSITION_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -323,7 +323,7 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("There must be at least one page in the book",
+        Assertions.assertEquals(BookFormErrors.PAGE_NUMBER_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -343,7 +343,7 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Please provide a book title",
+        Assertions.assertEquals(BookFormErrors.BOOK_TITLE_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -363,7 +363,7 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Please enter the author's first name",
+        Assertions.assertEquals(BookFormErrors.FIRST_NAME_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -383,7 +383,7 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Please enter the author's last name",
+        Assertions.assertEquals(BookFormErrors.LAST_NAME_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -403,7 +403,7 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Please select a shelf",
+        Assertions.assertEquals(BookFormErrors.SHELF_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -423,14 +423,13 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(2, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("The date you started reading the book cannot be after today's date.",
+        Assertions.assertEquals(String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"),
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
                                 .orElseThrow()
         );
-        Assertions.assertEquals(
-                "The date you finished reading the book cannot be earlier than the date you started reading the book",
+        Assertions.assertEquals(BookFormErrors.FINISH_DATE_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(1)
                                 .getMessage()
