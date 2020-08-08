@@ -44,20 +44,14 @@ public class BookServiceTest {
         validBook.setShelf(toRead);
     }
 
-    /**
-     * Tests whether the null book is  can be saved
-     */
     @Test
     public void whenTryingToSaveNullBookExpectNoSave() {
         goalService.save(null);
         Assertions.assertEquals(0, goalService.count());
     }
 
-    /**
-     * Tests whether the book without author can be saved
-     */
     @Test
-    public void whenTryingToWithoutAuthorBookExpectNoSave() {
+    public void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
         goalService.save(bookWithoutAuthor);
         Assertions.assertEquals(0, authorService.count());
         Assertions.assertEquals(0, goalService.count());
@@ -67,7 +61,7 @@ public class BookServiceTest {
      * Tests whether the book without shelf can be saved
      */
     @Test
-    public void whenTryingToSaveWithoutShelfBookExpectNoSave() {
+    public void whenTryingToSaveWithoutShelfExpectNoSave() {
         goalService.save(bookWithoutShelf);
         Assertions.assertEquals(0, authorService.count());
         Assertions.assertEquals(0, goalService.count());
