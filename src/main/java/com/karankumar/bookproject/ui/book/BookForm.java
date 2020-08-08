@@ -619,7 +619,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private SerializablePredicate<String> authorPredicate() {
-        return firstName -> (firstName != null && !firstName.isEmpty());
+        return name -> (name != null && !name.isEmpty());
     }
 
     public void addBook() {
@@ -632,7 +632,6 @@ public class BookForm extends VerticalLayout {
         return getEventBus().addListener(eventType, listener);
     }
 
-    // Events
     public static abstract class BookFormEvent extends ComponentEvent<BookForm> {
         private Book book;
 
