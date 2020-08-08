@@ -42,15 +42,26 @@ public class RatingStatisticsTest {
     }
 
     @Test
+    public void testLowestRatedBookDoesNotExist() {
+        resetRatingStatistics();
+        Assertions.assertNull(ratingStatistics.findLeastLikedBook());
+    }
+
+    @Test
     public void highestRatedBookExistsAndIsFound() {
         Assertions.assertEquals(bookWithHighestRating.getTitle(), ratingStatistics.findMostLikedBook().getTitle());
+    }
+
+    @Test
+    public void testHighestRatedBookDoesNotExist() {
+        resetRatingStatistics();
+        Assertions.assertNull(ratingStatistics.findMostLikedBook());
     }
 
     @Test
     public void testAverageRatingDivideByZero() {
         resetRatingStatistics();
         Assertions.assertNull(ratingStatistics.calculateAverageRatingGiven());
-
     }
 
     private void resetRatingStatistics() {
