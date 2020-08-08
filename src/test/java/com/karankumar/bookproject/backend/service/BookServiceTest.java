@@ -70,4 +70,14 @@ public class BookServiceTest {
         Assertions.assertEquals(validBook, bookService.findAll(validBook.getTitle()).get(0));
         Assertions.assertEquals(validBook.getAuthor(), bookService.findAll(validBook.getTitle()).get(0).getAuthor());
     }
+
+    @Test
+    public void allBooksReturnedWhenFilterIsEmpty() {
+        Assertions.assertEquals(bookService.findAll(), bookService.findAll(""));
+    }
+
+    @Test
+    public void allBooksReturnedWhenFilterIsNull() {
+        Assertions.assertEquals(bookService.findAll(), bookService.findAll(null));
+    }
 }
