@@ -1,25 +1,36 @@
 package com.karankumar.bookproject.backend.goal;
 
-import com.karankumar.bookproject.annotations.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Random;
-
-@IntegrationTest
 public class CalculateReadingGoalTests {
-
+    private int booksToRead = 52;
     @Test
     public void progressValueCorrect() {
-        int booksToRead = new Random().nextInt(100);
+        int toRead = 25;
+        int read = 5;
+        Assertions.assertEquals(CalculateReadingGoal.calculateProgressTowardsReadingGoal(toRead, read), 0.2);
+    }
 
-        Assertions.assertEquals(CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0), 0); // == 0%
-        Assertions.assertEquals(CalculateReadingGoal.calculateProgressTowardsReadingGoal(25, 5), 0.2); // < 100%
-        Assertions.assertEquals(CalculateReadingGoal.calculateProgressTowardsReadingGoal(booksToRead, booksToRead), 1.0,
-                "Books to read = " + booksToRead); // == 100%
-        Assertions.assertEquals(CalculateReadingGoal.calculateProgressTowardsReadingGoal(booksToRead, (booksToRead + 1)), 1.0,
-                "Books to read = " + booksToRead); // > 100%
+    @Test
+    public void testProgressWhenGoalMet() {
+        Assertions.assertEquals(
+                CalculateReadingGoal.calculateProgressTowardsReadingGoal(booksToRead, booksToRead), 1.0);
+    }
 
+    @Test
+    public void testProgressWhenGoalExceeded() {
+        Assertions.assertEquals(
+                CalculateReadingGoal.calculateProgressTowardsReadingGoal(booksToRead, (booksToRead + 1)), 1.0);
+    }
+
+    @Test
+    public void testNoProgressMadeTowardsGoal() {
+        Assertions.assertEquals(CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0), 0);
+    }
+
+    @Test
+    public void testCalculateProgressTowardsReadingGoalDivideByZero() {
         // ensure 0, and not an arithmetic exception, is returned
         Assertions.assertEquals(CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0), 0);
     }
