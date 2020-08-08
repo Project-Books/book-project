@@ -24,8 +24,10 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -33,21 +35,17 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@IntegrationTest
 @WebAppConfiguration
 public class BookFormTests {
 
@@ -60,17 +58,24 @@ public class BookFormTests {
 
     // if either the RatingScale or the double rating is changed, then the other has to also be changed accordingly
     private static final RatingScale ratingVal = RatingScale.NINE;
+    private static final int SERIES_POSITION = 10;
     private static double rating = 9.0;
 
     private static int pagesRead;
     private static int numberOfPages;
+    private static int seriesPosition;
     private static Routes routes;
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
+
     @Autowired
     private ApplicationContext ctx;
+
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private PredefinedShelfService shelfService;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -78,7 +83,7 @@ public class BookFormTests {
     }
 
     @BeforeEach
-    public void setup(@Autowired PredefinedShelfService shelfService) {
+    public void setup() {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
@@ -86,18 +91,25 @@ public class BookFormTests {
         bookService.deleteAll();
 
         Assumptions.assumeTrue(shelfService != null);
-        bookForm = new BookForm(shelfService);
-        bookForm.setBook(createBook(shelfService));
+        bookForm = createBookForm(true);
     }
 
-    private Book createBook(PredefinedShelfService predefinedShelfService) {
+    private BookForm createBookForm(boolean isInSeries) {
+        BookForm bookForm = new BookForm(shelfService);
+        bookForm.setBook(createBook(shelfService, isInSeries));
+        return bookForm;
+
+    }
+
+    private Book createBook(PredefinedShelfService predefinedShelfService, boolean isInSeries) {
         Author author = new Author(firstName, lastName);
         Book book = new Book(bookTitle, author);
 
         readShelf = predefinedShelfService.findAll().get(2);
-      
+
         pagesRead = generateRandomNumberOfPages();
         numberOfPages = generateRandomNumberOfPages();
+        seriesPosition = SERIES_POSITION;
 
         book.setShelf(readShelf);
         book.setGenre(genre);
@@ -106,6 +118,9 @@ public class BookFormTests {
         book.setDateStartedReading(dateStarted);
         book.setDateFinishedReading(dateFinished);
         book.setRating(ratingVal);
+        if (isInSeries) {
+            book.setSeriesPosition(seriesPosition);
+        }
 
         return book;
     }
@@ -129,6 +144,7 @@ public class BookFormTests {
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
         Assertions.assertEquals(rating, bookForm.rating.getValue());
+        Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
     }
 
     enum EventType {
@@ -168,6 +184,7 @@ public class BookFormTests {
         Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
         Assertions.assertEquals(ratingVal, savedOrDeletedBook.getRating());
+        Assertions.assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
     }
 
     private void populateBookForm() {
@@ -273,6 +290,211 @@ public class BookFormTests {
         } else {
             Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible(), pagesRead + shown);
         }
+    }
+
+    @Test
+    void shouldNotAllowNegativeSeriesPosition() {
+        // given
+        bookForm.seriesPosition.setValue(-1);
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(BookFormErrors.SERIES_POSITION_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow());
+    }
+
+    @Test
+    void shouldNotAllowNegativePageNumbers() {
+        // given
+        bookForm.numberOfPages.setValue(-1);
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(BookFormErrors.PAGE_NUMBER_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+    }
+
+    @Test
+    void shouldNotAllowEmptyBookTitle() {
+        // given
+        bookForm.bookTitle.setValue("");
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(BookFormErrors.BOOK_TITLE_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+    }
+
+    @Test
+    void shouldNotAllowEmptyAuthorFirstName() {
+        // given
+        bookForm.authorFirstName.setValue("");
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(BookFormErrors.FIRST_NAME_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+    }
+
+    @Test
+    void shouldNotAllowEmptyAuthorLastName() {
+        // given
+        bookForm.authorLastName.setValue("");
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(BookFormErrors.LAST_NAME_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+    }
+
+    @Test
+    void shouldNotAllowEmptyShelf() {
+        // given
+        bookForm.shelf.setValue(null);
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(BookFormErrors.SHELF_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+    }
+
+    @Test
+    void shouldNotAllowFutureStartDate() {
+        // given
+        bookForm.dateStartedReading.setValue(LocalDate.now().plusDays(5));
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(2, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"),
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+        Assertions.assertEquals(BookFormErrors.FINISH_DATE_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(1)
+                                .getMessage()
+                                .orElseThrow()
+        );
+    }
+
+    @Test
+    void shouldDisplaySeriesPositionForm_whenIsInSeriesCheckboxOn() {
+        // given
+        bookForm.inSeriesCheckbox.setValue(true);
+
+        // then
+        Assertions.assertTrue(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertTrue(bookForm.seriesPosition.isVisible());
+        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
+    }
+
+    @Test
+    void shouldNotDisplaySeriesPositionForm_whenIsInSeriesCheckboxOff() {
+        // given
+        bookForm.inSeriesCheckbox.setValue(false);
+
+        // then
+        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+    }
+
+    @Test
+    void shouldClearSeriesPositionValue_whenSeriesPositionCheckboxIsFirstEnabled_andThenDisabled() {
+        // given
+        bookForm.inSeriesCheckbox.setValue(true);
+
+        // when
+        bookForm.inSeriesCheckbox.setValue(false);
+
+        // then
+        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertNull(bookForm.seriesPosition.getValue());
+    }
+
+    @Test
+    void shouldDisplaySeriesPositionForm_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
+        // given
+        populateBookForm();
+
+        // when
+        bookForm.openForm();
+
+        // then
+        Assertions.assertTrue(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertTrue(bookForm.seriesPosition.isVisible());
+        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
+    }
+
+    @Test
+    void shouldNotDisplaySeriesPositionForm_withSeriesPositionPopulated_whenBookDoesNotHaveSeriesPosition() {
+        // given
+        bookForm = createBookForm(false);
+
+        // when
+        bookForm.openForm();
+
+        // then
+        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertNull(bookForm.seriesPosition.getValue());
     }
 
     @AfterEach

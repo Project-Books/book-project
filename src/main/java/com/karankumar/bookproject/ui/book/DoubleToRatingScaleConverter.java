@@ -23,11 +23,8 @@ import lombok.extern.java.Log;
 
 import java.util.logging.Level;
 
-/**
- * Converts a double from the Vaadin rating field to a @see RatingScale and visa versa.
- */
 @Log
-class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
+public class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     @Override
     public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
         if (ratingVal == null) {

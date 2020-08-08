@@ -283,27 +283,32 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void configureFilters() {
+        filterByAuthorName();
+        filterByBookTitle();
+    }
+
+    private void filterByAuthorName() {
         filterByAuthorName.setPlaceholder("Filter by Author Name");
         filterByAuthorName.setClearButtonVisible(true);
         filterByAuthorName.setValueChangeMode(ValueChangeMode.LAZY);
-        filterByAuthorName.addValueChangeListener(
-                eventFilterAuthorName -> {
-                    if (eventFilterAuthorName.getValue() != null) {
+        filterByAuthorName.addValueChangeListener(eventFilterAuthorName -> {
+            if (eventFilterAuthorName.getValue() != null) {
+                authorName = eventFilterAuthorName.getValue();
+            }
+            updateGrid();
+        });
+    }
 
-                        authorName = eventFilterAuthorName.getValue();
-                    }
-                    updateGrid();
-                });
+    private void filterByBookTitle() {
         filterByTitle.setPlaceholder("Filter by book title");
         filterByTitle.setClearButtonVisible(true);
         filterByTitle.setValueChangeMode(ValueChangeMode.LAZY);
-        filterByTitle.addValueChangeListener(
-                event -> {
-                    if (event.getValue() != null) {
-                        bookTitle = event.getValue();
-                    }
-                    updateGrid();
-                });
+        filterByTitle.addValueChangeListener(event -> {
+            if (event.getValue() != null) {
+                bookTitle = event.getValue();
+            }
+            updateGrid();
+        });
     }
 
     private void editBook(Book book) {

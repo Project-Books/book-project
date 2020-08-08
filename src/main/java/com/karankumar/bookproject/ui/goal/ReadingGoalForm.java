@@ -1,5 +1,6 @@
 package com.karankumar.bookproject.ui.goal;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -25,18 +26,21 @@ import java.util.logging.Level;
  */
 @Log
 public class ReadingGoalForm extends VerticalLayout {
-
     private static final String BOOKS_TO_READ = "Books to read";
     private static final String PAGES_TO_READ = "Pages to read";
-
     private final Dialog newGoalDialog;
+
+    @VisibleForTesting
     final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
+    @VisibleForTesting
     final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
+    @VisibleForTesting
     final IntegerField targetToRead;
+    @VisibleForTesting
     Button saveButton;
 
     public ReadingGoalForm() {
-        targetToRead = createBooksGoalField();
+        targetToRead = createTargetGoalField();
         saveButton = createSaveButton();
 
         FormLayout formLayout = new FormLayout();
@@ -45,30 +49,27 @@ public class ReadingGoalForm extends VerticalLayout {
         newGoalDialog.setCloseOnOutsideClick(true);
         add(newGoalDialog);
 
-        chooseGoalType = createGoalTypeRadioGroup();
+        chooseGoalType = createGoalTypeFormField();
 
         formLayout.addFormItem(chooseGoalType, "Goal type");
         formLayout.addFormItem(targetToRead, "To read");
         formLayout.add(new HorizontalLayout(saveButton));
         chooseGoalType.addValueChangeListener(event -> {
-            if (event.getValue() == null) {
-                return;
-            } else if (event.getValue().equals(ReadingGoal.GoalType.BOOKS)) {
-                targetToRead.setPlaceholder(BOOKS_TO_READ);
-            } else {
-                targetToRead.setPlaceholder(PAGES_TO_READ);
+            if (event.getValue() != null) {
+                if (event.getValue().equals(ReadingGoal.GoalType.BOOKS)) {
+                    targetToRead.setPlaceholder(BOOKS_TO_READ);
+                } else {
+                    targetToRead.setPlaceholder(PAGES_TO_READ);
+                }
             }
         });
 
         configureBinder();
     }
 
-    /**
-     * @return an IntegerField representing the number of books to read
-     */
-    private IntegerField createBooksGoalField() {
+    private IntegerField createTargetGoalField() {
         IntegerField field = new IntegerField();
-        field.setPlaceholder(BOOKS_TO_READ);
+        field.setPlaceholder(BOOKS_TO_READ); // default value
         field.setClearButtonVisible(true);
         field.setMin(1);
         field.setHasControls(true);
@@ -76,9 +77,6 @@ public class ReadingGoalForm extends VerticalLayout {
         return field;
     }
 
-    /**
-     * @return a save button
-     */
     private Button createSaveButton() {
         Button save = new Button("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -87,18 +85,12 @@ public class ReadingGoalForm extends VerticalLayout {
         return save;
     }
 
-    /**
-     * @return a radio button group for the goal type
-     */
-    private RadioButtonGroup<ReadingGoal.GoalType> createGoalTypeRadioGroup() {
+    private RadioButtonGroup<ReadingGoal.GoalType> createGoalTypeFormField() {
         RadioButtonGroup<ReadingGoal.GoalType> goalTypeRadioButtonGroup = new RadioButtonGroup<>();
         goalTypeRadioButtonGroup.setItems(ReadingGoal.GoalType.values());
         return goalTypeRadioButtonGroup;
     }
 
-    /**
-     * Fires a save event if the binder is valid and the bean from the binder is not null
-     */
     private void validateOnSave() {
         if (binder.isValid()) {
             ReadingGoal.GoalType goalType = this.chooseGoalType.getValue();
@@ -116,9 +108,6 @@ public class ReadingGoalForm extends VerticalLayout {
         }
     }
 
-    /**
-     * Displays a confirmation message when the reading goal has been successfully set
-     */
     private void confirmSavedGoal(int target, ReadingGoal.GoalType goalType) {
         newGoalDialog.close();
         String notificationMessage =
@@ -130,9 +119,6 @@ public class ReadingGoalForm extends VerticalLayout {
         newGoalDialog.open();
     }
 
-    /**
-     * Asks user to choose a goal type, and makes sure the target goal is valid
-     */
     private void configureBinder() {
         binder.forField(chooseGoalType)
               .asRequired("Please select a goal type")

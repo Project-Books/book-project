@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-/**
- * A Spring service that acts as the gateway to the @see AuthorRepository -- to use the AuthorRepository, you should go
- * via this AuthorService.
- */
 @Service
 @Log
 public class AuthorService extends BaseService<Author, Long> {

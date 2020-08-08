@@ -1,28 +1,63 @@
-# Java style guide
+# Style guide
+
+By contributing to this repository, you are expected to follow this style guide. Please also ensure that you remain familiar with this document as it may change from time to time.
+
+Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
+the version on the master branch should be followed, as this version should be the most up-to-date.
+
+## Table of Contents
+
+1. [Introduction](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#introduction)
+1. [IDE formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#ide-formatting)
+   1. [IntelliJ](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#intellij)
+   1. [Eclipse](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#eclipse)
+1. [Checking for violations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#checking-for-violations)
+1. [Source files](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-files)
+   1. [Source file structure](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-file-structure)
+      1. [No wildcard imports](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-wildcard-imports)
+      1. [No line-wrapping for package & import statements](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-line-wrapping-for-package-and-import-statements)
+   1. [Fields at the top](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fields-at-the-top)
+   1. [Overloads together](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overloads-together)
+   1. [Newline at end of file](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#newline-at-end-of-file)
+1. [Formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#formatting)
+   1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces)
+   1. [120 character column limit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#120-character-column-limit)
+   1. [One statement per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-statement-per-line)
+   1. [Underscores in numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#underscores-in-numeric-literals)
+   1. [Empty blocks can be concise](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#empty-blocks-can-be-concise)
+   1. [Whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#whitespace)
+      1. [Vertical whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#vertical-whitespace)
+      1. [No horizontal alignment](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-horizontal-alignment)
+   1. [Optional grouping parentheses: recommended](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#optional-grouping-parentheses-recommended)
+1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
+   1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
+   1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
+1. [Javadoc](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#javadoc)
+   1. [No @author tag](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-author-tag)
+1. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
+   1. [Use @Override](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-override)
+   1. [StringBuilder over StringBuffer](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#stringbuilder-over-stringbuffer)
+   1. [Overriding hashCode() and equals()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-hashcode-and-equals)
+   1. [Overriding toString()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-tostring)
+   1. [Short methods](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#short-methods)
+   1. [JUnit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#junit)
+      1. [Fewest number of assertions in every test](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fewest-number-of-assertions-in-every-test)
+1. [Recommended reading](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#recommended-reading)
+1. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
+
+## Introduction
 
 Good judgement should be followed. There may be times where it is more readable to not follow a particular guideline.
 Readable code is preferred over code that strictly follows this guide.
 
 A short summary explaining why the guideline is in place is included to help explain the rationale behind having it.
 
-The styleguide used is an extension of the [Google Java style guide](https://google.github.io/styleguide/javaguide.html). 
-Any differences are listed in this document. By contributing to this repository, you are expected to follow this style
-guide and, where it does not conflict with this style guide, Google's Java style guide.
-
-## Notes
-
-1. Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
-the version on the master branch should be followed, as this version should be the most up-to-date.
-
-2. Please also ensure that you remain familiar with this document as it may change from time to time
-
-This style guide has been dapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
-[Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
-
 ## IDE formatting
 
 IDE-specific code style files have been exported and can be imported into your IDE. The files are located in the
 [ide](https://github.com/knjk04/book-project/tree/master/ide) directory.
+
+### IntelliJ
 
 <p align="center">
   <img src="/media/intellij_code_style.png" alt="Import IntelliJ code style file"/>
@@ -31,6 +66,8 @@ IDE-specific code style files have been exported and can be imported into your I
 For IntelliJ, you can use import the [code style file](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml).
 Go to File > Settings > Editor > Code Style > Java in Linux or Windows. Click on the settings cog and choose 
 Import Scheme > IntelliJ IDEA code style XML. 
+
+### Eclipse
 
 <p align="center">
   <img src="/media/eclipse_code_style.png" alt="Import Eclipse code style file"/>
@@ -49,9 +86,52 @@ $ ./mvnw validate
 
 By using the maven wrapper, you don't need to have Maven installed. Alternatively, you could run `mvn validate` if you do have Maven installed.
 
+## Source files
+
+### Source file structure
+
+A source file should contain the following in order:
+
+1. License notice and copyright information
+2. Package statement
+3. Import statements
+4. Exactly one top-level class
+
+There should be exactly one blank line to separate every section.
+
+#### No wildcard imports
+
+Wildcard imports, regardless of whether they are static, should not be used:
+```java
+// good
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+
+// bad
+import com.vaadin.flow.component.*;
+```
+
+#### No line-wrapping for package and import statements
+
+The package statement and import statements should not be line-wrapped.
+
+### Fields at the top
+
+All fields should appear at the top of the class before any constructors. Fields should not be interspersed between methods.
+
+### Overloads together
+
+Overloaded methods, including constructors, should appear together with nothing in between. 
+
+### Newline at end of file
+
+Every source file should have one newline at the end of the file.
+
 ## Formatting
 
-**Braces** 
+### Braces
+
+#### One true brace style (1TBS)
 
 We use the [One true brace style (1TBS)](https://en.wikipedia.org/wiki/Indentation_style#Variant:_1TBS_(OTBS)).
 
@@ -68,15 +148,21 @@ if (condition) {
 }
 ```
 
-**120 character limit**
+### 120 character column limit
 
 A line should generally not exceed 120 characters (an IntelliJ default).
 
 Why 120 characters, not 100 characters (like the Google Java style guide)? You can have two files side by side that do not exceed 120 characters on a 1920x1080 display (at least in IntelliJ).
 
-**One statement per line**
+Exceptions to this rule:
+- `package` and `import` statements
+- Long URL in Javadoc
 
-**Underscores in numeric literals**
+### One statement per line
+
+Every statement should be followed by a line break. This includes variable declarations.
+
+### Underscores in numeric literals
 
 For numeric literals that are ten thousand or higher, underscores are recommended to separate digits by thousands:
 
@@ -88,15 +174,108 @@ int booksSold = 10000;
 int booksSold = 10_000;
 ```
 
-### Indentation
+### Empty blocks can be concise
 
-**4 Spaces, no tabs**
+Empty blocks can be concise providing they do not form a part of a multi-block statement.
+
+```java
+// fine
+void foo() {}
+
+// also fine
+void bar() {
+}
+
+// not fine
+if (condition) {
+  foo();
+} else { }
+```
+
+This applies to `if/else` and `try/catch/finally` blocks.
+
+### Whitespace
+
+#### Vertical whitespace
+
+*Where there should be one blank line*
+
+- Between the end of one method (the closing brace) and the start of another
+
+- Between groups of logical statements. This could be a group of related imports, fields, or statements within a method.
+
+Generally speaking, there should not be more than one blank line.
+
+*Where there should not be one blank line*
+
+- Between the class name and the first field declaration (or method declaration or defintion)
+
+#### No horizontal alignment
+
+```java
+// acceptable
+private int numberOfPages;
+private String authorFirstName;
+
+// unacceptable
+private int     numberOfPages;
+private Strring authorFirstName;
+```
+
+There should be no horizontal alignment. While it looks nice and improves readability, it is can be harder to maintain.
+
+### Optional grouping parentheses: recommended
+
+Optional grouping parentheses are recommended as they can improve readability. It can help when not everyone is clear with certain precedence rules.
+
+### Enum classes
+
+If an enum class has no methods, it can be written as an array initialiser:
+```java
+private enum EventType { SAVED, DELETED }
+```
+
+### Variable declarations
+
+#### One variable declaration per line
+
+A variable declaration should appear on its own line. There should not be multiple declarations on one line:
+```java
+// good
+private String authorFirstName;
+private String authorLastName;
+
+// bad
+private String authorFirstName, authorLastName;
+```
+
+#### Declare as close as possible to use
+
+Local variables should be declared as close as reasonably possible to where it is used. This can help limit scope and improve readability. Local variables should not be declared at the top of a method for the sake of it.
+
+### Arrays
+
+#### No C-style array declarations
+
+The square brackets should be next to the type name, not the variable name. This is because they a part of the type.
+
+```java
+// good
+String[] args
+
+// bad
+String args[]
+```
+
+## Indentation
+
+### 4 Spaces, no tabs
 
 4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
 
 This also applies to CSS.
 
-**Aligning method calls**
+### Aligning method calls
 
 An exception to the above 4 spaces indentation rule is aligning method calls (see below). This can improve readability.
 
@@ -112,34 +291,30 @@ bookGrid.addColumn(AUTHOR_KEY)
 
 ## Javadoc
 
-**Class, interface & enum comments**
-
-Every class, interface and enum should have a one sentence Javadoc summary explaining what the class is for.
-
-**No @author tag**
+### No @author tag
 
 Author tags can quickly become outdated as methods are updated or completely written by new authors. Git is far better
 at tracking changes.
 
 ## Programming practices
 
-**Use @Override**
+### Use @Override
 
-Wherever possible, the @Override annotation should be used for overriden methods. This is so that the compiler can run
+The @Override annotation should be used for overriden methods. This is so that the compiler can run
 a check at compile-time to see whether the method annotated with @Override actually overrides a method.
 
-**StringBuilder over StringBuffer**
+### StringBuilder over StringBuffer
 
 StringBuilder should be used instead of a StringBuffer for single-threaded code.
 
-**Overriding hashCode() and equals()**
+### Overriding hashCode() and equals()
 
 If you override `hashCode()`, it is good practice to also override `equals()`.
 
 The overrides of `equals()` and `hashCode()` should be equivalent; if `x.equals(y)` is true, then `x.hashCode()` should have
 the same value as `y.hashCode()`.
 
-**Overriding toString()**
+### Overriding toString()
 
 It is sometimes worthwhile overriding `toString()` for logging purposes.
 
@@ -162,9 +337,19 @@ public String toString() {
 }
 ```
 
-**Short methods**
+### Short methods
 
 Wherever possible, try to keep methods short (under 15 lines). This makes it easier to test, comprehend and reuse.
+
+### JUnit
+
+### Fewest number of assertions in every test
+
+In every test method, try to minimise the number of assertions. Generally speaking, ideally there should only be one.
+
+## Recommended reading
+
+- Clean code, Robert C. Martin
 
 ## Updates to this document
 
@@ -173,3 +358,10 @@ If you are considering making changes to any of the recommended styles in this g
 - [Checkstyle configuration](https://github.com/knjk04/book-project/blob/master/src/main/resources/checkstyle.xml)
 - [IntelliJ formatter](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml)
 - [Eclipse formatter](https://github.com/knjk04/book-project/blob/master/ide/eclipse/book_project_formatter_profile.xml)
+
+In addition, please update the [table of contents](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#contents).
+
+## Acknowledgements
+
+This style guide has been adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
+[Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).

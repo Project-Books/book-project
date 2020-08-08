@@ -36,7 +36,7 @@ Examples of unacceptable behavior by participants include:
  professional setting
  
  If someone has a problem with something that you said, please don't get defensive. Instead, stop doing what they 
- complained about and just apologise, even if you don't think you did anything wrong or if what you said was
+ complained about, even if you don't think you did anything wrong or if what you said was
  misinterpreted. It may be the case that you could have better communicated what you said. Ultimately, we're trying
  to make this a place where we can all get along.
 

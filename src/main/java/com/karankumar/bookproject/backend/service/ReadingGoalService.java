@@ -22,10 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * A Spring service that acts as the gateway to the @see GoalRepository -- to use the GoalRepository, you should go
- * via this GoalService.
- */
 @Service
 @Log
 public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
@@ -48,10 +44,13 @@ public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
     @Override
     public void save(ReadingGoal goal) {
         if (goal != null) {
-            // this goal overwrites any previously set goals for this year)
-            goalRepository.deleteAll();
-            goalRepository.save(goal);
+            overwritePreviouslySetGoals(goal);
         }
+    }
+
+    private void overwritePreviouslySetGoals(ReadingGoal goal) {
+        goalRepository.deleteAll();
+        goalRepository.save(goal);
     }
 
     @Override

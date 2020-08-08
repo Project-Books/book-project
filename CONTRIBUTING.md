@@ -1,16 +1,30 @@
 # Contributing
 
-Thank you for taking an interest in contributing! Please note that by contributing to this project, you are expected to adhere to this contributing document.
+Thank you for taking an interest in contributing! 
 
-## Notes
+Please note that by contributing to this project, you are expected to adhere to this contributing document. Please also ensure that you remain familiar with this contributing document as it may change from time to time. 
 
-1. Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/README.md).
-
-2. Please also ensure that you remain familiar with this contributing document as it may change from time to time.
+Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/README.md). 
 
 ## Code of Conduct
 
 By contributing to this project, you are expected to adhere to the [Book Project Code of Conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md). 
+
+## Contents
+
+1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
+1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
+   1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
+   1. [Discuss your implementation approach](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#discuss-your-implementation-approach)
+1. [Workflow](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#workflow)
+   1. [Commit messages](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#commit-messages)
+   1. [One problem per patch](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#one-problem-per-patch)
+1. [Code contributions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#code-contributions)
+   1. [Writing tests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#writing-tests)
+1. [Pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#pull-requests)
+1. [Stale issues & pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#stale-issues--pull-requests)
+1. [Unassigning yourself](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#unassigning-yourself)
+1. [Ways to contribute](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#ways-to-contribute)
 
 ## Questions, suggestions & feedback
 
@@ -24,7 +38,7 @@ If in doubt, talk to us over [Gitter](https://gitter.im/book-project-community)!
 
 ## Before making changes
 
-### Tell us what issue you want to work on
+### Tell us which issue you want to work on
 
 *This applies to both code and documentation changes.*
 

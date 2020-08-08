@@ -15,12 +15,6 @@
 
 package com.karankumar.bookproject.backend.service;
 
-/**
- * All other Spring services inherit from this.
- *
- * @param <T>  an entity type (e.g. {@code Book})
- * @param <Id> the unique ID
- */
 public abstract class BaseService<T, Id> {
 
     public abstract T findById(Id id);

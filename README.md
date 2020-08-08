@@ -1,5 +1,5 @@
   <p align="center">
-	<img src="/media/book_project_logo_banner.png" alt="Logo"/>
+	<img src="/media/banner/book_project_banner_dark.png" alt="Logo"/>
   </p>
   
 [![Build Status](https://travis-ci.com/knjk04/book-project.svg?branch=master)](https://travis-ci.com/knjk04/book-project)
@@ -13,6 +13,7 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - View books in your different shelves and make changes
 - A rating scale from 0-10 that that goes up in steps of 0.5
 - Track your progress towards a reading goal: the number of books or pages you hope to read by the end of the year
+- Statistics about your reading habits
 
 *Coming soon:*
 - Add your own shelves
@@ -27,6 +28,11 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
         
 ![Reading goal](/media/reading_goal.png)
 
+<p align="center">
+    <img src="/media/statistics.png" alt="Reading statistics"/>
+</p>
+
+
 *The images above may look slightly different to the app. If major changes are made, new images will be uploaded to 
 reflect this.*
 
@@ -36,13 +42,16 @@ Prerequisites:
 - JDK 11 (or higher) 
 - If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
   - If you do have Node.js installed, please ensure it is at least version 10.0
+- MySQL 8.0.* or (better) Docker
+  - For Windows users, install Docker Desktop and then run `docker-compose up` at the root of the project on the command line
 
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Run `BookProjectApplication.java`
-4. Go to `localhost:8080`
-5. Log in with the details below:
+3. Start the MySQL Database or run the docker-compose file `docker-compose up`
+4. Run `BookProjectApplication.java`
+5. Go to `localhost:8080`
+6. Log in with the details below:
     - Username: `user`
     - Password: `password`
     
@@ -64,16 +73,12 @@ In Eclipse, you will need to run Maven install before running the project (right
 
 ### Access database
 
-To access the h2 database:
+To access the MySQL database when docker-compose is running:
 
-1. Go to `http://localhost:8080/h2-console`
-2. Ensure you log in with the settings below. The password field is intentionally left blank.
-    - Saved settings: `Generic H2 (Embedded)`
-    - Setting Name: `Generic H2 (Embedded)`
-    - Driver class: `org.h2.Driver`
-    - JDBC URL: `jdbc:h2:mem:testdb`
-    - User Name: `sa`
-    - Password: 
+1. Go to `http://localhost:8081/`
+2. Log in with the settings below.
+    - User Name: `root`
+    - Password: `rootpassword`
 3. Click on connect
 
 ## Contributing

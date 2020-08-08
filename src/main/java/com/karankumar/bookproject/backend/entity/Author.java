@@ -20,20 +20,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-/**
- * Represents a single Author
- */
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude= "books")
 public class Author extends BaseEntity {
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     @NotNull
     @NotEmpty
@@ -42,6 +50,10 @@ public class Author extends BaseEntity {
     @NotNull
     @NotEmpty
     private String lastName;
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
+    @Setter
+    private Set<Book> books = new HashSet<>();
 
     @Override
     public String toString() {

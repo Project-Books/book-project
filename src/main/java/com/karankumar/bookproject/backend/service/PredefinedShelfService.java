@@ -16,19 +16,6 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.stereotype.Service;
-
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
@@ -39,12 +26,13 @@ import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.repository.TagRepository;
-
-
 import lombok.extern.java.Log;
+import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -52,10 +40,6 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * A Spring service that acts as the gateway to the @see PredefinedShelfRepository -- to use the
- * PredefinedShelfRepository, you should go via this PredefinedShelfService.
- */
 @Service
 @Log
 public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
@@ -151,10 +135,8 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
     }
 
     private void populateBookRepository() {
-        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
         List<Author> authors = authorRepository.findAll();
         List<Tag> tags = tagRepository.findAll();
-
         bookRepository.saveAll(
                 Stream.of(
                         "Harry Potter and the Philosopher's stone",
@@ -169,37 +151,47 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
                         "The Hobbit",
                         "Harry Potter and the Deathly Hallows"
                 )
-                      .map(title -> {
-                          int min = 300;
-                          int max = 1000;
-                          int pages = (threadLocalRandom.nextInt(min, max + 1));
-                          int pagesRead = (threadLocalRandom.nextInt(min, max + 1));
-                          int series = (threadLocalRandom.nextInt(1, 10 + 1));
-                          Author author = authors.get(threadLocalRandom.nextInt(authors.size()));
-                          Book book = new Book(title, author);
-                          Genre genre = Genre.values()[threadLocalRandom.nextInt(Genre.values().length)];
-                          List<String> recommendedBy =
-                                  Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
-                          String recommender = recommendedBy.get(threadLocalRandom.nextInt(recommendedBy.size()));
-                          Tag tag = tags.get(threadLocalRandom.nextInt(tags.size()));
-                          book.setTags(new HashSet<>(Collections.singletonList(tag)));
-                          book.setGenre(genre);
-                          book.setSeriesPosition(series);
-                          book.setBookReview("Must Read Book. Really Enjoyed it");
-                          book.setNumberOfPages(pages);
-                          book.setPagesRead(pagesRead);
-                          book.setBookRecommendedBy(recommender);
-                          return book;
-                      }).collect(Collectors.toList()));
+                      .map(title -> createBook(authors, title, tags)).collect(Collectors.toList()));
+    }
+
+    private Book createBook(List<Author> authors, String title, List<Tag> tags) {
+        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
+
+        Author author = authors.get(threadLocalRandom.nextInt(authors.size()));
+        Book book = new Book(title, author);
+
+        Genre genre = Genre.values()[threadLocalRandom.nextInt(Genre.values().length)];
+        book.setGenre(genre);
+
+        List<String> friends = Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
+        String recommendedBy = friends.get(threadLocalRandom.nextInt(friends.size()));
+        book.setBookRecommendedBy(recommendedBy);
+
+        Tag tag = tags.get(threadLocalRandom.nextInt(tags.size()));
+        book.setTags(new HashSet<>(Collections.singletonList(tag)));
+
+        int series = (threadLocalRandom.nextInt(1, 10 + 1));
+        book.setSeriesPosition(series);
+
+        book.setBookReview("Must Read Book. Really Enjoyed it");
+
+        int min = 300;
+        int max = 1000;
+        int pages = (threadLocalRandom.nextInt(min, max + 1));
+        int pagesRead = (threadLocalRandom.nextInt(min, max + 1));
+        book.setNumberOfPages(pages);
+        book.setPagesRead(pagesRead);
+
+        return book;
     }
 
     private void populateShelfRepository() {
         List<Book> books = bookRepository.findAll();
         shelfRepository.saveAll(
                 Stream.of(PredefinedShelf.ShelfName.values())
-                        .map(book -> {
-                            PredefinedShelf shelf = new PredefinedShelf(book);
-                            shelf.setBooks(new HashSet<>(books));
+                      .map(book -> {
+                          PredefinedShelf shelf = new PredefinedShelf(book);
+                          shelf.setBooks(new HashSet<>(books));
                             return shelf;
                         }).collect(Collectors.toList())
         );
