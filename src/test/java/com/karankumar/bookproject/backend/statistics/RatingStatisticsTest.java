@@ -42,7 +42,7 @@ public class RatingStatisticsTest {
     }
 
     @Test
-    public void testLowestRatedBookDoesNotExist() {
+    public void testNonExistentLowestRatedBook() {
         resetRatingStatistics();
         Assertions.assertNull(ratingStatistics.findLeastLikedBook());
     }
@@ -53,9 +53,14 @@ public class RatingStatisticsTest {
     }
 
     @Test
-    public void testHighestRatedBookDoesNotExist() {
+    public void testNonExistentHighestRatedBook() {
         resetRatingStatistics();
         Assertions.assertNull(ratingStatistics.findMostLikedBook());
+    }
+
+    @Test
+    public void testAverageRatingIsCorrect() {
+
     }
 
     @Test

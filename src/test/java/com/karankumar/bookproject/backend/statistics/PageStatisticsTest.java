@@ -34,7 +34,10 @@ public class PageStatisticsTest {
 
     @Test
     public void bookWithMostPagesExistsAndIsFound() {
-        Assertions.assertEquals(StatisticTestUtils.getBookWithMostPages(), pageStatistics.findBookWithMostPages());
+        Assertions.assertEquals(
+                StatisticTestUtils.getBookWithMostPages().getTitle(),
+                pageStatistics.findBookWithMostPages().getTitle()
+        );
     }
 
     @Test
@@ -43,7 +46,8 @@ public class PageStatisticsTest {
         readingBook.setNumberOfPages(StatisticTestUtils.getBookWithMostPages().getNumberOfPages() + 50);
         bookService.save(readingBook);
 
-        Assertions.assertEquals(StatisticTestUtils.getBookWithMostPages(), pageStatistics.findBookWithMostPages());
+        Assertions.assertEquals(StatisticTestUtils.getBookWithMostPages().getTitle(),
+                pageStatistics.findBookWithMostPages().getTitle());
     }
 
     @Test
