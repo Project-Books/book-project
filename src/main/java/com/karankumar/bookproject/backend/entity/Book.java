@@ -15,8 +15,10 @@
 
 package com.karankumar.bookproject.backend.entity;
 
-import java.time.LocalDate;
-import java.util.Set;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,32 +29,22 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
-
     @NotNull
     @NotEmpty
     private String title;
-
     private Integer numberOfPages;
-
     private Integer pagesRead;
-
     private Genre genre;
-
     private Integer seriesPosition;
-    
     private String edition;
-
     private String bookRecommendedBy;
 
     // For books that have been read
