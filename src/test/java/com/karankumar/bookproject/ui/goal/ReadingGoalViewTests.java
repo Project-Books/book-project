@@ -6,6 +6,7 @@ import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
+import com.karankumar.bookproject.backend.goal.CalculateReadingGoal;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
@@ -56,24 +57,6 @@ public class ReadingGoalViewTests {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
         goalView = new ReadingGoalView(goalService, predefinedShelfService);
-    }
-
-    /**
-     * Tests whether the progress value calculation is correct
-     */
-    @Test
-    public void progressValueCorrect() {
-        int booksToRead = new Random().nextInt(100);
-
-        Assertions.assertEquals(ReadingGoalView.getProgress(5, 0), 0); // == 0%
-        Assertions.assertEquals(ReadingGoalView.getProgress(25, 5), 0.2); // < 100%
-        Assertions.assertEquals(ReadingGoalView.getProgress(booksToRead, booksToRead), 1.0,
-                "Books to read = " + booksToRead); // == 100%
-        Assertions.assertEquals(ReadingGoalView.getProgress(booksToRead, (booksToRead + 1)), 1.0,
-                "Books to read = " + booksToRead); // > 100%
-
-        // ensure 0, and not an arithmetic exception, is returned
-        Assertions.assertEquals(ReadingGoalView.getProgress(5, 0), 0);
     }
 
     /**
@@ -161,10 +144,10 @@ public class ReadingGoalViewTests {
 
         PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
         Assumptions.assumeTrue(readShelf != null);
-        Assertions.assertEquals(booksInReadShelf, ReadingGoalView
-                .howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
-        Assertions.assertEquals(pagesReadInReadShelf, ReadingGoalView
-                .howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
+        Assertions.assertEquals(booksInReadShelf,
+                CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
+        Assertions.assertEquals(pagesReadInReadShelf,
+                CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
     }
 
     /**
@@ -231,7 +214,7 @@ public class ReadingGoalViewTests {
         Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
 
         PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
-        int howManyReadThisYear = ReadingGoalView.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
+        int howManyReadThisYear = CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
         int targetToRead = booksGoal.getTarget();
         boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
 
@@ -261,7 +244,7 @@ public class ReadingGoalViewTests {
         Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
 
         PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
-        int howManyReadThisYear = ReadingGoalView.howManyReadThisYear(readingGoal.getGoalType(), readShelf);
+        int howManyReadThisYear = CalculateReadingGoal.howManyReadThisYear(readingGoal.getGoalType(), readShelf);
         int targetToRead = readingGoal.getTarget();
         boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
 
