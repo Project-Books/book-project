@@ -38,6 +38,7 @@ Prerequisites:
 - If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
   - If you do have Node.js installed, please ensure it is at least version 10.0
 - MySQL 8.0.* or (better) Docker
+  - For Windows users, install Docker Desktop and then run `docker-compose up` at the root of the project on the command line
 
 
 1. Clone the repository
