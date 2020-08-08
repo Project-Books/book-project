@@ -13,23 +13,25 @@ public class PredefinedShelfUtils {
     }
 
     /**
+     * Helper method that find a shelf with a particular name
+     * @param shelfName the name of the shelf to look for
+     * @return the shelf that matches the shelf name provided
+     */
+    public PredefinedShelf findPredefinedShelf(PredefinedShelf.ShelfName shelfName) {
+        return predefinedShelfService.findAll()
+                                     .stream()
+                                     .filter(shelf -> shelf.getPredefinedShelfName().equals(shelfName))
+                                     .collect(Collectors.toList())
+                                     .get(0); // there should only be one
+    }
+
+    /**
      * @return the read shelf if it can be found, null otherwise.
      */
     public PredefinedShelf findReadShelf() {
         return predefinedShelfService.findAll()
                                      .stream()
                                      .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.READ))
-                                     .collect(Collectors.toList())
-                                     .get(0); // there should only be one
-    }
-
-    /**
-     * @return the reading shelf if it can be found, null otherwise.
-     */
-    public PredefinedShelf findReadingShelf() {
-        return predefinedShelfService.findAll()
-                                     .stream()
-                                     .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.READING))
                                      .collect(Collectors.toList())
                                      .get(0); // there should only be one
     }
