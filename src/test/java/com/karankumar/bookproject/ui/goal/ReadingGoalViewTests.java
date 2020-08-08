@@ -227,8 +227,8 @@ public class ReadingGoalViewTests {
         goalService.save(booksGoal);
         goalView.getCurrentGoal();
         // should be visible for both a book or pages goal
-        Assertions.assertTrue(goalView.readingGoal.isVisible());
-        Assertions.assertTrue(goalView.progressPercentage.isVisible());
+        Assertions.assertTrue(goalView.readingGoalSummary.isVisible());
+        Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
 
         PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
         int howManyReadThisYear = ReadingGoalView.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
@@ -239,9 +239,9 @@ public class ReadingGoalViewTests {
             // Additional components that should be visible for a books goal
             Assertions.assertTrue(goalView.goalProgress.isVisible());
             if(hasReachedGoal) {
-                Assertions.assertFalse(goalView.booksToRead.isVisible());
+                Assertions.assertFalse(goalView.booksToReadOnAverageToMeetGoal.isVisible());
             } else {
-                Assertions.assertTrue(goalView.booksToRead.isVisible());
+                Assertions.assertTrue(goalView.booksToReadOnAverageToMeetGoal.isVisible());
             }
         }
     }
@@ -257,8 +257,8 @@ public class ReadingGoalViewTests {
         goalService.save(readingGoal);
         goalView.getCurrentGoal();
         // should be visible for both a book or pages goal
-        Assertions.assertTrue(goalView.readingGoal.isVisible());
-        Assertions.assertTrue(goalView.progressPercentage.isVisible());
+        Assertions.assertTrue(goalView.readingGoalSummary.isVisible());
+        Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
 
         PredefinedShelf readShelf = findShelf(PredefinedShelf.ShelfName.READ);
         int howManyReadThisYear = ReadingGoalView.howManyReadThisYear(readingGoal.getGoalType(), readShelf);
@@ -269,9 +269,9 @@ public class ReadingGoalViewTests {
             // Additional components that should be visible for a books goal
             Assertions.assertTrue(goalView.goalProgress.isVisible());
             if(hasReachedGoal) {
-                Assertions.assertFalse(goalView.booksToRead.isVisible());
+                Assertions.assertFalse(goalView.booksToReadOnAverageToMeetGoal.isVisible());
             } else {
-                Assertions.assertTrue(goalView.booksToRead.isVisible());
+                Assertions.assertTrue(goalView.booksToReadOnAverageToMeetGoal.isVisible());
             }
         }
     }

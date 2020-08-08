@@ -15,6 +15,7 @@
 
 package com.karankumar.bookproject.ui.goal;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
@@ -38,64 +39,56 @@ import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 @Route(value = "goal", layout = MainView.class)
 @PageTitle("Goal | Book Project")
 @Log
 public class ReadingGoalView extends VerticalLayout {
 
-    public static final String SET_GOAL = "Set goal";
-    public static final String UPDATE_GOAL = "Update goal";
-    public static final String TARGET_MET = "Congratulations for reaching your target!";
+    @VisibleForTesting
+    static final String SET_GOAL = "Set goal";
+    @VisibleForTesting
+    static final String UPDATE_GOAL = "Update goal";
+    @VisibleForTesting
+    static final String TARGET_MET = "Congratulations for reaching your target!";
 
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
     private static final int WEEKS_IN_YEAR = 52;
 
-    public final Button setGoalButton;
+    @VisibleForTesting
+    final Button setGoalButton;
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
 
     private ReadingGoalService goalService;
 
-    /**
-     * Displays what the reading goal is and how many books/pages the user has read
-     */
-    H1 readingGoal;
-
-    /**
-     * Displays whether a user has met the goal, is ahead or is behind the goal
-     */
+    @VisibleForTesting
+    H1 readingGoalSummary;
+    @VisibleForTesting
     H3 goalProgress;
-
-    /**
-     * Displays the user's progress towards their goal as a percentage
-     */
-    Span progressPercentage;
-
-    /**
-     * Displays how many books a user needs to read on average to meet their goal
-     */
-    Span booksToRead;
+    @VisibleForTesting
+    Span goalProgressPercentage;
+    @VisibleForTesting
+    Span booksToReadOnAverageToMeetGoal;
 
     public ReadingGoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
 
-        readingGoal = new H1();
+        readingGoalSummary = new H1();
         setGoalButton = new Button();
         goalProgress = new H3();
-        booksToRead = new Span();
+        booksToReadOnAverageToMeetGoal = new Span();
         progressBar = new ProgressBar();
         progressBar.setMaxWidth("500px");
-        progressPercentage = new Span();
-        progressPercentage.getElement().getStyle().set("font-style", "italic");
+        goalProgressPercentage = new Span();
+        goalProgressPercentage.getElement().getStyle().set("font-style", "italic");
 
         configureSetGoal();
         getCurrentGoal();
 
-        add(readingGoal, progressBar, progressPercentage, goalProgress, booksToRead, setGoalButton);
+        add(readingGoalSummary, progressBar, goalProgressPercentage, goalProgress, booksToReadOnAverageToMeetGoal, setGoalButton);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
@@ -113,7 +106,7 @@ public class ReadingGoalView extends VerticalLayout {
     void getCurrentGoal() {
         List<ReadingGoal> goals = goalService.findAll();
         if (goals.size() == 0) {
-            readingGoal.setText("Reading goal not set");
+            readingGoalSummary.setText("Reading goal not set");
             setGoalButton.setText(SET_GOAL);
         } else {
             updateReadingGoal(goals.get(0).getTarget(), goals.get(0).getGoalType());
@@ -146,18 +139,19 @@ public class ReadingGoalView extends VerticalLayout {
         String outOf = " out of ";
 
         if (goalType.equals(ReadingGoal.GoalType.BOOKS)) {
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + getPluralized(" book", targetToRead));
+            readingGoalSummary.setText(haveRead + howManyReadThisYear + outOf + + targetToRead + getPluralized(" book", targetToRead));
             goalProgress.setText(calculateProgress(targetToRead, howManyReadThisYear));
-            booksToRead.setText(calculateBooksToRead(targetToRead, howManyReadThisYear));
+            booksToReadOnAverageToMeetGoal.setText(calculateBooksToRead(targetToRead, howManyReadThisYear));
             toggleBooksGoalInfo(true, hasReachedGoal);    // show book goal-specific information
         } else {
-            readingGoal.setText(haveRead + howManyReadThisYear + outOf + targetToRead + getPluralized(" page", targetToRead));
+            readingGoalSummary
+                    .setText(haveRead + howManyReadThisYear + outOf + targetToRead + getPluralized(" page", targetToRead));
             toggleBooksGoalInfo(false, hasReachedGoal);
         }
 
         double progress = getProgress(targetToRead, howManyReadThisYear);
         progressBar.setValue(progress);
-        progressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
+        goalProgressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
 
         updateSetGoalText();
     }
@@ -198,7 +192,7 @@ public class ReadingGoalView extends VerticalLayout {
      */
     private void toggleBooksGoalInfo(boolean isOn, boolean hasReachedGoal) {
         goalProgress.setVisible(isOn);
-        booksToRead.setVisible(isOn && !hasReachedGoal);
+        booksToReadOnAverageToMeetGoal.setVisible(isOn && !hasReachedGoal);
     }
 
     /**
