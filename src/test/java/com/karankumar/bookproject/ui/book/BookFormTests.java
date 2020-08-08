@@ -128,9 +128,6 @@ public class BookFormTests {
     private int generateRandomNumberOfPages() {
         return ThreadLocalRandom.current().nextInt(300, (2000 + 1));
     }
-    private int generateRandomSeriesPosition() {
-        return ThreadLocalRandom.current().nextInt(1, (10 + 1));
-    }
 
     /**
      * Tests whether the form fields are correctly populated
@@ -307,7 +304,11 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Series position must be at least 1", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+        Assertions.assertEquals("Series position must be at least 1",
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow());
     }
 
     @Test
@@ -322,7 +323,12 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("There must be at least one page in the book", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+        Assertions.assertEquals("There must be at least one page in the book",
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
     }
 
     @Test
@@ -337,7 +343,12 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Please provide a book title", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+        Assertions.assertEquals("Please provide a book title",
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
     }
 
     @Test
@@ -352,7 +363,12 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Please enter the author's first name", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+        Assertions.assertEquals("Please enter the author's first name",
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
     }
 
     @Test
@@ -367,7 +383,12 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Please enter the author's last name", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+        Assertions.assertEquals("Please enter the author's last name",
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
     }
 
     @Test
@@ -382,7 +403,12 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("Please select a shelf", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
+        Assertions.assertEquals("Please select a shelf",
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
     }
 
     @Test
@@ -397,8 +423,19 @@ public class BookFormTests {
         // then
         Assertions.assertTrue(validationStatus.hasErrors());
         Assertions.assertEquals(2, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals("The date you started reading the book cannot be after today's date.", validationStatus.getFieldValidationErrors().get(0).getMessage().orElseThrow());
-        Assertions.assertEquals("The date you finished reading the book cannot be earlier than the date you started reading the book", validationStatus.getFieldValidationErrors().get(1).getMessage().orElseThrow());
+        Assertions.assertEquals("The date you started reading the book cannot be after today's date.",
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+        Assertions.assertEquals(
+                "The date you finished reading the book cannot be earlier than the date you started reading the book",
+                validationStatus.getFieldValidationErrors()
+                                .get(1)
+                                .getMessage()
+                                .orElseThrow()
+        );
     }
 
     @Test

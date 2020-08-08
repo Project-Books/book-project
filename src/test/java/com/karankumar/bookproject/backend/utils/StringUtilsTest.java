@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class StringUtilsTest {
-    /**
-     * Check to ensure that isPlural method is returning the correct String
-     */
     @Test
     public void pluralizeReturnsSingularString() {
         Assertions.assertEquals("book", StringUtils.pluralize("book", 1));
