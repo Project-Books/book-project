@@ -55,15 +55,13 @@ public class BookFormTests {
     private static final Genre genre = Genre.SCIENCE;
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
-
-    // if either the RatingScale or the double rating is changed, then the other has to also be changed accordingly
     private static final RatingScale ratingVal = RatingScale.NINE;
+    private static DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
     private static final int SERIES_POSITION = 10;
-    private static double rating = 9.0;
-
     private static int pagesRead;
     private static int numberOfPages;
     private static int seriesPosition;
+
     private static Routes routes;
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
@@ -143,6 +141,7 @@ public class BookFormTests {
         Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
+        double rating = converter.convertToPresentation(ratingVal, null);
         Assertions.assertEquals(rating, bookForm.rating.getValue());
         Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
     }
@@ -197,7 +196,7 @@ public class BookFormTests {
         bookForm.numberOfPages.setValue(numberOfPages);
         bookForm.dateStartedReading.setValue(dateStarted);
         bookForm.dateFinishedReading.setValue(dateFinished);
-        bookForm.rating.setValue(rating);
+        bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
     }
 
     /**
@@ -419,7 +418,7 @@ public class BookFormTests {
     }
 
     @Test
-    void shouldDisplaySeriesPositionForm_whenIsInSeriesCheckboxOn() {
+    void whenIsInSeriesCheckedDisplaySeriesPosition() {
         // given
         bookForm.inSeriesCheckbox.setValue(true);
 
@@ -430,7 +429,7 @@ public class BookFormTests {
     }
 
     @Test
-    void shouldNotDisplaySeriesPositionForm_whenIsInSeriesCheckboxOff() {
+    void whenIsInSeriesUnchecked_SeriesPositionShouldNotShow() {
         // given
         bookForm.inSeriesCheckbox.setValue(false);
 
@@ -439,7 +438,7 @@ public class BookFormTests {
     }
 
     @Test
-    void shouldClearSeriesPositionValue_whenSeriesPositionCheckboxIsFirstEnabled_andThenDisabled() {
+    void whenSeriesPositionIsSwitchedOnAndThenOff_seriesPositionHides() {
         // given
         bookForm.inSeriesCheckbox.setValue(true);
 
@@ -448,11 +447,10 @@ public class BookFormTests {
 
         // then
         Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
-        Assertions.assertNull(bookForm.seriesPosition.getValue());
     }
 
     @Test
-    void shouldDisplaySeriesPositionForm_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
+    void shouldDisplaySeriesPosition_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
         // given
         populateBookForm();
 
@@ -466,16 +464,14 @@ public class BookFormTests {
     }
 
     @Test
-    void shouldNotDisplaySeriesPositionForm_withSeriesPositionPopulated_whenBookDoesNotHaveSeriesPosition() {
+    void shouldNotDisplaySeriesPosition_whenBookDoesNotHaveSeriesPosition() {
         // given
         bookForm = createBookForm(false);
 
-        // when
         bookForm.openForm();
 
         // then
         Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
-        Assertions.assertNull(bookForm.seriesPosition.getValue());
     }
 
     @AfterEach
