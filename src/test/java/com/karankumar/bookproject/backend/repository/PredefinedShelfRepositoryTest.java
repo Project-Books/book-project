@@ -2,7 +2,7 @@ package com.karankumar.bookproject.backend.repository;
 
 
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.tags.DataJpaIntegrationTest;
+import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

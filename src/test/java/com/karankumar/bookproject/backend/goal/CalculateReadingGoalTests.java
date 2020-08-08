@@ -1,6 +1,6 @@
 package com.karankumar.bookproject.backend.goal;
 
-import com.karankumar.bookproject.tags.IntegrationTest;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

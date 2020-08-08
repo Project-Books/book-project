@@ -3,12 +3,12 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.tags.IntegrationTest;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

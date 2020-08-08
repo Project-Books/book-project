@@ -1,10 +1,7 @@
-package com.karankumar.bookproject.tags;
+package com.karankumar.bookproject.annotations;
 
 import org.junit.jupiter.api.Tag;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.ElementType;
