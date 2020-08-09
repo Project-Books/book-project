@@ -30,7 +30,7 @@ By contributing to this project, you are expected to adhere to the [Book Project
 
 All questions, suggestions and feedback are both welcome and encouraged. 
 
-Questions and feedback should be discussed over [Gitter](https://gitter.im/book-project-community). This allows other to benefit from seeing the questions, too.
+Questions and feedback should be discussed over [Gitter](https://gitter.im/book-project-community). This allows others to benefit from seeing the answers, too.
 
 For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
 
@@ -97,15 +97,17 @@ The same applies for pull requests where we've request changes -- mark it as a d
 ## Stale issues & pull requests
 
 If you have been assigned to an issue and we have not heard back to you for a week (either through a message or seeing a pull request you made), we will send a friendly message asking whether everything is OK and whether you need a hand. If you need more time, the work is non-urgent and is not blocking anyone, that's completely fine, just let us know. 
-If possible, try to let us know how long it will take you to submit a ready-to-review pull request. If we have not heard back from you one week after our friendly reminder (i.e. 2 weeks after you were first assigned to the issue), we will unassign you from the issue. This is so that we can assign someone else to the issue. 
+If possible, try to let us know how long it will take you to submit a ready-to-review pull request. If we have not heard back from you one week after our friendly reminder (i.e. two weeks after you were first assigned to the issue), we will unassign you from the issue. This is so that we can assign someone else to the issue. 
 
 Pull requests are similar. We will send a friendly reminder after one week of receiving the pull request or receiving your last message. If we don't hear back from you, we will close the pull request and label it as [stale](https://github.com/knjk04/book-project/labels/stale).
 
-For urgent work, such as fixing important bugs or work that is blocking others, a similar process will be followed but with shorter timescales. Exactly how long depends on the severity of the stale work. Where possible, we will inform you whether an issue is important so that you can know before picking it up. For high priority bugs, we recommend that you only take it up if you are able to commit to finishing it reasonably quickly.
+For urgent work, such as fixing important bugs or work that is blocking others, a similar process will be followed but with shorter timescales. Exactly how long depends on the severity of the stale work. Where possible, we will inform you whether an issue is important so that you can know before picking it up. For high priority bugs, we recommend that you only take it up if you can commit to finishing it reasonably quickly.
+
+The reason that we ask to be kept informed is so that we don't find ourselves assigning work and then never hearing back from the contributor. In turn, this allows us to progress with the project at a good pace.
 
 ## Unassigning yourself
 
-If you no longer wish to work an issue, that's fine. All we ask is that you let us know. If you unassign yourself from the issue, we don't get notified, so a quick message (no explanation required) will do. This allows to easily manage issues. We can then assign it to someone else. 
+If you no longer wish to work an issue, that's fine. All we ask is that you let us know. If you unassign yourself from the issue, we don't get notified, so a quick message (no explanation required) will do. We can then assign it to someone else. 
 
 Where possible, please let us know as soon as possible if you no longer wish to work on an issue. 
 
