@@ -2,8 +2,6 @@
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
-
 To report a vulnerability, please email bookproject@madebykarankumar.com. Please do not expose the vulnerability in public, which includes creating a GitHub issue.
 You should expect an acknowledgement within one week. If you do not, please message @knjk04 privately on Gitter.
 
