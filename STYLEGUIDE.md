@@ -235,6 +235,30 @@ If an enum class has no methods, it can be written as an array initialiser:
 private enum EventType { SAVED, DELETED }
 ```
 
+#### Comment fall-through
+
+If a case continues onto the next statement group with a `break`, this should be commented. Something like  `// fall through` is sufficient. For example:
+
+```java
+switch (param) {
+   case 1:
+   case 2:
+      foo();
+      // fall through
+   case 3:
+      bar();
+      break;
+   default:
+      baz();
+}
+```
+
+The final statement in the switch block, the `default` case above, does not require a fall-through comment.
+
+#### All cases or default cases
+
+Either cover all of the cases or use the `default` case. Covering all cases is the preferred approach.
+
 ### Variable declarations
 
 #### One variable declaration per line
