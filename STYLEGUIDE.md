@@ -277,6 +277,19 @@ Hoewver, for fields, multiple annotations can be on the same line:
 @NotNull @VisibleForTesting String authorFirstName;
 ```
 
+### Comments
+
+This section is to do with implementatoin comments, not Javadoc.
+
+Comments should not be decorated with asterisks or any other characters.
+
+### Modifiers
+
+Where applicable, class and member modifiers should appear in the following order, as recommended by the Java Language Specification:
+```java
+public protected private abstract default static final transient volatile synchronized native strictfp
+```
+
 ### Variable declarations
 
 #### One variable declaration per line
