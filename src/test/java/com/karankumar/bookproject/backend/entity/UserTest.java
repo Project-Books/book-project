@@ -78,6 +78,19 @@ public class UserTest {
     }
 
     @Test
+    void testPasswordWithNoLowercaseCharacterIsInvalid() {
+        // given
+        User user = userWithoutPassword().password("PASSWORD1&")
+                                         .build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+
+    @Test
     void testPasswordWithNoUppercaseCharacterIsInvalid() {
         // given
         User user = userWithoutPassword().password("password1&")
