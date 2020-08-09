@@ -23,15 +23,14 @@ the version on the master branch should be followed, as this version should be t
    1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces)
    1. [120 character column limit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#120-character-column-limit)
    1. [One statement per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-statement-per-line)
-   1. [Underscores in numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#underscores-in-numeric-literals)
    1. [Empty blocks can be concise](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#empty-blocks-can-be-concise)
    1. [Whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#whitespace)
       1. [Vertical whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#vertical-whitespace)
       1. [No horizontal alignment](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-horizontal-alignment)
    1. [Optional grouping parentheses: recommended](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#optional-grouping-parentheses-recommended)
-1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
-   1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
-   1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
+   1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
+      1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
+      1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
 1. [Javadoc](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#javadoc)
    1. [No @author tag](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-author-tag)
 1. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
@@ -329,15 +328,15 @@ String[] args
 String args[]
 ```
 
-## Indentation
+### Indentation
 
-### 4 Spaces, no tabs
+#### 4 Spaces, no tabs
 
 4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
 
 This also applies to CSS.
 
-### Aligning method calls
+#### Aligning method calls
 
 An exception to the above 4 spaces indentation rule is aligning method calls (see below). This can improve readability.
 
