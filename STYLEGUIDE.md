@@ -28,6 +28,8 @@ the version on the master branch should be followed, as this version should be t
       1. [Vertical whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#vertical-whitespace)
       1. [No horizontal alignment](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-horizontal-alignment)
    1. [Optional grouping parentheses: recommended](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#optional-grouping-parentheses-recommended)
+   1. [Enum classes](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md)
+      1. [Comment fall-through](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md)
    1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
       1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
       1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
@@ -242,7 +244,7 @@ switch (param) {
 
 The final statement in the switch block, the `default` case above, does not require a fall-through comment.
 
-#### All cases or default cases
+#### Enumerate all cases or have a default case
 
 Either cover all of the cases or use the `default` case. Covering all cases is the preferred approach.
 
