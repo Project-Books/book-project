@@ -515,7 +515,7 @@ In every test method, try to minimise the number of assertions. Generally speaki
 
 ### Avoid randomness
 
-While it may seem better to use pseudorandom bounded values so that you can test more cases, it makes it harder to reproduce. It's better to use fixed input data with well-defined edge cases.
+While it may seem better to use pseudorandom bounded values so that you can test more cases, it rarely improves coverage. It's better to use fixed input data with well-defined edge cases.
 
 ## Recommended reading
 
