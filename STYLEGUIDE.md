@@ -162,18 +162,6 @@ Exceptions to this rule:
 
 Every statement should be followed by a line break. This includes variable declarations.
 
-### Underscores in numeric literals
-
-For numeric literals that are ten thousand or higher, underscores are recommended to separate digits by thousands:
-
-```java
-// bad
-int booksSold = 10000;
-
-// good
-int booksSold = 10_000;
-```
-
 ### Empty blocks can be concise
 
 Empty blocks can be concise providing they do not form a part of a multi-block statement.
@@ -289,6 +277,25 @@ Where applicable, class and member modifiers should appear in the following orde
 ```java
 public protected private abstract default static final transient volatile synchronized native strictfp
 ```
+
+### Numeric literals
+
+#### Underscores in numeric literals
+
+For numeric literals that are ten thousand or higher, underscores are recommended to separate digits by thousands:
+
+```java
+// bad
+int booksSold = 10000;
+
+// good
+int booksSold = 10_000;
+```
+
+#### Long suffixes
+
+`long` variables should be suffixed with an uppercase `L`. The lowercase `l` should not be used as it may cause confusion with the digit `1`. For example, `1_000_000_000L` instead of `1_000_000_000l`.
+
 
 ### Variable declarations
 
