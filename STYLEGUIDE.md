@@ -259,6 +259,24 @@ The final statement in the switch block, the `default` case above, does not requ
 
 Either cover all of the cases or use the `default` case. Covering all cases is the preferred approach.
 
+### Annotations
+
+Annotations should appear after any javadoc for the class, field or method.
+
+Each annotation should appear on its own line. For example:
+```java
+@Override
+@Nullable
+public Integer getPagesReadIfPresent() {
+   ...
+}
+```
+
+Hoewver, for fields, multiple annotations can be on the same line:
+```java
+@NotNull @VisibleForTesting String authorFirstName;
+```
+
 ### Variable declarations
 
 #### One variable declaration per line
