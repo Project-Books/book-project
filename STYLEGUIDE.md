@@ -420,6 +420,22 @@ at tracking changes.
 The @Override annotation should be used for overriden methods. This is so that the compiler can run
 a check at compile-time to see whether the method annotated with @Override actually overrides a method.
 
+### Don't swallow exceptions
+
+Rarely should there be no response to a caught exception (e.g. you may want to log it).
+
+If it is actually right to not do anything, then this has to be justified in a comment.
+
+An exception to ignore exeptions is if the exception is expected in a test. For example, you may want to test whether the code under test does indeed throw an exception:
+```java
+try {
+   foo(-1);
+} catch (IndexOutOfBoundsException expected) {
+}
+```
+
+In such cases, the exception parameter should be called or include the word `expected`, as above.
+
 ### StringBuilder over StringBuffer
 
 StringBuilder should be used instead of a StringBuffer for single-threaded code.
