@@ -415,10 +415,16 @@ at tracking changes.
 
 ## Programming practices
 
-### Use @Override
+### Annotations
+
+#### Use @Override
 
 The @Override annotation should be used for overriden methods. This is so that the compiler can run
 a check at compile-time to see whether the method annotated with @Override actually overrides a method.
+
+#### Use @VisibleForTesting
+
+While it is usually better to limit members and methods, if it's required for testing, it will need to be made package-private. In such cases, they should be tagged as @VisibleForTesting to make it clear.
 
 ### Don't swallow exceptions
 
@@ -479,6 +485,10 @@ Wherever possible, try to keep methods short (under 15 lines). This makes it eas
 ### Fewest number of assertions in every test
 
 In every test method, try to minimise the number of assertions. Generally speaking, ideally there should only be one.
+
+### Avoid randomness
+
+While it may seem better to use pseudorandom bounded values so that you can test more cases, it makes it harder to reproduce. It's better to use fixed input data with well-defined edge cases.
 
 ## Recommended reading
 
