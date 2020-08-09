@@ -350,6 +350,62 @@ bookGrid.addColumn(AUTHOR_KEY)
     .setSortable(true);
 ```
 
+## Naming
+
+Special prefixes or suffixes, such as to represent member variables, are not used.  For example, he following are not permitted: `mTitle` and `_title`.
+
+### Package names
+
+Package names are written in lowercase. Consecutive words are concatenated together without any underscores. For example, `com.example.readinggoal`, not `com.example.readingGoal` or `com.example.reading_goal`. 
+
+To aid readability, try to keep package names short and one-word names wherever possible.
+
+### Class names
+
+Class names are written in PascalCase (also referred to as UpperCamelCase).
+
+Class names should be nouns or noun phrases.
+
+Interface names can be nouns or noun phrases. However, in some cases, adjectives or adjective phrases are better (e.g. `Iterable`).
+
+Test classes should be the name of the class that it is testing followed by the suffix `Test`. For example. the test class for the `GenreStatistics` class should be called `GenreStatisticsTest`.
+
+### Method names
+
+Method names are written in lowerCamelCase.
+
+Method names should usually be verb or verb phrases. For example, `processTransaction` or `findId`.
+
+Underscores are allowed in JUnit tes tmethods to separate logical components. One popular pattern is `<methodUnderTest>_<state>`; for example, `pop_emptyStack`. The most important thing is that the test method name clearly summarises what is being tested.
+
+### Constant names
+
+Constnats are written in CONSTANT_CASE. It is written in uppercase letters with each word separated by an underscore.
+
+### Non-constant field names
+
+Non-constant field names, regardless of whether they are static, are written in`lowerCamelCase`.
+
+The names tend to be noun or noun phrases.
+
+### Parameter names
+
+Paramter names are written in `lowerCamelCase`.
+
+Single letter parameter names should be avoided in methods (common exception: for loops).
+
+### Local variables names
+
+Local variables names are written in `lowerCamelCase`.
+
+Even if they are immutable (e.g. marked as `final`), they are not considered constants, so they not be styles as constants.
+
+### Type variables names
+
+Type variables should be either:
+- One capital letter, which can be optionally succeeded by a letter (e.g. `T`, `E` or `T2`)
+- A class name followed by the capital letter `T` (e.g. `AuthorT`)
+
 ## Javadoc
 
 ### No @author tag
