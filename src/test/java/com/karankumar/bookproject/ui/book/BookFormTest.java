@@ -47,7 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @IntegrationTest
 @WebAppConfiguration
-public class BookFormTests {
+public class BookFormTest {
 
     private static final String firstName = "Nick";
     private static final String lastName = "Bostrom";

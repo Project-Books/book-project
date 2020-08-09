@@ -3,7 +3,7 @@ package com.karankumar.bookproject.backend.goal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CalculateReadingGoalTests {
+public class CalculateReadingGoalTest {
     private int booksToRead = 52;
     @Test
     public void progressValueCorrect() {
