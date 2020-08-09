@@ -2,7 +2,7 @@
 
 By contributing to this repository, you are expected to follow this style guide. Please also ensure that you remain familiar with this document as it may change from time to time.
 
-Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
+Multiple versions of this style guide may exist throughout this repository. As with other documents on this repository,
 the version on the master branch should be followed, as this version should be the most up-to-date.
 
 ## Table of Contents
@@ -186,7 +186,7 @@ Exceptions to this rule:
 
 ### One statement per line
 
-Every statement should be followed by a line break. This includes variable declarations.
+A line break should follow every statement. This includes variable declarations.
 
 ### Empty blocks can be concise
 
@@ -222,7 +222,7 @@ Generally speaking, there should not be more than one blank line.
 
 *Where there should not be one blank line*
 
-- Between the class name and the first field declaration (or method declaration or defintion)
+- Between the class name and the first field declaration (or method declaration or definition)
 
 #### No horizontal alignment
 
@@ -236,7 +236,7 @@ private int     numberOfPages;
 private Strring authorFirstName;
 ```
 
-There should be no horizontal alignment. While it looks nice and improves readability, it is can be harder to maintain.
+There should be no horizontal alignment. While it looks nice and improves readability, it can be harder to maintain.
 
 ### Optional grouping parentheses: recommended
 
@@ -286,7 +286,7 @@ public Integer getPagesReadIfPresent() {
 }
 ```
 
-Hoewver, for fields, multiple annotations can be on the same line:
+However, for fields, multiple annotations can be on the same line:
 ```java
 @NotNull @VisibleForTesting String authorFirstName;
 ```
@@ -339,7 +339,7 @@ private String authorFirstName, authorLastName;
 
 #### Declare as close as possible to use
 
-Local variables should be declared as close as reasonably possible to where it is used. This can help limit scope and improve readability. Local variables should not be declared at the top of a method for the sake of it.
+Local variables should be declared as close as reasonably possible to where it is used. This can help limit the scope and improve readability. Local variables should not be declared at the top of a method for the sake of it.
 
 ### Arrays
 
@@ -359,13 +359,13 @@ String args[]
 
 #### 4 Spaces, no tabs
 
-4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
+Four spaces should be used for indentation. This is clearer than two spaces (more than four is extraneous).
 
 This also applies to CSS.
 
 #### Aligning method calls
 
-An exception to the above 4 spaces indentation rule is aligning method calls (see below). This can improve readability.
+An exception to the above four spaces indentation rule is aligning method calls (see below). This can improve readability.
 
 ```java
 // good
@@ -379,7 +379,7 @@ bookGrid.addColumn(AUTHOR_KEY)
 
 ## Naming
 
-Special prefixes or suffixes, such as to represent member variables, are not used.  For example, he following are not permitted: `mTitle` and `_title`.
+Special prefixes or suffixes, such as to represent member variables, are not used.  For example, the following are not permitted: `mTitle` and `_title`.
 
 ### Package names
 
@@ -403,11 +403,11 @@ Method names are written in lowerCamelCase.
 
 Method names should usually be verb or verb phrases. For example, `processTransaction` or `findId`.
 
-Underscores are allowed in JUnit tes tmethods to separate logical components. One popular pattern is `<methodUnderTest>_<state>`; for example, `pop_emptyStack`. The most important thing is that the test method name clearly summarises what is being tested.
+Underscores are allowed in JUnit test methods to separate logical components. One popular pattern is `<methodUnderTest>_<state>`; for example, `pop_emptyStack`. The most important thing is that the test method name clearly summarises what is being tested.
 
 ### Constant names
 
-Constnats are written in CONSTANT_CASE. It is written in uppercase letters with each word separated by an underscore.
+Constants are written in CONSTANT_CASE. It is written in uppercase letters with each word separated by an underscore.
 
 ### Non-constant field names
 
@@ -417,7 +417,7 @@ The names tend to be noun or noun phrases.
 
 ### Parameter names
 
-Paramter names are written in `lowerCamelCase`.
+Parameter names are written in `lowerCamelCase`.
 
 Single letter parameter names should be avoided in methods (common exception: for loops).
 
@@ -425,7 +425,7 @@ Single letter parameter names should be avoided in methods (common exception: fo
 
 Local variables names are written in `lowerCamelCase`.
 
-Even if they are immutable (e.g. marked as `final`), they are not considered constants, so they not be styles as constants.
+Even if they are immutable (e.g. marked as `final`), they are not considered constants, so they are not styled as constants.
 
 ### Type variables names
 
@@ -446,7 +446,7 @@ at tracking changes.
 
 #### Use @Override
 
-The @Override annotation should be used for overriden methods. This is so that the compiler can run
+The @Override annotation should be used for overridden methods. This is so that the compiler can run
 a check at compile-time to see whether the method annotated with @Override actually overrides a method.
 
 #### Use @VisibleForTesting
@@ -457,9 +457,9 @@ While it is usually better to limit members and methods, if it's required for te
 
 Rarely should there be no response to a caught exception (e.g. you may want to log it).
 
-If it is actually right to not do anything, then this has to be justified in a comment.
+If it is right not to do anything, then this has to be justified in a comment.
 
-An exception to ignore exeptions is if the exception is expected in a test. For example, you may want to test whether the code under test does indeed throw an exception:
+An exception to ignore exceptions is if the exception is expected in a test. For example, you may want to test whether the code under test does indeed throw an exception:
 ```java
 try {
    foo(-1);
@@ -511,7 +511,7 @@ Wherever possible, try to keep methods short (under 15 lines). This makes it eas
 
 ### Fewest number of assertions in every test
 
-In every test method, try to minimise the number of assertions. Generally speaking, ideally there should only be one.
+In every test method, try to minimise the number of assertions. Generally speaking, ideally, there should only be one.
 
 ### Avoid randomness
 
@@ -523,7 +523,7 @@ While it may seem better to use pseudorandom bounded values so that you can test
 
 ## Updates to this document
 
-If you are considering making changes to any of the recommended styles in this guide, please note that the following may also need to be changed:
+If you change any of the recommended styles in this guide, please note that the following may also need to be changed:
 
 - [Checkstyle configuration](https://github.com/knjk04/book-project/blob/master/src/main/resources/checkstyle.xml)
 - [IntelliJ formatter](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml)
