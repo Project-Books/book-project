@@ -99,8 +99,7 @@ public class BookService extends BaseService<Book, Long> {
 
     @Override
     public void deleteAll() {
-        List<Book> books = bookRepository.findAll();
-        if(books.isEmpty()){
+        if(bookRepository.count() == 0){
             LOGGER.log(Level.INFO, "All books already deleted");
             return;
         }

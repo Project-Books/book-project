@@ -44,16 +44,16 @@ import java.util.logging.Level;
 public class SettingsView extends HorizontalLayout {
 
     // -------------- Enable Dark/Light Mode ----------------------
-    private static final String enable = "Enable dark mode";
-    private static final String disable = "Disable dark mode";
-    private static final Button toggleDarkmode;
+    private static final String ENABLE = "Enable dark mode";
+    private static final String DISABLE = "Disable dark mode";
+    private static final Button TOGGLE_DARKMODE;
     private static boolean darkModeOn = false;
 
 
     // -------------- Clear Shelves ----------------------
-    private static final String clearShelves = "Clear Shelves";
-    private static final String shelvesAlreadyEmpty = "Shelves are empty";
-    private static Button clearShelvesButton; // Not labeled 'private' because it is tested in SettingsViewTest
+    private static final String CLEAR_SHELVES = "Clear Shelves";
+    private static final String SHELVES_ARE_EMPTY = "Shelves are empty";
+    private static Button clearShelveButton; // Not labeled 'private' because it is tested in SettingsViewTest
     private static boolean shelvesEmpty = false;
     private static BookService bookService;
     private static Dialog dialog;
@@ -61,7 +61,7 @@ public class SettingsView extends HorizontalLayout {
     private static Button cancelButton;
 
     static {
-        toggleDarkmode = new Button(enable, click -> {
+        TOGGLE_DARKMODE = new Button(ENABLE, click -> {
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
 
             if (themeList.contains(Lumo.DARK)) {
@@ -75,17 +75,17 @@ public class SettingsView extends HorizontalLayout {
         });
 
 
-        clearShelvesButton = new Button(clearShelves, click -> {
+        clearShelveButton = new Button(CLEAR_SHELVES, click -> {
 
             dialog = new Dialog();
             dialog.setCloseOnEsc(false);
             dialog.setCloseOnOutsideClick(false);
 
-            Label messageLabel = new Label();
+            final Label messageLabel = new Label();
 
             confirmButton = new Button("Confirm", event -> {
                 deleteAllBooks();
-                List<Book> books = bookService.findAll();
+                final List<Book> books = bookService.findAll();
                 if(books.isEmpty()){
                     shelvesEmpty = true;
                     messageLabel.setText("Confirmed!");
@@ -121,7 +121,7 @@ public class SettingsView extends HorizontalLayout {
             updateClearShelvesButtonText();
         }
 
-        VerticalLayout verticalLayout = new VerticalLayout(toggleDarkmode, clearShelvesButton);
+        final VerticalLayout verticalLayout = new VerticalLayout(TOGGLE_DARKMODE, clearShelveButton);
         verticalLayout.setAlignItems(Alignment.CENTER);
 
         add(verticalLayout);
@@ -130,14 +130,14 @@ public class SettingsView extends HorizontalLayout {
     }
 
     private static void updateDarkModeButtonText() {
-        if (toggleDarkmode != null) {
-            toggleDarkmode.setText(darkModeOn ? disable : enable);
+        if (TOGGLE_DARKMODE != null) {
+            TOGGLE_DARKMODE.setText(darkModeOn ? DISABLE : ENABLE);
         }
     }
 
     private static void updateClearShelvesButtonText() {
-        if (clearShelvesButton != null) {
-            clearShelvesButton.setText(shelvesEmpty ? shelvesAlreadyEmpty : clearShelves);
+        if (clearShelveButton != null) {
+            clearShelveButton.setText(shelvesEmpty ? SHELVES_ARE_EMPTY : CLEAR_SHELVES);
         }
     }
 
