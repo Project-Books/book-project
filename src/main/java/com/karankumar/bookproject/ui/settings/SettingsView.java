@@ -20,6 +20,8 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
+import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
 import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -41,6 +43,7 @@ public class SettingsView extends HorizontalLayout{
     private static final String disable = "Disable dark mode";
     private static final Button toggle;
     private static boolean darkModeOn = false;
+    private static final  RadioButtonGroup<String> radioGroup = new RadioButtonGroup<>();
 
 
 
@@ -57,14 +60,21 @@ public class SettingsView extends HorizontalLayout{
             }
             updateDarkModeButtonText();
         });
+
+        radioGroup.setLabel("Date options");
+        radioGroup.setItems("MM/DD/YYYY", "DD/MM/YYYY");
+        radioGroup.addThemeVariants(RadioGroupVariant.LUMO_VERTICAL);
+        radioGroup.setValue("Option one");
+
+
+
     }
 
     public SettingsView() throws IOException {
 
         Properties datePreferences = new Properties();
-        FileInputStream in = new FileInputStream("dataPreferences");
-        datePreferences.load(in);
-
+        //FileInputStream in = new FileInputStream("dataPreferences");
+        //datePreferences.load(in);
         datePreferences.put("monthFirst", "MM/DD/YYYY");
         datePreferences.put("dayFirst", "DD/MM/YYYY");
 
@@ -74,13 +84,15 @@ public class SettingsView extends HorizontalLayout{
             updateDarkModeButtonText();
         }
 
-        VerticalLayout verticalLayout = new VerticalLayout(toggle);
+        VerticalLayout verticalLayout = new VerticalLayout(toggle,radioGroup);
         verticalLayout.setAlignItems(Alignment.CENTER);
 
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+        //add(radioGroup);
     }
+
 
     private static void updateDarkModeButtonText() {
         if (toggle != null) {
