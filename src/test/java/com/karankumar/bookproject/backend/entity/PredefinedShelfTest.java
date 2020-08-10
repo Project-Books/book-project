@@ -17,25 +17,24 @@ package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.tags.IntegrationTest;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 @IntegrationTest
-class PredefinedShelfTests {
+class PredefinedShelfTest {
 
     private static PredefinedShelfService shelfService;
 
     @BeforeAll
     public static void setup(@Autowired PredefinedShelfService shelfService, @Autowired BookService bookService) {
         Assumptions.assumeTrue(shelfService != null && bookService != null);
-        PredefinedShelfTests.shelfService = shelfService;
+        PredefinedShelfTest.shelfService = shelfService;
         bookService.deleteAll(); // reset
     }
 
@@ -45,7 +44,7 @@ class PredefinedShelfTests {
     @Test
     public void orphanShelfExists() {
         Assumptions.assumeTrue(shelfService != null);
-        List<PredefinedShelf> shelves = PredefinedShelfTests.shelfService.findAll();
+        List<PredefinedShelf> shelves = PredefinedShelfTest.shelfService.findAll();
 
         Assertions.assertEquals(4, shelves.size());
         Assertions.assertEquals(shelves.get(0).getPredefinedShelfName(), PredefinedShelf.ShelfName.TO_READ);

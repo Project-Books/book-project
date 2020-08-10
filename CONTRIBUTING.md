@@ -1,22 +1,36 @@
 # Contributing
 
-Thank you for taking an interest in contributing! Please note that by contributing to this project, you are expected to adhere to this contributing document.
+Thank you for taking an interest in contributing! 
 
-## Notes
+Please note that by contributing to this project, you are expected to adhere to this contributing document. Please also ensure that you remain familiar with this contributing document as it may change from time to time. 
 
-1. Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/README.md).
-
-2. Please also ensure that you remain familiar with this contributing document as it may change from time to time.
+Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/README.md). 
 
 ## Code of Conduct
 
 By contributing to this project, you are expected to adhere to the [Book Project Code of Conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md). 
 
+## Contents
+
+1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
+1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
+   1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
+   1. [Discuss your implementation approach](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#discuss-your-implementation-approach)
+1. [Workflow](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#workflow)
+   1. [Commit messages](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#commit-messages)
+   1. [One problem per patch](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#one-problem-per-patch)
+1. [Code contributions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#code-contributions)
+   1. [Writing tests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#writing-tests)
+1. [Pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#pull-requests)
+1. [Stale issues & pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#stale-issues--pull-requests)
+1. [Unassigning yourself](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#unassigning-yourself)
+1. [Ways to contribute](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#ways-to-contribute)
+
 ## Questions, suggestions & feedback
 
 All questions, suggestions and feedback are both welcome and encouraged. 
 
-Questions and feedback should be discussed over [Gitter](https://gitter.im/book-project-community). This allows other to benefit from seeing the questions, too.
+Questions and feedback should be discussed over [Gitter](https://gitter.im/book-project-community). This allows others to benefit from seeing the answers, too.
 
 For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
 
@@ -24,7 +38,7 @@ If in doubt, talk to us over [Gitter](https://gitter.im/book-project-community)!
 
 ## Before making changes
 
-### Tell us what issue you want to work on
+### Tell us which issue you want to work on
 
 *This applies to both code and documentation changes.*
 
@@ -83,15 +97,17 @@ The same applies for pull requests where we've request changes -- mark it as a d
 ## Stale issues & pull requests
 
 If you have been assigned to an issue and we have not heard back to you for a week (either through a message or seeing a pull request you made), we will send a friendly message asking whether everything is OK and whether you need a hand. If you need more time, the work is non-urgent and is not blocking anyone, that's completely fine, just let us know. 
-If possible, try to let us know how long it will take you to submit a ready-to-review pull request. If we have not heard back from you one week after our friendly reminder (i.e. 2 weeks after you were first assigned to the issue), we will unassign you from the issue. This is so that we can assign someone else to the issue. 
+If possible, try to let us know how long it will take you to submit a ready-to-review pull request. If we have not heard back from you one week after our friendly reminder (i.e. two weeks after you were first assigned to the issue), we will unassign you from the issue. This is so that we can assign someone else to the issue. 
 
 Pull requests are similar. We will send a friendly reminder after one week of receiving the pull request or receiving your last message. If we don't hear back from you, we will close the pull request and label it as [stale](https://github.com/knjk04/book-project/labels/stale).
 
-For urgent work, such as fixing important bugs or work that is blocking others, a similar process will be followed but with shorter timescales. Exactly how long depends on the severity of the stale work. Where possible, we will inform you whether an issue is important so that you can know before picking it up. For high priority bugs, we recommend that you only take it up if you are able to commit to finishing it reasonably quickly.
+For urgent work, such as fixing important bugs or work that is blocking others, a similar process will be followed but with shorter timescales. Exactly how long depends on the severity of the stale work. Where possible, we will inform you whether an issue is important so that you can know before picking it up. For high priority bugs, we recommend that you only take it up if you can commit to finishing it reasonably quickly.
+
+The reason that we ask to be kept informed is so that we don't find ourselves assigning work and then never hearing back from the contributor. In turn, this allows us to progress with the project at a good pace.
 
 ## Unassigning yourself
 
-If you no longer wish to work an issue, that's fine. All we ask is that you let us know. If you unassign yourself from the issue, we don't get notified, so a quick message (no explanation required) will do. This allows to easily manage issues. We can then assign it to someone else. 
+If you no longer wish to work an issue, that's fine. All we ask is that you let us know. If you unassign yourself from the issue, we don't get notified, so a quick message (no explanation required) will do. We can then assign it to someone else. 
 
 Where possible, please let us know as soon as possible if you no longer wish to work on an issue. 
 

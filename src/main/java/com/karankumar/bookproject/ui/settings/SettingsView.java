@@ -19,9 +19,12 @@ package com.karankumar.bookproject.ui.settings;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.toggle.PaperToggle;
 import com.vaadin.flow.component.UI;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
+
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -35,18 +38,18 @@ import java.util.List;
 import java.util.logging.Level;
 
 
-/**
- * Vaadin view for the settings page
- */
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
 @Log
 public class SettingsView extends HorizontalLayout {
 
-    // -------------- Enable Dark/Light Mode ----------------------
-    private static final String ENABLE = "Enable dark mode";
-    private static final String DISABLE = "Disable dark mode";
-    private static final Button TOGGLE_DARKMODE;
+
+
+    private static final String enable = "Enable dark mode";
+    private static final String disable = "Disable dark mode";
+    private static PaperToggle paperToggle;
+    private static Label darkModeLabel = new Label(enable);
+
     private static boolean darkModeOn = false;
 
 
@@ -61,7 +64,12 @@ public class SettingsView extends HorizontalLayout {
     private static Button cancelButton;
 
     static {
-        TOGGLE_DARKMODE = new Button(ENABLE, click -> {
+        reset-shelves-92
+
+        paperToggle = new PaperToggle();
+
+        paperToggle.addClickListener( e -> {
+
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
 
             if (themeList.contains(Lumo.DARK)) {
@@ -71,7 +79,7 @@ public class SettingsView extends HorizontalLayout {
                 themeList.add(Lumo.DARK);
                 darkModeOn = true;
             }
-            updateDarkModeButtonText();
+            updateDarkModeLabel();
         });
 
 
@@ -114,24 +122,34 @@ public class SettingsView extends HorizontalLayout {
 
         // Darkmode Layout
         if (darkModeOn) {
-            updateDarkModeButtonText();
+            updateDarkModeLabel();
+            paperToggle.setChecked(true);
+        } else {
+            paperToggle.setChecked(false);
         }
+
 
         if(shelvesEmpty){
             updateClearShelvesButtonText();
         }
 
-        final VerticalLayout verticalLayout = new VerticalLayout(TOGGLE_DARKMODE, clearShelveButton);
+        VerticalLayout verticalLayout = new VerticalLayout(TOGGLE_DARKMODE, clearShelveButton);
+
+        VerticalLayout verticalLayout = new VerticalLayout(paperToggle);
+
         verticalLayout.setAlignItems(Alignment.CENTER);
+        verticalLayout.add(darkModeLabel);
 
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
 
-    private static void updateDarkModeButtonText() {
-        if (TOGGLE_DARKMODE != null) {
-            TOGGLE_DARKMODE.setText(darkModeOn ? DISABLE : ENABLE);
+
+    private static void updateDarkModeLabel() {
+        if (darkModeLabel != null) {
+            darkModeLabel.setText(darkModeOn ? disable : enable);
+
         }
     }
 

@@ -15,10 +15,6 @@
 
 package com.karankumar.bookproject.backend.entity;
 
-/**
- * A rating scale for a from 0 to 10 (inclusive) that goes up in increments of 0.5.
- * A book that has been read can have a rating that is on this scale
- */
 public enum RatingScale {
     NO_RATING("No rating"),
     ZERO("0/10"),
