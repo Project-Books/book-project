@@ -43,6 +43,13 @@ public class UserTest {
                    .email("email");
     }
 
+    private User.UserBuilder userWithInvalidMail() {
+        return User.builder()
+                .username("username")
+                .password("passwordP1&")
+                .email("email");
+    }
+
     @Test
     void testPasswordLessThan8CharactersIsInvalid() {
         // given
@@ -108,6 +115,18 @@ public class UserTest {
         // given
         User user = userWithoutPassword().password("passwordP1")
                                          .build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+
+    @Test
+    void testUserWithInvalidMail() {
+        // given
+        User user = userWithInvalidMail().build();
 
         // when
         tryToSaveInvalidUser(user);
