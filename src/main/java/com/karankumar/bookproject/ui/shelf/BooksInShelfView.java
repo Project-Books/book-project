@@ -88,16 +88,21 @@ public class BooksInShelfView extends VerticalLayout {
         configureFilters();
 
         bookForm = new BookForm(shelfService);
-
         Button addBook = new Button("Add book");
         addBook.addClickListener(e -> bookForm.addBook());
+
+        CustomShelfForm customShelfForm = new CustomShelfForm();
+        Button addShelf = new Button("Add shelf");
+        addShelf.addClickListener(e -> customShelfForm.addShelf());
+
         HorizontalLayout horizontalLayout =
-                new HorizontalLayout(whichShelf, filterByTitle, filterByAuthorName, addBook);
+                new HorizontalLayout(whichShelf, filterByTitle, filterByAuthorName, addShelf, addBook);
         horizontalLayout.setAlignItems(Alignment.END);
 
         configureBookGrid();
         add(horizontalLayout, bookGrid);
 
+        add(customShelfForm);
         add(bookForm);
 
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
