@@ -24,17 +24,25 @@ import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.Lumo;
+import com.vaadin.flow.component.datepicker.DatePicker;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Vaadin view for the settings page
  */
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
-public class SettingsView extends HorizontalLayout {
+public class SettingsView extends HorizontalLayout{
     private static final String enable = "Enable dark mode";
     private static final String disable = "Disable dark mode";
     private static final Button toggle;
     private static boolean darkModeOn = false;
+
+
 
     static {
         toggle = new Button(enable, click -> {
@@ -51,7 +59,17 @@ public class SettingsView extends HorizontalLayout {
         });
     }
 
-    public SettingsView() {
+    public SettingsView() throws IOException {
+
+        Properties datePreferences = new Properties();
+        FileInputStream in = new FileInputStream("dataPreferences");
+        datePreferences.load(in);
+
+        datePreferences.put("monthFirst", "MM/DD/YYYY");
+        datePreferences.put("dayFirst", "DD/MM/YYYY");
+
+
+
         if (darkModeOn) {
             updateDarkModeButtonText();
         }
@@ -69,4 +87,5 @@ public class SettingsView extends HorizontalLayout {
             toggle.setText(darkModeOn ? disable : enable);
         }
     }
+
 }
