@@ -2,6 +2,7 @@ package com.karankumar.bookproject.ui.settings;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
@@ -15,9 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@WebAppConfiguration
+@IntegrationTest
 public class SettingsViewTest {
 
     private static Routes routes;
