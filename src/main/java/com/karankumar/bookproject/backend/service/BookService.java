@@ -15,12 +15,14 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 @Service
@@ -42,12 +44,21 @@ public class BookService extends BaseService<Book, Long> {
 
     @Override
     public void save(Book book) {
-        if (book == null || book.getAuthor() == null
-                || book.getShelf() == null || book.getShelf().getShelfName() == null) {
+        if (book == null || book.getAuthor() == null || book.getShelf() == null ||
+                book.getShelf().getShelfName() == null) {
             return;
         }
+
+        addBookToAuthor(book);
         authorService.save(book.getAuthor());
         bookRepository.save(book);
+    }
+
+    private void addBookToAuthor(Book book) {
+        Author author = book.getAuthor();
+        Set<Book> authorBooks = author.getBooks();
+        authorBooks.add(book);
+        author.setBooks(authorBooks);
     }
 
     public Long count() {

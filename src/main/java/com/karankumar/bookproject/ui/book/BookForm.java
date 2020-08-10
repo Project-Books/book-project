@@ -328,6 +328,11 @@ public class BookForm extends VerticalLayout {
 
         book.setGenre(bookGenre.getValue());
         book.setNumberOfPages(numberOfPages.getValue());
+        book.setDateStartedReading(dateStartedReading.getValue());
+        book.setDateFinishedReading(dateFinishedReading.getValue());
+        // TODO: add rating if OK
+//        Result<RatingScale> result = new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
+        book.setPagesRead(pagesRead.getValue());
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
             book.setSeriesPosition(seriesPosition.getValue());
