@@ -24,9 +24,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import java.util.Collections;
 
-/**
- * Vaadin view for the login page
- */
 @Route("login")
 @PageTitle("Login | Book Project")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
