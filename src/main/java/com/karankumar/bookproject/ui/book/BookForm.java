@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
@@ -33,6 +34,7 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
@@ -150,7 +152,7 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * @param formLayout the form layout to configure
+     * @param formLayout   the form layout to configure
      * @param buttonLayout a layout consisting of buttons
      */
     private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
@@ -274,49 +276,75 @@ public class BookForm extends VerticalLayout {
     }
 
     private void setBookBean() {
-        if (bookTitle.getValue() != null) {
-            String firstName = "";
-            String lastName = "";
-
-            if (authorFirstName.getValue() != null) {
-                firstName = authorFirstName.getValue();
-            } else {
-                LOGGER.log(Level.SEVERE, "Null first name");
-            }
-            if (authorLastName.getValue() != null) {
-                lastName = authorLastName.getValue();
-            } else {
-                LOGGER.log(Level.SEVERE, "Null last name");
-            }
-            Author author = new Author(firstName, lastName);
-            Book book = new Book(bookTitle.getValue(), author);
-
-            if (shelf.getValue() != null) {
-                List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
-                if (shelves.size() == 1) {
-                    book.setShelf(shelves.get(0));
-                    LOGGER.log(Level.INFO, "Shelf: " + shelves.get(0));
-                } else {
-                    LOGGER.log(Level.INFO, "Shelves count = " + shelves.size());
-                }
-
-            } else {
-                LOGGER.log(Level.SEVERE, "Null shelf");
-            }
-
-            if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-                book.setSeriesPosition(seriesPosition.getValue());
-            } else if (seriesPosition.getValue() != null) {
-                LOGGER.log(Level.SEVERE, "Negative Series value");
-            }
-
+        Book book = populateBookBean();
+        if (book != null) {
             binder.setBean(book);
-            LOGGER.log(Level.INFO, "Written bean. Null? " + (binder.getBean() == null));
+        }
+
+        if (binder.getBean() != null) {
+            LOGGER.log(Level.INFO, "Written bean. Not Null.");
             fireEvent(new SaveEvent(this, binder.getBean()));
-            LOGGER.log(Level.INFO, "Fired save event. Null? " + (binder.getBean() == null));
-            closeForm();
+            showSavedConfirmation();
         } else {
-            LOGGER.log(Level.SEVERE, "Book title is null");
+            LOGGER.log(Level.SEVERE, "Could not save book");
+            showErrorMessage();
+        }
+        closeForm();
+    }
+
+    private Book populateBookBean() {
+        String title;
+        if (bookTitle.getValue() == null) {
+            LOGGER.log(Level.SEVERE, "Book title from form field is null");
+            return null;
+        } else {
+            title = bookTitle.getValue();
+        }
+
+        String firstName;
+        String lastName;
+        if (authorFirstName.getValue() != null) {
+            firstName = authorFirstName.getValue();
+        } else {
+            LOGGER.log(Level.SEVERE, "Null first name");
+            return null;
+        }
+        if (authorLastName.getValue() != null) {
+            lastName = authorLastName.getValue();
+        } else {
+            LOGGER.log(Level.SEVERE, "Null last name");
+            return null;
+        }
+        Author author = new Author(firstName, lastName);
+        Book book = new Book(title, author);
+
+        if (shelf.getValue() != null) {
+            PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(shelfService);
+            PredefinedShelf predefinedShelf = predefinedShelfUtils.findPredefinedShelf(shelf.getValue());
+            book.setShelf(predefinedShelf);
+        } else {
+            LOGGER.log(Level.SEVERE, "Null shelf");
+        }
+
+        book.setGenre(bookGenre.getValue());
+        book.setNumberOfPages(numberOfPages.getValue());
+
+        if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
+            book.setSeriesPosition(seriesPosition.getValue());
+        } else if (seriesPosition.getValue() != null) {
+            LOGGER.log(Level.SEVERE, "Negative Series value");
+        }
+
+        return book;
+    }
+
+    private void showErrorMessage() {
+        Notification.show("We could not save your book.");
+    }
+
+    private void showSavedConfirmation() {
+        if (bookTitle.getValue() != null) {
+            Notification.show("Saved " + bookTitle.getValue());
         }
     }
 
