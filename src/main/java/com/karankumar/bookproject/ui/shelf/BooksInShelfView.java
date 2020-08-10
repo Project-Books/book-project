@@ -18,6 +18,7 @@ package com.karankumar.bookproject.ui.shelf;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.book.BookForm;
@@ -65,8 +66,11 @@ public class BooksInShelfView extends VerticalLayout {
     public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
 
     private final BookForm bookForm;
+
     private final BookService bookService;
     private final PredefinedShelfService shelfService;
+    private final CustomShelfService customShelfService;
+
     private final TextField filterByTitle;
     private final TextField filterByAuthorName;
 
@@ -74,9 +78,11 @@ public class BooksInShelfView extends VerticalLayout {
     private String bookTitle; // the book to filter by (if specified)
     private String authorName;
 
-    public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
+    public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService,
+                            CustomShelfService customShelfService) {
         this.bookService = bookService;
         this.shelfService = shelfService;
+        this.customShelfService = customShelfService;
 
         bookGrid = new Grid<>(Book.class);
 
@@ -107,6 +113,8 @@ public class BooksInShelfView extends VerticalLayout {
 
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
+
+        customShelfForm.addListener(CustomShelfForm.SaveEvent.class, this::saveCustomShelf);
     }
 
     private void configureChosenShelf() {
@@ -337,6 +345,15 @@ public class BooksInShelfView extends VerticalLayout {
             LOGGER.log(Level.INFO, "Book is not null");
             bookService.save(event.getBook());
             updateGrid();
+        }
+    }
+
+    private void saveCustomShelf(CustomShelfForm.SaveEvent event) {
+        if (event.getCustomShelf() != null) {
+            customShelfService.save(event.getCustomShelf());
+            LOGGER.log(Level.INFO, "Custom shelf saved");
+        } else {
+            LOGGER.log(Level.SEVERE, "Custom shelf value is null");
         }
     }
 }

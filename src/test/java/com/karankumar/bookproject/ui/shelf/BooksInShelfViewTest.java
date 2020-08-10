@@ -15,22 +15,14 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.AUTHOR_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_FINISHED_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_STARTED_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_READ_KEY;
-
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
@@ -50,6 +42,15 @@ import javax.transaction.NotSupportedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.AUTHOR_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_FINISHED_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_STARTED_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_READ_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
+import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -101,12 +102,12 @@ public class BooksInShelfViewTest {
 
     @BeforeEach
     public void setup(@Autowired BookService bookService,
-                      @Autowired PredefinedShelfService shelfService) {
+                      @Autowired PredefinedShelfService shelfService, @Autowired CustomShelfService customShelfService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
         Assumptions.assumeTrue(shelfService != null);
-        shelfView = new BooksInShelfView(bookService, shelfService);
+        shelfView = new BooksInShelfView(bookService, shelfService, customShelfService);
     }
 
     @ParameterizedTest

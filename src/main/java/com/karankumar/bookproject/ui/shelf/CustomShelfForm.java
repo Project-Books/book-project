@@ -1,14 +1,24 @@
 package com.karankumar.bookproject.ui.shelf;
 
+import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.shared.Registration;
 
 public class CustomShelfForm extends VerticalLayout {
     private final Dialog dialog;
+
+    private Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
+    private final TextField shelfNameField = new TextField();
 
     public CustomShelfForm() {
         FormLayout formLayout = new FormLayout();
@@ -17,17 +27,24 @@ public class CustomShelfForm extends VerticalLayout {
         dialog.setCloseOnOutsideClick(true);
         add(dialog);
 
-        TextField shelfName = createShelfNameField();
-        formLayout.addFormItem(shelfName, "Shelf name");
+        bindFormFields();
+
+        configureShelfNameField();
+        formLayout.addFormItem(shelfNameField, "Shelf name");
         formLayout.add(createSaveButton());
     }
 
-    private TextField createShelfNameField() {
-        TextField shelfNameField = new TextField();
+    private void bindFormFields() {
+        // TODO: do not allow duplicate shelf names
+        binder.forField(shelfNameField)
+              .asRequired("Please enter a shelf name")
+              .bind(CustomShelf::getShelfName, CustomShelf::setShelfName);
+    }
+
+    private void configureShelfNameField() {
         shelfNameField.setClearButtonVisible(true);
         shelfNameField.setPlaceholder("Enter shelf name");
         shelfNameField.setMinWidth("13em");
-        return shelfNameField;
     }
 
     private Button createSaveButton() {
@@ -35,10 +52,71 @@ public class CustomShelfForm extends VerticalLayout {
         save.setText("Save shelf");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setDisableOnClick(true);
+        save.addClickListener(event -> validateOnSave());
         return save;
+    }
+
+    private void validateOnSave() {
+        if (binder.isValid()) {
+            setCustomShelfBean();
+            fireEvent(new SaveEvent(this, binder.getBean()));
+            closeForm();
+            if (binder.getBean() != null) {
+                showSaveConfirmation();
+            } else {
+                showSaveError();
+            }
+        }
+    }
+
+    private void setCustomShelfBean() {
+        binder.setBean(new CustomShelf(shelfNameField.getValue()));
+    }
+
+    private void closeForm() {
+        dialog.close();
+    }
+
+    private void showSaveConfirmation() {
+        Notification.show("Saved shelf: " + binder.getBean().getShelfName());
+    }
+
+    private void showSaveError() {
+        Notification.show("Could not save shelf.");
     }
 
     public void addShelf() {
         dialog.open();
+    }
+
+    public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
+                                                                  ComponentEventListener<T> listener) {
+        return getEventBus().addListener(eventType, listener);
+    }
+
+    public static abstract class CustomShelfFormEvent extends ComponentEvent<CustomShelfForm> {
+        private CustomShelf customShelf;
+
+        protected CustomShelfFormEvent(CustomShelfForm source, CustomShelf customShelf) {
+            super(source, false);
+            this.customShelf = customShelf;
+        }
+
+        public CustomShelf getCustomShelf() {
+            return customShelf;
+        }
+    }
+
+    public static class SaveEvent extends CustomShelfForm.CustomShelfFormEvent {
+        SaveEvent(CustomShelfForm source, CustomShelf customShelf) {
+            super(source, customShelf);
+        }
+    }
+
+    // TODO: implement deleting a custom shelf
+    public static class DeleteEvent extends CustomShelfForm.CustomShelfFormEvent {
+        DeleteEvent(CustomShelfForm source, CustomShelf customShelf) {
+            super(source, customShelf);
+        }
     }
 }

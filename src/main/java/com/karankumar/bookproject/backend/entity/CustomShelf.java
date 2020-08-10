@@ -11,4 +11,8 @@ public class CustomShelf extends Shelf {
     public CustomShelf(String shelfName) {
         super(shelfName);
     }
+
+    public void setShelfName(String shelfName) {
+        super.shelfName = shelfName;
+    }
 }
