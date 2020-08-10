@@ -122,9 +122,8 @@ public class SettingsView extends HorizontalLayout {
             updateClearShelvesButtonText();
         }
 
-        VerticalLayout verticalLayout = new VerticalLayout(TOGGLE_DARKMODE, clearShelveButton);
+        VerticalLayout verticalLayout = new VerticalLayout(paperToggle, clearShelveButton);
 
-        VerticalLayout verticalLayout = new VerticalLayout(paperToggle);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
         verticalLayout.add(darkModeLabel);
