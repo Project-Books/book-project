@@ -15,16 +15,13 @@
 
 package com.karankumar.bookproject.ui.settings;
 
-
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.toggle.PaperToggle;
 import com.vaadin.flow.component.UI;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
-
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -33,7 +30,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.extern.java.Log;
-
 import java.util.List;
 import java.util.logging.Level;
 
@@ -43,15 +39,11 @@ import java.util.logging.Level;
 @Log
 public class SettingsView extends HorizontalLayout {
 
-
-
     private static final String enable = "Enable dark mode";
     private static final String disable = "Disable dark mode";
     private static PaperToggle paperToggle;
     private static Label darkModeLabel = new Label(enable);
-
     private static boolean darkModeOn = false;
-
 
     // -------------- Clear Shelves ----------------------
     private static final String CLEAR_SHELVES = "Clear Shelves";
@@ -64,10 +56,7 @@ public class SettingsView extends HorizontalLayout {
     private static Button cancelButton;
 
     static {
-        reset-shelves-92
-
         paperToggle = new PaperToggle();
-
         paperToggle.addClickListener( e -> {
 
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
