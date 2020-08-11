@@ -128,7 +128,6 @@ public class BooksInShelfView extends VerticalLayout {
 
     private void configureChosenShelf() {
         whichShelf.setPlaceholder("Select shelf");
-//        whichShelf.setItems(PredefinedShelf.ShelfName.values());
         whichShelf.setItems(findAllShelves());
         whichShelf.setRequired(true);
         whichShelf.addValueChangeListener(
@@ -169,7 +168,6 @@ public class BooksInShelfView extends VerticalLayout {
 
     /**
      * @throws NotSupportedException if a shelf is not supported.
-     * @param shelfName
      */
     @VisibleForTesting
     void showOrHideGridColumns(String shelfName) throws NotSupportedException {
@@ -334,6 +332,12 @@ public class BooksInShelfView extends VerticalLayout {
                 }
             } else {
                 LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
+            }
+        } else {
+            List<CustomShelf> customShelves = customShelfService.findAll(chosenShelf);
+            if (!customShelves.isEmpty()) {
+                CustomShelf customShelf = customShelves.get(0);
+                bookGrid.setItems(customShelf.getBooks());
             }
         }
     }

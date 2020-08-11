@@ -17,15 +17,16 @@ package com.karankumar.bookproject.ui.book;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
@@ -62,6 +63,7 @@ public class BookFormTest {
     private static int pagesRead;
     private static int numberOfPages;
     private static int seriesPosition;
+    private static final CustomShelf customShelf = new CustomShelf("BookFormTestShelf");
 
     private static Routes routes;
     private static PredefinedShelf readShelf;
@@ -89,8 +91,12 @@ public class BookFormTest {
         Assumptions.assumeTrue(bookService != null);
         bookService.deleteAll();
 
-        Assumptions.assumeTrue(customShelfService != null);
+        customShelfService.deleteAll();
+        customShelfService.save(customShelf);
+
+        Assumptions.assumeTrue(predefinedShelfService != null);
         bookForm = createBookForm(true);
+
     }
 
     private BookForm createBookForm(boolean isInSeries) {
@@ -111,6 +117,7 @@ public class BookFormTest {
         seriesPosition = SERIES_POSITION;
 
         book.setPredefinedShelf(readShelf);
+        book.setCustomShelf(customShelf);
         book.setGenre(genre);
         book.setPagesRead(pagesRead);
         book.setNumberOfPages(numberOfPages);
@@ -216,6 +223,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.authorFirstName.isEmpty());
         Assertions.assertTrue(bookForm.authorLastName.isEmpty());
         Assertions.assertTrue(bookForm.bookTitle.isEmpty());
+        Assertions.assertTrue(bookForm.customShelfField.isEmpty());
         Assertions.assertTrue(bookForm.predefinedShelfField.isEmpty());
         Assertions.assertTrue(bookForm.bookGenre.isEmpty());
         Assertions.assertTrue(bookForm.pagesRead.isEmpty());
