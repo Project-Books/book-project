@@ -1,6 +1,9 @@
-package com.karankumar.bookproject.backend.util;
+package com.karankumar.bookproject.backend.utils;
 
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalField;
 
 /**
  * An utils to provide Date related common functions.
@@ -10,31 +13,27 @@ public class DateUtils {
 
     private static final int WEEKS_IN_YEAR = 52;
 
-    private TimeUtils timeUtils;
-
-    public DateUtils(TimeUtils timeUtils) {
-        this.timeUtils = timeUtils;
-    }
-
     /**
      * @return the current week number of the year
      */
-    public int getWeekOfYear() {
-        return timeUtils.now().get(timeUtils.getWeekFields().weekOfWeekBasedYear());
+    public static int getWeekOfYear() {
+        LocalDateTime now = TimeUtils.now();
+        TemporalField week = TimeUtils.getWeekFields().weekOfWeekBasedYear();
+        return now.get(week);
     }
 
     /**
      * @param weekOfYear the current week number of the year
      * @return the number of weeks left in the year from the current week
      */
-    public int getWeeksLeftInYear(int weekOfYear) {
+    public static int getWeeksLeftInYear(int weekOfYear) {
         return (WEEKS_IN_YEAR - weekOfYear);
     }
 
     /**
      * @return the number of weeks left in the year from the current week
      */
-    public int getWeeksInYear() {
+    public static int getWeeksInYear() {
         return WEEKS_IN_YEAR;
     }
 

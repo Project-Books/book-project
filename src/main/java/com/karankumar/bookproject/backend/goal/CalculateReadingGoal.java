@@ -3,14 +3,12 @@ package com.karankumar.bookproject.backend.goal;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
+import com.karankumar.bookproject.backend.utils.DateUtils;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.temporal.WeekFields;
-import java.util.Locale;
 
 public class CalculateReadingGoal {
-    public static final int WEEKS_IN_YEAR = 52;
 
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
@@ -24,7 +22,7 @@ public class CalculateReadingGoal {
      * @return the number of books that the user should have read by this point in the year
      */
     public static int shouldHaveRead(int booksToReadThisYear) {
-        return booksToReadFromStartOfYear(booksToReadThisYear) * getWeekOfYear();
+        return booksToReadFromStartOfYear(booksToReadThisYear) * DateUtils.getWeekOfYear();
     }
 
     /**
@@ -32,7 +30,7 @@ public class CalculateReadingGoal {
      * @return the number of books that should have been read a week (on average) from the start of the year
      */
     public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
-        return ((int) Math.ceil(booksToReadThisYear / WEEKS_IN_YEAR));
+        return ((int) Math.ceil(booksToReadThisYear / DateUtils.getWeeksInYear()));
     }
 
     /**
@@ -55,30 +53,8 @@ public class CalculateReadingGoal {
         return readThisYear;
     }
 
-    /**
-     * @return the current week number of the year
-     */
-    public static int getWeekOfYear() {
-        LocalDate now = LocalDate.now();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        return now.get(weekFields.weekOfWeekBasedYear());
-    }
-
-    /**
-     * @param weekOfYear the current week number of the year
-     * @return the number of weeks left in the year from the current week
-     */
-    public static int weeksLeftInYear(int weekOfYear) {
-        return (WEEKS_IN_YEAR - weekOfYear);
-    }
-
-    /**
-     * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
-     * @param booksReadThisYear the number of books read so far
-     * @return the number of books that the user is ahead or behind schedule by
-     */
     public static int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {
-        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) * getWeekOfYear();
+        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) * DateUtils.getWeekOfYear();
         return Math.abs(shouldHaveRead - booksReadThisYear);
     }
 

@@ -11,6 +11,7 @@ import com.karankumar.bookproject.backend.goal.CalculateReadingGoal;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
+import com.karankumar.bookproject.backend.utils.DateUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
@@ -41,7 +42,6 @@ public class ReadingGoalViewTests {
     private PredefinedShelfService predefinedShelfService;
     private PredefinedShelfUtils predefinedShelfUtils;
     private ReadingGoalView goalView;
-    @MockBean
     private DateUtils dateUtils;
 
     @BeforeAll
@@ -61,9 +61,6 @@ public class ReadingGoalViewTests {
         this.predefinedShelfService = predefinedShelfService;
         this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         goalView = new ReadingGoalView(goalService, predefinedShelfService);
-        MockitoAnnotations.initMocks(dateUtils);
-        goalView = new ReadingGoalView(goalService, predefinedShelfService, dateUtils);
-        Mockito.when(dateUtils.getWeeksInYear()).thenReturn(52);
     }
 
     /**
@@ -243,30 +240,7 @@ public class ReadingGoalViewTests {
         }
     }
 
-    /**
-     * Checks whether ahead or behind with reading goal
-     */
-    @Test
-    public void checkHowFarAheadOrBehindSchedule(){
-        Mockito.when(dateUtils.getWeekOfYear()).thenReturn(1);
-        Assertions.assertEquals(0, goalView.howFarAheadOrBehindSchedule(52,1));
-        Assertions.assertEquals(1, goalView.howFarAheadOrBehindSchedule(52,0));
-        Assertions.assertEquals(9, goalView.howFarAheadOrBehindSchedule(52,10));
-        Assertions.assertEquals(9, goalView.howFarAheadOrBehindSchedule(199,12));
-        Assertions.assertEquals(2, goalView.howFarAheadOrBehindSchedule(199,5));
-        Mockito.when(dateUtils.getWeekOfYear()).thenReturn(15);
-        Assertions.assertEquals(12, goalView.howFarAheadOrBehindSchedule(52,3));
-        Assertions.assertEquals(9, goalView.howFarAheadOrBehindSchedule(52,24));
-        Assertions.assertEquals(5, goalView.howFarAheadOrBehindSchedule(52,20));
-        Mockito.when(dateUtils.getWeekOfYear()).thenReturn(10);
-        Assertions.assertEquals(20, goalView.howFarAheadOrBehindSchedule(199,50));
-        Assertions.assertEquals(22, goalView.howFarAheadOrBehindSchedule(199,8));
-        Assertions.assertEquals(70, goalView.howFarAheadOrBehindSchedule(199,100));
-        Mockito.when(dateUtils.getWeekOfYear()).thenReturn(43);
-        Assertions.assertEquals(7, goalView.howFarAheadOrBehindSchedule(113,79));
-        Assertions.assertEquals(45, goalView.howFarAheadOrBehindSchedule(113,41));
-        Assertions.assertEquals(0, goalView.howFarAheadOrBehindSchedule(113,86));
-    }
+
 
     @AfterEach
     public void tearDown() {

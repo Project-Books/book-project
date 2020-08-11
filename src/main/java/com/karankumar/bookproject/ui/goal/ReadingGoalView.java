@@ -23,7 +23,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.backend.utils.StringUtils;
-import com.karankumar.bookproject.backend.util.DateUtils;
+import com.karankumar.bookproject.backend.utils.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -35,8 +35,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import lombok.extern.java.Log;
 
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -59,8 +57,6 @@ public class ReadingGoalView extends VerticalLayout {
 
     private ReadingGoalService goalService;
 
-    private static DateUtils dateUtils;
-
     @VisibleForTesting
     H1 readingGoalSummary;
     @VisibleForTesting
@@ -70,10 +66,9 @@ public class ReadingGoalView extends VerticalLayout {
     @VisibleForTesting
     Span booksToReadOnAverageToMeetGoal;
 
-    public ReadingGoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService, DateUtils dateUtils) {
+    public ReadingGoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
-        this.dateUtils = dateUtils;
 
         readingGoalSummary = new H1();
         setGoalButton = new Button();
@@ -201,8 +196,8 @@ public class ReadingGoalView extends VerticalLayout {
      */
     private String calculateBooksToRead(int booksToReadThisYear, int booksReadThisYear) {
         int booksStillToRead = booksToReadThisYear - booksReadThisYear;
-        int weekOfYear = CalculateReadingGoal.getWeekOfYear();
-        int weeksLeftInYear = CalculateReadingGoal.weeksLeftInYear(weekOfYear);
+        int weekOfYear = DateUtils.getWeekOfYear();
+        int weeksLeftInYear = DateUtils.getWeeksLeftInYear(weekOfYear);
         double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
 
         String bookReadingRate = "";

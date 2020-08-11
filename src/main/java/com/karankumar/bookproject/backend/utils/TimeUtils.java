@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.backend.util;
+package com.karankumar.bookproject.backend.utils;
 
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
@@ -10,11 +10,12 @@ import java.util.Locale;
  */
 @Component
 public class TimeUtils {
-    public LocalDateTime now(){
+
+    public static LocalDateTime now() {
         return LocalDateTime.now();
     }
 
-    public WeekFields getWeekFields(){
+    public static WeekFields getWeekFields() {
         return WeekFields.of(Locale.getDefault());
     }
 }
