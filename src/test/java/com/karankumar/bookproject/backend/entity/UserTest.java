@@ -27,7 +27,8 @@ public class UserTest {
     @Test
     void testValidUserSaved() {
         // given
-        User user = userWithoutPassword().password("passwordP1&").email("abc@def.com")
+        User user = userWithoutPassword().password("passwordP1&")
+                                         .email("abc@def.com")
                                          .build();
 
         // when
