@@ -9,7 +9,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-public class CalculateReadingGoalTests {
+public class CalculateReadingGoalTest {
     private int booksToRead = 52;
     @Test
     public void progressValueCorrect() {
