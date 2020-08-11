@@ -45,14 +45,14 @@ import java.util.stream.Stream;
 public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
     private BookRepository bookRepository;
-    private PredefinedShelfRepository shelfRepository;
+    private PredefinedShelfRepository predefinedShelfRepository;
     private AuthorRepository authorRepository;
     private TagRepository tagRepository;
 
     public PredefinedShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
             PredefinedShelfRepository shelfRepository, TagRepository tagRepository) {
         this.bookRepository = bookRepository;
-        this.shelfRepository = shelfRepository;
+        this.predefinedShelfRepository = shelfRepository;
 
         this.authorRepository = authorRepository;
         this.tagRepository = tagRepository;
@@ -60,34 +60,34 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
     @Override
     public PredefinedShelf findById(Long id) {
-        return shelfRepository.getOne(id);
+        return predefinedShelfRepository.getOne(id);
     }
 
     @Override
     public void save(PredefinedShelf shelf) {
         if (shelf != null) {
             LOGGER.log(Level.INFO, "Saving shelf: " + shelf);
-            shelfRepository.save(shelf);
+            predefinedShelfRepository.save(shelf);
         } else {
             LOGGER.log(Level.SEVERE, "Null Shelf");
         }
     }
 
     public List<PredefinedShelf> findAll() {
-        return shelfRepository.findAll();
+        return predefinedShelfRepository.findAll();
     }
 
     public List<PredefinedShelf> findAll(PredefinedShelf.ShelfName shelfName) {
         if (shelfName == null) {
-            return shelfRepository.findAll();
+            return predefinedShelfRepository.findAll();
         } else {
-            return shelfRepository.findByPredefinedShelfName(shelfName);
+            return predefinedShelfRepository.findByPredefinedShelfName(shelfName);
         }
     }
 
     @Override
     public void delete(PredefinedShelf shelf) {
-        shelfRepository.delete(shelf);
+        predefinedShelfRepository.delete(shelf);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
             populateBookRepository();
         }
 
-        if (shelfRepository.count() == 0) {
+        if (predefinedShelfRepository.count() == 0) {
             populateShelfRepository();
         }
 
@@ -187,7 +187,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
     private void populateShelfRepository() {
         List<Book> books = bookRepository.findAll();
-        shelfRepository.saveAll(
+        predefinedShelfRepository.saveAll(
                 Stream.of(PredefinedShelf.ShelfName.values())
                       .map(book -> {
                           PredefinedShelf shelf = new PredefinedShelf(book);
@@ -213,7 +213,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
      */
     private void setShelfForAllBooks() {
         List<Book> books = bookRepository.findAll();
-        List<PredefinedShelf> shelves = shelfRepository.findAll();
+        List<PredefinedShelf> shelves = predefinedShelfRepository.findAll();
 
         ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
 

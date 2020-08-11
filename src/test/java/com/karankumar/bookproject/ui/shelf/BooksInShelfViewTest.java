@@ -102,12 +102,13 @@ public class BooksInShelfViewTest {
 
     @BeforeEach
     public void setup(@Autowired BookService bookService,
-                      @Autowired PredefinedShelfService shelfService, @Autowired CustomShelfService customShelfService) {
+                      @Autowired PredefinedShelfService predefinedShelfService,
+                      @Autowired CustomShelfService customShelfService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
-        Assumptions.assumeTrue(shelfService != null);
-        shelfView = new BooksInShelfView(bookService, shelfService, customShelfService);
+        Assumptions.assumeTrue(predefinedShelfService != null);
+        shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
     }
 
     @ParameterizedTest

@@ -102,7 +102,7 @@ public class BooksInShelfView extends VerticalLayout {
         filterByAuthorName = new TextField();
         configureFilters();
 
-        bookForm = new BookForm(predefinedShelfService);
+        bookForm = new BookForm(predefinedShelfService, customShelfService);
         Button addBook = new Button("Add book");
         addBook.addClickListener(e -> bookForm.addBook());
 

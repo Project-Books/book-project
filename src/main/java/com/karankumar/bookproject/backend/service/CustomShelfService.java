@@ -41,6 +41,14 @@ public class CustomShelfService extends BaseService<CustomShelf, Long> {
         return customShelfRepository.findAll();
     }
 
+    public List<CustomShelf> findAll(String shelfName) {
+        if (shelfName == null) {
+            return customShelfRepository.findAll();
+        } else {
+            return customShelfRepository.findByShelfName(shelfName);
+        }
+    }
+
     @Override
     public void save(CustomShelf customShelf) {
         customShelfRepository.save(customShelf);

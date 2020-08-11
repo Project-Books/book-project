@@ -18,5 +18,8 @@ package com.karankumar.bookproject.backend.repository;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface CustomShelfRepository extends JpaRepository<CustomShelf, Long> {
+    List<CustomShelf> findByShelfName(String shelfName);
 }
