@@ -13,25 +13,13 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.repository;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@MappedSuperclass
-@Getter
-@ToString
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Shelf extends BaseEntity {
-    @NotNull
-    protected String shelfName;
-
-    protected Shelf(String shelfName) {
-        this.shelfName = shelfName;
-    }
+public interface CustomShelfRepository extends JpaRepository<CustomShelf, Long> {
+    List<CustomShelf> findByShelfName(String shelfName);
 }

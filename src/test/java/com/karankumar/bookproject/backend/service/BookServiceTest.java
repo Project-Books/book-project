@@ -31,7 +31,7 @@ public class BookServiceTest {
 
         Author author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author);
-        validBook.setShelf(toRead);
+        validBook.setPredefinedShelf(toRead);
     }
 
     @Test

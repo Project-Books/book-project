@@ -1,9 +1,11 @@
 package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import lombok.extern.java.Log;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -36,5 +38,26 @@ public class PredefinedShelfUtils {
                                      .filter(shelf -> shelf.getPredefinedShelfName().equals(shelfName))
                                      .collect(Collectors.toList())
                                      .get(0); // there should only be one
+    }
+
+    public PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
+        switch (predefinedShelfName) {
+            case "To read":
+                return PredefinedShelf.ShelfName.TO_READ;
+            case "Reading":
+                return PredefinedShelf.ShelfName.READING;
+            case "Read":
+                return PredefinedShelf.ShelfName.READ;
+            case "Did not finish":
+                return PredefinedShelf.ShelfName.DID_NOT_FINISH;
+            default:
+                return null;
+        }
+    }
+
+    public List<String> getPredefinedShelfNamesAsStrings() {
+       return predefinedShelfService.findAll().stream()
+               .map(Shelf::getShelfName)
+               .collect(Collectors.toList());
     }
 }

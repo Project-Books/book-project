@@ -15,10 +15,14 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.button.Button;
@@ -37,6 +41,7 @@ import lombok.extern.java.Log;
 import javax.transaction.NotSupportedException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -62,21 +67,31 @@ public class BooksInShelfView extends VerticalLayout {
     public static final String DATE_FINISHED_KEY = "dateFinishedReading";
 
     public final Grid<Book> bookGrid;
-    public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
+//    public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
+    public final ComboBox<String> whichShelf;
 
     private final BookForm bookForm;
+
     private final BookService bookService;
     private final PredefinedShelfService shelfService;
+    private final CustomShelfService customShelfService;
+
     private final TextField filterByTitle;
     private final TextField filterByAuthorName;
 
-    private PredefinedShelf.ShelfName chosenShelf;
+//    private PredefinedShelf.ShelfName chosenShelf;
+    private String chosenShelf;
+
     private String bookTitle; // the book to filter by (if specified)
     private String authorName;
+    private final PredefinedShelfUtils predefinedShelfUtils;
 
-    public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
+    public BooksInShelfView(BookService bookService, PredefinedShelfService predefinedShelfService,
+                            CustomShelfService customShelfService) {
         this.bookService = bookService;
-        this.shelfService = shelfService;
+        this.shelfService = predefinedShelfService;
+        this.customShelfService = customShelfService;
+        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
 
         bookGrid = new Grid<>(Book.class);
 
@@ -87,26 +102,33 @@ public class BooksInShelfView extends VerticalLayout {
         filterByAuthorName = new TextField();
         configureFilters();
 
-        bookForm = new BookForm(shelfService);
-
+        bookForm = new BookForm(predefinedShelfService, customShelfService);
         Button addBook = new Button("Add book");
         addBook.addClickListener(e -> bookForm.addBook());
+
+        CustomShelfForm customShelfForm = new CustomShelfForm(customShelfService, predefinedShelfService);
+        Button addShelf = new Button("Add shelf");
+        addShelf.addClickListener(e -> customShelfForm.addShelf());
+
         HorizontalLayout horizontalLayout =
-                new HorizontalLayout(whichShelf, filterByTitle, filterByAuthorName, addBook);
+                new HorizontalLayout(whichShelf, filterByTitle, filterByAuthorName, addShelf, addBook);
         horizontalLayout.setAlignItems(Alignment.END);
 
         configureBookGrid();
         add(horizontalLayout, bookGrid);
 
+        add(customShelfForm);
         add(bookForm);
 
         bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
         bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
+
+        customShelfForm.addListener(CustomShelfForm.SaveEvent.class, this::saveCustomShelf);
     }
 
     private void configureChosenShelf() {
         whichShelf.setPlaceholder("Select shelf");
-        whichShelf.setItems(PredefinedShelf.ShelfName.values());
+        whichShelf.setItems(findAllShelves());
         whichShelf.setRequired(true);
         whichShelf.addValueChangeListener(
                 event -> {
@@ -124,11 +146,38 @@ public class BooksInShelfView extends VerticalLayout {
                 });
     }
 
+    private boolean isPredefinedShelf(String shelfName) {
+        List<String> predefinedShelfNames = new ArrayList<>();
+        for (PredefinedShelf.ShelfName predefinedShelfName : PredefinedShelf.ShelfName.values()) {
+            predefinedShelfNames.add(predefinedShelfName.toString());
+        }
+        return predefinedShelfNames.contains(shelfName);
+    }
+
+    private List<String> findAllShelves() {
+        List<String> shelves = new ArrayList<>();
+        for (PredefinedShelf.ShelfName predefinedShelfName : PredefinedShelf.ShelfName.values()) {
+            shelves.add(predefinedShelfName.toString());
+        }
+        List<CustomShelf> customShelves = customShelfService.findAll();
+        for (CustomShelf customShelf : customShelves) {
+            shelves.add(customShelf.getShelfName());
+        }
+        return shelves;
+    }
+
     /**
      * @throws NotSupportedException if a shelf is not supported.
      */
-    void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
-        switch (shelfName) {
+    @VisibleForTesting
+    void showOrHideGridColumns(String shelfName) throws NotSupportedException {
+        PredefinedShelf.ShelfName predefinedShelfName;
+        if (isPredefinedShelf(shelfName)) {
+            predefinedShelfName = predefinedShelfUtils.getPredefinedShelfName(shelfName);
+        } else {
+            return;
+        }
+        switch (predefinedShelfName) {
             case TO_READ:
                 toggleColumnVisibility(RATING_KEY, false);
                 toggleColumnVisibility(DATE_STARTED_KEY, false);
@@ -153,6 +202,8 @@ public class BooksInShelfView extends VerticalLayout {
                 toggleColumnVisibility(DATE_FINISHED_KEY, true);
                 toggleColumnVisibility(PAGES_READ_KEY, false);
                 return;
+            default:
+                break;
         }
         throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
     }
@@ -251,34 +302,43 @@ public class BooksInShelfView extends VerticalLayout {
             return;
         }
 
-        // Find the shelf that matches the chosen shelf's name
-        List<PredefinedShelf> matchingShelves = shelfService.findAll(chosenShelf);
+        if (isPredefinedShelf(chosenShelf)) {
+            PredefinedShelf.ShelfName predefinedShelfName = predefinedShelfUtils.getPredefinedShelfName(chosenShelf);
+            // Find the shelf that matches the chosen shelf's name
+            List<PredefinedShelf> matchingShelves = shelfService.findAll(predefinedShelfName);
 
-        if (!matchingShelves.isEmpty()) {
-            if (matchingShelves.size() == 1) {
-                LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
-                PredefinedShelf selectedShelf = matchingShelves.get(0);
-                Predicate<Book> caseInsensitiveBookTitleFilter = book -> bookTitle == null
-                        || book.getTitle().toLowerCase().contains(bookTitle.toLowerCase());
-                Predicate<Book> caseInsensitiveAuthorFilter =
-                        authorNameFilter ->
-                                authorName == null
-                                        || authorNameFilter
-                                        .getAuthor()
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains(authorName.toLowerCase());
-                bookGrid.setItems(
-                        selectedShelf.getBooks().stream()
-                                     .filter(caseInsensitiveBookTitleFilter)
-                                     .filter(caseInsensitiveAuthorFilter)
-                                     .collect(Collectors.toList()));
+            if (!matchingShelves.isEmpty()) {
+                if (matchingShelves.size() == 1) {
+                    LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
+                    PredefinedShelf selectedShelf = matchingShelves.get(0);
+                    Predicate<Book> caseInsensitiveBookTitleFilter = book -> bookTitle == null
+                            || book.getTitle().toLowerCase().contains(bookTitle.toLowerCase());
+                    Predicate<Book> caseInsensitiveAuthorFilter =
+                            authorNameFilter ->
+                                    authorName == null
+                                            || authorNameFilter
+                                            .getAuthor()
+                                            .toString()
+                                            .toLowerCase()
+                                            .contains(authorName.toLowerCase());
+                    bookGrid.setItems(
+                            selectedShelf.getBooks().stream()
+                                         .filter(caseInsensitiveBookTitleFilter)
+                                         .filter(caseInsensitiveAuthorFilter)
+                                         .collect(Collectors.toList()));
+                } else {
+                    LOGGER.log(
+                            Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
+                }
             } else {
-                LOGGER.log(
-                        Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
+                LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
             }
         } else {
-            LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
+            List<CustomShelf> customShelves = customShelfService.findAll(chosenShelf);
+            if (!customShelves.isEmpty()) {
+                CustomShelf customShelf = customShelves.get(0);
+                bookGrid.setItems(customShelf.getBooks());
+            }
         }
     }
 
@@ -332,6 +392,15 @@ public class BooksInShelfView extends VerticalLayout {
             LOGGER.log(Level.INFO, "Book is not null");
             bookService.save(event.getBook());
             updateGrid();
+        }
+    }
+
+    private void saveCustomShelf(CustomShelfForm.SaveEvent event) {
+        if (event.getCustomShelf() != null) {
+            customShelfService.save(event.getCustomShelf());
+            LOGGER.log(Level.INFO, "Custom shelf saved");
+        } else {
+            LOGGER.log(Level.SEVERE, "Custom shelf value is null");
         }
     }
 }

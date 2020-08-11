@@ -15,9 +15,9 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - A rating scale from 0-10 that that goes up in steps of 0.5
 - Track your progress towards a reading goal: the number of books or pages you hope to read by the end of the year
 - Statistics about your reading habits
+- Add your own shelves
 
 *Coming soon:*
-- Add your own shelves
 - User registration and accounts
 - And much more!
 
