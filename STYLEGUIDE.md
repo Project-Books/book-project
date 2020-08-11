@@ -2,7 +2,7 @@
 
 By contributing to this repository, you are expected to follow this style guide. Please also ensure that you remain familiar with this document as it may change from time to time.
 
-Multiple versions of this styleguide may exist throughout this repository. As with other documents on this repository,
+Multiple versions of this style guide may exist throughout this repository. As with other documents on this repository,
 the version on the master branch should be followed, as this version should be the most up-to-date.
 
 ## Table of Contents
@@ -23,25 +23,51 @@ the version on the master branch should be followed, as this version should be t
    1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces)
    1. [120 character column limit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#120-character-column-limit)
    1. [One statement per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-statement-per-line)
-   1. [Underscores in numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#underscores-in-numeric-literals)
    1. [Empty blocks can be concise](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#empty-blocks-can-be-concise)
    1. [Whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#whitespace)
       1. [Vertical whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#vertical-whitespace)
       1. [No horizontal alignment](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-horizontal-alignment)
    1. [Optional grouping parentheses: recommended](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#optional-grouping-parentheses-recommended)
-1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
-   1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
-   1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
+   1. [Enum classes](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md)
+      1. [Comment fall-through](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md)
+      1. [Enumerate all cases or have a default case](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#enumerate-all-cases-or-have-a-default-case)
+   1. [Annotations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#annotations)
+   1. [Comments](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#comments)
+   1. [Modifiers](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#modifiers)
+   1. [Numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#numeric-literals)
+      1. [Underscores in numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#underscores-in-numeric-literals)
+      1. [Long suffixes](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#long-suffixes)
+   1. [Variable declarations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#variable-declarations)
+      1. [One variable declaration per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-variable-declaration-per-line)
+      1. [Declare as close as possible to use](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#declare-as-close-as-possible-to-use)
+   1. [Arrays](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#arrays)
+      1. [No C-style array declarations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-c-style-array-declarations)
+   1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
+      1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
+      1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
+   1. [Naming](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#naming)
+      1. [Package names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#package-names)
+      1. [Class names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#class-names)
+      1. [Method names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#method-names)
+      1. [Constant names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#constant-names)
+      1. [Non-constant field names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#non-constant-field-names)
+      1. [Parameter names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#parameter-names)
+      1. [Local variable names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#local-variables-names)
+      1. [Type variable names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#type-variables-names)
 1. [Javadoc](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#javadoc)
    1. [No @author tag](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-author-tag)
 1. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
-   1. [Use @Override](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-override)
+   1. [Annotations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#annotations-1)
+      1. [Use @Override](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-override)
+      1. [Use @VisibleForTesting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-visiblefortesting)
+   1. [Don't swallow exceptions](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#dont-swallow-exceptions)
    1. [StringBuilder over StringBuffer](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#stringbuilder-over-stringbuffer)
    1. [Overriding hashCode() and equals()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-hashcode-and-equals)
    1. [Overriding toString()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-tostring)
    1. [Short methods](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#short-methods)
    1. [JUnit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#junit)
       1. [Fewest number of assertions in every test](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fewest-number-of-assertions-in-every-test)
+      1. [Avoid randomness](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#avoid-randomness)
 1. [Recommended reading](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#recommended-reading)
 1. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
 
@@ -160,19 +186,7 @@ Exceptions to this rule:
 
 ### One statement per line
 
-Every statement should be followed by a line break. This includes variable declarations.
-
-### Underscores in numeric literals
-
-For numeric literals that are ten thousand or higher, underscores are recommended to separate digits by thousands:
-
-```java
-// bad
-int booksSold = 10000;
-
-// good
-int booksSold = 10_000;
-```
+A line break should follow every statement. This includes variable declarations.
 
 ### Empty blocks can be concise
 
@@ -208,7 +222,7 @@ Generally speaking, there should not be more than one blank line.
 
 *Where there should not be one blank line*
 
-- Between the class name and the first field declaration (or method declaration or defintion)
+- Between the class name and the first field declaration (or method declaration or definition)
 
 #### No horizontal alignment
 
@@ -222,7 +236,7 @@ private int     numberOfPages;
 private Strring authorFirstName;
 ```
 
-There should be no horizontal alignment. While it looks nice and improves readability, it is can be harder to maintain.
+There should be no horizontal alignment. While it looks nice and improves readability, it can be harder to maintain.
 
 ### Optional grouping parentheses: recommended
 
@@ -234,6 +248,80 @@ If an enum class has no methods, it can be written as an array initialiser:
 ```java
 private enum EventType { SAVED, DELETED }
 ```
+
+#### Comment fall-through
+
+If a case continues onto the next statement group with a `break`, this should be commented. Something like  `// fall through` is sufficient. For example:
+
+```java
+switch (param) {
+   case 1:
+   case 2:
+      foo();
+      // fall through
+   case 3:
+      bar();
+      break;
+   default:
+      baz();
+}
+```
+
+The final statement in the switch block, the `default` case above, does not require a fall-through comment.
+
+#### Enumerate all cases or have a default case
+
+Either cover all of the cases or use the `default` case. Covering all cases is the preferred approach.
+
+### Annotations
+
+Annotations should appear after any javadoc for the class, field or method.
+
+Each annotation should appear on its own line. For example:
+```java
+@Override
+@Nullable
+public Integer getPagesReadIfPresent() {
+   ...
+}
+```
+
+However, for fields, multiple annotations can be on the same line:
+```java
+@NotNull @VisibleForTesting String authorFirstName;
+```
+
+### Comments
+
+This section is to do with implementation comments, not Javadoc.
+
+Comments should not be decorated with asterisks or any other characters.
+
+### Modifiers
+
+Where applicable, class and member modifiers should appear in the following order, as recommended by the Java Language Specification:
+```java
+public protected private abstract default static final transient volatile synchronized native strictfp
+```
+
+### Numeric literals
+
+#### Underscores in numeric literals
+
+For numeric literals that are ten thousand or higher, underscores are recommended to separate digits by thousands:
+
+```java
+// bad
+int booksSold = 10000;
+
+// good
+int booksSold = 10_000;
+```
+
+#### Long suffixes
+
+`long` variables should be suffixed with an uppercase `L`. The lowercase `l` should not be used as it may cause confusion with the digit `1`. For example, `1_000_000_000L` instead of `1_000_000_000l`.
+
 
 ### Variable declarations
 
@@ -251,7 +339,7 @@ private String authorFirstName, authorLastName;
 
 #### Declare as close as possible to use
 
-Local variables should be declared as close as reasonably possible to where it is used. This can help limit scope and improve readability. Local variables should not be declared at the top of a method for the sake of it.
+Local variables should be declared as close as reasonably possible to where it is used. This can help limit the scope and improve readability. Local variables should not be declared at the top of a method for the sake of it.
 
 ### Arrays
 
@@ -267,17 +355,17 @@ String[] args
 String args[]
 ```
 
-## Indentation
+### Indentation
 
-### 4 Spaces, no tabs
+#### 4 Spaces, no tabs
 
-4 spaces should be used for indentation. This is clearer than 2 spaces (more than 4 is extraneous).
+Four spaces should be used for indentation. This is clearer than two spaces (more than four is extraneous).
 
 This also applies to CSS.
 
-### Aligning method calls
+#### Aligning method calls
 
-An exception to the above 4 spaces indentation rule is aligning method calls (see below). This can improve readability.
+An exception to the above four spaces indentation rule is aligning method calls (see below). This can improve readability.
 
 ```java
 // good
@@ -289,6 +377,62 @@ bookGrid.addColumn(AUTHOR_KEY)
     .setSortable(true);
 ```
 
+## Naming
+
+Special prefixes or suffixes, such as to represent member variables, are not used.  For example, the following are not permitted: `mTitle` and `_title`.
+
+### Package names
+
+Package names are written in lowercase. Consecutive words are concatenated together without any underscores. For example, `com.example.readinggoal`, not `com.example.readingGoal` or `com.example.reading_goal`. 
+
+To aid readability, try to keep package names short and one-word names wherever possible.
+
+### Class names
+
+Class names are written in PascalCase (also referred to as UpperCamelCase).
+
+Class names should be nouns or noun phrases.
+
+Interface names can be nouns or noun phrases. However, in some cases, adjectives or adjective phrases are better (e.g. `Iterable`).
+
+Test classes should be the name of the class that it is testing followed by the suffix `Test`. For example. the test class for the `GenreStatistics` class should be called `GenreStatisticsTest`.
+
+### Method names
+
+Method names are written in lowerCamelCase.
+
+Method names should usually be verb or verb phrases. For example, `processTransaction` or `findId`.
+
+Underscores are allowed in JUnit test methods to separate logical components. One popular pattern is `<methodUnderTest>_<state>`; for example, `pop_emptyStack`. The most important thing is that the test method name clearly summarises what is being tested.
+
+### Constant names
+
+Constants are written in CONSTANT_CASE. It is written in uppercase letters with each word separated by an underscore.
+
+### Non-constant field names
+
+Non-constant field names, regardless of whether they are static, are written in`lowerCamelCase`.
+
+The names tend to be noun or noun phrases.
+
+### Parameter names
+
+Parameter names are written in `lowerCamelCase`.
+
+Single letter parameter names should be avoided in methods (common exception: for loops).
+
+### Local variables names
+
+Local variables names are written in `lowerCamelCase`.
+
+Even if they are immutable (e.g. marked as `final`), they are not considered constants, so they are not styled as constants.
+
+### Type variables names
+
+Type variables should be either:
+- One capital letter, which can be optionally succeeded by a letter (e.g. `T`, `E` or `T2`)
+- A class name followed by the capital letter `T` (e.g. `AuthorT`)
+
 ## Javadoc
 
 ### No @author tag
@@ -298,10 +442,32 @@ at tracking changes.
 
 ## Programming practices
 
-### Use @Override
+### Annotations
 
-The @Override annotation should be used for overriden methods. This is so that the compiler can run
+#### Use @Override
+
+The @Override annotation should be used for overridden methods. This is so that the compiler can run
 a check at compile-time to see whether the method annotated with @Override actually overrides a method.
+
+#### Use @VisibleForTesting
+
+While it is usually better to limit members and methods, if it's required for testing, it will need to be made package-private. In such cases, they should be tagged as @VisibleForTesting to make it clear.
+
+### Don't swallow exceptions
+
+Rarely should there be no response to a caught exception (e.g. you may want to log it).
+
+If it is right not to do anything, then this has to be justified in a comment.
+
+An exception to ignore exceptions is if the exception is expected in a test. For example, you may want to test whether the code under test does indeed throw an exception:
+```java
+try {
+   foo(-1);
+} catch (IndexOutOfBoundsException expected) {
+}
+```
+
+In such cases, the exception parameter should be called or include the word `expected`, as above.
 
 ### StringBuilder over StringBuffer
 
@@ -345,7 +511,11 @@ Wherever possible, try to keep methods short (under 15 lines). This makes it eas
 
 ### Fewest number of assertions in every test
 
-In every test method, try to minimise the number of assertions. Generally speaking, ideally there should only be one.
+In every test method, try to minimise the number of assertions. Generally speaking, ideally, there should only be one.
+
+### Avoid randomness
+
+While it may seem better to use pseudorandom bounded values so that you can test more cases, it rarely improves coverage. It's better to use fixed input data with well-defined edge cases.
 
 ## Recommended reading
 
@@ -353,7 +523,7 @@ In every test method, try to minimise the number of assertions. Generally speaki
 
 ## Updates to this document
 
-If you are considering making changes to any of the recommended styles in this guide, please note that the following may also need to be changed:
+If you change any of the recommended styles in this guide, please note that the following may also need to be changed:
 
 - [Checkstyle configuration](https://github.com/knjk04/book-project/blob/master/src/main/resources/checkstyle.xml)
 - [IntelliJ formatter](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml)

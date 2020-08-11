@@ -17,7 +17,7 @@ import java.util.Random;
 
 @IntegrationTest
 @WebAppConfiguration
-public class ReadingGoalFormTests {
+public class ReadingGoalFormTest {
     static Routes routes;
 
     @Autowired

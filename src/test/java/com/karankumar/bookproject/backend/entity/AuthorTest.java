@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 @IntegrationTest
-class AuthorTests {
+class AuthorTest {
     private static BookService bookService;
 
     private static Book testBook1;
@@ -45,13 +45,13 @@ class AuthorTests {
         testBook2 = createBook("The better angels of our nature", toRead);
 
         Assumptions.assumeTrue(predefinedShelfService != null && bookService != null);
-        AuthorTests.bookService = bookService;
-        AuthorTests.authorService = authorService;
+        AuthorTest.bookService = bookService;
+        AuthorTest.authorService = authorService;
 
         bookService.deleteAll(); // reset
 
-        AuthorTests.bookService.save(testBook1);
-        AuthorTests.bookService.save(testBook2);
+        AuthorTest.bookService.save(testBook1);
+        AuthorTest.bookService.save(testBook2);
     }
 
     private static Book createBook(String title, PredefinedShelf shelf) {

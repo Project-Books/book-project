@@ -60,7 +60,7 @@ public class User {
     @NotEmpty
     private String username;
 
-    @NotNull
+    // Note: this is allowed to be null if a user signs up without an email
     @NotEmpty
     private String email;
 

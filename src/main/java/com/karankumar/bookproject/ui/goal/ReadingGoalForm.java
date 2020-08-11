@@ -30,14 +30,10 @@ public class ReadingGoalForm extends VerticalLayout {
     private static final String PAGES_TO_READ = "Pages to read";
     private final Dialog newGoalDialog;
 
-    @VisibleForTesting
-    final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
-    @VisibleForTesting
-    final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
-    @VisibleForTesting
-    final IntegerField targetToRead;
-    @VisibleForTesting
-    Button saveButton;
+    @VisibleForTesting final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
+    @VisibleForTesting final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
+    @VisibleForTesting final IntegerField targetToRead;
+    @VisibleForTesting Button saveButton;
 
     public ReadingGoalForm() {
         targetToRead = createTargetGoalField();

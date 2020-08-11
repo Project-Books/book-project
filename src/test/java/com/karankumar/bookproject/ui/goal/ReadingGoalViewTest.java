@@ -32,7 +32,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @IntegrationTest
 @WebAppConfiguration
-public class ReadingGoalViewTests {
+public class ReadingGoalViewTest {
     private static Routes routes;
 
     @Autowired

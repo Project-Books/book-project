@@ -43,28 +43,20 @@ import java.util.logging.Level;
 @Log
 public class ReadingGoalView extends VerticalLayout {
 
-    @VisibleForTesting
-    static final String SET_GOAL = "Set goal";
-    @VisibleForTesting
-    static final String UPDATE_GOAL = "Update goal";
-    @VisibleForTesting
-    static final String TARGET_MET = "Congratulations for reaching your target!";
+    @VisibleForTesting static final String SET_GOAL = "Set goal";
+    @VisibleForTesting static final String UPDATE_GOAL = "Update goal";
+    @VisibleForTesting static final String TARGET_MET = "Congratulations for reaching your target!";
 
-    @VisibleForTesting
-    final Button setGoalButton;
+    @VisibleForTesting final Button setGoalButton;
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
 
     private ReadingGoalService goalService;
 
-    @VisibleForTesting
-    H1 readingGoalSummary;
-    @VisibleForTesting
-    H3 goalProgress;
-    @VisibleForTesting
-    Span goalProgressPercentage;
-    @VisibleForTesting
-    Span booksToReadOnAverageToMeetGoal;
+    @VisibleForTesting H1 readingGoalSummary;
+    @VisibleForTesting H3 goalProgress;
+    @VisibleForTesting Span goalProgressPercentage;
+    @VisibleForTesting Span booksToReadOnAverageToMeetGoal;
 
     public ReadingGoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;

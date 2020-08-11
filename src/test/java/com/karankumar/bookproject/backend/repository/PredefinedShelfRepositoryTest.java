@@ -28,7 +28,7 @@ class PredefinedShelfRepositoryTest {
     }
 
     @Test
-    void givenShelfExistsFindByShelfNameShouldReturnOneShelf() {
+    void whenShelfExistsFindByShelfNameReturnsOneShelf() {
         List<PredefinedShelf> shelves = repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
 
         Assertions.assertEquals(1, shelves.size());

@@ -27,14 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @IntegrationTest
-class PredefinedShelfTests {
+class PredefinedShelfTest {
 
     private static PredefinedShelfService shelfService;
 
     @BeforeAll
     public static void setup(@Autowired PredefinedShelfService shelfService, @Autowired BookService bookService) {
         Assumptions.assumeTrue(shelfService != null && bookService != null);
-        PredefinedShelfTests.shelfService = shelfService;
+        PredefinedShelfTest.shelfService = shelfService;
         bookService.deleteAll(); // reset
     }
 
@@ -44,7 +44,7 @@ class PredefinedShelfTests {
     @Test
     public void orphanShelfExists() {
         Assumptions.assumeTrue(shelfService != null);
-        List<PredefinedShelf> shelves = PredefinedShelfTests.shelfService.findAll();
+        List<PredefinedShelf> shelves = PredefinedShelfTest.shelfService.findAll();
 
         Assertions.assertEquals(4, shelves.size());
         Assertions.assertEquals(shelves.get(0).getPredefinedShelfName(), PredefinedShelf.ShelfName.TO_READ);

@@ -29,6 +29,7 @@ public class RatingStatisticsTest {
 
     @BeforeEach
     public void beforeEachSetup() {
+        bookService.deleteAll(); // reset
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         bookWithNoRating = StatisticTestUtils.getBookWithLowestRating();
         bookWithHighestRating = StatisticTestUtils.getBookWithHighestRating();
@@ -42,7 +43,7 @@ public class RatingStatisticsTest {
     }
 
     @Test
-    public void testLowestRatedBookDoesNotExist() {
+    public void testNonExistentLowestRatedBook() {
         resetRatingStatistics();
         Assertions.assertNull(ratingStatistics.findLeastLikedBook());
     }
@@ -53,9 +54,17 @@ public class RatingStatisticsTest {
     }
 
     @Test
-    public void testHighestRatedBookDoesNotExist() {
+    public void testNonExistentHighestRatedBook() {
         resetRatingStatistics();
         Assertions.assertNull(ratingStatistics.findMostLikedBook());
+    }
+
+    @Test
+    public void averageRatingExistsAndIsCorrect() {
+        int numberOfBooks = StatisticTestUtils.getNumberOfBooks();
+        double totalRating = StatisticTestUtils.totalRating;
+        double average = totalRating / numberOfBooks;
+        Assertions.assertEquals(average, ratingStatistics.calculateAverageRatingGiven());
     }
 
     @Test

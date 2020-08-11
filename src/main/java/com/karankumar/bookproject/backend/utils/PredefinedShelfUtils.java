@@ -29,7 +29,7 @@ public class PredefinedShelfUtils {
         return findPredefinedShelf(PredefinedShelf.ShelfName.READ);
     }
 
-    private PredefinedShelf findPredefinedShelf(PredefinedShelf.ShelfName shelfName) {
+    public PredefinedShelf findPredefinedShelf(PredefinedShelf.ShelfName shelfName) {
         LOGGER.log(Level.INFO, "Shelves: " + predefinedShelfService.findAll());
         return predefinedShelfService.findAll()
                                      .stream()

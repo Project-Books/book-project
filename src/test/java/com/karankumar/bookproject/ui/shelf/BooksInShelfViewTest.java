@@ -53,7 +53,7 @@ import java.util.List;
 
 @IntegrationTest
 @WebAppConfiguration
-public class BooksInShelfViewTests {
+public class BooksInShelfViewTest {
 
     private static Routes routes;
 
