@@ -40,13 +40,13 @@ public class PredefinedShelfUtils {
 
     public PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
-            case "TO_READ":
+            case "To read":
                 return PredefinedShelf.ShelfName.TO_READ;
-            case "READING":
+            case "Reading":
                 return PredefinedShelf.ShelfName.READING;
-            case "READ":
+            case "Read":
                 return PredefinedShelf.ShelfName.READ;
-            case "DID_NOT_FINISH":
+            case "Did not finish":
                 return PredefinedShelf.ShelfName.DID_NOT_FINISH;
             default:
                 return null;
