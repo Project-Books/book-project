@@ -78,14 +78,16 @@ public class SettingsView extends HorizontalLayout {
             dialog.setCloseOnEsc(false);
             dialog.setCloseOnOutsideClick(false);
 
+
             final Label messageLabel = new Label();
+            messageLabel.setText("   Are you sure you want to do delete all of the books in the shelves? There is no going back.    ");
+            dialog.add(messageLabel);
 
             confirmButton = new Button("Confirm", event -> {
                 deleteAllBooks();
                 final List<Book> books = bookService.findAll();
                 if(books.isEmpty()){
                     shelvesEmpty = true;
-                    messageLabel.setText("Confirmed!");
                     dialog.close();
                 }
                 else {
@@ -122,11 +124,12 @@ public class SettingsView extends HorizontalLayout {
             updateClearShelvesButtonText();
         }
 
-        VerticalLayout verticalLayout = new VerticalLayout(paperToggle, clearShelveButton);
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(darkModeLabel, paperToggle);
 
+        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelveButton);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
-        verticalLayout.add(darkModeLabel);
 
         add(verticalLayout);
         setSizeFull();
