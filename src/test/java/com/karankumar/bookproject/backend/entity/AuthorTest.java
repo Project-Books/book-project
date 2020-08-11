@@ -57,7 +57,7 @@ class AuthorTest {
     private static Book createBook(String title, PredefinedShelf shelf) {
         Author author = new Author("Steven", "Pinker");
         Book book = new Book(title, author);
-        book.setShelf(shelf);
+        book.setPredefinedShelf(shelf);
         return book;
     }
 

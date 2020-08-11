@@ -159,7 +159,7 @@ public class ReadingGoalViewTest {
      */
     private Book createBook(PredefinedShelf.ShelfName shelfName) {
         Book book = new Book("Title", new Author("Joe", "Bloggs"));
-        book.setShelf(predefinedShelfUtils.findReadShelf()); // important not to create a new predefined shelf
+        book.setPredefinedShelf(predefinedShelfUtils.findReadShelf()); // important not to create a new predefined shelf
         if (shelfName.equals(PredefinedShelf.ShelfName.READ)) {
             book.setDateFinishedReading(generateRandomDate());
         }

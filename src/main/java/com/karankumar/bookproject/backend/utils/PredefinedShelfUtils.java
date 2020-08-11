@@ -37,4 +37,19 @@ public class PredefinedShelfUtils {
                                      .collect(Collectors.toList())
                                      .get(0); // there should only be one
     }
+
+    public PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
+        switch (predefinedShelfName) {
+            case "TO_READ":
+                return PredefinedShelf.ShelfName.TO_READ;
+            case "READING":
+                return PredefinedShelf.ShelfName.READING;
+            case "READ":
+                return PredefinedShelf.ShelfName.READ;
+            case "DID_NOT_FINISH":
+                return PredefinedShelf.ShelfName.DID_NOT_FINISH;
+            default:
+                return null;
+        }
+    }
 }

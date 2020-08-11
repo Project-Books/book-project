@@ -109,7 +109,7 @@ public class BookFormTest {
         numberOfPages = generateRandomNumberOfPages();
         seriesPosition = SERIES_POSITION;
 
-        book.setShelf(readShelf);
+        book.setPredefinedShelf(readShelf);
         book.setGenre(genre);
         book.setPagesRead(pagesRead);
         book.setNumberOfPages(numberOfPages);
@@ -176,7 +176,7 @@ public class BookFormTest {
         Assertions.assertEquals(bookTitle, savedOrDeletedBook.getTitle());
         Assertions.assertEquals(firstName, savedOrDeletedBook.getAuthor().getFirstName());
         Assertions.assertEquals(lastName, savedOrDeletedBook.getAuthor().getLastName());
-        Assertions.assertEquals(readShelf.getShelfName(), savedOrDeletedBook.getShelf().getShelfName());
+        Assertions.assertEquals(readShelf.getShelfName(), savedOrDeletedBook.getPredefinedShelf().getShelfName());
         Assertions.assertEquals(genre, savedOrDeletedBook.getGenre());
         Assertions.assertEquals(pagesRead, savedOrDeletedBook.getPagesRead());
         Assertions.assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());

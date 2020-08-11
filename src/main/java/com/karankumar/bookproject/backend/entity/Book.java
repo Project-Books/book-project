@@ -47,19 +47,17 @@ public class Book extends BaseEntity {
     private String edition;
     private String bookRecommendedBy;
 
-    // For books that have been read
-    private RatingScale rating;
-    private LocalDate dateStartedReading;
-    private LocalDate dateFinishedReading;
-    private String bookReview;
-
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "shelf_id")
-    private PredefinedShelf shelf;
+    @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "ID")
+    private PredefinedShelf predefinedShelf;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "custom_shelf_id", referencedColumnName = "ID")
+    private CustomShelf customShelf;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
@@ -68,6 +66,12 @@ public class Book extends BaseEntity {
         inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
     private Set<Tag> tags;
+
+    // For books that have been read
+    private RatingScale rating;
+    private LocalDate dateStartedReading;
+    private LocalDate dateFinishedReading;
+    private String bookReview;
 
     public Book(String title, Author author) {
         this.title = title;

@@ -86,7 +86,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final Button saveButton = new Button();
     @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
 
-    private final PredefinedShelfService shelfService;
+    private final PredefinedShelfService predefinedShelfService;
     @VisibleForTesting final Button reset = new Button();
     private final Dialog dialog;
 
@@ -100,7 +100,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
     public BookForm(PredefinedShelfService shelfService) {
-        this.shelfService = shelfService;
+        this.predefinedShelfService = shelfService;
 
         dialog = new Dialog();
         dialog.setCloseOnOutsideClick(true);
@@ -198,7 +198,7 @@ public class BookForm extends VerticalLayout {
               .bind("author.lastName");
         binder.forField(shelf)
               .withValidator(Objects::nonNull, SHELF_ERROR)
-              .bind("shelf.predefinedShelfName");
+              .bind("predefinedShelf.predefinedShelfName");
         binder.forField(seriesPosition)
               .withValidator(positiveNumberPredicate(), SERIES_POSITION_ERROR)
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
@@ -292,9 +292,9 @@ public class BookForm extends VerticalLayout {
             Book book = new Book(bookTitle.getValue(), author);
 
             if (shelf.getValue() != null) {
-                List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
+                List<PredefinedShelf> shelves = predefinedShelfService.findAll(shelf.getValue());
                 if (shelves.size() == 1) {
-                    book.setShelf(shelves.get(0));
+                    book.setPredefinedShelf(shelves.get(0));
                     LOGGER.log(Level.INFO, "Shelf: " + shelves.get(0));
                 } else {
                     LOGGER.log(Level.INFO, "Shelves count = " + shelves.size());
@@ -321,10 +321,10 @@ public class BookForm extends VerticalLayout {
     }
 
     private void moveBookToDifferentShelf() {
-        List<PredefinedShelf> shelves = shelfService.findAll(shelf.getValue());
+        List<PredefinedShelf> shelves = predefinedShelfService.findAll(shelf.getValue());
         if (shelves.size() == 1) {
             Book book = binder.getBean();
-            book.setShelf(shelves.get(0));
+            book.setPredefinedShelf(shelves.get(0));
             LOGGER.log(Level.INFO, "2) Shelf: " + shelves.get(0));
             binder.setBean(book);
         } else {

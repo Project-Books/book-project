@@ -43,7 +43,7 @@ public class BookService extends BaseService<Book, Long> {
     @Override
     public void save(Book book) {
         if (book == null || book.getAuthor() == null
-                || book.getShelf() == null || book.getShelf().getShelfName() == null) {
+                || book.getPredefinedShelf() == null || book.getPredefinedShelf().getShelfName() == null) {
             return;
         }
         authorService.save(book.getAuthor());
