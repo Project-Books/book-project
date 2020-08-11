@@ -106,7 +106,7 @@ public class BooksInShelfView extends VerticalLayout {
         Button addBook = new Button("Add book");
         addBook.addClickListener(e -> bookForm.addBook());
 
-        CustomShelfForm customShelfForm = new CustomShelfForm();
+        CustomShelfForm customShelfForm = new CustomShelfForm(customShelfService, predefinedShelfService);
         Button addShelf = new Button("Add shelf");
         addShelf.addClickListener(e -> customShelfForm.addShelf());
 

@@ -1,9 +1,11 @@
 package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import lombok.extern.java.Log;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -51,5 +53,11 @@ public class PredefinedShelfUtils {
             default:
                 return null;
         }
+    }
+
+    public List<String> getPredefinedShelfNamesAsStrings() {
+       return predefinedShelfService.findAll().stream()
+               .map(Shelf::getShelfName)
+               .collect(Collectors.toList());
     }
 }

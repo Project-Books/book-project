@@ -1,6 +1,10 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
@@ -12,20 +16,29 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
+
+import java.util.List;
 
 public class CustomShelfForm extends VerticalLayout {
     private final Dialog dialog;
 
+    private final CustomShelfService customShelfService;
+    private final PredefinedShelfService predefinedShelfService;
+
     private Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
     private final TextField shelfNameField = new TextField();
 
-    public CustomShelfForm() {
+    public CustomShelfForm(CustomShelfService customShelfService, PredefinedShelfService predefinedShelfService) {
         FormLayout formLayout = new FormLayout();
         dialog = new Dialog();
         dialog.add(formLayout);
         dialog.setCloseOnOutsideClick(true);
         add(dialog);
+
+        this.customShelfService = customShelfService;
+        this.predefinedShelfService = predefinedShelfService;
 
         bindFormFields();
 
@@ -38,7 +51,23 @@ public class CustomShelfForm extends VerticalLayout {
         // TODO: do not allow duplicate shelf names
         binder.forField(shelfNameField)
               .asRequired("Please enter a shelf name")
+              .withValidator(isUniqueShelfName(), "This shelf name already exists. Please enter a new shelf name")
               .bind(CustomShelf::getShelfName, CustomShelf::setShelfName);
+    }
+
+    private SerializablePredicate<? super String> isUniqueShelfName() {
+        return shelfName -> !customShelfNameAlreadyUsed(shelfName) && !customShelfNameMatchesPredefinedShelfName(shelfName);
+    }
+
+    private boolean customShelfNameAlreadyUsed(String customShelfName) {
+        List<String> customShelfNames = new CustomShelfUtils(customShelfService).getCustomShelfNames();
+        return customShelfNames.contains(customShelfName);
+    }
+
+    private boolean customShelfNameMatchesPredefinedShelfName(String shelfName) {
+        List<String> predefinedShelfNames =
+                new PredefinedShelfUtils(predefinedShelfService).getPredefinedShelfNamesAsStrings();
+        return predefinedShelfNames.contains(shelfName);
     }
 
     private void configureShelfNameField() {
