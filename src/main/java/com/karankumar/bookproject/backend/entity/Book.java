@@ -73,9 +73,10 @@ public class Book extends BaseEntity {
     private LocalDate dateFinishedReading;
     private String bookReview;
 
-    public Book(String title, Author author) {
+    public Book(String title, Author author, PredefinedShelf predefinedShelf) {
         this.title = title;
         this.author = author;
+        this.predefinedShelf = predefinedShelf;
     }
     
     public void setEdition(Integer edition) {

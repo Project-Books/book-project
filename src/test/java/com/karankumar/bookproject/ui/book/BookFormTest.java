@@ -108,15 +108,14 @@ public class BookFormTest {
 
     private Book createBook(PredefinedShelfService predefinedShelfService, boolean isInSeries) {
         Author author = new Author(firstName, lastName);
-        Book book = new Book(bookTitle, author);
-
         readShelf = predefinedShelfService.findAll().get(2);
+        Book book = new Book(bookTitle, author, readShelf);
+
 
         pagesRead = generateRandomNumberOfPages();
         numberOfPages = generateRandomNumberOfPages();
         seriesPosition = SERIES_POSITION;
 
-        book.setPredefinedShelf(readShelf);
         book.setCustomShelf(customShelf);
         book.setGenre(genre);
         book.setPagesRead(pagesRead);

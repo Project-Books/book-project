@@ -17,12 +17,13 @@ public class BookServiceTest {
     private static BookService bookService;
 
     private Book validBook;
+    private PredefinedShelf toRead;
 
     @BeforeEach
     public void setup(@Autowired BookService goalService, @Autowired AuthorService authorService,
                       @Autowired PredefinedShelfService predefinedShelfService) {
         PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
-        PredefinedShelf toRead = predefinedShelfUtils.findToReadShelf();
+        toRead = predefinedShelfUtils.findToReadShelf();
 
         BookServiceTest.bookService = goalService;
         goalService.deleteAll();
@@ -30,8 +31,7 @@ public class BookServiceTest {
         authorService.deleteAll();
 
         Author author = new Author("Test First Name", "Test Last Name");
-        validBook = new Book("Book Name", author);
-        validBook.setPredefinedShelf(toRead);
+        validBook = new Book("Book Name", author, toRead);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class BookServiceTest {
 
     @Test
     public void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
-        bookService.save(new Book("Book without author", null));
+        bookService.save(new Book("Book without author", null, toRead));
         Assertions.assertEquals(0, authorService.count());
         Assertions.assertEquals(0, bookService.count());
     }
@@ -52,7 +52,7 @@ public class BookServiceTest {
      */
     @Test
     public void whenTryingToSaveWithoutShelfExpectNoSave() {
-        Book bookWithoutShelf = new Book("Title", new Author("First", "Last"));
+        Book bookWithoutShelf = new Book("Title", new Author("First", "Last"), null);
         bookService.save(bookWithoutShelf);
         Assertions.assertEquals(0, authorService.count());
         Assertions.assertEquals(0, bookService.count());

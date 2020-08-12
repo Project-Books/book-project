@@ -105,12 +105,13 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         if (tagRepository.count() == 0) {
             populateTagRepository();
         }
-        if (bookRepository.count() == 0) {
-            populateBookRepository();
-        }
 
         if (predefinedShelfRepository.count() == 0) {
             populateShelfRepository();
+        }
+
+        if (bookRepository.count() == 0) {
+            populateBookRepository();
         }
 
         setShelfForAllBooks();
@@ -158,7 +159,7 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
 
         Author author = authors.get(threadLocalRandom.nextInt(authors.size()));
-        Book book = new Book(title, author);
+        Book book = new Book(title, author, getRandomPredefinedShelf());
 
         Genre genre = Genre.values()[threadLocalRandom.nextInt(Genre.values().length)];
         book.setGenre(genre);
@@ -185,12 +186,18 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         return book;
     }
 
+    private PredefinedShelf getRandomPredefinedShelf() {
+        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
+        List<PredefinedShelf> shelves = predefinedShelfRepository.findAll();
+        return shelves.get(threadLocalRandom.nextInt(shelves.size()));
+    }
+
     private void populateShelfRepository() {
         List<Book> books = bookRepository.findAll();
         predefinedShelfRepository.saveAll(
                 Stream.of(PredefinedShelf.ShelfName.values())
-                      .map(book -> {
-                          PredefinedShelf shelf = new PredefinedShelf(book);
+                      .map(shelfName -> {
+                          PredefinedShelf shelf = new PredefinedShelf(shelfName);
                           shelf.setBooks(new HashSet<>(books));
                             return shelf;
                         }).collect(Collectors.toList())

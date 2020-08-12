@@ -2,10 +2,12 @@ package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +44,10 @@ public class PageStatisticsTest {
 
     @Test
     public void onlyReadBooksCountTowardsMostPagesStatistics() {
-        Book readingBook = new Book("More pages than any read book", new Author("Joe", "Bloggs"));
+        PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+        PredefinedShelf readingShelf = predefinedShelfUtils.findReadingShelf();
+
+        Book readingBook = new Book("More pages than any read book", new Author("Joe", "Bloggs"), readingShelf);
         readingBook.setNumberOfPages(StatisticTestUtils.getBookWithMostPages().getNumberOfPages() + 50);
         bookService.save(readingBook);
 

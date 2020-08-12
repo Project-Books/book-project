@@ -28,6 +28,10 @@ public class PredefinedShelfUtils {
         return findPredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
     }
 
+    public PredefinedShelf findReadingShelf() {
+        return findPredefinedShelf(PredefinedShelf.ShelfName.READING);
+    }
+
     /**
      * Convenience method for accessing the read shelf
      */

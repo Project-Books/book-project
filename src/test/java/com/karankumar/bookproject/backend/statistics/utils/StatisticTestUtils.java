@@ -58,8 +58,7 @@ public class StatisticTestUtils {
 
     private static Book createBook(String bookTitle, PredefinedShelf shelf, Genre genre, int pages) {
         Author author = new Author("Joe", "Bloggs");
-        Book book = new Book(bookTitle, author);
-        book.setPredefinedShelf(shelf);
+        Book book = new Book(bookTitle, author, shelf);
         book.setGenre(genre);
         book.setNumberOfPages(pages);
         return book;

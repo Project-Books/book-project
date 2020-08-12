@@ -34,13 +34,14 @@ class AuthorTest {
     private static Book testBook1;
     private static Book testBook2;
     private static AuthorService authorService;
+    private static PredefinedShelf toRead;
 
     @BeforeAll
     public static void setup(@Autowired PredefinedShelfService predefinedShelfService,
                              @Autowired BookService bookService,
                              @Autowired AuthorService authorService) {
 
-        PredefinedShelf toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
+        toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
         testBook1 = createBook("How the mind works", toRead);
         testBook2 = createBook("The better angels of our nature", toRead);
 
@@ -56,9 +57,7 @@ class AuthorTest {
 
     private static Book createBook(String title, PredefinedShelf shelf) {
         Author author = new Author("Steven", "Pinker");
-        Book book = new Book(title, author);
-        book.setPredefinedShelf(shelf);
-        return book;
+        return new Book(title, author, shelf);
     }
 
     /**
@@ -80,7 +79,7 @@ class AuthorTest {
         bookService.deleteAll(); // reset
 
         Author orphan = new Author("Jostein", "Gardner");
-        Book book = new Book("Sophie's World", orphan);
+        Book book = new Book("Sophie's World", orphan, toRead);
         bookService.delete(book);
 
         boolean idFound;

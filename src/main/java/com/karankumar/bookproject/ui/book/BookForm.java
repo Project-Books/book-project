@@ -331,19 +331,16 @@ public class BookForm extends VerticalLayout {
             return null;
         }
         Author author = new Author(firstName, lastName);
-        Book book = new Book(title, author);
 
+        PredefinedShelf predefinedShelf;
         if (predefinedShelfField.getValue() != null) {
-            List<PredefinedShelf> shelves = predefinedShelfService.findAll(predefinedShelfField.getValue());
-            if (shelves.size() == 1) {
-                book.setPredefinedShelf(shelves.get(0));
-                LOGGER.log(Level.INFO, "Shelf: " + shelves.get(0));
-            } else {
-                LOGGER.log(Level.INFO, "Shelves count = " + shelves.size());
-            }
+            PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+            predefinedShelf = predefinedShelfUtils.findPredefinedShelf(predefinedShelfField.getValue());
         } else {
             LOGGER.log(Level.SEVERE, "Null shelf");
+            return null;
         }
+        Book book = new Book(title, author, predefinedShelf);
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
             List<CustomShelf> shelves = customShelfService.findAll(customShelfField.getValue());
@@ -356,14 +353,6 @@ public class BookForm extends VerticalLayout {
             book.setSeriesPosition(seriesPosition.getValue());
         } else if (seriesPosition.getValue() != null) {
             LOGGER.log(Level.SEVERE, "Negative Series value");
-        }
-
-        if (predefinedShelfField.getValue() != null) {
-            PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
-            PredefinedShelf predefinedShelf = predefinedShelfUtils.findPredefinedShelf(predefinedShelfField.getValue());
-            book.setPredefinedShelf(predefinedShelf);
-        } else {
-            LOGGER.log(Level.SEVERE, "Null shelf");
         }
 
         book.setGenre(bookGenre.getValue());
