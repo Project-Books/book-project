@@ -56,15 +56,6 @@ import java.util.stream.Collectors;
 @PageTitle("My Books | Book Project")
 @Log
 public class BooksInShelfView extends VerticalLayout {
-    public static final String TITLE_KEY = "title";
-    public static final String AUTHOR_KEY = "author";
-    public static final String GENRE_KEY = "genre";
-    public static final String PAGES_KEY = "numberOfPages";
-    public static final String PAGES_READ_KEY = "pagesRead";
-    public static final String RATING_KEY = "rating";
-    public static final String DATE_STARTED_KEY = "dateStartedReading";
-    public static final String DATE_FINISHED_KEY = "dateFinishedReading";
-
     public final Grid<Book> bookGrid;
     public final ComboBox<String> whichShelf;
 
@@ -151,28 +142,28 @@ public class BooksInShelfView extends VerticalLayout {
         }
         switch (predefinedShelfName) {
             case TO_READ:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, false);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
+                toggleColumnVisibility(BookGridKeys.RATING_KEY, false);
+                toggleColumnVisibility(BookGridKeys.DATE_STARTED_KEY, false);
+                toggleColumnVisibility(BookGridKeys.DATE_FINISHED_KEY, false);
+                toggleColumnVisibility(BookGridKeys.PAGES_READ_KEY, false);
                 return;
             case READING:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
+                toggleColumnVisibility(BookGridKeys.RATING_KEY, false);
+                toggleColumnVisibility(BookGridKeys.DATE_STARTED_KEY, true);
+                toggleColumnVisibility(BookGridKeys.DATE_FINISHED_KEY, false);
+                toggleColumnVisibility(BookGridKeys.PAGES_READ_KEY, false);
                 return;
             case DID_NOT_FINISH:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, true);
+                toggleColumnVisibility(BookGridKeys.RATING_KEY, false);
+                toggleColumnVisibility(BookGridKeys.DATE_STARTED_KEY, true);
+                toggleColumnVisibility(BookGridKeys.DATE_FINISHED_KEY, false);
+                toggleColumnVisibility(BookGridKeys.PAGES_READ_KEY, true);
                 return;
             case READ:
-                toggleColumnVisibility(RATING_KEY, true);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, true);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
+                toggleColumnVisibility(BookGridKeys.RATING_KEY, true);
+                toggleColumnVisibility(BookGridKeys.DATE_STARTED_KEY, true);
+                toggleColumnVisibility(BookGridKeys.DATE_FINISHED_KEY, true);
+                toggleColumnVisibility(BookGridKeys.PAGES_READ_KEY, false);
                 return;
             default:
                 break;
@@ -219,15 +210,15 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void addPagesColumn() {
-        bookGrid.addColumn(PAGES_KEY);
+        bookGrid.addColumn(BookGridKeys.PAGES_KEY);
     }
 
     private void addPagesReadColumn() {
-        bookGrid.addColumn(PAGES_READ_KEY);
+        bookGrid.addColumn(BookGridKeys.PAGES_READ_KEY);
     }
 
     private void addRatingColumn() {
-        bookGrid.addColumn(RATING_KEY);
+        bookGrid.addColumn(BookGridKeys.RATING_KEY);
     }
 
     private void addDateFinishedColumn() {
@@ -236,7 +227,7 @@ public class BooksInShelfView extends VerticalLayout {
                 .setHeader("Date finished reading")
                 .setComparator(Comparator.comparing(Book::getDateStartedReading))
                 .setSortable(true)
-                .setKey(DATE_FINISHED_KEY);
+                .setKey(BookGridKeys.DATE_FINISHED_KEY);
     }
 
     private void addDateStartedColumn() {
@@ -244,15 +235,15 @@ public class BooksInShelfView extends VerticalLayout {
                 Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
                 .setHeader("Date started reading")
                 .setComparator(Comparator.comparing(Book::getDateStartedReading))
-                .setKey(DATE_STARTED_KEY);
+                .setKey(BookGridKeys.DATE_STARTED_KEY);
     }
 
     private void addGenreColumn() {
-        bookGrid.addColumn(GENRE_KEY);
+        bookGrid.addColumn(BookGridKeys.GENRE_KEY);
     }
 
     private void addAuthorColumn() {
-        bookGrid.addColumn(AUTHOR_KEY)
+        bookGrid.addColumn(BookGridKeys.AUTHOR_KEY)
                 .setComparator(Comparator.comparing(author -> author.getAuthor().toString()))
                 .setSortable(true);
     }
@@ -260,7 +251,7 @@ public class BooksInShelfView extends VerticalLayout {
     private void addTitleColumn() {
         bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
                 .setHeader("Title")
-                .setKey(TITLE_KEY)
+                .setKey(BookGridKeys.TITLE_KEY)
                 .setSortable(true);
     }
 

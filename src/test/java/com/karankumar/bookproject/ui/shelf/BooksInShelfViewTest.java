@@ -43,15 +43,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.AUTHOR_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_FINISHED_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_STARTED_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_READ_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
-
 @IntegrationTest
 @WebAppConfiguration
 public class BooksInShelfViewTest {
@@ -62,36 +53,36 @@ public class BooksInShelfViewTest {
     private ApplicationContext ctx;
 
     private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
-        TITLE_KEY,
-        AUTHOR_KEY,
-        GENRE_KEY,
-        PAGES_KEY
+        BookGridKeys.TITLE_KEY,
+        BookGridKeys.AUTHOR_KEY,
+        BookGridKeys.GENRE_KEY,
+        BookGridKeys.PAGES_KEY
     ));
     private final ArrayList<String> expectedReadingColumns = new ArrayList<>(Arrays.asList(
-        TITLE_KEY,
-        AUTHOR_KEY,
-        GENRE_KEY,
-        DATE_STARTED_KEY,
-        PAGES_KEY
+        BookGridKeys.TITLE_KEY,
+        BookGridKeys.AUTHOR_KEY,
+        BookGridKeys.GENRE_KEY,
+        BookGridKeys.DATE_STARTED_KEY,
+        BookGridKeys.PAGES_KEY
     ));
 
     private final ArrayList<String> expectedDidNotFinishColumns = new ArrayList<>(Arrays.asList(
-            TITLE_KEY,
-            AUTHOR_KEY,
-            GENRE_KEY,
-            DATE_STARTED_KEY,
-            PAGES_KEY,
-            PAGES_READ_KEY
+            BookGridKeys.TITLE_KEY,
+            BookGridKeys.AUTHOR_KEY,
+            BookGridKeys.GENRE_KEY,
+            BookGridKeys.DATE_STARTED_KEY,
+            BookGridKeys.PAGES_KEY,
+            BookGridKeys.PAGES_READ_KEY
     ));
 
     private final ArrayList<String> expectedReadColumns = new ArrayList<>(Arrays.asList(
-        TITLE_KEY,
-        AUTHOR_KEY,
-        GENRE_KEY,
-        DATE_STARTED_KEY,
-        DATE_FINISHED_KEY,
-        RATING_KEY,
-        PAGES_KEY
+        BookGridKeys.TITLE_KEY,
+        BookGridKeys.AUTHOR_KEY,
+        BookGridKeys.GENRE_KEY,
+        BookGridKeys.DATE_STARTED_KEY,
+        BookGridKeys.DATE_FINISHED_KEY,
+        BookGridKeys.RATING_KEY,
+        BookGridKeys.PAGES_KEY
     ));
     private BooksInShelfView shelfView;
 
