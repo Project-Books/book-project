@@ -1,14 +1,8 @@
 package com.karankumar.bookproject.backend.goal;
 
-import com.karankumar.bookproject.backend.utils.DateUtils;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.Test;
 
-@RunWith(PowerMockRunner.class)
 public class CalculateReadingGoalTest {
     private int booksToRead = 52;
     @Test
@@ -45,25 +39,18 @@ public class CalculateReadingGoalTest {
      * Checks whether ahead or behind with reading goal
      */
     @Test
-    @PrepareForTest({ DateUtils.class})
     public void testHowFarAheadOrBehindSchedule(){
-        PowerMockito.mockStatic(DateUtils.class);
-        PowerMockito.when(DateUtils.getWeeksInYear()).thenReturn(52);
-        PowerMockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
         Assertions.assertEquals(0, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,1));
         Assertions.assertEquals(1, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,0));
         Assertions.assertEquals(9, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,10));
         Assertions.assertEquals(9, CalculateReadingGoal.howFarAheadOrBehindSchedule(199,12));
         Assertions.assertEquals(2, CalculateReadingGoal.howFarAheadOrBehindSchedule(199,5));
-        PowerMockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(15);
         Assertions.assertEquals(12, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,3));
         Assertions.assertEquals(9, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,24));
         Assertions.assertEquals(5, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,20));
-        PowerMockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(10);
         Assertions.assertEquals(20, CalculateReadingGoal.howFarAheadOrBehindSchedule(199,50));
         Assertions.assertEquals(22, CalculateReadingGoal.howFarAheadOrBehindSchedule(199,8));
         Assertions.assertEquals(70, CalculateReadingGoal.howFarAheadOrBehindSchedule(199,100));
-        PowerMockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(43);
         Assertions.assertEquals(7, CalculateReadingGoal.howFarAheadOrBehindSchedule(113,79));
         Assertions.assertEquals(45, CalculateReadingGoal.howFarAheadOrBehindSchedule(113,41));
         Assertions.assertEquals(0, CalculateReadingGoal.howFarAheadOrBehindSchedule(113,86));

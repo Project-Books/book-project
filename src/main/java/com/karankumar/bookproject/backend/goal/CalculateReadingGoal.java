@@ -30,7 +30,7 @@ public class CalculateReadingGoal {
      * @return the number of books that should have been read a week (on average) from the start of the year
      */
     public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
-        return ((int) Math.ceil(booksToReadThisYear / DateUtils.getWeeksInYear()));
+        return ((int) Math.ceil(booksToReadThisYear / DateUtils.WEEKS_IN_YEAR));
     }
 
     /**
