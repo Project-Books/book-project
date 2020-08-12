@@ -17,12 +17,12 @@ package com.karankumar.bookproject.ui.shelf;
 
 import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.BookUtils;
+import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
@@ -275,7 +275,8 @@ public class BooksInShelfView extends VerticalLayout {
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
             books = getBooksInChosenPredefinedShelf();
         } else {
-            books = getBooksInChosenCustomShelf();
+            CustomShelfUtils customShelfUtils = new CustomShelfUtils(customShelfService);
+            books = customShelfUtils.getBooksInChosenCustomShelf(chosenShelf);
         }
         populateGridWithBooks(books);
     }
@@ -288,18 +289,6 @@ public class BooksInShelfView extends VerticalLayout {
             books = new HashSet<>();
         } else {
             PredefinedShelf customShelf = predefinedShelves.get(0);
-            books = customShelf.getBooks();
-        }
-        return books;
-    }
-
-    private Set<Book> getBooksInChosenCustomShelf() {
-        Set<Book> books;
-        List<CustomShelf> customShelves = customShelfService.findAll(chosenShelf);
-        if (customShelves.isEmpty()) {
-            books = new HashSet<>();
-        } else {
-            CustomShelf customShelf = customShelves.get(0);
             books = customShelf.getBooks();
         }
         return books;
