@@ -56,21 +56,7 @@ Prerequisites:
     - Username: `user`
     - Password: `password`
     
-You may find lots of errors for things like the log statements, or the entities not having constructors. Below, you can find instructions on how to fix this for IntelliJ and Eclipse.
-
-### IntelliJ
-    
-  <p align="center">
-	<img src="/media/intellij_annotation_processing.png" alt="Enable IntelliJ annotation processing"/>
-  </p>
-    
-To remove the errors in IntelliJ, install the [Lombok plugin](https://plugins.jetbrains.com/plugin/6317-lombok) and enable annotation 
-processing. This can be done either in the popup window that appears after installing the Lombok plugin or by checking the
-'Enable annotation processing' checkbox in Settings > Build, Execution, Deployment > Compiler > Annotation Processors.
-
-### Eclipse
-
-In Eclipse, you will need to run Maven install before running the project (right click anywhere in the pom.xml and select Run as > Maven install).
+You may find lots of errors for things like the log statements, or the entities not having constructors. You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). Other common errors and solutions are also detailed in the troubleshooting page.
 
 ### Access database
 
