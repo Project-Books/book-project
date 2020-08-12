@@ -23,8 +23,8 @@ import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
@@ -203,10 +203,10 @@ public class BookForm extends VerticalLayout {
               .asRequired(BOOK_TITLE_ERROR)
               .bind(Book::getTitle, Book::setTitle);
         binder.forField(authorFirstName)
-              .withValidator(authorPredicate(), FIRST_NAME_ERROR)
+              .withValidator(BookFormValidators.authorPredicate(), FIRST_NAME_ERROR)
               .bind("author.firstName");
         binder.forField(authorLastName)
-              .withValidator(authorPredicate(), LAST_NAME_ERROR)
+              .withValidator(BookFormValidators.authorPredicate(), LAST_NAME_ERROR)
               .bind("author.lastName");
         binder.forField(predefinedShelfField)
               .withValidator(Objects::nonNull, SHELF_ERROR)
@@ -214,17 +214,17 @@ public class BookForm extends VerticalLayout {
         binder.forField(customShelfField)
               .bind("customShelf.shelfName");
         binder.forField(seriesPosition)
-              .withValidator(positiveNumberPredicate(), SERIES_POSITION_ERROR)
+              .withValidator(BookFormValidators.positiveNumberPredicate(), SERIES_POSITION_ERROR)
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
         binder.forField(dateStartedReading)
-              .withValidator(datePredicate(), String.format(AFTER_TODAY_ERROR, "started"))
+              .withValidator(BookFormValidators.datePredicate(), String.format(AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
               .withValidator(endDatePredicate(), FINISH_DATE_ERROR)
-              .withValidator(datePredicate(), String.format(AFTER_TODAY_ERROR, "finished"))
+              .withValidator(BookFormValidators.datePredicate(), String.format(AFTER_TODAY_ERROR, "finished"))
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(numberOfPages)
-              .withValidator(positiveNumberPredicate(), PAGE_NUMBER_ERROR)
+              .withValidator(BookFormValidators.positiveNumberPredicate(), PAGE_NUMBER_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(pagesRead)
               .bind(Book::getPagesRead, Book::setPagesRead);
@@ -615,26 +615,14 @@ public class BookForm extends VerticalLayout {
         }
     }
 
-    private SerializablePredicate<LocalDate> endDatePredicate() {
-        return endDate -> !(endDate != null && dateStartedReading.getValue() != null
-                && endDate.isBefore(dateStartedReading.getValue()));
-    }
-
-    private SerializablePredicate<LocalDate> datePredicate() {
-        return startDate -> !(startDate != null && startDate.isAfter(LocalDate.now()));
-    }
-
-    private SerializablePredicate<Integer> positiveNumberPredicate() {
-        return series -> (series == null || series > 0);
-    }
-
-    private SerializablePredicate<String> authorPredicate() {
-        return name -> (name != null && !name.isEmpty());
-    }
-
     public void addBook() {
         clearFormFields();
         openForm();
+    }
+
+    private SerializablePredicate<LocalDate> endDatePredicate() {
+        return endDate -> !(endDate != null && dateStartedReading.getValue() != null &&
+                endDate.isBefore(dateStartedReading.getValue()));
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,

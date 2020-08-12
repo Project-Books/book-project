@@ -13,7 +13,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.entity.account;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,26 +24,56 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 /**
- * Represents a single Role
+ * Represents a single User
  */
 @Entity
 @Builder
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
-public class Role extends BaseEntity {
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uidgenerator")
+    @SequenceGenerator(name = "uidgenerator", sequenceName = "uid_sequence")
+    @Getter
+    private Long id;
+
     @NotNull
     @NotEmpty
-    private String role;
+    private String username;
+
+    // Note: this is allowed to be null if a user signs up without an email
+    @NotEmpty
+    private String email;
+
+    @NotNull
+    @NotEmpty
+    // For the RegExp see https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation/3802238#3802238
+    @Pattern(
+            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
+            message = "The password must be at least 8 characters long and including at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+="
+    )
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 }

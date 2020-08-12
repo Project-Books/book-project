@@ -1,6 +1,6 @@
 package com.karankumar.bookproject.security;
 
-import com.karankumar.bookproject.backend.entity.User;
+import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
