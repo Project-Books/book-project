@@ -50,6 +50,7 @@ import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.GENRE
 import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.PAGES_KEY;
 import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.RATING_KEY;
 import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.TITLE_KEY;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.PAGES_READ_KEY;
 
 @IntegrationTest
 @WebAppConfiguration
