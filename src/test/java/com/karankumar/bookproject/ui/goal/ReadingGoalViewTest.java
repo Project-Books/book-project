@@ -240,8 +240,6 @@ public class ReadingGoalViewTest {
         }
     }
 
-
-
     @AfterEach
     public void tearDown() {
         MockVaadin.tearDown();
