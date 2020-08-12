@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
@@ -45,6 +46,8 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.Result;
+import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
@@ -367,8 +370,10 @@ public class BookForm extends VerticalLayout {
         book.setNumberOfPages(numberOfPages.getValue());
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
-        // TODO: add rating if OK
-        //        Result<RatingScale> result = new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
+
+        Result<RatingScale> result = new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
+        result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
+
         book.setPagesRead(pagesRead.getValue());
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
