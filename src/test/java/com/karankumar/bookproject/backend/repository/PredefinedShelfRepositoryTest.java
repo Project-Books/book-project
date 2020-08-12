@@ -19,7 +19,7 @@ class PredefinedShelfRepositoryTest {
     private PredefinedShelfRepository repository;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
         repository.saveAll(
             Arrays.stream(PredefinedShelf.ShelfName.values())
                   .map(PredefinedShelf::new)
