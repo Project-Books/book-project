@@ -16,7 +16,7 @@
 package com.karankumar.bookproject.ui.settings;
 
 import com.karankumar.bookproject.ui.MainView;
-import com.karankumar.bookproject.ui.components.toggle.PaperToggle;
+import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -31,12 +31,12 @@ import com.vaadin.flow.theme.lumo.Lumo;
 public class SettingsView extends HorizontalLayout {
     private static final String enable = "Enable dark mode";
     private static final String disable = "Disable dark mode";
-    private static PaperToggle paperToggle;
+    private static SwitchToggle paperToggle;
     private static Label darkModeLabel = new Label(enable);
     private static boolean darkModeOn = false;
 
     static {
-        paperToggle = new PaperToggle();
+        paperToggle = new SwitchToggle();
 
         paperToggle.addClickListener( e -> {
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
