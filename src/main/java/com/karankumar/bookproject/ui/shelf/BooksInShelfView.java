@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.BookUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
@@ -101,15 +102,17 @@ public class BooksInShelfView extends VerticalLayout {
         Button addShelf = new Button("Add shelf");
         addShelf.addClickListener(e -> customShelfForm.addShelf());
 
+        configureBookGrid();
+
         HorizontalLayout horizontalLayout =
                 new HorizontalLayout(whichShelf, filterByTitleField, filterByAuthorNameField, addShelf, addBook);
         horizontalLayout.setAlignItems(Alignment.END);
-
-        configureBookGrid();
-        add(horizontalLayout, bookGrid);
-
-        add(customShelfForm);
-        add(bookForm);
+        add(
+                horizontalLayout,
+                bookGrid,
+                customShelfForm,
+                bookForm
+        );
     }
 
     private BookForm createBookForm() {
@@ -192,16 +195,6 @@ public class BooksInShelfView extends VerticalLayout {
         }
     }
 
-    private String combineTitleAndSeries(Book book) {
-        String result;
-        if (book.getSeriesPosition() != null && book.getSeriesPosition() > 0) {
-            result = String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
-        } else {
-            result = book.getTitle();
-        }
-        return result;
-    }
-
     private void configureBookGrid() {
         bookGrid.asSingleSelect()
                 .addValueChangeListener(event -> {
@@ -262,7 +255,7 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void addTitleColumn() {
-        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
+        bookGrid.addColumn(BookUtils::combineTitleAndSeries) // display the series position only if it is bigger than 0
                 .setHeader("Title")
                 .setKey(BookGridKeys.TITLE_KEY)
                 .setSortable(true);
