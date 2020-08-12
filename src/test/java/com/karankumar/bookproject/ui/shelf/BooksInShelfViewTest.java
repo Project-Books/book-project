@@ -43,7 +43,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.*;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.AUTHOR_KEY;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.DATE_FINISHED_KEY;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.DATE_STARTED_KEY;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.GENRE_KEY;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.PAGES_KEY;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.RATING_KEY;
+import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.TITLE_KEY;
 
 @IntegrationTest
 @WebAppConfiguration
