@@ -40,9 +40,8 @@ public class ReadingGoalForm extends VerticalLayout {
         saveButton = createSaveButton();
 
         FormLayout formLayout = new FormLayout();
-        newGoalDialog = new Dialog();
+        newGoalDialog = createGoalDialog();
         newGoalDialog.add(formLayout);
-        newGoalDialog.setCloseOnOutsideClick(true);
         add(newGoalDialog);
 
         chooseGoalType = createGoalTypeFormField();
@@ -50,17 +49,14 @@ public class ReadingGoalForm extends VerticalLayout {
         formLayout.addFormItem(chooseGoalType, "Goal type");
         formLayout.addFormItem(targetToRead, "To read");
         formLayout.add(new HorizontalLayout(saveButton));
-        chooseGoalType.addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-                if (event.getValue().equals(ReadingGoal.GoalType.BOOKS)) {
-                    targetToRead.setPlaceholder(BOOKS_TO_READ);
-                } else {
-                    targetToRead.setPlaceholder(PAGES_TO_READ);
-                }
-            }
-        });
 
         configureBinder();
+    }
+
+    private Dialog createGoalDialog() {
+        Dialog dialog = new Dialog();
+        dialog.setCloseOnOutsideClick(true);
+        return dialog;
     }
 
     private IntegerField createTargetGoalField() {
@@ -84,6 +80,17 @@ public class ReadingGoalForm extends VerticalLayout {
     private RadioButtonGroup<ReadingGoal.GoalType> createGoalTypeFormField() {
         RadioButtonGroup<ReadingGoal.GoalType> goalTypeRadioButtonGroup = new RadioButtonGroup<>();
         goalTypeRadioButtonGroup.setItems(ReadingGoal.GoalType.values());
+
+        goalTypeRadioButtonGroup.addValueChangeListener(event -> {
+            if (event.getValue() != null) {
+                if (event.getValue().equals(ReadingGoal.GoalType.BOOKS)) {
+                    targetToRead.setPlaceholder(BOOKS_TO_READ);
+                } else {
+                    targetToRead.setPlaceholder(PAGES_TO_READ);
+                }
+            }
+        });
+
         return goalTypeRadioButtonGroup;
     }
 
@@ -91,10 +98,7 @@ public class ReadingGoalForm extends VerticalLayout {
         if (binder.isValid()) {
             ReadingGoal.GoalType goalType = this.chooseGoalType.getValue();
             if (goalType != null && targetToRead.getValue() != null) {
-                binder.setBean(new ReadingGoal(targetToRead.getValue(), goalType));
-                LOGGER.log(Level.INFO, "Setting the bean");
-                fireEvent(new SaveEvent(this, binder.getBean()));
-                confirmSavedGoal(binder.getBean().getTarget(), binder.getBean().getGoalType());
+                saveReadingGoal(goalType);
             }
         } else {
             BinderValidationStatus<ReadingGoal> status = binder.validate();
@@ -102,6 +106,13 @@ public class ReadingGoalForm extends VerticalLayout {
                 LOGGER.log(Level.SEVERE, "Invalid binder");
             }
         }
+    }
+
+    private void saveReadingGoal(ReadingGoal.GoalType goalType) {
+        binder.setBean(new ReadingGoal(targetToRead.getValue(), goalType));
+        LOGGER.log(Level.INFO, "Setting the bean");
+        fireEvent(new SaveEvent(this, binder.getBean()));
+        confirmSavedGoal(binder.getBean().getTarget(), binder.getBean().getGoalType());
     }
 
     private void confirmSavedGoal(int target, ReadingGoal.GoalType goalType) {
@@ -153,6 +164,7 @@ public class ReadingGoalForm extends VerticalLayout {
         }
     }
 
+    // TODO: implement deleting reading goal
     public static class DeleteEvent extends GoalFormEvent {
         DeleteEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
             super(source, readingGoal);
