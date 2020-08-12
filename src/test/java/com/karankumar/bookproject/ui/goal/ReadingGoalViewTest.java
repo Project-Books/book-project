@@ -11,6 +11,7 @@ import com.karankumar.bookproject.backend.goal.CalculateReadingGoal;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
+import com.karankumar.bookproject.backend.utils.DateUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
@@ -41,6 +42,7 @@ public class ReadingGoalViewTest {
     private PredefinedShelfService predefinedShelfService;
     private PredefinedShelfUtils predefinedShelfUtils;
     private ReadingGoalView goalView;
+    private DateUtils dateUtils;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -68,7 +70,6 @@ public class ReadingGoalViewTest {
     public void setGoalButtonTextIsCorrect() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
-
         goalService.save(new ReadingGoal(getRandomGoalTarget(), getRandomGoalType()));
         goalView.getCurrentGoal();
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.UPDATE_GOAL);

@@ -23,6 +23,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.backend.utils.StringUtils;
+import com.karankumar.bookproject.backend.utils.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -187,8 +188,8 @@ public class ReadingGoalView extends VerticalLayout {
      */
     private String calculateBooksToRead(int booksToReadThisYear, int booksReadThisYear) {
         int booksStillToRead = booksToReadThisYear - booksReadThisYear;
-        int weekOfYear = CalculateReadingGoal.getWeekOfYear();
-        int weeksLeftInYear = CalculateReadingGoal.weeksLeftInYear(weekOfYear);
+        int weekOfYear = DateUtils.getCurrentWeekNumberOfYear();
+        int weeksLeftInYear = DateUtils.calculateWeeksLeftInYearFromCurrentWeek(weekOfYear);
         double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
 
         String bookReadingRate = "";
