@@ -44,8 +44,6 @@ import javax.transaction.NotSupportedException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -273,25 +271,12 @@ public class BooksInShelfView extends VerticalLayout {
 
         Set<Book> books;
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
-            books = getBooksInChosenPredefinedShelf();
+            books = predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
         } else {
             CustomShelfUtils customShelfUtils = new CustomShelfUtils(customShelfService);
             books = customShelfUtils.getBooksInChosenCustomShelf(chosenShelf);
         }
         populateGridWithBooks(books);
-    }
-
-    private Set<Book> getBooksInChosenPredefinedShelf() {
-        PredefinedShelf.ShelfName predefinedShelfName = predefinedShelfUtils.getPredefinedShelfName(chosenShelf);
-        Set<Book> books;
-        List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAll(predefinedShelfName);
-        if (predefinedShelves.isEmpty()) {
-            books = new HashSet<>();
-        } else {
-            PredefinedShelf customShelf = predefinedShelves.get(0);
-            books = customShelf.getBooks();
-        }
-        return books;
     }
 
     private void populateGridWithBooks(Set<Book> books) {

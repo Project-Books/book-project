@@ -1,12 +1,15 @@
 package com.karankumar.bookproject.backend.utils;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import lombok.extern.java.Log;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -68,5 +71,21 @@ public class PredefinedShelfUtils {
             predefinedShelfNames.add(predefinedShelfName.toString());
         }
         return predefinedShelfNames.contains(shelfName);
+    }
+
+    /**
+     * Fetches all of the books in the chosen predefined shelf
+     */
+    public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
+        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
+        Set<Book> books;
+        List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAll(predefinedShelfName);
+        if (predefinedShelves.isEmpty()) {
+            books = new HashSet<>();
+        } else {
+            PredefinedShelf customShelf = predefinedShelves.get(0);
+            books = customShelf.getBooks();
+        }
+        return books;
     }
 }
