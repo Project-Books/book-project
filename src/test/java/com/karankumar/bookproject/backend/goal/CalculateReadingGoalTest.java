@@ -43,8 +43,8 @@ public class CalculateReadingGoalTest {
     @Test
     public void testHowFarAheadOrBehindSchedule(){
         Mockito.mockStatic(DateUtils.class);
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
 
+        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
         Assertions.assertEquals(0, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,1));
         Assertions.assertEquals(1, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,0));
         Assertions.assertEquals(9, CalculateReadingGoal.howFarAheadOrBehindSchedule(52,10));

@@ -9,11 +9,8 @@ import java.time.temporal.WeekFields;
 import java.util.Locale;
 
 public class DateUtilsTest {
-    /**
-     * Test the current week and remaining weeks
-     */
     @Test
-    public void testCurrentWeekAndLeftWeek() {
+    void testCurrentWeekNumberOfYearAndWeeksLeftInYear() {
         Mockito.mockStatic(DateUtils.TimeUtils.class);
         Mockito.when(DateUtils.TimeUtils.getWeekFields()).thenReturn(WeekFields.of(Locale.getDefault()));
         Mockito.when(DateUtils.TimeUtils.now()).thenReturn(LocalDateTime.of(2020, 1, 1, 1, 1));
@@ -37,7 +34,7 @@ public class DateUtilsTest {
     }
 
     private int calculateWeeksLeftInYear(int currentWeekNumber) {
-        return 52 - currentWeekNumber;
+        int weeksInYear = 52;
+        return weeksInYear - currentWeekNumber;
     }
-
 }
