@@ -31,17 +31,17 @@ public class DateUtilsTest {
         PowerMockito.mockStatic(TimeUtils.class);
         PowerMockito.when(TimeUtils.getWeekFields()).thenReturn(WeekFields.of(Locale.getDefault()));
         PowerMockito.when(TimeUtils.now()).thenReturn(LocalDateTime.of(2020, 1, 1, 1, 1));
-        int firstWeekOfYear = DateUtils.getWeekOfYear();
+        int firstWeekOfYear = DateUtils.getCurrentWeekNumberOfYear();
         Assertions.assertEquals(1, firstWeekOfYear);
-        Assertions.assertEquals(52 - firstWeekOfYear, DateUtils.getWeeksLeftInYear(firstWeekOfYear));
+        Assertions.assertEquals(52 - firstWeekOfYear, DateUtils.calculateWeeksLeftInYearFromCurrentWeek(firstWeekOfYear));
         PowerMockito.when(TimeUtils.now()).thenReturn(LocalDateTime.of(2020, 10, 1, 1, 1));
-        int fortiethsWeekOfYear = DateUtils.getWeekOfYear();
+        int fortiethsWeekOfYear = DateUtils.getCurrentWeekNumberOfYear();
         Assertions.assertEquals(40, fortiethsWeekOfYear);
-        Assertions.assertEquals(52 - fortiethsWeekOfYear, DateUtils.getWeeksLeftInYear(fortiethsWeekOfYear));
+        Assertions.assertEquals(52 - fortiethsWeekOfYear, DateUtils.calculateWeeksLeftInYearFromCurrentWeek(fortiethsWeekOfYear));
         PowerMockito.when(TimeUtils.now()).thenReturn(LocalDateTime.of(2020, 12, 25, 1, 1));
-        int lastWeekOfYear = DateUtils.getWeekOfYear();
+        int lastWeekOfYear = DateUtils.getCurrentWeekNumberOfYear();
         Assertions.assertEquals(52, lastWeekOfYear);
-        Assertions.assertEquals(52 - lastWeekOfYear, DateUtils.getWeeksLeftInYear(lastWeekOfYear));
+        Assertions.assertEquals(52 - lastWeekOfYear, DateUtils.calculateWeeksLeftInYearFromCurrentWeek(lastWeekOfYear));
     }
 
 }

@@ -5,11 +5,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 
-/**
- * An utils to provide time related common functions.
- */
 @Component
 public class TimeUtils {
+    private TimeUtils() {}
 
     public static LocalDateTime now() {
         return LocalDateTime.now();

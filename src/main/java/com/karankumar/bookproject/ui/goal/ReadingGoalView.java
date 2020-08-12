@@ -188,8 +188,8 @@ public class ReadingGoalView extends VerticalLayout {
      */
     private String calculateBooksToRead(int booksToReadThisYear, int booksReadThisYear) {
         int booksStillToRead = booksToReadThisYear - booksReadThisYear;
-        int weekOfYear = DateUtils.getWeekOfYear();
-        int weeksLeftInYear = DateUtils.getWeeksLeftInYear(weekOfYear);
+        int weekOfYear = DateUtils.getCurrentWeekNumberOfYear();
+        int weeksLeftInYear = DateUtils.calculateWeeksLeftInYearFromCurrentWeek(weekOfYear);
         double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
 
         String bookReadingRate = "";
