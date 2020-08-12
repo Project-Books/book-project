@@ -23,6 +23,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.vaadin.flow.component.button.Button;
@@ -41,7 +42,6 @@ import lombok.extern.java.Log;
 import javax.transaction.NotSupportedException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -56,7 +56,6 @@ import java.util.stream.Collectors;
 @PageTitle("My Books | Book Project")
 @Log
 public class BooksInShelfView extends VerticalLayout {
-
     public static final String TITLE_KEY = "title";
     public static final String AUTHOR_KEY = "author";
     public static final String GENRE_KEY = "genre";
@@ -67,7 +66,6 @@ public class BooksInShelfView extends VerticalLayout {
     public static final String DATE_FINISHED_KEY = "dateFinishedReading";
 
     public final Grid<Book> bookGrid;
-//    public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
     public final ComboBox<String> whichShelf;
 
     private final BookForm bookForm;
@@ -79,7 +77,6 @@ public class BooksInShelfView extends VerticalLayout {
     private final TextField filterByTitle;
     private final TextField filterByAuthorName;
 
-//    private PredefinedShelf.ShelfName chosenShelf;
     private String chosenShelf;
 
     private String bookTitle; // the book to filter by (if specified)
@@ -105,10 +102,13 @@ public class BooksInShelfView extends VerticalLayout {
         bookForm = new BookForm(predefinedShelfService, customShelfService);
         Button addBook = new Button("Add book");
         addBook.addClickListener(e -> bookForm.addBook());
+        bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
+        bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
 
         CustomShelfForm customShelfForm = new CustomShelfForm(customShelfService, predefinedShelfService);
         Button addShelf = new Button("Add shelf");
         addShelf.addClickListener(e -> customShelfForm.addShelf());
+        customShelfForm.addListener(CustomShelfForm.SaveEvent.class, this::saveCustomShelf);
 
         HorizontalLayout horizontalLayout =
                 new HorizontalLayout(whichShelf, filterByTitle, filterByAuthorName, addShelf, addBook);
@@ -119,16 +119,11 @@ public class BooksInShelfView extends VerticalLayout {
 
         add(customShelfForm);
         add(bookForm);
-
-        bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
-        bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
-
-        customShelfForm.addListener(CustomShelfForm.SaveEvent.class, this::saveCustomShelf);
     }
 
     private void configureChosenShelf() {
         whichShelf.setPlaceholder("Select shelf");
-        whichShelf.setItems(findAllShelves());
+        whichShelf.setItems(ShelfUtils.findAllShelfNames(customShelfService.findAll()));
         whichShelf.setRequired(true);
         whichShelf.addValueChangeListener(
                 event -> {
@@ -146,33 +141,10 @@ public class BooksInShelfView extends VerticalLayout {
                 });
     }
 
-    private boolean isPredefinedShelf(String shelfName) {
-        List<String> predefinedShelfNames = new ArrayList<>();
-        for (PredefinedShelf.ShelfName predefinedShelfName : PredefinedShelf.ShelfName.values()) {
-            predefinedShelfNames.add(predefinedShelfName.toString());
-        }
-        return predefinedShelfNames.contains(shelfName);
-    }
-
-    private List<String> findAllShelves() {
-        List<String> shelves = new ArrayList<>();
-        for (PredefinedShelf.ShelfName predefinedShelfName : PredefinedShelf.ShelfName.values()) {
-            shelves.add(predefinedShelfName.toString());
-        }
-        List<CustomShelf> customShelves = customShelfService.findAll();
-        for (CustomShelf customShelf : customShelves) {
-            shelves.add(customShelf.getShelfName());
-        }
-        return shelves;
-    }
-
-    /**
-     * @throws NotSupportedException if a shelf is not supported.
-     */
     @VisibleForTesting
     void showOrHideGridColumns(String shelfName) throws NotSupportedException {
         PredefinedShelf.ShelfName predefinedShelfName;
-        if (isPredefinedShelf(shelfName)) {
+        if (PredefinedShelfUtils.isPredefinedShelf(shelfName)) {
             predefinedShelfName = predefinedShelfUtils.getPredefinedShelfName(shelfName);
         } else {
             return;
@@ -302,7 +274,7 @@ public class BooksInShelfView extends VerticalLayout {
             return;
         }
 
-        if (isPredefinedShelf(chosenShelf)) {
+        if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
             PredefinedShelf.ShelfName predefinedShelfName = predefinedShelfUtils.getPredefinedShelfName(chosenShelf);
             // Find the shelf that matches the chosen shelf's name
             List<PredefinedShelf> matchingShelves = shelfService.findAll(predefinedShelfName);

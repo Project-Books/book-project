@@ -5,6 +5,7 @@ import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import lombok.extern.java.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -59,5 +60,13 @@ public class PredefinedShelfUtils {
        return predefinedShelfService.findAll().stream()
                .map(Shelf::getShelfName)
                .collect(Collectors.toList());
+    }
+
+    public static boolean isPredefinedShelf(String shelfName) {
+        List<String> predefinedShelfNames = new ArrayList<>();
+        for (PredefinedShelf.ShelfName predefinedShelfName : PredefinedShelf.ShelfName.values()) {
+            predefinedShelfNames.add(predefinedShelfName.toString());
+        }
+        return predefinedShelfNames.contains(shelfName);
     }
 }
