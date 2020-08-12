@@ -1,11 +1,8 @@
 package com.karankumar.bookproject.backend.utils;
 
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalField;
 
-@Component
 public class DateUtils {
     public static final int WEEKS_IN_YEAR = 52;
 
