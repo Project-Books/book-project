@@ -15,10 +15,14 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.AuthorFilterText;
@@ -26,9 +30,9 @@ import com.karankumar.bookproject.ui.shelf.component.BookShelfComboBox;
 import com.karankumar.bookproject.ui.shelf.component.TitleFilterText;
 import com.karankumar.bookproject.ui.shelf.listener.BookDeleteListener;
 import com.karankumar.bookproject.ui.shelf.listener.BookSaveListener;
+import com.karankumar.bookproject.ui.shelf.listener.CustomShelfListener;
 import com.karankumar.bookproject.ui.shelf.visibility.*;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -58,35 +62,41 @@ public class BooksInShelfView extends VerticalLayout {
 
     private final BookForm bookForm;
     private final PredefinedShelfService shelfService;
+    private final CustomShelfService customShelfService;
     private final TitleFilterText filterByTitle;
     private final AuthorFilterText filterByAuthorName;
 
-    private PredefinedShelf.ShelfName chosenShelf;
+    private String chosenShelf;
     private final BookFilters bookFilters;
 
+    private final PredefinedShelfUtils predefinedShelfUtils;
 
-    public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
+    public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService,
+                            CustomShelfService customShelfService) {
+
         this.shelfService = shelfService;
+        this.predefinedShelfUtils = new PredefinedShelfUtils(shelfService);
+        this.customShelfService = customShelfService;
         this.visibilityStrategies = initVisibilityStrategies();
         this.bookGrid = new BookGrid();
         this.bookFilters = new BookFilters();
 
-        this.whichShelf = new BookShelfComboBox();
+        this.whichShelf = new BookShelfComboBox(customShelfService);
         this.filterByTitle = new TitleFilterText();
         this.filterByAuthorName = new AuthorFilterText();
 
+        whichShelf.bind(this);
         filterByTitle.bind(this);
         filterByAuthorName.bind(this);
 
-        add(initializeLayout(), bookGrid.get());
-
-        bookForm = new BookForm(shelfService);
+        bookForm = new BookForm(shelfService, customShelfService);
 
         bookGrid.bind(bookForm);
-
-        add(bookForm);
-
         bindListeners(bookService);
+
+        CustomShelfForm customShelfForm = createCustomShelfForm();
+
+        add(initializeLayout(), bookGrid.get(), customShelfForm, bookForm);
     }
 
     private void bindListeners(BookService bookService) {
@@ -104,48 +114,58 @@ public class BooksInShelfView extends VerticalLayout {
         return m;
     }
 
+    private CustomShelfForm createCustomShelfForm() {
+        CustomShelfForm customShelfForm = new CustomShelfForm(customShelfService, shelfService);
+        new CustomShelfListener(customShelfService).bind(customShelfForm);
+        return customShelfForm;
+    }
+
     private HorizontalLayout initializeLayout() {
         Button addBook = new Button("Add book");
         addBook.addClickListener(e -> bookForm.addBook());
 
+        CustomShelfForm customShelfForm = createCustomShelfForm();
+        Button addShelf = new Button("Add shelf");
+        addShelf.addClickListener(e -> customShelfForm.addShelf());
+
         HorizontalLayout layout = new HorizontalLayout(addBook);
 
+        whichShelf.addToLayout(layout);
         filterByTitle.addToLayout(layout);
         filterByAuthorName.addToLayout(layout);
-        whichShelf.addToLayout(layout);
+        layout.add(addShelf);
+        layout.add(addBook);
 
         layout.setAlignItems(Alignment.END);
 
         return layout;
     }
 
-    private ComboBox<PredefinedShelf.ShelfName> initializeChosenShelf() {
-        ComboBox<PredefinedShelf.ShelfName> whichShelf = new ComboBox<>();
-
-        whichShelf.setPlaceholder("Select shelf");
-        whichShelf.setItems(PredefinedShelf.ShelfName.values());
-        whichShelf.setRequired(true);
-
-        return whichShelf;
-    }
-
     /**
      * @throws NotSupportedException if a shelf is not supported.
      */
     // TODO: 3.08.2020 this should be moved BookShelfListener. But it's also invoked in the test.
-    public void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
-        if (!visibilityStrategies.containsKey(shelfName)) {
+    @VisibleForTesting
+    public void showOrHideGridColumns(String shelfName) throws NotSupportedException {
+        if (!PredefinedShelfUtils.isPredefinedShelf(shelfName)) {
+            return;
+        }
+
+        PredefinedShelf.ShelfName predefinedShelfName = predefinedShelfUtils.getPredefinedShelfName(shelfName);
+
+        if (!visibilityStrategies.containsKey(predefinedShelfName)) {
             throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
         }
 
-        visibilityStrategies.get(shelfName).toggleColumnVisibility(bookGrid);
+        visibilityStrategies.get(predefinedShelfName).toggleColumnVisibility(bookGrid);
     }
 
     public void updateGrid() {
-        bookGrid.update(chosenShelf, shelfService, bookFilters);
+        CustomShelfUtils shelfUtils = new CustomShelfUtils(customShelfService);
+        bookGrid.update(chosenShelf, shelfUtils, bookFilters, predefinedShelfUtils);
     }
 
-    public void chooseShelf(PredefinedShelf.ShelfName chosenShelf) {
+    public void chooseShelf(String chosenShelf) {
         this.chosenShelf = chosenShelf;
     }
 

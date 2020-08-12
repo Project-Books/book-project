@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.tags;
+package com.karankumar.bookproject.annotations;
 
 import org.junit.jupiter.api.Tag;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

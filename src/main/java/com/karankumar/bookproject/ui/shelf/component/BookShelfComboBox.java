@@ -1,6 +1,8 @@
 package com.karankumar.bookproject.ui.shelf.component;
 
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -11,19 +13,19 @@ import java.util.logging.Level;
 
 @Log
 public class BookShelfComboBox {
-    private final ComboBox<PredefinedShelf.ShelfName> comboBox;
+    private final ComboBox<String> comboBox;
 
-    public BookShelfComboBox() {
+    public BookShelfComboBox(CustomShelfService customShelfService) {
         this.comboBox = new ComboBox<>();
 
         comboBox.setPlaceholder("Select shelf");
-        comboBox.setItems(PredefinedShelf.ShelfName.values());
+        comboBox.setItems(ShelfUtils.findAllShelfNames(customShelfService.findAll()));
         comboBox.setRequired(true);
     }
 
     public void bind(BooksInShelfView view) {
         comboBox.addValueChangeListener(event -> {
-            PredefinedShelf.ShelfName chosenShelf = event.getValue();
+            String chosenShelf = event.getValue();
             if (chosenShelf == null) {
                 LOGGER.log(Level.FINE, "No choice selected");
                 return;
@@ -33,11 +35,10 @@ public class BookShelfComboBox {
             view.updateGrid();
 
             try {
-                view.showOrHideGridColumns(chosenShelf); //
+                view.showOrHideGridColumns(chosenShelf);
             } catch (NotSupportedException e) {
                 e.printStackTrace();
             }
-
         });
     }
 

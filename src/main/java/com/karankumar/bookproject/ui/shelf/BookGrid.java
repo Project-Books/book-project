@@ -1,14 +1,15 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 import com.vaadin.flow.component.grid.Grid;
 import lombok.extern.java.Log;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -49,33 +50,33 @@ public class BookGrid {
         return bookGrid;
     }
 
-    void update(PredefinedShelf.ShelfName chosenShelf, PredefinedShelfService shelfService, BookFilters bookFilters) {
+    void update(String chosenShelf, CustomShelfUtils customShelfUtils, BookFilters bookFilters, PredefinedShelfUtils predefinedShelfUtils) {
         if (chosenShelf == null) {
             LOGGER.log(Level.FINEST, "Chosen shelf is null");
             return;
         }
 
-        // Find the shelf that matches the chosen shelf's name
-        List<PredefinedShelf> matchingShelves = shelfService.findAll(chosenShelf);
+        Set<Book> books = getBooks(chosenShelf, customShelfUtils, predefinedShelfUtils);
 
-        if (matchingShelves.isEmpty()) {
-            LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
-            return;
-        }
-
-        if (matchingShelves.size() != 1) {
-            LOGGER.log(Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
-            return;
-        }
-
-        LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
-        bookGrid.setItems(filterShelf(matchingShelves.get(0), bookFilters));
+        populateGridWithBooks(books, bookFilters);
     }
 
-    private List<Book> filterShelf(PredefinedShelf selectedShelf, BookFilters bookFilters) {
-        return selectedShelf.getBooks()
-                            .stream()
-                            .filter(book -> bookFilters.apply(book))
-                            .collect(Collectors.toList());
+    private Set<Book> getBooks(String chosenShelf, CustomShelfUtils customShelfUtils, PredefinedShelfUtils predefinedShelfUtils) {
+        if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
+            return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
+        }
+
+        return customShelfUtils.getBooksInChosenCustomShelf(chosenShelf);
+    }
+
+    private void populateGridWithBooks(Set<Book> books, BookFilters bookFilters) {
+        List<Book> items = filterShelf(books, bookFilters);
+        bookGrid.setItems(items);
+    }
+
+    private List<Book> filterShelf(Set<Book> books, BookFilters bookFilters) {
+        return books.stream()
+                .filter(book -> bookFilters.apply(book))
+                .collect(Collectors.toList());
     }
 }

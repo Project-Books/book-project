@@ -20,7 +20,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -31,36 +37,27 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
-
     @NotNull
     @NotEmpty
     private String title;
-
     private Integer numberOfPages;
-
     private Integer pagesRead;
-
     private Genre genre;
-
     private Integer seriesPosition;
-
     private String edition;
-
     private String bookRecommendedBy;
-
-    // For books that have been read
-    private RatingScale rating;
-    private LocalDate dateStartedReading;
-    private LocalDate dateFinishedReading;
-    private String bookReview;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "shelf_id")
-    private PredefinedShelf shelf;
+    @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "ID")
+    private PredefinedShelf predefinedShelf;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "custom_shelf_id", referencedColumnName = "ID")
+    private CustomShelf customShelf;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
@@ -70,11 +67,18 @@ public class Book extends BaseEntity {
     )
     private Set<Tag> tags;
 
-    public Book(String title, Author author) {
+    // For books that have been read
+    private RatingScale rating;
+    private LocalDate dateStartedReading;
+    private LocalDate dateFinishedReading;
+    private String bookReview;
+
+    public Book(String title, Author author, PredefinedShelf predefinedShelf) {
         this.title = title;
         this.author = author;
+        this.predefinedShelf = predefinedShelf;
     }
-
+    
     public void setEdition(Integer edition) {
         if (edition == null) {
             return;

@@ -15,10 +15,11 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.tags.IntegrationTest;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,46 +27,37 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @IntegrationTest
-class AuthorTests {
-
-    private static PredefinedShelfService shelfService;
+class AuthorTest {
     private static BookService bookService;
 
     private static Book testBook1;
     private static Book testBook2;
     private static AuthorService authorService;
+    private static PredefinedShelf toRead;
 
     @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService shelfService,
+    public static void setup(@Autowired PredefinedShelfService predefinedShelfService,
                              @Autowired BookService bookService,
                              @Autowired AuthorService authorService) {
-        Author author = new Author("Steven", "Pinker");
 
-        testBook1 = new Book("How the mind works", author);
-        testBook2 = new Book("The better angels of our nature", author);
+        toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
+        testBook1 = createBook("How the mind works", toRead);
+        testBook2 = createBook("The better angels of our nature", toRead);
 
-        Assumptions.assumeTrue(shelfService != null && bookService != null);
-        AuthorTests.shelfService = shelfService;
-        AuthorTests.bookService = bookService;
-        AuthorTests.authorService = authorService;
+        Assumptions.assumeTrue(predefinedShelfService != null && bookService != null);
+        AuthorTest.bookService = bookService;
+        AuthorTest.authorService = authorService;
 
         bookService.deleteAll(); // reset
 
-        List<PredefinedShelf> shelves = AuthorTests.shelfService.findAll();
-        PredefinedShelf toRead = shelves.stream()
-                .takeWhile(s -> s.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.TO_READ))
-                .collect(Collectors.toList())
-                .get(0);
+        AuthorTest.bookService.save(testBook1);
+        AuthorTest.bookService.save(testBook2);
+    }
 
-        testBook1.setShelf(toRead);
-        testBook2.setShelf(toRead);
-
-        AuthorTests.bookService.save(testBook1);
-        AuthorTests.bookService.save(testBook2);
+    private static Book createBook(String title, PredefinedShelf shelf) {
+        Author author = new Author("Steven", "Pinker");
+        return new Book(title, author, shelf);
     }
 
     /**
@@ -74,8 +66,6 @@ class AuthorTests {
      */
     @Test
     public void updateAuthorAffectsOneRow() {
-        Assumptions.assumeTrue(shelfService != null);
-
         Author newAuthor = new Author("Matthew", "Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
@@ -89,7 +79,7 @@ class AuthorTests {
         bookService.deleteAll(); // reset
 
         Author orphan = new Author("Jostein", "Gardner");
-        Book book = new Book("Sophie's World", orphan);
+        Book book = new Book("Sophie's World", orphan, toRead);
         bookService.delete(book);
 
         boolean idFound;

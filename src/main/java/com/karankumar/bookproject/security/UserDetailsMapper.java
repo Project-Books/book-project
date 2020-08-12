@@ -8,7 +8,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 @Component
 public class UserDetailsMapper {
-    public User toUserDetails(com.karankumar.bookproject.backend.entity.User user) {
+    public User toUserDetails(com.karankumar.bookproject.backend.entity.account.User user) {
         return new User(
                 user.getUsername(),
                 user.getPassword(),

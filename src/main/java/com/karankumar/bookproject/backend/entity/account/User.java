@@ -13,7 +13,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.entity.account;
 
 import lombok.*;
 
@@ -44,7 +44,7 @@ public class User {
     @NotEmpty
     private String username;
 
-    @NotNull
+    // Note: this is allowed to be null if a user signs up without an email
     @NotEmpty
     private String email;
 

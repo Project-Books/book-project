@@ -15,12 +15,14 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 @Service
@@ -42,20 +44,21 @@ public class BookService extends BaseService<Book, Long> {
 
     @Override
     public void save(Book book) {
-        if (book == null) {
-            LOGGER.log(Level.SEVERE, "Cannot save the null book");
+        if (book == null || book.getAuthor() == null
+                || book.getPredefinedShelf() == null || book.getPredefinedShelf().getShelfName() == null) {
             return;
         }
-        if (book.getAuthor() == null) {
-            LOGGER.log(Level.SEVERE, "Without author book cannot be saved.");
-            return;
-        }
-        if (book.getShelf() == null || book.getShelf().getShelfName() == null) {
-            LOGGER.log(Level.SEVERE, "Shelf not assigned to book, cannot be saved");
-            return;
-        }
+
+        addBookToAuthor(book);
         authorService.save(book.getAuthor());
         bookRepository.save(book);
+    }
+
+    private void addBookToAuthor(Book book) {
+        Author author = book.getAuthor();
+        Set<Book> authorBooks = author.getBooks();
+        authorBooks.add(book);
+        author.setBooks(authorBooks);
     }
 
     public Long count() {
@@ -87,9 +90,7 @@ public class BookService extends BaseService<Book, Long> {
         if (books.contains(book)) {
             LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
         } else {
-            LOGGER.log(
-                Level.INFO,
-                book.getTitle() + " deleted. Book repository size = " + bookRepository.count());
+            LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " + bookRepository.count());
         }
     }
 

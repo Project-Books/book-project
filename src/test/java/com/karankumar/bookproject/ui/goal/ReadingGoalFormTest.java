@@ -4,7 +4,7 @@ import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
-import com.karankumar.bookproject.tags.IntegrationTest;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
@@ -17,7 +17,7 @@ import java.util.Random;
 
 @IntegrationTest
 @WebAppConfiguration
-public class ReadingGoalFormTests {
+public class ReadingGoalFormTest {
     static Routes routes;
 
     @Autowired

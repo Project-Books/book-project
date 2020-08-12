@@ -13,26 +13,13 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.repository;
 
-import lombok.*;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.Entity;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
-/**
- * Represents a single Role
- */
-@Entity
-@Builder
-@Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@ToString
-public class Role extends BaseEntity {
-    @NotNull
-    @NotEmpty
-    private String role;
+public interface CustomShelfRepository extends JpaRepository<CustomShelf, Long> {
+    List<CustomShelf> findByShelfName(String shelfName);
 }

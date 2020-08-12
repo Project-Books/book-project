@@ -18,6 +18,7 @@ package com.karankumar.bookproject.ui;
 import com.karankumar.bookproject.ui.goal.ReadingGoalView;
 import com.karankumar.bookproject.ui.settings.SettingsView;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
+import com.karankumar.bookproject.ui.statistics.StatisticsView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -38,8 +39,9 @@ public class MainView extends AppLayout {
         Tabs tabs = new Tabs();
         Tab myBooks = createTab(VaadinIcon.BOOK, BooksInShelfView.class, "My books");
         Tab readingChallenge = createTab(VaadinIcon.HOURGLASS, ReadingGoalView.class, "Goal");
+        Tab stats = createTab(VaadinIcon.TRENDING_UP, StatisticsView.class, "Statistics");
         Tab settings = createTab(VaadinIcon.COG_O, SettingsView.class, "Settings");
-        tabs.add(myBooks, readingChallenge, settings);
+        tabs.add(myBooks, readingChallenge, stats, settings);
 
         Anchor logout = new Anchor("/logout", "Log out");
         logout.addClassName("logout");

@@ -24,7 +24,7 @@ import lombok.extern.java.Log;
 import java.util.logging.Level;
 
 @Log
-class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
+public class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
     @Override
     public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
         if (ratingVal == null) {
