@@ -20,8 +20,9 @@ import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.tags.IntegrationTest;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
@@ -42,7 +43,7 @@ import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.*;
 
 @IntegrationTest
 @WebAppConfiguration
-public class BooksInShelfViewTests {
+public class BooksInShelfViewTest {
 
     private static Routes routes;
 
@@ -90,12 +91,13 @@ public class BooksInShelfViewTests {
 
     @BeforeEach
     public void setup(@Autowired BookService bookService,
-                      @Autowired PredefinedShelfService shelfService) {
+                      @Autowired PredefinedShelfService predefinedShelfService,
+                      @Autowired CustomShelfService customShelfService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
-        Assumptions.assumeTrue(shelfService != null);
-        shelfView = new BooksInShelfView(bookService, shelfService);
+        Assumptions.assumeTrue(predefinedShelfService != null);
+        shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
     }
 
     @ParameterizedTest
@@ -103,7 +105,7 @@ public class BooksInShelfViewTests {
     public void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
         System.out.println("Shelf: " + shelfName);
         try {
-            shelfView.showOrHideGridColumns(shelfName);
+            shelfView.showOrHideGridColumns(shelfName.toString());
         } catch (NotSupportedException e) {
             e.printStackTrace();
         }
