@@ -85,3 +85,5 @@ If you need help with anything, we'll be happy to help you in our [Gitter Channe
 [Project Lombok](https://projectlombok.org/) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
 
 [Karibu Testing](https://github.com/mvysny/karibu-testing) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html)
+
+[Mockito](https://github.com/mockito/mockito) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
