@@ -174,11 +174,9 @@ if (condition) {
 }
 ```
 
-### 120 character column limit
+### 100 character column limit
 
-A line should generally not exceed 120 characters (an IntelliJ default).
-
-Why 120 characters, not 100 characters (like the Google Java style guide)? You can have two files side by side that do not exceed 120 characters on a 1920x1080 display (at least in IntelliJ).
+A line should generally not exceed 100 characters.
 
 Exceptions to this rule:
 - `package` and `import` statements
