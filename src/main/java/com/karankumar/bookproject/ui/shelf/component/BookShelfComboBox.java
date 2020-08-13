@@ -1,6 +1,5 @@
 package com.karankumar.bookproject.ui.shelf.component;
 
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
