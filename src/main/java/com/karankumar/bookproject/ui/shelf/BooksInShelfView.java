@@ -157,7 +157,8 @@ public class BooksInShelfView extends VerticalLayout {
             throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
         }
 
-        visibilityStrategies.get(predefinedShelfName).toggleColumnVisibility(bookGrid);
+        visibilityStrategies.get(predefinedShelfName)
+                            .toggleColumnVisibility(bookGrid);
     }
 
     public void updateGrid() {
@@ -178,6 +179,7 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     List<Grid.Column<Book>> getColumns() {
-        return bookGrid.get().getColumns();
+        return bookGrid.get()
+                       .getColumns();
     }
 }
