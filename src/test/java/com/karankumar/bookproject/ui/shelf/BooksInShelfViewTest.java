@@ -54,36 +54,36 @@ public class BooksInShelfViewTest {
     private ApplicationContext ctx;
 
     private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
-            BookGridColumn.TITLE_KEY,
-            BookGridColumn.AUTHOR_KEY,
-            BookGridColumn.GENRE_KEY,
-            BookGridColumn.PAGES_KEY
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.PAGES_KEY
     ));
     private final ArrayList<String> expectedReadingColumns = new ArrayList<>(Arrays.asList(
-            BookGridColumn.TITLE_KEY,
-            BookGridColumn.AUTHOR_KEY,
-            BookGridColumn.GENRE_KEY,
-            BookGridColumn.DATE_STARTED_KEY,
-            BookGridColumn.PAGES_KEY
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.DATE_STARTED_KEY,
+        BookGridColumn.PAGES_KEY
     ));
 
     private final ArrayList<String> expectedDidNotFinishColumns = new ArrayList<>(Arrays.asList(
-            BookGridColumn.TITLE_KEY,
-            BookGridColumn.AUTHOR_KEY,
-            BookGridColumn.GENRE_KEY,
-            BookGridColumn.DATE_STARTED_KEY,
-            BookGridColumn.PAGES_KEY,
-            BookGridColumn.PAGES_READ_KEY
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.DATE_STARTED_KEY,
+        BookGridColumn.PAGES_KEY,
+        BookGridColumn.PAGES_READ_KEY
     ));
 
     private final ArrayList<String> expectedReadColumns = new ArrayList<>(Arrays.asList(
-            BookGridColumn.TITLE_KEY,
-            BookGridColumn.AUTHOR_KEY,
-            BookGridColumn.GENRE_KEY,
-            BookGridColumn.DATE_STARTED_KEY,
-            BookGridColumn.DATE_FINISHED_KEY,
-            BookGridColumn.RATING_KEY,
-            BookGridColumn.PAGES_KEY
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.DATE_STARTED_KEY,
+        BookGridColumn.DATE_FINISHED_KEY,
+        BookGridColumn.RATING_KEY,
+        BookGridColumn.PAGES_KEY
     ));
     private BooksInShelfView shelfView;
 
