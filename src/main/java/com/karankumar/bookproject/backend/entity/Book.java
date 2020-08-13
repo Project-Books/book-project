@@ -109,7 +109,7 @@ public class Book extends BaseEntity {
             + '}';
     }
 
-    public boolean existsSeriesPosition() {
+    public boolean seriesPositionExists() {
         return seriesPosition != null && seriesPosition > 0;
     }
 }
