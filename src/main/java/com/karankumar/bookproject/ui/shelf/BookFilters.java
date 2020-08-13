@@ -6,16 +6,8 @@ class BookFilters {
     private String bookTitle;
     private String bookAuthor;
 
-    private String getBookTitle() {
-        return bookTitle.toLowerCase();
-    }
-
     void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
-    }
-
-    private String getBookAuthor() {
-        return bookAuthor.toLowerCase();
     }
 
     void setBookAuthor(String bookAuthor) {
@@ -35,10 +27,10 @@ class BookFilters {
     }
 
     private boolean containsBookAuthor(Book book) {
-        return isBookAuthorNull() || book.getAuthor().toString().toLowerCase().contains(getBookAuthor());
+        return isBookAuthorNull() || book.getAuthor().toString().toLowerCase().contains(bookAuthor.toLowerCase());
     }
 
     private boolean containsBookTitle(Book book) {
-        return isBookTitleNull() || book.getTitle().toLowerCase().contains(getBookTitle());
+        return isBookTitleNull() || book.getTitle().toLowerCase().contains(bookTitle.toLowerCase());
     }
 }
