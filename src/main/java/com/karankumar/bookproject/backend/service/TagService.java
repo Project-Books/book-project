@@ -1,12 +1,14 @@
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.Tag;
-import com.karankumar.bookproject.backend.repository.TagRepository;
-import lombok.extern.java.Log;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.logging.Level;
+
+import org.springframework.stereotype.Service;
+
+import com.karankumar.bookproject.backend.entity.Tag;
+import com.karankumar.bookproject.backend.repository.TagRepository;
+
+import lombok.extern.java.Log;
 
 @Service
 @Log
