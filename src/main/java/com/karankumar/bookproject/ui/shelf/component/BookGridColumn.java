@@ -50,7 +50,7 @@ public class BookGridColumn {
     }
 
     private String combineTitleAndSeries(Book book) {
-        if (book.existsSeriesPosition()) {
+        if (book.seriesPositionExists()) {
             return String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
         }
 
@@ -82,7 +82,7 @@ public class BookGridColumn {
                 .setKey(DATE_FINISHED_KEY);
     }
 
-    private LocalDateRenderer createLocalDateRenderer(ValueProvider<Book, LocalDate> provider) {
+    private LocalDateRenderer<Book> createLocalDateRenderer(ValueProvider<Book, LocalDate> provider) {
         return new LocalDateRenderer(provider, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
     }
 
