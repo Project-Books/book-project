@@ -27,10 +27,15 @@ class BookFilters {
     }
 
     private boolean containsBookAuthor(Book book) {
-        return isBookAuthorNull() || book.getAuthor().toString().toLowerCase().contains(bookAuthor.toLowerCase());
+        return isBookAuthorNull() || book.getAuthor()
+                                         .toString()
+                                         .toLowerCase()
+                                         .contains(bookAuthor.toLowerCase());
     }
 
     private boolean containsBookTitle(Book book) {
-        return isBookTitleNull() || book.getTitle().toLowerCase().contains(bookTitle.toLowerCase());
+        return isBookTitleNull() || book.getTitle()
+                                        .toLowerCase()
+                                        .contains(bookTitle.toLowerCase());
     }
 }
