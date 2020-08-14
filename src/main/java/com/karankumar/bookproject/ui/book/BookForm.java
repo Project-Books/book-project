@@ -587,12 +587,12 @@ public class BookForm extends VerticalLayout {
                 dateFinishedReading,
                 rating,
         };
+        resetSaveButtonText();
+        ComponentUtil.clearComponentFields(components);
+    }
+
+    private void resetSaveButtonText() {
         saveButton.setText(LABEL_ADD_BOOK);
-        for (HasValue component : components) {
-            if (component != null && !component.isEmpty()) {
-                component.clear();
-            }
-        }
     }
 
     public void addBook() {
