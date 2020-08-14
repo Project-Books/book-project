@@ -13,19 +13,15 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-
 package com.karankumar.bookproject.ui.components.dialog;
 
-import com.vaadin.flow.component.*;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
-@Tag("confirmation-dialog")
-abstract class ConfirmationDialog extends Component {
+
+abstract class ConfirmationDialog extends Dialog {
 
     /*
     ConfirmationDialog is a general purpose dialog to be extended for customization.
@@ -33,42 +29,39 @@ abstract class ConfirmationDialog extends Component {
      */
 
     protected static Dialog dialog;
-    private static String descriptionText;
+    private String descriptionText;
     Button confirmButton;
     Button cancelButton;
 
     ConfirmationDialog(String dialogText){
         descriptionText = dialogText;
+        openDialog();
     }
 
-    void openDialog(){
-        dialog = new Dialog();
-        dialog.setCloseOnEsc(false);
-        dialog.setCloseOnOutsideClick(false);
+    private void openDialog(){
+        setCloseOnEsc(false);
+        setCloseOnOutsideClick(false);
 
         final Label messageLabel = new Label();
         messageLabel.setText(descriptionText);
-        dialog.add(messageLabel);
+        add(messageLabel);
 
-         confirmButton = new Button("Confirm", event -> {
-
+        confirmButton = new Button("Confirm", event -> {
             save();
-            dialog.close();
+            close();
         });
 
         cancelButton = new Button("Cancel", event -> {
-            messageLabel.setText("Cancelled...");
-            dialog.close();
+            close();
         });
 
         HorizontalLayout hLayout = new HorizontalLayout();
         hLayout.add(confirmButton, cancelButton);
-        dialog.add(hLayout);
-        dialog.open();
+        add(hLayout);
+        open();
     }
 
-
-
+    // To be defined in subclass
     abstract void save();
 
 }

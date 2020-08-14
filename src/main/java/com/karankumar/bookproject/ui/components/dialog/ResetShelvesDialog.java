@@ -17,12 +17,9 @@ package com.karankumar.bookproject.ui.components.dialog;
 
 import com.karankumar.bookproject.backend.service.BookService;
 import java.util.logging.Level;
-
-import com.vaadin.flow.component.Tag;
 import lombok.extern.java.Log;
 
 @Log
-@Tag("reset-shelves-dialog")
 public class ResetShelvesDialog extends ConfirmationDialog {
 
 
@@ -31,10 +28,6 @@ public class ResetShelvesDialog extends ConfirmationDialog {
     public ResetShelvesDialog(BookService bookService) {
         super(" Are you sure you want to do delete all of the books in the shelves? There is no going back. ");
         ResetShelvesDialog.bookService = bookService;
-    }
-
-    public void open(){
-        openDialog();
     }
 
     @Override

@@ -68,7 +68,6 @@ public class SettingsView extends HorizontalLayout {
 
         clearShelveButton = new Button(CLEAR_SHELVES, click -> {
             resetShelvesDialog = new ResetShelvesDialog(bookService);
-            resetShelvesDialog.open();
         });
     }
 
@@ -101,7 +100,6 @@ public class SettingsView extends HorizontalLayout {
     private static void updateDarkModeLabel() {
         if (darkModeLabel != null) {
             darkModeLabel.setText(darkModeOn ? disable : enable);
-
         }
     }
 }
