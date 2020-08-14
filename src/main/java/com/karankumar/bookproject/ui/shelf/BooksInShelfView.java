@@ -32,7 +32,7 @@ import com.karankumar.bookproject.ui.shelf.listener.BookDeleteListener;
 import com.karankumar.bookproject.ui.shelf.listener.BookSaveListener;
 import com.karankumar.bookproject.ui.shelf.listener.CustomShelfListener;
 import com.karankumar.bookproject.ui.shelf.visibility.BookVisibilityStrategy;
-import com.karankumar.bookproject.ui.shelf.visibility.DidntFinishBookVisibility;
+import com.karankumar.bookproject.ui.shelf.visibility.DidNotFinishBookVisibility;
 import com.karankumar.bookproject.ui.shelf.visibility.ReadBookVisibility;
 import com.karankumar.bookproject.ui.shelf.visibility.ReadingBookVisibility;
 import com.karankumar.bookproject.ui.shelf.visibility.ToReadBookVisibility;
@@ -106,7 +106,7 @@ public class BooksInShelfView extends VerticalLayout {
         EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> m = new EnumMap<>(PredefinedShelf.ShelfName.class);
         m.put(PredefinedShelf.ShelfName.TO_READ, new ToReadBookVisibility());
         m.put(PredefinedShelf.ShelfName.READING, new ReadingBookVisibility());
-        m.put(PredefinedShelf.ShelfName.DID_NOT_FINISH, new DidntFinishBookVisibility());
+        m.put(PredefinedShelf.ShelfName.DID_NOT_FINISH, new DidNotFinishBookVisibility());
         m.put(PredefinedShelf.ShelfName.READ, new ReadBookVisibility());
 
         return m;

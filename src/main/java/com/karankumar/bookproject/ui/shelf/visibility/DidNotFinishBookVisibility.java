@@ -4,7 +4,7 @@ import com.karankumar.bookproject.ui.shelf.BookGrid;
 
 import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.*;
 
-public class DidntFinishBookVisibility implements BookVisibilityStrategy {
+public class DidNotFinishBookVisibility implements BookVisibilityStrategy {
     @Override
     public void toggleColumnVisibility(BookGrid bookGrid) {
         bookGrid.toggleColumnVisibility(RATING_KEY, false);
