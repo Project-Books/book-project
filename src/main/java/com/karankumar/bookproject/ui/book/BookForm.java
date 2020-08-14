@@ -59,15 +59,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
-import static com.karankumar.bookproject.ui.book.BookFormErrors.AFTER_TODAY_ERROR;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.BOOK_TITLE_ERROR;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.FINISH_DATE_ERROR;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.FIRST_NAME_ERROR;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.LAST_NAME_ERROR;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.PAGE_NUMBER_ERROR;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.SERIES_POSITION_ERROR;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.SHELF_ERROR;
-
 /**
  * A Vaadin form for adding a new @see Book.
  */
@@ -204,31 +195,31 @@ public class BookForm extends VerticalLayout {
 
     private void bindFormFields() {
         binder.forField(bookTitle)
-              .asRequired(BOOK_TITLE_ERROR)
+              .asRequired(BookFormErrors.BOOK_TITLE_ERROR)
               .bind(Book::getTitle, Book::setTitle);
         binder.forField(authorFirstName)
-              .withValidator(BookFormValidators.authorPredicate(), FIRST_NAME_ERROR)
+              .withValidator(BookFormValidators.authorPredicate(), BookFormErrors.FIRST_NAME_ERROR)
               .bind("author.firstName");
         binder.forField(authorLastName)
-              .withValidator(BookFormValidators.authorPredicate(), LAST_NAME_ERROR)
+              .withValidator(BookFormValidators.authorPredicate(), BookFormErrors.LAST_NAME_ERROR)
               .bind("author.lastName");
         binder.forField(predefinedShelfField)
-              .withValidator(Objects::nonNull, SHELF_ERROR)
+              .withValidator(Objects::nonNull, BookFormErrors.SHELF_ERROR)
               .bind("predefinedShelf.predefinedShelfName");
         binder.forField(customShelfField)
               .bind("customShelf.shelfName");
         binder.forField(seriesPosition)
-              .withValidator(BookFormValidators.positiveNumberPredicate(), SERIES_POSITION_ERROR)
+              .withValidator(BookFormValidators.positiveNumberPredicate(), BookFormErrors.SERIES_POSITION_ERROR)
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
         binder.forField(dateStartedReading)
-              .withValidator(BookFormValidators.datePredicate(), String.format(AFTER_TODAY_ERROR, "started"))
+              .withValidator(BookFormValidators.datePredicate(), String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
-              .withValidator(endDatePredicate(), FINISH_DATE_ERROR)
-              .withValidator(BookFormValidators.datePredicate(), String.format(AFTER_TODAY_ERROR, "finished"))
+              .withValidator(endDatePredicate(), BookFormErrors.FINISH_DATE_ERROR)
+              .withValidator(BookFormValidators.datePredicate(), String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(numberOfPages)
-              .withValidator(BookFormValidators.positiveNumberPredicate(), PAGE_NUMBER_ERROR)
+              .withValidator(BookFormValidators.positiveNumberPredicate(), BookFormErrors.PAGE_NUMBER_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(pagesRead)
               .bind(Book::getPagesRead, Book::setPagesRead);
