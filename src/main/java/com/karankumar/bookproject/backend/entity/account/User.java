@@ -74,7 +74,7 @@ public class User {
     // For the RegExp see https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation/3802238#3802238
     @Pattern(
             regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
-            message = "The password must be at least 8 characters long and including at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+="
+            message = "The password must be at least 8 characters long and consist of at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+="
     )
     private String password;
 
