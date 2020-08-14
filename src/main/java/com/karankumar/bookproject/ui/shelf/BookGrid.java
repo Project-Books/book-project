@@ -47,7 +47,8 @@ public class BookGrid {
         if (bookGrid.getColumnByKey(columnKey) == null) {
             LOGGER.log(Level.SEVERE, "Key is null: " + columnKey);
         } else {
-            bookGrid.getColumnByKey(columnKey).setVisible(showColumn);
+            bookGrid.getColumnByKey(columnKey)
+                    .setVisible(showColumn);
         }
     }
 
@@ -62,7 +63,6 @@ public class BookGrid {
         }
 
         Set<Book> books = getBooks(chosenShelf);
-
         populateGridWithBooks(books, bookFilters);
     }
 
