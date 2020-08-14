@@ -26,6 +26,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
@@ -147,7 +148,7 @@ public class BookForm extends VerticalLayout {
                 numberOfPages,
                 rating,
         };
-        setComponentMinWidth(components);
+        ComponentUtil.setComponentMinWidth(components);
         configureFormLayout(formLayout, buttons);
 
         add(dialog);
@@ -600,12 +601,6 @@ public class BookForm extends VerticalLayout {
             if (component != null && !component.isEmpty()) {
                 component.clear();
             }
-        }
-    }
-
-    private void setComponentMinWidth(HasSize[] components) {
-        for (HasSize h : components) {
-            h.setMinWidth("23em");
         }
     }
 

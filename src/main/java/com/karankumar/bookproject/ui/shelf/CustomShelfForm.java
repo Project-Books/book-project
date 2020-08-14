@@ -48,7 +48,6 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     private void bindFormFields() {
-        // TODO: do not allow duplicate shelf names
         binder.forField(shelfNameField)
               .asRequired("Please enter a shelf name")
               .withValidator(isUniqueShelfName(), "This shelf name already exists. Please enter a new shelf name")
