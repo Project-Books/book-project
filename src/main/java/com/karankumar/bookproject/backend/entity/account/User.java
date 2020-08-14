@@ -22,7 +22,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,6 +36,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -54,10 +57,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uidgenerator")
     @SequenceGenerator(name = "uidgenerator", sequenceName = "uid_sequence")
     @Getter
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
     @NotEmpty
+    @Length(min = 5, max = 64)
     private String username;
 
     // Note: this is allowed to be null if a user signs up without an email
@@ -72,6 +77,12 @@ public class User {
             message = "The password must be at least 8 characters long and including at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+="
     )
     private String password;
+
+    @Transient
+    private transient String passwordConfirmation;
+
+    @NotNull
+    private boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
