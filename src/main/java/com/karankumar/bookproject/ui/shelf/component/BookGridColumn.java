@@ -16,13 +16,14 @@
 package com.karankumar.bookproject.ui.shelf.component;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.utils.BookUtils;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.renderer.LocalDateRenderer;
 import com.vaadin.flow.function.ValueProvider;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.time.LocalDate;
 import java.util.Comparator;
 
 public class BookGridColumn {
@@ -58,18 +59,11 @@ public class BookGridColumn {
     }
 
     private void addTitleColumn() {
-        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
+        // we want to display the series only if it is bigger than 0
+        bookGrid.addColumn(BookUtils::combineTitleAndSeries)
                 .setHeader("Title")
                 .setKey(TITLE_KEY)
                 .setSortable(true);
-    }
-
-    private String combineTitleAndSeries(Book book) {
-        if (book.seriesPositionExists()) {
-            return String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
-        }
-
-        return book.getTitle();
     }
 
     private void addAuthorColumn() {
