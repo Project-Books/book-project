@@ -61,7 +61,7 @@ public class BooksInShelfView extends VerticalLayout {
     private final EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> visibilityStrategies;
 
     private final BookForm bookForm;
-    private final PredefinedShelfService shelfService;
+    private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
     private final TitleFilterText filterByTitle;
     private final AuthorFilterText filterByAuthorName;
@@ -71,11 +71,10 @@ public class BooksInShelfView extends VerticalLayout {
 
     private final PredefinedShelfUtils predefinedShelfUtils;
 
-    public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService,
+    public BooksInShelfView(BookService bookService, PredefinedShelfService predefinedShelfService,
                             CustomShelfService customShelfService) {
-
-        this.shelfService = shelfService;
-        this.predefinedShelfUtils = new PredefinedShelfUtils(shelfService);
+        this.predefinedShelfService = predefinedShelfService;
+        this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         this.customShelfService = customShelfService;
         this.visibilityStrategies = initVisibilityStrategies();
         this.bookGrid = new BookGrid();
@@ -89,7 +88,7 @@ public class BooksInShelfView extends VerticalLayout {
         filterByTitle.bind(this);
         filterByAuthorName.bind(this);
 
-        bookForm = new BookForm(shelfService, customShelfService);
+        bookForm = new BookForm(predefinedShelfService, customShelfService);
 
         bookGrid.bind(bookForm);
         bindListeners(bookService);
@@ -115,7 +114,7 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private CustomShelfForm createCustomShelfForm() {
-        CustomShelfForm customShelfForm = new CustomShelfForm(customShelfService, shelfService);
+        CustomShelfForm customShelfForm = new CustomShelfForm(customShelfService, predefinedShelfService);
         new CustomShelfListener(customShelfService).bind(customShelfForm);
         return customShelfForm;
     }
