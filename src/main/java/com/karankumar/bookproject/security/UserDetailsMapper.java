@@ -12,6 +12,10 @@ public class UserDetailsMapper {
         return new User(
                 user.getUsername(),
                 user.getPassword(),
+                user.isActive(),
+                true,
+                true,
+                true,
                 user.getRoles()
                     .stream()
                     .map(role -> new SimpleGrantedAuthority(role.getRole()))
