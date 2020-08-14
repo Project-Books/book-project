@@ -49,8 +49,6 @@ import javax.transaction.NotSupportedException;
 import java.util.EnumMap;
 import java.util.List;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
-
 /**
  * Contains a @see BookForm and a grid containing a list of books in a given shelf.
  */
@@ -106,10 +104,10 @@ public class BooksInShelfView extends VerticalLayout {
 
     private EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> initVisibilityStrategies() {
         EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> m = new EnumMap<>(PredefinedShelf.ShelfName.class);
-        m.put(TO_READ, new ToReadBookVisibility());
-        m.put(READING, new ReadingBookVisibility());
-        m.put(DID_NOT_FINISH, new DidntFinishBookVisibility());
-        m.put(READ, new ReadBookVisibility());
+        m.put(PredefinedShelf.ShelfName.TO_READ, new ToReadBookVisibility());
+        m.put(PredefinedShelf.ShelfName.READING, new ReadingBookVisibility());
+        m.put(PredefinedShelf.ShelfName.DID_NOT_FINISH, new DidntFinishBookVisibility());
+        m.put(PredefinedShelf.ShelfName.READ, new ReadBookVisibility());
 
         return m;
     }
