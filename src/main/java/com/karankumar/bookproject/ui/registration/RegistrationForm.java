@@ -2,6 +2,7 @@ package com.karankumar.bookproject.ui.registration;
 
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -9,16 +10,20 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.validator.EmailValidator;
 
 public class RegistrationForm extends FormLayout {
     private final UserService userService;
-    private final BeanValidationBinder<User> binder = new BeanValidationBinder<>(User.class);
+    private final Binder<User> binder = new BeanValidationBinder<>(User.class);
 
     private final TextField usernameField = new TextField("Username");
     private final EmailField emailField = new EmailField("Email Address");
     private final PasswordField passwordField = new PasswordField("Password");
     private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
+    private final Text passwordHint = new Text(
+            "The password must be at least 8 characters long and consist of at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+=");
+
     private final Button registerButton = new Button("Register");
 
     public RegistrationForm(UserService userService) {
@@ -39,29 +44,31 @@ public class RegistrationForm extends FormLayout {
         });
 
         binder.bind(usernameField, "username");
-        binder.bind(emailField, "email");
-        binder.forField(passwordField)
-              .withValidator(password -> {
-                          boolean valid = passwordConfirmationField.getValue().equals(password);
-                          passwordConfirmationField.setInvalid(!valid);
-                          return valid;
-                      },
-                      "The passwords do not match")
-              .bind("password");
-        binder.forField(passwordConfirmationField)
-              .withValidator(password -> {
-                          boolean valid = passwordField.getValue().equals(password);
-                          passwordField.setInvalid(!valid);
-                          return valid;
-                      },
-                      "The passwords do not match")
-              .bind("passwordConfirmation");
+        binder.forField(emailField)
+              .withValidator(new EmailValidator("Please enter a correct email address"))
+              .bind("email");
+
+        var passwordBinding =
+                binder.forField(passwordField)
+                      .withValidator(
+                              password -> passwordConfirmationField.getValue().equals(password),
+                              "The passwords do not match")
+                      .bind("password");
+        var passwordConfirmationBinding =
+                binder.forField(passwordConfirmationField)
+                      .withValidator(password -> passwordField.getValue()
+                                                              .equals(password),
+                              "The passwords do not match")
+                      .bind("passwordConfirmation");
+        passwordField.addValueChangeListener(e -> passwordConfirmationBinding.validate());
+        passwordConfirmationField.addValueChangeListener(e -> passwordBinding.validate());
 
         add(
                 usernameField,
                 emailField,
                 passwordField,
                 passwordConfirmationField,
+                passwordHint,
                 registerButton
         );
     }
