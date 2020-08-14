@@ -215,7 +215,7 @@ public class BookForm extends VerticalLayout {
               .withValidator(BookFormValidators.datePredicate(), String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
-              .withValidator(endDatePredicate(), BookFormErrors.FINISH_DATE_ERROR)
+              .withValidator(isEndDateAfterStartDate(), BookFormErrors.FINISH_DATE_ERROR)
               .withValidator(BookFormValidators.datePredicate(), String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(numberOfPages)
@@ -601,9 +601,9 @@ public class BookForm extends VerticalLayout {
         openForm();
     }
 
-    private SerializablePredicate<LocalDate> endDatePredicate() {
-        return endDate -> !(endDate != null && dateStartedReading.getValue() != null &&
-                endDate.isBefore(dateStartedReading.getValue()));
+    private SerializablePredicate<LocalDate> isEndDateAfterStartDate() {
+        return endDate -> (endDate != null && dateStartedReading.getValue() != null &&
+                endDate.isAfter(dateStartedReading.getValue()));
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
