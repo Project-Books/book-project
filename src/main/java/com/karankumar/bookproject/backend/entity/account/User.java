@@ -78,9 +78,6 @@ public class User {
     )
     private String password;
 
-    @Transient
-    private transient String passwordConfirmation;
-
     @NotNull
     private boolean active;
 

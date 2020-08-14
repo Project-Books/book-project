@@ -51,11 +51,6 @@ public class UserService {
                     "A user with the email address " + user.getUsername() + " already exists");
         }
 
-        if (!user.getPassword().equals(user.getPasswordConfirmation())) {
-            throw new BadCredentialsException(
-                    "The password and the password confirmation do not match");
-        }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(true);
         Role userRole = roleRepository.findByRole("USER")

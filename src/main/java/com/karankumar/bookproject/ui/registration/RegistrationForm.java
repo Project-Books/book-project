@@ -2,16 +2,23 @@ package com.karankumar.bookproject.ui.registration;
 
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.ValidationResult;
+import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.validator.EmailValidator;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.internal.engine.ValidationContext;
 
 public class RegistrationForm extends FormLayout {
     private final UserService userService;
@@ -21,10 +28,14 @@ public class RegistrationForm extends FormLayout {
     private final EmailField emailField = new EmailField("Email Address");
     private final PasswordField passwordField = new PasswordField("Password");
     private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
-    private final Text passwordHint = new Text(
+    private final Paragraph passwordHint = new Paragraph(
             "The password must be at least 8 characters long and consist of at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+=");
+    private final Span errorMessage = new Span();
 
     private final Button registerButton = new Button("Register");
+
+    // Flag for disabling first run for password validation
+    private boolean enablePasswordValidation = false;
 
     public RegistrationForm(UserService userService) {
         this.userService = userService;
@@ -40,6 +51,9 @@ public class RegistrationForm extends FormLayout {
 
             if (binder.writeBeanIfValid(user)) {
                 this.userService.register(user);
+
+                Notification notification = Notification.show("Data saved, welcome " + user.getUsername());
+                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             }
         });
 
@@ -53,20 +67,16 @@ public class RegistrationForm extends FormLayout {
                       "A user with this email address already exists")
               .bind("email");
 
-        var passwordBinding =
-                binder.forField(passwordField)
-                      .withValidator(
-                              password -> passwordConfirmationField.getValue().equals(password),
-                              "The passwords do not match")
-                      .bind("password");
-        var passwordConfirmationBinding =
-                binder.forField(passwordConfirmationField)
-                      .withValidator(password -> passwordField.getValue()
-                                                              .equals(password),
-                              "The passwords do not match")
-                      .bind("passwordConfirmation");
-        passwordField.addValueChangeListener(e -> passwordConfirmationBinding.validate());
-        passwordConfirmationField.addValueChangeListener(e -> passwordBinding.validate());
+        binder.forField(passwordField)
+              .withValidator(this::passwordValidator)
+              .bind("password");
+        passwordConfirmationField.addValueChangeListener(e -> {
+            // The user has modified the second field, now we can validate and show errors.
+            enablePasswordValidation = true;
+            binder.validate();
+        });
+        binder.setStatusLabel(errorMessage);
+        errorMessage.getStyle().set("color", "var(--lumo-error-text-color)");
 
         add(
                 usernameField,
@@ -74,7 +84,23 @@ public class RegistrationForm extends FormLayout {
                 passwordField,
                 passwordConfirmationField,
                 passwordHint,
+                errorMessage,
                 registerButton
         );
+    }
+
+    private ValidationResult passwordValidator(String password, ValueContext ctx) {
+        if (!enablePasswordValidation) {
+            // user hasn't visited the field yet, so don't validate just yet
+            return ValidationResult.ok();
+        }
+
+        String passwordConfirmation = passwordConfirmationField.getValue();
+
+        if (StringUtils.equals(password, passwordConfirmation)) {
+            return ValidationResult.ok();
+        }
+
+        return ValidationResult.error("Passwords do not match");
     }
 }
