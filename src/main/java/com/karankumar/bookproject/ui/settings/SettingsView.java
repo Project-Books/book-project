@@ -15,13 +15,12 @@
 
 package com.karankumar.bookproject.ui.settings;
 
-import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.toggle.PaperToggle;
+import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -30,8 +29,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.extern.java.Log;
-import java.util.List;
-import java.util.logging.Level;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Route(value = "settings", layout = MainView.class)
@@ -46,14 +44,10 @@ public class SettingsView extends HorizontalLayout {
     private static boolean darkModeOn = false;
 
     // -------------- Clear Shelves ----------------------
+    private static ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Clear Shelves";
-    private static final String SHELVES_ARE_EMPTY = "Shelves are empty";
     private static Button clearShelveButton; // Not labeled 'private' because it is tested in SettingsViewTest
-    private static boolean shelvesEmpty = false;
     private static BookService bookService;
-    private static Dialog dialog;
-    private static Button confirmButton;
-    private static Button cancelButton;
 
     static {
         paperToggle = new PaperToggle();
@@ -73,43 +67,14 @@ public class SettingsView extends HorizontalLayout {
 
 
         clearShelveButton = new Button(CLEAR_SHELVES, click -> {
-
-            dialog = new Dialog();
-            dialog.setCloseOnEsc(false);
-            dialog.setCloseOnOutsideClick(false);
-
-
-            final Label messageLabel = new Label();
-            messageLabel.setText("   Are you sure you want to do delete all of the books in the shelves? There is no going back.    ");
-            dialog.add(messageLabel);
-
-            confirmButton = new Button("Confirm", event -> {
-                deleteAllBooks();
-                final List<Book> books = bookService.findAll();
-                if(books.isEmpty()){
-                    shelvesEmpty = true;
-                    dialog.close();
-                }
-                else {
-                    LOGGER.log(Level.INFO, "Did not delete all books as instructed.");
-                }
-            });
-
-            cancelButton = new Button("Cancel", event -> {
-                messageLabel.setText("Cancelled...");
-                dialog.close();
-            });
-
-            dialog.add(confirmButton, cancelButton);
-            dialog.open();
+            resetShelvesDialog = new ResetShelvesDialog(bookService);
+            resetShelvesDialog.open();
         });
     }
 
-    public SettingsView(BookService bookService) {
+    SettingsView(@Autowired BookService bookService) {
 
-        // Clear Shelves
         SettingsView.bookService = bookService;
-
 
         // Darkmode Layout
         if (darkModeOn) {
@@ -119,10 +84,6 @@ public class SettingsView extends HorizontalLayout {
             paperToggle.setChecked(false);
         }
 
-
-        if(shelvesEmpty){
-            updateClearShelvesButtonText();
-        }
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(darkModeLabel, paperToggle);
@@ -142,21 +103,5 @@ public class SettingsView extends HorizontalLayout {
             darkModeLabel.setText(darkModeOn ? disable : enable);
 
         }
-    }
-
-    private static void updateClearShelvesButtonText() {
-        if (clearShelveButton != null) {
-            clearShelveButton.setText(shelvesEmpty ? SHELVES_ARE_EMPTY : CLEAR_SHELVES);
-        }
-    }
-
-    private static void deleteAllBooks(){
-        LOGGER.log(Level.INFO, "Deleting all books...");
-        bookService.deleteAll();
-        LOGGER.log(Level.INFO, "Deleted all books.");
-    }
-
-    public static boolean isEmpty(){
-        return bookService.count() == 0;
     }
 }
