@@ -141,9 +141,6 @@ public class BooksInShelfView extends VerticalLayout {
         return layout;
     }
 
-    /**
-     * @throws NotSupportedException if a shelf is not supported.
-     */
     // TODO: 3.08.2020 this should be moved BookShelfListener. But it's also invoked in the test.
     @VisibleForTesting
     public void showOrHideGridColumns(String shelfName) throws NotSupportedException {
