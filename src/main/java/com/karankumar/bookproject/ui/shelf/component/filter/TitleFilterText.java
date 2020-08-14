@@ -1,17 +1,18 @@
-package com.karankumar.bookproject.ui.shelf.component;
+package com.karankumar.bookproject.ui.shelf.component.filter;
+
 
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
-public class AuthorFilterText {
+public class TitleFilterText {
     private final TextField text;
 
-    public AuthorFilterText() {
+    public TitleFilterText() {
         text = new TextField();
 
-        text.setPlaceholder("Filter by Author Name");
+        text.setPlaceholder("Filter by book title");
         text.setClearButtonVisible(true);
         text.setValueChangeMode(ValueChangeMode.LAZY);
     }
@@ -19,7 +20,7 @@ public class AuthorFilterText {
     public void bind(BooksInShelfView view) {
         text.addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                view.setBookFilterAuthor(event.getValue());
+                view.setBookFilterTitle(event.getValue());
             }
             view.updateGrid();
         });
