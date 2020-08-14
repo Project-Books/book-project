@@ -166,7 +166,7 @@ public class BooksInShelfView extends VerticalLayout {
         bookGrid.update(chosenShelf, shelfUtils, bookFilters, predefinedShelfUtils);
     }
 
-    public void chooseShelf(String chosenShelf) {
+    public void setChosenShelf(String chosenShelf) {
         this.chosenShelf = chosenShelf;
     }
 

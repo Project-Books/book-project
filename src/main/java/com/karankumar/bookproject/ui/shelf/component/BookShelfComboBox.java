@@ -30,7 +30,7 @@ public class BookShelfComboBox {
                 return;
             }
 
-            view.chooseShelf(chosenShelf);
+            view.setChosenShelf(chosenShelf);
             view.updateGrid();
 
             try {
