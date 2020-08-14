@@ -579,6 +579,7 @@ public class BookForm extends VerticalLayout {
                 authorLastName,
                 customShelfField,
                 predefinedShelfField,
+                inSeriesCheckbox,
                 seriesPosition,
                 bookGenre,
                 pagesRead,
