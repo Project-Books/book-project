@@ -41,12 +41,12 @@ public class UserService {
             throw new BadCredentialsException(errors);
         }
 
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+        if (usernameIsInUse(user.getUsername())) {
             throw new UserAlreadyRegisteredException(
                     "The username " + user.getUsername() + " is already taken");
         }
 
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (emailIsInUse(user.getEmail())) {
             throw new UserAlreadyRegisteredException(
                     "A user with the email address " + user.getUsername() + " already exists");
         }
@@ -67,5 +67,21 @@ public class UserService {
 
     public void delete(User user) {
         userRepository.delete(user);
+    }
+
+    public boolean usernameIsInUse(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
+    public boolean usernameIsNotInUse(String username) {
+        return !usernameIsInUse(username);
+    }
+
+    public boolean emailIsInUse(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public boolean emailIsNotInUse(String email) {
+        return !emailIsInUse(email);
     }
 }

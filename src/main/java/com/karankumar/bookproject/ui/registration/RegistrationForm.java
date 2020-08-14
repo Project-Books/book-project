@@ -43,9 +43,14 @@ public class RegistrationForm extends FormLayout {
             }
         });
 
-        binder.bind(usernameField, "username");
+        binder.forField(usernameField)
+              .withValidator(userService::usernameIsNotInUse,
+                      "A user with this username does already exist")
+              .bind("username");
         binder.forField(emailField)
               .withValidator(new EmailValidator("Please enter a correct email address"))
+              .withValidator(userService::emailIsNotInUse,
+                      "A user with this email address already exists")
               .bind("email");
 
         var passwordBinding =
