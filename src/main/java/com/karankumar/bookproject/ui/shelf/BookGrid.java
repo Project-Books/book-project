@@ -76,7 +76,7 @@ public class BookGrid {
 
     private List<Book> filterShelf(Set<Book> books, BookFilters bookFilters) {
         return books.stream()
-                .filter(book -> bookFilters.apply(book))
-                .collect(Collectors.toList());
+                    .filter(bookFilters::apply)
+                    .collect(Collectors.toList());
     }
 }
