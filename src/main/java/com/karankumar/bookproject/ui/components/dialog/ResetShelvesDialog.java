@@ -22,7 +22,6 @@ import com.vaadin.flow.component.Tag;
 import lombok.extern.java.Log;
 
 @Log
-@Tag("reset-shelves-dialog")
 public class ResetShelvesDialog extends ConfirmationDialog {
 
 
