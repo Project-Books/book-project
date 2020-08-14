@@ -70,14 +70,16 @@ public class BooksInShelfView extends VerticalLayout {
     private final BookFilters bookFilters;
 
     private final PredefinedShelfUtils predefinedShelfUtils;
+    private final CustomShelfUtils customShelfUtils;
 
     public BooksInShelfView(BookService bookService, PredefinedShelfService predefinedShelfService,
                             CustomShelfService customShelfService) {
         this.predefinedShelfService = predefinedShelfService;
-        this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         this.customShelfService = customShelfService;
+        customShelfUtils = new CustomShelfUtils(customShelfService);
         this.visibilityStrategies = initVisibilityStrategies();
-        this.bookGrid = new BookGrid();
+        this.bookGrid = new BookGrid(predefinedShelfUtils, customShelfUtils);
         this.bookFilters = new BookFilters();
 
         this.whichShelf = new BookShelfComboBox(customShelfService);
@@ -158,8 +160,7 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     public void updateGrid() {
-        CustomShelfUtils shelfUtils = new CustomShelfUtils(customShelfService);
-        bookGrid.update(chosenShelf, shelfUtils, bookFilters, predefinedShelfUtils);
+        bookGrid.update(chosenShelf, bookFilters);
     }
 
     public void setChosenShelf(String chosenShelf) {

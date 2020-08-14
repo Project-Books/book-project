@@ -17,9 +17,14 @@ import java.util.stream.Collectors;
 @Log
 public class BookGrid {
     private final Grid<Book> bookGrid;
+    
+    private final PredefinedShelfUtils predefinedShelfUtils;
+    private final CustomShelfUtils customShelfUtils;
 
-    BookGrid() {
+    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfUtils customShelfUtils) {
         this.bookGrid = new Grid<>(Book.class);
+        this.predefinedShelfUtils = predefinedShelfUtils;
+        this.customShelfUtils = customShelfUtils;
         configure();
     }
 
@@ -40,7 +45,7 @@ public class BookGrid {
 
     public void toggleColumnVisibility(String columnKey, boolean showColumn) {
         if (bookGrid.getColumnByKey(columnKey) == null) {
-            LOGGER.log(Level.SEVERE, "Key is null:" + columnKey);
+            LOGGER.log(Level.SEVERE, "Key is null: " + columnKey);
         } else {
             bookGrid.getColumnByKey(columnKey).setVisible(showColumn);
         }
@@ -50,18 +55,18 @@ public class BookGrid {
         return bookGrid;
     }
 
-    void update(String chosenShelf, CustomShelfUtils customShelfUtils, BookFilters bookFilters, PredefinedShelfUtils predefinedShelfUtils) {
+    void update(String chosenShelf, BookFilters bookFilters) {
         if (chosenShelf == null) {
             LOGGER.log(Level.FINEST, "Chosen shelf is null");
             return;
         }
 
-        Set<Book> books = getBooks(chosenShelf, customShelfUtils, predefinedShelfUtils);
+        Set<Book> books = getBooks(chosenShelf);
 
         populateGridWithBooks(books, bookFilters);
     }
 
-    private Set<Book> getBooks(String chosenShelf, CustomShelfUtils customShelfUtils, PredefinedShelfUtils predefinedShelfUtils) {
+    private Set<Book> getBooks(String chosenShelf) {
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
             return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
         }
