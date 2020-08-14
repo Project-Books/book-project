@@ -178,6 +178,7 @@ public class BooksInShelfView extends VerticalLayout {
         bookFilters.setBookTitle(title);
     }
 
+    @VisibleForTesting
     List<Grid.Column<Book>> getColumns() {
         return bookGrid.get()
                        .getColumns();
