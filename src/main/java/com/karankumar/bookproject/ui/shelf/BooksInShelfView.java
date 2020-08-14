@@ -63,6 +63,8 @@ public class BooksInShelfView extends VerticalLayout {
     private final EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> visibilityStrategies;
 
     private final BookForm bookForm;
+    private final CustomShelfForm customShelfForm;
+
     private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
     private final TitleFilterText filterByTitle;
@@ -96,7 +98,7 @@ public class BooksInShelfView extends VerticalLayout {
         bookGrid.bind(bookForm);
         bindListeners(bookService);
 
-        CustomShelfForm customShelfForm = createCustomShelfForm();
+        customShelfForm = createCustomShelfForm();
 
         add(initializeLayout(), bookGrid.get(), customShelfForm, bookForm);
     }
@@ -126,7 +128,6 @@ public class BooksInShelfView extends VerticalLayout {
         Button addBook = new Button("Add book");
         addBook.addClickListener(e -> bookForm.addBook());
 
-        CustomShelfForm customShelfForm = createCustomShelfForm();
         Button addShelf = new Button("Add shelf");
         addShelf.addClickListener(e -> customShelfForm.addShelf());
 
