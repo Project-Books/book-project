@@ -91,6 +91,7 @@ public class ReadingGoalView extends VerticalLayout {
         });
     }
 
+    @VisibleForTesting
     void getCurrentGoal() {
         List<ReadingGoal> goals = goalService.findAll();
         if (goals.size() == 0) {
