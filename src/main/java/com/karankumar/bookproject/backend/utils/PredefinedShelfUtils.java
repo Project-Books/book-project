@@ -58,7 +58,8 @@ public class PredefinedShelfUtils {
         LOGGER.log(Level.INFO, "Shelves: " + predefinedShelfService.findAll());
         return predefinedShelfService.findAll()
                                      .stream()
-                                     .filter(shelf -> shelf.getPredefinedShelfName().equals(shelfName))
+                                     .filter(shelf ->
+                                             shelf.getPredefinedShelfName().equals(shelfName))
                                      .collect(Collectors.toList())
                                      .get(0); // there should only be one
     }

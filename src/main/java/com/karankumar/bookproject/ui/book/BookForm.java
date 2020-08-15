@@ -102,7 +102,8 @@ public class BookForm extends VerticalLayout {
 
     private final Dialog dialog;
 
-    public BookForm(PredefinedShelfService predefinedShelfService, CustomShelfService customShelfService) {
+    public BookForm(PredefinedShelfService predefinedShelfService,
+                    CustomShelfService customShelfService) {
         this.predefinedShelfService = predefinedShelfService;
         this.customShelfService = customShelfService;
 
@@ -209,17 +210,21 @@ public class BookForm extends VerticalLayout {
         binder.forField(customShelfField)
               .bind("customShelf.shelfName");
         binder.forField(seriesPosition)
-              .withValidator(BookFormValidators.positiveNumberPredicate(), BookFormErrors.SERIES_POSITION_ERROR)
+              .withValidator(BookFormValidators.positiveNumberPredicate(),
+                      BookFormErrors.SERIES_POSITION_ERROR)
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
         binder.forField(dateStartedReading)
-              .withValidator(BookFormValidators.datePredicate(), String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
+              .withValidator(BookFormValidators.datePredicate(),
+                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
               .withValidator(isEndDateAfterStartDate(), BookFormErrors.FINISH_DATE_ERROR)
-              .withValidator(BookFormValidators.datePredicate(), String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
+              .withValidator(BookFormValidators.datePredicate(),
+                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
         binder.forField(numberOfPages)
-              .withValidator(BookFormValidators.positiveNumberPredicate(), BookFormErrors.PAGE_NUMBER_ERROR)
+              .withValidator(BookFormValidators.positiveNumberPredicate(),
+                      BookFormErrors.PAGE_NUMBER_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(pagesRead)
               .bind(Book::getPagesRead, Book::setPagesRead);
@@ -326,8 +331,10 @@ public class BookForm extends VerticalLayout {
 
         PredefinedShelf predefinedShelf;
         if (predefinedShelfField.getValue() != null) {
-            PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
-            predefinedShelf = predefinedShelfUtils.findPredefinedShelf(predefinedShelfField.getValue());
+            PredefinedShelfUtils predefinedShelfUtils =
+                    new PredefinedShelfUtils(predefinedShelfService);
+            predefinedShelf =
+                    predefinedShelfUtils.findPredefinedShelf(predefinedShelfField.getValue());
         } else {
             LOGGER.log(Level.SEVERE, "Null shelf");
             return null;
@@ -352,7 +359,8 @@ public class BookForm extends VerticalLayout {
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
 
-        Result<RatingScale> result = new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
+        Result<RatingScale> result =
+                new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
         result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
 
         book.setPagesRead(pagesRead.getValue());
@@ -377,7 +385,8 @@ public class BookForm extends VerticalLayout {
     }
 
     private void moveBookToDifferentShelf() {
-        List<PredefinedShelf> shelves = predefinedShelfService.findAll(predefinedShelfField.getValue());
+        List<PredefinedShelf> shelves =
+                predefinedShelfService.findAll(predefinedShelfField.getValue());
         if (shelves.size() == 1) {
             Book book = binder.getBean();
             book.setPredefinedShelf(shelves.get(0));
@@ -457,7 +466,8 @@ public class BookForm extends VerticalLayout {
      * Toggles whether the date started reading and date finished reading form fields should show
      *
      * @param name the name of the @see PredefinedShelf that was chosen in the book form
-     * @throws NotSupportedException if the shelf name parameter does not match the name of a @see PredefinedShelf
+     * @throws NotSupportedException if the shelf name parameter does not match the name of
+     * a @see PredefinedShelf
      */
     private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
@@ -501,7 +511,8 @@ public class BookForm extends VerticalLayout {
      * Toggles showing the pages read depending on which shelf this new book is going into
      *
      * @param name the name of the shelf that was selected in this book form
-     * @throws NotSupportedException if the shelf name parameter does not match the name of a @see PredefinedShelf
+     * @throws NotSupportedException if the shelf name parameter does not match the name of
+     * a @see PredefinedShelf
      */
     private void showOrHidePagesRead(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
@@ -522,7 +533,8 @@ public class BookForm extends VerticalLayout {
      * Toggles showing the rating depending on which shelf this new book is going into
      *
      * @param name the name of the shelf that was selected in this book form
-     * @throws NotSupportedException if the shelf name parameter does not match the name of a @see PredefinedShelf
+     * @throws NotSupportedException if the shelf name parameter does not match the name of
+     * a @see PredefinedShelf
      */
     private void showOrHideRating(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {

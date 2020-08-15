@@ -108,7 +108,8 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> initVisibilityStrategies() {
-        EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> m = new EnumMap<>(PredefinedShelf.ShelfName.class);
+        EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> m =
+                new EnumMap<>(PredefinedShelf.ShelfName.class);
         m.put(PredefinedShelf.ShelfName.TO_READ, new ToReadBookVisibility());
         m.put(PredefinedShelf.ShelfName.READING, new ReadingBookVisibility());
         m.put(PredefinedShelf.ShelfName.DID_NOT_FINISH, new DidNotFinishBookVisibility());
@@ -123,7 +124,8 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private CustomShelfForm createCustomShelfForm() {
-        CustomShelfForm customShelfForm = new CustomShelfForm(customShelfService, predefinedShelfService);
+        CustomShelfForm customShelfForm =
+                new CustomShelfForm(customShelfService, predefinedShelfService);
         new CustomShelfListener(this, customShelfService).bind(customShelfForm);
         return customShelfForm;
     }
@@ -155,10 +157,12 @@ public class BooksInShelfView extends VerticalLayout {
             return;
         }
 
-        PredefinedShelf.ShelfName predefinedShelfName = predefinedShelfUtils.getPredefinedShelfName(shelfName);
+        PredefinedShelf.ShelfName predefinedShelfName =
+                predefinedShelfUtils.getPredefinedShelfName(shelfName);
 
         if (!visibilityStrategies.containsKey(predefinedShelfName)) {
-            throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
+            throw new NotSupportedException("Shelf " + shelfName +
+                    " has not been added as a case in switch statement.");
         }
 
         visibilityStrategies.get(predefinedShelfName)

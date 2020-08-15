@@ -45,7 +45,8 @@ public class ReadingGoalForm extends VerticalLayout {
     private static final String PAGES_TO_READ = "Pages to read";
     private final Dialog newGoalDialog;
 
-    @VisibleForTesting final Binder<ReadingGoal> binder = new BeanValidationBinder<>(ReadingGoal.class);
+    @VisibleForTesting final Binder<ReadingGoal> binder =
+            new BeanValidationBinder<>(ReadingGoal.class);
     @VisibleForTesting final RadioButtonGroup<ReadingGoal.GoalType> chooseGoalType;
     @VisibleForTesting final IntegerField targetToRead;
     @VisibleForTesting Button saveButton;
@@ -133,7 +134,9 @@ public class ReadingGoalForm extends VerticalLayout {
     private void confirmSavedGoal(int target, ReadingGoal.GoalType goalType) {
         newGoalDialog.close();
         String notificationMessage =
-                String.format("Set your reading goal of %d %s", target, goalType.toString().toLowerCase());
+                String.format("Set your reading goal of %d %s", target,
+                        goalType.toString().
+                                toLowerCase());
         new Notification(notificationMessage, 3000).open();
     }
 
@@ -158,7 +161,8 @@ public class ReadingGoalForm extends VerticalLayout {
     }
 
     /**
-     * Vaadin's event bus system. A registered listener can be notified when a save or delete event is fired
+     * Vaadin's event bus system. A registered listener can be notified when a save or delete event
+     * is fired
      */
     public static abstract class GoalFormEvent extends ComponentEvent<ReadingGoalForm> {
         private ReadingGoal readingGoal;

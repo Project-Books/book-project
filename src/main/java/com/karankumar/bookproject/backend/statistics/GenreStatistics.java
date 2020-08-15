@@ -141,7 +141,8 @@ public class GenreStatistics extends Statistics {
     private List<Book> findReadBooksWithGenresAndRatings() {
         List<Book> booksWithGenresAndRatings = new ArrayList<>();
         for (Book book : readShelfBooks) {
-            if (book.getGenre() != null && book.getRating() != null && book.getRating() != RatingScale.NO_RATING) {
+            if (book.getGenre() != null && book.getRating() != null &&
+                    book.getRating() != RatingScale.NO_RATING) {
                 booksWithGenresAndRatings.add(book);
             }
         }

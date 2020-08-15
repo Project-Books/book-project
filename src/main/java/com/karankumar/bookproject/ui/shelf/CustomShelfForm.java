@@ -45,7 +45,8 @@ public class CustomShelfForm extends VerticalLayout {
     private Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
     private final TextField shelfNameField = new TextField();
 
-    public CustomShelfForm(CustomShelfService customShelfService, PredefinedShelfService predefinedShelfService) {
+    public CustomShelfForm(CustomShelfService customShelfService,
+                           PredefinedShelfService predefinedShelfService) {
         FormLayout formLayout = new FormLayout();
         dialog = new Dialog();
         dialog.add(formLayout);
@@ -65,12 +66,14 @@ public class CustomShelfForm extends VerticalLayout {
     private void bindFormFields() {
         binder.forField(shelfNameField)
               .asRequired("Please enter a shelf name")
-              .withValidator(isUniqueShelfName(), "This shelf name already exists. Please enter a new shelf name")
+              .withValidator(isUniqueShelfName(),
+                      "This shelf name already exists. Please enter a new shelf name")
               .bind(CustomShelf::getShelfName, CustomShelf::setShelfName);
     }
 
     private SerializablePredicate<? super String> isUniqueShelfName() {
-        return shelfName -> !customShelfNameAlreadyUsed(shelfName) && !customShelfNameMatchesPredefinedShelfName(shelfName);
+        return shelfName -> !customShelfNameAlreadyUsed(shelfName) &&
+                !customShelfNameMatchesPredefinedShelfName(shelfName);
     }
 
     private boolean customShelfNameAlreadyUsed(String customShelfName) {

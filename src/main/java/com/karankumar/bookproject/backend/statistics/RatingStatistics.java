@@ -82,7 +82,8 @@ public class RatingStatistics extends Statistics {
     private double calculateTotalRating() {
         return readBooksRated.stream()
                              .mapToDouble(book -> {
-                                 Double rating = converter.convertToPresentation(book.getRating(), null);
+                                 Double rating =
+                                         converter.convertToPresentation(book.getRating(), null);
                                  rating = (rating == null) ? 0.0 : rating;
                                  return rating;
                              })

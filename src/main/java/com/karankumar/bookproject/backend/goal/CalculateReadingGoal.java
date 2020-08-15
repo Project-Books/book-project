@@ -31,8 +31,8 @@ public class CalculateReadingGoal {
     private CalculateReadingGoal() {}
 
     /**
-     * Calculates the number of books that should have been read by this point in the year in order to be on target to
-     * achieving the goal
+     * Calculates the number of books that should have been read by this point in the year in order
+     * to be on target to achieving the goal
      * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
      * @return the number of books that the user should have read by this point in the year
      */
@@ -42,7 +42,8 @@ public class CalculateReadingGoal {
 
     /**
      * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
-     * @return the number of books that should have been read a week (on average) from the start of the year
+     * @return the number of books that should have been read a week (on average) from the start of
+     * the year
      */
     public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
         return ((int) Math.ceil(booksToReadThisYear / DateUtils.WEEKS_IN_YEAR));
@@ -54,7 +55,8 @@ public class CalculateReadingGoal {
      * @param readShelf the predefined read shelf
      * @return the number of books or pages read this year
      */
-    public static int howManyReadThisYear(ReadingGoal.GoalType goalType, @NotNull PredefinedShelf readShelf) {
+    public static int howManyReadThisYear(ReadingGoal.GoalType goalType,
+                                          @NotNull PredefinedShelf readShelf) {
         int readThisYear = 0;
         boolean lookingForBooks = goalType.equals(ReadingGoal.GoalType.BOOKS);
         for (Book book : readShelf.getBooks()) {
@@ -69,7 +71,8 @@ public class CalculateReadingGoal {
     }
 
     public static int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {
-        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) * DateUtils.getCurrentWeekNumberOfYear();
+        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) *
+                DateUtils.getCurrentWeekNumberOfYear();
         return Math.abs(shouldHaveRead - booksReadThisYear);
     }
 
@@ -77,7 +80,8 @@ public class CalculateReadingGoal {
      * Calculates a user's progress towards their reading goal
      * @param toRead the number of books to read by the end of the year (the goal)
      * @param read the number of books that the user has read so far
-     * @return a fraction of the number of books to read over the books read. If greater than 1, 1.0 is returned
+     * @return a fraction of the number of books to read over the books read.
+     * If greater than 1, 1.0 is returned
      */
     public static double calculateProgressTowardsReadingGoal(int toRead, int read) {
         double progress = (toRead == 0) ? 0 : ((double) read / toRead);
@@ -85,9 +89,11 @@ public class CalculateReadingGoal {
     }
 
     /**
-     * Note that this method assumes that the user is behind or ahead of schedule (and that they haven't met their goal)
+     * Note that this method assumes that the user is behind or ahead of schedule
+     * (and that they haven't met their goal)
      * @param booksReadThisYear the number of books read so far
-     * @param shouldHaveRead the number of books that should have been ready by this point to be on schedule
+     * @param shouldHaveRead the number of books that should have been ready by this point to be on
+     *                       schedule
      * @return a String denoting that the user is ahead or behind schedule
      */
     public static String behindOrAheadSchedule(int booksReadThisYear, int shouldHaveRead) {

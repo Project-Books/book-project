@@ -51,8 +51,8 @@ public class AuthorService extends BaseService<Author, Long> {
                 .map(BaseEntity::getId)
                 .filter(id -> id.equals(author.getId())).collect(Collectors.toList());
             if (matchingAuthors.size() == 1) {
-                // if an author with the same ID exists, set this incoming author ID to null so that a new row in the
-                // table is made rather than updating the row that has the same ID
+                // if an author with the same ID exists, set this incoming author ID to null so that
+                // a new row in the table is made rather than updating the row that has the same ID
                 LOGGER.log(Level.INFO, "Matching authorIds: " + matchingAuthors);
                 author.removeId();
             }

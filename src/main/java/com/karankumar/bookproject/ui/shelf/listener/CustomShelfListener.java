@@ -27,7 +27,8 @@ public class CustomShelfListener {
     private final BooksInShelfView booksInShelfView;
     private final CustomShelfService customShelfService;
 
-    public CustomShelfListener(BooksInShelfView booksInShelfView, CustomShelfService customShelfService) {
+    public CustomShelfListener(BooksInShelfView booksInShelfView,
+                               CustomShelfService customShelfService) {
         this.customShelfService = customShelfService;
         this.booksInShelfView = booksInShelfView;
     }

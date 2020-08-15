@@ -37,7 +37,8 @@ public class DatabaseUserDetailsPasswordService implements UserDetailsPasswordSe
     public UserDetails updatePassword(UserDetails userDetails, String newPassword) {
         User user = userRepository.findByUsername(userDetails.getUsername())
                                   .orElseThrow(() -> new UsernameNotFoundException(
-                                          "User with the username " + userDetails.getUsername() + " was not found."));
+                                          "User with the username " + userDetails.getUsername() +
+                                                  " was not found."));
         user.setPassword(newPassword);
         return userDetailsMapper.toUserDetails(user);
     }

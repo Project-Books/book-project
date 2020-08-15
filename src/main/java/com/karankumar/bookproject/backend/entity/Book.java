@@ -47,15 +47,23 @@ public class Book extends BaseEntity {
     private String edition;
     private String bookRecommendedBy;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(cascade =
+            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}
+    )
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
+    )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "ID")
     private PredefinedShelf predefinedShelf;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
+    )
     @JoinColumn(name = "custom_shelf_id", referencedColumnName = "ID")
     private CustomShelf customShelf;
 
@@ -107,9 +115,5 @@ public class Book extends BaseEntity {
         return Book.class.getSimpleName() + "{"
             + "title='" + title + '\''
             + '}';
-    }
-
-    public boolean seriesPositionExists() {
-        return seriesPosition != null && seriesPosition > 0;
     }
 }
