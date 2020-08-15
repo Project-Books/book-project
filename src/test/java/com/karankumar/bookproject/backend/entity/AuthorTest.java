@@ -61,8 +61,8 @@ class AuthorTest {
     }
 
     /**
-     * Updating the author of a book should only affect that book, not any other book that originally had the
-     * same author name
+     * Updating the author of a book should only affect that book, not any other book that
+     * originally had the same author name
      */
     @Test
     public void updateAuthorAffectsOneRow() {

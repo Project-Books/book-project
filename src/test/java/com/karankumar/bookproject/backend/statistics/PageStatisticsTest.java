@@ -47,8 +47,10 @@ public class PageStatisticsTest {
         PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         PredefinedShelf readingShelf = predefinedShelfUtils.findReadingShelf();
 
-        Book readingBook = new Book("More pages than any read book", new Author("Joe", "Bloggs"), readingShelf);
-        readingBook.setNumberOfPages(StatisticTestUtils.getBookWithMostPages().getNumberOfPages() + 50);
+        Book readingBook = new Book("More pages than any read book",
+                new Author("Joe", "Bloggs"), readingShelf);
+        readingBook.setNumberOfPages(StatisticTestUtils.getBookWithMostPages()
+                                                       .getNumberOfPages() + 50);
         bookService.save(readingBook);
 
         Assertions.assertEquals(StatisticTestUtils.getBookWithMostPages().getTitle(),
@@ -63,7 +65,8 @@ public class PageStatisticsTest {
 
     @Test
     public void averagePageLengthExistsAndIsCorrect() {
-        int averagePageLength = StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
+        int averagePageLength =
+                StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
         Assertions.assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
     }
 

@@ -17,17 +17,21 @@ public class DateUtilsTest {
     }
 
     private int mockFirstWeekOfYear() {
-        Mockito.when(DateUtils.TimeUtils.now()).thenReturn(LocalDateTime.of(2020, 1, 1, 1, 1));
+        Mockito.when(DateUtils.TimeUtils.now())
+               .thenReturn(LocalDateTime.of(2020, 1, 1, 1, 1)
+        );
         return DateUtils.getCurrentWeekNumberOfYear();
     }
 
     private int mockFortiethWeekOfYear() {
-        Mockito.when(DateUtils.TimeUtils.now()).thenReturn(LocalDateTime.of(2020, 10, 1, 1, 1));
+        Mockito.when(DateUtils.TimeUtils.now())
+               .thenReturn(LocalDateTime.of(2020, 10, 1, 1, 1));
         return DateUtils.getCurrentWeekNumberOfYear();
     }
 
     private int mockLastWeekOfYear() {
-        Mockito.when(DateUtils.TimeUtils.now()).thenReturn(LocalDateTime.of(2020, 12, 25, 1, 1));
+        Mockito.when(DateUtils.TimeUtils.now())
+               .thenReturn(LocalDateTime.of(2020, 12, 25, 1, 1));
         return DateUtils.getCurrentWeekNumberOfYear();
     }
 

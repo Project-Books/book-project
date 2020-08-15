@@ -68,7 +68,10 @@ public class BookServiceTest {
         Assertions.assertEquals(1, bookService.count());
         Assertions.assertEquals(1, bookService.findAll(validBook.getTitle()).size());
         Assertions.assertEquals(validBook, bookService.findAll(validBook.getTitle()).get(0));
-        Assertions.assertEquals(validBook.getAuthor(), bookService.findAll(validBook.getTitle()).get(0).getAuthor());
+        Assertions.assertEquals(validBook.getAuthor(),
+                bookService.findAll(validBook.getTitle())
+                           .get(0)
+                           .getAuthor());
     }
 
     @Test

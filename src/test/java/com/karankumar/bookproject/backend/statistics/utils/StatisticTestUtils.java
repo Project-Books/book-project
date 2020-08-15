@@ -31,13 +31,16 @@ public class StatisticTestUtils {
 
     private StatisticTestUtils() {}
 
-    public static void populateReadBooks(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateReadBooks(BookService bookService,
+                                         PredefinedShelfService predefinedShelfService) {
         StatisticTestUtils.bookService = bookService;
         bookService.deleteAll();
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
 
-        bookWithLowestRating = createReadBook("Book1", RatingScale.NO_RATING, Genre.BUSINESS, 100);
-        bookWithHighestRating = createReadBook("Book2", RatingScale.NINE_POINT_FIVE, mostReadGenre, 150);
+        bookWithLowestRating =
+                createReadBook("Book1", RatingScale.NO_RATING, Genre.BUSINESS, 100);
+        bookWithHighestRating =
+                createReadBook("Book2", RatingScale.NINE_POINT_FIVE, mostReadGenre, 150);
         createReadBook("Book3", RatingScale.SIX, mostReadGenre, 200);
         createReadBook("Book4", RatingScale.ONE, mostReadGenre, 250);
         createReadBook("Book5", RatingScale.NINE, mostLikedGenre, 300);

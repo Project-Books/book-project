@@ -142,7 +142,8 @@ public class BookFormTest {
         Assertions.assertEquals(bookTitle, bookForm.bookTitle.getValue());
         Assertions.assertEquals(firstName, bookForm.authorFirstName.getValue());
         Assertions.assertEquals(lastName, bookForm.authorLastName.getValue());
-        Assertions.assertEquals(readShelf.getPredefinedShelfName(), bookForm.predefinedShelfField.getValue());
+        Assertions.assertEquals(readShelf.getPredefinedShelfName(),
+                bookForm.predefinedShelfField.getValue());
         Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
         Assertions.assertEquals(pagesRead, bookForm.pagesRead.getValue());
         Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
@@ -183,7 +184,9 @@ public class BookFormTest {
         Assertions.assertEquals(bookTitle, savedOrDeletedBook.getTitle());
         Assertions.assertEquals(firstName, savedOrDeletedBook.getAuthor().getFirstName());
         Assertions.assertEquals(lastName, savedOrDeletedBook.getAuthor().getLastName());
-        Assertions.assertEquals(readShelf.getShelfName(), savedOrDeletedBook.getPredefinedShelf().getShelfName());
+        Assertions.assertEquals(readShelf.getShelfName(),
+                savedOrDeletedBook.getPredefinedShelf()
+                                  .getShelfName());
         Assertions.assertEquals(genre, savedOrDeletedBook.getGenre());
         Assertions.assertEquals(pagesRead, savedOrDeletedBook.getPagesRead());
         Assertions.assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());
