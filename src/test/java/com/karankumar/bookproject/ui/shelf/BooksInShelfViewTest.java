@@ -129,6 +129,8 @@ public class BooksInShelfViewTest {
             case READ:
                 expectedColumns = expectedReadColumns;
                 break;
+            default:
+                Assertions.fail();
         }
 
         for (Grid.Column<Book> col : columns) {
