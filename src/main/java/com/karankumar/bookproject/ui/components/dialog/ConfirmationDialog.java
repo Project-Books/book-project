@@ -20,14 +20,11 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
-
+/**
+ * A general purpose dialog to be extended for customization.
+ * All dialogs that request confirmation from a user should extend this class.
+ */
 abstract class ConfirmationDialog extends Dialog {
-
-    /*
-    ConfirmationDialog is a general purpose dialog to be extended for customization.
-    All dialogs that request confirmation from a user should extend this class.
-     */
-
     protected static Dialog dialog;
     private String descriptionText;
     Button confirmButton;
@@ -61,7 +58,5 @@ abstract class ConfirmationDialog extends Dialog {
         open();
     }
 
-    // To be defined in subclass
     abstract void save();
-
 }
