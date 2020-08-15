@@ -43,10 +43,9 @@ public class SettingsView extends HorizontalLayout {
     private static Label darkModeLabel = new Label(enable);
     private static boolean darkModeOn = false;
 
-    // -------------- Clear Shelves ----------------------
-    private static ResetShelvesDialog resetShelvesDialog;
+    // Clear Shelves
     private static final String CLEAR_SHELVES = "Clear Shelves";
-    private static Button clearShelveButton; // Not labeled 'private' because it is tested in SettingsViewTest
+    private static Button clearShelfButton;
     private static BookService bookService;
 
     static {
@@ -65,17 +64,14 @@ public class SettingsView extends HorizontalLayout {
             updateDarkModeLabel();
         });
 
-
-        clearShelveButton = new Button(CLEAR_SHELVES, click -> {
-            resetShelvesDialog = new ResetShelvesDialog(bookService);
-        });
+        clearShelfButton = new Button(CLEAR_SHELVES, click -> new ResetShelvesDialog(bookService));
     }
 
     SettingsView(@Autowired BookService bookService) {
 
         SettingsView.bookService = bookService;
 
-        // Darkmode Layout
+        // Dark mode Layout
         if (darkModeOn) {
             updateDarkModeLabel();
             paperToggle.setChecked(true);
@@ -87,7 +83,7 @@ public class SettingsView extends HorizontalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(darkModeLabel, paperToggle);
 
-        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelveButton);
+        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelfButton);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 
