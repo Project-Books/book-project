@@ -26,6 +26,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -49,7 +50,7 @@ public class CustomShelfForm extends VerticalLayout {
                            PredefinedShelfService predefinedShelfService) {
         FormLayout formLayout = new FormLayout();
         dialog = new Dialog();
-        dialog.add(formLayout);
+        dialog.add(new H3("Add custom shelf"), formLayout);
         dialog.setCloseOnOutsideClick(true);
         add(dialog);
 
