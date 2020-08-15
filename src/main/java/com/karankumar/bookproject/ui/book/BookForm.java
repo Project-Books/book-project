@@ -622,7 +622,7 @@ public class BookForm extends VerticalLayout {
                 // allowed since these are optional fields
                 return true;
             }
-            return (endDate.isAfter(dateStarted));
+            return (endDate.isEqual(dateStarted) || endDate.isAfter(dateStarted));
         };
     }
 
