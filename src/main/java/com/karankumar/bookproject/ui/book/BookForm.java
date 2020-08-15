@@ -76,7 +76,8 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final IntegerField seriesPosition = new IntegerField();
     @VisibleForTesting final TextField authorFirstName = new TextField();
     @VisibleForTesting final TextField authorLastName = new TextField();
-    @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField = new ComboBox<>();
+    @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
+            new ComboBox<>();
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
     @VisibleForTesting final ComboBox<Genre> bookGenre = new ComboBox<>();
     @VisibleForTesting final IntegerField pagesRead = new IntegerField();
@@ -185,7 +186,8 @@ public class BookForm extends VerticalLayout {
     }
 
     private void showSeriesPositionFormIfSeriesPositionAvailable() {
-        boolean isInSeries = binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
+        boolean isInSeries =
+                binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
         inSeriesCheckbox.setValue(isInSeries);
         seriesPositionFormItem.setVisible(isInSeries);
     }
@@ -467,7 +469,7 @@ public class BookForm extends VerticalLayout {
      *
      * @param name the name of the @see PredefinedShelf that was chosen in the book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of
-     * a @see PredefinedShelf
+     *                               a @see PredefinedShelf
      */
     private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
@@ -512,7 +514,7 @@ public class BookForm extends VerticalLayout {
      *
      * @param name the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of
-     * a @see PredefinedShelf
+     *                               a @see PredefinedShelf
      */
     private void showOrHidePagesRead(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
@@ -534,7 +536,7 @@ public class BookForm extends VerticalLayout {
      *
      * @param name the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of
-     * a @see PredefinedShelf
+     *                               a @see PredefinedShelf
      */
     private void showOrHideRating(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
@@ -614,8 +616,14 @@ public class BookForm extends VerticalLayout {
     }
 
     private SerializablePredicate<LocalDate> isEndDateAfterStartDate() {
-        return endDate -> (endDate != null && dateStartedReading.getValue() != null &&
-                endDate.isAfter(dateStartedReading.getValue()));
+        return endDate -> {
+            LocalDate dateStarted = dateStartedReading.getValue();
+            if (dateStarted == null || endDate == null) {
+                // allowed since these are optional fields
+                return true;
+            }
+            return (endDate.isAfter(dateStarted));
+        };
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
