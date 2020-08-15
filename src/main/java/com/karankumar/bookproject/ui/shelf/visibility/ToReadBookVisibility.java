@@ -16,16 +16,15 @@
 package com.karankumar.bookproject.ui.shelf.visibility;
 
 import com.karankumar.bookproject.ui.shelf.BookGrid;
-
-import static com.karankumar.bookproject.ui.shelf.component.BookGridColumn.*;
+import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 
 public class ToReadBookVisibility implements BookVisibilityStrategy {
 
     @Override
     public void toggleColumnVisibility(BookGrid bookGrid) {
-        bookGrid.toggleColumnVisibility(RATING_KEY, false);
-        bookGrid.toggleColumnVisibility(DATE_STARTED_KEY, false);
-        bookGrid.toggleColumnVisibility(DATE_FINISHED_KEY, false);
-        bookGrid.toggleColumnVisibility(PAGES_READ_KEY, false);
+        bookGrid.toggleColumnVisibility(BookGridColumn.RATING_KEY, false);
+        bookGrid.toggleColumnVisibility(BookGridColumn.DATE_STARTED_KEY, false);
+        bookGrid.toggleColumnVisibility(BookGridColumn.DATE_FINISHED_KEY, false);
+        bookGrid.toggleColumnVisibility(BookGridColumn.PAGES_READ_KEY, false);
     }
 }
