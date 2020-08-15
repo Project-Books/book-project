@@ -16,6 +16,7 @@
 package com.karankumar.bookproject.ui.shelf.listener;
 
 import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.karankumar.bookproject.ui.shelf.CustomShelfForm;
 import lombok.extern.java.Log;
 
@@ -23,10 +24,12 @@ import java.util.logging.Level;
 
 @Log
 public class CustomShelfListener {
+    private final BooksInShelfView booksInShelfView;
     private final CustomShelfService customShelfService;
 
-    public CustomShelfListener(CustomShelfService customShelfService) {
+    public CustomShelfListener(BooksInShelfView booksInShelfView, CustomShelfService customShelfService) {
         this.customShelfService = customShelfService;
+        this.booksInShelfView = booksInShelfView;
     }
 
     public void bind(CustomShelfForm customShelfForm) {
@@ -37,6 +40,7 @@ public class CustomShelfListener {
         if (event.getCustomShelf() != null) {
             customShelfService.save(event.getCustomShelf());
             LOGGER.log(Level.INFO, "Custom shelf saved");
+            booksInShelfView.updateWhichShelfList();
         } else {
             LOGGER.log(Level.SEVERE, "Custom shelf value is null");
         }

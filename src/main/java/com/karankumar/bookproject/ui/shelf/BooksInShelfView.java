@@ -103,6 +103,10 @@ public class BooksInShelfView extends VerticalLayout {
         add(initializeLayout(), bookGrid.get(), customShelfForm, bookForm);
     }
 
+    public void updateWhichShelfList() {
+        whichShelf.updateShelfList();
+    }
+
     private EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> initVisibilityStrategies() {
         EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> m = new EnumMap<>(PredefinedShelf.ShelfName.class);
         m.put(PredefinedShelf.ShelfName.TO_READ, new ToReadBookVisibility());
@@ -114,13 +118,13 @@ public class BooksInShelfView extends VerticalLayout {
     }
 
     private void bindListeners(BookService bookService) {
-        new BookSaveListener(bookService, this).bind(bookForm);
+        new BookSaveListener(this, bookService).bind(bookForm);
         new BookDeleteListener(bookService, this).bind(bookForm);
     }
 
     private CustomShelfForm createCustomShelfForm() {
         CustomShelfForm customShelfForm = new CustomShelfForm(customShelfService, predefinedShelfService);
-        new CustomShelfListener(customShelfService).bind(customShelfForm);
+        new CustomShelfListener(this, customShelfService).bind(customShelfForm);
         return customShelfForm;
     }
 

@@ -27,18 +27,24 @@ import java.util.logging.Level;
 
 @Log
 public class BookShelfComboBox {
-    private final ComboBox<String> comboBox;
+    private final ComboBox<String> allShelvesList;
+    private final CustomShelfService customShelfService;
 
     public BookShelfComboBox(CustomShelfService customShelfService) {
-        this.comboBox = new ComboBox<>();
+        this.allShelvesList = new ComboBox<>();
+        this.customShelfService = customShelfService;
 
-        comboBox.setPlaceholder("Select shelf");
-        comboBox.setItems(ShelfUtils.findAllShelfNames(customShelfService.findAll()));
-        comboBox.setRequired(true);
+        allShelvesList.setPlaceholder("Select shelf");
+        updateShelfList();
+        allShelvesList.setRequired(true);
+    }
+
+    public void updateShelfList() {
+        allShelvesList.setItems(ShelfUtils.findAllShelfNames(customShelfService.findAll()));
     }
 
     public void bind(BooksInShelfView view) {
-        comboBox.addValueChangeListener(event -> {
+        allShelvesList.addValueChangeListener(event -> {
             String chosenShelf = event.getValue();
             if (chosenShelf == null) {
                 LOGGER.log(Level.FINE, "No choice selected");
@@ -57,6 +63,6 @@ public class BookShelfComboBox {
     }
 
     public void addToLayout(HorizontalLayout layout) {
-        layout.add(comboBox);
+        layout.add(allShelvesList);
     }
 }

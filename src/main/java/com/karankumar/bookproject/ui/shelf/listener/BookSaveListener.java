@@ -27,13 +27,12 @@ public class BookSaveListener {
     private final BookService bookService;
     private final BooksInShelfView view;
 
-    public BookSaveListener(BookService bookService, BooksInShelfView view) {
+    public BookSaveListener(BooksInShelfView view, BookService bookService) {
         this.bookService = bookService;
         this.view = view;
     }
 
     private void saveBook(BookForm.SaveEvent event) {
-        LOGGER.log(Level.INFO, "Saving book...");
         if (event.getBook() == null) {
             LOGGER.log(Level.SEVERE, "Retrieved book from event is null");
         } else {
