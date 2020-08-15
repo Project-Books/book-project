@@ -23,7 +23,7 @@ import java.util.Random;
 @IntegrationTest
 @WebAppConfiguration
 public class ReadingGoalFormTest {
-    static Routes routes;
+    private static Routes routes;
 
     @Autowired
     private ApplicationContext ctx;
