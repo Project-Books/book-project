@@ -28,14 +28,10 @@ import org.springframework.context.ApplicationContext;
 
 @IntegrationTest
 public class ResetShelvesDialogTest {
-
-    // Arrange
     private BookService bookService;
-    private ResetShelvesDialog resetShelvesDialog;
-    private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
+    private static Routes routes;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -53,15 +49,17 @@ public class ResetShelvesDialogTest {
 
     @Test
     void openDialog(){
-        //Act
-        resetShelvesDialog = new ResetShelvesDialog(bookService);
+        // given
+        ResetShelvesDialog resetShelvesDialog = new ResetShelvesDialog(bookService);
+
+        // when
         resetShelvesDialog.open();
         resetShelvesDialog.confirmButton.click();
-        //Assert
-        Assertions.assertTrue(resetShelvesDialog.isEmpty());
+
+        // then
+        Assertions.assertEquals(bookService.count(), 0);
 
     }
-
 
     @AfterEach
     public void tearDown() {

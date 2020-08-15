@@ -31,7 +31,6 @@ import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
 @Log
@@ -68,10 +67,8 @@ public class SettingsView extends HorizontalLayout {
     }
 
     SettingsView(@Autowired BookService bookService) {
-
         SettingsView.bookService = bookService;
 
-        // Dark mode Layout
         if (darkModeOn) {
             updateDarkModeLabel();
             paperToggle.setChecked(true);
@@ -84,14 +81,12 @@ public class SettingsView extends HorizontalLayout {
         horizontalLayout.add(darkModeLabel, paperToggle);
 
         VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelfButton);
-
         verticalLayout.setAlignItems(Alignment.CENTER);
 
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
-
 
     private static void updateDarkModeLabel() {
         if (darkModeLabel != null) {

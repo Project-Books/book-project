@@ -16,30 +16,21 @@
 package com.karankumar.bookproject.ui.components.dialog;
 
 import com.karankumar.bookproject.backend.service.BookService;
-import java.util.logging.Level;
 import lombok.extern.java.Log;
 
 @Log
 public class ResetShelvesDialog extends ConfirmationDialog {
-
-
     private static BookService bookService;
 
     public ResetShelvesDialog(BookService bookService) {
-        super(" Are you sure you want to do delete all of the books in the shelves? There is no going back. ");
+        super(" Are you sure you want to do delete all of the books in the shelves? " +
+                "There is no going back. ");
         ResetShelvesDialog.bookService = bookService;
     }
 
     @Override
     void save() {
-        LOGGER.log(Level.INFO, "Deleting all books...");
         bookService.deleteAll();
-        LOGGER.log(Level.INFO, "Deleted all books.");
     }
-
-    boolean isEmpty(){
-        return bookService.count() == 0;
-    }
-
 }
 
