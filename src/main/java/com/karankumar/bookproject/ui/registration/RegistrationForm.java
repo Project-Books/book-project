@@ -2,6 +2,7 @@ package com.karankumar.bookproject.ui.registration;
 
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
+import com.karankumar.bookproject.ui.login.LoginView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -96,7 +97,8 @@ public class RegistrationForm extends FormLayout {
                 passwordConfirmationField,
                 passwordHint,
                 errorMessage,
-                registerButton
+                registerButton,
+                new Button("Go back to Login", e -> getUI().ifPresent(ui -> ui.navigate(LoginView.class)))
         );
     }
 
