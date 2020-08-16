@@ -6,7 +6,6 @@ import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -41,11 +40,7 @@ public class UserService {
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
 
         if (!constraintViolations.isEmpty()) {
-            String errors = constraintViolations
-                    .stream()
-                    .map(v -> v.getPropertyPath() + " " + v.getMessage())
-                    .collect(Collectors.joining());
-            throw new BadCredentialsException(errors);
+            throw new ConstraintViolationException(constraintViolations);
         }
 
         if (usernameIsInUse(user.getUsername())) {
@@ -71,6 +66,10 @@ public class UserService {
 
         userRepository.save(userToRegister);
 
+        authenticateUser(user);
+    }
+
+    private void authenticateUser(User user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         Authentication authResult = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -78,10 +77,6 @@ public class UserService {
         if (authResult.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authResult);
         }
-    }
-
-    public void delete(User user) {
-        userRepository.delete(user);
     }
 
     public boolean usernameIsInUse(String username) {
