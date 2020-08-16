@@ -46,7 +46,7 @@ public class SettingsView extends HorizontalLayout {
     // -------------- Clear Shelves ----------------------
     private static ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Clear Shelves";
-    private static Button clearShelveButton; // Not labeled 'private' because it is tested in SettingsViewTest
+    private static Button clearShelfButton;
     private static BookService bookService;
 
     static {
@@ -67,7 +67,7 @@ public class SettingsView extends HorizontalLayout {
         });
 
 
-        clearShelveButton = new Button(CLEAR_SHELVES, click -> {
+        clearShelfButton = new Button(CLEAR_SHELVES, click -> {
             resetShelvesDialog = new ResetShelvesDialog(bookService);
             resetShelvesDialog.openDialog();
         });
@@ -83,7 +83,7 @@ public class SettingsView extends HorizontalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(darkModeLabel, darkModeToggle);
 
-        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelveButton);
+        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelfButton);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 

@@ -53,7 +53,7 @@ public class ResetShelvesDialogTest {
         ResetShelvesDialog resetShelvesDialog = new ResetShelvesDialog(bookService);
 
         // when
-        resetShelvesDialog.open();
+        resetShelvesDialog.openDialog();
         resetShelvesDialog.confirmButton.click();
 
         // then
