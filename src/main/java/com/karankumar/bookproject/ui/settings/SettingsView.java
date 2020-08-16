@@ -31,6 +31,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
 @Log
@@ -42,9 +43,10 @@ public class SettingsView extends HorizontalLayout {
     private static Label darkModeLabel = new Label(enable);
     private static boolean darkModeOn = false;
 
-    // Clear Shelves
+    // -------------- Clear Shelves ----------------------
+    private static ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Clear Shelves";
-    private static Button clearShelfButton;
+    private static Button clearShelveButton; // Not labeled 'private' because it is tested in SettingsViewTest
     private static BookService bookService;
 
     static {
@@ -63,12 +65,17 @@ public class SettingsView extends HorizontalLayout {
             updateDarkModeLabel();
         });
 
-        clearShelfButton = new Button(CLEAR_SHELVES, click -> new ResetShelvesDialog(bookService));
+
+        clearShelveButton = new Button(CLEAR_SHELVES, click -> {
+            resetShelvesDialog = new ResetShelvesDialog(bookService);
+        });
     }
 
     SettingsView(@Autowired BookService bookService) {
+
         SettingsView.bookService = bookService;
 
+        // Darkmode Layout
         if (darkModeOn) {
             updateDarkModeLabel();
             paperToggle.setChecked(true);
@@ -80,13 +87,15 @@ public class SettingsView extends HorizontalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(darkModeLabel, paperToggle);
 
-        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelfButton);
+        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelveButton);
+
         verticalLayout.setAlignItems(Alignment.CENTER);
 
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
+
 
     private static void updateDarkModeLabel() {
         if (darkModeLabel != null) {

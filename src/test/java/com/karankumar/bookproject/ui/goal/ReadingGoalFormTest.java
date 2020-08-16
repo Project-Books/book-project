@@ -2,13 +2,18 @@ package com.karankumar.bookproject.ui.goal;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
-import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -18,7 +23,7 @@ import java.util.Random;
 @IntegrationTest
 @WebAppConfiguration
 public class ReadingGoalFormTest {
-    static Routes routes;
+    private static Routes routes;
 
     @Autowired
     private ApplicationContext ctx;

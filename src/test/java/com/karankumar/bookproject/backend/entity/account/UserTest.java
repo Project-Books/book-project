@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.entity.account;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.repository.UserRepository;

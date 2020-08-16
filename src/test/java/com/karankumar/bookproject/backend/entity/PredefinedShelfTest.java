@@ -32,14 +32,16 @@ class PredefinedShelfTest {
     private static PredefinedShelfService shelfService;
 
     @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService shelfService, @Autowired BookService bookService) {
+    public static void setup(@Autowired PredefinedShelfService shelfService,
+                             @Autowired BookService bookService) {
         Assumptions.assumeTrue(shelfService != null && bookService != null);
         PredefinedShelfTest.shelfService = shelfService;
         bookService.deleteAll(); // reset
     }
 
     /**
-     * A {@link com.karankumar.bookproject.backend.entity.PredefinedShelf} without any books should still exist
+     * A {@link com.karankumar.bookproject.backend.entity.PredefinedShelf} without any books should
+     * still exist
      */
     @Test
     public void orphanShelfExists() {
@@ -47,9 +49,13 @@ class PredefinedShelfTest {
         List<PredefinedShelf> shelves = PredefinedShelfTest.shelfService.findAll();
 
         Assertions.assertEquals(4, shelves.size());
-        Assertions.assertEquals(shelves.get(0).getPredefinedShelfName(), PredefinedShelf.ShelfName.TO_READ);
-        Assertions.assertEquals(shelves.get(1).getPredefinedShelfName(), PredefinedShelf.ShelfName.READING);
-        Assertions.assertEquals(shelves.get(2).getPredefinedShelfName(), PredefinedShelf.ShelfName.READ);
-        Assertions.assertEquals(shelves.get(3).getPredefinedShelfName(), PredefinedShelf.ShelfName.DID_NOT_FINISH);
+        Assertions.assertEquals(shelves.get(0).getPredefinedShelfName(),
+                PredefinedShelf.ShelfName.TO_READ);
+        Assertions.assertEquals(shelves.get(1).getPredefinedShelfName(),
+                PredefinedShelf.ShelfName.READING);
+        Assertions.assertEquals(shelves.get(2).getPredefinedShelfName(),
+                PredefinedShelf.ShelfName.READ);
+        Assertions.assertEquals(shelves.get(3).getPredefinedShelfName(),
+                PredefinedShelf.ShelfName.DID_NOT_FINISH);
     }
 }
