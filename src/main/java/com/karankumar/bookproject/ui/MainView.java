@@ -7,7 +7,7 @@
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License along with this program.
     If not, see <https://www.gnu.org/licenses/>.
@@ -31,10 +31,15 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.InitialPageSettings;
+import com.vaadin.flow.server.PageConfigurator;
+
+import java.util.HashMap;
 
 @CssImport("./styles/shared-styles.css")
-public class MainView extends AppLayout {
+public class MainView extends AppLayout implements RouterLayout, PageConfigurator {
     public MainView() {
         Tabs tabs = new Tabs();
         Tab myBooks = createTab(VaadinIcon.BOOK, BooksInShelfView.class, "My books");
@@ -75,5 +80,13 @@ public class MainView extends AppLayout {
         a.add(icon.create());
         a.add(title);
         return a;
+    }
+
+    @Override
+    public void configurePage(InitialPageSettings settings) {
+        HashMap<String, String> attributes = new HashMap<>();
+        attributes.put("rel", "shortcut icon");
+        attributes.put("type", "image/png");
+        settings.addLink("icons/icon.png", attributes);
     }
 }
