@@ -32,10 +32,9 @@ abstract class ConfirmationDialog extends Dialog {
 
     ConfirmationDialog(String dialogText){
         descriptionText = dialogText;
-        openDialog();
     }
 
-    private void openDialog(){
+    public void openDialog(){
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
 

@@ -25,9 +25,9 @@ import com.vaadin.flow.shared.Registration;
 @Tag("paper-toggle-button")
 @NpmPackage(value="@polymer/paper-toggle-button", version = "3.0.1")
 @JsModule("@polymer/paper-toggle-button/paper-toggle-button.js")
-public class SwitchToggle extends Component {
-    public Registration addClickListener(ComponentEventListener<SwitchToggleClickEvent> listener) {
-        return addListener(SwitchToggleClickEvent.class, listener);
+public class PaperToggle extends Component {
+    public Registration addClickListener(ComponentEventListener<PaperToggleClickEvent> listener) {
+        return addListener(PaperToggleClickEvent.class, listener);
     }
 
     public void setChecked(boolean checked){
