@@ -5,6 +5,7 @@ import com.karankumar.bookproject.backend.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
@@ -18,7 +19,6 @@ import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.validator.EmailValidator;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.internal.engine.ValidationContext;
 
 public class RegistrationForm extends FormLayout {
     private final UserService userService;
@@ -75,10 +75,21 @@ public class RegistrationForm extends FormLayout {
             enablePasswordValidation = true;
             binder.validate();
         });
+
+        passwordHint.getStyle().set("font-size", "var(--lumo-font-size-s)");
+        passwordHint.getStyle().set("color", "var(--lumo-secondary-text-color)");
+
         binder.setStatusLabel(errorMessage);
         errorMessage.getStyle().set("color", "var(--lumo-error-text-color)");
 
+        this.setMaxWidth("360px");
+        this.getStyle().set("margin", "0 auto");
+        this.setResponsiveSteps(
+                new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP)
+        );
+
         add(
+                new H2("Register"),
                 usernameField,
                 emailField,
                 passwordField,
