@@ -23,18 +23,17 @@ import org.apache.commons.lang3.StringUtils;
 
 @Log
 public class RegistrationForm extends FormLayout {
+    public static final String PASSWORD_HINT =
+            "The password must be at least 8 characters long and consist of at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+=";
     private final UserService userService;
     private final Binder<User> binder = new BeanValidationBinder<>(User.class);
 
-    private final TextField usernameField = new TextField("Username");
-    private final EmailField emailField = new EmailField("Email Address");
-    private final PasswordField passwordField = new PasswordField("Password");
-    private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
-    private final Paragraph passwordHint = new Paragraph(
-            "The password must be at least 8 characters long and consist of at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+=");
-    private final Span errorMessage = new Span();
-
-    private final Button registerButton = new Button("Register");
+   private final TextField usernameField = new TextField("Username");
+   private final EmailField emailField = new EmailField("Email Address");
+   private final PasswordField passwordField = new PasswordField("Password");
+   private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
+   private final Button registerButton = new Button("Register");
+   private final Span errorMessage = new Span();
 
     // Flag for disabling first run for password validation
     private boolean enablePasswordValidation = false;
@@ -43,10 +42,20 @@ public class RegistrationForm extends FormLayout {
         this.userService = userService;
 
         usernameField.setRequired(true);
-        emailField.setRequiredIndicatorVisible(true);
-        passwordField.setRequired(true);
-        passwordConfirmationField.setRequired(true);
+        usernameField.setId("username");
 
+        emailField.setRequiredIndicatorVisible(true);
+        emailField.setId("email");
+
+        passwordField.setRequired(true);
+        passwordField.setId("password");
+
+        passwordConfirmationField.setRequired(true);
+        passwordConfirmationField.setId("password-confirmation");
+
+        errorMessage.setId("error-message");
+
+        registerButton.setId("register");
         registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         registerButton.addClickListener(buttonClickEvent -> {
             User user = User.builder().build();
@@ -61,33 +70,16 @@ public class RegistrationForm extends FormLayout {
 
                     errorMessage.setText("A server error occurred when registering. Please try again later.");
                 }
+            } else {
+                errorMessage.setText("There are errors in the registration form.");
             }
         });
 
-        binder.forField(usernameField)
-              .withValidator(userService::usernameIsNotInUse,
-                      "A user with this username does already exist")
-              .bind("username");
-        binder.forField(emailField)
-              .withValidator(new EmailValidator("Please enter a correct email address"))
-              .withValidator(userService::emailIsNotInUse,
-                      "A user with this email address already exists")
-              .bind("email");
+        addFieldValidations(userService);
 
-        binder.forField(passwordField)
-              .withValidator(this::passwordValidator)
-              .bind("password");
-        passwordConfirmationField.addValueChangeListener(e -> {
-            // The user has modified the second field, now we can validate and show errors.
-            enablePasswordValidation = true;
-            binder.validate();
-        });
-
+        Paragraph passwordHint = new Paragraph(PASSWORD_HINT);
         passwordHint.getStyle().set("font-size", "var(--lumo-font-size-s)");
         passwordHint.getStyle().set("color", "var(--lumo-secondary-text-color)");
-
-        binder.setStatusLabel(errorMessage);
-        errorMessage.getStyle().set("color", "var(--lumo-error-text-color)");
 
         this.setMaxWidth("360px");
         this.getStyle().set("margin", "0 auto");
@@ -106,6 +98,32 @@ public class RegistrationForm extends FormLayout {
                 registerButton,
                 new Button("Go back to Login", e -> getUI().ifPresent(ui -> ui.navigate(LoginView.class)))
         );
+    }
+
+    private void addFieldValidations(UserService userService) {
+        binder.forField(usernameField)
+              .withValidator(userService::usernameIsNotInUse,
+                      "A user with this username does already exist")
+              .bind("username");
+
+        binder.forField(emailField)
+              .withValidator(new EmailValidator("Please enter a correct email address"))
+              .withValidator(userService::emailIsNotInUse,
+                      "A user with this email address already exists")
+              .bind("email");
+
+        binder.forField(passwordField)
+              .withValidator(this::passwordValidator)
+              .bind("password");
+
+        passwordConfirmationField.addValueChangeListener(e -> {
+            // The user has modified the second field, now we can validate and show errors.
+            enablePasswordValidation = true;
+            binder.validate();
+        });
+
+        binder.setStatusLabel(errorMessage);
+        errorMessage.getStyle().set("color", "var(--lumo-error-text-color)");
     }
 
     private ValidationResult passwordValidator(String password, ValueContext ctx) {
