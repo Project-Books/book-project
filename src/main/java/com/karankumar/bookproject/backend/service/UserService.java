@@ -4,8 +4,12 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +24,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     public void register(User user) throws UserAlreadyRegisteredException {
@@ -51,13 +58,26 @@ public class UserService {
                     "A user with the email address " + user.getUsername() + " already exists");
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActive(true);
         Role userRole = roleRepository.findByRole("USER")
                                       .orElseThrow(() -> new AuthenticationServiceException(
                                               "The default user role could not be found"));
-        user.setRoles(Set.of(userRole));
-        userRepository.save(user);
+        User userToRegister = User.builder()
+                                  .username(user.getUsername())
+                                  .email(user.getEmail())
+                                  .password(passwordEncoder.encode(user.getPassword()))
+                                  .active(true)
+                                  .roles(Set.of(userRole))
+                                  .build();
+
+        userRepository.save(userToRegister);
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        Authentication authResult = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+        if (authResult.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(authResult);
+        }
     }
 
     public void delete(User user) {

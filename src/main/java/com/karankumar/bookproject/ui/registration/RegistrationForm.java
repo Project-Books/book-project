@@ -3,14 +3,13 @@ package com.karankumar.bookproject.ui.registration;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
 import com.karankumar.bookproject.ui.login.LoginView;
+import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,8 +18,10 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.validator.EmailValidator;
+import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 
+@Log
 public class RegistrationForm extends FormLayout {
     private final UserService userService;
     private final Binder<User> binder = new BeanValidationBinder<>(User.class);
@@ -51,10 +52,15 @@ public class RegistrationForm extends FormLayout {
             User user = User.builder().build();
 
             if (binder.writeBeanIfValid(user)) {
-                this.userService.register(user);
+                try {
+                    this.userService.register(user);
+                    getUI().ifPresent(ui -> ui.navigate(BooksInShelfView.class));
+                } catch (Exception e) {
+                    LOGGER.severe("Could not register the user " + user);
+                    e.printStackTrace();
 
-                Notification notification = Notification.show("Data saved, welcome " + user.getUsername());
-                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    errorMessage.setText("A server error occurred when registering. Please try again later.");
+                }
             }
         });
 
