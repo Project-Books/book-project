@@ -44,7 +44,8 @@ class RegistrationFormTest {
     private final RoleRepository roleRepository;
 
     @Autowired
-    RegistrationFormTest(UserRepository userRepository, RoleRepository roleRepository, ApplicationContext ctx) {
+    RegistrationFormTest(UserRepository userRepository, RoleRepository roleRepository,
+                         ApplicationContext ctx) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.ctx = ctx;
