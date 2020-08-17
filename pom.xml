@@ -13,8 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>book-project</name>
     <description>Book tracking system</description>
-
+    <packaging>jar</packaging>
     <properties>
+	<start-class>com.karankumar.bookproject.BookProjectApplication</start-class>
         <java.version>11</java.version>
         <vaadin.version>14.3.1</vaadin.version>
         <lombok.version>1.18.12</lombok.version>
