@@ -50,11 +50,10 @@ Prerequisites:
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Change the spring.datasource.url in src/main/resources/application.properties as `spring.datasource.url = jdbc:mysql://localhost:3306/bookproject` 
-4. Build the project using `mvn clean install`
-5. Start MYSQL databse using `docker-compose up -d mysql
-6. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
-7. Log in with the details below:
+3. Build the project using `mvn clean install`
+4. Start MYSQL databse using `docker-compose up -d mysql
+5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
+6. Log in with the details below:
     - Username: `user`
     - Password: `password`
 
