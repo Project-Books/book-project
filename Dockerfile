@@ -3,5 +3,5 @@ WORKDIR /
 ADD target/*.jar app.jar
 RUN useradd -m myuser
 USER myuser
-EXPOSE 8081
-CMD java -jar app.jar
+EXPOSE 8080
+CMD java -jar -Dspring.profiles.active=prod  app.jar

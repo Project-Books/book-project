@@ -46,15 +46,27 @@ Prerequisites:
 - MySQL 8.0.* or (better) Docker
   - For Windows users, install Docker Desktop and then run `docker-compose up` at the root of the project on the command line
 
+### Start locally with only MYSQL running in docker
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Start the MySQL Database or run the docker-compose file `docker-compose up`
-4. Run `BookProjectApplication.java`
+3. Change the spring.datasource.url in src/main/resources/application.properties as `spring.datasource.url = jdbc:mysql://localhost:3306/bookproject` 
+4. Build the project using `mvn clean install`
+5. Start MYSQL databse using `docker-compose up -d mysql
+6. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
+7. Log in with the details below:
+    - Username: `user`
+    - Password: `password`
+
+### Start using docker-compose in production mode
+1. Clone the repository
+2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
+4. Start the MySQL Database and bookself app using docker compose `docker-compose up --build`
 5. Go to `localhost:8080`
 6. Log in with the details below:
     - Username: `user`
     - Password: `password`
+
     
 You may find lots of errors for things like the log statements, or the entities not having constructors. You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). Other common errors and solutions are also detailed in the troubleshooting page.
 
