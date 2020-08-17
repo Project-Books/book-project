@@ -16,7 +16,7 @@
 package com.karankumar.bookproject.ui.settings;
 
 import com.karankumar.bookproject.ui.MainView;
-import com.karankumar.bookproject.ui.components.toggle.PaperToggle;
+import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -29,16 +29,19 @@ import com.vaadin.flow.theme.lumo.Lumo;
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
 public class SettingsView extends HorizontalLayout {
-    private static final String enable = "Enable dark mode";
-    private static final String disable = "Disable dark mode";
-    private static PaperToggle paperToggle;
-    private static Label darkModeLabel = new Label(enable);
+    private static final String ENABLE_DARK_MODE = "Enable dark mode";
+    private static final String DISABLE_DARK_MODE = "Disable dark mode";
+    private static SwitchToggle darkModeToggle;
+    private static Label darkModeLabel = new Label(ENABLE_DARK_MODE);
     private static boolean darkModeOn = false;
 
     static {
-        paperToggle = new PaperToggle();
+        createDarkModeToggle();
+    }
 
-        paperToggle.addClickListener( e -> {
+    private static void createDarkModeToggle() {
+        darkModeToggle = new SwitchToggle();
+        darkModeToggle.addClickListener(e -> {
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
 
             if (themeList.contains(Lumo.DARK)) {
@@ -53,13 +56,9 @@ public class SettingsView extends HorizontalLayout {
     }
 
     public SettingsView() {
-        if (darkModeOn) {
-            updateDarkModeLabel();
-            paperToggle.setChecked(true);
-        } else {
-            paperToggle.setChecked(false);
-        }
-        VerticalLayout verticalLayout = new VerticalLayout(paperToggle);
+        setDarkModeState();
+
+        VerticalLayout verticalLayout = new VerticalLayout(darkModeToggle);
         verticalLayout.setAlignItems(Alignment.CENTER);
         verticalLayout.add(darkModeLabel);
 
@@ -68,9 +67,16 @@ public class SettingsView extends HorizontalLayout {
         setAlignItems(Alignment.CENTER);
     }
 
-    private static void updateDarkModeLabel() {
-        if (darkModeLabel != null) {
-            darkModeLabel.setText(darkModeOn ? disable : enable);
+    private void setDarkModeState() {
+        if (darkModeOn) {
+            updateDarkModeLabel();
+            darkModeToggle.setChecked(true);
+        } else {
+            darkModeToggle.setChecked(false);
         }
+    }
+
+    private static void updateDarkModeLabel() {
+        darkModeLabel.setText(darkModeOn ? DISABLE_DARK_MODE : ENABLE_DARK_MODE);
     }
 }

@@ -23,6 +23,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.backend.utils.StringUtils;
+import com.karankumar.bookproject.backend.utils.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -57,7 +58,8 @@ public class ReadingGoalView extends VerticalLayout {
     @VisibleForTesting Span goalProgressPercentage;
     @VisibleForTesting Span booksToReadOnAverageToMeetGoal;
 
-    public ReadingGoalView(ReadingGoalService goalService, PredefinedShelfService predefinedShelfService) {
+    public ReadingGoalView(ReadingGoalService goalService,
+                           PredefinedShelfService predefinedShelfService) {
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
 
@@ -73,7 +75,8 @@ public class ReadingGoalView extends VerticalLayout {
         configureSetGoal();
         getCurrentGoal();
 
-        add(readingGoalSummary, progressBar, goalProgressPercentage, goalProgress, booksToReadOnAverageToMeetGoal, setGoalButton);
+        add(readingGoalSummary, progressBar, goalProgressPercentage, goalProgress,
+                booksToReadOnAverageToMeetGoal, setGoalButton);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
@@ -88,6 +91,7 @@ public class ReadingGoalView extends VerticalLayout {
         });
     }
 
+    @VisibleForTesting
     void getCurrentGoal() {
         List<ReadingGoal> goals = goalService.findAll();
         if (goals.size() == 0) {
@@ -106,7 +110,8 @@ public class ReadingGoalView extends VerticalLayout {
         if (event.getReadingGoal() != null) {
             LOGGER.log(Level.INFO, "Retrieved goal from form is not null");
             goalService.save(event.getReadingGoal());
-            updateReadingGoal(event.getReadingGoal().getTarget(), event.getReadingGoal().getGoalType());
+            updateReadingGoal(event.getReadingGoal().getTarget(),
+                    event.getReadingGoal().getGoalType());
         } else {
             LOGGER.log(Level.SEVERE, "Retrieved goal from form is null");
         }
@@ -127,7 +132,8 @@ public class ReadingGoalView extends VerticalLayout {
             readingGoalSummary.setText(haveRead + howManyReadThisYear + outOf + + targetToRead +
                     StringUtils.pluralize(" book", targetToRead));
             goalProgress.setText(calculateProgress(targetToRead, howManyReadThisYear));
-            booksToReadOnAverageToMeetGoal.setText(calculateBooksToRead(targetToRead, howManyReadThisYear));
+            booksToReadOnAverageToMeetGoal.setText(calculateBooksToRead(targetToRead,
+                    howManyReadThisYear));
             toggleBooksGoalInfo(true, hasReachedGoal);    // show book goal-specific information
         } else {
             readingGoalSummary.setText(haveRead + howManyReadThisYear + outOf + targetToRead +
@@ -135,7 +141,8 @@ public class ReadingGoalView extends VerticalLayout {
             toggleBooksGoalInfo(false, hasReachedGoal);
         }
 
-        double progress = CalculateReadingGoal.calculateProgressTowardsReadingGoal(targetToRead, howManyReadThisYear);
+        double progress = CalculateReadingGoal.calculateProgressTowardsReadingGoal(targetToRead,
+                howManyReadThisYear);
         progressBar.setValue(progress);
         goalProgressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
 
@@ -143,8 +150,10 @@ public class ReadingGoalView extends VerticalLayout {
     }
 
     /**
-     * @param isOn if true, set the visibility of the book goal-specific text to true. Otherwise, set them to false
-     * @param hasReachedGoal if true, set the visibility of the "books to read on average" text to false.
+     * @param isOn if true, set the visibility of the book goal-specific text to true.
+     *             Otherwise, set them to false
+     * @param hasReachedGoal if true, set the visibility of the "books to read on average" text to
+     *                       false.
      */
     private void toggleBooksGoalInfo(boolean isOn, boolean hasReachedGoal) {
         goalProgress.setVisible(isOn);
@@ -155,7 +164,8 @@ public class ReadingGoalView extends VerticalLayout {
      * Calculates the reading progress for the books goal only
      * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
      * @param booksReadThisYear the number of books that have already been read by th end of the year
-     * @return a String that displays whether the goal was met, or whether the user is ahead or behind schedule
+     * @return a String that displays whether the goal was met, or whether the user is ahead or
+     * behind schedule
      */
     @VisibleForTesting
     String calculateProgress(int booksToReadThisYear, int booksReadThisYear) {
@@ -169,26 +179,28 @@ public class ReadingGoalView extends VerticalLayout {
         if (booksStillToRead <= 0) {
             schedule = TARGET_MET;
         } else {
-            int howManyBehindOrAhead = CalculateReadingGoal.howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
-            schedule = String.format("You are %d "+ StringUtils.pluralize("book", howManyBehindOrAhead) +
-                            " %s schedule",
+            int howManyBehindOrAhead =
+                    CalculateReadingGoal.howFarAheadOrBehindSchedule(booksToReadThisYear,
+                            booksReadThisYear);
+            schedule = String.format("You are %d "+ StringUtils.pluralize("book",
+                    howManyBehindOrAhead) + " %s schedule",
                     howManyBehindOrAhead, CalculateReadingGoal.behindOrAheadSchedule(booksReadThisYear,
                             CalculateReadingGoal.shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;
     }
 
-
     /**
      * Calculates how many books a user needs to read on average to meet their goal for the books goal only
      * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
      * @param booksReadThisYear the number of books that have already been read till date
-     * @return a String that displays the number of books user needs to read on average to meet their goal(if not met).
+     * @return a String that displays the number of books user needs to read on average to meet
+     * their goal (if not met).
      */
     private String calculateBooksToRead(int booksToReadThisYear, int booksReadThisYear) {
         int booksStillToRead = booksToReadThisYear - booksReadThisYear;
-        int weekOfYear = CalculateReadingGoal.getWeekOfYear();
-        int weeksLeftInYear = CalculateReadingGoal.weeksLeftInYear(weekOfYear);
+        int weekOfYear = DateUtils.getCurrentWeekNumberOfYear();
+        int weeksLeftInYear = DateUtils.calculateWeeksLeftInYearFromCurrentWeek(weekOfYear);
         double booksStillToReadAWeek = Math.ceil((double) booksStillToRead / weeksLeftInYear);
 
         String bookReadingRate = "";

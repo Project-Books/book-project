@@ -15,23 +15,16 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.AUTHOR_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_FINISHED_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.DATE_STARTED_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.GENRE_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.RATING_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.TITLE_KEY;
-import static com.karankumar.bookproject.ui.shelf.BooksInShelfView.PAGES_READ_KEY;
-
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.ui.MockSpringServlet;
+import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.SpringServlet;
@@ -61,36 +54,36 @@ public class BooksInShelfViewTest {
     private ApplicationContext ctx;
 
     private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
-        TITLE_KEY,
-        AUTHOR_KEY,
-        GENRE_KEY,
-        PAGES_KEY
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.PAGES_KEY
     ));
     private final ArrayList<String> expectedReadingColumns = new ArrayList<>(Arrays.asList(
-        TITLE_KEY,
-        AUTHOR_KEY,
-        GENRE_KEY,
-        DATE_STARTED_KEY,
-        PAGES_KEY
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.DATE_STARTED_KEY,
+        BookGridColumn.PAGES_KEY
     ));
 
     private final ArrayList<String> expectedDidNotFinishColumns = new ArrayList<>(Arrays.asList(
-            TITLE_KEY,
-            AUTHOR_KEY,
-            GENRE_KEY,
-            DATE_STARTED_KEY,
-            PAGES_KEY,
-            PAGES_READ_KEY
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.DATE_STARTED_KEY,
+        BookGridColumn.PAGES_KEY,
+        BookGridColumn.PAGES_READ_KEY
     ));
 
     private final ArrayList<String> expectedReadColumns = new ArrayList<>(Arrays.asList(
-        TITLE_KEY,
-        AUTHOR_KEY,
-        GENRE_KEY,
-        DATE_STARTED_KEY,
-        DATE_FINISHED_KEY,
-        RATING_KEY,
-        PAGES_KEY
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.DATE_STARTED_KEY,
+        BookGridColumn.DATE_FINISHED_KEY,
+        BookGridColumn.RATING_KEY,
+        BookGridColumn.PAGES_KEY
     ));
     private BooksInShelfView shelfView;
 
@@ -101,12 +94,13 @@ public class BooksInShelfViewTest {
 
     @BeforeEach
     public void setup(@Autowired BookService bookService,
-                      @Autowired PredefinedShelfService shelfService) {
+                      @Autowired PredefinedShelfService predefinedShelfService,
+                      @Autowired CustomShelfService customShelfService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
-        Assumptions.assumeTrue(shelfService != null);
-        shelfView = new BooksInShelfView(bookService, shelfService);
+        Assumptions.assumeTrue(predefinedShelfService != null);
+        shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
     }
 
     @ParameterizedTest
@@ -114,12 +108,12 @@ public class BooksInShelfViewTest {
     public void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
         System.out.println("Shelf: " + shelfName);
         try {
-            shelfView.showOrHideGridColumns(shelfName);
+            shelfView.showOrHideGridColumns(shelfName.toString());
         } catch (NotSupportedException e) {
             e.printStackTrace();
         }
 
-        List<Grid.Column<Book>> columns = shelfView.bookGrid.getColumns();
+        List<Grid.Column<Book>> columns = shelfView.getColumns();
 
         ArrayList<String> expectedColumns = new ArrayList<>();
         switch (shelfName) {
@@ -135,6 +129,8 @@ public class BooksInShelfViewTest {
             case READ:
                 expectedColumns = expectedReadColumns;
                 break;
+            default:
+                Assertions.fail();
         }
 
         for (Grid.Column<Book> col : columns) {

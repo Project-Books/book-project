@@ -48,7 +48,8 @@ public class ReadingGoalViewTest {
     }
 
     @BeforeEach
-    public void setup(@Autowired ReadingGoalService goalService, @Autowired PredefinedShelfService predefinedShelfService) {
+    public void setup(@Autowired ReadingGoalService goalService,
+                      @Autowired PredefinedShelfService predefinedShelfService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
@@ -68,7 +69,6 @@ public class ReadingGoalViewTest {
     public void setGoalButtonTextIsCorrect() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
-
         goalService.save(new ReadingGoal(getRandomGoalTarget(), getRandomGoalType()));
         goalView.getCurrentGoal();
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.UPDATE_GOAL);
@@ -106,7 +106,8 @@ public class ReadingGoalViewTest {
     }
 
     /**
-     * Only books that in the read shelf that have a date finished (which will always be this year) should count towards the reading goal
+     * Only books that in the read shelf that have a date finished (which will always be this year)
+     * should count towards the reading goal
      * @param bookService an Autowired book service to access the book repository
      */
     @Test
@@ -158,8 +159,9 @@ public class ReadingGoalViewTest {
      * @return a new Book
      */
     private Book createBook(PredefinedShelf.ShelfName shelfName) {
-        Book book = new Book("Title", new Author("Joe", "Bloggs"));
-        book.setShelf(predefinedShelfUtils.findReadShelf()); // important not to create a new predefined shelf
+        // important not to create a new predefined shelf
+        Book book = new Book("Title", new Author("Joe", "Bloggs"),
+                predefinedShelfUtils.findReadShelf());
         if (shelfName.equals(PredefinedShelf.ShelfName.READ)) {
             book.setDateFinishedReading(generateRandomDate());
         }
@@ -194,7 +196,8 @@ public class ReadingGoalViewTest {
         Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
 
         PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
-        int howManyReadThisYear = CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
+        int howManyReadThisYear =
+                CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
         int targetToRead = booksGoal.getTarget();
         boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
 
@@ -224,7 +227,8 @@ public class ReadingGoalViewTest {
         Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
 
         PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
-        int howManyReadThisYear = CalculateReadingGoal.howManyReadThisYear(readingGoal.getGoalType(), readShelf);
+        int howManyReadThisYear =
+                CalculateReadingGoal.howManyReadThisYear(readingGoal.getGoalType(), readShelf);
         int targetToRead = readingGoal.getTarget();
         boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
 

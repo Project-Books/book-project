@@ -86,7 +86,7 @@ IDE-specific code style files have been exported and can be imported into your I
 ### IntelliJ
 
 <p align="center">
-  <img src="/media/intellij_code_style.png" alt="Import IntelliJ code style file"/>
+  <img src="/media/styleguide/intellij_code_style.png" alt="Import IntelliJ code style file"/>
 </p>
 
 For IntelliJ, you can use import the [code style file](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml).
@@ -96,7 +96,7 @@ Import Scheme > IntelliJ IDEA code style XML.
 ### Eclipse
 
 <p align="center">
-  <img src="/media/eclipse_code_style.png" alt="Import Eclipse code style file"/>
+  <img src="/media/styleguide/eclipse_code_style.png" alt="Import Eclipse code style file"/>
 </p>
 
 If you use Eclipse, you can import the formatter file by going to Window > Preferences > Java > Code Style > Formatter
@@ -174,11 +174,9 @@ if (condition) {
 }
 ```
 
-### 120 character column limit
+### 100 character column limit
 
-A line should generally not exceed 120 characters (an IntelliJ default).
-
-Why 120 characters, not 100 characters (like the Google Java style guide)? You can have two files side by side that do not exceed 120 characters on a 1920x1080 display (at least in IntelliJ).
+A line should generally not exceed 100 characters.
 
 Exceptions to this rule:
 - `package` and `import` statements

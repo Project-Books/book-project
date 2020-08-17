@@ -19,7 +19,7 @@ class PredefinedShelfRepositoryTest {
     private PredefinedShelfRepository repository;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
         repository.saveAll(
             Arrays.stream(PredefinedShelf.ShelfName.values())
                   .map(PredefinedShelf::new)
@@ -29,13 +29,15 @@ class PredefinedShelfRepositoryTest {
 
     @Test
     void whenShelfExistsFindByShelfNameReturnsOneShelf() {
-        List<PredefinedShelf> shelves = repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+        List<PredefinedShelf> shelves =
+                repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
 
         Assertions.assertEquals(1, shelves.size());
         PredefinedShelf shelf = shelves.get(0);
         Assertions.assertNotNull(shelf);
         Assertions.assertAll(
-            () -> Assertions.assertEquals(PredefinedShelf.ShelfName.TO_READ, shelf.getPredefinedShelfName()),
+            () -> Assertions.assertEquals(PredefinedShelf.ShelfName.TO_READ,
+                    shelf.getPredefinedShelfName()),
             () -> Assertions.assertNull(shelf.getBooks())
         );
     }

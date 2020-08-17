@@ -15,33 +15,39 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.book.BookForm;
+import com.karankumar.bookproject.ui.shelf.component.filter.AuthorFilterText;
+import com.karankumar.bookproject.ui.shelf.component.BookShelfComboBox;
+import com.karankumar.bookproject.ui.shelf.component.filter.TitleFilterText;
+import com.karankumar.bookproject.ui.shelf.listener.BookDeleteListener;
+import com.karankumar.bookproject.ui.shelf.listener.BookSaveListener;
+import com.karankumar.bookproject.ui.shelf.listener.CustomShelfListener;
+import com.karankumar.bookproject.ui.shelf.visibility.BookVisibilityStrategy;
+import com.karankumar.bookproject.ui.shelf.visibility.DidNotFinishBookVisibility;
+import com.karankumar.bookproject.ui.shelf.visibility.ReadBookVisibility;
+import com.karankumar.bookproject.ui.shelf.visibility.ReadingBookVisibility;
+import com.karankumar.bookproject.ui.shelf.visibility.ToReadBookVisibility;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.renderer.LocalDateRenderer;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Contains a @see BookForm and a grid containing a list of books in a given shelf.
@@ -51,287 +57,137 @@ import java.util.stream.Collectors;
 @PageTitle("My Books | Book Project")
 @Log
 public class BooksInShelfView extends VerticalLayout {
+    public final BookGrid bookGrid;
+    public final BookShelfComboBox whichShelf;
 
-    public static final String TITLE_KEY = "title";
-    public static final String AUTHOR_KEY = "author";
-    public static final String GENRE_KEY = "genre";
-    public static final String PAGES_KEY = "numberOfPages";
-    public static final String PAGES_READ_KEY = "pagesRead";
-    public static final String RATING_KEY = "rating";
-    public static final String DATE_STARTED_KEY = "dateStartedReading";
-    public static final String DATE_FINISHED_KEY = "dateFinishedReading";
-
-    public final Grid<Book> bookGrid;
-    public final ComboBox<PredefinedShelf.ShelfName> whichShelf;
+    private final EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> visibilityStrategies;
 
     private final BookForm bookForm;
-    private final BookService bookService;
-    private final PredefinedShelfService shelfService;
-    private final TextField filterByTitle;
-    private final TextField filterByAuthorName;
+    private final CustomShelfForm customShelfForm;
 
-    private PredefinedShelf.ShelfName chosenShelf;
-    private String bookTitle; // the book to filter by (if specified)
-    private String authorName;
+    private final PredefinedShelfService predefinedShelfService;
+    private final CustomShelfService customShelfService;
+    private final TitleFilterText filterByTitle;
+    private final AuthorFilterText filterByAuthorName;
 
-    public BooksInShelfView(BookService bookService, PredefinedShelfService shelfService) {
-        this.bookService = bookService;
-        this.shelfService = shelfService;
+    private String chosenShelf;
+    private final BookFilters bookFilters;
 
-        bookGrid = new Grid<>(Book.class);
+    private final PredefinedShelfUtils predefinedShelfUtils;
 
-        whichShelf = new ComboBox<>();
-        configureChosenShelf();
+    public BooksInShelfView(BookService bookService, PredefinedShelfService predefinedShelfService,
+                            CustomShelfService customShelfService) {
+        this.predefinedShelfService = predefinedShelfService;
+        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+        this.customShelfService = customShelfService;
+        this.visibilityStrategies = initVisibilityStrategies();
+        CustomShelfUtils customShelfUtils = new CustomShelfUtils(customShelfService);
+        this.bookGrid = new BookGrid(predefinedShelfUtils, customShelfUtils);
+        this.bookFilters = new BookFilters();
 
-        filterByTitle = new TextField();
-        filterByAuthorName = new TextField();
-        configureFilters();
+        this.whichShelf = new BookShelfComboBox(customShelfService);
+        this.filterByTitle = new TitleFilterText();
+        this.filterByAuthorName = new AuthorFilterText();
 
-        bookForm = new BookForm(shelfService);
+        whichShelf.bind(this);
+        filterByTitle.bind(this);
+        filterByAuthorName.bind(this);
 
+        bookForm = new BookForm(predefinedShelfService, customShelfService);
+
+        bookGrid.bind(bookForm);
+        bindListeners(bookService);
+
+        customShelfForm = createCustomShelfForm();
+
+        add(initializeLayout(), bookGrid.get(), customShelfForm, bookForm);
+    }
+
+    public void updateWhichShelfList() {
+        whichShelf.updateShelfList();
+    }
+
+    private EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> initVisibilityStrategies() {
+        EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> m =
+                new EnumMap<>(PredefinedShelf.ShelfName.class);
+        m.put(PredefinedShelf.ShelfName.TO_READ, new ToReadBookVisibility());
+        m.put(PredefinedShelf.ShelfName.READING, new ReadingBookVisibility());
+        m.put(PredefinedShelf.ShelfName.DID_NOT_FINISH, new DidNotFinishBookVisibility());
+        m.put(PredefinedShelf.ShelfName.READ, new ReadBookVisibility());
+
+        return m;
+    }
+
+    private void bindListeners(BookService bookService) {
+        new BookSaveListener(this, bookService).bind(bookForm);
+        new BookDeleteListener(bookService, this).bind(bookForm);
+    }
+
+    private CustomShelfForm createCustomShelfForm() {
+        CustomShelfForm customShelfForm =
+                new CustomShelfForm(customShelfService, predefinedShelfService);
+        new CustomShelfListener(this, customShelfService).bind(customShelfForm);
+        return customShelfForm;
+    }
+
+    private HorizontalLayout initializeLayout() {
         Button addBook = new Button("Add book");
         addBook.addClickListener(e -> bookForm.addBook());
-        HorizontalLayout horizontalLayout =
-                new HorizontalLayout(whichShelf, filterByTitle, filterByAuthorName, addBook);
-        horizontalLayout.setAlignItems(Alignment.END);
 
-        configureBookGrid();
-        add(horizontalLayout, bookGrid);
+        Button addShelf = new Button("Add shelf");
+        addShelf.addClickListener(e -> customShelfForm.addShelf());
 
-        add(bookForm);
+        HorizontalLayout layout = new HorizontalLayout(addBook);
 
-        bookForm.addListener(BookForm.SaveEvent.class, this::saveBook);
-        bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
+        whichShelf.addToLayout(layout);
+        filterByTitle.addToLayout(layout);
+        filterByAuthorName.addToLayout(layout);
+        layout.add(addShelf);
+        layout.add(addBook);
+
+        layout.setAlignItems(Alignment.END);
+
+        return layout;
     }
 
-    private void configureChosenShelf() {
-        whichShelf.setPlaceholder("Select shelf");
-        whichShelf.setItems(PredefinedShelf.ShelfName.values());
-        whichShelf.setRequired(true);
-        whichShelf.addValueChangeListener(
-                event -> {
-                    if (event.getValue() == null) {
-                        LOGGER.log(Level.FINE, "No choice selected");
-                    } else {
-                        chosenShelf = event.getValue();
-                        updateGrid();
-                        try {
-                            showOrHideGridColumns(chosenShelf);
-                        } catch (NotSupportedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
-
-    /**
-     * @throws NotSupportedException if a shelf is not supported.
-     */
-    void showOrHideGridColumns(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
-        switch (shelfName) {
-            case TO_READ:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, false);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
-                return;
-            case READING:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
-                return;
-            case DID_NOT_FINISH:
-                toggleColumnVisibility(RATING_KEY, false);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, false);
-                toggleColumnVisibility(PAGES_READ_KEY, true);
-                return;
-            case READ:
-                toggleColumnVisibility(RATING_KEY, true);
-                toggleColumnVisibility(DATE_STARTED_KEY, true);
-                toggleColumnVisibility(DATE_FINISHED_KEY, true);
-                toggleColumnVisibility(PAGES_READ_KEY, false);
-                return;
-        }
-        throw new NotSupportedException("Shelf " + shelfName + " has not been added as a case in switch statement.");
-    }
-
-    private void toggleColumnVisibility(String columnKey, boolean showColumn) {
-        if (bookGrid.getColumnByKey(columnKey) == null) {
-            LOGGER.log(Level.SEVERE, "Key is null:" + columnKey);
-        } else {
-            bookGrid.getColumnByKey(columnKey).setVisible(showColumn);
-        }
-    }
-
-    private String combineTitleAndSeries(Book book) {
-        String result;
-        if (book.getSeriesPosition() != null && book.getSeriesPosition() > 0) {
-            result = String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
-        } else {
-            result = book.getTitle();
-        }
-        return result;
-    }
-
-    private void configureBookGrid() {
-        bookGrid.asSingleSelect()
-                .addValueChangeListener(event -> {
-                    if (event.getValue() != null) {
-                        editBook(event.getValue());
-                    }
-                });
-
-        resetGridColumns();
-
-        addTitleColumn();
-        addAuthorColumn();
-        addGenreColumn();
-        addDateStartedColumn();
-        addDateFinishedColumn();
-        addRatingColumn();
-        addPagesColumn();
-        addPagesReadColumn();
-    }
-
-    private void addPagesColumn() {
-        bookGrid.addColumn(PAGES_KEY);
-    }
-
-    private void addPagesReadColumn() {
-        bookGrid.addColumn(PAGES_READ_KEY);
-    }
-
-    private void addRatingColumn() {
-        bookGrid.addColumn(RATING_KEY);
-    }
-
-    private void addDateFinishedColumn() {
-        bookGrid.addColumn(new LocalDateRenderer<>(
-                Book::getDateFinishedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-                .setHeader("Date finished reading")
-                .setComparator(Comparator.comparing(Book::getDateStartedReading))
-                .setSortable(true)
-                .setKey(DATE_FINISHED_KEY);
-    }
-
-    private void addDateStartedColumn() {
-        bookGrid.addColumn(new LocalDateRenderer<>(
-                Book::getDateStartedReading, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-                .setHeader("Date started reading")
-                .setComparator(Comparator.comparing(Book::getDateStartedReading))
-                .setKey(DATE_STARTED_KEY);
-    }
-
-    private void addGenreColumn() {
-        bookGrid.addColumn(GENRE_KEY);
-    }
-
-    private void addAuthorColumn() {
-        bookGrid.addColumn(AUTHOR_KEY)
-                .setComparator(Comparator.comparing(author -> author.getAuthor().toString()))
-                .setSortable(true);
-    }
-
-    private void addTitleColumn() {
-        bookGrid.addColumn(this::combineTitleAndSeries) // we want to display the series only if it is bigger than 0
-                .setHeader("Title")
-                .setKey(TITLE_KEY)
-                .setSortable(true);
-    }
-
-    private void resetGridColumns() {
-        bookGrid.setColumns();
-    }
-
-    private void updateGrid() {
-        if (chosenShelf == null) {
-            LOGGER.log(Level.FINEST, "Chosen shelf is null");
+    // TODO: 3.08.2020 this should be moved BookShelfListener. But it's also invoked in the test.
+    @VisibleForTesting
+    public void showOrHideGridColumns(String shelfName) throws NotSupportedException {
+        if (!PredefinedShelfUtils.isPredefinedShelf(shelfName)) {
             return;
         }
 
-        // Find the shelf that matches the chosen shelf's name
-        List<PredefinedShelf> matchingShelves = shelfService.findAll(chosenShelf);
+        PredefinedShelf.ShelfName predefinedShelfName =
+                predefinedShelfUtils.getPredefinedShelfName(shelfName);
 
-        if (!matchingShelves.isEmpty()) {
-            if (matchingShelves.size() == 1) {
-                LOGGER.log(Level.INFO, "Found 1 shelf: " + matchingShelves.get(0));
-                PredefinedShelf selectedShelf = matchingShelves.get(0);
-                Predicate<Book> caseInsensitiveBookTitleFilter = book -> bookTitle == null
-                        || book.getTitle().toLowerCase().contains(bookTitle.toLowerCase());
-                Predicate<Book> caseInsensitiveAuthorFilter =
-                        authorNameFilter ->
-                                authorName == null
-                                        || authorNameFilter
-                                        .getAuthor()
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains(authorName.toLowerCase());
-                bookGrid.setItems(
-                        selectedShelf.getBooks().stream()
-                                     .filter(caseInsensitiveBookTitleFilter)
-                                     .filter(caseInsensitiveAuthorFilter)
-                                     .collect(Collectors.toList()));
-            } else {
-                LOGGER.log(
-                        Level.SEVERE, matchingShelves.size() + " matching shelves found for " + chosenShelf);
-            }
-        } else {
-            LOGGER.log(Level.SEVERE, "No matching shelves found for " + chosenShelf);
+        if (!visibilityStrategies.containsKey(predefinedShelfName)) {
+            throw new NotSupportedException("Shelf " + shelfName +
+                    " has not been added as a case in switch statement.");
         }
+
+        visibilityStrategies.get(predefinedShelfName)
+                            .toggleColumnVisibility(bookGrid);
     }
 
-    private void configureFilters() {
-        filterByAuthorName();
-        filterByBookTitle();
+    public void updateGrid() {
+        bookGrid.update(chosenShelf, bookFilters);
     }
 
-    private void filterByAuthorName() {
-        filterByAuthorName.setPlaceholder("Filter by Author Name");
-        filterByAuthorName.setClearButtonVisible(true);
-        filterByAuthorName.setValueChangeMode(ValueChangeMode.LAZY);
-        filterByAuthorName.addValueChangeListener(eventFilterAuthorName -> {
-            if (eventFilterAuthorName.getValue() != null) {
-                authorName = eventFilterAuthorName.getValue();
-            }
-            updateGrid();
-        });
+    public void setChosenShelf(String chosenShelf) {
+        this.chosenShelf = chosenShelf;
     }
 
-    private void filterByBookTitle() {
-        filterByTitle.setPlaceholder("Filter by book title");
-        filterByTitle.setClearButtonVisible(true);
-        filterByTitle.setValueChangeMode(ValueChangeMode.LAZY);
-        filterByTitle.addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-                bookTitle = event.getValue();
-            }
-            updateGrid();
-        });
+    public void setBookFilterAuthor(String author) {
+        bookFilters.setBookAuthor(author);
     }
 
-    private void editBook(Book book) {
-        if (book != null && bookForm != null) {
-            bookForm.setBook(book);
-            bookForm.openForm();
-        }
+    public void setBookFilterTitle(String title) {
+        bookFilters.setBookTitle(title);
     }
 
-    private void deleteBook(BookForm.DeleteEvent event) {
-        LOGGER.log(Level.INFO, "Deleting book...");
-        bookService.delete(event.getBook());
-        updateGrid();
-    }
-
-    private void saveBook(BookForm.SaveEvent event) {
-        LOGGER.log(Level.INFO, "Saving book...");
-        if (event.getBook() == null) {
-            LOGGER.log(Level.SEVERE, "Retrieved book from event is null");
-        } else {
-            LOGGER.log(Level.INFO, "Book is not null");
-            bookService.save(event.getBook());
-            updateGrid();
-        }
+    @VisibleForTesting
+    List<Grid.Column<Book>> getColumns() {
+        return bookGrid.get()
+                       .getColumns();
     }
 }

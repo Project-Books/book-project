@@ -1,3 +1,18 @@
+/*
+    The book project lets a user keep track of different books they've read, are currently reading or would like to read
+    Copyright (C) 2020  Karan Kumar
+
+    This program is free software: you can redistribute it and/or modify it under the terms of the
+    GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+    warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with this program.
+    If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.karankumar.bookproject.ui.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
@@ -28,21 +43,24 @@ public class StatisticsView extends VerticalLayout {
 
         Double averageRating = ratingStatistics.calculateAverageRatingGiven();
         if (averageRating != null) {
-            String averageRatingOutOf10 = String.format("%s/10", new DecimalFormat("#.00").format(averageRating));
+            String averageRatingOutOf10 =
+                    String.format("%s/10", new DecimalFormat("#.00").format(averageRating));
             add(configureStatistic("Average rating given", averageRatingOutOf10));
         }
 
         Book mostLikedBook = ratingStatistics.findMostLikedBook();
         if (mostLikedBook != null) {
             String mostLikedBookStatistic =
-                    formatStatistic(mostLikedBook.getTitle(), mostLikedBook.getRating().toString(), "rating");
+                    formatStatistic(mostLikedBook.getTitle(), mostLikedBook.getRating().toString(),
+                            "rating");
             add(configureStatistic("Most liked book", mostLikedBookStatistic));
         }
 
         Book leastLikedBook = ratingStatistics.findLeastLikedBook();
         if (leastLikedBook != null) {
             String leastLikedBookRating =
-                    formatStatistic(leastLikedBook.getTitle(), leastLikedBook.getRating().toString(), "rating");
+                    formatStatistic(leastLikedBook.getTitle(), leastLikedBook.getRating().toString(),
+                            "rating");
             add(configureStatistic("Least liked book", leastLikedBookRating));
         }
 
@@ -63,13 +81,15 @@ public class StatisticsView extends VerticalLayout {
 
         Integer averagePageLength = pageStatistics.calculateAveragePageLength();
         if (averagePageLength != null) {
-            add(configureStatistic("Average page length", String.format("%d pages", averagePageLength)));
+            add(configureStatistic("Average page length", String.format("%d pages",
+                    averagePageLength)));
         }
 
         Book longestBook = pageStatistics.findBookWithMostPages();
         if (longestBook != null) {
             String longestBookStatistic =
-                    formatStatistic(longestBook.getTitle(), String.valueOf(longestBook.getNumberOfPages()), "pages");
+                    formatStatistic(longestBook.getTitle(),
+                            String.valueOf(longestBook.getNumberOfPages()), "pages");
             add(configureStatistic("Longest book read", longestBookStatistic));
         }
 
