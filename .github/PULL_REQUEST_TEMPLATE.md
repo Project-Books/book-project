@@ -15,6 +15,7 @@
 Please ensure you have done the following:
 
 - [ ] Read, understood and adhered to our [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
+  - [ ] Ensure that you were first assigned to a relevant issue before creating this pull request
   - [ ] Ensure code changes pass all tests
 
 - [ ] Read, understood and adhered to our [style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md). A lot of our code reviews are spent on ensuring compliance with our style guide, so it would save a lot of time if this was adhered to from the outset. 
