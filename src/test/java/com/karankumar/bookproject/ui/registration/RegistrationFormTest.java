@@ -65,12 +65,6 @@ class RegistrationFormTest {
         UI.getCurrent().navigate(RegistrationView.class);
     }
 
-    @AfterEach
-    public void tearDown() {
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-    }
-
     @Test
     void registrationForm_passwordFieldNotMatchingTheRules_hasError() {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
@@ -184,4 +178,9 @@ class RegistrationFormTest {
         assertThat(userRepository.findByUsername("testusername").isPresent()).isTrue();
     }
 
+    @AfterEach
+    public void tearDown() {
+        userRepository.deleteAll();
+        roleRepository.deleteAll();
+    }
 }
