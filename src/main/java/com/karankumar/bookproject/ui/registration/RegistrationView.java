@@ -28,13 +28,16 @@ public class RegistrationView extends VerticalLayout {
         addClassName("registration-view");
         setSizeFull();
 
-        // centre
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setAlignItems(Alignment.CENTER);
+        centerElements();
 
         add(
                 new H1("Book Project"),
                 new RegistrationForm(userService)
         );
+    }
+
+    private void centerElements() {
+        setJustifyContentMode(JustifyContentMode.CENTER);
+        setAlignItems(Alignment.CENTER);
     }
 }
