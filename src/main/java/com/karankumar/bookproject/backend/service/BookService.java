@@ -101,9 +101,11 @@ public class BookService extends BaseService<Book, Long> {
             LOGGER.log(Level.INFO, "All books already deleted");
             return;
         }
-        LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " + bookRepository.count());
+        LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " +
+                bookRepository.count());
         bookRepository.deleteAll();
         authorService.deleteAll();
-        LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = " + bookRepository.count());
+        LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = " +
+                bookRepository.count());
     }
 }
