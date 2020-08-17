@@ -77,7 +77,8 @@ class RegistrationFormTest {
     @Test
     void registrationForm_passwordConfirmationWrong_hasError() {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
-        PasswordField passwordConfirmationField = _get(PasswordField.class, spec -> spec.withId("password-confirmation"));
+        PasswordField passwordConfirmationField =
+                _get(PasswordField.class, spec -> spec.withId("password-confirmation"));
 
 
         _setValue(passwordField, "asdfASDF1234=");
@@ -166,7 +167,8 @@ class RegistrationFormTest {
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
-        PasswordField passwordConfirmationField = _get(PasswordField.class, spec -> spec.withId("password-confirmation"));
+        PasswordField passwordConfirmationField =
+                _get(PasswordField.class, spec -> spec.withId("password-confirmation"));
         Button registerButton = _get(Button.class, spec -> spec.withId("register"));
 
         _setValue(usernameField, "testusername");
