@@ -43,7 +43,7 @@ public class SettingsView extends HorizontalLayout {
     private static boolean darkModeOn = false;
     private static Label darkModeLabel = new Label(ENABLE_DARK_MODE);
 
-    // -------------- Clear Shelves ----------------------
+    //Clear Shelves
     private static ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Clear Shelves";
     private static Button clearShelfButton;
