@@ -23,17 +23,18 @@ import org.apache.commons.lang3.StringUtils;
 
 @Log
 public class RegistrationForm extends FormLayout {
-    public static final String PASSWORD_HINT =
-            "The password must be at least 8 characters long and consist of at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+=";
+    public static final String PASSWORD_HINT = "The password must be at least 8 characters long " +
+            "and consist of at least one lowercase letter, one uppercase letter, one digit, and " +
+            "one special character from @#$%^&+=";
     private final UserService userService;
     private final Binder<User> binder = new BeanValidationBinder<>(User.class);
 
-   private final TextField usernameField = new TextField("Username");
-   private final EmailField emailField = new EmailField("Email Address");
-   private final PasswordField passwordField = new PasswordField("Password");
-   private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
-   private final Button registerButton = new Button("Register");
-   private final Span errorMessage = new Span();
+    private final TextField usernameField = new TextField("Username");
+    private final EmailField emailField = new EmailField("Email Address");
+    private final PasswordField passwordField = new PasswordField("Password");
+    private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
+    private final Button registerButton = new Button("Register");
+    private final Span errorMessage = new Span();
 
     // Flag for disabling first run for password validation
     private boolean enablePasswordValidation = false;
@@ -58,7 +59,8 @@ public class RegistrationForm extends FormLayout {
         registerButton.setId("register");
         registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         registerButton.addClickListener(buttonClickEvent -> {
-            User user = User.builder().build();
+            User user = User.builder()
+                            .build();
 
             if (binder.writeBeanIfValid(user)) {
                 try {
@@ -68,7 +70,8 @@ public class RegistrationForm extends FormLayout {
                     LOGGER.severe("Could not register the user " + user);
                     e.printStackTrace();
 
-                    errorMessage.setText("A server error occurred when registering. Please try again later.");
+                    errorMessage.setText(
+                            "A server error occurred when registering. Please try again later.");
                 }
             } else {
                 errorMessage.setText("There are errors in the registration form.");
@@ -78,11 +81,14 @@ public class RegistrationForm extends FormLayout {
         addFieldValidations(userService);
 
         Paragraph passwordHint = new Paragraph(PASSWORD_HINT);
-        passwordHint.getStyle().set("font-size", "var(--lumo-font-size-s)");
-        passwordHint.getStyle().set("color", "var(--lumo-secondary-text-color)");
+        passwordHint.getStyle()
+                    .set("font-size", "var(--lumo-font-size-s)");
+        passwordHint.getStyle()
+                    .set("color", "var(--lumo-secondary-text-color)");
 
         this.setMaxWidth("360px");
-        this.getStyle().set("margin", "0 auto");
+        this.getStyle()
+            .set("margin", "0 auto");
         this.setResponsiveSteps(
                 new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP)
         );
@@ -96,7 +102,8 @@ public class RegistrationForm extends FormLayout {
                 passwordHint,
                 errorMessage,
                 registerButton,
-                new Button("Go back to Login", e -> getUI().ifPresent(ui -> ui.navigate(LoginView.class)))
+                new Button("Go back to Login",
+                        e -> getUI().ifPresent(ui -> ui.navigate(LoginView.class)))
         );
     }
 
@@ -123,7 +130,8 @@ public class RegistrationForm extends FormLayout {
         });
 
         binder.setStatusLabel(errorMessage);
-        errorMessage.getStyle().set("color", "var(--lumo-error-text-color)");
+        errorMessage.getStyle()
+                    .set("color", "var(--lumo-error-text-color)");
     }
 
     private ValidationResult passwordValidator(String password, ValueContext ctx) {
