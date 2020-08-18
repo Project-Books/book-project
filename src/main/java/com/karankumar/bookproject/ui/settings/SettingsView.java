@@ -44,7 +44,7 @@ public class SettingsView extends HorizontalLayout {
 
     // Clear Shelves
     private static ResetShelvesDialog resetShelvesDialog;
-    private static final String CLEAR_SHELVES = "Clear Shelves";
+    private static final String CLEAR_SHELVES = "Reset shelves";
     private static Button clearShelvesButton;
     private static BookService bookService;
 
