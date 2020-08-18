@@ -31,7 +31,6 @@ import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
 @Log
@@ -43,14 +42,13 @@ public class SettingsView extends HorizontalLayout {
     private static boolean darkModeOn = false;
     private static Label darkModeLabel = new Label(ENABLE_DARK_MODE);
 
-    //Clear Shelves
+    // Clear Shelves
     private static ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Clear Shelves";
-    private static Button clearShelfButton;
+    private static Button clearShelvesButton;
     private static BookService bookService;
 
     static {
-
         darkModeToggle = new SwitchToggle();
         darkModeToggle.addClickListener(e -> {
 
@@ -67,14 +65,13 @@ public class SettingsView extends HorizontalLayout {
         });
 
 
-        clearShelfButton = new Button(CLEAR_SHELVES, click -> {
+        clearShelvesButton = new Button(CLEAR_SHELVES, click -> {
             resetShelvesDialog = new ResetShelvesDialog(bookService);
             resetShelvesDialog.openDialog();
         });
     }
 
     SettingsView(@Autowired BookService bookService) {
-
         SettingsView.bookService = bookService;
 
         setDarkModeState();
@@ -83,7 +80,7 @@ public class SettingsView extends HorizontalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(darkModeLabel, darkModeToggle);
 
-        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelfButton);
+        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelvesButton);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 
