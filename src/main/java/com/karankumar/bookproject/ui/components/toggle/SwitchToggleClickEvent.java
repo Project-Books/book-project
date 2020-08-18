@@ -20,7 +20,7 @@ import com.vaadin.flow.component.DomEvent;
 import com.vaadin.flow.component.EventData;
 
 /**
- * A click event to be used for the PaperToggle listener
+ * A click event to be used for the SwitchToggle listener
  */
 @DomEvent("click")
 public class SwitchToggleClickEvent extends ComponentEvent<SwitchToggle> {
