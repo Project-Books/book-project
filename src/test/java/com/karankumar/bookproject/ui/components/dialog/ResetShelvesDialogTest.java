@@ -30,10 +30,15 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 
 @IntegrationTest
 public class ResetShelvesDialogTest {
+    
     private BookService bookService;
+    private PredefinedShelf toRead;
 
     @Autowired private ApplicationContext ctx;
     private static Routes routes;
@@ -44,16 +49,30 @@ public class ResetShelvesDialogTest {
     }
 
     @BeforeEach
-    public void setup(@Autowired BookService bookService) {
+    public void setup(@Autowired BookService bookService,
+                      @Autowired PredefinedShelfService predefinedShelfService) {
+        
+        toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
         this.bookService = bookService;
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
         Assumptions.assumeTrue(bookService != null);
     }
+    
+    private void populateBookService(){
+        Author h_a_Rey = new Author("H.A.", "Rey");
+        Book book = new Book("Curious George Takes A Job", h_a_Rey, toRead);
+        bookService.save(book);
+        Book book1 = new Book("Curious George Gets a medal", h_a_Rey, toRead);
+        bookService.save(book1);
+    }
 
     @Test
-    void openDialog(){
+    void openResetShelvesDialog(){
+        
+        populateBookService();
+        
         // given
         ResetShelvesDialog resetShelvesDialog = new ResetShelvesDialog(bookService);
 
