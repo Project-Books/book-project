@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-
 @IntegrationTest
 class ResetShelvesDialogTest {
     
@@ -61,24 +60,20 @@ class ResetShelvesDialogTest {
         MockVaadin.setup(UI::new, servlet);
 
         Assumptions.assumeTrue(bookService != null);
-
     }
     
-    private void populateBookService(){
-
-        Author h_a_Rey = new Author("H.A.", "Rey");
-        Book book = new Book("Curious George Takes A Job", h_a_Rey, toRead);
-        bookService.save(book);
-        Book book1 = new Book("Curious George Gets a medal", h_a_Rey, toRead);
+    private void populateBookService() {
+        Author author = new Author("H.A.", "Rey");
+        Book book1 = new Book("Curious George Takes A Job", author, toRead);
         bookService.save(book1);
-
+        Book book2 = new Book("Curious George Gets a medal", author, toRead);
+        bookService.save(book2);
     }
 
     @Test
-    void openResetShelvesDialog(){
-        
-        populateBookService();
+    void testResetShelvesDeletesAllBooks() {
         // given
+        populateBookService();
         ResetShelvesDialog resetShelvesDialog = new ResetShelvesDialog(bookService);
 
         // when
@@ -93,7 +88,4 @@ class ResetShelvesDialogTest {
     public void tearDown() {
         MockVaadin.tearDown();
     }
-
 }
-
-
