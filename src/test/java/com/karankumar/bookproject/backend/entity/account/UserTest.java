@@ -28,6 +28,7 @@ public class UserTest {
     void testValidUserSaved() {
         // given
         User user = userWithoutPassword().password("passwordP1&")
+                                         .email("abc@def.com")
                                          .build();
 
         // when
@@ -115,4 +116,112 @@ public class UserTest {
         // then
         Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
     }
+    @Test
+    void testUserWithMailWithoutDomain() {
+        // given
+        User user = userWithEmailWithoutDomain().build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+
+    private User.UserBuilder userWithEmailWithoutDomain() {
+        return userWithoutEmail()
+                .email("email");
+    }
+
+    private User.UserBuilder userWithoutEmail() {
+        return User.builder()
+                   .username("username")
+                   .password("passwordP1&");
+    }
+
+    @Test
+    void testUserWithEmailWithoutAt() {
+        // given
+        User user = userWithEmailWithoutAt().build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+
+    private User.UserBuilder userWithEmailWithoutAt() {
+        return userWithoutEmail()
+                .email("emailgoogle.com");
+    }
+
+    @Test
+    void testUserWithEmailWithoutTopLevelDomain() {
+        // given
+        User user = userWithEmailWithoutTopLevelDomain().build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+
+    private User.UserBuilder userWithEmailWithoutTopLevelDomain() {
+        return userWithoutEmail()
+                .email("email@def");
+    }
+
+    @Test
+    void testUserWithEmailWithoutLocalPart() {
+        // given
+        User user = userWithEmailWithoutLocalPart().build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+
+    private User.UserBuilder userWithEmailWithoutLocalPart() {
+        return userWithoutEmail()
+                .email("@def.com");
+    }
+
+    @Test
+    void testUserWithEmailWithSpace() {
+        // given
+        User user = userWithEmailWithSpace().build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+
+    private User.UserBuilder userWithEmailWithSpace() {
+        return userWithoutEmail()
+                .email(" @def.org");
+    }
+
+    @Test
+    void testUserWithEmailWithQuotes() {
+        // given
+        User user = userWithEmailWithQuotes().build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+
+    private User.UserBuilder userWithEmailWithQuotes() {
+        return userWithoutEmail()
+                .email("\"abc@def.org");
+    }
+
 }

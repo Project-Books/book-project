@@ -62,6 +62,12 @@ public class User {
 
     // Note: this is allowed to be null if a user signs up without an email
     @NotEmpty
+    // For the RegExp see https://owasp.org/www-community/OWASP_Validation_Regex_Repository
+    @Pattern(
+            regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$",
+            flags = Pattern.Flag.CASE_INSENSITIVE,
+            message = "The email must conform to OWASP Validation Regex for email address"
+    )
     private String email;
 
     @NotNull
