@@ -31,13 +31,11 @@ abstract class ConfirmationDialog extends Dialog {
     protected Button confirmButton;
     protected Button cancelButton;
 
-    ConfirmationDialog(String dialogText){ 
-        
+    ConfirmationDialog(String dialogText) {
         descriptionText = dialogText;
     }
 
-    public void openDialog(){
-
+    public void openDialog() {
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
 
