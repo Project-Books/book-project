@@ -23,8 +23,6 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.shared.Registration;
 
 @Tag("switch-toggle-button")
-@NpmPackage(value="@polymer/switch-toggle-button", version = "3.0.1")
-@JsModule("@polymer/switch-toggle-button/switch-toggle-button.js")
 public class SwitchToggle extends Component {
     public Registration addClickListener(ComponentEventListener<SwitchToggleClickEvent> listener) {
         return addListener(SwitchToggleClickEvent.class, listener);
