@@ -15,33 +15,22 @@
 
 package com.karankumar.bookproject.ui.components.toggle;
 
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.DomEvent;
-import com.vaadin.flow.component.EventData;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.shared.Registration;
 
-/**
- * A click event to be used for the PaperToggle listener
- */
-@DomEvent("click")
-public class PaperToggleClickEvent extends ComponentEvent<PaperToggle> {
-    private int x;
-    private int y;
-
-    public PaperToggleClickEvent(PaperToggle source,
-                                 boolean fromClient,
-                                 @EventData("event.offsetX") int x,
-                                 @EventData("event.offsetY") int y) {
-        super(source, fromClient);
-        this.x = x;
-        this.y = y;
+@Tag("switch-toggle-button")
+@NpmPackage(value="@polymer/switch-toggle-button", version = "3.0.1")
+@JsModule("@polymer/switch-toggle-button/switch-toggle-button.js")
+public class SwitchToggle extends Component {
+    public Registration addClickListener(ComponentEventListener<SwitchToggleClickEvent> listener) {
+        return addListener(SwitchToggleClickEvent.class, listener);
     }
 
-    public int getX() {
-        return x;
+    public void setChecked(boolean checked){
+        getElement().setProperty("checked", checked);
     }
-
-    public int getY() {
-        return y;
-    }
-
 }

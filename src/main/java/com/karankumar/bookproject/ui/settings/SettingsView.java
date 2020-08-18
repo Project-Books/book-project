@@ -17,7 +17,7 @@ package com.karankumar.bookproject.ui.settings;
 
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
-import com.karankumar.bookproject.ui.components.toggle.PaperToggle;
+import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -39,11 +39,11 @@ public class SettingsView extends HorizontalLayout {
 
     private static final String ENABLE_DARK_MODE = "Enable dark mode";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
-    private static PaperToggle darkModeToggle;
+    private static SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static Label darkModeLabel = new Label(ENABLE_DARK_MODE);
 
-    // -------------- Clear Shelves ----------------------
+    //Clear Shelves
     private static ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Clear Shelves";
     private static Button clearShelfButton;
@@ -51,7 +51,7 @@ public class SettingsView extends HorizontalLayout {
 
     static {
 
-        darkModeToggle = new PaperToggle();
+        darkModeToggle = new SwitchToggle();
         darkModeToggle.addClickListener(e -> {
 
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
