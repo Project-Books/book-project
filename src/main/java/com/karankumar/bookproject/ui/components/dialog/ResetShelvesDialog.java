@@ -23,8 +23,8 @@ public class ResetShelvesDialog extends ConfirmationDialog {
     private static BookService bookService;
 
     public ResetShelvesDialog(BookService bookService) {
-        super(" Are you sure you want to do delete all of the books in the shelves? " +
-                "There is no going back. ");
+        super(" Are you sure you want to do delete all of the books in all of the " +
+                "shelves? There is no going back.");
         ResetShelvesDialog.bookService = bookService;
     }
 
