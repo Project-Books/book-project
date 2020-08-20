@@ -31,12 +31,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @WebAppConfiguration
 class RegistrationFormTest {
-    private final static User TEST_USER = User.builder()
-                                              .username("testuser")
-                                              .email("testemail")
-                                              .password("asdfASDF1234=")
-                                              .build();
-
     private final static User VALID_TEST_USER = User.builder()
                                                     .username("validTestUser")
                                                     .email("valid@testemail.com")
