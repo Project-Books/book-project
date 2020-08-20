@@ -64,23 +64,23 @@ class UserServiceTest {
 
     @Test
     void register_withUsernameTaken_throwsException() {
-        userRepository.save(testUser);
-        testUser.setEmail("anotherEmail");
+        userRepository.save(validUser);
+        validUser.setEmail("anotherEmail@testmail.com");
 
-        assertThrows(UserAlreadyRegisteredException.class, () -> userService.register(testUser));
+        assertThrows(UserAlreadyRegisteredException.class, () -> userService.register(validUser));
     }
 
     @Test
     void register_withEmailTaken_throwsException() {
-        userRepository.save(testUser);
-        testUser.setUsername("anotherUsername");
+        userRepository.save(validUser);
+        validUser.setUsername("anotherUsername");
 
-        assertThrows(UserAlreadyRegisteredException.class, () -> userService.register(testUser));
+        assertThrows(UserAlreadyRegisteredException.class, () -> userService.register(validUser));
     }
 
     @Test
     void register_withoutUserRole_throwsError() {
-        assertThrows(AuthenticationServiceException.class, () -> userService.register(testUser));
+        assertThrows(AuthenticationServiceException.class, () -> userService.register(validUser));
     }
 
     @Test
@@ -108,9 +108,9 @@ class UserServiceTest {
 
     @Test
     void usernameIsInUse_UsernameInUse_returnsTrue() {
-        userRepository.save(testUser);
+        userRepository.save(validUser);
 
-        assertThat(userService.usernameIsInUse("testuser"), equalTo(true));
+        assertThat(userService.usernameIsInUse(validUser.getUsername()), equalTo(true));
     }
 
     @Test
@@ -121,9 +121,9 @@ class UserServiceTest {
     @Test
     @Transactional
     void usernameIsNotInUse_UsernameInUse_returnsFalse() {
-        userRepository.save(testUser);
+        userRepository.save(validUser);
 
-        assertThat(userService.usernameIsNotInUse("testuser"), equalTo(false));
+        assertThat(userService.usernameIsNotInUse(validUser.getUsername()), equalTo(false));
     }
 
     @Test
@@ -145,8 +145,8 @@ class UserServiceTest {
 
     @Test
     void emailIsNotInUse_EmailInUse_returnsFalse() {
-        userRepository.save(testUser);
+        userRepository.save(validUser);
 
-        assertThat(userService.emailIsNotInUse("testmail"), equalTo(false));
+        assertThat(userService.emailIsNotInUse(validUser.getEmail()), equalTo(false));
     }
 }
