@@ -30,6 +30,12 @@ class UserServiceTest {
                                       .password("aaaaAAAA1234@")
                                       .build();
 
+    private final User validUser = User.builder()
+                                       .username("validUser")
+                                       .email("valid@testmail.com")
+                                       .password("aaaaAAAA1234@")
+                                       .build();
+
     @Autowired
     UserServiceTest(UserService userService,
                     UserRepository userRepository,
@@ -80,17 +86,19 @@ class UserServiceTest {
     @Test
     void register_registersUser() {
         roleRepository.save(Role.builder().role("USER").build());
-        userService.register(testUser);
+        userService.register(validUser);
 
-        assertThat(userRepository.findByUsername(testUser.getUsername()).isPresent(), equalTo(true));
+        assertThat(userRepository.findByUsername(validUser.getUsername()).isPresent(),
+                equalTo(true));
     }
 
     @Test
     void register_logsUserIn() {
         roleRepository.save(Role.builder().role("USER").build());
-        userService.register(testUser);
+        userService.register(validUser);
 
-        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated(), equalTo(true));
+        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated(),
+                equalTo(true));
     }
 
     @Test
@@ -125,9 +133,9 @@ class UserServiceTest {
 
     @Test
     void emailIsInUse_EmailInUse_returnsTrue() {
-        userRepository.save(testUser);
+        userRepository.save(validUser);
 
-        assertThat(userService.emailIsInUse("testmail"), equalTo(true));
+        assertThat(userService.emailIsInUse(validUser.getEmail()), equalTo(true));
     }
 
     @Test
