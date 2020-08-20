@@ -60,6 +60,7 @@ Prerequisites:
 ### Start using docker-compose in production mode
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
+3. Build the project in production mode using `mvn clean package -Pproduction`. In production mode all UI components are packaged in jar file.
 4. Start the MySQL Database and bookself app using docker compose `docker-compose up --build`
 5. Go to `localhost:8080`
 6. Log in with the details below:
