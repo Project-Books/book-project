@@ -37,6 +37,12 @@ class RegistrationFormTest {
                                               .password("asdfASDF1234=")
                                               .build();
 
+    private final static User VALID_TEST_USER = User.builder()
+                                                    .username("validTestUser")
+                                                    .email("valid@testemail.com")
+                                                    .password("asdfASDF1234=")
+                                                    .build();
+
     private static Routes routes;
 
     private final ApplicationContext ctx;
@@ -80,7 +86,6 @@ class RegistrationFormTest {
         PasswordField passwordConfirmationField =
                 _get(PasswordField.class, spec -> spec.withId("password-confirmation"));
 
-
         _setValue(passwordField, "asdfASDF1234=");
         _setValue(passwordConfirmationField, "somethingelse");
 
@@ -107,10 +112,10 @@ class RegistrationFormTest {
 
     @Test
     void registrationForm_usernameInUse_hasError() {
-        userRepository.save(TEST_USER);
+        userRepository.save(VALID_TEST_USER);
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
-        _setValue(usernameField, TEST_USER.getUsername());
+        _setValue(usernameField, VALID_TEST_USER.getUsername());
 
         assertThat(usernameField.getErrorMessage()).isNotBlank();
     }
@@ -135,10 +140,10 @@ class RegistrationFormTest {
 
     @Test
     void registrationForm_emailInUse_hasError() {
-        userRepository.save(TEST_USER);
+        userRepository.save(VALID_TEST_USER);
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
-        _setValue(emailField, TEST_USER.getEmail());
+        _setValue(emailField, VALID_TEST_USER.getEmail());
 
         assertThat(emailField.getErrorMessage()).isNotBlank();
     }
