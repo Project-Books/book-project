@@ -15,9 +15,12 @@
 
 package com.karankumar.bookproject.ui.settings;
 
+import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
+import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -25,23 +28,30 @@ import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.Lumo;
+import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
+@Log
 public class SettingsView extends HorizontalLayout {
+
     private static final String ENABLE_DARK_MODE = "Enable dark mode";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
     private static SwitchToggle darkModeToggle;
-    private static Label darkModeLabel = new Label(ENABLE_DARK_MODE);
     private static boolean darkModeOn = false;
+    private static Label darkModeLabel = new Label(ENABLE_DARK_MODE);
+
+    // Clear Shelves
+    private static ResetShelvesDialog resetShelvesDialog;
+    private static final String CLEAR_SHELVES = "Reset shelves";
+    private static Button clearShelvesButton;
+    private static BookService bookService;
 
     static {
-        createDarkModeToggle();
-    }
-
-    private static void createDarkModeToggle() {
         darkModeToggle = new SwitchToggle();
         darkModeToggle.addClickListener(e -> {
+
             ThemeList themeList = UI.getCurrent().getElement().getThemeList();
 
             if (themeList.contains(Lumo.DARK)) {
@@ -53,14 +63,26 @@ public class SettingsView extends HorizontalLayout {
             }
             updateDarkModeLabel();
         });
+
+
+        clearShelvesButton = new Button(CLEAR_SHELVES, click -> {
+            resetShelvesDialog = new ResetShelvesDialog(bookService);
+            resetShelvesDialog.openDialog();
+        });
     }
 
-    public SettingsView() {
+    SettingsView(@Autowired BookService bookService) {
+        SettingsView.bookService = bookService;
+
         setDarkModeState();
 
-        VerticalLayout verticalLayout = new VerticalLayout(darkModeToggle);
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.add(darkModeLabel, darkModeToggle);
+
+        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelvesButton);
+
         verticalLayout.setAlignItems(Alignment.CENTER);
-        verticalLayout.add(darkModeLabel);
 
         add(verticalLayout);
         setSizeFull();
@@ -76,7 +98,10 @@ public class SettingsView extends HorizontalLayout {
         }
     }
 
+
     private static void updateDarkModeLabel() {
-        darkModeLabel.setText(darkModeOn ? DISABLE_DARK_MODE : ENABLE_DARK_MODE);
+        if (darkModeLabel != null) {
+            darkModeLabel.setText(darkModeOn ? DISABLE_DARK_MODE : ENABLE_DARK_MODE);
+        }
     }
 }
