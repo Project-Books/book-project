@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <vaadin.version>14.3.1</vaadin.version>
+        <vaadin.version>14.3.3</vaadin.version>
         <lombok.version>1.18.12</lombok.version>
     </properties>
 
