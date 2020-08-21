@@ -13,28 +13,31 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.security;
+package com.karankumar.bookproject.ui.registration;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
+import com.karankumar.bookproject.backend.service.UserService;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 
-import static java.util.stream.Collectors.toUnmodifiableList;
+@Route("register")
+@PageTitle("Register | Book Project")
+public class RegistrationView extends VerticalLayout {
+    public RegistrationView(UserService userService) {
+        addClassName("registration-view");
+        setSizeFull();
 
-@Component
-public class UserDetailsMapper {
-    public User toUserDetails(com.karankumar.bookproject.backend.entity.account.User user) {
-        return new User(
-                user.getUsername(),
-                user.getPassword(),
-                user.isActive(),
-                true,
-                true,
-                true,
-                user.getRoles()
-                    .stream()
-                    .map(role -> new SimpleGrantedAuthority(role.getRole()))
-                    .collect(toUnmodifiableList())
+        centerElements();
+
+        add(
+                new H1("Book Project"),
+                new RegistrationForm(userService)
         );
+    }
+
+    private void centerElements() {
+        setJustifyContentMode(JustifyContentMode.CENTER);
+        setAlignItems(Alignment.CENTER);
     }
 }

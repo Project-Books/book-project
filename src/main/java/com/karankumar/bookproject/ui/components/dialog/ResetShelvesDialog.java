@@ -13,14 +13,24 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.repository;
+package com.karankumar.bookproject.ui.components.dialog;
 
-import com.karankumar.bookproject.backend.entity.account.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.karankumar.bookproject.backend.service.BookService;
+import lombok.extern.java.Log;
 
-import java.util.Optional;
+@Log
+public class ResetShelvesDialog extends ConfirmationDialog {
+    private static BookService bookService;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUsername(String username);
-    Optional<User> findByEmail(String email);
+    public ResetShelvesDialog(BookService bookService) {
+        super(" Are you sure you want to do delete all of the books in all of the " +
+                "shelves? There is no going back.");
+        ResetShelvesDialog.bookService = bookService;
+    }
+
+    @Override
+    void save() {
+        bookService.deleteAll();
+    }
 }
+

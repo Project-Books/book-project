@@ -15,6 +15,8 @@
 
 package com.karankumar.bookproject.ui.login;
 
+import com.karankumar.bookproject.ui.registration.RegistrationView;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -42,7 +44,9 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         add(
             new H1("Book Project"),
-            loginForm
+            loginForm,
+            new Button("Don't have an account yet? Register now",
+                    e -> getUI().ifPresent(ui -> ui.navigate(RegistrationView.class)))
         );
     }
 

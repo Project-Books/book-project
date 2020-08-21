@@ -92,7 +92,11 @@ Generally speaking, if you're working on a new feature (any issue with the [enha
 
 If you've opened a pull request but it is not yet ready for a review, please convert it to a draft. Otherwise, we may help you out by adding to your branch while you're also working on it if the changes needed are small or if the work needs to be completed quickly (e.g. if it is a high priority bug or if it is blocking other work). 
 
-The same applies for pull requests where we've request changes -- mark it as a draft until you're ready for another review. 
+The same applies for pull requests where we've requested changes -- mark it as a draft until you're ready for another review. 
+
+### Merge conflicts
+
+We expect you to resolve any merge conflicts that appear when you have a pull request. This includes when you first create the pull request and at any point later on if merge conflicts appear before your pull request is merged. This is to minimise the time spent reviewers spend reviewing pull requests, but it is may also provide you with the opportunity to change or adapt your work based on new changes.
   
 ## Stale issues & pull requests
 

@@ -87,3 +87,5 @@ If you need help with anything, we'll be happy to help you in our [Gitter Channe
 [Karibu Testing](https://github.com/mvysny/karibu-testing) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 [Mockito](https://github.com/mockito/mockito) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
+
+[Java Hamcrest](https://github.com/hamcrest/JavaHamcrest) - [BSD License](http://opensource.org/licenses/BSD-3-Clause)

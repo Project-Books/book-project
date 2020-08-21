@@ -17,6 +17,8 @@ package com.karankumar.bookproject.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -34,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_FAILURE_URL = "/login?error";
     private static final String LOGIN_URL = "/login";
     private static final String LOGOUT_SUCCESS_URL = "/login";
+    private static final String REGISTRATION_URL = "/register";
 
     private final DatabaseUserDetailsService databaseUserDetailsService;
     private final DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService;
@@ -56,6 +59,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .passwordEncoder(passwordEncoder());
     }
 
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
@@ -76,18 +85,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // Vaadin has its own cross-site request forgery protection, so disable Spring's
         http.csrf().disable()
-            .requestCache().requestCache(new CustomRequestCache())
-            .and().authorizeRequests()
-            .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
-
-            .anyRequest().authenticated()
-
-            .and().formLogin()
-            .loginPage(LOGIN_URL).permitAll()
-            .loginProcessingUrl(LOGIN_PROCESSING_URL)
-            .failureUrl(LOGIN_FAILURE_URL)
-
+            .requestCache()
+                .requestCache(new CustomRequestCache())
+                .and()
+            .authorizeRequests()
+                .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
+                .antMatchers(REGISTRATION_URL).permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage(LOGIN_URL).permitAll()
+                .loginProcessingUrl(LOGIN_PROCESSING_URL)
+                .failureUrl(LOGIN_FAILURE_URL)
+                .and()
             // send users to the logout URL when they log out
-            .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
+            .logout()
+                .logoutSuccessUrl(LOGOUT_SUCCESS_URL);
     }
 }

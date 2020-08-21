@@ -22,7 +22,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -54,14 +56,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uidgenerator")
     @SequenceGenerator(name = "uidgenerator", sequenceName = "uid_sequence")
     @Getter
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
     @NotEmpty
+    @Length(min = 5, max = 64)
     private String username;
 
     // Note: this is allowed to be null if a user signs up without an email
     @NotEmpty
+    // For the RegExp see https://owasp.org/www-community/OWASP_Validation_Regex_Repository
+    @Pattern(
+            regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$",
+            flags = Pattern.Flag.CASE_INSENSITIVE,
+            message = "The email must conform to OWASP Validation Regex for email address"
+    )
     private String email;
 
     @NotNull
@@ -69,9 +79,12 @@ public class User {
     // For the RegExp see https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation/3802238#3802238
     @Pattern(
             regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
-            message = "The password must be at least 8 characters long and including at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+="
+            message = "The password must be at least 8 characters long and consist of at least one lowercase letter, one uppercase letter, one digit, and one special character from @#$%^&+="
     )
     private String password;
+
+    @NotNull
+    private boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
