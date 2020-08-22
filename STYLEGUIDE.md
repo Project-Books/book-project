@@ -13,6 +13,7 @@ the version on the master branch should be followed, as this version should be t
    1. [Eclipse](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#eclipse)
 1. [Checking for violations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#checking-for-violations)
 1. [Source files](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-files)
+   1. [American English](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-american-english)
    1. [Source file structure](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-file-structure)
       1. [No wildcard imports](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-wildcard-imports)
       1. [No line-wrapping for package & import statements](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-line-wrapping-for-package-and-import-statements)
