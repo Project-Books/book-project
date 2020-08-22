@@ -153,7 +153,7 @@ public class BookForm extends VerticalLayout {
         inSeriesCheckbox.setValue(false);
         inSeriesCheckbox.addValueChangeListener(event -> {
             seriesPositionFormItem.setVisible(event.getValue());
-            if (!event.getValue()) {
+            if (Boolean.FALSE.equals(event.getValue())) {
                 seriesPosition.clear();
             }
         });
