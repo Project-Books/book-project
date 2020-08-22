@@ -520,6 +520,10 @@ In every test method, try to minimise the number of assertions. Generally speaki
 
 While it may seem better to use pseudorandom bounded values so that you can test more cases, it rarely improves coverage. It's better to use fixed input data with well-defined edge cases.
 
+### TODOs
+
+TODO comments are acceptable and encouraged if they are useful. However, we ask that if you create a TODO, please also create a new corresponding issue.
+
 ## Recommended reading
 
 - Clean code, Robert C. Martin
