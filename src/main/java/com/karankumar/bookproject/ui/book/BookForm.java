@@ -407,6 +407,17 @@ public class BookForm extends VerticalLayout {
             return;
         }
         saveButton.setText(LABEL_UPDATE_BOOK);
+        if (binder == null) {
+            LOGGER.log(Level.SEVERE, "Null binder");
+            return;
+        }
+
+        // TODO: this should be removed. A custom shelf should not be mandatory, so it should
+        // be acceptable to the custom shelf to be null
+        if (book.getCustomShelf() == null) {
+            book.setCustomShelf(new CustomShelf("ShelfName"));
+        }
+
         binder.setBean(book);
     }
 
