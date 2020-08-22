@@ -114,6 +114,10 @@ By using the maven wrapper, you don't need to have Maven installed. Alternativel
 
 ## Source files
 
+### Use American English
+
+All code and comments should be written in English (United States).
+
 ### Source file structure
 
 A source file should contain the following in order:
