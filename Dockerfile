@@ -1,6 +1,6 @@
 FROM openjdk:11-jre-slim
 WORKDIR /
-COPY target/*.jar app.jar
+COPY target/book-project*.jar app.jar
 RUN useradd -m myuser
 USER myuser
 EXPOSE 8080
