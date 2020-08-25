@@ -214,23 +214,24 @@ public class BookFormTest {
     }
 
     private void populateBookForm(ShelfName shelfName, boolean isInSeries) {
-        populateBookFormWithExistingBook(shelfName, isInSeries, null);
+        bookForm.authorFirstName.setValue(firstName);
+        bookForm.authorLastName.setValue(lastName);
+        bookForm.bookTitle.setValue(bookTitle);
+        bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
+        bookForm.bookGenre.setValue(genre);
+        bookForm.numberOfPages.setValue(numberOfPages);
+        if (isInSeries) {
+            bookForm.seriesPosition.setValue(SERIES_POSITION);
+        }
+        populateBookShelf(shelfName);
     }
 
-    private void populateBookFormWithExistingBook(ShelfName shelfName, boolean isInSeries, Book maybePresentBook) {
-        if (maybePresentBook != null) {
-            bookForm.setBook(maybePresentBook);
-        } else {
-            bookForm.authorFirstName.setValue(firstName);
-            bookForm.authorLastName.setValue(lastName);
-            bookForm.bookTitle.setValue(bookTitle);
-            bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
-            bookForm.bookGenre.setValue(genre);
-            bookForm.numberOfPages.setValue(numberOfPages);
-            if (isInSeries) {
-                bookForm.seriesPosition.setValue(SERIES_POSITION);
-            }
-        }
+    private void populateBookFormWithExistingBook(ShelfName shelfName, Book existingBook) {
+        bookForm.setBook(existingBook);
+        populateBookShelf(shelfName);
+    }
+
+    private void populateBookShelf(ShelfName shelfName) {
         switch (shelfName) {
             case TO_READ:
                 bookForm.predefinedShelfField.setValue(shelfName);
@@ -558,7 +559,7 @@ public class BookFormTest {
         bookForm.saveButton.click();
 
         Book savedBook = bookService.findAll().get(0);
-        populateBookFormWithExistingBook(READ, false, savedBook);
+        populateBookFormWithExistingBook(READ, savedBook);
 
         // when
         bookForm.bookTitle.setValue("IT");
@@ -608,7 +609,7 @@ public class BookFormTest {
         bookForm = createBookForm(initialShelf, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
         bookForm.saveButton.click();
-        populateBookFormWithExistingBook(newShelf, false, bookService.findAll().get(0));
+        populateBookFormWithExistingBook(newShelf, bookService.findAll().get(0));
 
         // when
         bookForm.saveButton.click();
