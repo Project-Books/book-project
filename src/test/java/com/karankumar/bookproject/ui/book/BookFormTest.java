@@ -36,7 +36,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -44,6 +46,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -93,35 +98,46 @@ public class BookFormTest {
         customShelfService.save(customShelf);
 
         Assumptions.assumeTrue(predefinedShelfService != null);
-        bookForm = createBookForm(true);
-
+        bookForm = createBookForm(READ, true);
     }
 
-    private BookForm createBookForm(boolean isInSeries) {
+    private BookForm createBookForm(ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
-        bookForm.setBook(createBook(predefinedShelfService, isInSeries));
+        readShelf = predefinedShelfService.findAll().get(2);
+        bookForm.setBook(createBook(shelf, isInSeries));
         return bookForm;
     }
 
-    private Book createBook(PredefinedShelfService predefinedShelfService, boolean isInSeries) {
+    private Book createBook(ShelfName shelfName, boolean isInSeries) {
+        // values that are present in all forms
         Author author = new Author(firstName, lastName);
-        readShelf = predefinedShelfService.findAll().get(2);
-        Book book = new Book(bookTitle, author, readShelf);
-
+        PredefinedShelf shelf = predefinedShelfService.findAll(shelfName).get(0);
+        Book book = new Book(bookTitle, author, shelf);
 
         pagesRead = generateRandomNumberOfPages();
         numberOfPages = generateRandomNumberOfPages();
         seriesPosition = SERIES_POSITION;
 
-        book.setCustomShelf(customShelf);
         book.setGenre(genre);
-        book.setPagesRead(pagesRead);
         book.setNumberOfPages(numberOfPages);
-        book.setDateStartedReading(dateStarted);
-        book.setDateFinishedReading(dateFinished);
-        book.setRating(ratingVal);
-        if (isInSeries) {
-            book.setSeriesPosition(seriesPosition);
+        book.setCustomShelf(customShelfService.findAll().get(0));
+        if (isInSeries) book.setSeriesPosition(SERIES_POSITION);
+
+        // values that are only present for specific predefined shelves
+        switch (shelfName) {
+            case READING:
+                book.setDateStartedReading(dateStarted);
+                break;
+            case READ:
+                book.setDateStartedReading(dateStarted);
+                book.setDateFinishedReading(dateFinished);
+                book.setRating(ratingVal);
+                break;
+            case DID_NOT_FINISH:
+                book.setDateStartedReading(dateStarted);
+                book.setPagesRead(pagesRead);
+                book.setRating(ratingVal);
+                break;
         }
         return book;
     }
@@ -160,7 +176,7 @@ public class BookFormTest {
     @EnumSource(EventType.class)
     void saveEventPopulated(EventType eventType) {
         // given
-        populateBookForm();
+        populateBookForm(READ, false, null);
 
         // when
         AtomicReference<Book> bookReference = new AtomicReference<>(null);
@@ -190,17 +206,39 @@ public class BookFormTest {
         Assertions.assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
     }
 
-    private void populateBookForm() {
-        bookForm.authorFirstName.setValue(firstName);
-        bookForm.authorLastName.setValue(lastName);
-        bookForm.bookTitle.setValue(bookTitle);
-        bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
-        bookForm.bookGenre.setValue(genre);
-        bookForm.pagesRead.setValue(pagesRead);
-        bookForm.numberOfPages.setValue(numberOfPages);
-        bookForm.dateStartedReading.setValue(dateStarted);
-        bookForm.dateFinishedReading.setValue(dateFinished);
-        bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+    private void populateBookForm(ShelfName shelfName, boolean isInSeries, Book maybePresentBook) {
+        if (maybePresentBook != null) {
+            bookForm.setBook(maybePresentBook);
+        } else {
+            bookForm.authorFirstName.setValue(firstName);
+            bookForm.authorLastName.setValue(lastName);
+            bookForm.bookTitle.setValue(bookTitle);
+            bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
+            bookForm.bookGenre.setValue(genre);
+            bookForm.numberOfPages.setValue(numberOfPages);
+            if(isInSeries) bookForm.seriesPosition.setValue(SERIES_POSITION);
+        }
+        switch (shelfName) {
+            case TO_READ:
+                bookForm.predefinedShelfField.setValue(shelfName);
+                break;
+            case READING:
+                bookForm.predefinedShelfField.setValue(shelfName);
+                bookForm.dateStartedReading.setValue(dateStarted);
+                break;
+            case READ:
+                bookForm.predefinedShelfField.setValue(shelfName);
+                bookForm.dateStartedReading.setValue(dateStarted);
+                bookForm.dateFinishedReading.setValue(dateFinished);
+                bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+                break;
+            case DID_NOT_FINISH:
+                bookForm.predefinedShelfField.setValue(shelfName);
+                bookForm.dateStartedReading.setValue(dateStarted);
+                bookForm.pagesRead.setValue(pagesRead);
+                bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+                break;
+        }
     }
 
     /**
@@ -209,7 +247,7 @@ public class BookFormTest {
     @Test
     void formCanBeCleared() {
         // given
-        populateBookForm();
+        populateBookForm(READ, false, null);
         assumeAllFormFieldsArePopulated();
 
         // when
@@ -456,7 +494,7 @@ public class BookFormTest {
     @Test
     void shouldDisplaySeriesPosition_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
         // given
-        populateBookForm();
+        populateBookForm(READ, false, null);
 
         // when
         bookForm.openForm();
@@ -470,7 +508,7 @@ public class BookFormTest {
     @Test
     void shouldNotDisplaySeriesPosition_whenBookDoesNotHaveSeriesPosition() {
         // given
-        bookForm = createBookForm(false);
+        bookForm = createBookForm(READ, false);
 
         bookForm.openForm();
 
