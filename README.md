@@ -46,12 +46,12 @@ Prerequisites:
 - MySQL 8.0.* or (better) Docker
   - For Windows users, install Docker Desktop and then run `docker-compose up` at the root of the project on the command line
 
-### Start locally with only MYSQL running in docker
+### Start locally with only MySQL running in docker
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Build the project using `mvn clean install`
-4. Start MYSQL databse using `docker-compose up -d mysql
+4. Start MySQL database using `docker-compose up -d mysql`
 5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
 6. Log in with the details below:
     - Username: `user`
@@ -61,7 +61,7 @@ Prerequisites:
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Build the project in production mode using `mvn clean package -Pproduction`. In production mode all UI components are packaged in jar file.
-4. Start the MySQL Database and bookself app using docker compose `docker-compose up --build`
+4. Start the MySQL Database and book project app using docker compose `docker-compose up --build`
 5. Go to `localhost:8080`
 6. Log in with the details below:
     - Username: `user`
