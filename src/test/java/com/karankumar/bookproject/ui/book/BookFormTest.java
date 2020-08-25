@@ -20,12 +20,8 @@ package com.karankumar.bookproject.ui.book;
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.Genre;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -60,7 +56,7 @@ public class BookFormTest {
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
     private static final RatingScale ratingVal = RatingScale.NINE;
-    private static DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
+    private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
     private static final int SERIES_POSITION = 10;
     private static int pagesRead;
     private static int numberOfPages;
@@ -105,7 +101,6 @@ public class BookFormTest {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
         bookForm.setBook(createBook(predefinedShelfService, isInSeries));
         return bookForm;
-
     }
 
     private Book createBook(PredefinedShelfService predefinedShelfService, boolean isInSeries) {
@@ -128,7 +123,6 @@ public class BookFormTest {
         if (isInSeries) {
             book.setSeriesPosition(seriesPosition);
         }
-
         return book;
     }
 
@@ -147,7 +141,6 @@ public class BookFormTest {
         Assertions.assertEquals(readShelf.getPredefinedShelfName(),
                 bookForm.predefinedShelfField.getValue());
         Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
-        Assertions.assertEquals(pagesRead, bookForm.pagesRead.getValue());
         Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
@@ -190,7 +183,6 @@ public class BookFormTest {
                 savedOrDeletedBook.getPredefinedShelf()
                                   .getShelfName());
         Assertions.assertEquals(genre, savedOrDeletedBook.getGenre());
-        Assertions.assertEquals(pagesRead, savedOrDeletedBook.getPagesRead());
         Assertions.assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());
         Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
@@ -243,7 +235,6 @@ public class BookFormTest {
         Assumptions.assumeFalse(bookForm.bookTitle.isEmpty());
         Assumptions.assumeFalse(bookForm.predefinedShelfField.isEmpty());
         Assumptions.assumeFalse(bookForm.bookGenre.isEmpty());
-        Assumptions.assumeFalse(bookForm.pagesRead.isEmpty());
         Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty());
         Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty());
         Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty());
@@ -251,7 +242,7 @@ public class BookFormTest {
 
     @Test
     void correctFormFieldsShowForToReadShelf() {
-        bookForm.predefinedShelfField.setValue(PredefinedShelf.ShelfName.TO_READ);
+        bookForm.predefinedShelfField.setValue(TO_READ);
         Assertions.assertFalse(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
@@ -260,7 +251,7 @@ public class BookFormTest {
 
     @Test
     void correctFormFieldsShowForReadingShelf() {
-        bookForm.predefinedShelfField.setValue(PredefinedShelf.ShelfName.READING);
+        bookForm.predefinedShelfField.setValue(READING);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
@@ -269,7 +260,7 @@ public class BookFormTest {
 
     @Test
     void correctFormFieldsShowForReadShelf() {
-        bookForm.predefinedShelfField.setValue(PredefinedShelf.ShelfName.READ);
+        bookForm.predefinedShelfField.setValue(READ);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertTrue(bookForm.dateFinishedReadingFormItem.isVisible());
         Assertions.assertTrue(bookForm.ratingFormItem.isVisible());
@@ -278,7 +269,7 @@ public class BookFormTest {
 
     @Test
     void correctFormFieldsShowForDidNotFinishShelf() {
-        bookForm.predefinedShelfField.setValue(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+        bookForm.predefinedShelfField.setValue(DID_NOT_FINISH);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
