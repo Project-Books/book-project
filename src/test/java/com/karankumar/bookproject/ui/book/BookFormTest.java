@@ -20,8 +20,13 @@ package com.karankumar.bookproject.ui.book;
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -121,7 +126,9 @@ public class BookFormTest {
         book.setGenre(genre);
         book.setNumberOfPages(numberOfPages);
         book.setCustomShelf(customShelfService.findAll().get(0));
-        if (isInSeries) book.setSeriesPosition(SERIES_POSITION);
+        if (isInSeries) {
+            book.setSeriesPosition(SERIES_POSITION);
+        }
 
         // values that are only present for specific predefined shelves
         switch (shelfName) {
@@ -216,7 +223,9 @@ public class BookFormTest {
             bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
             bookForm.bookGenre.setValue(genre);
             bookForm.numberOfPages.setValue(numberOfPages);
-            if(isInSeries) bookForm.seriesPosition.setValue(SERIES_POSITION);
+            if (isInSeries) {
+                bookForm.seriesPosition.setValue(SERIES_POSITION);
+            }
         }
         switch (shelfName) {
             case TO_READ:
