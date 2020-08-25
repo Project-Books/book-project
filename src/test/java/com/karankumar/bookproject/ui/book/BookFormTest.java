@@ -631,30 +631,26 @@ public class BookFormTest {
         // these values should only be present for specific predefined shelves
         switch (shelfName) {
             case TO_READ:
-                Assertions.assertNull(bookInDatabase.getDateStartedReading());
-                Assertions.assertNull(bookInDatabase.getDateFinishedReading());
-                Assertions.assertEquals(RatingScale.NO_RATING, bookInDatabase.getRating());
-                Assertions.assertNull(bookInDatabase.getPagesRead());
+                assertStateSpecificFields(bookInDatabase, null, null, RatingScale.NO_RATING, null);
                 break;
             case READING:
-                Assertions.assertEquals(dateStarted, bookInDatabase.getDateStartedReading());
-                Assertions.assertNull(bookInDatabase.getDateFinishedReading());
-                Assertions.assertEquals(RatingScale.NO_RATING, bookInDatabase.getRating());
-                Assertions.assertNull(bookInDatabase.getPagesRead());
+                assertStateSpecificFields(bookInDatabase, dateStarted, null, RatingScale.NO_RATING, null);
                 break;
             case READ:
-                Assertions.assertEquals(dateStarted, bookInDatabase.getDateStartedReading());
-                Assertions.assertEquals(dateFinished, bookInDatabase.getDateFinishedReading());
-                Assertions.assertEquals(0, bookInDatabase.getRating().compareTo(ratingVal));
-                Assertions.assertNull(bookInDatabase.getPagesRead());
+                assertStateSpecificFields(bookInDatabase, dateStarted, dateFinished, ratingVal, null);
                 break;
             case DID_NOT_FINISH:
-                Assertions.assertEquals(dateStarted, bookInDatabase.getDateStartedReading());
-                Assertions.assertNull(bookInDatabase.getDateFinishedReading());
-                Assertions.assertEquals(0, bookInDatabase.getRating().compareTo(ratingVal));
-                Assertions.assertEquals(pagesRead, bookInDatabase.getPagesRead());
+                assertStateSpecificFields(bookInDatabase, dateStarted, null, ratingVal, pagesRead);
                 break;
         }
+    }
+
+    private void assertStateSpecificFields(Book book, LocalDate dateStarted, LocalDate dateFinished,
+                                           RatingScale rating, Integer pagesRead) {
+        Assertions.assertEquals(dateStarted, book.getDateStartedReading());
+        Assertions.assertEquals(dateFinished, book.getDateFinishedReading());
+        Assertions.assertEquals(rating, book.getRating());
+        Assertions.assertEquals(pagesRead, book.getPagesRead());
     }
 
     /**
