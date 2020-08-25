@@ -183,7 +183,7 @@ public class BookFormTest {
     @EnumSource(EventType.class)
     void saveEventPopulated(EventType eventType) {
         // given
-        populateBookForm(READ, false, null);
+        populateBookForm(READ, false);
 
         // when
         AtomicReference<Book> bookReference = new AtomicReference<>(null);
@@ -213,7 +213,11 @@ public class BookFormTest {
         Assertions.assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
     }
 
-    private void populateBookForm(ShelfName shelfName, boolean isInSeries, Book maybePresentBook) {
+    private void populateBookForm(ShelfName shelfName, boolean isInSeries) {
+        populateBookFormWithExistingBook(shelfName, isInSeries, null);
+    }
+
+    private void populateBookFormWithExistingBook(ShelfName shelfName, boolean isInSeries, Book maybePresentBook) {
         if (maybePresentBook != null) {
             bookForm.setBook(maybePresentBook);
         } else {
@@ -256,7 +260,7 @@ public class BookFormTest {
     @Test
     void formCanBeCleared() {
         // given
-        populateBookForm(READ, false, null);
+        populateBookForm(READ, false);
         assumeAllFormFieldsArePopulated();
 
         // when
@@ -503,7 +507,7 @@ public class BookFormTest {
     @Test
     void shouldDisplaySeriesPosition_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
         // given
-        populateBookForm(READ, false, null);
+        populateBookForm(READ, false);
 
         // when
         bookForm.openForm();
@@ -554,21 +558,13 @@ public class BookFormTest {
         bookForm.saveButton.click();
 
         Book savedBook = bookService.findAll().get(0);
-        Assertions.assertEquals(bookTitle, savedBook.getTitle());
-        Assertions.assertEquals(TO_READ, savedBook.getPredefinedShelf().getPredefinedShelfName());
-        Assertions.assertEquals(firstName, savedBook.getAuthor().getFirstName());
-        Assertions.assertEquals(lastName, savedBook.getAuthor().getLastName());
-        Assertions.assertEquals(genre, savedBook.getGenre());
-        Assertions.assertNull(savedBook.getDateStartedReading());
-        Assertions.assertNull(savedBook.getDateFinishedReading());
+        populateBookFormWithExistingBook(READ, false, savedBook);
 
-        populateBookForm(READ, false, savedBook);
+        // when
         bookForm.bookTitle.setValue("IT");
         bookForm.authorFirstName.setValue("Stephen");
         bookForm.authorLastName.setValue("King");
         bookForm.bookGenre.setValue(Genre.HORROR);
-
-        // when
         bookForm.saveButton.click();
 
         // then
@@ -612,7 +608,7 @@ public class BookFormTest {
         bookForm = createBookForm(initialShelf, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
         bookForm.saveButton.click();
-        populateBookForm(newShelf, false, bookService.findAll().get(0));
+        populateBookFormWithExistingBook(newShelf, false, bookService.findAll().get(0));
 
         // when
         bookForm.saveButton.click();
