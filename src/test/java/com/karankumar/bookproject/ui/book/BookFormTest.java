@@ -516,6 +516,161 @@ public class BookFormTest {
         Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
     }
 
+    /**
+     * Tests whether a book is saved to the database when the save-event is called
+     */
+    @Test
+    void shouldSaveBookToDatabase() {
+        // given
+        bookForm = createBookForm(TO_READ, false);
+
+        // when
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(1, bookService.count());
+        Book bookInDatabase = bookService.findAll().get(0);
+        assertBookInSpecificShelf(TO_READ, bookInDatabase);
+    }
+
+    /**
+     * Tests whether a book is updated in the database when the save-event is called
+     */
+    @Test
+    void shouldUpdateValuesForBook() {
+        // given
+        bookForm = createBookForm(TO_READ, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        Book savedBook = bookService.findAll().get(0);
+        Assertions.assertEquals(bookTitle, savedBook.getTitle());
+        Assertions.assertEquals(TO_READ, savedBook.getPredefinedShelf().getPredefinedShelfName());
+        Assertions.assertEquals(firstName, savedBook.getAuthor().getFirstName());
+        Assertions.assertEquals(lastName, savedBook.getAuthor().getLastName());
+        Assertions.assertEquals(genre, savedBook.getGenre());
+        Assertions.assertNull(savedBook.getDateStartedReading());
+        Assertions.assertNull(savedBook.getDateFinishedReading());
+
+        populateBookForm(READ, false, savedBook);
+        bookForm.bookTitle.setValue("IT");
+        bookForm.authorFirstName.setValue("Stephen");
+        bookForm.authorLastName.setValue("King");
+        bookForm.bookGenre.setValue(Genre.HORROR);
+
+        // when
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(1, bookService.count());
+        Book updatedBook = bookService.findAll().get(0);
+        Assertions.assertEquals("IT", updatedBook.getTitle());
+        Assertions.assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName());
+        Assertions.assertEquals("Stephen", updatedBook.getAuthor().getFirstName());
+        Assertions.assertEquals("King", updatedBook.getAuthor().getLastName());
+        Assertions.assertEquals(Genre.HORROR, updatedBook.getGenre());
+        Assertions.assertEquals(dateStarted, updatedBook.getDateStartedReading());
+        Assertions.assertEquals(dateFinished, updatedBook.getDateFinishedReading());
+    }
+
+
+    private static Stream<Arguments> shelfCombinations() {
+        return Stream.of(
+                Arguments.of(TO_READ, READING),
+                Arguments.of(TO_READ, READ),
+                Arguments.of(TO_READ, DID_NOT_FINISH),
+                Arguments.of(READING, DID_NOT_FINISH),
+                Arguments.of(READING, READ)
+                // TODO: these cases are not passing atm because of issue #271
+                // Arguments.of(READING, TO_READ),
+                // Arguments.of(READ, TO_READ),
+                // Arguments.of(READ, DID_NOT_FINISH),
+                // Arguments.of(READ, READING),
+                // Arguments.of(DID_NOT_FINISH, TO_READ),
+                // Arguments.of(DID_NOT_FINISH, READING),
+                // Arguments.of(DID_NOT_FINISH, READ)
+                );
+    }
+
+    /**
+     * Tests whether a book is updated in the database when the save-event is called
+     */
+    @ParameterizedTest
+    @MethodSource("shelfCombinations")
+    void shouldUpdateValuesWhenBookIsMovedBetweenShelves(ShelfName initialShelf, ShelfName newShelf) {
+        // given
+        bookForm = createBookForm(initialShelf, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+        populateBookForm(newShelf, false, bookService.findAll().get(0));
+
+        // when
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(1, bookService.count());
+        Book bookInDatabase = bookService.findAll().get(0);
+        assertBookInSpecificShelf(newShelf, bookInDatabase);
+    }
+
+    private void assertBookInSpecificShelf(ShelfName shelfName, Book bookInDatabase) {
+        // these values should be present no matter which shelf the book is in
+        Assertions.assertEquals(bookTitle, bookInDatabase.getTitle());
+        Assertions.assertEquals(shelfName, bookInDatabase.getPredefinedShelf().getPredefinedShelfName());
+        Assertions.assertEquals(firstName, bookInDatabase.getAuthor().getFirstName());
+        Assertions.assertEquals(lastName, bookInDatabase.getAuthor().getLastName());
+        Assertions.assertEquals(genre, bookInDatabase.getGenre());
+        Assertions.assertEquals(numberOfPages, bookInDatabase.getNumberOfPages());
+
+        // these values should only be present for specific predefined shelves
+        switch (shelfName) {
+            case TO_READ:
+                Assertions.assertNull(bookInDatabase.getDateStartedReading());
+                Assertions.assertNull(bookInDatabase.getDateFinishedReading());
+                Assertions.assertEquals(RatingScale.NO_RATING, bookInDatabase.getRating());
+                Assertions.assertNull(bookInDatabase.getPagesRead());
+                break;
+            case READING:
+                Assertions.assertEquals(dateStarted, bookInDatabase.getDateStartedReading());
+                Assertions.assertNull(bookInDatabase.getDateFinishedReading());
+                Assertions.assertEquals(RatingScale.NO_RATING, bookInDatabase.getRating());
+                Assertions.assertNull(bookInDatabase.getPagesRead());
+                break;
+            case READ:
+                Assertions.assertEquals(dateStarted, bookInDatabase.getDateStartedReading());
+                Assertions.assertEquals(dateFinished, bookInDatabase.getDateFinishedReading());
+                Assertions.assertEquals(0, bookInDatabase.getRating().compareTo(ratingVal));
+                Assertions.assertNull(bookInDatabase.getPagesRead());
+                break;
+            case DID_NOT_FINISH:
+                Assertions.assertEquals(dateStarted, bookInDatabase.getDateStartedReading());
+                Assertions.assertNull(bookInDatabase.getDateFinishedReading());
+                Assertions.assertEquals(0, bookInDatabase.getRating().compareTo(ratingVal));
+                Assertions.assertEquals(pagesRead, bookInDatabase.getPagesRead());
+                break;
+        }
+    }
+
+    /**
+     * Tests whether a book is removed from the database when the delete-event is called
+     */
+    @Test
+    void shouldDeleteBookFromDatabase() {
+        // given
+        bookForm = createBookForm(TO_READ, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+        Assertions.assertEquals(1, bookService.count());
+
+        // when
+        bookForm.addListener(BookForm.DeleteEvent.class, event -> bookService.delete(event.getBook()));
+        bookForm.delete.click();
+
+        // then
+        Assertions.assertEquals(0, bookService.count());
+    }
+
     @AfterEach
     public void tearDown() {
         MockVaadin.tearDown();
