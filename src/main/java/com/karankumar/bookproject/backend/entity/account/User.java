@@ -28,6 +28,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
+import com.karankumar.bookproject.backend.constraints.PasswordDescriptor;
+import com.karankumar.bookproject.backend.constraints.PasswordStrengthCheck;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -78,13 +81,7 @@ public class User {
 
     @NotNull
     @NotEmpty
-    // For the RegExp see https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation/3802238#3802238
-    @Pattern(
-            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
-            message = "The password must be at least 8 characters long and consist of at least " +
-                    "one lowercase letter, one uppercase letter, one digit, and one special " +
-                    "character from @#$%^&+="
-    )
+    @PasswordStrengthCheck(PasswordDescriptor.STRONG)
     private String password;
 
     @NotNull

@@ -44,7 +44,7 @@ public class UserTest {
     @Test
     void testValidUserSaved() {
         // given
-        User user = userWithoutPassword().password("passwordP1&")
+        User user = userWithoutPassword().password("passwordP1&132")
                                          .email("abc@def.com")
                                          .build();
 
@@ -62,9 +62,9 @@ public class UserTest {
     }
 
     @Test
-    void testPasswordLessThan8CharactersIsInvalid() {
+    void testWeakPasswordIsInvalid() {
         // given
-        User user = userWithoutPassword().password("pP1&")
+        User user = userWithoutPassword().password("123456789")
                                          .build();
 
         // when
@@ -73,7 +73,33 @@ public class UserTest {
         // then
         Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
     }
+    
+    @Test
+    void testFairPasswordIsInvalid() {
+        // given
+        User user = userWithoutPassword().password("aPassWorD")
+                                         .build();
 
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+    
+    @Test
+    void testGoodPasswordIsInvalid() {
+        // given
+        User user = userWithoutPassword().password("testPa$$123")
+                                         .build();
+
+        // when
+        tryToSaveInvalidUser(user);
+
+        // then
+        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+    
     void tryToSaveInvalidUser(User user) {
         try {
             // when
@@ -82,57 +108,6 @@ public class UserTest {
         }
     }
 
-    @Test
-    void testPasswordWithNoDigitIsInvalid() {
-        // given
-        User user = userWithoutPassword().password("passwordP&")
-                                         .build();
-
-        // when
-        tryToSaveInvalidUser(user);
-
-        // then
-        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
-    }
-
-    @Test
-    void testPasswordWithNoLowercaseCharacterIsInvalid() {
-        // given
-        User user = userWithoutPassword().password("PASSWORD1&")
-                                         .build();
-
-        // when
-        tryToSaveInvalidUser(user);
-
-        // then
-        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
-    }
-
-    @Test
-    void testPasswordWithNoUppercaseCharacterIsInvalid() {
-        // given
-        User user = userWithoutPassword().password("password1&")
-                                         .build();
-
-        // when
-        tryToSaveInvalidUser(user);
-
-        // then
-        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
-    }
-
-    @Test
-    void testPasswordWithNoSpecialCharacterIsInvalid() {
-        // given
-        User user = userWithoutPassword().password("passwordP1")
-                                         .build();
-
-        // when
-        tryToSaveInvalidUser(user);
-
-        // then
-        Assertions.assertEquals(initialNumberOfUsers, userRepository.count());
-    }
     @Test
     void testUserWithMailWithoutDomain() {
         // given
