@@ -50,7 +50,7 @@ public class Book extends BaseEntity {
     private String bookRecommendedBy;
 
     @ManyToOne(cascade =
-            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}
+            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
