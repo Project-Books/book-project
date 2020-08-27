@@ -7,15 +7,15 @@ import com.nulabinc.zxcvbn.Zxcvbn;
 
 public class PasswordStrengthValidator implements ConstraintValidator<PasswordStrengthCheck, String>{
     
-    private PasswordDescriptor passwordDescriptor;
+    private PasswordStrength passwordStrength;
     
     @Override
     public void initialize(PasswordStrengthCheck constraintAnnotation) {
-	this.passwordDescriptor = constraintAnnotation.value();
+	this.passwordStrength = constraintAnnotation.value();
     }
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
-	return new Zxcvbn().measure(password).getScore() >= passwordDescriptor.getStrengthNum();
+	return new Zxcvbn().measure(password).getScore() >= passwordStrength.getStrengthNum();
     }
 }

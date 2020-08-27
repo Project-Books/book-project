@@ -28,7 +28,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-import com.karankumar.bookproject.backend.constraints.PasswordDescriptor;
+import com.karankumar.bookproject.backend.constraints.PasswordStrength;
 import com.karankumar.bookproject.backend.constraints.PasswordStrengthCheck;
 
 import javax.persistence.CascadeType;
@@ -81,7 +81,7 @@ public class User {
 
     @NotNull
     @NotEmpty
-    @PasswordStrengthCheck(PasswordDescriptor.STRONG)
+    @PasswordStrengthCheck(PasswordStrength.STRONG)
     private String password;
 
     @NotNull

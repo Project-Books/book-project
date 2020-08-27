@@ -21,5 +21,5 @@ public @interface PasswordStrengthCheck {
     
     Class<? extends Payload>[] payload() default {};
     
-    PasswordDescriptor value();
+    PasswordStrength value();
 }

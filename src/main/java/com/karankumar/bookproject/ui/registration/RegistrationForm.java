@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.ui.registration;
 
-import com.karankumar.bookproject.backend.constraints.PasswordDescriptor;
+import com.karankumar.bookproject.backend.constraints.PasswordStrength;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
 import com.karankumar.bookproject.ui.login.LoginView;
@@ -112,7 +112,7 @@ public class RegistrationForm extends FormLayout {
         	passwordStrengthMeter.setValue(0);
             } else {
         	setPasswordStrengthMeterColor(passwordScore);
-        	passwordStrengthDescriptor.setText("Password Strength: " + PasswordDescriptor.values()[passwordScore]);
+        	passwordStrengthDescriptor.setText("Password Strength: " + PasswordStrength.values()[passwordScore]);
             }
         });
 
@@ -160,7 +160,6 @@ public class RegistrationForm extends FormLayout {
             binder.validate();
         });
         
-       
         binder.setStatusLabel(errorMessage);
         errorMessage.getStyle()
                     .set("color", "var(--lumo-error-text-color)");
@@ -190,13 +189,13 @@ public class RegistrationForm extends FormLayout {
             passwordStrengthMeter.setClassName("fair-indicator");
             break;
         case 2:
-    	    passwordStrengthMeter.setClassName("good-indicator");
+            passwordStrengthMeter.setClassName("good-indicator");
             break;
         case 3:
             passwordStrengthMeter.setClassName("strong-indicator");
             break;
         case 4:
-    	    passwordStrengthMeter.setClassName("very-strong-indicator");
+            passwordStrengthMeter.setClassName("very-strong-indicator");
             break;
         default:
             throw new IllegalArgumentException("The password score has to lie between 0 and 5 (exclusive)");
