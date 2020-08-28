@@ -25,7 +25,6 @@ import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
@@ -53,7 +52,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -106,15 +108,14 @@ public class BookFormTest {
         bookForm = createBookForm(READ, true);
     }
 
-    private BookForm createBookForm(ShelfName shelf, boolean isInSeries) {
+    private BookForm createBookForm(PredefinedShelf.ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
-        readShelf = predefinedShelfService.findAll().get(2);
+        readShelf = predefinedShelfService.findAll(READ).get(0);
         bookForm.setBook(createBook(shelf, isInSeries));
         return bookForm;
     }
 
-    private Book createBook(ShelfName shelfName, boolean isInSeries) {
-        // values that are present in all forms
+    private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
         Author author = new Author(firstName, lastName);
         PredefinedShelf shelf = predefinedShelfService.findAll(shelfName).get(0);
         Book book = new Book(bookTitle, author, shelf);
@@ -130,7 +131,10 @@ public class BookFormTest {
             book.setSeriesPosition(SERIES_POSITION);
         }
 
-        // values that are only present for specific predefined shelves
+        return setShelfSpecificFields(book, shelfName);
+    }
+
+    private Book setShelfSpecificFields(Book book, PredefinedShelf.ShelfName shelfName) {
         switch (shelfName) {
             case READING:
                 book.setDateStartedReading(dateStarted);
@@ -213,7 +217,7 @@ public class BookFormTest {
         Assertions.assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
     }
 
-    private void populateBookForm(ShelfName shelfName, boolean isInSeries) {
+    private void populateBookForm(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
         bookForm.authorFirstName.setValue(firstName);
         bookForm.authorLastName.setValue(lastName);
         bookForm.bookTitle.setValue(bookTitle);
@@ -226,12 +230,12 @@ public class BookFormTest {
         populateBookShelf(shelfName);
     }
 
-    private void populateBookFormWithExistingBook(ShelfName shelfName, Book existingBook) {
+    private void populateBookFormWithExistingBook(PredefinedShelf.ShelfName shelfName, Book existingBook) {
         bookForm.setBook(existingBook);
         populateBookShelf(shelfName);
     }
 
-    private void populateBookShelf(ShelfName shelfName) {
+    private void populateBookShelf(PredefinedShelf.ShelfName shelfName) {
         switch (shelfName) {
             case TO_READ:
                 bookForm.predefinedShelfField.setValue(shelfName);
@@ -530,11 +534,8 @@ public class BookFormTest {
         Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
     }
 
-    /**
-     * Tests whether a book is saved to the database when the save-event is called
-     */
     @Test
-    void shouldSaveBookToDatabase() {
+    void shouldAddBookToDatabaseWhenSaveEventIsCalled() {
         // given
         bookForm = createBookForm(TO_READ, false);
 
@@ -545,15 +546,15 @@ public class BookFormTest {
         // then
         Assertions.assertEquals(1, bookService.count());
         Book bookInDatabase = bookService.findAll().get(0);
-        assertBookInSpecificShelf(TO_READ, bookInDatabase);
+        assertThatRightValuesArePresentForBookInSpecificShelf(TO_READ, bookInDatabase);
     }
 
-    /**
-     * Tests whether a book is updated in the database when the save-event is called
-     */
     @Test
-    void shouldUpdateValuesForBook() {
+    void shouldUpdateValuesInDatabaseForExistingBookWhenSaveEventIsCalled() {
         // given
+        String newTitle = "IT";
+        Author newAuthor = new Author("Stephen", "King");
+
         bookForm = createBookForm(TO_READ, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
         bookForm.saveButton.click();
@@ -562,19 +563,19 @@ public class BookFormTest {
         populateBookFormWithExistingBook(READ, savedBook);
 
         // when
-        bookForm.bookTitle.setValue("IT");
-        bookForm.authorFirstName.setValue("Stephen");
-        bookForm.authorLastName.setValue("King");
+        bookForm.bookTitle.setValue(newTitle);
+        bookForm.authorFirstName.setValue(newAuthor.getFirstName());
+        bookForm.authorLastName.setValue(newAuthor.getLastName());
         bookForm.bookGenre.setValue(Genre.HORROR);
         bookForm.saveButton.click();
 
         // then
         Assertions.assertEquals(1, bookService.count());
         Book updatedBook = bookService.findAll().get(0);
-        Assertions.assertEquals("IT", updatedBook.getTitle());
+        Assertions.assertEquals(newTitle, updatedBook.getTitle());
         Assertions.assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName());
-        Assertions.assertEquals("Stephen", updatedBook.getAuthor().getFirstName());
-        Assertions.assertEquals("King", updatedBook.getAuthor().getLastName());
+        Assertions.assertEquals(newAuthor.getFirstName(), updatedBook.getAuthor().getFirstName());
+        Assertions.assertEquals(newAuthor.getLastName(), updatedBook.getAuthor().getLastName());
         Assertions.assertEquals(Genre.HORROR, updatedBook.getGenre());
         Assertions.assertEquals(dateStarted, updatedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, updatedBook.getDateFinishedReading());
@@ -588,7 +589,7 @@ public class BookFormTest {
                 Arguments.of(TO_READ, DID_NOT_FINISH),
                 Arguments.of(READING, DID_NOT_FINISH),
                 Arguments.of(READING, READ)
-                // TODO: these cases are not passing atm because of issue #271
+                // TODO: these cases are not passing at the moment because of issue #271
                 // Arguments.of(READING, TO_READ),
                 // Arguments.of(READ, TO_READ),
                 // Arguments.of(READ, DID_NOT_FINISH),
@@ -604,7 +605,8 @@ public class BookFormTest {
      */
     @ParameterizedTest
     @MethodSource("shelfCombinations")
-    void shouldUpdateValuesWhenBookIsMovedBetweenShelves(ShelfName initialShelf, ShelfName newShelf) {
+    void shouldUpdateValuesWhenBookIsMovedBetweenShelves(PredefinedShelf.ShelfName initialShelf,
+                                                         PredefinedShelf.ShelfName newShelf) {
         // given
         bookForm = createBookForm(initialShelf, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
@@ -617,10 +619,11 @@ public class BookFormTest {
         // then
         Assertions.assertEquals(1, bookService.count());
         Book bookInDatabase = bookService.findAll().get(0);
-        assertBookInSpecificShelf(newShelf, bookInDatabase);
+        assertThatRightValuesArePresentForBookInSpecificShelf(newShelf, bookInDatabase);
     }
 
-    private void assertBookInSpecificShelf(ShelfName shelfName, Book bookInDatabase) {
+    private void assertThatRightValuesArePresentForBookInSpecificShelf(PredefinedShelf.ShelfName shelfName,
+                                                                       Book bookInDatabase) {
         // these values should be present no matter which shelf the book is in
         Assertions.assertEquals(bookTitle, bookInDatabase.getTitle());
         Assertions.assertEquals(shelfName, bookInDatabase.getPredefinedShelf().getPredefinedShelfName());
