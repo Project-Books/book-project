@@ -10,17 +10,17 @@ public enum PasswordStrength {
     private final String strength;
     private final int strengthNum;
 
-    private PasswordStrength(String strength, int strengthNum) {
-	this.strength = strength;
-	this.strengthNum = strengthNum;
+    PasswordStrength(String strength, int strengthNum) {
+        this.strength = strength;
+        this.strengthNum = strengthNum;
     }
 
     @Override
     public String toString() {
-	return strength;
+        return strength;
     }
 
     public int getStrengthNum() {
-	return strengthNum;
+        return strengthNum;
     }
 }

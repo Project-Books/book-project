@@ -11,11 +11,11 @@ public class PasswordStrengthValidator implements ConstraintValidator<PasswordSt
     
     @Override
     public void initialize(PasswordStrengthCheck constraintAnnotation) {
-	this.passwordStrength = constraintAnnotation.value();
+        this.passwordStrength = constraintAnnotation.value();
     }
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
-	return new Zxcvbn().measure(password).getScore() >= passwordStrength.getStrengthNum();
+        return new Zxcvbn().measure(password).getScore() >= passwordStrength.getStrengthNum();
     }
 }
