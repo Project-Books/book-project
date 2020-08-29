@@ -188,8 +188,8 @@ public class BookFormTest {
 
     /**
      * Tests whether the event is populated with the values from the form
-     * @param eventType represents a saved event (when the user presses the save button) or a delete event (when the
-     *                  user presses the delete event)
+     * @param eventType represents a saved event (when the user presses the save button) or a delete
+     *                  event (when the user presses the delete event)
      */
     @ParameterizedTest
     @EnumSource(EventType.class)
@@ -555,7 +555,7 @@ public class BookFormTest {
         // then
         Assertions.assertEquals(1, bookService.count());
         Book bookInDatabase = bookService.findAll().get(0);
-        rightValuesPresentForBookInSpecificShelf(TO_READ, bookInDatabase);
+        correctBookAttributesPresent(TO_READ, bookInDatabase);
     }
 
     @Test
@@ -629,20 +629,16 @@ public class BookFormTest {
         // then
         Assertions.assertEquals(1, bookService.count());
         Book bookInDatabase = bookService.findAll().get(0);
-        rightValuesPresentForBookInSpecificShelf(newShelf, bookInDatabase);
+        correctBookAttributesPresent(newShelf, bookInDatabase);
     }
 
-    private void rightValuesPresentForBookInSpecificShelf(PredefinedShelf.ShelfName shelfName,
-                                                          Book book) {
-        // these values should be present no matter which shelf the book is in
-        Assertions.assertEquals(bookTitle, book.getTitle());
-        Assertions.assertEquals(shelfName, book.getPredefinedShelf().getPredefinedShelfName());
-        Assertions.assertEquals(firstName, book.getAuthor().getFirstName());
-        Assertions.assertEquals(lastName, book.getAuthor().getLastName());
-        Assertions.assertEquals(genre, book.getGenre());
-        Assertions.assertEquals(numberOfPages, book.getNumberOfPages());
+    private void correctBookAttributesPresent(PredefinedShelf.ShelfName shelfName, Book book) {
+        testBookAttributesPresentForAllShelves(shelfName, book);
+        bookAttributesPresentForSpecificPredefinedShelf(shelfName, book);
+    }
 
-        // these values should only be present for specific predefined shelves
+    private void bookAttributesPresentForSpecificPredefinedShelf(PredefinedShelf.ShelfName shelfName,
+                                                                 Book book) {
         switch (shelfName) {
             case TO_READ:
                 assertStateSpecificFields(book, NULL_STARED_DATE, NULL_FINISHED_DATE,
@@ -661,6 +657,16 @@ public class BookFormTest {
                         ratingVal, pagesRead);
                 break;
         }
+    }
+
+    private void testBookAttributesPresentForAllShelves(PredefinedShelf.ShelfName shelfName,
+                                                        Book book) {
+        Assertions.assertEquals(bookTitle, book.getTitle());
+        Assertions.assertEquals(shelfName, book.getPredefinedShelf().getPredefinedShelfName());
+        Assertions.assertEquals(firstName, book.getAuthor().getFirstName());
+        Assertions.assertEquals(lastName, book.getAuthor().getLastName());
+        Assertions.assertEquals(genre, book.getGenre());
+        Assertions.assertEquals(numberOfPages, book.getNumberOfPages());
     }
 
     private void assertStateSpecificFields(Book book, LocalDate dateStarted, LocalDate dateFinished,
