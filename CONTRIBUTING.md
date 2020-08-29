@@ -121,6 +121,7 @@ Please also consider that you're finding something difficult on the issue you're
 
 - Code: adding new features, fixing bugs and general refactoring to name a few
   - Code reviews: either offering to review a pull request on Gitter or if you see a pull request and think the code could be improved, feel free to offer suggestions on how to do so. This can help improve our code quality and is much appreciated!
+     - Before reviewing code, please ensure you are familiar with and understand our [code reviews document](https://github.com/knjk04/book-project/blob/master/.github/CODE_REVIEWS.md)
   - Issues and pull requests labelled with [needs-repro](https://github.com/knjk04/book-project/labels/needs-repro) have yet to be reproduced. If you're able to reproduce it, letting us know would help a lot
   - Our test coverage is low, so we need a lot more tests, particularly the areas that are undertested or not covered at all
 
