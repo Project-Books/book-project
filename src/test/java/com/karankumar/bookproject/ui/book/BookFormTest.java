@@ -29,6 +29,7 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
@@ -82,6 +83,8 @@ public class BookFormTest {
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
 
+    private static PredefinedShelfUtils predefinedShelfUtils;
+
     @Autowired
     private ApplicationContext ctx;
 
@@ -101,6 +104,8 @@ public class BookFormTest {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
+        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+
         Assumptions.assumeTrue(bookService != null);
         bookService.deleteAll();
 
@@ -113,14 +118,14 @@ public class BookFormTest {
 
     private BookForm createBookForm(PredefinedShelf.ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
-        readShelf = predefinedShelfService.findAll(READ).get(0);
+        readShelf = predefinedShelfUtils.findReadShelf();
         bookForm.setBook(createBook(shelf, isInSeries));
         return bookForm;
     }
 
     private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
         Author author = new Author(firstName, lastName);
-        PredefinedShelf shelf = predefinedShelfService.findAll(shelfName).get(0);
+        PredefinedShelf shelf = predefinedShelfUtils.findPredefinedShelf(shelfName);
         Book book = new Book(bookTitle, author, shelf);
 
         pagesRead = generateRandomNumberOfPages();
@@ -557,6 +562,7 @@ public class BookFormTest {
         // given
         String newTitle = "IT";
         Author newAuthor = new Author("Stephen", "King");
+        Genre newGenre = Genre.HORROR;
 
         bookForm = createBookForm(TO_READ, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
@@ -569,7 +575,7 @@ public class BookFormTest {
         bookForm.bookTitle.setValue(newTitle);
         bookForm.authorFirstName.setValue(newAuthor.getFirstName());
         bookForm.authorLastName.setValue(newAuthor.getLastName());
-        bookForm.bookGenre.setValue(Genre.HORROR);
+        bookForm.bookGenre.setValue(newGenre);
         bookForm.saveButton.click();
 
         // then
@@ -579,7 +585,7 @@ public class BookFormTest {
         Assertions.assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName());
         Assertions.assertEquals(newAuthor.getFirstName(), updatedBook.getAuthor().getFirstName());
         Assertions.assertEquals(newAuthor.getLastName(), updatedBook.getAuthor().getLastName());
-        Assertions.assertEquals(Genre.HORROR, updatedBook.getGenre());
+        Assertions.assertEquals(newGenre, updatedBook.getGenre());
         Assertions.assertEquals(dateStarted, updatedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, updatedBook.getDateFinishedReading());
     }
