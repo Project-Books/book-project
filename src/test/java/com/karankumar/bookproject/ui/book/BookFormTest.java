@@ -269,7 +269,6 @@ public class BookFormTest {
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.dateStartedReading.setValue(dateStarted);
                 bookForm.pagesRead.setValue(pagesRead);
-                bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
                 break;
         }
     }
@@ -667,7 +666,7 @@ public class BookFormTest {
                 break;
             case DID_NOT_FINISH:
                 assertStateSpecificFields(book, dateStarted, NULL_FINISHED_DATE,
-                        ratingVal, NO_BOOK_REVIEW, pagesRead);
+                        RatingScale.NO_RATING, NO_BOOK_REVIEW, pagesRead);
                 break;
         }
     }
