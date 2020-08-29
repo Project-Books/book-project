@@ -20,15 +20,16 @@ package com.karankumar.bookproject.ui.book;
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
@@ -40,7 +41,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -48,6 +51,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -60,16 +69,21 @@ public class BookFormTest {
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
     private static final RatingScale ratingVal = RatingScale.NINE;
-    private static DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
+    private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
     private static final int SERIES_POSITION = 10;
     private static int pagesRead;
     private static int numberOfPages;
     private static int seriesPosition;
     private static final CustomShelf customShelf = new CustomShelf("BookFormTestShelf");
+    private static final LocalDate NULL_STARED_DATE = null;
+    private static final LocalDate NULL_FINISHED_DATE = null;
+    private static final Integer NO_PAGES_READ = null;
 
     private static Routes routes;
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
+
+    private static PredefinedShelfUtils predefinedShelfUtils;
 
     @Autowired
     private ApplicationContext ctx;
@@ -90,6 +104,8 @@ public class BookFormTest {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
+        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+
         Assumptions.assumeTrue(bookService != null);
         bookService.deleteAll();
 
@@ -97,38 +113,51 @@ public class BookFormTest {
         customShelfService.save(customShelf);
 
         Assumptions.assumeTrue(predefinedShelfService != null);
-        bookForm = createBookForm(true);
-
+        bookForm = createBookForm(READ, true);
     }
 
-    private BookForm createBookForm(boolean isInSeries) {
+    private BookForm createBookForm(PredefinedShelf.ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
-        bookForm.setBook(createBook(predefinedShelfService, isInSeries));
+        readShelf = predefinedShelfUtils.findReadShelf();
+        bookForm.setBook(createBook(shelf, isInSeries));
         return bookForm;
-
     }
 
-    private Book createBook(PredefinedShelfService predefinedShelfService, boolean isInSeries) {
+    private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
         Author author = new Author(firstName, lastName);
-        readShelf = predefinedShelfService.findAll().get(2);
-        Book book = new Book(bookTitle, author, readShelf);
-
+        PredefinedShelf shelf = predefinedShelfUtils.findPredefinedShelf(shelfName);
+        Book book = new Book(bookTitle, author, shelf);
 
         pagesRead = generateRandomNumberOfPages();
         numberOfPages = generateRandomNumberOfPages();
         seriesPosition = SERIES_POSITION;
 
-        book.setCustomShelf(customShelf);
         book.setGenre(genre);
-        book.setPagesRead(pagesRead);
         book.setNumberOfPages(numberOfPages);
-        book.setDateStartedReading(dateStarted);
-        book.setDateFinishedReading(dateFinished);
-        book.setRating(ratingVal);
+        book.setCustomShelf(customShelfService.findAll().get(0));
         if (isInSeries) {
-            book.setSeriesPosition(seriesPosition);
+            book.setSeriesPosition(SERIES_POSITION);
         }
 
+        return setShelfSpecificFields(book, shelfName);
+    }
+
+    private Book setShelfSpecificFields(Book book, PredefinedShelf.ShelfName shelfName) {
+        switch (shelfName) {
+            case READING:
+                book.setDateStartedReading(dateStarted);
+                break;
+            case READ:
+                book.setDateStartedReading(dateStarted);
+                book.setDateFinishedReading(dateFinished);
+                book.setRating(ratingVal);
+                break;
+            case DID_NOT_FINISH:
+                book.setDateStartedReading(dateStarted);
+                book.setPagesRead(pagesRead);
+                book.setRating(ratingVal);
+                break;
+        }
         return book;
     }
 
@@ -147,7 +176,6 @@ public class BookFormTest {
         Assertions.assertEquals(readShelf.getPredefinedShelfName(),
                 bookForm.predefinedShelfField.getValue());
         Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
-        Assertions.assertEquals(pagesRead, bookForm.pagesRead.getValue());
         Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
@@ -160,14 +188,14 @@ public class BookFormTest {
 
     /**
      * Tests whether the event is populated with the values from the form
-     * @param eventType represents a saved event (when the user presses the save button) or a delete event (when the
-     *                  user presses the delete event)
+     * @param eventType represents a saved event (when the user presses the save button) or a delete
+     *                  event (when the user presses the delete event)
      */
     @ParameterizedTest
     @EnumSource(EventType.class)
     void saveEventPopulated(EventType eventType) {
         // given
-        populateBookForm();
+        populateBookForm(READ, false);
 
         // when
         AtomicReference<Book> bookReference = new AtomicReference<>(null);
@@ -190,7 +218,6 @@ public class BookFormTest {
                 savedOrDeletedBook.getPredefinedShelf()
                                   .getShelfName());
         Assertions.assertEquals(genre, savedOrDeletedBook.getGenre());
-        Assertions.assertEquals(pagesRead, savedOrDeletedBook.getPagesRead());
         Assertions.assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());
         Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
@@ -198,17 +225,47 @@ public class BookFormTest {
         Assertions.assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
     }
 
-    private void populateBookForm() {
+    private void populateBookForm(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
         bookForm.authorFirstName.setValue(firstName);
         bookForm.authorLastName.setValue(lastName);
         bookForm.bookTitle.setValue(bookTitle);
         bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.setValue(genre);
-        bookForm.pagesRead.setValue(pagesRead);
         bookForm.numberOfPages.setValue(numberOfPages);
-        bookForm.dateStartedReading.setValue(dateStarted);
-        bookForm.dateFinishedReading.setValue(dateFinished);
-        bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+        if (isInSeries) {
+            bookForm.seriesPosition.setValue(SERIES_POSITION);
+        }
+        populateBookShelf(shelfName);
+    }
+
+    private void populateBookFormWithExistingBook(PredefinedShelf.ShelfName shelfName,
+                                                  Book existingBook) {
+        bookForm.setBook(existingBook);
+        populateBookShelf(shelfName);
+    }
+
+    private void populateBookShelf(PredefinedShelf.ShelfName shelfName) {
+        switch (shelfName) {
+            case TO_READ:
+                bookForm.predefinedShelfField.setValue(shelfName);
+                break;
+            case READING:
+                bookForm.predefinedShelfField.setValue(shelfName);
+                bookForm.dateStartedReading.setValue(dateStarted);
+                break;
+            case READ:
+                bookForm.predefinedShelfField.setValue(shelfName);
+                bookForm.dateStartedReading.setValue(dateStarted);
+                bookForm.dateFinishedReading.setValue(dateFinished);
+                bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+                break;
+            case DID_NOT_FINISH:
+                bookForm.predefinedShelfField.setValue(shelfName);
+                bookForm.dateStartedReading.setValue(dateStarted);
+                bookForm.pagesRead.setValue(pagesRead);
+                bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+                break;
+        }
     }
 
     /**
@@ -217,7 +274,7 @@ public class BookFormTest {
     @Test
     void formCanBeCleared() {
         // given
-        populateBookForm();
+        populateBookForm(READ, false);
         assumeAllFormFieldsArePopulated();
 
         // when
@@ -243,7 +300,6 @@ public class BookFormTest {
         Assumptions.assumeFalse(bookForm.bookTitle.isEmpty());
         Assumptions.assumeFalse(bookForm.predefinedShelfField.isEmpty());
         Assumptions.assumeFalse(bookForm.bookGenre.isEmpty());
-        Assumptions.assumeFalse(bookForm.pagesRead.isEmpty());
         Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty());
         Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty());
         Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty());
@@ -251,7 +307,7 @@ public class BookFormTest {
 
     @Test
     void correctFormFieldsShowForToReadShelf() {
-        bookForm.predefinedShelfField.setValue(PredefinedShelf.ShelfName.TO_READ);
+        bookForm.predefinedShelfField.setValue(TO_READ);
         Assertions.assertFalse(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
@@ -260,7 +316,7 @@ public class BookFormTest {
 
     @Test
     void correctFormFieldsShowForReadingShelf() {
-        bookForm.predefinedShelfField.setValue(PredefinedShelf.ShelfName.READING);
+        bookForm.predefinedShelfField.setValue(READING);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
@@ -269,7 +325,7 @@ public class BookFormTest {
 
     @Test
     void correctFormFieldsShowForReadShelf() {
-        bookForm.predefinedShelfField.setValue(PredefinedShelf.ShelfName.READ);
+        bookForm.predefinedShelfField.setValue(READ);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertTrue(bookForm.dateFinishedReadingFormItem.isVisible());
         Assertions.assertTrue(bookForm.ratingFormItem.isVisible());
@@ -278,7 +334,7 @@ public class BookFormTest {
 
     @Test
     void correctFormFieldsShowForDidNotFinishShelf() {
-        bookForm.predefinedShelfField.setValue(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+        bookForm.predefinedShelfField.setValue(DID_NOT_FINISH);
         Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
         Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
@@ -465,7 +521,7 @@ public class BookFormTest {
     @Test
     void shouldDisplaySeriesPosition_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
         // given
-        populateBookForm();
+        populateBookForm(READ, false);
 
         // when
         bookForm.openForm();
@@ -479,12 +535,165 @@ public class BookFormTest {
     @Test
     void shouldNotDisplaySeriesPosition_whenBookDoesNotHaveSeriesPosition() {
         // given
-        bookForm = createBookForm(false);
+        bookForm = createBookForm(READ, false);
 
         bookForm.openForm();
 
         // then
         Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+    }
+
+    @Test
+    void shouldAddBookToDatabaseWhenSaveEventIsCalled() {
+        // given
+        bookForm = createBookForm(TO_READ, false);
+
+        // when
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(1, bookService.count());
+        Book bookInDatabase = bookService.findAll().get(0);
+        correctBookAttributesPresent(TO_READ, bookInDatabase);
+    }
+
+    @Test
+    void shouldUpdateValuesInDatabaseForExistingBookWhenSaveEventIsCalled() {
+        // given
+        String newTitle = "IT";
+        Author newAuthor = new Author("Stephen", "King");
+        Genre newGenre = Genre.HORROR;
+
+        bookForm = createBookForm(TO_READ, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        Book savedBook = bookService.findAll().get(0);
+        populateBookFormWithExistingBook(READ, savedBook);
+
+        // when
+        bookForm.bookTitle.setValue(newTitle);
+        bookForm.authorFirstName.setValue(newAuthor.getFirstName());
+        bookForm.authorLastName.setValue(newAuthor.getLastName());
+        bookForm.bookGenre.setValue(newGenre);
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(1, bookService.count());
+        Book updatedBook = bookService.findAll().get(0);
+        Assertions.assertEquals(newTitle, updatedBook.getTitle());
+        Assertions.assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName());
+        Assertions.assertEquals(newAuthor.getFirstName(), updatedBook.getAuthor().getFirstName());
+        Assertions.assertEquals(newAuthor.getLastName(), updatedBook.getAuthor().getLastName());
+        Assertions.assertEquals(newGenre, updatedBook.getGenre());
+        Assertions.assertEquals(dateStarted, updatedBook.getDateStartedReading());
+        Assertions.assertEquals(dateFinished, updatedBook.getDateFinishedReading());
+    }
+
+
+    private static Stream<Arguments> shelfCombinations() {
+        return Stream.of(
+                Arguments.of(TO_READ, READING),
+                Arguments.of(TO_READ, READ),
+                Arguments.of(TO_READ, DID_NOT_FINISH),
+                Arguments.of(READING, DID_NOT_FINISH),
+                Arguments.of(READING, READ)
+                // TODO: these cases are not passing at the moment because of issue #271
+                // Arguments.of(READING, TO_READ),
+                // Arguments.of(READ, TO_READ),
+                // Arguments.of(READ, DID_NOT_FINISH),
+                // Arguments.of(READ, READING),
+                // Arguments.of(DID_NOT_FINISH, TO_READ),
+                // Arguments.of(DID_NOT_FINISH, READING),
+                // Arguments.of(DID_NOT_FINISH, READ)
+                );
+    }
+
+    /**
+     * Tests whether a book is updated in the database when the save-event is called
+     */
+    @ParameterizedTest
+    @MethodSource("shelfCombinations")
+    void shouldUpdateValuesWhenBookIsMovedBetweenShelves(PredefinedShelf.ShelfName initialShelf,
+                                                         PredefinedShelf.ShelfName newShelf) {
+        // given
+        bookForm = createBookForm(initialShelf, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+        populateBookFormWithExistingBook(newShelf, bookService.findAll().get(0));
+
+        // when
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(1, bookService.count());
+        Book bookInDatabase = bookService.findAll().get(0);
+        correctBookAttributesPresent(newShelf, bookInDatabase);
+    }
+
+    private void correctBookAttributesPresent(PredefinedShelf.ShelfName shelfName, Book book) {
+        testBookAttributesPresentForAllShelves(shelfName, book);
+        bookAttributesPresentForSpecificPredefinedShelf(shelfName, book);
+    }
+
+    private void bookAttributesPresentForSpecificPredefinedShelf(PredefinedShelf.ShelfName shelfName,
+                                                                 Book book) {
+        switch (shelfName) {
+            case TO_READ:
+                assertStateSpecificFields(book, NULL_STARED_DATE, NULL_FINISHED_DATE,
+                        RatingScale.NO_RATING, NO_PAGES_READ);
+                break;
+            case READING:
+                assertStateSpecificFields(book, dateStarted, NULL_FINISHED_DATE,
+                        RatingScale.NO_RATING, NO_PAGES_READ);
+                break;
+            case READ:
+                assertStateSpecificFields(book, dateStarted, dateFinished, ratingVal,
+                        NO_PAGES_READ);
+                break;
+            case DID_NOT_FINISH:
+                assertStateSpecificFields(book, dateStarted, NULL_FINISHED_DATE,
+                        ratingVal, pagesRead);
+                break;
+        }
+    }
+
+    private void testBookAttributesPresentForAllShelves(PredefinedShelf.ShelfName shelfName,
+                                                        Book book) {
+        Assertions.assertEquals(bookTitle, book.getTitle());
+        Assertions.assertEquals(shelfName, book.getPredefinedShelf().getPredefinedShelfName());
+        Assertions.assertEquals(firstName, book.getAuthor().getFirstName());
+        Assertions.assertEquals(lastName, book.getAuthor().getLastName());
+        Assertions.assertEquals(genre, book.getGenre());
+        Assertions.assertEquals(numberOfPages, book.getNumberOfPages());
+    }
+
+    private void assertStateSpecificFields(Book book, LocalDate dateStarted, LocalDate dateFinished,
+                                           RatingScale rating, Integer pagesRead) {
+        Assertions.assertEquals(dateStarted, book.getDateStartedReading());
+        Assertions.assertEquals(dateFinished, book.getDateFinishedReading());
+        Assertions.assertEquals(rating, book.getRating());
+        Assertions.assertEquals(pagesRead, book.getPagesRead());
+    }
+
+    /**
+     * Tests whether a book is removed from the database when the delete-event is called
+     */
+    @Test
+    void shouldDeleteBookFromDatabase() {
+        // given
+        bookForm = createBookForm(TO_READ, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+        Assertions.assertEquals(1, bookService.count());
+
+        // when
+        bookForm.addListener(BookForm.DeleteEvent.class, event -> bookService.delete(event.getBook()));
+        bookForm.delete.click();
+
+        // then
+        Assertions.assertEquals(0, bookService.count());
     }
 
     @AfterEach
