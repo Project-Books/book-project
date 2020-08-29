@@ -74,6 +74,9 @@ public class BookFormTest {
     private static int numberOfPages;
     private static int seriesPosition;
     private static final CustomShelf customShelf = new CustomShelf("BookFormTestShelf");
+    private static final LocalDate NULL_STARED_DATE = null;
+    private static final LocalDate NULL_FINISHED_DATE = null;
+    private static final Integer NO_PAGES_READ = null;
 
     private static Routes routes;
     private static PredefinedShelf readShelf;
@@ -635,16 +638,16 @@ public class BookFormTest {
         // these values should only be present for specific predefined shelves
         switch (shelfName) {
             case TO_READ:
-                assertStateSpecificFields(bookInDatabase, null, null, RatingScale.NO_RATING, null);
+                assertStateSpecificFields(bookInDatabase, NULL_STARED_DATE, NULL_FINISHED_DATE, RatingScale.NO_RATING, NO_PAGES_READ);
                 break;
             case READING:
-                assertStateSpecificFields(bookInDatabase, dateStarted, null, RatingScale.NO_RATING, null);
+                assertStateSpecificFields(bookInDatabase, dateStarted, NULL_FINISHED_DATE, RatingScale.NO_RATING, NO_PAGES_READ);
                 break;
             case READ:
-                assertStateSpecificFields(bookInDatabase, dateStarted, dateFinished, ratingVal, null);
+                assertStateSpecificFields(bookInDatabase, dateStarted, dateFinished, ratingVal, NO_PAGES_READ);
                 break;
             case DID_NOT_FINISH:
-                assertStateSpecificFields(bookInDatabase, dateStarted, null, ratingVal, pagesRead);
+                assertStateSpecificFields(bookInDatabase, dateStarted, NULL_FINISHED_DATE, ratingVal, pagesRead);
                 break;
         }
     }
