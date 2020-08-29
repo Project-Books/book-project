@@ -4,7 +4,7 @@ The purpose of this document is to outline the process of code reviews. This ser
 However, this could also be useful for contributors that want to understand the process. We want to be as transparent as possible.
 
 As with other documents, this document may change from time to time. Therefore, as a code reviewer, it is important that you stay up-to-date with any changes made.
-You should always refer to the latest version of this document on the master branch.
+You should always refer to the [latest version of this document on the master branch](https://github.com/knjk04/book-project/blob/master/.github/CODE_REVIEWS.md).
 
 ## Process
 
