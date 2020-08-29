@@ -238,7 +238,8 @@ public class BookFormTest {
         populateBookShelf(shelfName);
     }
 
-    private void populateBookFormWithExistingBook(PredefinedShelf.ShelfName shelfName, Book existingBook) {
+    private void populateBookFormWithExistingBook(PredefinedShelf.ShelfName shelfName,
+                                                  Book existingBook) {
         bookForm.setBook(existingBook);
         populateBookShelf(shelfName);
     }
@@ -554,7 +555,7 @@ public class BookFormTest {
         // then
         Assertions.assertEquals(1, bookService.count());
         Book bookInDatabase = bookService.findAll().get(0);
-        assertThatRightValuesArePresentForBookInSpecificShelf(TO_READ, bookInDatabase);
+        rightValuesPresentForBookInSpecificShelf(TO_READ, bookInDatabase);
     }
 
     @Test
@@ -628,32 +629,36 @@ public class BookFormTest {
         // then
         Assertions.assertEquals(1, bookService.count());
         Book bookInDatabase = bookService.findAll().get(0);
-        assertThatRightValuesArePresentForBookInSpecificShelf(newShelf, bookInDatabase);
+        rightValuesPresentForBookInSpecificShelf(newShelf, bookInDatabase);
     }
 
-    private void assertThatRightValuesArePresentForBookInSpecificShelf(PredefinedShelf.ShelfName shelfName,
-                                                                       Book bookInDatabase) {
+    private void rightValuesPresentForBookInSpecificShelf(PredefinedShelf.ShelfName shelfName,
+                                                          Book book) {
         // these values should be present no matter which shelf the book is in
-        Assertions.assertEquals(bookTitle, bookInDatabase.getTitle());
-        Assertions.assertEquals(shelfName, bookInDatabase.getPredefinedShelf().getPredefinedShelfName());
-        Assertions.assertEquals(firstName, bookInDatabase.getAuthor().getFirstName());
-        Assertions.assertEquals(lastName, bookInDatabase.getAuthor().getLastName());
-        Assertions.assertEquals(genre, bookInDatabase.getGenre());
-        Assertions.assertEquals(numberOfPages, bookInDatabase.getNumberOfPages());
+        Assertions.assertEquals(bookTitle, book.getTitle());
+        Assertions.assertEquals(shelfName, book.getPredefinedShelf().getPredefinedShelfName());
+        Assertions.assertEquals(firstName, book.getAuthor().getFirstName());
+        Assertions.assertEquals(lastName, book.getAuthor().getLastName());
+        Assertions.assertEquals(genre, book.getGenre());
+        Assertions.assertEquals(numberOfPages, book.getNumberOfPages());
 
         // these values should only be present for specific predefined shelves
         switch (shelfName) {
             case TO_READ:
-                assertStateSpecificFields(bookInDatabase, NULL_STARED_DATE, NULL_FINISHED_DATE, RatingScale.NO_RATING, NO_PAGES_READ);
+                assertStateSpecificFields(book, NULL_STARED_DATE, NULL_FINISHED_DATE,
+                        RatingScale.NO_RATING, NO_PAGES_READ);
                 break;
             case READING:
-                assertStateSpecificFields(bookInDatabase, dateStarted, NULL_FINISHED_DATE, RatingScale.NO_RATING, NO_PAGES_READ);
+                assertStateSpecificFields(book, dateStarted, NULL_FINISHED_DATE,
+                        RatingScale.NO_RATING, NO_PAGES_READ);
                 break;
             case READ:
-                assertStateSpecificFields(bookInDatabase, dateStarted, dateFinished, ratingVal, NO_PAGES_READ);
+                assertStateSpecificFields(book, dateStarted, dateFinished, ratingVal,
+                        NO_PAGES_READ);
                 break;
             case DID_NOT_FINISH:
-                assertStateSpecificFields(bookInDatabase, dateStarted, NULL_FINISHED_DATE, ratingVal, pagesRead);
+                assertStateSpecificFields(book, dateStarted, NULL_FINISHED_DATE,
+                        ratingVal, pagesRead);
                 break;
         }
     }
