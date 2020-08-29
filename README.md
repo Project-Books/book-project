@@ -90,4 +90,4 @@ If you need help with anything, we'll be happy to help you in our [Gitter Channe
 
 [Java Hamcrest](https://github.com/hamcrest/JavaHamcrest) - [BSD License](http://opensource.org/licenses/BSD-3-Clause)
 
-[zxcvbn](https://github.com/nulab/zxcvbn4j) - [MIT License](https://opensource.org/licenses/mit-license.php)
+[zxcvbn4j](https://github.com/nulab/zxcvbn4j) - [MIT License](https://opensource.org/licenses/mit-license.php)
