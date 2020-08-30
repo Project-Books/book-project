@@ -1,3 +1,17 @@
-[part="overlay"]{
-    width:60%;
+@media screen and (max-width: 37em) {
+    [part="overlay"] {
+        width:95%;
+    }
+}
+
+@media screen and (min-width: 37em) {
+    [part="overlay"] {
+        width:35em;
+    }
+}
+
+@media screen and (min-width: 70em) {
+    [part="overlay"] {
+        width:68em;
+    }
 }
