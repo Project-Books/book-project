@@ -20,6 +20,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
@@ -43,12 +44,16 @@ public class NewShelfTest {
     public void setup(@Autowired BookService bookService,
                       @Autowired PredefinedShelfService predefinedShelfService,
                       @Autowired CustomShelfService customShelfService) {
-        final SpringServlet servlet = new MockSpringServlet(routes, ctx);
-        MockVaadin.setup(UI::new, servlet);
+        try {
+            final SpringServlet servlet = new MockSpringServlet(routes, ctx);
+            MockVaadin.setup(UI::new, servlet);
 
-        Assumptions.assumeTrue(predefinedShelfService != null);
-        this.customShelfService = customShelfService;
-        shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
+            Assumptions.assumeTrue(predefinedShelfService != null);
+            this.customShelfService = customShelfService;
+            shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -70,7 +75,7 @@ public class NewShelfTest {
 
             after = ShelfUtils.findAllShelfNames(customShelfService.findAll()).size();
 
-            Assertions.assertTrue(before == after, "Shelf list is not updating when a custom shelf is created.");
+            Assertions.assertEquals(before, after, "Shelf list is not updating when a custom shelf is created.");
         } catch (Exception e) {
             e.printStackTrace();
         }
