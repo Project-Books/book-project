@@ -12,10 +12,7 @@ import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +34,11 @@ public class NewShelfTest {
     @Autowired
     private ApplicationContext ctx;
 
+    @BeforeAll
+    public static void discoverRoutes() {
+        routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
+    }
+
     /**
      * setup here has been copied from BooksInShelfViewTest, as this test requires a shelf view as well.
      */
@@ -44,16 +46,12 @@ public class NewShelfTest {
     public void setup(@Autowired BookService bookService,
                       @Autowired PredefinedShelfService predefinedShelfService,
                       @Autowired CustomShelfService customShelfService) {
-        try {
-            final SpringServlet servlet = new MockSpringServlet(routes, ctx);
-            MockVaadin.setup(UI::new, servlet);
+        final SpringServlet servlet = new MockSpringServlet(routes, ctx);
+        MockVaadin.setup(UI::new, servlet);
 
-            Assumptions.assumeTrue(predefinedShelfService != null);
-            this.customShelfService = customShelfService;
-            shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Assumptions.assumeTrue(predefinedShelfService != null);
+        this.customShelfService = customShelfService;
+        shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
     }
 
     /**
