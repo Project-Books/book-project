@@ -40,14 +40,14 @@ public class SettingsView extends HorizontalLayout {
 
     private static final String ENABLE_DARK_MODE = "Enable dark mode";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
-    private static SwitchToggle darkModeToggle;
+    private static final SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
-    private static Label darkModeLabel = new Label(ENABLE_DARK_MODE);
+    private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
 
     // Clear Shelves
     private static ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Reset shelves";
-    private static Button clearShelvesButton;
+    private static final Button clearShelvesButton;
     private static BookService bookService;
 
     static {
@@ -73,11 +73,10 @@ public class SettingsView extends HorizontalLayout {
         });
     }
 
-    SettingsView(@Autowired BookService bookService) {
+    SettingsView(BookService bookService) {
         SettingsView.bookService = bookService;
 
         setDarkModeState();
-
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(darkModeLabel, darkModeToggle);
@@ -102,8 +101,6 @@ public class SettingsView extends HorizontalLayout {
 
 
     private static void updateDarkModeLabel() {
-        if (darkModeLabel != null) {
-            darkModeLabel.setText(darkModeOn ? DISABLE_DARK_MODE : ENABLE_DARK_MODE);
-        }
+        darkModeLabel.setText(darkModeOn ? DISABLE_DARK_MODE : ENABLE_DARK_MODE);
     }
 }

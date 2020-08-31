@@ -46,6 +46,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -90,6 +91,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final DatePicker dateStartedReading = new DatePicker();
     @VisibleForTesting final DatePicker dateFinishedReading = new DatePicker();
     @VisibleForTesting final NumberField rating = new NumberField();
+    @VisibleForTesting final TextArea bookReview = new TextArea();
     @VisibleForTesting final Button saveButton = new Button();
     @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
     @VisibleForTesting final Button reset = new Button();
@@ -97,6 +99,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting FormLayout.FormItem dateStartedReadingFormItem;
     @VisibleForTesting FormLayout.FormItem dateFinishedReadingFormItem;
     @VisibleForTesting FormLayout.FormItem ratingFormItem;
+    @VisibleForTesting FormLayout.FormItem bookReviewFormItem;
     @VisibleForTesting FormLayout.FormItem seriesPositionFormItem;
     @VisibleForTesting FormLayout.FormItem pagesReadFormItem;
 
@@ -130,6 +133,7 @@ public class BookForm extends VerticalLayout {
         configureDateStartedFormField();
         configureDateFinishedFormField();
         configureRatingFormField();
+        configureBookReviewFormField();
         configureInSeriesFormField();
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
@@ -145,6 +149,7 @@ public class BookForm extends VerticalLayout {
                 pagesRead,
                 numberOfPages,
                 rating,
+                bookReview
         };
         ComponentUtil.setComponentClassName(components);
         configureFormLayout(formLayout, buttons);
@@ -186,6 +191,7 @@ public class BookForm extends VerticalLayout {
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
         seriesPositionFormItem = formLayout.addFormItem(seriesPosition, "Series number");
+        bookReviewFormItem = formLayout.addFormItem(bookReview, "Book review");
         formLayout.add(buttonLayout, 3);
         seriesPositionFormItem.setVisible(false);
     }
@@ -245,6 +251,8 @@ public class BookForm extends VerticalLayout {
         binder.forField(rating)
               .withConverter(new DoubleToRatingScaleConverter())
               .bind(Book::getRating, Book::setRating);
+        binder.forField(bookReview)
+              .bind(Book::getBookReview, Book::setBookReview);
     }
 
     /**
@@ -377,6 +385,7 @@ public class BookForm extends VerticalLayout {
                 new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
         result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
 
+        book.setBookReview(bookReview.getValue());
         book.setPagesRead(pagesRead.getValue());
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
@@ -478,7 +487,7 @@ public class BookForm extends VerticalLayout {
             if (event.getValue() != null) {
                 try {
                     hideDates(predefinedShelfField.getValue());
-                    showOrHideRating(predefinedShelfField.getValue());
+                    showOrHideRatingAndBookReview(predefinedShelfField.getValue());
                     showOrHidePagesRead(predefinedShelfField.getValue());
                 } catch (NotSupportedException e) {
                     e.printStackTrace();
@@ -555,21 +564,23 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * Toggles showing the rating depending on which shelf this new book is going into
+     * Toggles showing the rating and the bookReview depending on which shelf this new book is going into
      *
      * @param name the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of
      *                               a @see PredefinedShelf
      */
-    private void showOrHideRating(PredefinedShelf.ShelfName name) throws NotSupportedException {
+    private void showOrHideRatingAndBookReview(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
             case TO_READ:
             case READING:
             case DID_NOT_FINISH:
                 ratingFormItem.setVisible(false);
+                bookReviewFormItem.setVisible(false);
                 break;
             case READ:
                 ratingFormItem.setVisible(true);
+                bookReviewFormItem.setVisible(true);
                 break;
             default:
                 throw new NotSupportedException("Shelf " + name + " not yet supported");
@@ -583,6 +594,11 @@ public class BookForm extends VerticalLayout {
         rating.setMax(10);
         rating.setStep(0.5f);
         rating.setClearButtonVisible(true);
+    }
+
+    private void configureBookReviewFormField() {
+        bookReview.setPlaceholder("Enter your review for the book");
+        bookReview.setClearButtonVisible(true);
     }
 
     private void configureDateStartedFormField() {
@@ -624,6 +640,7 @@ public class BookForm extends VerticalLayout {
                 dateStartedReading,
                 dateFinishedReading,
                 rating,
+                bookReview
         };
         resetSaveButtonText();
         ComponentUtil.clearComponentFields(components);
