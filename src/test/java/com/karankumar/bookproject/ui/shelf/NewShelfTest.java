@@ -73,7 +73,7 @@ public class NewShelfTest {
 
             after = ShelfUtils.findAllShelfNames(customShelfService.findAll()).size();
 
-            Assertions.assertEquals(before, after, "Shelf list is not updating when a custom shelf is created.");
+            Assertions.assertEquals(before + 1, after, "Shelf list is not updating when a custom shelf is created.");
         } catch (Exception e) {
             e.printStackTrace();
         }
