@@ -38,6 +38,7 @@ import com.karankumar.bookproject.ui.shelf.visibility.DidNotFinishBookVisibility
 import com.karankumar.bookproject.ui.shelf.visibility.ReadBookVisibility;
 import com.karankumar.bookproject.ui.shelf.visibility.ReadingBookVisibility;
 import com.karankumar.bookproject.ui.shelf.visibility.ToReadBookVisibility;
+import com.karankumar.bookproject.ui.shelf.visibility.AllShelvesBookVisibility;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
