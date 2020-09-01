@@ -44,9 +44,12 @@ Prerequisites:
 - If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
   - If you do have Node.js installed, please ensure it is at least version 10.0
 - MySQL 8.0.* or (better) Docker
-  - For Windows users, install Docker Desktop and then run `docker-compose up` at the root of the project on the command line
+ 
+### Running the app
+  
+If you want to use Docker, follow one of the two appoaches (if you use Windows, follow the first approach):
 
-### Start locally with only MySQL running in docker
+#### 1. Start locally with only MySQL running in docker
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
@@ -57,7 +60,7 @@ Prerequisites:
     - Username: `user`
     - Password: `password`
 
-### Start using docker-compose in production mode
+#### 2. Start using docker-compose in production mode
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Build the project in production mode using `mvn clean package -Pproduction`. In production mode all UI components are packaged in jar file.
