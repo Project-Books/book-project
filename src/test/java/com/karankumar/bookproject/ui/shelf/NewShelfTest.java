@@ -22,7 +22,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  * The NewShelfTest helps verify functionality around creating a new shelf works as expected.
- * @author MikeLowrie
  */
 @IntegrationTest
 @WebAppConfiguration
