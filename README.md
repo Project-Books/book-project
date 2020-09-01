@@ -100,4 +100,8 @@ If you need help with anything, we'll be happy to help you in our [Gitter Channe
 
 [Mockito](https://github.com/mockito/mockito) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
 
-[Java Hamcrest](https://github.com/hamcrest/JavaHamcrest) - [BSD License](http://opensource.org/licenses/BSD-3-Clause)
+[Java Hamcrest](https://github.com/hamcrest/JavaHamcrest) - [BSD-3 clause License](http://opensource.org/licenses/BSD-3-Clause)
+
+[zxcvbn4j](https://github.com/nulab/zxcvbn4j) - [MIT License](https://opensource.org/licenses/mit-license.php)
+
+[paper-toggle-button](https://www.webcomponents.org/element/@polymer/paper-toggle-button) - [BSD-3 clause](https://spdx.org/licenses/BSD-3-Clause)

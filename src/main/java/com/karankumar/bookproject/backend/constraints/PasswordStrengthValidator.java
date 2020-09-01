@@ -15,18 +15,24 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.constraints;
 
-public class StringUtils {
-    private StringUtils() {}
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
-    /**
-     * Determine if a String should be singular or plural
-     * @param num the number of book or pages
-     * @param itemStr the String that will be pluralized
-     * @return either the original String or the original string with an "s" concatenated to it
-     */
-    public static String pluralize(String itemStr, int num) {
-        return (num > 1) ? (itemStr + "s") : (itemStr);
+import com.nulabinc.zxcvbn.Zxcvbn;
+
+public class PasswordStrengthValidator implements ConstraintValidator<PasswordStrengthCheck, String>{
+    
+    private PasswordStrength passwordStrength;
+    
+    @Override
+    public void initialize(PasswordStrengthCheck constraintAnnotation) {
+        this.passwordStrength = constraintAnnotation.value();
+    }
+
+    @Override
+    public boolean isValid(String password, ConstraintValidatorContext context) {
+        return new Zxcvbn().measure(password).getScore() >= passwordStrength.getStrengthNum();
     }
 }
