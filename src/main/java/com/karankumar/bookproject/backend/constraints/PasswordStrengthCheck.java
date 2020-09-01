@@ -15,18 +15,28 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.constraints;
 
-public class StringUtils {
-    private StringUtils() {}
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-    /**
-     * Determine if a String should be singular or plural
-     * @param num the number of book or pages
-     * @param itemStr the String that will be pluralized
-     * @return either the original String or the original string with an "s" concatenated to it
-     */
-    public static String pluralize(String itemStr, int num) {
-        return (num > 1) ? (itemStr + "s") : (itemStr);
-    }
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+@Target({FIELD})
+@Retention(RUNTIME)
+@Documented
+@Constraint(validatedBy = { PasswordStrengthValidator.class })
+public @interface PasswordStrengthCheck {
+    
+    String message() default "The chosen password is too weak. Try mixing uppercase letters, lowercase letters, numbers and special characters.";
+    
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+    
+    PasswordStrength value();
 }

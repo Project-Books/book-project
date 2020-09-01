@@ -15,18 +15,29 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.constraints;
 
-public class StringUtils {
-    private StringUtils() {}
+public enum PasswordStrength {
+    WEAK("Weak", 0),
+    FAIR("Fair", 1),
+    GOOD("Good", 2),
+    STRONG("Strong", 3),
+    VERY_STRONG("Very strong", 4);
 
-    /**
-     * Determine if a String should be singular or plural
-     * @param num the number of book or pages
-     * @param itemStr the String that will be pluralized
-     * @return either the original String or the original string with an "s" concatenated to it
-     */
-    public static String pluralize(String itemStr, int num) {
-        return (num > 1) ? (itemStr + "s") : (itemStr);
+    private final String strength;
+    private final int strengthNum;
+
+    PasswordStrength(String strength, int strengthNum) {
+        this.strength = strength;
+        this.strengthNum = strengthNum;
+    }
+
+    @Override
+    public String toString() {
+        return strength;
+    }
+
+    public int getStrengthNum() {
+        return strengthNum;
     }
 }

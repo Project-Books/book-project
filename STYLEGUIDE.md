@@ -13,6 +13,7 @@ the version on the master branch should be followed, as this version should be t
    1. [Eclipse](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#eclipse)
 1. [Checking for violations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#checking-for-violations)
 1. [Source files](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-files)
+   1. [American English](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-american-english)
    1. [Source file structure](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-file-structure)
       1. [No wildcard imports](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-wildcard-imports)
       1. [No line-wrapping for package & import statements](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-line-wrapping-for-package-and-import-statements)
@@ -68,6 +69,7 @@ the version on the master branch should be followed, as this version should be t
    1. [JUnit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#junit)
       1. [Fewest number of assertions in every test](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fewest-number-of-assertions-in-every-test)
       1. [Avoid randomness](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#avoid-randomness)
+   1. [TODOs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#todos)
 1. [Recommended reading](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#recommended-reading)
 1. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
 
@@ -113,6 +115,10 @@ $ ./mvnw validate
 By using the maven wrapper, you don't need to have Maven installed. Alternatively, you could run `mvn validate` if you do have Maven installed.
 
 ## Source files
+
+### Use American English
+
+All code and comments should be written in English (United States).
 
 ### Source file structure
 
@@ -507,13 +513,17 @@ Wherever possible, try to keep methods short (under 15 lines). This makes it eas
 
 ### JUnit
 
-### Fewest number of assertions in every test
+#### Fewest number of assertions in every test
 
 In every test method, try to minimise the number of assertions. Generally speaking, ideally, there should only be one.
 
-### Avoid randomness
+#### Avoid randomness
 
 While it may seem better to use pseudorandom bounded values so that you can test more cases, it rarely improves coverage. It's better to use fixed input data with well-defined edge cases.
+
+### TODOs
+
+TODO comments are acceptable and encouraged if they are useful. However, we ask that if you create a TODO, please also create a new corresponding issue.
 
 ## Recommended reading
 
