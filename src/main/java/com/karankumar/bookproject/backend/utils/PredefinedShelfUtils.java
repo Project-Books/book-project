@@ -76,6 +76,8 @@ public class PredefinedShelfUtils {
                 return PredefinedShelf.ShelfName.READ;
             case "Did not finish":
                 return PredefinedShelf.ShelfName.DID_NOT_FINISH;
+            case "All shelves":
+                return PredefinedShelf.ShelfName.ALL_SHELVES;
             default:
                 return null;
         }
@@ -104,10 +106,26 @@ public class PredefinedShelfUtils {
         List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAll(predefinedShelfName);
         if (predefinedShelves.isEmpty()) {
             books = new HashSet<>();
+        } else if (shelfNameIsAllShelves(predefinedShelves.get(0))) {
+            List<PredefinedShelf> allPredefinedShelves = predefinedShelfService.findAll();
+            return getBooksInPredefinedShelves(allPredefinedShelves);
         } else {
             PredefinedShelf customShelf = predefinedShelves.get(0);
             books = customShelf.getBooks();
         }
         return books;
+    }
+
+    private boolean shelfNameIsAllShelves(PredefinedShelf predefinedShelve) {
+        return predefinedShelve.getPredefinedShelfName() == PredefinedShelf.ShelfName.ALL_SHELVES;
+    }
+
+    /**
+     * Fetches all of the books in the chosen predefined shelves
+     */
+    public Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
+        return predefinedShelves.stream()
+                .map(PredefinedShelf::getBooks)
+                .collect(HashSet::new, Set::addAll, Set::addAll);
     }
 }

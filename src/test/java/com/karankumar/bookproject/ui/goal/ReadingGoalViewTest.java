@@ -130,7 +130,7 @@ public class ReadingGoalViewTest {
     @Test
     public void onlyReadBooksCountTowardsGoal(@Autowired BookService bookService) {
         int numberOfShelves = predefinedShelfService.findAll().size();
-        Assumptions.assumeTrue(numberOfShelves == 4);
+        Assumptions.assumeTrue(numberOfShelves == 5);
         Assumptions.assumeFalse(bookService == null);
 
         bookService.deleteAll(); // reset

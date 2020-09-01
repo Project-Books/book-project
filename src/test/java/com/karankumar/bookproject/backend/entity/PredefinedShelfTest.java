@@ -50,7 +50,7 @@ class PredefinedShelfTest {
         Assumptions.assumeTrue(shelfService != null);
         List<PredefinedShelf> shelves = PredefinedShelfTest.shelfService.findAll();
 
-        Assertions.assertEquals(4, shelves.size());
+        Assertions.assertEquals(5, shelves.size());
         Assertions.assertEquals(shelves.get(0).getPredefinedShelfName(),
                 PredefinedShelf.ShelfName.TO_READ);
         Assertions.assertEquals(shelves.get(1).getPredefinedShelfName(),
@@ -59,5 +59,7 @@ class PredefinedShelfTest {
                 PredefinedShelf.ShelfName.READ);
         Assertions.assertEquals(shelves.get(3).getPredefinedShelfName(),
                 PredefinedShelf.ShelfName.DID_NOT_FINISH);
+        Assertions.assertEquals(shelves.get(4).getPredefinedShelfName(),
+                PredefinedShelf.ShelfName.ALL_SHELVES);
     }
 }
