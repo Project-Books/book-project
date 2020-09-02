@@ -83,12 +83,6 @@ public class BookGrid {
     }
 
     private Set<Book> getBooks(String chosenShelf) {
-        if (chosenShelf.equals("All shelves")) {
-            Set<Book> books = predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
-            books.addAll(customShelfUtils.getBooksInChosenCustomShelf(chosenShelf));
-            return books;
-        }
-
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
             return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
         }
