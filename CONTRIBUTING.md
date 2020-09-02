@@ -46,6 +46,8 @@ If an issue already exists for what you want to work and it is unassigned, and i
 
 Letting us know which issue you want to work on before working on it helps to minimise the chances of duplicated work.
 
+If you have a new contributor (have not yet contributed to the project), we ask that you only request to be assigned to one issue. Only once your corresponding pull has been merged can you request to be assigned to other issues (more than one). The reason for this restriction is because we have had people ask to be assigned to an issue but then, for whatever reason, not work on it. We don't want to find ourselves in a situation where multiple issues are assigned to one person who then does not deliver. We want to keep our project alive at a good pace.
+
 ### Discuss your implementation approach
 
 After having been assigned to a ticket, please discuss your implementation approach with us first before working on it. It may be the case that you make a good change, but it isn't what we are looking for. Moreover, there may be a better way of doing something.
