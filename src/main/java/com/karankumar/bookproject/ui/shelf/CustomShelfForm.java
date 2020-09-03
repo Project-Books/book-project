@@ -147,10 +147,11 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     private void addClassNameToForm() {
-        UI.getCurrent().getPage().executeJs("document.getElementById(\"overlay\")" +
-                ".shadowRoot" +
-                ".getElementById('overlay')" +
-                ".classList.add('shelfFormOverlay');\n");
+        UI.getCurrent().getPage()
+                .executeJs("document.getElementById(\"overlay\")" +
+                            ".shadowRoot" +
+                            ".getElementById('overlay')" +
+                            ".classList.add('shelfFormOverlay');\n");
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,

@@ -204,10 +204,11 @@ public class BookForm extends VerticalLayout {
     }
 
     private void addClassNameToForm() {
-        UI.getCurrent().getPage().executeJs("document.getElementById(\"overlay\")" +
-                ".shadowRoot" +
-                ".getElementById('overlay')" +
-                ".classList.add('bookFormOverlay');\n");
+        UI.getCurrent().getPage()
+                .executeJs("document.getElementById(\"overlay\")" +
+                            ".shadowRoot" +
+                            ".getElementById('overlay')" +
+                            ".classList.add('bookFormOverlay');\n");
     }
 
     private void showSeriesPositionFormIfSeriesPositionAvailable() {
