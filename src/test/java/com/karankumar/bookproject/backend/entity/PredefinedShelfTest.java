@@ -60,6 +60,6 @@ class PredefinedShelfTest {
         Assertions.assertEquals(shelves.get(3).getPredefinedShelfName(),
                 PredefinedShelf.ShelfName.DID_NOT_FINISH);
         Assertions.assertEquals(shelves.get(4).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.ALL_SHELVES);
+                PredefinedShelf.ShelfName.ALL_BOOKS);
     }
 }

@@ -142,7 +142,7 @@ public class BooksInShelfViewTest {
             case READ:
                 expectedColumns = expectedReadColumns;
                 break;
-            case ALL_SHELVES:
+            case ALL_BOOKS:
                 expectedColumns = expectedAllShelvesColumns;
                 break;
             default:

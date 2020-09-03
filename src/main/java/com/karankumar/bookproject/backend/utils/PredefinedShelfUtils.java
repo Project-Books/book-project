@@ -76,8 +76,8 @@ public class PredefinedShelfUtils {
                 return PredefinedShelf.ShelfName.READ;
             case "Did not finish":
                 return PredefinedShelf.ShelfName.DID_NOT_FINISH;
-            case "All shelves":
-                return PredefinedShelf.ShelfName.ALL_SHELVES;
+            case "All books":
+                return PredefinedShelf.ShelfName.ALL_BOOKS;
             default:
                 return null;
         }
@@ -103,12 +103,15 @@ public class PredefinedShelfUtils {
     public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
         PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
         Set<Book> books;
+
+        if (shelfNameIsAllBooks(predefinedShelfName)) {
+            List<PredefinedShelf> allPredefinedShelves = predefinedShelfService.findAll();
+            return getBooksInPredefinedShelves(allPredefinedShelves);
+        }
+
         List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAll(predefinedShelfName);
         if (predefinedShelves.isEmpty()) {
             books = new HashSet<>();
-        } else if (shelfNameIsAllShelves(predefinedShelves.get(0))) {
-            List<PredefinedShelf> allPredefinedShelves = predefinedShelfService.findAll();
-            return getBooksInPredefinedShelves(allPredefinedShelves);
         } else {
             PredefinedShelf customShelf = predefinedShelves.get(0);
             books = customShelf.getBooks();
@@ -116,8 +119,8 @@ public class PredefinedShelfUtils {
         return books;
     }
 
-    private boolean shelfNameIsAllShelves(PredefinedShelf predefinedShelve) {
-        return predefinedShelve.getPredefinedShelfName() == PredefinedShelf.ShelfName.ALL_SHELVES;
+    private boolean shelfNameIsAllBooks(PredefinedShelf.ShelfName shelfName) {
+        return shelfName == PredefinedShelf.ShelfName.ALL_BOOKS;
     }
 
     /**

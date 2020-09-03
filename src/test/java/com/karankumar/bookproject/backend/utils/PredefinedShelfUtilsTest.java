@@ -54,7 +54,7 @@ public class PredefinedShelfUtilsTest {
         readingShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READING));
         readShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
         didNotFinishShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH));
-        allShelves = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.ALL_SHELVES));
+        allShelves = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.ALL_BOOKS));
 
         book1 = bookRepository.save(new Book("someTitle", NO_AUTHOR, toReadShelf));
         book2 = bookRepository.save(new Book("someTitle2", NO_AUTHOR, toReadShelf));
@@ -75,7 +75,7 @@ public class PredefinedShelfUtilsTest {
                 PredefinedShelf.ShelfName.READING.toString(),
                 PredefinedShelf.ShelfName.READ.toString(),
                 PredefinedShelf.ShelfName.DID_NOT_FINISH.toString(),
-                PredefinedShelf.ShelfName.ALL_SHELVES.toString()
+                PredefinedShelf.ShelfName.ALL_BOOKS.toString()
         );
 
         // when
@@ -103,7 +103,7 @@ public class PredefinedShelfUtilsTest {
         Set<Book> expectedBooks = Set.of(book1, book2, book3, book4);
 
         // when
-        Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf("All shelves");
+        Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf("All books");
 
         // then
         Assertions.assertEquals(expectedBooks, actualBooks);

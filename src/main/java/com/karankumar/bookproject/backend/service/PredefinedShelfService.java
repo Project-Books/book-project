@@ -223,10 +223,10 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
     private void setShelfForAllBooks() {
         List<Book> books = bookRepository.findAll();
         List<PredefinedShelf> shelves = predefinedShelfRepository
-                // this is needed to prevent that a book gets sorted into the shelf "All shelves"
+                // this is needed to prevent that a book gets sorted into the shelf "All books"
                 .findAll()
                 .stream()
-                .filter(shelf -> !shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.ALL_SHELVES))
+                .filter(shelf -> !shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.ALL_BOOKS))
                 .collect(Collectors.toList());
 
         ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();

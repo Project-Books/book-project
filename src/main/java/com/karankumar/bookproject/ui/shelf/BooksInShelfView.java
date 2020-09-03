@@ -116,7 +116,7 @@ public class BooksInShelfView extends VerticalLayout {
         m.put(PredefinedShelf.ShelfName.TO_READ, new ToReadBookVisibility());
         m.put(PredefinedShelf.ShelfName.READING, new ReadingBookVisibility());
         m.put(PredefinedShelf.ShelfName.DID_NOT_FINISH, new DidNotFinishBookVisibility());
-        m.put(PredefinedShelf.ShelfName.ALL_SHELVES, new AllShelvesBookVisibility());
+        m.put(PredefinedShelf.ShelfName.ALL_BOOKS, new AllShelvesBookVisibility());
         m.put(PredefinedShelf.ShelfName.READ, new ReadBookVisibility());
 
         return m;

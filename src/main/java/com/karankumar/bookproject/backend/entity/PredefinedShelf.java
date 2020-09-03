@@ -65,7 +65,7 @@ public class PredefinedShelf extends Shelf {
         READING("Reading"),
         READ("Read"),
         DID_NOT_FINISH("Did not finish"),
-        ALL_SHELVES("All shelves");
+        ALL_BOOKS("All books");
 
         private final String name;
 
