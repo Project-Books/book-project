@@ -29,6 +29,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -42,7 +43,9 @@ public class Book extends BaseEntity {
     @NotNull
     @NotEmpty
     private String title;
+    @Max(value = 23000)
     private Integer numberOfPages;
+    @Max(value = 23000)
     private Integer pagesRead;
     private Genre genre;
     private Integer seriesPosition;

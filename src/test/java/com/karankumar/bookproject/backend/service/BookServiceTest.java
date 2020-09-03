@@ -22,10 +22,13 @@ import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.validation.ConstraintViolationException;
 
 @IntegrationTest
 public class BookServiceTest {
@@ -61,6 +64,38 @@ public class BookServiceTest {
     public void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
         bookService.save(new Book("Book without author", null, toRead));
         Assertions.assertEquals(0, authorService.count());
+        Assertions.assertEquals(0, bookService.count());
+    }
+
+    /**
+     * Tests book is not saved with numberOfPages > 23000
+     */
+    @Test
+    public void whenTryingToSaveBookWithMaxNumberPageExceedNoSave() {
+        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
+        book.setNumberOfPages(Integer.MAX_VALUE);
+        try {
+            bookService.save(book);
+        } catch (Exception e)
+        {
+            Assertions.assertTrue(ExceptionUtils.getRootCause(e) instanceof ConstraintViolationException);
+        }
+        Assertions.assertEquals(0, bookService.count());
+    }
+
+    /**
+     * Tests book is not saved with pagesRead > 23000
+     */
+    @Test
+    public void whenTryingToSaveBookWithPagesReadExceedNoSave() {
+        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
+        book.setPagesRead(Integer.MAX_VALUE);
+        try {
+            bookService.save(book);
+        } catch (Exception e)
+        {
+            Assertions.assertTrue(ExceptionUtils.getRootCause(e) instanceof ConstraintViolationException);
+        }
         Assertions.assertEquals(0, bookService.count());
     }
 
