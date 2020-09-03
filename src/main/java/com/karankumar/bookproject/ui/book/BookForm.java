@@ -33,6 +33,7 @@ import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -151,7 +152,7 @@ public class BookForm extends VerticalLayout {
                 rating,
                 bookReview
         };
-        ComponentUtil.setComponentClassName(components);
+        ComponentUtil.setComponentClassName(components, "bookFormInputField");
         configureFormLayout(formLayout, buttons);
 
         add(dialog);
@@ -199,6 +200,14 @@ public class BookForm extends VerticalLayout {
     public void openForm() {
         dialog.open();
         showSeriesPositionFormIfSeriesPositionAvailable();
+        addClassNameToForm();
+    }
+
+    private void addClassNameToForm() {
+        UI.getCurrent().getPage().executeJs("document.getElementById(\"overlay\")" +
+                ".shadowRoot" +
+                ".getElementById('overlay')" +
+                ".classList.add('bookFormOverlay');\n");
     }
 
     private void showSeriesPositionFormIfSeriesPositionAvailable() {
