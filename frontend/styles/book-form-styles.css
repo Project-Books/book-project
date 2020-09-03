@@ -1,0 +1,18 @@
+@media screen and (max-width: 37em) {
+    .formInputField {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 37em) {
+    .formInputField {
+        width: 23em;
+    }
+}
+
+@media screen and (max-width: 37em) {
+    .formButtonLayout {
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+}

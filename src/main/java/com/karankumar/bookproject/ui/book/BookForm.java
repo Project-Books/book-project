@@ -69,6 +69,9 @@ import java.util.logging.Level;
         value = "./styles/vaadin-dialog-overlay-styles.css",
         themeFor = "vaadin-dialog-overlay"
 )
+@CssImport(
+        value = "./styles/book-form-styles.css"
+)
 @Log
 public class BookForm extends VerticalLayout {
     private static final String ENTER_DATE = "Enter a date";
@@ -159,7 +162,7 @@ public class BookForm extends VerticalLayout {
                 rating,
                 bookReview
         };
-        ComponentUtil.setComponentMinWidth(components);
+        ComponentUtil.setComponentClassName(components);
         configureFormLayout(formLayout, buttons);
 
         add(dialog);
@@ -180,7 +183,12 @@ public class BookForm extends VerticalLayout {
      * @param buttonLayout a layout consisting of buttons
      */
     private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
-        formLayout.setResponsiveSteps();
+        formLayout.setResponsiveSteps(
+                new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP),
+                new FormLayout.ResponsiveStep("31em", 1),
+                new FormLayout.ResponsiveStep("62em", 2)
+        );
+
         formLayout.addFormItem(bookTitle, "Book title *");
         formLayout.addFormItem(predefinedShelfField, "Book shelf *");
         formLayout.addFormItem(customShelfField, "Secondary shelf");
@@ -268,7 +276,9 @@ public class BookForm extends VerticalLayout {
 
         binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
 
-        return new HorizontalLayout(saveButton, reset, delete);
+        HorizontalLayout buttonLayout = new HorizontalLayout(saveButton, reset, delete);
+        buttonLayout.addClassName("formButtonLayout");
+        return buttonLayout;
     }
 
     private void configureSaveFormButton() {
