@@ -102,6 +102,15 @@ public class BookForm extends VerticalLayout {
 
     @VisibleForTesting HasValue[] fieldsToReset;
 
+    @VisibleForTesting final HasValue[] fieldsToResetForToRead
+            = new HasValue[]{pagesRead, dateStartedReading, dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] fieldsToResetForReading
+            = new HasValue[]{pagesRead, dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] fieldsToResetForRead
+            = new HasValue[]{pagesRead};
+    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
+            = new HasValue[]{dateFinishedReading, rating, bookReview};
+
     @VisibleForTesting Button delete = new Button();
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
@@ -590,19 +599,20 @@ public class BookForm extends VerticalLayout {
      *                               a @see PredefinedShelf
      */
     private void setFieldsToReset(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
+        fieldsToReset = getFieldsToReset(shelfName);
+    }
+
+    @VisibleForTesting
+    HasValue[] getFieldsToReset(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
         switch (shelfName) {
             case TO_READ:
-                fieldsToReset = new HasValue[]{pagesRead, dateStartedReading, dateFinishedReading, rating, bookReview};
-                break;
+                return fieldsToResetForToRead;
             case READING:
-                fieldsToReset = new HasValue[]{pagesRead, dateFinishedReading, rating, bookReview};
-                break;
+                return fieldsToResetForReading;
             case READ:
-                fieldsToReset = new HasValue[]{pagesRead};
-                break;
+                return fieldsToResetForRead;
             case DID_NOT_FINISH:
-                fieldsToReset = new HasValue[]{dateFinishedReading, rating, bookReview};
-                break;
+                return fieldsToResetForDidNotFinish;
             default:
                 throw new NotSupportedException("Shelf " + shelfName + " not yet supported");
         }

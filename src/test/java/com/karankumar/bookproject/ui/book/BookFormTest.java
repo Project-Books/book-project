@@ -49,8 +49,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
- import java.util.List;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -355,66 +356,25 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.pagesReadFormItem.isVisible());
     }
 
-    @Test
-    void fieldsToResetIsCorrectlyPopulatedForToReadShelf() {
-        // given
-        HasValue[] fieldsThatShouldBeReset = new HasValue[]{bookForm.dateStartedReading,
-                bookForm.dateFinishedReading, bookForm.pagesRead, bookForm.rating, bookForm.bookReview};
-        populateBookForm(READ, false);
-        bookForm.pagesRead.setValue(pagesRead);
-
-        // when
-        bookForm.predefinedShelfField.setValue(TO_READ);
-
-        // then
-        Assertions.assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
-        Assertions.assertTrue(List.of(bookForm.fieldsToReset)
-                              .containsAll(List.of(fieldsThatShouldBeReset)));
+    private static Stream<Arguments> shelfNames() {
+        return Stream.of(
+                Arguments.of(TO_READ),
+                Arguments.of(READING),
+                Arguments.of(READ),
+                Arguments.of(DID_NOT_FINISH)
+        );
     }
 
-    @Test
-    void fieldsToResetIsCorrectlyPopulatedForReadingShelf() {
+    @ParameterizedTest
+    @MethodSource("shelfNames")
+    void fieldsToResetIsCorrectlyPopulated(PredefinedShelf.ShelfName newShelf) throws NotSupportedException {
         // given
-        HasValue[] fieldsThatShouldBeReset = new HasValue[]{bookForm.dateFinishedReading,
-                bookForm.pagesRead, bookForm.rating, bookForm.bookReview};
+        HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
         populateBookForm(READ, false);
         bookForm.pagesRead.setValue(pagesRead);
 
         // when
-        bookForm.predefinedShelfField.setValue(READING);
-
-        // then
-        Assertions.assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
-        Assertions.assertTrue(List.of(bookForm.fieldsToReset)
-                              .containsAll(List.of(fieldsThatShouldBeReset)));
-    }
-
-    @Test
-    void fieldsToResetIsCorrectlyPopulatedForReadShelf() {
-        // given
-        HasValue[] fieldsThatShouldBeReset = new HasValue[]{bookForm.pagesRead};
-        populateBookForm(READ, false);
-        bookForm.pagesRead.setValue(pagesRead);
-
-        // when
-        bookForm.predefinedShelfField.setValue(READ);
-
-        // then
-        Assertions.assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
-        Assertions.assertTrue(List.of(bookForm.fieldsToReset)
-                              .containsAll(List.of(fieldsThatShouldBeReset)));
-    }
-
-    @Test
-    void fieldsToResetIsCorrectlyPopulatedForDidNotFinishShelf() {
-        // given
-        HasValue[] fieldsThatShouldBeReset = new HasValue[]{bookForm.dateFinishedReading,
-                bookForm.rating, bookForm.bookReview};
-        populateBookForm(READ, false);
-        bookForm.pagesRead.setValue(pagesRead);
-
-        // when
-        bookForm.predefinedShelfField.setValue(DID_NOT_FINISH);
+        bookForm.predefinedShelfField.setValue(newShelf);
 
         // then
         Assertions.assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
