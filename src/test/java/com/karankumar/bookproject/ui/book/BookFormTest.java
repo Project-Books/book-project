@@ -367,7 +367,7 @@ public class BookFormTest {
 
     @ParameterizedTest
     @MethodSource("shelfNames")
-    void fieldsToResetIsCorrectlyPopulated(PredefinedShelf.ShelfName newShelf) throws NotSupportedException {
+    void fieldsToResetAreCorrectlyPopulated(PredefinedShelf.ShelfName newShelf) throws NotSupportedException {
         // given
         HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
         populateBookForm(READ, false);
