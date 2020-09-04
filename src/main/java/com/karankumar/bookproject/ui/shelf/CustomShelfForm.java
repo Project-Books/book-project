@@ -104,7 +104,7 @@ public class CustomShelfForm extends VerticalLayout {
 
     private Button createSaveButton() {
         Button save = new Button();
-        save.setText("Save shelf");
+        save.setText("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setDisableOnClick(true);
         save.addClassName("shelfFormSaveButton");
