@@ -18,6 +18,8 @@ services:
     command: --init-file /data/application/init.sql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    links:
+      - mysql:db
     ports:
       - "8081:80"
   bookapp:
