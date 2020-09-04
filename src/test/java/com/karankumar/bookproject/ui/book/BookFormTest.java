@@ -379,7 +379,7 @@ public class BookFormTest {
         // then
         Assertions.assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
         Assertions.assertTrue(List.of(bookForm.fieldsToReset)
-                              .containsAll(List.of(fieldsThatShouldBeReset)));
+                                  .containsAll(List.of(fieldsThatShouldBeReset)));
     }
 
     @Test
