@@ -647,7 +647,7 @@ public class BookFormTest {
                 Arguments.of(DID_NOT_FINISH, TO_READ),
                 Arguments.of(DID_NOT_FINISH, READING),
                 Arguments.of(DID_NOT_FINISH, READ)
-                );
+        );
     }
 
     /**
