@@ -20,6 +20,8 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import elemental.json.Json;
+import elemental.json.JsonObject;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
@@ -109,5 +111,13 @@ public class BookService extends BaseService<Book, Long> {
         authorService.deleteAll();
         LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = " +
                 bookRepository.count());
+    }
+
+    public JsonObject getJsonRepresentationForBooks() {
+        JsonObject jsonObject = Json.createObject();
+        jsonObject.put("name", "jon doe");
+        jsonObject.put("age", "22");
+        jsonObject.put("city", "chicago");
+        return jsonObject;
     }
 }
