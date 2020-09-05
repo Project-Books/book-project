@@ -40,6 +40,8 @@ A maintainer is expected to make regular, meaningful commits to the project. 'Re
 of free time that they can spend on the project outside of the rest of their busy lives. Therefore, this is something that should be agreed upon with the owner. For 
 example, if can only contribute once a month, that may be fine. The important thing is that the frequency of work is agreed upon.
 
+When a build breaks or when we have high-priority bugs to fix, we depend on the owner and maintainers to help create fix or create a patch for them quickly.
+
 In addition to regularly committing, a maintainer is expected to review pull requests regularly. As before, the definition of 'regular' should be agreed with the owner.
 In general, we try to review pull requests within seven days (regular days, not working days) of having received them. If this is not feasible for you, please discuss
 this with the owner as we are somewhat flexible on this.
