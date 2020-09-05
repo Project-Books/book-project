@@ -9,7 +9,7 @@ In particular, all maintainers must be welcoming and inclusive to all at all tim
 
 ### Project owner
 
-Karan ([@knjk04](https://github.com/knjk04)) first started this project and is the owner of the repository. As the project owner, this role also includes the maintainer role. Karan is an active in committing to the project, reviewing code and helping others on the project over
+Karan ([@knjk04](https://github.com/knjk04)) first started this project and is the owner of the repository. As the project owner, this role also includes the maintainer role. Karan is active in committing to the project, reviewing code and helping others on the project over
 Gitter.
 
 Karan has the final say on decisions and is in responsible for the overall direction of the project. However, Karan is always open to new ideas and thoughts. If you think
@@ -22,7 +22,7 @@ Should you have any concerns about any of the maintainers, Karan is the person t
 
 *We currently do not have any maintainers, but we are looking for some.*
 
-Maintainers have made regular and several significant contributions to the project over an extended period of time. Usually, the contributions are code, but it does not have to be. 
+Maintainers have made regular and several significant contributions to the project over an extended period. Usually, the contributions are code, but it does not have to be. 
 Maintainers could have made important contributions in, for example, design or documentation. 
 
 A maintainer may have a particular area of expertise. If they do, it will be listed here. You can then reach out to them should you need any help. We encourage the 
@@ -31,44 +31,44 @@ if we can all see the exchange(s).
 
 While everyone can help shape the direction of the project, this is particularly true of maintainers, as the owner and other maintainers may lean on each other.
 
-As a regular committer, they can be given access rights to commit to the project. However, they are trusted to not do so unless until their work has first been reviewed.
+As a regular committer, they can be given access rights to commit to the project. However, they are trusted not to do so unless until their work has first been reviewed.
 This also includes changes to the wiki.
 
 #### Responsibilities
 
-A maintainer is expected to make regular meaningful commits to the project. 'Regular' is intentionally vague as we appreciate that different people have different levels
+A maintainer is expected to make regular, meaningful commits to the project. 'Regular' is intentionally vague as we appreciate that different people have different levels
 of free time that they can spend on the project outside of the rest of their busy lives. Therefore, this is something that should be agreed upon with the owner. For 
-example, if you are able to contribute once a month, that may be fine. The important thing is that the frequency of work is agreed upon.
+example, if can only contribute once a month, that may be fine. The important thing is that the frequency of work is agreed upon.
 
-In addition to regularly committing, a maintainer is expected to regularly review pull requests. As before, the definition of 'regular' should be agreed with the owner.
+In addition to regularly committing, a maintainer is expected to review pull requests regularly. As before, the definition of 'regular' should be agreed with the owner.
 In general, we try to review pull requests within seven days (regular days, not working days) of having received them. If this is not feasible for you, please discuss
 this with the owner as we are somewhat flexible on this.
 
 Lastly, we have an active Gitter community room where we can provide help to committers. We expect maintainers to be active here to help others. We don't expect
-our maintainers to always be online, but to be responsive to messages directed towards them and undirected messages that they can help with. As a rule of thumb, we would
+our maintainers always to be online, but to be responsive to messages directed towards them and undirected messages that they can help with. As a rule of thumb, we would
 expect maintainers to reply within seven days.
 
-Holidays and other committments come up from time to time. This is fine, just keep us informed where possible.
+Holidays and other commitments come up from time to time. This is fine, just keep us informed where possible.
 
-We appreciate this is large commitment to make, so we highly value the time and effort of all of our maintainers to help push the project forward.
+We appreciate this is a large commitment to make, so we highly value the time and effort of all of our maintainers to help push the project forward.
 
 #### Becoming a maintainer
 
 If you would like to become a maintainer, feel free to message Karan ([@knjk04](https://github.com/knjk04)) on Gitter. This can be done either privately or on the Gitter group chat. If we say no, we will
-be constructive by telling you what you would need to do in order to get there (e.g. contribute for longer to gain further trust). Please do note feel disheartened
+be constructive by telling you what you would need to do to get there (e.g. contribute for longer to gain further trust). Please do not feel disheartened
 if we say no. Think of it as 'not yet' rather than 'never'. If you ask Karan publicly on Gitter, the assumption is that you are happy for a public response.
 
 In some cases, Karan may contact you to ask whether you like to become a maintainer.
 
 #### Removing a maintainer
 
-If a maintainer becomes unresponsive for an extended period of time, or if they violate our code of conduct or a responsibility, they can have their role revoked.
+If a maintainer becomes unresponsive for an extended period, or if they violate our code of conduct or responsibility, they can have their role revoked.
 While this may seem daunting, this should not come as a surprise as the owner should have already discussed this with you.
 
 ### Non-leadership roles
 
 **Committer**
 
-Commiters are those whose work is directly visible on our GitHub project. While this is usually code or documentation, it could also include design work. 
+Committers are those whose work is directly visible on our GitHub project. While this is usually code or documentation, it could also include design work. 
 
-Even if you are a commiter and not in a leadership role, your contributions are still very much appreciated.
+Even if you are a committer and not in a leadership role, your contributions are still very much appreciated.
