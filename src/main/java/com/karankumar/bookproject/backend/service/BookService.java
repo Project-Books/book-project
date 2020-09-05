@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
@@ -120,9 +121,9 @@ public class BookService extends BaseService<Book, Long> {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
 
-        String json = mapper.writeValueAsString(books);
-
+        String json = jsonWriter.writeValueAsString(books);
         return json.getBytes();
     }
 }
