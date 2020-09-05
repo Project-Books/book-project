@@ -103,6 +103,17 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting FormLayout.FormItem seriesPositionFormItem;
     @VisibleForTesting FormLayout.FormItem pagesReadFormItem;
 
+    @VisibleForTesting HasValue[] fieldsToReset;
+
+    @VisibleForTesting final HasValue[] fieldsToResetForToRead
+            = new HasValue[]{pagesRead, dateStartedReading, dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] fieldsToResetForReading
+            = new HasValue[]{pagesRead, dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] fieldsToResetForRead
+            = new HasValue[]{pagesRead};
+    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
+            = new HasValue[]{dateFinishedReading, rating, bookReview};
+
     @VisibleForTesting Button delete = new Button();
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
 
@@ -301,6 +312,7 @@ public class BookForm extends VerticalLayout {
             } else {
                 LOGGER.log(Level.INFO, "Binder.getBean() is not null");
                 moveBookToDifferentShelf();
+                ComponentUtil.clearComponentFields(fieldsToReset);
                 fireEvent(new SaveEvent(this, binder.getBean()));
                 closeForm();
             }
@@ -317,6 +329,7 @@ public class BookForm extends VerticalLayout {
 
         if (binder.getBean() != null) {
             LOGGER.log(Level.INFO, "Written bean. Not Null.");
+            ComponentUtil.clearComponentFields(fieldsToReset);
             fireEvent(new SaveEvent(this, binder.getBean()));
             showSavedConfirmation();
         } else {
@@ -489,6 +502,7 @@ public class BookForm extends VerticalLayout {
                     hideDates(predefinedShelfField.getValue());
                     showOrHideRatingAndBookReview(predefinedShelfField.getValue());
                     showOrHidePagesRead(predefinedShelfField.getValue());
+                    setFieldsToReset(predefinedShelfField.getValue());
                 } catch (NotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -584,6 +598,33 @@ public class BookForm extends VerticalLayout {
                 break;
             default:
                 throw new NotSupportedException("Shelf " + name + " not yet supported");
+        }
+    }
+
+    /**
+     * Populates the fieldsToReset array with state-specific fields depending on which shelf the book is going into
+     *
+     * @param shelfName the name of the shelf that was selected in this book form
+     * @throws NotSupportedException if the shelf name parameter does not match the name of
+     *                               a @see PredefinedShelf
+     */
+    private void setFieldsToReset(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
+        fieldsToReset = getFieldsToReset(shelfName);
+    }
+
+    @VisibleForTesting
+    HasValue[] getFieldsToReset(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
+        switch (shelfName) {
+            case TO_READ:
+                return fieldsToResetForToRead;
+            case READING:
+                return fieldsToResetForReading;
+            case READ:
+                return fieldsToResetForRead;
+            case DID_NOT_FINISH:
+                return fieldsToResetForDidNotFinish;
+            default:
+                throw new NotSupportedException("Shelf " + shelfName + " not yet supported");
         }
     }
 
