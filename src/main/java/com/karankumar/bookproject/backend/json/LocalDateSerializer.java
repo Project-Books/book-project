@@ -14,9 +14,9 @@ public class LocalDateSerializer extends StdSerializer<LocalDate> {
 
     @Override
     public void serialize(LocalDate localDate, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        String dateString = String.format("%02d", localDate.getDayOfMonth()) + "-"
-                            + String.format("%02d", localDate.getMonthValue())+ "-"
-                            + localDate.getYear();
+        String dateString = localDate.getYear() + "-"
+                            + String.format("%02d", localDate.getMonthValue()) + "-"
+                            + String.format("%02d", localDate.getDayOfMonth());
         jsonGenerator.writeString(dateString);
     }
 }
