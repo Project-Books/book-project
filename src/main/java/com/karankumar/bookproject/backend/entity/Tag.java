@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,6 +37,7 @@ import java.util.Set;
  */
 @Entity
 @Data
+@JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, exclude = "books")
 public class Tag extends BaseEntity {
@@ -45,7 +47,6 @@ public class Tag extends BaseEntity {
     @Column(unique = true)
     private String name;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
     private Set<Book> books;
 

@@ -17,6 +17,9 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.karankumar.bookproject.backend.json.LocalDateSerializer;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,6 +39,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
@@ -79,7 +83,9 @@ public class Book extends BaseEntity {
 
     // For books that have been read
     private RatingScale rating;
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateStartedReading;
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateFinishedReading;
     private String bookReview;
 
