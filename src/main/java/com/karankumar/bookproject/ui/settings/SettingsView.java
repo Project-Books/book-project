@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.settings;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
@@ -35,11 +36,10 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamRegistration;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.Lumo;
-import elemental.json.JsonObject;
 import lombok.extern.java.Log;
 
 import java.io.ByteArrayInputStream;
-import java.net.URI;
+import java.util.logging.Level;
 
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
@@ -120,20 +120,25 @@ public class SettingsView extends HorizontalLayout {
     }
 
     private void configureExportBooksAnchor() {
-        URI jsonExportURI = generateJsonResource();
-        exportBooksAnchor.setHref(jsonExportURI.toString());
+        String jsonExportURI = generateJsonResource();
+        exportBooksAnchor.setHref(jsonExportURI);
     }
 
-    private URI generateJsonResource() {
-        JsonObject jsonRepresentationForBooks = bookService.getJsonRepresentationForBooks();
+    private String generateJsonResource() {
+        try {
+            byte[] jsonRepresentationForBooks = bookService.getJsonRepresentationForBooksAsByteArray();
 
-        final StreamResource resource = new StreamResource("foo.json",
-                () -> new ByteArrayInputStream(jsonRepresentationForBooks.toString().getBytes()));
-        final StreamRegistration registration = UI.getCurrent()
-                                                .getSession()
-                                                .getResourceRegistry()
-                                                .registerResource(resource);
+            final StreamResource resource = new StreamResource("bookExport.json",
+                    () -> new ByteArrayInputStream(jsonRepresentationForBooks));
+            final StreamRegistration registration = UI.getCurrent()
+                                                    .getSession()
+                                                    .getResourceRegistry()
+                                                    .registerResource(resource);
 
-        return registration.getResourceUri();
+            return registration.getResourceUri().toString();
+        } catch (JsonProcessingException e) {
+            LOGGER.log(Level.SEVERE, "Cannot create json resource." + e);
+            return "";
+        }
     }
 }

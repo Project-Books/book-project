@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,6 +47,7 @@ public class Author extends BaseEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
     @Setter
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
     public Author(String firstName, String lastName) {

@@ -18,6 +18,7 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,7 @@ public class PredefinedShelf extends Shelf {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "predefinedShelf")
     @Getter
     @Setter
+    @JsonIgnore
     protected Set<Book> books;
 
     public PredefinedShelf(ShelfName predefinedShelfName) {

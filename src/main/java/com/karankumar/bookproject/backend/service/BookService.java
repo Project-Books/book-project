@@ -17,11 +17,12 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import elemental.json.Json;
-import elemental.json.JsonObject;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
@@ -113,11 +114,15 @@ public class BookService extends BaseService<Book, Long> {
                 bookRepository.count());
     }
 
-    public JsonObject getJsonRepresentationForBooks() {
-        JsonObject jsonObject = Json.createObject();
-        jsonObject.put("name", "jon doe");
-        jsonObject.put("age", "22");
-        jsonObject.put("city", "chicago");
-        return jsonObject;
+    public byte[] getJsonRepresentationForBooksAsByteArray() throws JsonProcessingException {
+        List<Book> books = bookRepository.findAll();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        String json = mapper.writeValueAsString(books);
+
+        return json.getBytes();
     }
 }
