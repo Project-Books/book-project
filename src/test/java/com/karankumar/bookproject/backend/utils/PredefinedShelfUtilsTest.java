@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Set;
 
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
+
 
 @IntegrationTest
 public class PredefinedShelfUtilsTest {
@@ -54,7 +56,6 @@ public class PredefinedShelfUtilsTest {
         readingShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READING));
         readShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
         didNotFinishShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH));
-        allShelves = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.ALL_BOOKS));
 
         book1 = bookRepository.save(new Book("someTitle", NO_AUTHOR, toReadShelf));
         book2 = bookRepository.save(new Book("someTitle2", NO_AUTHOR, toReadShelf));
@@ -74,8 +75,7 @@ public class PredefinedShelfUtilsTest {
                 PredefinedShelf.ShelfName.TO_READ.toString(),
                 PredefinedShelf.ShelfName.READING.toString(),
                 PredefinedShelf.ShelfName.READ.toString(),
-                PredefinedShelf.ShelfName.DID_NOT_FINISH.toString(),
-                PredefinedShelf.ShelfName.ALL_BOOKS.toString()
+                PredefinedShelf.ShelfName.DID_NOT_FINISH.toString()
         );
 
         // when
@@ -103,7 +103,7 @@ public class PredefinedShelfUtilsTest {
         Set<Book> expectedBooks = Set.of(book1, book2, book3, book4);
 
         // when
-        Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf("All books");
+        Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
 
         // then
         Assertions.assertEquals(expectedBooks, actualBooks);

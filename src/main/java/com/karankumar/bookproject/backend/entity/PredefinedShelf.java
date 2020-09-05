@@ -64,8 +64,7 @@ public class PredefinedShelf extends Shelf {
         TO_READ("To read"),
         READING("Reading"),
         READ("Read"),
-        DID_NOT_FINISH("Did not finish"),
-        ALL_BOOKS("All books");
+        DID_NOT_FINISH("Did not finish");
 
         private final String name;
 
@@ -75,10 +74,6 @@ public class PredefinedShelf extends Shelf {
 
         public String toString() {
             return name;
-        }
-
-        public static ShelfName[] usableShelves() {
-            return new ShelfName[] {TO_READ, READING, READ, DID_NOT_FINISH};
         }
     }
 }

@@ -49,8 +49,11 @@ import com.vaadin.flow.router.RouteAlias;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
 
 /**
  * Contains a @see BookForm and a grid containing a list of books in a given shelf.
@@ -63,7 +66,7 @@ public class BooksInShelfView extends VerticalLayout {
     public final BookGrid bookGrid;
     public final BookShelfComboBox whichShelf;
 
-    private final EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> visibilityStrategies;
+    private final HashMap<String, BookVisibilityStrategy> visibilityStrategies;
 
     private final BookForm bookForm;
     private final CustomShelfForm customShelfForm;
@@ -110,14 +113,13 @@ public class BooksInShelfView extends VerticalLayout {
         whichShelf.updateShelfList();
     }
 
-    private EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> initVisibilityStrategies() {
-        EnumMap<PredefinedShelf.ShelfName, BookVisibilityStrategy> m =
-                new EnumMap<>(PredefinedShelf.ShelfName.class);
-        m.put(PredefinedShelf.ShelfName.TO_READ, new ToReadBookVisibility());
-        m.put(PredefinedShelf.ShelfName.READING, new ReadingBookVisibility());
-        m.put(PredefinedShelf.ShelfName.DID_NOT_FINISH, new DidNotFinishBookVisibility());
-        m.put(PredefinedShelf.ShelfName.ALL_BOOKS, new AllShelvesBookVisibility());
-        m.put(PredefinedShelf.ShelfName.READ, new ReadBookVisibility());
+    private HashMap<String, BookVisibilityStrategy> initVisibilityStrategies() {
+        HashMap<String, BookVisibilityStrategy> m = new HashMap<>();
+        m.put(PredefinedShelf.ShelfName.TO_READ.toString(), new ToReadBookVisibility());
+        m.put(PredefinedShelf.ShelfName.READING.toString(), new ReadingBookVisibility());
+        m.put(PredefinedShelf.ShelfName.DID_NOT_FINISH.toString(), new DidNotFinishBookVisibility());
+        m.put(PredefinedShelf.ShelfName.READ.toString(), new ReadBookVisibility());
+        m.put(ALL_BOOKS_SHELF, new AllShelvesBookVisibility());
 
         return m;
     }
@@ -157,20 +159,16 @@ public class BooksInShelfView extends VerticalLayout {
     // TODO: 3.08.2020 this should be moved BookShelfListener. But it's also invoked in the test.
     @VisibleForTesting
     public void showOrHideGridColumns(String shelfName) throws NotSupportedException {
-        if (!PredefinedShelfUtils.isPredefinedShelf(shelfName)) {
-            return;
+        if (isAllBooksShelf(shelfName)) {
+            visibilityStrategies.get(ALL_BOOKS_SHELF).toggleColumnVisibility(bookGrid);
         }
 
-        PredefinedShelf.ShelfName predefinedShelfName =
-                predefinedShelfUtils.getPredefinedShelfName(shelfName);
-
-        if (!visibilityStrategies.containsKey(predefinedShelfName)) {
+        if (!visibilityStrategies.containsKey(shelfName)) {
             throw new NotSupportedException("Shelf " + shelfName +
                     " has not been added as a case in switch statement.");
         }
 
-        visibilityStrategies.get(predefinedShelfName)
-                            .toggleColumnVisibility(bookGrid);
+        visibilityStrategies.get(shelfName).toggleColumnVisibility(bookGrid);
     }
 
     public void updateGrid() {

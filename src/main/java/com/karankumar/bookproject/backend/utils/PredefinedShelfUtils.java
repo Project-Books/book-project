@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
+
 @Log
 public class PredefinedShelfUtils {
     private final PredefinedShelfService predefinedShelfService;
@@ -76,8 +78,6 @@ public class PredefinedShelfUtils {
                 return PredefinedShelf.ShelfName.READ;
             case "Did not finish":
                 return PredefinedShelf.ShelfName.DID_NOT_FINISH;
-            case "All books":
-                return PredefinedShelf.ShelfName.ALL_BOOKS;
             default:
                 return null;
         }
@@ -101,14 +101,12 @@ public class PredefinedShelfUtils {
      * Fetches all of the books in the chosen predefined shelf
      */
     public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
-        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
         Set<Book> books;
-
-        if (shelfNameIsAllBooks(predefinedShelfName)) {
-            List<PredefinedShelf> allPredefinedShelves = predefinedShelfService.findAll();
-            return getBooksInPredefinedShelves(allPredefinedShelves);
+        if (isAllBooksShelf(chosenShelf)) {
+            return getBooksInAllPredefinedShelves();
         }
 
+        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
         List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAll(predefinedShelfName);
         if (predefinedShelves.isEmpty()) {
             books = new HashSet<>();
@@ -119,8 +117,8 @@ public class PredefinedShelfUtils {
         return books;
     }
 
-    private boolean shelfNameIsAllBooks(PredefinedShelf.ShelfName shelfName) {
-        return shelfName == PredefinedShelf.ShelfName.ALL_BOOKS;
+    public Set<Book> getBooksInAllPredefinedShelves() {
+        return getBooksInPredefinedShelves(predefinedShelfService.findAll());
     }
 
     /**

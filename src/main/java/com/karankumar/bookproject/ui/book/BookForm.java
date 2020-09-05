@@ -482,7 +482,7 @@ public class BookForm extends VerticalLayout {
         predefinedShelfField.setRequired(true);
         predefinedShelfField.setPlaceholder("Choose a shelf");
         predefinedShelfField.setClearButtonVisible(true);
-        predefinedShelfField.setItems(PredefinedShelf.ShelfName.usableShelves());
+        predefinedShelfField.setItems(PredefinedShelf.ShelfName.values());
         predefinedShelfField.addValueChangeListener(event -> {
             if (event.getValue() != null) {
                 try {
