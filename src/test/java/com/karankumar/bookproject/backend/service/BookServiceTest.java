@@ -131,7 +131,7 @@ public class BookServiceTest {
         bookService.save(anotherValidBook);
 
         String expectedJsonString = FileUtils.readFileToString(
-                new File("src/test/resources/allBooksJson.json"), "UTF8");
+                new File("src/test/resources/exportedBooksSample.json"), "UTF8");
 
         // when
         String jsonAsString = bookService.getJsonRepresentationForBooksAsString();
