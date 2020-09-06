@@ -23,7 +23,7 @@ Please ensure you have done the following:
 - [ ] Filled in the summary, context (if applicable) and related issue section. Replace the square brackets and its placeholder content with your contents. For an example, see any merged in pull request
   - [ ] Included a screenshot(s) if a UI change was involved (it may look different on a reviewer's device)
 
-- [ ] Created a branch that has a descriptive name (what your branch is for a in a few words and includes the issue number at the end, e.g. `test-reading-goal-123`
+- [ ] Created a branch that has a descriptive name (what your branch is for in a few words and includes the issue number at the end, e.g. `test-reading-goal-123`
 
 - [ ] Set this pull request to 'draft' if you are still working on it
 

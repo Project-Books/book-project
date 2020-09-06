@@ -11,7 +11,15 @@
 }
 
 @media screen and (min-width: 70em) {
-    [part="overlay"] {
+    [part="overlay"].bookFormOverlay {
         width:68em;
     }
+
+    [part="overlay"].shelfFormOverlay {
+        width:35em;
+    }
+}
+
+.shelfFormOverlay {
+    align-items: center;
 }

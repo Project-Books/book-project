@@ -1,11 +1,11 @@
 @media screen and (max-width: 37em) {
-    .formInputField {
+    .bookFormInputField {
         width: 100%;
     }
 }
 
 @media screen and (min-width: 37em) {
-    .formInputField {
+    .bookFormInputField {
         width: 23em;
     }
 }

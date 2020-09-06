@@ -31,6 +31,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.spring.SpringServlet;
@@ -48,7 +49,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -353,6 +356,32 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.pagesReadFormItem.isVisible());
     }
 
+    private static Stream<Arguments> shelfNames() {
+        return Stream.of(
+                Arguments.of(TO_READ),
+                Arguments.of(READING),
+                Arguments.of(READ),
+                Arguments.of(DID_NOT_FINISH)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("shelfNames")
+    void fieldsToResetAreCorrectlyPopulated(PredefinedShelf.ShelfName newShelf) throws NotSupportedException {
+        // given
+        HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
+        populateBookForm(READ, false);
+        bookForm.pagesRead.setValue(pagesRead);
+
+        // when
+        bookForm.predefinedShelfField.setValue(newShelf);
+
+        // then
+        Assertions.assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
+        Assertions.assertTrue(List.of(bookForm.fieldsToReset)
+                                  .containsAll(List.of(fieldsThatShouldBeReset)));
+    }
+
     @Test
     void shouldNotAllowNegativeSeriesPosition() {
         // given
@@ -610,16 +639,15 @@ public class BookFormTest {
                 Arguments.of(TO_READ, READ),
                 Arguments.of(TO_READ, DID_NOT_FINISH),
                 Arguments.of(READING, DID_NOT_FINISH),
-                Arguments.of(READING, READ)
-                // TODO: these cases are not passing at the moment because of issue #271
-                // Arguments.of(READING, TO_READ),
-                // Arguments.of(READ, TO_READ),
-                // Arguments.of(READ, DID_NOT_FINISH),
-                // Arguments.of(READ, READING),
-                // Arguments.of(DID_NOT_FINISH, TO_READ),
-                // Arguments.of(DID_NOT_FINISH, READING),
-                // Arguments.of(DID_NOT_FINISH, READ)
-                );
+                Arguments.of(READING, READ),
+                Arguments.of(READING, TO_READ),
+                Arguments.of(READ, TO_READ),
+                Arguments.of(READ, DID_NOT_FINISH),
+                Arguments.of(READ, READING),
+                Arguments.of(DID_NOT_FINISH, TO_READ),
+                Arguments.of(DID_NOT_FINISH, READING),
+                Arguments.of(DID_NOT_FINISH, READ)
+        );
     }
 
     /**
