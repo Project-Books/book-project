@@ -115,7 +115,7 @@ public class BookService extends BaseService<Book, Long> {
                 bookRepository.count());
     }
 
-    public byte[] getJsonRepresentationForBooksAsByteArray() throws JsonProcessingException {
+    public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
         List<Book> books = bookRepository.findAll();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -123,7 +123,6 @@ public class BookService extends BaseService<Book, Long> {
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
 
-        String json = jsonWriter.writeValueAsString(books);
-        return json.getBytes();
+        return jsonWriter.writeValueAsString(books);
     }
 }

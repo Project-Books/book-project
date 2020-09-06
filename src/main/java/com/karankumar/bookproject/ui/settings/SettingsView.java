@@ -126,7 +126,7 @@ public class SettingsView extends HorizontalLayout {
 
     private String generateJsonResource() {
         try {
-            byte[] jsonRepresentationForBooks = bookService.getJsonRepresentationForBooksAsByteArray();
+            byte[] jsonRepresentationForBooks = bookService.getJsonRepresentationForBooksAsString().getBytes();
 
             final StreamResource resource = new StreamResource("bookExport.json",
                     () -> new ByteArrayInputStream(jsonRepresentationForBooks));
