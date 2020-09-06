@@ -103,16 +103,16 @@ public class Book extends BaseEntity {
         int lastDigit = edition % 10;
         switch (lastDigit) {
             case 1:
-                bookEdition = getEdition() + "st edition";
+                bookEdition = edition + "st edition";
                 break;
             case 2:
-                bookEdition = getEdition() + "nd edition";
+                bookEdition = edition + "nd edition";
                 break;
             case 3:
-                bookEdition = getEdition() + "rd edition";
+                bookEdition = edition + "rd edition";
                 break;
             default:
-                bookEdition = getEdition() + "th edition";
+                bookEdition = edition + "th edition";
                 break;
         }
         this.edition = bookEdition;
