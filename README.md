@@ -16,6 +16,8 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - Track your progress towards a reading goal: the number of books or pages you hope to read by the end of the year
 - Statistics about your reading habits
 - Add your own shelves
+- Export your saved data to JSON
+- And much more!
 
 *Coming soon:*
 - User registration and accounts
