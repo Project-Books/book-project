@@ -90,6 +90,10 @@ Before submitting a pull request, run the unit tests and ensure they pass.
 
 Generally speaking, if you're working on a new feature (any issue with the [enhancement label](https://github.com/knjk04/book-project/labels/enhancement)) or fixing a [bug](https://github.com/knjk04/book-project/labels/bug), please also write tests. If you need a hand with this, we can help.
 
+### New files
+
+If you're adding a new file, please ensure to copy the contents of our [copyright file](https://github.com/knjk04/book-project/blob/master/docs/COPYRIGHT) verbatim (use the latest version on the master branch).
+
 ## Pull requests
 
 If you've opened a pull request but it is not yet ready for a review, please convert it to a draft. Otherwise, we may help you out by adding to your branch while you're also working on it if the changes needed are small or if the work needs to be completed quickly (e.g. if it is a high priority bug or if it is blocking other work). 
