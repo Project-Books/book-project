@@ -137,7 +137,7 @@ public class BookServiceTest {
         String jsonAsString = bookService.getJsonRepresentationForBooksAsString();
 
         // then
-        JSONAssert.assertEquals(expectedJsonString, jsonAsString, JSONCompareMode.STRICT_ORDER);
+        JSONAssert.assertEquals(expectedJsonString, jsonAsString, JSONCompareMode.NON_EXTENSIBLE);
     }
 
     private Book createBookAndSetAllAttributes() {
