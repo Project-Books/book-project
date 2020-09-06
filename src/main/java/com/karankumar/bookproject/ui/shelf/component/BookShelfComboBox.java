@@ -46,7 +46,7 @@ public class BookShelfComboBox {
 
     public void updateShelfList() {
         List<String> shelves = ShelfUtils.findAllShelfNames(customShelfService.findAll());
-        shelves.add(ALL_BOOKS_SHELF);
+        shelves.add(0, ALL_BOOKS_SHELF);
         allShelvesList.setItems(shelves);
     }
 
