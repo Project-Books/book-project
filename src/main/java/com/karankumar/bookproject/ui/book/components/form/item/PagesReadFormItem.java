@@ -1,9 +1,8 @@
 package com.karankumar.bookproject.ui.book.components.form.item;
 
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 
-public class PagesReadFormItem extends FormItem<IntegerField>{
+public class PagesReadFormItem extends FormItem<IntegerField> {
 
     public PagesReadFormItem() {
         super(new IntegerField());
@@ -20,7 +19,7 @@ public class PagesReadFormItem extends FormItem<IntegerField>{
     }
 
     @Override
-    public void add(FormLayout formLayout) {
-        super.add(formLayout, "Pages read");
+    protected String getLabel() {
+        return "Pages read";
     }
 }

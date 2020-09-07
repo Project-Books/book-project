@@ -1,6 +1,5 @@
 package com.karankumar.bookproject.ui.book.components.form.item;
 
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 
 public class RatingFormItem extends FormItem<NumberField> {
@@ -20,7 +19,7 @@ public class RatingFormItem extends FormItem<NumberField> {
     }
 
     @Override
-    public void add(FormLayout layout) {
-        super.add(layout, "Book rating");
+    protected String getLabel() {
+        return "Book rating";
     }
 }

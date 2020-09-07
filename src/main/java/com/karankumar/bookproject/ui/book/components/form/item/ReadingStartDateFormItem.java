@@ -1,7 +1,6 @@
 package com.karankumar.bookproject.ui.book.components.form.item;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.formlayout.FormLayout;
 
 public class ReadingStartDateFormItem extends FormItem<DatePicker> {
 
@@ -17,7 +16,7 @@ public class ReadingStartDateFormItem extends FormItem<DatePicker> {
     }
 
     @Override
-    public void add(FormLayout layout) {
-        super.add(layout, "Date started");
+    protected String getLabel() {
+        return "Date started";
     }
 }

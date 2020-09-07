@@ -13,13 +13,11 @@ public abstract class FormItem<T extends Component> {
 
     public abstract void configure();
 
-    protected void add(FormLayout layout, String label) {
-        this.item = layout.addFormItem(field, label);
+    public void add(FormLayout layout) {
+        this.item = layout.addFormItem(field, getLabel());
     }
 
-    // This method should invoke protected add via subclass label.
-    // TODO: Bunu da ucurup abstract getLabel ekleyelim bir tane en temizinden ...
-    public abstract void add(FormLayout layout);
+    protected abstract String getLabel();
 
     public T getField() {
         return field;
