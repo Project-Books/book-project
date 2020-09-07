@@ -30,6 +30,7 @@ import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
 import com.karankumar.bookproject.ui.book.components.form.item.PagesReadFormItem;
 import com.karankumar.bookproject.ui.book.components.form.item.RatingFormItem;
+import com.karankumar.bookproject.ui.book.components.form.item.ReadingEndDateFormItem;
 import com.karankumar.bookproject.ui.book.components.form.item.ReadingStartDateFormItem;
 import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
@@ -41,7 +42,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -77,7 +77,6 @@ import java.util.logging.Level;
 )
 @Log
 public class BookForm extends VerticalLayout {
-    private static final String ENTER_DATE = "Enter a date";
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
 
@@ -92,27 +91,26 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final PagesReadFormItem pagesReadFormItem = new PagesReadFormItem();
     @VisibleForTesting final IntegerField numberOfPages = new IntegerField();
     @VisibleForTesting final ReadingStartDateFormItem readingStartDate = new ReadingStartDateFormItem();
-    @VisibleForTesting final DatePicker dateFinishedReading = new DatePicker();
+    @VisibleForTesting final ReadingEndDateFormItem readingEndDate = new ReadingEndDateFormItem();
     @VisibleForTesting final RatingFormItem ratingFormItem = new RatingFormItem();
     @VisibleForTesting final TextArea bookReview = new TextArea();
     @VisibleForTesting final Button saveButton = new Button();
     @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
     @VisibleForTesting final Button reset = new Button();
 
-    @VisibleForTesting FormLayout.FormItem dateFinishedReadingFormItem;
     @VisibleForTesting FormLayout.FormItem bookReviewFormItem;
     @VisibleForTesting FormLayout.FormItem seriesPositionFormItem;
 
     @VisibleForTesting HasValue[] fieldsToReset;
 
     @VisibleForTesting final HasValue[] fieldsToResetForToRead
-            = new HasValue[]{pagesReadFormItem.getField(), readingStartDate.getField(), dateFinishedReading, ratingFormItem.getField(), bookReview};
+            = new HasValue[]{pagesReadFormItem.getField(), readingStartDate.getField(), readingEndDate.getField(), ratingFormItem.getField(), bookReview};
     @VisibleForTesting final HasValue[] fieldsToResetForReading
-            = new HasValue[]{pagesReadFormItem.getField(), dateFinishedReading, ratingFormItem.getField(), bookReview};
+            = new HasValue[]{pagesReadFormItem.getField(), readingEndDate.getField(), ratingFormItem.getField(), bookReview};
     @VisibleForTesting final HasValue[] fieldsToResetForRead
             = new HasValue[]{pagesReadFormItem.getField()};
     @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
-            = new HasValue[]{dateFinishedReading, ratingFormItem.getField(), bookReview};
+            = new HasValue[]{readingEndDate.getField(), ratingFormItem.getField(), bookReview};
 
     @VisibleForTesting Button delete = new Button();
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
@@ -153,7 +151,7 @@ public class BookForm extends VerticalLayout {
                 authorLastName,
                 seriesPosition,
                 readingStartDate.getField(),
-                dateFinishedReading,
+                readingEndDate.getField(),
                 bookGenre.getComponent(),
                 customShelfField,
                 predefinedShelfField,
@@ -195,7 +193,7 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(authorFirstName, "Author's first name *");
         formLayout.addFormItem(authorLastName, "Author's last name *");
         readingStartDate.add(formLayout);
-        dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
+        readingEndDate.add(formLayout);
         pagesReadFormItem.add(formLayout);
         formLayout.addFormItem(numberOfPages, "Number of pages");
         ratingFormItem.add(formLayout);
@@ -254,7 +252,7 @@ public class BookForm extends VerticalLayout {
               .withValidator(BookFormValidators.datePredicate(),
                       String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
-        binder.forField(dateFinishedReading)
+        binder.forField(readingEndDate.getField())
               .withValidator(isEndDateAfterStartDate(), BookFormErrors.FINISH_DATE_ERROR)
               .withValidator(BookFormValidators.datePredicate(),
                       String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
@@ -400,7 +398,7 @@ public class BookForm extends VerticalLayout {
         book.setGenre(bookGenre.getValue());
         book.setNumberOfPages(numberOfPages.getValue());
         book.setDateStartedReading(readingStartDate.getField().getValue());
-        book.setDateFinishedReading(dateFinishedReading.getValue());
+        book.setDateFinishedReading(readingEndDate.getField().getValue());
 
         Result<RatingScale> result =
                 new DoubleToRatingScaleConverter().convertToModel(ratingFormItem.getField().getValue(), null);
@@ -541,8 +539,8 @@ public class BookForm extends VerticalLayout {
     }
 
     private void hideFinishDate() {
-        if (dateFinishedReadingFormItem.isVisible()) {
-            dateFinishedReadingFormItem.setVisible(false);
+        if (readingEndDate.isVisible()) {
+            readingEndDate.hide();
         }
     }
 
@@ -553,8 +551,8 @@ public class BookForm extends VerticalLayout {
     }
 
     private void showFinishDate() {
-        if (!dateFinishedReadingFormItem.isVisible()) {
-            dateFinishedReadingFormItem.setVisible(true);
+        if (!readingEndDate.isVisible()) {
+            readingEndDate.show();
         }
     }
 
@@ -637,8 +635,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureDateFinishedFormField() {
-        dateFinishedReading.setClearButtonVisible(true);
-        dateFinishedReading.setPlaceholder(ENTER_DATE);
+        readingEndDate.configure();
     }
 
     private void configureNumberOfPagesFormField() {
@@ -661,7 +658,7 @@ public class BookForm extends VerticalLayout {
                 pagesReadFormItem.getField(),
                 numberOfPages,
                 readingStartDate.getField(),
-                dateFinishedReading,
+                readingEndDate.getField(),
                 ratingFormItem.getField(),
                 bookReview
         };

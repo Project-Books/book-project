@@ -184,7 +184,7 @@ public class BookFormTest {
         Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
         Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
         Assertions.assertEquals(dateStarted, bookForm.readingStartDate.getField().getValue());
-        Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
+        Assertions.assertEquals(dateFinished, bookForm.readingEndDate.getField().getValue());
         double rating = converter.convertToPresentation(ratingVal, null);
         Assertions.assertEquals(rating, bookForm.ratingFormItem.getField().getValue());
         Assertions.assertEquals(bookReview, bookForm.bookReview.getValue());
@@ -264,7 +264,7 @@ public class BookFormTest {
             case READ:
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.readingStartDate.getField().setValue(dateStarted);
-                bookForm.dateFinishedReading.setValue(dateFinished);
+                bookForm.readingEndDate.getField().setValue(dateFinished);
                 bookForm.ratingFormItem.getField().setValue(converter.convertToPresentation(ratingVal, null));
                 bookForm.bookReview.setValue(bookReview);
                 break;
@@ -298,7 +298,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.pagesReadFormItem.getField().isEmpty());
         Assertions.assertTrue(bookForm.numberOfPages.isEmpty());
         Assertions.assertTrue(bookForm.readingStartDate.getField().isEmpty());
-        Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty());
+        Assertions.assertTrue(bookForm.readingEndDate.getField().isEmpty());
         Assertions.assertTrue(bookForm.ratingFormItem.getField().isEmpty());
         Assertions.assertTrue(bookForm.bookReview.isEmpty());
     }
@@ -311,7 +311,7 @@ public class BookFormTest {
         Assumptions.assumeFalse(bookForm.bookGenre.isEmpty());
         Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty());
         Assumptions.assumeFalse(bookForm.readingStartDate.getField().isEmpty());
-        Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty());
+        Assumptions.assumeFalse(bookForm.readingEndDate.getField().isEmpty());
         Assumptions.assumeFalse(bookForm.ratingFormItem.getField().isEmpty());
         Assumptions.assumeFalse(bookForm.bookReview.isEmpty());
     }
