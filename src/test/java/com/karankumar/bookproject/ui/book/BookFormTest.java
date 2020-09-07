@@ -186,7 +186,7 @@ public class BookFormTest {
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
         double rating = converter.convertToPresentation(ratingVal, null);
-        Assertions.assertEquals(rating, bookForm.rating.getValue());
+        Assertions.assertEquals(rating, bookForm.ratingFormItem.getRating().getValue());
         Assertions.assertEquals(bookReview, bookForm.bookReview.getValue());
         Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
     }
@@ -265,7 +265,7 @@ public class BookFormTest {
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.dateStartedReading.setValue(dateStarted);
                 bookForm.dateFinishedReading.setValue(dateFinished);
-                bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+                bookForm.ratingFormItem.getRating().setValue(converter.convertToPresentation(ratingVal, null));
                 bookForm.bookReview.setValue(bookReview);
                 break;
             case DID_NOT_FINISH:
@@ -299,7 +299,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.numberOfPages.isEmpty());
         Assertions.assertTrue(bookForm.dateStartedReading.isEmpty());
         Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty());
-        Assertions.assertTrue(bookForm.rating.isEmpty());
+        Assertions.assertTrue(bookForm.ratingFormItem.getRating().isEmpty());
         Assertions.assertTrue(bookForm.bookReview.isEmpty());
     }
 
@@ -312,7 +312,7 @@ public class BookFormTest {
         Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty());
         Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty());
         Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty());
-        Assumptions.assumeFalse(bookForm.rating.isEmpty());
+        Assumptions.assumeFalse(bookForm.ratingFormItem.getRating().isEmpty());
         Assumptions.assumeFalse(bookForm.bookReview.isEmpty());
     }
 
