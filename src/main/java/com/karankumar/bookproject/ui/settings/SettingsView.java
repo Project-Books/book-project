@@ -17,21 +17,29 @@
 
 package com.karankumar.bookproject.ui.settings;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamRegistration;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.ByteArrayInputStream;
+import java.util.logging.Level;
 
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
@@ -48,6 +56,8 @@ public class SettingsView extends HorizontalLayout {
     private static ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Reset shelves";
     private static final Button clearShelvesButton;
+    private static final String EXPORT_BOOKS = "Export";
+    private static final Anchor exportBooksAnchor;
     private static BookService bookService;
 
     static {
@@ -71,6 +81,10 @@ public class SettingsView extends HorizontalLayout {
             resetShelvesDialog = new ResetShelvesDialog(bookService);
             resetShelvesDialog.openDialog();
         });
+
+        exportBooksAnchor = new Anchor();
+        exportBooksAnchor.getElement().setAttribute("download", true);
+        exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
     }
 
     SettingsView(BookService bookService) {
@@ -81,7 +95,9 @@ public class SettingsView extends HorizontalLayout {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(darkModeLabel, darkModeToggle);
 
-        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelvesButton);
+        configureExportBooksAnchor();
+
+        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelvesButton, exportBooksAnchor);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 
@@ -99,8 +115,30 @@ public class SettingsView extends HorizontalLayout {
         }
     }
 
-
     private static void updateDarkModeLabel() {
         darkModeLabel.setText(darkModeOn ? DISABLE_DARK_MODE : ENABLE_DARK_MODE);
+    }
+
+    private void configureExportBooksAnchor() {
+        String jsonExportURI = generateJsonResource();
+        exportBooksAnchor.setHref(jsonExportURI);
+    }
+
+    private String generateJsonResource() {
+        try {
+            byte[] jsonRepresentationForBooks = bookService.getJsonRepresentationForBooksAsString().getBytes();
+
+            final StreamResource resource = new StreamResource("bookExport.json",
+                    () -> new ByteArrayInputStream(jsonRepresentationForBooks));
+            final StreamRegistration registration = UI.getCurrent()
+                                                    .getSession()
+                                                    .getResourceRegistry()
+                                                    .registerResource(resource);
+
+            return registration.getResourceUri().toString();
+        } catch (JsonProcessingException e) {
+            LOGGER.log(Level.SEVERE, "Cannot create json resource." + e);
+            return "";
+        }
     }
 }

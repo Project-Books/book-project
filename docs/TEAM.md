@@ -56,11 +56,11 @@ We appreciate this is a large commitment to make, so we highly value the time an
 
 #### Becoming a maintainer
 
-If you would like to become a maintainer, feel free to message Karan ([@knjk04](https://github.com/knjk04)) on Gitter. This can be done either privately or on the Gitter group chat. If we say no, we will
+If Karan believes you are already operating at our maintainer standard, he may contact you to ask whether you would like to become a maintainer. If this is the case, we we still follow our process of agreeing on the details on how frequently you are available to help.
+
+If you were not approached and would like to become a maintainer, feel free to message Karan ([@knjk04](https://github.com/knjk04)) on Gitter. This can be done either privately or on the Gitter group chat. If we say no, we will
 be constructive by telling you what you would need to do to get there (e.g. contribute for longer to gain further trust). Please do not feel disheartened
 if we say no. Think of it as 'not yet' rather than 'never'. If you ask Karan publicly on Gitter, the assumption is that you are happy for a public response.
-
-In some cases, Karan may contact you to ask whether you like to become a maintainer.
 
 #### Removing a maintainer
 

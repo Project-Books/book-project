@@ -16,6 +16,8 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - Track your progress towards a reading goal: the number of books or pages you hope to read by the end of the year
 - Statistics about your reading habits
 - Add your own shelves
+- Export your saved data to JSON
+- And much more!
 
 *Coming soon:*
 - User registration and accounts
@@ -103,8 +105,10 @@ If you need help with anything, we'll be happy to help you in our [Gitter Channe
 
 [Mockito](https://github.com/mockito/mockito) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
 
-[Java Hamcrest](https://github.com/hamcrest/JavaHamcrest) - [BSD-3 clause License](http://opensource.org/licenses/BSD-3-Clause)
+[Java Hamcrest](https://github.com/hamcrest/JavaHamcrest) - [BSD-3 clause](http://opensource.org/licenses/BSD-3-Clause)
 
 [zxcvbn4j](https://github.com/nulab/zxcvbn4j) - [MIT License](https://opensource.org/licenses/mit-license.php)
 
 [paper-toggle-button](https://www.webcomponents.org/element/@polymer/paper-toggle-button) - [BSD-3 clause](https://spdx.org/licenses/BSD-3-Clause)
+
+[jackson](https://github.com/FasterXML/jackson) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
