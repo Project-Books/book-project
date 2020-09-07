@@ -2,9 +2,9 @@ package com.karankumar.bookproject.ui.book.components.form.item;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
 
-public class ReadingStartDateFormItem extends FormItem<DatePicker> {
+public class ReadingStartDate extends FormItem<DatePicker> {
 
-    public ReadingStartDateFormItem() {
+    public ReadingStartDate() {
         super(new DatePicker());
     }
 

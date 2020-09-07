@@ -2,9 +2,9 @@ package com.karankumar.bookproject.ui.book.components.form.item;
 
 import com.vaadin.flow.component.textfield.IntegerField;
 
-public class PagesReadFormItem extends FormItem<IntegerField> {
+public class PagesRead extends FormItem<IntegerField> {
 
-    public PagesReadFormItem() {
+    public PagesRead() {
         super(new IntegerField());
     }
 

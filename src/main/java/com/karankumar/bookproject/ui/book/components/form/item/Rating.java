@@ -2,8 +2,8 @@ package com.karankumar.bookproject.ui.book.components.form.item;
 
 import com.vaadin.flow.component.textfield.NumberField;
 
-public class RatingFormItem extends FormItem<NumberField> {
-    public RatingFormItem() {
+public class Rating extends FormItem<NumberField> {
+    public Rating() {
         super(new NumberField());
     }
 
