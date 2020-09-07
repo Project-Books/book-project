@@ -176,7 +176,7 @@ public class BookFormTest {
      */
     @Test
     void formFieldsPopulated() {
-        Assertions.assertEquals(bookTitle, bookForm.bookTitle.getValue());
+        Assertions.assertEquals(bookTitle, bookForm.bookTitle.getField().getValue());
         Assertions.assertEquals(firstName, bookForm.authorFirstName.getValue());
         Assertions.assertEquals(lastName, bookForm.authorLastName.getValue());
         Assertions.assertEquals(readShelf.getPredefinedShelfName(),
@@ -236,7 +236,7 @@ public class BookFormTest {
     private void populateBookForm(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
         bookForm.authorFirstName.setValue(firstName);
         bookForm.authorLastName.setValue(lastName);
-        bookForm.bookTitle.setValue(bookTitle);
+        bookForm.bookTitle.getField().setValue(bookTitle);
         bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.setValue(genre);
         bookForm.pageCount.getField().setValue(numberOfPages);
@@ -291,7 +291,7 @@ public class BookFormTest {
         // then
         Assertions.assertTrue(bookForm.authorFirstName.isEmpty());
         Assertions.assertTrue(bookForm.authorLastName.isEmpty());
-        Assertions.assertTrue(bookForm.bookTitle.isEmpty());
+        Assertions.assertTrue(bookForm.bookTitle.getField().isEmpty());
         Assertions.assertTrue(bookForm.customShelfField.isEmpty());
         Assertions.assertTrue(bookForm.predefinedShelfField.isEmpty());
         Assertions.assertTrue(bookForm.bookGenre.isEmpty());
@@ -306,7 +306,7 @@ public class BookFormTest {
     private void assumeAllFormFieldsArePopulated() {
         Assumptions.assumeFalse(bookForm.authorFirstName.isEmpty());
         Assumptions.assumeFalse(bookForm.authorLastName.isEmpty());
-        Assumptions.assumeFalse(bookForm.bookTitle.isEmpty());
+        Assumptions.assumeFalse(bookForm.bookTitle.getField().isEmpty());
         Assumptions.assumeFalse(bookForm.predefinedShelfField.isEmpty());
         Assumptions.assumeFalse(bookForm.bookGenre.isEmpty());
         Assumptions.assumeFalse(bookForm.pageCount.getField().isEmpty());
@@ -424,7 +424,7 @@ public class BookFormTest {
     @Test
     void shouldNotAllowEmptyBookTitle() {
         // given
-        bookForm.bookTitle.setValue("");
+        bookForm.bookTitle.getField().setValue("");
 
         // when
         bookForm.saveButton.click();
@@ -614,7 +614,7 @@ public class BookFormTest {
         populateBookFormWithExistingBook(READ, savedBook);
 
         // when
-        bookForm.bookTitle.setValue(newTitle);
+        bookForm.bookTitle.getField().setValue(newTitle);
         bookForm.authorFirstName.setValue(newAuthor.getFirstName());
         bookForm.authorLastName.setValue(newAuthor.getLastName());
         bookForm.bookGenre.setValue(newGenre);
