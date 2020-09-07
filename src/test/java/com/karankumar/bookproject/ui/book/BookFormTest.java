@@ -67,7 +67,7 @@ public class BookFormTest {
 
     private static final String firstName = "Nick";
     private static final String lastName = "Bostrom";
-    private static final String bookTitle = "Superintelligence: Paths, Dangers, Strategies";
+    private static String bookTitle = "Superintelligence: Paths, Dangers, Strategies";
     private static final Genre genre = Genre.SCIENCE;
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
@@ -600,6 +600,26 @@ public class BookFormTest {
     }
 
     @Test
+    void shouldAddBooksToDatabaseWhenSaveEventIsCalled_withoutReplacingExistingBook() {
+        // given
+        bookForm = createBookForm(TO_READ, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        // when
+        bookTitle = "someOtherBook";
+        bookForm = createBookForm(TO_READ, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(2, bookService.count());
+        List<Book> booksInDatabase = bookService.findAll();
+        Assertions.assertEquals("Superintelligence: Paths, Dangers, Strategies", booksInDatabase.get(0).getTitle());
+        Assertions.assertEquals("someOtherBook", booksInDatabase.get(1).getTitle());
+    }
+
+    @Test
     void shouldUpdateValuesInDatabaseForExistingBookWhenSaveEventIsCalled() {
         // given
         String newTitle = "IT";
@@ -671,6 +691,8 @@ public class BookFormTest {
         Book bookInDatabase = bookService.findAll().get(0);
         correctBookAttributesPresent(newShelf, bookInDatabase);
     }
+
+
 
     private void correctBookAttributesPresent(PredefinedShelf.ShelfName shelfName, Book book) {
         testBookAttributesPresentForAllShelves(shelfName, book);
