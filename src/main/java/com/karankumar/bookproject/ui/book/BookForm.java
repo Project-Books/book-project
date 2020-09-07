@@ -45,7 +45,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -85,7 +84,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
     @VisibleForTesting final BookGenreComboBox bookGenre = new BookGenreComboBox();
     @VisibleForTesting final PagesRead pagesRead = new PagesRead();
-    @VisibleForTesting final IntegerField numberOfPages = new IntegerField();
+    @VisibleForTesting final PageCount pageCount = new PageCount();
     @VisibleForTesting final ReadingStartDate readingStartDate = new ReadingStartDate();
     @VisibleForTesting final ReadingEndDate readingEndDate = new ReadingEndDate();
     @VisibleForTesting final Rating rating = new Rating();
@@ -131,7 +130,7 @@ public class BookForm extends VerticalLayout {
         bookGenre.configure();
         seriesPosition.configure();
         pagesRead.configure();
-        configureNumberOfPagesFormField();
+        pageCount.configure();
         readingStartDate.configure();
         configureDateFinishedFormField();
         rating.configure();
@@ -149,7 +148,7 @@ public class BookForm extends VerticalLayout {
                 customShelfField,
                 predefinedShelfField,
                 pagesRead.getField(),
-                numberOfPages,
+                pageCount.getField(),
                 rating.getField(),
                 bookReview.getField()
         };
@@ -190,7 +189,7 @@ public class BookForm extends VerticalLayout {
         readingStartDate.add(formLayout);
         readingEndDate.add(formLayout);
         pagesRead.add(formLayout);
-        formLayout.addFormItem(numberOfPages, "Number of pages");
+        pageCount.add(formLayout);
         rating.add(formLayout);
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
         seriesPosition.add(formLayout);
@@ -258,7 +257,7 @@ public class BookForm extends VerticalLayout {
               .withValidator(BookFormValidators.datePredicate(),
                       String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
-        binder.forField(numberOfPages)
+        binder.forField(pageCount.getField())
               .withValidator(BookFormValidators.positiveNumberPredicate(),
                       BookFormErrors.PAGE_NUMBER_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
@@ -397,7 +396,7 @@ public class BookForm extends VerticalLayout {
         }
 
         book.setGenre(bookGenre.getValue());
-        book.setNumberOfPages(numberOfPages.getValue());
+        book.setNumberOfPages(pageCount.getField().getValue());
         book.setDateStartedReading(readingStartDate.getField().getValue());
         book.setDateFinishedReading(readingEndDate.getField().getValue());
 
@@ -628,13 +627,6 @@ public class BookForm extends VerticalLayout {
         readingEndDate.configure();
     }
 
-    private void configureNumberOfPagesFormField() {
-        numberOfPages.setPlaceholder("Enter number of pages");
-        numberOfPages.setMin(1);
-        numberOfPages.setHasControls(true);
-        numberOfPages.setClearButtonVisible(true);
-    }
-
     private void clearFormFields() {
         HasValue[] components = {
                 bookTitle,
@@ -646,7 +638,7 @@ public class BookForm extends VerticalLayout {
                 seriesPosition.getField(),
                 bookGenre.getComponent(),
                 pagesRead.getField(),
-                numberOfPages,
+                pageCount.getField(),
                 readingStartDate.getField(),
                 readingEndDate.getField(),
                 rating.getField(),

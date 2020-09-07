@@ -182,7 +182,7 @@ public class BookFormTest {
         Assertions.assertEquals(readShelf.getPredefinedShelfName(),
                 bookForm.predefinedShelfField.getValue());
         Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
-        Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
+        Assertions.assertEquals(numberOfPages, bookForm.pageCount.getField().getValue());
         Assertions.assertEquals(dateStarted, bookForm.readingStartDate.getField().getValue());
         Assertions.assertEquals(dateFinished, bookForm.readingEndDate.getField().getValue());
         double rating = converter.convertToPresentation(ratingVal, null);
@@ -239,7 +239,7 @@ public class BookFormTest {
         bookForm.bookTitle.setValue(bookTitle);
         bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.setValue(genre);
-        bookForm.numberOfPages.setValue(numberOfPages);
+        bookForm.pageCount.getField().setValue(numberOfPages);
         if (isInSeries) {
             bookForm.seriesPosition.getField().setValue(SERIES_POSITION);
         }
@@ -296,7 +296,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.predefinedShelfField.isEmpty());
         Assertions.assertTrue(bookForm.bookGenre.isEmpty());
         Assertions.assertTrue(bookForm.pagesRead.getField().isEmpty());
-        Assertions.assertTrue(bookForm.numberOfPages.isEmpty());
+        Assertions.assertTrue(bookForm.pageCount.getField().isEmpty());
         Assertions.assertTrue(bookForm.readingStartDate.getField().isEmpty());
         Assertions.assertTrue(bookForm.readingEndDate.getField().isEmpty());
         Assertions.assertTrue(bookForm.rating.getField().isEmpty());
@@ -309,7 +309,7 @@ public class BookFormTest {
         Assumptions.assumeFalse(bookForm.bookTitle.isEmpty());
         Assumptions.assumeFalse(bookForm.predefinedShelfField.isEmpty());
         Assumptions.assumeFalse(bookForm.bookGenre.isEmpty());
-        Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty());
+        Assumptions.assumeFalse(bookForm.pageCount.getField().isEmpty());
         Assumptions.assumeFalse(bookForm.readingStartDate.getField().isEmpty());
         Assumptions.assumeFalse(bookForm.readingEndDate.getField().isEmpty());
         Assumptions.assumeFalse(bookForm.rating.getField().isEmpty());
@@ -404,7 +404,7 @@ public class BookFormTest {
     @Test
     void shouldNotAllowNegativePageNumbers() {
         // given
-        bookForm.numberOfPages.setValue(-1);
+        bookForm.pageCount.getField().setValue(-1);
 
         // when
         bookForm.saveButton.click();
