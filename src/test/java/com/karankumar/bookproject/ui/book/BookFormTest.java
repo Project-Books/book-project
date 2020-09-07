@@ -320,7 +320,7 @@ public class BookFormTest {
     void correctFormFieldsShowForToReadShelf() {
         bookForm.predefinedShelfField.setValue(TO_READ);
         Assertions.assertFalse(bookForm.readingStartDate.isVisible());
-        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.readingEndDate.isVisible());
         Assertions.assertFalse(bookForm.rating.isVisible());
         Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
         Assertions.assertFalse(bookForm.pagesRead.isVisible());
@@ -330,7 +330,7 @@ public class BookFormTest {
     void correctFormFieldsShowForReadingShelf() {
         bookForm.predefinedShelfField.setValue(READING);
         Assertions.assertTrue(bookForm.readingStartDate.isVisible());
-        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.readingEndDate.isVisible());
         Assertions.assertFalse(bookForm.rating.isVisible());
         Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
         Assertions.assertFalse(bookForm.pagesRead.isVisible());
@@ -340,7 +340,7 @@ public class BookFormTest {
     void correctFormFieldsShowForReadShelf() {
         bookForm.predefinedShelfField.setValue(READ);
         Assertions.assertTrue(bookForm.readingStartDate.isVisible());
-        Assertions.assertTrue(bookForm.dateFinishedReadingFormItem.isVisible());
+        Assertions.assertTrue(bookForm.readingEndDate.isVisible());
         Assertions.assertTrue(bookForm.rating.isVisible());
         Assertions.assertTrue(bookForm.bookReviewFormItem.isVisible());
         Assertions.assertFalse(bookForm.pagesRead.isVisible());
@@ -350,7 +350,7 @@ public class BookFormTest {
     void correctFormFieldsShowForDidNotFinishShelf() {
         bookForm.predefinedShelfField.setValue(DID_NOT_FINISH);
         Assertions.assertTrue(bookForm.readingStartDate.isVisible());
-        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        Assertions.assertFalse(bookForm.readingEndDate.isVisible());
         Assertions.assertFalse(bookForm.rating.isVisible());
         Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
         Assertions.assertTrue(bookForm.pagesRead.isVisible());
