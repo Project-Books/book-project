@@ -28,6 +28,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
+import com.karankumar.bookproject.ui.book.components.form.item.AuthorFirstName;
 import com.karankumar.bookproject.ui.book.components.form.item.BookTitle;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.*;
 import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
@@ -82,7 +83,7 @@ public class BookForm extends VerticalLayout {
     //TODO: edip yapılabilir wrap etmek yerine decoratordaki gibi ...
     @VisibleForTesting final BookTitle bookTitle = new BookTitle();
     @VisibleForTesting final SeriesPosition seriesPosition = new SeriesPosition();
-    @VisibleForTesting final TextField authorFirstName = new TextField();
+    @VisibleForTesting final AuthorFirstName authorFirstName = new AuthorFirstName();
     @VisibleForTesting final TextField authorLastName = new TextField();
     @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
             new ComboBox<>();
@@ -144,7 +145,7 @@ public class BookForm extends VerticalLayout {
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
                 bookTitle.getField(),
-                authorFirstName,
+                authorFirstName.getField(),
                 authorLastName,
                 seriesPosition.getField(),
                 readingStartDate.getField(),
@@ -189,7 +190,7 @@ public class BookForm extends VerticalLayout {
         bookTitle.add(formLayout);
         formLayout.addFormItem(predefinedShelfField, "Book shelf *");
         formLayout.addFormItem(customShelfField, "Secondary shelf");
-        formLayout.addFormItem(authorFirstName, "Author's first name *");
+        authorFirstName.add(formLayout);
         formLayout.addFormItem(authorLastName, "Author's last name *");
         readingStartDate.add(formLayout);
         readingEndDate.add(formLayout);
@@ -236,9 +237,7 @@ public class BookForm extends VerticalLayout {
 
     private void bindFormFields() {
         bookTitle.bind(binder);
-        binder.forField(authorFirstName)
-              .withValidator(BookFormValidators.authorPredicate(), BookFormErrors.FIRST_NAME_ERROR)
-              .bind("author.firstName");
+        authorFirstName.bind(binder);
         binder.forField(authorLastName)
               .withValidator(BookFormValidators.authorPredicate(), BookFormErrors.LAST_NAME_ERROR)
               .bind("author.lastName");
@@ -343,8 +342,8 @@ public class BookForm extends VerticalLayout {
 
         String firstName;
         String lastName;
-        if (authorFirstName.getValue() != null) {
-            firstName = authorFirstName.getValue();
+        if (authorFirstName.getField().getValue() != null) {
+            firstName = authorFirstName.getField().getValue();
         } else {
             LOGGER.log(Level.SEVERE, "Null first name");
             return null;
@@ -447,10 +446,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureAuthorFormField() {
-        authorFirstName.setPlaceholder("Enter the author's first name");
-        authorFirstName.setClearButtonVisible(true);
-        authorFirstName.setRequired(true);
-        authorFirstName.setRequiredIndicatorVisible(true);
+        authorFirstName.configure();
 
         authorLastName.setPlaceholder("Enter the author's last name");
         authorLastName.setClearButtonVisible(true);
@@ -610,7 +606,7 @@ public class BookForm extends VerticalLayout {
     private void clearFormFields() {
         HasValue[] components = {
                 bookTitle.getField(),
-                authorFirstName,
+                authorFirstName.getField(),
                 authorLastName,
                 customShelfField,
                 predefinedShelfField,
