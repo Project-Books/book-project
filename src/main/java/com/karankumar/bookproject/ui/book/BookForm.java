@@ -28,6 +28,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
+import com.karankumar.bookproject.ui.book.components.PagesReadFormItem;
 import com.karankumar.bookproject.ui.book.components.RatingFormItem;
 import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
@@ -87,7 +88,7 @@ public class BookForm extends VerticalLayout {
             new ComboBox<>();
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
     @VisibleForTesting final BookGenreComboBox bookGenre = new BookGenreComboBox();
-    @VisibleForTesting final IntegerField pagesRead = new IntegerField();
+    @VisibleForTesting final PagesReadFormItem pagesReadFormItem = new PagesReadFormItem();
     @VisibleForTesting final IntegerField numberOfPages = new IntegerField();
     @VisibleForTesting final DatePicker dateStartedReading = new DatePicker();
     @VisibleForTesting final DatePicker dateFinishedReading = new DatePicker();
@@ -101,16 +102,15 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting FormLayout.FormItem dateFinishedReadingFormItem;
     @VisibleForTesting FormLayout.FormItem bookReviewFormItem;
     @VisibleForTesting FormLayout.FormItem seriesPositionFormItem;
-    @VisibleForTesting FormLayout.FormItem pagesReadFormItem;
 
     @VisibleForTesting HasValue[] fieldsToReset;
 
     @VisibleForTesting final HasValue[] fieldsToResetForToRead
-            = new HasValue[]{pagesRead, dateStartedReading, dateFinishedReading, ratingFormItem.getRating(), bookReview};
+            = new HasValue[]{pagesReadFormItem.getField(), dateStartedReading, dateFinishedReading, ratingFormItem.getRating(), bookReview};
     @VisibleForTesting final HasValue[] fieldsToResetForReading
-            = new HasValue[]{pagesRead, dateFinishedReading, ratingFormItem.getRating(), bookReview};
+            = new HasValue[]{pagesReadFormItem.getField(), dateFinishedReading, ratingFormItem.getRating(), bookReview};
     @VisibleForTesting final HasValue[] fieldsToResetForRead
-            = new HasValue[]{pagesRead};
+            = new HasValue[]{pagesReadFormItem.getField()};
     @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
             = new HasValue[]{dateFinishedReading, ratingFormItem.getRating(), bookReview};
 
@@ -139,7 +139,7 @@ public class BookForm extends VerticalLayout {
         configureCustomShelfField();
         bookGenre.configure();
         configureSeriesPositionFormField();
-        configurePagesReadFormField();
+        pagesReadFormItem.configure();
         configureNumberOfPagesFormField();
         configureDateStartedFormField();
         configureDateFinishedFormField();
@@ -157,7 +157,7 @@ public class BookForm extends VerticalLayout {
                 bookGenre.getComponent(),
                 customShelfField,
                 predefinedShelfField,
-                pagesRead,
+                pagesReadFormItem.getField(),
                 numberOfPages,
                 ratingFormItem.getRating(),
                 bookReview
@@ -196,7 +196,7 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(authorLastName, "Author's last name *");
         dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
-        pagesReadFormItem = formLayout.addFormItem(pagesRead, "Pages read");
+        pagesReadFormItem.add(formLayout);
         formLayout.addFormItem(numberOfPages, "Number of pages");
         ratingFormItem.add(formLayout);
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
@@ -263,7 +263,7 @@ public class BookForm extends VerticalLayout {
               .withValidator(BookFormValidators.positiveNumberPredicate(),
                       BookFormErrors.PAGE_NUMBER_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
-        binder.forField(pagesRead)
+        binder.forField(pagesReadFormItem.getField())
               .bind(Book::getPagesRead, Book::setPagesRead);
         binder.forField(bookGenre.getComponent())
               .bind(Book::getGenre, Book::setGenre);
@@ -407,7 +407,7 @@ public class BookForm extends VerticalLayout {
         result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
 
         book.setBookReview(bookReview.getValue());
-        book.setPagesRead(pagesRead.getValue());
+        book.setPagesRead(pagesReadFormItem.getField().getValue());
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
             book.setSeriesPosition(seriesPosition.getValue());
@@ -570,10 +570,10 @@ public class BookForm extends VerticalLayout {
             case TO_READ:
             case READING:
             case READ:
-                pagesReadFormItem.setVisible(false);
+                pagesReadFormItem.makeInvisible();
                 break;
             case DID_NOT_FINISH:
-                pagesReadFormItem.setVisible(true);
+                pagesReadFormItem.makeVisible();
                 break;
             default:
                 throw new NotSupportedException("Shelf " + name + " not yet supported");
@@ -653,13 +653,6 @@ public class BookForm extends VerticalLayout {
         numberOfPages.setClearButtonVisible(true);
     }
 
-    private void configurePagesReadFormField() {
-        pagesRead.setPlaceholder("Enter number of pages read");
-        pagesRead.setMin(1);
-        pagesRead.setHasControls(true);
-        pagesRead.setClearButtonVisible(true);
-    }
-
     private void clearFormFields() {
         HasValue[] components = {
                 bookTitle,
@@ -670,7 +663,7 @@ public class BookForm extends VerticalLayout {
                 inSeriesCheckbox,
                 seriesPosition,
                 bookGenre.getComponent(),
-                pagesRead,
+                pagesReadFormItem.getField(),
                 numberOfPages,
                 dateStartedReading,
                 dateFinishedReading,

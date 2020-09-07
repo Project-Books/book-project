@@ -271,7 +271,7 @@ public class BookFormTest {
             case DID_NOT_FINISH:
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.dateStartedReading.setValue(dateStarted);
-                bookForm.pagesRead.setValue(pagesRead);
+                bookForm.pagesReadFormItem.getField().setValue(pagesRead);
                 break;
         }
     }
@@ -295,7 +295,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.customShelfField.isEmpty());
         Assertions.assertTrue(bookForm.predefinedShelfField.isEmpty());
         Assertions.assertTrue(bookForm.bookGenre.isEmpty());
-        Assertions.assertTrue(bookForm.pagesRead.isEmpty());
+        Assertions.assertTrue(bookForm.pagesReadFormItem.getField().isEmpty());
         Assertions.assertTrue(bookForm.numberOfPages.isEmpty());
         Assertions.assertTrue(bookForm.dateStartedReading.isEmpty());
         Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty());
@@ -371,7 +371,7 @@ public class BookFormTest {
         // given
         HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
         populateBookForm(READ, false);
-        bookForm.pagesRead.setValue(pagesRead);
+        bookForm.pagesReadFormItem.getField().setValue(pagesRead);
 
         // when
         bookForm.predefinedShelfField.setValue(newShelf);
