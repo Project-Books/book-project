@@ -106,13 +106,13 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting HasValue[] fieldsToReset;
 
     @VisibleForTesting final HasValue[] fieldsToResetForToRead
-            = new HasValue[]{pagesReadFormItem.getField(), dateStartedReading, dateFinishedReading, ratingFormItem.getRating(), bookReview};
+            = new HasValue[]{pagesReadFormItem.getField(), dateStartedReading, dateFinishedReading, ratingFormItem.getField(), bookReview};
     @VisibleForTesting final HasValue[] fieldsToResetForReading
-            = new HasValue[]{pagesReadFormItem.getField(), dateFinishedReading, ratingFormItem.getRating(), bookReview};
+            = new HasValue[]{pagesReadFormItem.getField(), dateFinishedReading, ratingFormItem.getField(), bookReview};
     @VisibleForTesting final HasValue[] fieldsToResetForRead
             = new HasValue[]{pagesReadFormItem.getField()};
     @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
-            = new HasValue[]{dateFinishedReading, ratingFormItem.getRating(), bookReview};
+            = new HasValue[]{dateFinishedReading, ratingFormItem.getField(), bookReview};
 
     @VisibleForTesting Button delete = new Button();
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
@@ -159,7 +159,7 @@ public class BookForm extends VerticalLayout {
                 predefinedShelfField,
                 pagesReadFormItem.getField(),
                 numberOfPages,
-                ratingFormItem.getRating(),
+                ratingFormItem.getField(),
                 bookReview
         };
         ComponentUtil.setComponentClassName(components, "bookFormInputField");
@@ -267,7 +267,7 @@ public class BookForm extends VerticalLayout {
               .bind(Book::getPagesRead, Book::setPagesRead);
         binder.forField(bookGenre.getComponent())
               .bind(Book::getGenre, Book::setGenre);
-        binder.forField(ratingFormItem.getRating())
+        binder.forField(ratingFormItem.getField())
               .withConverter(new DoubleToRatingScaleConverter())
               .bind(Book::getRating, Book::setRating);
         binder.forField(bookReview)
@@ -403,7 +403,7 @@ public class BookForm extends VerticalLayout {
         book.setDateFinishedReading(dateFinishedReading.getValue());
 
         Result<RatingScale> result =
-                new DoubleToRatingScaleConverter().convertToModel(ratingFormItem.getRating().getValue(), null);
+                new DoubleToRatingScaleConverter().convertToModel(ratingFormItem.getField().getValue(), null);
         result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
 
         book.setBookReview(bookReview.getValue());
@@ -667,7 +667,7 @@ public class BookForm extends VerticalLayout {
                 numberOfPages,
                 dateStartedReading,
                 dateFinishedReading,
-                ratingFormItem.getRating(),
+                ratingFormItem.getField(),
                 bookReview
         };
         resetSaveButtonText();

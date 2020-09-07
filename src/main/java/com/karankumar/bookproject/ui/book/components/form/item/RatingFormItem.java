@@ -3,40 +3,24 @@ package com.karankumar.bookproject.ui.book.components.form.item;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 
-public class RatingFormItem {
-    private final NumberField rating;
-    private FormLayout.FormItem item;
-
+public class RatingFormItem extends FormItem<NumberField> {
     public RatingFormItem() {
-        this.rating = new NumberField();
+        super(new NumberField());
     }
 
+    @Override
     public void configure() {
-        rating.setHasControls(true);
-        rating.setPlaceholder("Enter a rating");
-        rating.setMin(0);
-        rating.setMax(10);
-        rating.setStep(0.5f);
-        rating.setClearButtonVisible(true);
+        NumberField field = super.getField();
+        field.setHasControls(true);
+        field.setPlaceholder("Enter a rating");
+        field.setMin(0);
+        field.setMax(10);
+        field.setStep(0.5f);
+        field.setClearButtonVisible(true);
     }
 
+    @Override
     public void add(FormLayout layout) {
-        this.item = layout.addFormItem(rating, "Book rating");
-    }
-
-    public NumberField getRating() {
-        return rating;
-    }
-
-    public void makeVisible() {
-        item.setVisible(true);
-    }
-
-    public void makeInvisible() {
-        item.setVisible(false);
-    }
-
-    public boolean isVisible() {
-        return item.isVisible();
+        super.add(layout, "Book rating");
     }
 }

@@ -3,38 +3,24 @@ package com.karankumar.bookproject.ui.book.components.form.item;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 
-public class PagesReadFormItem {
-    private final IntegerField field;
-    private FormLayout.FormItem item;
+public class PagesReadFormItem extends FormItem<IntegerField>{
 
     public PagesReadFormItem() {
-        field = new IntegerField();
+        super(new IntegerField());
     }
 
-    public IntegerField getField() {
-        return field;
-    }
-
+    @Override
     public void configure() {
+        IntegerField field = super.getField();
+
         field.setPlaceholder("Enter number of pages read");
         field.setMin(1);
         field.setHasControls(true);
         field.setClearButtonVisible(true);
     }
 
+    @Override
     public void add(FormLayout formLayout) {
-        item = formLayout.addFormItem(field, "Pages read");
-    }
-
-    public void makeVisible() {
-        item.setVisible(true);
-    }
-
-    public void makeInvisible() {
-        item.setVisible(false);
-    }
-
-    public boolean isVisible() {
-        return item.isVisible();
+        super.add(formLayout, "Pages read");
     }
 }
