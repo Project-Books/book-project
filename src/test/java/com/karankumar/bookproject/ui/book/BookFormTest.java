@@ -188,7 +188,7 @@ public class BookFormTest {
         double rating = converter.convertToPresentation(ratingVal, null);
         Assertions.assertEquals(rating, bookForm.rating.getField().getValue());
         Assertions.assertEquals(bookReview, bookForm.bookReview.getField().getValue());
-        Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
+        Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getField().getValue());
     }
 
     enum EventType { SAVED, DELETED }
@@ -241,7 +241,7 @@ public class BookFormTest {
         bookForm.bookGenre.setValue(genre);
         bookForm.numberOfPages.setValue(numberOfPages);
         if (isInSeries) {
-            bookForm.seriesPosition.setValue(SERIES_POSITION);
+            bookForm.seriesPosition.getField().setValue(SERIES_POSITION);
         }
         populateBookShelf(shelfName);
     }
@@ -385,7 +385,7 @@ public class BookFormTest {
     @Test
     void shouldNotAllowNegativeSeriesPosition() {
         // given
-        bookForm.seriesPosition.setValue(-1);
+        bookForm.seriesPosition.getField().setValue(-1);
 
         // when
         bookForm.saveButton.click();
@@ -533,9 +533,9 @@ public class BookFormTest {
         bookForm.inSeriesCheckbox.setValue(true);
 
         // then
-        Assertions.assertTrue(bookForm.seriesPositionFormItem.isVisible());
         Assertions.assertTrue(bookForm.seriesPosition.isVisible());
-        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
+        Assertions.assertTrue(bookForm.seriesPosition.getField().isVisible());
+        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getField().getValue());
     }
 
     @Test
@@ -544,7 +544,7 @@ public class BookFormTest {
         bookForm.inSeriesCheckbox.setValue(false);
 
         // then
-        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertFalse(bookForm.seriesPosition.isVisible());
     }
 
     @Test
@@ -556,7 +556,7 @@ public class BookFormTest {
         bookForm.inSeriesCheckbox.setValue(false);
 
         // then
-        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertFalse(bookForm.seriesPosition.isVisible());
     }
 
     @Test
@@ -568,9 +568,9 @@ public class BookFormTest {
         bookForm.openForm();
 
         // then
-        Assertions.assertTrue(bookForm.seriesPositionFormItem.isVisible());
         Assertions.assertTrue(bookForm.seriesPosition.isVisible());
-        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
+        Assertions.assertTrue(bookForm.seriesPosition.getField().isVisible());
+        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getField().getValue());
     }
 
     @Test
@@ -581,7 +581,7 @@ public class BookFormTest {
         bookForm.openForm();
 
         // then
-        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        Assertions.assertFalse(bookForm.seriesPosition.isVisible());
     }
 
     @Test

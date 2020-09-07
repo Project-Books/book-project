@@ -77,7 +77,7 @@ public class BookForm extends VerticalLayout {
     private static final String LABEL_UPDATE_BOOK = "Update book";
 
     @VisibleForTesting final TextField bookTitle = new TextField();
-    @VisibleForTesting final IntegerField seriesPosition = new IntegerField();
+    @VisibleForTesting final SeriesPosition seriesPosition = new SeriesPosition();
     @VisibleForTesting final TextField authorFirstName = new TextField();
     @VisibleForTesting final TextField authorLastName = new TextField();
     @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
@@ -93,8 +93,6 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final Button saveButton = new Button();
     @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
     @VisibleForTesting final Button reset = new Button();
-
-    @VisibleForTesting FormLayout.FormItem seriesPositionFormItem;
 
     @VisibleForTesting HasValue[] fieldsToReset;
 
@@ -131,7 +129,7 @@ public class BookForm extends VerticalLayout {
         configurePredefinedShelfField();
         configureCustomShelfField();
         bookGenre.configure();
-        configureSeriesPositionFormField();
+        seriesPosition.configure();
         pagesRead.configure();
         configureNumberOfPagesFormField();
         readingStartDate.configure();
@@ -144,7 +142,7 @@ public class BookForm extends VerticalLayout {
                 bookTitle,
                 authorFirstName,
                 authorLastName,
-                seriesPosition,
+                seriesPosition.getField(),
                 readingStartDate.getField(),
                 readingEndDate.getField(),
                 bookGenre.getComponent(),
@@ -164,9 +162,11 @@ public class BookForm extends VerticalLayout {
     private void configureInSeriesFormField() {
         inSeriesCheckbox.setValue(false);
         inSeriesCheckbox.addValueChangeListener(event -> {
-            seriesPositionFormItem.setVisible(event.getValue());
-            if (Boolean.FALSE.equals(event.getValue())) {
-                seriesPosition.clear();
+            if (Boolean.TRUE.equals(event.getValue())) {
+                seriesPosition.show();
+            } else {
+                seriesPosition.hide();
+                seriesPosition.getField().clear();
             }
         });
     }
@@ -193,10 +193,10 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(numberOfPages, "Number of pages");
         rating.add(formLayout);
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
-        seriesPositionFormItem = formLayout.addFormItem(seriesPosition, "Series number");
+        seriesPosition.add(formLayout);
         bookReview.add(formLayout);
         formLayout.add(buttonLayout, 3);
-        seriesPositionFormItem.setVisible(false);
+        seriesPosition.hide();
     }
 
     public void openForm() {
@@ -216,8 +216,14 @@ public class BookForm extends VerticalLayout {
     private void showSeriesPositionFormIfSeriesPositionAvailable() {
         boolean isInSeries =
                 binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
+
         inSeriesCheckbox.setValue(isInSeries);
-        seriesPositionFormItem.setVisible(isInSeries);
+
+        if(isInSeries) {
+            seriesPosition.show();
+        } else {
+            seriesPosition.hide();
+        }
     }
 
     private void closeForm() {
@@ -239,7 +245,7 @@ public class BookForm extends VerticalLayout {
               .bind("predefinedShelf.predefinedShelfName");
         binder.forField(customShelfField)
               .bind("customShelf.shelfName");
-        binder.forField(seriesPosition)
+        binder.forField(seriesPosition.getField())
               .withValidator(BookFormValidators.positiveNumberPredicate(),
                       BookFormErrors.SERIES_POSITION_ERROR)
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
@@ -384,9 +390,9 @@ public class BookForm extends VerticalLayout {
             }
         }
 
-        if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-            book.setSeriesPosition(seriesPosition.getValue());
-        } else if (seriesPosition.getValue() != null) {
+        if (seriesPosition.getField().getValue() != null && seriesPosition.getField().getValue() > 0) {
+            book.setSeriesPosition(seriesPosition.getField().getValue());
+        } else if (seriesPosition.getField().getValue() != null) {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
@@ -402,9 +408,9 @@ public class BookForm extends VerticalLayout {
         book.setBookReview(bookReview.getField().getValue());
         book.setPagesRead(pagesRead.getField().getValue());
 
-        if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-            book.setSeriesPosition(seriesPosition.getValue());
-        } else if (seriesPosition.getValue() != null) {
+        if (seriesPosition.getField().getValue() != null && seriesPosition.getField().getValue() > 0) {
+            book.setSeriesPosition(seriesPosition.getField().getValue());
+        } else if (seriesPosition.getField().getValue() != null) {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
@@ -471,12 +477,6 @@ public class BookForm extends VerticalLayout {
         authorLastName.setClearButtonVisible(true);
         authorLastName.setRequired(true);
         authorLastName.setRequiredIndicatorVisible(true);
-    }
-
-    private void configureSeriesPositionFormField() {
-        seriesPosition.setPlaceholder("Enter series position");
-        seriesPosition.setMin(1);
-        seriesPosition.setHasControls(true);
     }
 
     private void configureCustomShelfField() {
@@ -643,7 +643,7 @@ public class BookForm extends VerticalLayout {
                 customShelfField,
                 predefinedShelfField,
                 inSeriesCheckbox,
-                seriesPosition,
+                seriesPosition.getField(),
                 bookGenre.getComponent(),
                 pagesRead.getField(),
                 numberOfPages,
