@@ -28,6 +28,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
 import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -86,7 +87,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
             new ComboBox<>();
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
-    @VisibleForTesting final ComboBox<Genre> bookGenre = new ComboBox<>();
+    @VisibleForTesting final BookGenreComboBox bookGenre = new BookGenreComboBox();
     @VisibleForTesting final IntegerField pagesRead = new IntegerField();
     @VisibleForTesting final IntegerField numberOfPages = new IntegerField();
     @VisibleForTesting final DatePicker dateStartedReading = new DatePicker();
@@ -138,7 +139,7 @@ public class BookForm extends VerticalLayout {
         configureAuthorFormField();
         configurePredefinedShelfField();
         configureCustomShelfField();
-        configureGenreFormField();
+        bookGenre.configure();
         configureSeriesPositionFormField();
         configurePagesReadFormField();
         configureNumberOfPagesFormField();
@@ -155,7 +156,7 @@ public class BookForm extends VerticalLayout {
                 seriesPosition,
                 dateStartedReading,
                 dateFinishedReading,
-                bookGenre,
+                bookGenre.getComponent(),
                 customShelfField,
                 predefinedShelfField,
                 pagesRead,
@@ -197,7 +198,6 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(authorLastName, "Author's last name *");
         dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
-        formLayout.addFormItem(bookGenre, "Book genre");
         pagesReadFormItem = formLayout.addFormItem(pagesRead, "Pages read");
         formLayout.addFormItem(numberOfPages, "Number of pages");
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
@@ -267,7 +267,7 @@ public class BookForm extends VerticalLayout {
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(pagesRead)
               .bind(Book::getPagesRead, Book::setPagesRead);
-        binder.forField(bookGenre)
+        binder.forField(bookGenre.getComponent())
               .bind(Book::getGenre, Book::setGenre);
         binder.forField(rating)
               .withConverter(new DoubleToRatingScaleConverter())
@@ -482,11 +482,6 @@ public class BookForm extends VerticalLayout {
         authorLastName.setRequiredIndicatorVisible(true);
     }
 
-    private void configureGenreFormField() {
-        bookGenre.setItems(Genre.values());
-        bookGenre.setPlaceholder("Choose a book genre");
-    }
-
     private void configureSeriesPositionFormField() {
         seriesPosition.setPlaceholder("Enter series position");
         seriesPosition.setMin(1);
@@ -685,7 +680,7 @@ public class BookForm extends VerticalLayout {
                 predefinedShelfField,
                 inSeriesCheckbox,
                 seriesPosition,
-                bookGenre,
+                bookGenre.getComponent(),
                 pagesRead,
                 numberOfPages,
                 dateStartedReading,
