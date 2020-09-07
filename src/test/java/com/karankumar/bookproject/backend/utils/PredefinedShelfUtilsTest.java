@@ -67,7 +67,7 @@ public class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void shouldGetAllPredefinedShelveNamesFromDatabase() {
+    void shouldGetAllPredefinedShelfNamesFromDatabase() {
         // given
         List<String> expectedShelfNames = List.of(
                 PredefinedShelf.ShelfName.TO_READ.toString(),
