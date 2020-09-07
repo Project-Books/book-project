@@ -18,17 +18,18 @@ public abstract class FormItem<T extends Component> {
     }
 
     // This method should invoke protected add via subclass label.
+    // TODO: Bunu da ucurup abstract getLabel ekleyelim bir tane en temizinden ...
     public abstract void add(FormLayout layout);
 
     public T getField() {
         return field;
     }
 
-    public void makeVisible() {
+    public void show() {
         item.setVisible(true);
     }
 
-    public void makeInvisible() {
+    public void hide() {
         item.setVisible(false);
     }
 

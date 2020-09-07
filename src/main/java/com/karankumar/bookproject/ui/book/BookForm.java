@@ -523,7 +523,7 @@ public class BookForm extends VerticalLayout {
     private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
             case TO_READ:
-                readingStartDate.makeInvisible();
+                readingStartDate.hide();
                 hideFinishDate();
                 break;
             case READING:
@@ -548,7 +548,7 @@ public class BookForm extends VerticalLayout {
 
     private void showStartDate() {
         if (!readingStartDate.isVisible()) {
-            readingStartDate.makeVisible();
+            readingStartDate.show();
         }
     }
 
@@ -570,10 +570,10 @@ public class BookForm extends VerticalLayout {
             case TO_READ:
             case READING:
             case READ:
-                pagesReadFormItem.makeInvisible();
+                pagesReadFormItem.hide();
                 break;
             case DID_NOT_FINISH:
-                pagesReadFormItem.makeVisible();
+                pagesReadFormItem.show();
                 break;
             default:
                 throw new NotSupportedException("Shelf " + name + " not yet supported");
@@ -592,11 +592,11 @@ public class BookForm extends VerticalLayout {
             case TO_READ:
             case READING:
             case DID_NOT_FINISH:
-                ratingFormItem.makeInvisible();
+                ratingFormItem.hide();
                 bookReviewFormItem.setVisible(false);
                 break;
             case READ:
-                ratingFormItem.makeVisible();
+                ratingFormItem.show();
                 bookReviewFormItem.setVisible(true);
                 break;
             default:
