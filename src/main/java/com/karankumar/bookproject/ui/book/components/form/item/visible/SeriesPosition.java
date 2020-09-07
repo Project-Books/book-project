@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.ui.book.components.form.item;
+package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.BookFormErrors;
@@ -6,9 +6,9 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.function.SerializablePredicate;
 
-public class PageCount extends VisibleFormItem<IntegerField> {
+public class SeriesPosition extends VisibleFormItem<IntegerField> {
 
-    public PageCount(){
+    public SeriesPosition() {
         super(new IntegerField());
     }
 
@@ -16,22 +16,21 @@ public class PageCount extends VisibleFormItem<IntegerField> {
     public void configure() {
         IntegerField field = super.getField();
 
-        field.setPlaceholder("Enter number of pages");
+        field.setPlaceholder("Enter series position");
         field.setMin(1);
         field.setHasControls(true);
-        field.setClearButtonVisible(true);
     }
 
     @Override
     protected String getLabel() {
-        return "Number of pages";
+        return "Series number";
     }
 
     @Override
     public void bind(Binder<Book> binder, IntegerField fieldToCompare) {
         binder.forField(super.getField())
-              .withValidator(isNumberPositive(), BookFormErrors.PAGE_NUMBER_ERROR)
-              .bind(Book::getNumberOfPages, Book::setNumberOfPages);
+              .withValidator(isNumberPositive(), BookFormErrors.SERIES_POSITION_ERROR)
+              .bind(Book::getSeriesPosition, Book::setSeriesPosition);
     }
 
     private SerializablePredicate<Integer> isNumberPositive() {

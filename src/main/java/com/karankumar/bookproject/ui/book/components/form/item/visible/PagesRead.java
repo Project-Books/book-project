@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.ui.book.components.form.item;
+package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.vaadin.flow.component.textfield.IntegerField;

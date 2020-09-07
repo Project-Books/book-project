@@ -1,9 +1,10 @@
-package com.karankumar.bookproject.ui.book.components.form.item;
+package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
+import com.karankumar.bookproject.ui.book.components.form.item.FormItem;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.formlayout.FormLayout;
 
-public abstract class VisibleFormItem<T extends Component> extends FormItem<T>{
+public abstract class VisibleFormItem<T extends Component> extends FormItem<T> {
     private FormLayout.FormItem item;
 
     public VisibleFormItem(T field) {
