@@ -1,8 +1,10 @@
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.data.binder.Binder;
 
 public class BookGenreComboBox {
 
@@ -35,5 +37,10 @@ public class BookGenreComboBox {
 
     public boolean isEmpty() {
         return component.isEmpty();
+    }
+
+    public void bind(Binder<Book> binder) {
+        binder.forField(component)
+              .bind(Book::getGenre, Book::setGenre);
     }
 }

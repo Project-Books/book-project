@@ -1,6 +1,8 @@
 package com.karankumar.bookproject.ui.book.components.form.item;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.data.binder.Binder;
 
 public class PagesRead extends FormItem<IntegerField> {
 
@@ -21,5 +23,11 @@ public class PagesRead extends FormItem<IntegerField> {
     @Override
     protected String getLabel() {
         return "Pages read";
+    }
+
+    @Override
+    public void bind(Binder<Book> binder, IntegerField fieldToCompare) {
+        binder.forField(super.getField())
+              .bind(Book::getPagesRead, Book::setPagesRead);
     }
 }

@@ -75,6 +75,10 @@ public class BookForm extends VerticalLayout {
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
 
+    //TODO: Seni de FormItem olan class'ın sub'ı yapmak lazim ama visibility ozelligin yok senin
+    //TODO: O yüzden seni digerlerinden ayırmak lazım yani visibility özelligi bir interface olmalu
+    //TODO: Ya da decorator pattern uygulanabilir. Ya da iste bir interface yazariz bu interface gider FormItem'ı extend
+    //TODO: edip yapılabilir wrap etmek yerine decoratordaki gibi ...
     @VisibleForTesting final TextField bookTitle = new TextField();
     @VisibleForTesting final SeriesPosition seriesPosition = new SeriesPosition();
     @VisibleForTesting final TextField authorFirstName = new TextField();
@@ -244,32 +248,16 @@ public class BookForm extends VerticalLayout {
               .bind("predefinedShelf.predefinedShelfName");
         binder.forField(customShelfField)
               .bind("customShelf.shelfName");
-        binder.forField(seriesPosition.getField())
-              .withValidator(BookFormValidators.positiveNumberPredicate(),
-                      BookFormErrors.SERIES_POSITION_ERROR)
-              .bind(Book::getSeriesPosition, Book::setSeriesPosition);
-        binder.forField(readingStartDate.getField())
-              .withValidator(BookFormValidators.datePredicate(),
-                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
-              .bind(Book::getDateStartedReading, Book::setDateStartedReading);
-        binder.forField(readingEndDate.getField())
-              .withValidator(isEndDateAfterStartDate(), BookFormErrors.FINISH_DATE_ERROR)
-              .withValidator(BookFormValidators.datePredicate(),
-                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
-              .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
-        binder.forField(pageCount.getField())
-              .withValidator(BookFormValidators.positiveNumberPredicate(),
-                      BookFormErrors.PAGE_NUMBER_ERROR)
-              .bind(Book::getNumberOfPages, Book::setNumberOfPages);
-        binder.forField(pagesRead.getField())
-              .bind(Book::getPagesRead, Book::setPagesRead);
-        binder.forField(bookGenre.getComponent())
-              .bind(Book::getGenre, Book::setGenre);
-        binder.forField(rating.getField())
-              .withConverter(new DoubleToRatingScaleConverter())
-              .bind(Book::getRating, Book::setRating);
-        binder.forField(bookReview.getField())
-              .bind(Book::getBookReview, Book::setBookReview);
+
+
+        seriesPosition.bind(binder);
+        readingStartDate.bind(binder);
+        readingEndDate.bind(binder, readingStartDate.getField());
+        pageCount.bind(binder);
+        pagesRead.bind(binder);
+        bookGenre.bind(binder);
+        rating.bind(binder);
+        bookReview.bind(binder);
     }
 
     /**
