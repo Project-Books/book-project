@@ -28,4 +28,12 @@ public class BookGenreComboBox {
     public ComboBox<Genre> getComponent() {
         return component;
     }
+
+    public void setValue(Genre genre) {
+        component.setValue(genre);
+    }
+
+    public boolean isEmpty() {
+        return component.isEmpty();
+    }
 }
