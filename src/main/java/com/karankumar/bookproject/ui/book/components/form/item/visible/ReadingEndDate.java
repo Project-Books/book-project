@@ -30,6 +30,8 @@ public class ReadingEndDate extends VisibleFormItem<DatePicker> {
     @Override
     //TODO: Sanki readingEndDate ve readingStartDate birlestirilebilir tek bir ReadingDate altında
     //TODO: needs better solution
+    //TODO: Decorator pattern can be applied ?
+    //TODO: Decorator pattern can be also applied to VisibleFormField
     public void bind(Binder<Book> binder, DatePicker readingStartDate) {
         binder.forField(super.getField())
                 .withValidator(isEndDateAfterStartDate(readingStartDate), BookFormErrors.FINISH_DATE_ERROR)
