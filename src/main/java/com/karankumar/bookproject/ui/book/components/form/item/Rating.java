@@ -5,7 +5,7 @@ import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.data.binder.Binder;
 
-public class Rating extends FormItem<NumberField> {
+public class Rating extends VisibleFormItem<NumberField> {
     public Rating() {
         super(new NumberField());
     }

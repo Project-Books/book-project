@@ -9,7 +9,7 @@ import com.vaadin.flow.function.SerializablePredicate;
 
 import java.time.LocalDate;
 
-public class ReadingStartDate extends FormItem<DatePicker> {
+public class ReadingStartDate extends VisibleFormItem<DatePicker> {
 
     public ReadingStartDate() {
         super(new DatePicker());

@@ -6,7 +6,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.function.SerializablePredicate;
 
-public class PageCount extends FormItem<IntegerField> {
+public class PageCount extends VisibleFormItem<IntegerField> {
 
     public PageCount(){
         super(new IntegerField());

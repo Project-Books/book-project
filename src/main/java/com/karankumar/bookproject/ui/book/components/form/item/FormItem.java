@@ -7,7 +7,7 @@ import com.vaadin.flow.data.binder.Binder;
 
 public abstract class FormItem<T extends Component> {
     private final T field;
-    private FormLayout.FormItem item;
+
 
     protected FormItem(T field) {
         this.field = field;
@@ -16,25 +16,13 @@ public abstract class FormItem<T extends Component> {
     public abstract void configure();
 
     public void add(FormLayout layout) {
-        this.item = layout.addFormItem(field, getLabel());
+        layout.addFormItem(field, getLabel());
     }
 
     protected abstract String getLabel();
 
     public T getField() {
         return field;
-    }
-
-    public void show() {
-        item.setVisible(true);
-    }
-
-    public void hide() {
-        item.setVisible(false);
-    }
-
-    public boolean isVisible() {
-        return item.isVisible();
     }
 
     //TODO: Bundan daha iyi bir çözüm sunmak gerekebilir

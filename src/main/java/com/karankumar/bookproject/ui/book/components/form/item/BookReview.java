@@ -4,7 +4,7 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.binder.Binder;
 
-public class BookReview extends FormItem<TextArea> {
+public class BookReview extends VisibleFormItem<TextArea> {
     public BookReview() {
         super(new TextArea());
     }

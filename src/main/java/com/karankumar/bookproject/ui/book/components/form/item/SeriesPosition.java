@@ -6,7 +6,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.function.SerializablePredicate;
 
-public class SeriesPosition extends FormItem<IntegerField> {
+public class SeriesPosition extends VisibleFormItem<IntegerField> {
 
     public SeriesPosition() {
         super(new IntegerField());
