@@ -187,7 +187,7 @@ public class BookFormTest {
         Assertions.assertEquals(dateFinished, bookForm.readingEndDate.getField().getValue());
         double rating = converter.convertToPresentation(ratingVal, null);
         Assertions.assertEquals(rating, bookForm.rating.getField().getValue());
-        Assertions.assertEquals(bookReview, bookForm.bookReview.getValue());
+        Assertions.assertEquals(bookReview, bookForm.bookReview.getField().getValue());
         Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
     }
 
@@ -266,7 +266,7 @@ public class BookFormTest {
                 bookForm.readingStartDate.getField().setValue(dateStarted);
                 bookForm.readingEndDate.getField().setValue(dateFinished);
                 bookForm.rating.getField().setValue(converter.convertToPresentation(ratingVal, null));
-                bookForm.bookReview.setValue(bookReview);
+                bookForm.bookReview.getField().setValue(bookReview);
                 break;
             case DID_NOT_FINISH:
                 bookForm.predefinedShelfField.setValue(shelfName);
@@ -300,7 +300,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.readingStartDate.getField().isEmpty());
         Assertions.assertTrue(bookForm.readingEndDate.getField().isEmpty());
         Assertions.assertTrue(bookForm.rating.getField().isEmpty());
-        Assertions.assertTrue(bookForm.bookReview.isEmpty());
+        Assertions.assertTrue(bookForm.bookReview.getField().isEmpty());
     }
 
     private void assumeAllFormFieldsArePopulated() {
@@ -313,7 +313,7 @@ public class BookFormTest {
         Assumptions.assumeFalse(bookForm.readingStartDate.getField().isEmpty());
         Assumptions.assumeFalse(bookForm.readingEndDate.getField().isEmpty());
         Assumptions.assumeFalse(bookForm.rating.getField().isEmpty());
-        Assumptions.assumeFalse(bookForm.bookReview.isEmpty());
+        Assumptions.assumeFalse(bookForm.bookReview.getField().isEmpty());
     }
 
     @Test

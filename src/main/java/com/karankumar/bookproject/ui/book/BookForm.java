@@ -28,10 +28,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
-import com.karankumar.bookproject.ui.book.components.form.item.PagesRead;
-import com.karankumar.bookproject.ui.book.components.form.item.Rating;
-import com.karankumar.bookproject.ui.book.components.form.item.ReadingEndDate;
-import com.karankumar.bookproject.ui.book.components.form.item.ReadingStartDate;
+import com.karankumar.bookproject.ui.book.components.form.item.*;
 import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -49,7 +46,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -93,7 +89,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final ReadingStartDate readingStartDate = new ReadingStartDate();
     @VisibleForTesting final ReadingEndDate readingEndDate = new ReadingEndDate();
     @VisibleForTesting final Rating rating = new Rating();
-    @VisibleForTesting final TextArea bookReview = new TextArea();
+    @VisibleForTesting final BookReview bookReview = new BookReview();
     @VisibleForTesting final Button saveButton = new Button();
     @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
     @VisibleForTesting final Button reset = new Button();
@@ -104,13 +100,13 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting HasValue[] fieldsToReset;
 
     @VisibleForTesting final HasValue[] fieldsToResetForToRead
-            = new HasValue[]{pagesRead.getField(), readingStartDate.getField(), readingEndDate.getField(), rating.getField(), bookReview};
+            = new HasValue[]{pagesRead.getField(), readingStartDate.getField(), readingEndDate.getField(), rating.getField(), bookReview.getField()};
     @VisibleForTesting final HasValue[] fieldsToResetForReading
-            = new HasValue[]{pagesRead.getField(), readingEndDate.getField(), rating.getField(), bookReview};
+            = new HasValue[]{pagesRead.getField(), readingEndDate.getField(), rating.getField(), bookReview.getField()};
     @VisibleForTesting final HasValue[] fieldsToResetForRead
             = new HasValue[]{pagesRead.getField()};
     @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
-            = new HasValue[]{readingEndDate.getField(), rating.getField(), bookReview};
+            = new HasValue[]{readingEndDate.getField(), rating.getField(), bookReview.getField()};
 
     @VisibleForTesting Button delete = new Button();
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
@@ -142,7 +138,7 @@ public class BookForm extends VerticalLayout {
         readingStartDate.configure();
         configureDateFinishedFormField();
         rating.configure();
-        configureBookReviewFormField();
+        bookReview.configure();
         configureInSeriesFormField();
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
@@ -158,7 +154,7 @@ public class BookForm extends VerticalLayout {
                 pagesRead.getField(),
                 numberOfPages,
                 rating.getField(),
-                bookReview
+                bookReview.getField()
         };
         ComponentUtil.setComponentClassName(components, "bookFormInputField");
         configureFormLayout(formLayout, buttons);
@@ -199,7 +195,7 @@ public class BookForm extends VerticalLayout {
         rating.add(formLayout);
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
         seriesPositionFormItem = formLayout.addFormItem(seriesPosition, "Series number");
-        bookReviewFormItem = formLayout.addFormItem(bookReview, "Book review");
+        bookReview.add(formLayout);
         formLayout.add(buttonLayout, 3);
         seriesPositionFormItem.setVisible(false);
     }
@@ -268,7 +264,7 @@ public class BookForm extends VerticalLayout {
         binder.forField(rating.getField())
               .withConverter(new DoubleToRatingScaleConverter())
               .bind(Book::getRating, Book::setRating);
-        binder.forField(bookReview)
+        binder.forField(bookReview.getField())
               .bind(Book::getBookReview, Book::setBookReview);
     }
 
@@ -404,7 +400,7 @@ public class BookForm extends VerticalLayout {
                 new DoubleToRatingScaleConverter().convertToModel(rating.getField().getValue(), null);
         result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
 
-        book.setBookReview(bookReview.getValue());
+        book.setBookReview(bookReview.getField().getValue());
         book.setPagesRead(pagesRead.getField().getValue());
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
@@ -629,11 +625,6 @@ public class BookForm extends VerticalLayout {
         }
     }
 
-    private void configureBookReviewFormField() {
-        bookReview.setPlaceholder("Enter your review for the book");
-        bookReview.setClearButtonVisible(true);
-    }
-
     private void configureDateFinishedFormField() {
         readingEndDate.configure();
     }
@@ -660,7 +651,7 @@ public class BookForm extends VerticalLayout {
                 readingStartDate.getField(),
                 readingEndDate.getField(),
                 rating.getField(),
-                bookReview
+                bookReview.getField()
         };
         resetSaveButtonText();
         ComponentUtil.clearComponentFields(components);
