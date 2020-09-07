@@ -31,10 +31,8 @@ public class PredefinedShelfUtilsTest {
     private static PredefinedShelfUtils predefinedShelfUtils;
 
     private static PredefinedShelf toReadShelf;
-    private static PredefinedShelf readingShelf;
     private static PredefinedShelf readShelf;
     private static PredefinedShelf didNotFinishShelf;
-    private static PredefinedShelf allShelves;
     private static final Author NO_AUTHOR = null;
 
     private static Book book1 = new Book("someTitle", NO_AUTHOR, toReadShelf);
@@ -53,7 +51,7 @@ public class PredefinedShelfUtilsTest {
         shelfRepository.deleteAll();
 
         toReadShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ));
-        readingShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READING));
+        PredefinedShelf readingShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READING));
         readShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
         didNotFinishShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH));
 
