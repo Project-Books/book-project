@@ -10,8 +10,10 @@ public class ReadingEndDate extends FormItem<DatePicker> {
 
     @Override
     public void configure() {
-        super.getField().setClearButtonVisible(true);
-        super.getField().setPlaceholder("Enter a date");
+        DatePicker field = super.getField();
+        
+        field.setClearButtonVisible(true);
+        field.setPlaceholder("Enter a date");
     }
 
     @Override

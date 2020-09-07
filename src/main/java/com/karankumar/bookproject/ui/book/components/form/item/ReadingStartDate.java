@@ -11,6 +11,7 @@ public class ReadingStartDate extends FormItem<DatePicker> {
     @Override
     public void configure() {
         DatePicker field = super.getField();
+
         field.setClearButtonVisible(true);
         field.setPlaceholder("Enter a date");
     }

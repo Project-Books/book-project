@@ -10,6 +10,7 @@ public class BookReview extends FormItem<TextArea> {
     @Override
     public void configure() {
         TextArea field = super.getField();
+
         field.setPlaceholder("Enter your review for the book");
         field.setClearButtonVisible(true);
     }

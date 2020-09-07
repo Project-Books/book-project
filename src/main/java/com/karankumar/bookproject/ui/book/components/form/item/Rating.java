@@ -10,6 +10,7 @@ public class Rating extends FormItem<NumberField> {
     @Override
     public void configure() {
         NumberField field = super.getField();
+
         field.setHasControls(true);
         field.setPlaceholder("Enter a rating");
         field.setMin(0);
