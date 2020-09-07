@@ -33,6 +33,6 @@ public abstract class FormItem<T extends Component> {
     }
 
     public boolean isVisible() {
-        return field.isVisible();
+        return item.isVisible();
     }
 }
