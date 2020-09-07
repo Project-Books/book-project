@@ -94,7 +94,6 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
     @VisibleForTesting final Button reset = new Button();
 
-    @VisibleForTesting FormLayout.FormItem bookReviewFormItem;
     @VisibleForTesting FormLayout.FormItem seriesPositionFormItem;
 
     @VisibleForTesting HasValue[] fieldsToReset;
@@ -515,7 +514,7 @@ public class BookForm extends VerticalLayout {
      *                               a @see PredefinedShelf
      */
     private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
-        switch (name) {
+        switch (name) { // TODO: 7.09.2020 Can state pattern be applied ? - kaansonmezoz
             case TO_READ:
                 readingStartDate.hide();
                 hideFinishDate();
@@ -587,11 +586,11 @@ public class BookForm extends VerticalLayout {
             case READING:
             case DID_NOT_FINISH:
                 rating.hide();
-                bookReviewFormItem.setVisible(false);
+                bookReview.hide();
                 break;
             case READ:
                 rating.show();
-                bookReviewFormItem.setVisible(true);
+                bookReview.show();
                 break;
             default:
                 throw new NotSupportedException("Shelf " + name + " not yet supported");

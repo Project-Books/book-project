@@ -322,7 +322,7 @@ public class BookFormTest {
         Assertions.assertFalse(bookForm.readingStartDate.isVisible());
         Assertions.assertFalse(bookForm.readingEndDate.isVisible());
         Assertions.assertFalse(bookForm.rating.isVisible());
-        Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
+        Assertions.assertFalse(bookForm.bookReview.isVisible());
         Assertions.assertFalse(bookForm.pagesRead.isVisible());
     }
 
@@ -332,7 +332,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.readingStartDate.isVisible());
         Assertions.assertFalse(bookForm.readingEndDate.isVisible());
         Assertions.assertFalse(bookForm.rating.isVisible());
-        Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
+        Assertions.assertFalse(bookForm.bookReview.isVisible());
         Assertions.assertFalse(bookForm.pagesRead.isVisible());
     }
 
@@ -342,7 +342,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.readingStartDate.isVisible());
         Assertions.assertTrue(bookForm.readingEndDate.isVisible());
         Assertions.assertTrue(bookForm.rating.isVisible());
-        Assertions.assertTrue(bookForm.bookReviewFormItem.isVisible());
+        Assertions.assertTrue(bookForm.bookReview.isVisible());
         Assertions.assertFalse(bookForm.pagesRead.isVisible());
     }
 
@@ -352,7 +352,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.readingStartDate.isVisible());
         Assertions.assertFalse(bookForm.readingEndDate.isVisible());
         Assertions.assertFalse(bookForm.rating.isVisible());
-        Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
+        Assertions.assertFalse(bookForm.bookReview.isVisible());
         Assertions.assertTrue(bookForm.pagesRead.isVisible());
     }
 
