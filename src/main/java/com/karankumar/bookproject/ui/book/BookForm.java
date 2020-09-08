@@ -208,7 +208,7 @@ public class BookForm extends VerticalLayout {
 
         inSeries.setValue(isInSeries);
 
-        if(isInSeries) {
+        if (isInSeries) {
             seriesPosition.show();
         } else {
             seriesPosition.hide();
@@ -310,41 +310,28 @@ public class BookForm extends VerticalLayout {
     }
 
     private Book populateBookBean() {
-        String title;
         if (bookTitle.getField().getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
             return null;
-        } else {
-            title = bookTitle.getField().getValue();
         }
 
-        String firstName;
-        String lastName;
-        if (authorFirstName.getField().getValue() != null) {
-            firstName = authorFirstName.getField().getValue();
-        } else {
+        if (authorFirstName.getField().getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null first name");
             return null;
         }
-        if (authorLastName.getField().getValue() != null) {
-            lastName = authorLastName.getField().getValue();
-        } else {
+
+        if (authorLastName.getField().getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null last name");
             return null;
         }
-        Author author = new Author(firstName, lastName);
 
-        PredefinedShelf predefinedShelf;
-        if (this.predefinedShelf.getValue() != null) { // TODO: Refactor here ....
-            PredefinedShelfUtils predefinedShelfUtils =
-                    new PredefinedShelfUtils(predefinedShelfService);
-            predefinedShelf =
-                    predefinedShelfUtils.findPredefinedShelf(this.predefinedShelf.getValue());
-        } else {
+        if (this.predefinedShelf.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null shelf");
             return null;
         }
-        Book book = new Book(title, author, predefinedShelf);
+
+        Author author = new Author(authorFirstName.getField().getValue(), authorLastName.getField().getValue());
+        Book book = new Book(bookTitle.getField().getValue(), author, getPredefinedShelf());
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
             List<CustomShelf> shelves = customShelfService.findAll(customShelfField.getValue());
@@ -378,6 +365,11 @@ public class BookForm extends VerticalLayout {
         }
 
         return book;
+    }
+
+    private PredefinedShelf getPredefinedShelf() {
+        PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+        return predefinedShelfUtils.findPredefinedShelf(this.predefinedShelf.getValue());
     }
 
     private void showErrorMessage() {
