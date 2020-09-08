@@ -616,17 +616,6 @@ public class BookForm extends VerticalLayout {
         openForm();
     }
 
-    private SerializablePredicate<LocalDate> isEndDateAfterStartDate() {
-        return endDate -> {
-            LocalDate dateStarted = readingStartDate.getField().getValue();
-            if (dateStarted == null || endDate == null) {
-                // allowed since these are optional fields
-                return true;
-            }
-            return (endDate.isEqual(dateStarted) || endDate.isAfter(dateStarted));
-        };
-    }
-
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
                                                                   ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
