@@ -310,23 +310,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private Book populateBookBean() {
-        if (bookTitle.getField().getValue() == null) {
-            LOGGER.log(Level.SEVERE, "Book title from form field is null");
-            return null;
-        }
-
-        if (authorFirstName.getField().getValue() == null) {
-            LOGGER.log(Level.SEVERE, "Null first name");
-            return null;
-        }
-
-        if (authorLastName.getField().getValue() == null) {
-            LOGGER.log(Level.SEVERE, "Null last name");
-            return null;
-        }
-
-        if (this.predefinedShelf.getValue() == null) {
-            LOGGER.log(Level.SEVERE, "Null shelf");
+        if (!canCreateBook()) {
             return null;
         }
 
@@ -365,6 +349,30 @@ public class BookForm extends VerticalLayout {
         }
 
         return book;
+    }
+
+    public boolean canCreateBook() {
+        if (bookTitle.getField().getValue() == null) {
+            LOGGER.log(Level.SEVERE, "Book title from form field is null");
+            return false;
+        }
+
+        if (authorFirstName.getField().getValue() == null) {
+            LOGGER.log(Level.SEVERE, "Null first name");
+            return false;
+        }
+
+        if (authorLastName.getField().getValue() == null) {
+            LOGGER.log(Level.SEVERE, "Null last name");
+            return false;
+        }
+
+        if (predefinedShelf.getValue() == null) {
+            LOGGER.log(Level.SEVERE, "Null shelf");
+            return false;
+        }
+
+        return true;
     }
 
     private PredefinedShelf getPredefinedShelf() {
