@@ -28,10 +28,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
-import com.karankumar.bookproject.ui.book.components.form.item.AuthorFirstName;
-import com.karankumar.bookproject.ui.book.components.form.item.AuthorLastName;
-import com.karankumar.bookproject.ui.book.components.form.item.BookTitle;
-import com.karankumar.bookproject.ui.book.components.form.item.InSeries;
+import com.karankumar.bookproject.ui.book.components.form.item.*;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.*;
 import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
@@ -41,7 +38,6 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -53,12 +49,10 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.function.SerializableConsumer;
-import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -75,8 +69,6 @@ import java.util.logging.Level;
 )
 @Log
 public class BookForm extends VerticalLayout {
-    private static final String LABEL_ADD_BOOK = "Add book";
-    private static final String LABEL_UPDATE_BOOK = "Update book";
 
     //TODO: Seni de FormItem olan class'ın sub'ı yapmak lazim ama visibility ozelligin yok senin
     //TODO: O yüzden seni digerlerinden ayırmak lazım yani visibility özelligi bir interface olmalu
@@ -97,7 +89,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final ReadingEndDate readingEndDate = new ReadingEndDate();
     @VisibleForTesting final Rating rating = new Rating();
     @VisibleForTesting final BookReview bookReview = new BookReview();
-    @VisibleForTesting final Button saveButton = new Button();
+    @VisibleForTesting final SaveButton saveButton = new SaveButton();
     @VisibleForTesting final InSeries inSeries = new InSeries();
     @VisibleForTesting final Button reset = new Button();
 
@@ -258,18 +250,16 @@ public class BookForm extends VerticalLayout {
         configureResetFormButton();
         configureDeleteButton();
 
-        binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
+        saveButton.bind(binder);
 
-        HorizontalLayout buttonLayout = new HorizontalLayout(saveButton, reset, delete);
+        HorizontalLayout buttonLayout = new HorizontalLayout(saveButton.getField(), reset, delete);
         buttonLayout.addClassName("formButtonLayout");
         return buttonLayout;
     }
 
     private void configureSaveFormButton() {
-        saveButton.setText(LABEL_ADD_BOOK);
-        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        saveButton.addClickListener(click -> validateOnSave());
-        saveButton.setDisableOnClick(true);
+        saveButton.configure();
+        saveButton.addListener(click -> validateOnSave());
     }
 
     private void configureResetFormButton() {
@@ -284,7 +274,7 @@ public class BookForm extends VerticalLayout {
             fireEvent(new DeleteEvent(this, binder.getBean()));
             closeForm();
         });
-        delete.addClickListener(v -> saveButton.setText(LABEL_ADD_BOOK));
+        delete.addClickListener(v -> saveButton.setAddText());
     }
 
     private void validateOnSave() {
@@ -422,7 +412,9 @@ public class BookForm extends VerticalLayout {
             LOGGER.log(Level.SEVERE, "Book is null");
             return;
         }
-        saveButton.setText(LABEL_UPDATE_BOOK);
+
+        saveButton.setUpdateText();
+
         if (binder == null) {
             LOGGER.log(Level.SEVERE, "Null binder");
             return;
@@ -603,12 +595,8 @@ public class BookForm extends VerticalLayout {
                 rating.getField(),
                 bookReview.getField()
         };
-        resetSaveButtonText();
+        saveButton.resetText();
         ComponentUtil.clearComponentFields(components);
-    }
-
-    private void resetSaveButtonText() {
-        saveButton.setText(LABEL_ADD_BOOK);
     }
 
     public void addBook() {

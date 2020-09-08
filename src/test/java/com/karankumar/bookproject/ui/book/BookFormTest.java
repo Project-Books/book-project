@@ -209,7 +209,7 @@ public class BookFormTest {
         if (eventType.equals(EventType.SAVED)) {
             bookForm
                 .addListener(BookForm.SaveEvent.class, event -> bookReference.set(event.getBook()));
-            bookForm.saveButton.click();
+            bookForm.saveButton.getField().click();
         } else if (eventType.equals(EventType.DELETED)) {
             bookForm.addListener(BookForm.DeleteEvent.class,
                 event -> bookReference.set(event.getBook()));
@@ -388,7 +388,7 @@ public class BookFormTest {
         bookForm.seriesPosition.getField().setValue(-1);
 
         // when
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
@@ -407,7 +407,7 @@ public class BookFormTest {
         bookForm.pageCount.getField().setValue(-1);
 
         // when
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
@@ -427,7 +427,7 @@ public class BookFormTest {
         bookForm.bookTitle.getField().setValue("");
 
         // when
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
@@ -447,7 +447,7 @@ public class BookFormTest {
         bookForm.authorFirstName.getField().setValue("");
 
         // when
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
@@ -467,7 +467,7 @@ public class BookFormTest {
         bookForm.authorLastName.getField().setValue("");
 
         // when
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
@@ -487,7 +487,7 @@ public class BookFormTest {
         bookForm.predefinedShelfField.setValue(null);
 
         // when
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
@@ -507,7 +507,7 @@ public class BookFormTest {
         bookForm.readingStartDate.getField().setValue(LocalDate.now().plusDays(5));
 
         // when
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
@@ -591,7 +591,7 @@ public class BookFormTest {
 
         // when
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
 
         // then
         Assertions.assertEquals(1, bookService.count());
@@ -608,7 +608,7 @@ public class BookFormTest {
 
         bookForm = createBookForm(TO_READ, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
 
         Book savedBook = bookService.findAll().get(0);
         populateBookFormWithExistingBook(READ, savedBook);
@@ -618,7 +618,7 @@ public class BookFormTest {
         bookForm.authorFirstName.getField().setValue(newAuthor.getFirstName());
         bookForm.authorLastName.getField().setValue(newAuthor.getLastName());
         bookForm.bookGenre.setValue(newGenre);
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
 
         // then
         Assertions.assertEquals(1, bookService.count());
@@ -660,11 +660,11 @@ public class BookFormTest {
         // given
         bookForm = createBookForm(initialShelf, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         populateBookFormWithExistingBook(newShelf, bookService.findAll().get(0));
 
         // when
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
 
         // then
         Assertions.assertEquals(1, bookService.count());
@@ -726,7 +726,7 @@ public class BookFormTest {
         // given
         bookForm = createBookForm(TO_READ, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
-        bookForm.saveButton.click();
+        bookForm.saveButton.getField().click();
         Assertions.assertEquals(1, bookService.count());
 
         // when
