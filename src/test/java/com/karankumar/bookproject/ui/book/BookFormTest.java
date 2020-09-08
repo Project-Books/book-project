@@ -73,7 +73,6 @@ public class BookFormTest {
     private static final LocalDate dateFinished = LocalDate.now();
     private static final RatingScale ratingVal = RatingScale.NINE;
     private static final String bookReview = "Very good. Would read again.";
-    private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
     private static final int SERIES_POSITION = 10;
     private static int pagesRead;
     private static int numberOfPages;
@@ -185,7 +184,7 @@ public class BookFormTest {
         Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
-        double rating = converter.convertToPresentation(ratingVal, null);
+        double rating = RatingScale.toDouble(ratingVal);
         Assertions.assertEquals(rating, bookForm.rating.getValue());
         Assertions.assertEquals(bookReview, bookForm.bookReview.getValue());
         Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
@@ -265,7 +264,7 @@ public class BookFormTest {
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.dateStartedReading.setValue(dateStarted);
                 bookForm.dateFinishedReading.setValue(dateFinished);
-                bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+                bookForm.rating.setValue(RatingScale.toDouble(ratingVal));
                 bookForm.bookReview.setValue(bookReview);
                 break;
             case DID_NOT_FINISH:
