@@ -329,17 +329,9 @@ public class BookForm extends VerticalLayout {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
-        book.setGenre(bookGenre.getValue());
-        book.setNumberOfPages(pageCount.getField().getValue());
-        book.setDateStartedReading(readingStartDate.getField().getValue());
-        book.setDateFinishedReading(readingEndDate.getField().getValue());
-
         Result<RatingScale> result =
                 new DoubleToRatingScaleConverter().convertToModel(rating.getField().getValue(), null);
         result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
-
-        book.setBookReview(bookReview.getField().getValue());
-        book.setPagesRead(pagesRead.getField().getValue());
 
         if (seriesPosition.getField().getValue() != null && seriesPosition.getField().getValue() > 0) {
             book.setSeriesPosition(seriesPosition.getField().getValue());
@@ -376,7 +368,17 @@ public class BookForm extends VerticalLayout {
 
     private Book createBook() {
         Author author = new Author(authorFirstName.getField().getValue(), authorLastName.getField().getValue());
-        return new Book(bookTitle.getField().getValue(), author, getPredefinedShelf());
+        Book book =  new Book(bookTitle.getField().getValue(), author, getPredefinedShelf());
+
+        book.setGenre(bookGenre.getValue());
+        book.setNumberOfPages(pageCount.getField().getValue());
+        book.setDateStartedReading(readingStartDate.getField().getValue());
+        book.setDateFinishedReading(readingEndDate.getField().getValue());
+
+        book.setBookReview(bookReview.getField().getValue());
+        book.setPagesRead(pagesRead.getField().getValue());
+
+        return book;
     }
 
     private PredefinedShelf getPredefinedShelf() {
