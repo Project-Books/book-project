@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.ui.book.components.form.item.visible;
+package com.karankumar.bookproject.ui.book.components.form.item;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.BookFormErrors;
@@ -6,7 +6,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.function.SerializablePredicate;
 
-public class PageCount extends VisibleFormItem<IntegerField> {
+public class PageCount extends FormItem<IntegerField> {
 
     public PageCount(){
         super(new IntegerField());
