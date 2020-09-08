@@ -314,8 +314,7 @@ public class BookForm extends VerticalLayout {
             return null;
         }
 
-        Author author = new Author(authorFirstName.getField().getValue(), authorLastName.getField().getValue());
-        Book book = new Book(bookTitle.getField().getValue(), author, getPredefinedShelf());
+        Book book = createBook();
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
             List<CustomShelf> shelves = customShelfService.findAll(customShelfField.getValue());
@@ -351,7 +350,7 @@ public class BookForm extends VerticalLayout {
         return book;
     }
 
-    public boolean canCreateBook() {
+    private boolean canCreateBook() {
         if (bookTitle.getField().getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
             return false;
@@ -373,6 +372,11 @@ public class BookForm extends VerticalLayout {
         }
 
         return true;
+    }
+
+    private Book createBook() {
+        Author author = new Author(authorFirstName.getField().getValue(), authorLastName.getField().getValue());
+        return new Book(bookTitle.getField().getValue(), author, getPredefinedShelf());
     }
 
     private PredefinedShelf getPredefinedShelf() {
