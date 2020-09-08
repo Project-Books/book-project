@@ -323,12 +323,6 @@ public class BookForm extends VerticalLayout {
             }
         }
 
-        if (seriesPosition.getField().getValue() != null && seriesPosition.getField().getValue() > 0) {
-            book.setSeriesPosition(seriesPosition.getField().getValue());
-        } else if (seriesPosition.getField().getValue() != null) {
-            LOGGER.log(Level.SEVERE, "Negative Series value");
-        }
-
         Result<RatingScale> result =
                 new DoubleToRatingScaleConverter().convertToModel(rating.getField().getValue(), null);
         result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
