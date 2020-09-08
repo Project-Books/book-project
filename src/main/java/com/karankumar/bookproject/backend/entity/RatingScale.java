@@ -18,6 +18,13 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import lombok.extern.java.Log;
+
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.logging.Level;
+
+@Log
 public enum RatingScale {
     NO_RATING("No rating", null),
     ZERO("0/10", 0.0),
@@ -53,5 +60,25 @@ public enum RatingScale {
     @Override
     public String toString() {
         return rating;
+    }
+
+    public static Double toDouble(RatingScale ratingScale) {
+        if (ratingScale == null) {
+            LOGGER.log(Level.INFO, "Returning null as rating was null");
+            return null;
+        }
+
+        return ratingScale.value;
+    }
+
+    public static Optional<RatingScale> of(Double ratingValue) {
+        if (ratingValue == null) {
+            return Optional.of(RatingScale.NO_RATING);
+        }
+
+        return Arrays.stream(values())
+                     .filter(ratingScale -> ratingScale.value != null)
+                     .filter(ratingScale -> ratingScale.value.doubleValue() == ratingValue.doubleValue())
+                     .findFirst();
     }
 }
