@@ -32,6 +32,7 @@ public class SaveButton extends FormItem<Button> {
         binder.addStatusChangeListener(event -> super.getField().setEnabled(binder.isValid()));
     }
 
+    //TODO: Listenerlar bayagi bir artıyor bunu belki get ettirterek yapabiliriz ya da decorator ile listener eklemesini saglayabiliriz ...
     public void addListener(ComponentEventListener<ClickEvent<Button>> listener) {
         getField().addClickListener(listener);
     }
