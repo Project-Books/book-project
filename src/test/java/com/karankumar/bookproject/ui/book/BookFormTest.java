@@ -530,7 +530,7 @@ public class BookFormTest {
     @Test
     void whenIsInSeriesCheckedDisplaySeriesPosition() {
         // given
-        bookForm.inSeriesCheckbox.setValue(true);
+        bookForm.inSeries.setValue(true);
 
         // then
         Assertions.assertTrue(bookForm.seriesPosition.isVisible());
@@ -541,7 +541,7 @@ public class BookFormTest {
     @Test
     void whenIsInSeriesUnchecked_SeriesPositionShouldNotShow() {
         // given
-        bookForm.inSeriesCheckbox.setValue(false);
+        bookForm.inSeries.setValue(false);
 
         // then
         Assertions.assertFalse(bookForm.seriesPosition.isVisible());
@@ -550,10 +550,10 @@ public class BookFormTest {
     @Test
     void whenSeriesPositionIsSwitchedOnAndThenOff_seriesPositionHides() {
         // given
-        bookForm.inSeriesCheckbox.setValue(true);
+        bookForm.inSeries.setValue(true);
 
         // when
-        bookForm.inSeriesCheckbox.setValue(false);
+        bookForm.inSeries.setValue(false);
 
         // then
         Assertions.assertFalse(bookForm.seriesPosition.isVisible());
