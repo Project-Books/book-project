@@ -61,6 +61,7 @@ import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 
 /**
@@ -404,9 +405,8 @@ public class BookForm extends VerticalLayout {
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
 
-        Result<RatingScale> result =
-                new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
-        result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
+        Optional<RatingScale> ratingScale = RatingScale.of(rating.getValue());
+        ratingScale.ifPresent(book::setRating);
 
         book.setBookReview(bookReview.getValue());
         book.setPagesRead(pagesRead.getValue());

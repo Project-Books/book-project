@@ -21,7 +21,6 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,12 +30,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GenreStatistics extends Statistics {
-    private final DoubleToRatingScaleConverter converter;
     private final List<Book> readBooksWithGenresAndRatings;
 
     public GenreStatistics(PredefinedShelfService predefinedShelfService) {
         super(predefinedShelfService);
-        converter = new DoubleToRatingScaleConverter();
         readBooksWithGenresAndRatings = findReadBooksWithGenresAndRatings();
     }
 
@@ -107,7 +104,7 @@ public class GenreStatistics extends Statistics {
         for (Book book : readBooksWithGenresAndRatings) {
             Genre genre = book.getGenre();
             double totalGenreRating = totalRatingForReadGenre.get(genre);
-            double genreRating = converter.convertToPresentation(book.getRating(), null);
+            double genreRating = RatingScale.toDouble(book.getRating());
             totalGenreRating += genreRating;
             totalRatingForReadGenre.replace(genre, totalGenreRating);
         }
