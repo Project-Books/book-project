@@ -22,9 +22,12 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ShelfUtils {
     private ShelfUtils() {}
+
+    public static String ALL_BOOKS_SHELF = "All books";
 
     public static List<String> findAllShelfNames(List<CustomShelf> allCustomShelves) {
         List<String> shelves = new ArrayList<>();
@@ -36,5 +39,9 @@ public class ShelfUtils {
             shelves.add(customShelf.getShelfName());
         }
         return shelves;
+    }
+
+    public static boolean isAllBooksShelf(String shelfName) {
+        return Objects.equals(shelfName, ALL_BOOKS_SHELF);
     }
 }
