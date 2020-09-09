@@ -3,7 +3,7 @@
   </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/knjk04/book-project">
+  <a href="https://travis-ci.com/github/Project-Books/book-project">
     <img src="https://travis-ci.com/Project-Books/book-project.svg?branch=master" alt="Build Status"/>
   </a>
   <a href="https://codecov.io/gh/Project-Books/book-project">
