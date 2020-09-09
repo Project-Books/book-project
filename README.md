@@ -3,7 +3,7 @@
   </p>
   
 [![Build Status](https://travis-ci.com/Project-Books/book-project.svg?branch=master)](https://travis-ci.com/knjk04/book-project)
-[![codecov](https://codecov.io/gh/knjk04/book-project/branch/master/graph/badge.svg)](https://codecov.io/gh/knjk04/book-project)
+[![codecov](https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg)](https://codecov.io/gh/Project-Books/book-project)
 [![Gitter](https://badges.gitter.im/book-project-community/community.svg)](https://gitter.im/book-project-community/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab)](https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard)
 
