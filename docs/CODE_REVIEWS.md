@@ -63,7 +63,7 @@ try to get back to them within seven days.
 
 For high priority bug fixes, we would recommend the PR as soon as possible as it is important that add patches as soon as possible. 
 
-If you are do not have a sufficient amount of time to review a PR, please inform the project maintainer (e.g. over Gitter) so that they or someone else can review it.
+If you are do not have a sufficient amount of time to review a PR, please inform the project maintainer (e.g. over Slack) so that they or someone else can review it.
 
 ### Providing updates
 

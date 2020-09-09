@@ -14,4 +14,4 @@ availability changes, that's fine. The important thing is to let us know so that
 
 4. Are you able to help fix failing builds or when we have high-priority bugs to fix regularly? If so, how often (e.g. weekly, fortnightly)?
 
-5. Are you able to help others and respond to others on Gitter (we aim to respond to messages within at most seven days)?
+5. Are you able to help others and respond to others on our Slack workspace (we aim to respond to messages within at most seven days)?
