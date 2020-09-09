@@ -1,8 +1,6 @@
   <p align="center">
 	<img src="/media/banner/book_project_banner_dark.png" alt="Logo"/>
   </p>
-  
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab)](https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard)
 
 <p align="center">
   <a href="https://travis-ci.com/knjk04/book-project">
