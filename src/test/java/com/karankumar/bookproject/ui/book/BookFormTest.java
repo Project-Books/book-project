@@ -67,7 +67,7 @@ public class BookFormTest {
 
     private static final String firstName = "Nick";
     private static final String lastName = "Bostrom";
-    private static String bookTitle = "Superintelligence: Paths, Dangers, Strategies";
+    private static final String bookTitle = "Superintelligence: Paths, Dangers, Strategies";
     private static final Genre genre = Genre.SCIENCE;
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
@@ -124,11 +124,11 @@ public class BookFormTest {
     private BookForm createBookForm(PredefinedShelf.ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
         readShelf = predefinedShelfUtils.findReadShelf();
-        bookForm.setBook(createBook(shelf, isInSeries));
+        bookForm.setBook(createBook(shelf, isInSeries, bookTitle));
         return bookForm;
     }
 
-    private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
+    private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries, String bookTitle) {
         Author author = new Author(firstName, lastName);
         PredefinedShelf shelf = predefinedShelfUtils.findPredefinedShelf(shelfName);
         Book book = new Book(bookTitle, author, shelf);
@@ -607,15 +607,14 @@ public class BookFormTest {
         bookForm.saveButton.click();
 
         // when
-        bookTitle = "someOtherBook";
-        bookForm = createBookForm(TO_READ, false);
+        bookForm.setBook(createBook(TO_READ, false, "someOtherBook"));
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
         bookForm.saveButton.click();
 
         // then
         Assertions.assertEquals(2, bookService.count());
         List<Book> booksInDatabase = bookService.findAll();
-        Assertions.assertEquals("Superintelligence: Paths, Dangers, Strategies", booksInDatabase.get(0).getTitle());
+        Assertions.assertEquals(bookTitle, booksInDatabase.get(0).getTitle());
         Assertions.assertEquals("someOtherBook", booksInDatabase.get(1).getTitle());
     }
 
@@ -691,8 +690,6 @@ public class BookFormTest {
         Book bookInDatabase = bookService.findAll().get(0);
         correctBookAttributesPresent(newShelf, bookInDatabase);
     }
-
-
 
     private void correctBookAttributesPresent(PredefinedShelf.ShelfName shelfName, Book book) {
         testBookAttributesPresentForAllShelves(shelfName, book);
