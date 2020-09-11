@@ -137,4 +137,4 @@ Please also consider that you're finding something difficult on the issue you're
 
 - Feedback: we're eager to find new ways to improve, so please do let us know!
 
-- Translations: it would be good if we could support multiple languages. If you're able to help with this, feel free to get in touch with us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).
+In addition to the above, you can get involved in shaping the future of the project over on [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).
