@@ -68,7 +68,7 @@ if we say no. Think of it as 'not yet' rather than 'never'. If you ask Karan pub
 
 You will be asked to answer a [set of questions](https://github.com/Project-Books/book-project/blob/master/docs/maintainers/becoming-a-maintainer-template.md) (informal process).
 
-#### Revoking maintainer privileges
+### Revoking maintainer privileges
 
 If a maintainer becomes unresponsive for an extended period, or if they violate our code of conduct or responsibility, they can have their role revoked.
 While this may seem daunting, this should not come as a surprise as the owner should have already discussed this with you.
