@@ -123,11 +123,11 @@ public class BookFormTest {
     private BookForm createBookForm(PredefinedShelf.ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
         readShelf = predefinedShelfUtils.findReadShelf();
-        bookForm.setBook(createBook(shelf, isInSeries));
+        bookForm.setBook(createBook(shelf, isInSeries, bookTitle));
         return bookForm;
     }
 
-    private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
+    private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries, String bookTitle) {
         Author author = new Author(firstName, lastName);
         PredefinedShelf shelf = predefinedShelfUtils.findPredefinedShelf(shelfName);
         Book book = new Book(bookTitle, author, shelf);
@@ -596,6 +596,25 @@ public class BookFormTest {
         Assertions.assertEquals(1, bookService.count());
         Book bookInDatabase = bookService.findAll().get(0);
         correctBookAttributesPresent(TO_READ, bookInDatabase);
+    }
+
+    @Test
+    void shouldAddBooksToDatabaseWhenSaveEventIsCalled_withoutReplacingExistingBook() {
+        // given
+        bookForm = createBookForm(TO_READ, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        // when
+        bookForm.setBook(createBook(TO_READ, false, "someOtherBook"));
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(2, bookService.count());
+        List<Book> booksInDatabase = bookService.findAll();
+        Assertions.assertEquals(bookTitle, booksInDatabase.get(0).getTitle());
+        Assertions.assertEquals("someOtherBook", booksInDatabase.get(1).getTitle());
     }
 
     @Test
