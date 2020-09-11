@@ -1,6 +1,6 @@
-# Team
+# Core Team
 
-This document formalises the leadership roles within the Book Project.
+Everyone who commits to the Book Project is considered a part of our team. The core team refers to those who beyond committing to the project and have added responsibilities to help maintain and push the project forward. 
 
 ## Leadership roles
 
@@ -20,19 +20,23 @@ Should you have any concerns about any of the maintainers, Karan is the person t
 
 ### Maintainers
 
-*We currently do not have any maintainers, but we are looking for some.*
+#### Current maintainers
+
+In addition to Karan, there is
+
+- Amit ([@amit1307](https://github.com/amit1307)): Java, micro services, Docker
+
+#### Why we have maintainers
 
 Maintainers have made regular and several significant contributions to the project over an extended period. Usually, the contributions are code, but it does not have to be. 
 Maintainers could have made important contributions in, for example, design or documentation. 
 
-A maintainer may have a particular area of expertise. If they do, it will be listed here. You can then reach out to them should you need any help. We encourage the 
-communication to happen over our public Slack #book-project channel rather than privately so that others can also benefit from the responses. It can also help to settle disputes
-if we can all see the exchange(s). 
+A maintainer may have a particular area of expertise. You can then reach out to them should you need any help. We encourage the 
+communication to happen over our public Slack [#book-project channel](https://teambookproject.slack.com/archives/C01AGDC5X1S) rather than privately so that others can also benefit from the responses. It can also help to settle disputes if we can all see the exchange(s). 
 
 While everyone can help shape the direction of the project, this is particularly true of maintainers, as the owner and other maintainers may lean on each other.
 
-As a regular committer, they can be given access rights to commit to the project. However, they are trusted not to do so unless until their work has first been reviewed.
-This also includes changes to the wiki.
+As a regular committer, they can be given access rights to commit to the project. However, they are trusted not to do so unless until their work has first been reviewed. This also includes changes to the wiki.
 
 #### Responsibilities
 
@@ -58,7 +62,7 @@ We appreciate this is a large commitment to make, so we highly value the time an
 
 If Karan believes you are already operating at our maintainer standard, he may contact you to ask whether you would like to become a maintainer. If this is the case, we we still follow our process of agreeing on the details on how frequently you are available to help.
 
-If you were not approached and would like to become a maintainer, feel free to message Karan ([@knjk04](https://github.com/knjk04)) on Slack. This can be done either privately or on the Slack #book-project channel. If we say no, we will
+If you were not approached and would like to become a maintainer, feel free to message Karan ([@knjk04](https://github.com/knjk04)) on Slack. This can be done either privately or on the Slack [#book-project](https://teambookproject.slack.com/archives/C01AGDC5X1S) channel. If we say no, we will
 be constructive by telling you what you would need to do to get there (e.g. contribute for longer to gain further trust). Please do not feel disheartened
 if we say no. Think of it as 'not yet' rather than 'never'. If you ask Karan publicly on Slack, the assumption is that you are happy for a public response.
 
@@ -68,11 +72,3 @@ You will be asked to answer a [set of questions](https://github.com/Project-Book
 
 If a maintainer becomes unresponsive for an extended period, or if they violate our code of conduct or responsibility, they can have their role revoked.
 While this may seem daunting, this should not come as a surprise as the owner should have already discussed this with you.
-
-### Non-leadership roles
-
-**Committer**
-
-Committers are those whose work is directly visible on our GitHub project. While this is usually code or documentation, it could also include design work. 
-
-Even if you are a committer and not in a leadership role, your contributions are still very much appreciated.
