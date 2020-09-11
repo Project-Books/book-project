@@ -2,12 +2,10 @@
 
 Everyone who commits to the Book Project is considered a part of our team. The core team refers to those who beyond committing to the project and have added responsibilities to help maintain and push the project forward. 
 
-## Leadership roles
-
-All those in leadership roles are held to the highest standard of our [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
+All those in the core are held to the highest standard of our [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
 In particular, all maintainers must be welcoming and inclusive to all at all times. If they are not, their role as a maintainer could be revoked. 
 
-### Project owner
+## Project owner
 
 Karan ([@knjk04](https://github.com/knjk04)) first started this project and is the owner of the repository. As the project owner, this role also includes the maintainer role. Karan is active in committing to the project, reviewing code and helping others on the project over
 Slack.
@@ -18,15 +16,17 @@ will be responded to, regardless of whether we take up your suggestion. If we do
 
 Should you have any concerns about any of the maintainers, Karan is the person to speak to. You can message him privately on Slack.
 
-### Maintainers
+## Maintainers
 
-#### Current maintainers
+### Current maintainers
 
 In addition to Karan, there is
 
-- Amit ([@amit1307](https://github.com/amit1307)): Java, micro services, Docker
+Amit ([@amit1307](https://github.com/amit1307))
 
-#### Why we have maintainers
+ *Specialities: Java, micro services, Docker*
+
+### Why we have maintainers
 
 Maintainers have made regular and several significant contributions to the project over an extended period. Usually, the contributions are code, but it does not have to be. 
 Maintainers could have made important contributions in, for example, design or documentation. 
@@ -38,7 +38,7 @@ While everyone can help shape the direction of the project, this is particularly
 
 As a regular committer, they can be given access rights to commit to the project. However, they are trusted not to do so unless until their work has first been reviewed. This also includes changes to the wiki.
 
-#### Responsibilities
+### Responsibilities
 
 A maintainer is expected to make regular, meaningful commits to the project. 'Regular' is intentionally vague as we appreciate that different people have different levels
 of free time that they can spend on the project outside of the rest of their busy lives. Therefore, this is something that should be agreed upon with the owner. For 
@@ -58,7 +58,7 @@ Holidays and other commitments come up from time to time. This is fine, just kee
 
 We appreciate this is a large commitment to make, so we highly value the time and effort of all of our maintainers to help push the project forward.
 
-#### Becoming a maintainer
+### Becoming a maintainer
 
 If Karan believes you are already operating at our maintainer standard, he may contact you to ask whether you would like to become a maintainer. If this is the case, we we still follow our process of agreeing on the details on how frequently you are available to help.
 
@@ -68,7 +68,7 @@ if we say no. Think of it as 'not yet' rather than 'never'. If you ask Karan pub
 
 You will be asked to answer a [set of questions](https://github.com/Project-Books/book-project/blob/master/docs/maintainers/becoming-a-maintainer-template.md) (informal process).
 
-#### Removing a maintainer
+#### Revoking maintainer privileges
 
 If a maintainer becomes unresponsive for an extended period, or if they violate our code of conduct or responsibility, they can have their role revoked.
 While this may seem daunting, this should not come as a surprise as the owner should have already discussed this with you.
