@@ -62,6 +62,8 @@ If you were not approached and would like to become a maintainer, feel free to m
 be constructive by telling you what you would need to do to get there (e.g. contribute for longer to gain further trust). Please do not feel disheartened
 if we say no. Think of it as 'not yet' rather than 'never'. If you ask Karan publicly on Slack, the assumption is that you are happy for a public response.
 
+You will be asked to answer a [set of questions](https://github.com/Project-Books/book-project/blob/master/docs/maintainers/becoming-a-maintainer-template.md) (informal process).
+
 #### Removing a maintainer
 
 If a maintainer becomes unresponsive for an extended period, or if they violate our code of conduct or responsibility, they can have their role revoked.
