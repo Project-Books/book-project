@@ -2,7 +2,7 @@
 
 If you have been offered the position of becoming a maintainer, then the following questions need to be answered to help set the expectations between the prospective maintainer and the a) owner and b) the wider team.
 
-As explained in the [team document](https://github.com/knjk04/book-project/blob/master/docs/TEAM.md), we appreciate people are flexible
+As explained in the [core team document](https://github.com/Project-Books/book-project/blob/master/docs/maintainers/CORE_TEAM.md), we appreciate people are flexible
 and that becoming a maintainer is a big commitment. We want to be flexible to respect people's other commitments. If your 
 availability changes, that's fine. The important thing is to let us know so that we are clear and can be respectful of your time.
 
