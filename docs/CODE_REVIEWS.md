@@ -1,9 +1,9 @@
 # Code reviews
 
-The purpose of this document is to outline the process of code reviews. This serves as a guideline for reviewers, sa we want to create a standardized way of reviewing code.
+The purpose of this document is to outline the process of code reviews. This serves as a guideline for reviewers, as we want to create a standardized way of reviewing code.
 However, this could also be useful for contributors that want to understand the process. We want to be as transparent as possible.
 
-As with other documents, this document may change from time to time. Therefore, as a code reviewer, it is important that you stay up-to-date with any changes made.
+As with other documents, this document may change from time to time. Therefore, as a code reviewer, please stay up-to-date with any changes made.
 You should always refer to the [latest version of this document on the master branch](https://github.com/knjk04/book-project/blob/master/.github/CODE_REVIEWS.md).
 
 ## Process
@@ -22,12 +22,12 @@ that are hard to identify by just looking at the code in GitHub's diff window (e
 
 - Style guide violations
   - Please ensure you are familiar with the latest version of our [style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
-- Areas to improve readability (e.g. does the name of the method accurately describe what it does?, can a comment be replaced with extracting a block of code into
-a method?, etc.)
+- Areas to improve readability (e.g. does the name of the method accurately describe what it does? Can a comment be replaced with extracting a block of code into
+a method? Etc.)
 - Areas to improve efficiency
 - Code duplication (e.g. has the contributor redefined a utility method?)
 - Grammatical mistakes
-- If you seen a failing test that works when you it again, don't ignore it. Look into why that may have failed.
+- If you see a test fail that works when you run again, it would be best not to ignore it. Look into why that may have failed.
 
 This is by no means an exhaustive list. This is only indicative of common problems that arise.
 
@@ -63,7 +63,7 @@ try to get back to them within seven days.
 
 For high priority bug fixes, we would recommend the PR as soon as possible as it is important that add patches as soon as possible. 
 
-If you are do not have a sufficient amount of time to review a PR, please inform the project maintainer (e.g. over Gitter) so that they or someone else can review it.
+If you are do not have a sufficient amount of time to review a PR, please inform the project maintainer (e.g. over Slack) so that they or someone else can review it.
 
 ### Providing updates
 

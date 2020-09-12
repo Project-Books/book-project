@@ -15,34 +15,17 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
+package com.karankumar.bookproject.ui.shelf.visibility;
 
-package com.karankumar.bookproject.backend.entity;
+import com.karankumar.bookproject.ui.shelf.BookGrid;
+import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.util.Set;
-
-@Entity
-@JsonIgnoreProperties(value = {"id", "books"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CustomShelf extends Shelf {
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customShelf")
-    @Getter
-    @Setter
-    protected Set<Book> books;
-
-    public CustomShelf(String shelfName) {
-        super(shelfName);
-    }
-
-    public void setShelfName(String shelfName) {
-        super.shelfName = shelfName;
+public class AllShelvesBookVisibility implements BookVisibilityStrategy {
+    @Override
+    public void toggleColumnVisibility(BookGrid bookGrid) {
+        bookGrid.toggleColumnVisibility(BookGridColumn.RATING_KEY, true);
+        bookGrid.toggleColumnVisibility(BookGridColumn.DATE_STARTED_KEY, true);
+        bookGrid.toggleColumnVisibility(BookGridColumn.DATE_FINISHED_KEY, true);
+        bookGrid.toggleColumnVisibility(BookGridColumn.PAGES_READ_KEY, true);
     }
 }

@@ -87,6 +87,17 @@ public class BooksInShelfViewTest {
         BookGridColumn.RATING_KEY,
         BookGridColumn.PAGES_KEY
     ));
+
+    private final ArrayList<String> expectedAllShelvesColumns = new ArrayList<>(Arrays.asList(
+        BookGridColumn.TITLE_KEY,
+        BookGridColumn.AUTHOR_KEY,
+        BookGridColumn.GENRE_KEY,
+        BookGridColumn.DATE_STARTED_KEY,
+        BookGridColumn.DATE_FINISHED_KEY,
+        BookGridColumn.RATING_KEY,
+        BookGridColumn.PAGES_KEY,
+        BookGridColumn.PAGES_READ_KEY
+    ));
     private BooksInShelfView shelfView;
 
     @BeforeAll

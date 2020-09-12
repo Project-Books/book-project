@@ -23,9 +23,9 @@ import com.vaadin.flow.component.HasValue;
 public class ComponentUtil {
     private ComponentUtil() {}
 
-    public static void setComponentClassName(HasSize[] components) {
+    public static void setComponentClassName(HasSize[] components, String className) {
         for (HasSize h : components) {
-            h.getElement().getClassList().add("formInputField");
+            h.getElement().getClassList().add(className);
         }
     }
 

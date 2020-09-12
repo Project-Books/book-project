@@ -17,6 +17,10 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
@@ -109,5 +113,16 @@ public class BookService extends BaseService<Book, Long> {
         authorService.deleteAll();
         LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = " +
                 bookRepository.count());
+    }
+
+    public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
+        List<Book> books = bookRepository.findAll();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
+
+        return jsonWriter.writeValueAsString(books);
     }
 }

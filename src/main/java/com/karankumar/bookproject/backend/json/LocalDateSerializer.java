@@ -15,26 +15,26 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.backend.json;
 
-import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.vaadin.flow.data.binder.Result;
-import com.vaadin.flow.data.binder.ValueContext;
-import com.vaadin.flow.data.converter.Converter;
-import lombok.extern.java.Log;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-@Log
-public class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
+import java.io.IOException;
+import java.time.LocalDate;
 
-    @Override
-    public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
-        return RatingScale.of(ratingVal)
-                          .map(value -> Result.ok(value))
-                          .orElseGet(() -> Result.error("Invalid rating"));
+public class LocalDateSerializer extends StdSerializer<LocalDate> {
+    protected LocalDateSerializer() {
+        super(LocalDate.class);
     }
 
     @Override
-    public Double convertToPresentation(RatingScale rating, ValueContext valueContext) {
-        return RatingScale.toDouble(rating);
+    public void serialize(LocalDate localDate, JsonGenerator jsonGenerator,
+                          SerializerProvider serializerProvider) throws IOException {
+        String dateString = localDate.getYear() + "-"
+                            + String.format("%02d", localDate.getMonthValue()) + "-"
+                            + String.format("%02d", localDate.getDayOfMonth());
+        jsonGenerator.writeString(dateString);
     }
 }

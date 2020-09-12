@@ -31,6 +31,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.spring.SpringServlet;
@@ -48,7 +49,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -70,7 +73,6 @@ public class BookFormTest {
     private static final LocalDate dateFinished = LocalDate.now();
     private static final RatingScale ratingVal = RatingScale.NINE;
     private static final String bookReview = "Very good. Would read again.";
-    private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
     private static final int SERIES_POSITION = 10;
     private static int pagesRead;
     private static int numberOfPages;
@@ -121,11 +123,11 @@ public class BookFormTest {
     private BookForm createBookForm(PredefinedShelf.ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
         readShelf = predefinedShelfUtils.findReadShelf();
-        bookForm.setBook(createBook(shelf, isInSeries));
+        bookForm.setBook(createBook(shelf, isInSeries, bookTitle));
         return bookForm;
     }
 
-    private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
+    private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries, String bookTitle) {
         Author author = new Author(firstName, lastName);
         PredefinedShelf shelf = predefinedShelfUtils.findPredefinedShelf(shelfName);
         Book book = new Book(bookTitle, author, shelf);
@@ -182,7 +184,7 @@ public class BookFormTest {
         Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
-        double rating = converter.convertToPresentation(ratingVal, null);
+        double rating = RatingScale.toDouble(ratingVal);
         Assertions.assertEquals(rating, bookForm.rating.getValue());
         Assertions.assertEquals(bookReview, bookForm.bookReview.getValue());
         Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
@@ -262,7 +264,7 @@ public class BookFormTest {
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.dateStartedReading.setValue(dateStarted);
                 bookForm.dateFinishedReading.setValue(dateFinished);
-                bookForm.rating.setValue(converter.convertToPresentation(ratingVal, null));
+                bookForm.rating.setValue(RatingScale.toDouble(ratingVal));
                 bookForm.bookReview.setValue(bookReview);
                 break;
             case DID_NOT_FINISH:
@@ -351,6 +353,32 @@ public class BookFormTest {
         Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
         Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
         Assertions.assertTrue(bookForm.pagesReadFormItem.isVisible());
+    }
+
+    private static Stream<Arguments> shelfNames() {
+        return Stream.of(
+                Arguments.of(TO_READ),
+                Arguments.of(READING),
+                Arguments.of(READ),
+                Arguments.of(DID_NOT_FINISH)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("shelfNames")
+    void fieldsToResetAreCorrectlyPopulated(PredefinedShelf.ShelfName newShelf) throws NotSupportedException {
+        // given
+        HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
+        populateBookForm(READ, false);
+        bookForm.pagesRead.setValue(pagesRead);
+
+        // when
+        bookForm.predefinedShelfField.setValue(newShelf);
+
+        // then
+        Assertions.assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
+        Assertions.assertTrue(List.of(bookForm.fieldsToReset)
+                                  .containsAll(List.of(fieldsThatShouldBeReset)));
     }
 
     @Test
@@ -571,6 +599,25 @@ public class BookFormTest {
     }
 
     @Test
+    void shouldAddBooksToDatabaseWhenSaveEventIsCalled_withoutReplacingExistingBook() {
+        // given
+        bookForm = createBookForm(TO_READ, false);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        // when
+        bookForm.setBook(createBook(TO_READ, false, "someOtherBook"));
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
+        bookForm.saveButton.click();
+
+        // then
+        Assertions.assertEquals(2, bookService.count());
+        List<Book> booksInDatabase = bookService.findAll();
+        Assertions.assertEquals(bookTitle, booksInDatabase.get(0).getTitle());
+        Assertions.assertEquals("someOtherBook", booksInDatabase.get(1).getTitle());
+    }
+
+    @Test
     void shouldUpdateValuesInDatabaseForExistingBookWhenSaveEventIsCalled() {
         // given
         String newTitle = "IT";
@@ -610,16 +657,15 @@ public class BookFormTest {
                 Arguments.of(TO_READ, READ),
                 Arguments.of(TO_READ, DID_NOT_FINISH),
                 Arguments.of(READING, DID_NOT_FINISH),
-                Arguments.of(READING, READ)
-                // TODO: these cases are not passing at the moment because of issue #271
-                // Arguments.of(READING, TO_READ),
-                // Arguments.of(READ, TO_READ),
-                // Arguments.of(READ, DID_NOT_FINISH),
-                // Arguments.of(READ, READING),
-                // Arguments.of(DID_NOT_FINISH, TO_READ),
-                // Arguments.of(DID_NOT_FINISH, READING),
-                // Arguments.of(DID_NOT_FINISH, READ)
-                );
+                Arguments.of(READING, READ),
+                Arguments.of(READING, TO_READ),
+                Arguments.of(READ, TO_READ),
+                Arguments.of(READ, DID_NOT_FINISH),
+                Arguments.of(READ, READING),
+                Arguments.of(DID_NOT_FINISH, TO_READ),
+                Arguments.of(DID_NOT_FINISH, READING),
+                Arguments.of(DID_NOT_FINISH, READ)
+        );
     }
 
     /**
