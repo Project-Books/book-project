@@ -421,6 +421,46 @@ public class BookFormTest {
     }
 
     @Test
+    void shouldNotAllowPageNumbersExceed() {
+        // given
+        bookForm.numberOfPages.setValue(BookFormValidators.MAX_PAGES + 1);
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(BookFormErrors.MAX_PAGES_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+    }
+
+    @Test
+    void shouldNotAllowPageReadExceed() {
+        // given
+        bookForm.pagesRead.setValue(BookFormValidators.MAX_PAGES + 1);
+
+        // when
+        bookForm.saveButton.click();
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+
+        // then
+        Assertions.assertTrue(validationStatus.hasErrors());
+        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
+        Assertions.assertEquals(BookFormErrors.MAX_PAGES_ERROR,
+                validationStatus.getFieldValidationErrors()
+                                .get(0)
+                                .getMessage()
+                                .orElseThrow()
+        );
+    }
+
+    @Test
     void shouldNotAllowEmptyBookTitle() {
         // given
         bookForm.bookTitle.setValue("");
