@@ -42,8 +42,7 @@ import java.util.Random;
 public class ReadingGoalFormTest {
     private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
     @BeforeAll
     public static void discoverRoutes() {
