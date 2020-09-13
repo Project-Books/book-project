@@ -117,7 +117,7 @@ class ReadingGoalViewTest {
         Assumptions.assumeTrue(numberOfShelves == 4);
         Assumptions.assumeFalse(bookService == null);
 
-        bookService.deleteAll(); // reset
+        resetBookService(bookService);
         Assumptions.assumeTrue(bookService.findAll().size() == 0);
 
         // Add books to all shelves (books in the read shelf must have a non-null finish date)
@@ -159,6 +159,10 @@ class ReadingGoalViewTest {
                 CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
     }
 
+    private void resetBookService(BookService bookService) {
+        bookService.deleteAll();
+    }
+
     /**
      * Creates a book in the specified shelf
      * @param shelfName the name of the shelf to place the book in
@@ -173,34 +177,6 @@ class ReadingGoalViewTest {
         }
         book.setNumberOfPages(ThreadLocalRandom.current().nextInt(300, (1000 + 1)));
         return book;
-    }
-
-    @Test
-    void correctInformationShownForGoalType() {
-        Assumptions.assumeTrue(goalService.findAll().size() == 0);
-
-        ReadingGoal booksGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
-        goalService.save(booksGoal);
-        goalView.getCurrentGoal();
-        // should be visible for both a book or pages goal
-        Assertions.assertTrue(goalView.readingGoalSummary.isVisible());
-        Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
-
-        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
-        int howManyReadThisYear =
-                CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf);
-        int targetToRead = booksGoal.getTarget();
-        boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
-
-        if (booksGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
-            // Additional components that should be visible for a books goal
-            Assertions.assertTrue(goalView.goalProgress.isVisible());
-            if (hasReachedGoal) {
-                Assertions.assertFalse(goalView.booksToReadOnAverageToMeetGoal.isVisible());
-            } else {
-                Assertions.assertTrue(goalView.booksToReadOnAverageToMeetGoal.isVisible());
-            }
-        }
     }
 
     @Test
