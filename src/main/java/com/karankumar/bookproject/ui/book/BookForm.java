@@ -61,6 +61,7 @@ import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 
 /**
@@ -316,19 +317,24 @@ public class BookForm extends VerticalLayout {
     private void validateOnSave() {
         if (binder.isValid()) {
             LOGGER.log(Level.INFO, "Valid binder");
-            if (binder.getBean() == null) {
-                LOGGER.log(Level.SEVERE, "Binder book bean is null");
-                setBookBean();
-            } else {
+            if (binder.getBean() != null && isMovedToDifferentShelf()) {
                 LOGGER.log(Level.INFO, "Binder.getBean() is not null");
                 moveBookToDifferentShelf();
                 ComponentUtil.clearComponentFields(fieldsToReset);
                 fireEvent(new SaveEvent(this, binder.getBean()));
                 closeForm();
+            } else {
+                setBookBean();
             }
         } else {
             LOGGER.log(Level.SEVERE, "Invalid binder");
         }
+    }
+
+    private boolean isMovedToDifferentShelf() {
+        PredefinedShelf.ShelfName shelfName = predefinedShelfField.getValue();
+        PredefinedShelf.ShelfName bookInShelf = binder.getBean().getPredefinedShelf().getPredefinedShelfName();
+        return !shelfName.equals(bookInShelf);
     }
 
     private void setBookBean() {
@@ -404,9 +410,8 @@ public class BookForm extends VerticalLayout {
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
 
-        Result<RatingScale> result =
-                new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
-        result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
+        Optional<RatingScale> ratingScale = RatingScale.of(rating.getValue());
+        ratingScale.ifPresent(book::setRating);
 
         book.setBookReview(bookReview.getValue());
         book.setPagesRead(pagesRead.getValue());

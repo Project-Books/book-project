@@ -31,8 +31,7 @@ import java.util.stream.Collectors;
 @DataJpaIntegrationTest
 class PredefinedShelfRepositoryTest {
 
-    @Autowired
-    private PredefinedShelfRepository repository;
+    @Autowired private PredefinedShelfRepository repository;
 
     @BeforeEach
     void setup() {

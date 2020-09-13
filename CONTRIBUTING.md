@@ -30,11 +30,11 @@ By contributing to this project, you are expected to adhere to the [Book Project
 
 All questions, suggestions and feedback are both welcome and encouraged. 
 
-Questions and feedback should be discussed over [Gitter](https://gitter.im/book-project-community). This allows others to benefit from seeing the answers, too.
+Questions and feedback should be discussed over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). This allows others to benefit from seeing the answers, too.
 
 For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
 
-If in doubt, talk to us over [Gitter](https://gitter.im/book-project-community)!
+If in doubt, talk to us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)!
 
 ## Before making changes
 
@@ -121,12 +121,12 @@ If you no longer wish to work an issue, that's fine. All we ask is that you let 
 
 Where possible, please let us know as soon as possible if you no longer wish to work on an issue. 
 
-Please also consider that you're finding something difficult on the issue you're assigned to, we're here to help on [Gitter](https://gitter.im/book-project-community/community).
+Please also consider that you're finding something difficult on the issue you're assigned to, we're here to help on [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).
 
 ## Ways to contribute
 
 - Code: adding new features, fixing bugs and general refactoring to name a few
-  - Code reviews: either offering to review a pull request on Gitter or if you see a pull request and think the code could be improved, feel free to offer suggestions on how to do so. This can help improve our code quality and is much appreciated!
+  - Code reviews: either offering to review a pull request on Slack or if you see a pull request and think the code could be improved, feel free to offer suggestions on how to do so. This can help improve our code quality and is much appreciated!
      - Before reviewing code, please ensure you are familiar with and understand our [code reviews document](https://github.com/knjk04/book-project/blob/master/.github/CODE_REVIEWS.md)
   - Issues and pull requests labelled with [needs-repro](https://github.com/knjk04/book-project/labels/needs-repro) have yet to be reproduced. If you're able to reproduce it, letting us know would help a lot
   - Our test coverage is low, so we need a lot more tests, particularly the areas that are undertested or not covered at all
@@ -137,4 +137,4 @@ Please also consider that you're finding something difficult on the issue you're
 
 - Feedback: we're eager to find new ways to improve, so please do let us know!
 
-- Translations: it would be good if we could support multiple languages. If you're able to help with this, feel free to get in touch with us over [Gitter](https://gitter.im/book-project-community).
+In addition to the above, you can get involved in shaping the future of the project over on [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).

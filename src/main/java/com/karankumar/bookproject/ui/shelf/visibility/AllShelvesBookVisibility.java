@@ -15,26 +15,17 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.shelf.visibility;
 
-import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.vaadin.flow.data.binder.Result;
-import com.vaadin.flow.data.binder.ValueContext;
-import com.vaadin.flow.data.converter.Converter;
-import lombok.extern.java.Log;
+import com.karankumar.bookproject.ui.shelf.BookGrid;
+import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 
-@Log
-public class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
-
+public class AllShelvesBookVisibility implements BookVisibilityStrategy {
     @Override
-    public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
-        return RatingScale.of(ratingVal)
-                          .map(value -> Result.ok(value))
-                          .orElseGet(() -> Result.error("Invalid rating"));
-    }
-
-    @Override
-    public Double convertToPresentation(RatingScale rating, ValueContext valueContext) {
-        return RatingScale.toDouble(rating);
+    public void toggleColumnVisibility(BookGrid bookGrid) {
+        bookGrid.toggleColumnVisibility(BookGridColumn.RATING_KEY, true);
+        bookGrid.toggleColumnVisibility(BookGridColumn.DATE_STARTED_KEY, true);
+        bookGrid.toggleColumnVisibility(BookGridColumn.DATE_FINISHED_KEY, true);
+        bookGrid.toggleColumnVisibility(BookGridColumn.PAGES_READ_KEY, true);
     }
 }

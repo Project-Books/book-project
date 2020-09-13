@@ -42,8 +42,7 @@ import java.util.Random;
 public class ReadingGoalFormTest {
     private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -59,17 +58,12 @@ public class ReadingGoalFormTest {
         goalService.deleteAll(); // reset
     }
 
-    private ReadingGoal.GoalType getRandomGoalType() {
-        ReadingGoal.GoalType[] goalTypes = ReadingGoal.GoalType.values();
-        return goalTypes[new Random().nextInt(goalTypes.length)];
-    }
-
     @Test
     public void onlyTargetGoalOfAtLeastOneIsValid() {
         ReadingGoalForm goalForm = new ReadingGoalForm();
 
         goalForm.targetToRead.setValue(1);
-        goalForm.chooseGoalType.setValue(getRandomGoalType());
+        goalForm.chooseGoalType.setValue(ReadingGoal.GoalType.BOOKS);
         goalForm.saveButton.click();
         Assertions.assertTrue(goalForm.binder.isValid());
 

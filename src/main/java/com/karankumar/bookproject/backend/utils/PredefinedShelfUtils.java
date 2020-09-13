@@ -17,6 +17,8 @@
 
 package com.karankumar.bookproject.backend.utils;
 
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -97,8 +99,12 @@ public class PredefinedShelfUtils {
      * Fetches all of the books in the chosen predefined shelf
      */
     public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
-        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
         Set<Book> books;
+        if (isAllBooksShelf(chosenShelf)) {
+            return getBooksInAllPredefinedShelves();
+        }
+
+        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
         List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAll(predefinedShelfName);
         if (predefinedShelves.isEmpty()) {
             books = new HashSet<>();
@@ -107,5 +113,18 @@ public class PredefinedShelfUtils {
             books = customShelf.getBooks();
         }
         return books;
+    }
+
+    public Set<Book> getBooksInAllPredefinedShelves() {
+        return getBooksInPredefinedShelves(predefinedShelfService.findAll());
+    }
+
+    /**
+     * Fetches all of the books in the chosen predefined shelves
+     */
+    public Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
+        return predefinedShelves.stream()
+                .map(PredefinedShelf::getBooks)
+                .collect(HashSet::new, Set::addAll, Set::addAll);
     }
 }

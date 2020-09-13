@@ -52,8 +52,7 @@ public class BooksInShelfViewTest {
 
     private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
     private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
         BookGridColumn.TITLE_KEY,
@@ -87,6 +86,7 @@ public class BooksInShelfViewTest {
         BookGridColumn.RATING_KEY,
         BookGridColumn.PAGES_KEY
     ));
+
     private BooksInShelfView shelfView;
 
     @BeforeAll
@@ -125,7 +125,7 @@ public class BooksInShelfViewTest {
             case READING:
                 expectedColumns = expectedReadingColumns;
                 break;
-            case DID_NOT_FINISH: // intentional
+            case DID_NOT_FINISH:
                 expectedColumns = expectedDidNotFinishColumns;
                 break;
             case READ:

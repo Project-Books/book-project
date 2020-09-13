@@ -25,7 +25,6 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 
 import java.util.ArrayList;
 
@@ -43,7 +42,6 @@ public class StatisticTestUtils {
     private static BookService bookService;
     private static PredefinedShelfUtils predefinedShelfUtils;
 
-    private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
     public static double totalRating = 0.0;
 
     private StatisticTestUtils() {}
@@ -90,7 +88,7 @@ public class StatisticTestUtils {
     }
 
     private static void updateTotalRating(RatingScale ratingScale) {
-        Double rating = converter.convertToPresentation(ratingScale, null);
+        Double rating = RatingScale.toDouble(ratingScale);
         if (rating != null) {
             totalRating += rating;
         }

@@ -48,16 +48,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @IntegrationTest
 @WebAppConfiguration
-public class ReadingGoalViewTest {
+class ReadingGoalViewTest {
     private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
     private ReadingGoalService goalService;
     private PredefinedShelfService predefinedShelfService;
     private PredefinedShelfUtils predefinedShelfUtils;
     private ReadingGoalView goalView;
+
+    private final int GOAL_TARGET = 52;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -79,14 +80,11 @@ public class ReadingGoalViewTest {
         goalView = new ReadingGoalView(goalService, predefinedShelfService);
     }
 
-    /**
-     * Check whether the set goal button text correctly updates when the goal has been updated
-     */
     @Test
-    public void setGoalButtonTextIsCorrect() {
+    void testSetGoalButtonTextUpdatesWhenGoalUpdates() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
-        goalService.save(new ReadingGoal(getRandomGoalTarget(), getRandomGoalType()));
+        goalService.save(new ReadingGoal(GOAL_TARGET, getRandomGoalType()));
         goalView.getCurrentGoal();
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.UPDATE_GOAL);
     }
@@ -96,39 +94,25 @@ public class ReadingGoalViewTest {
         return goalTypes[new Random().nextInt(goalTypes.length)];
     }
 
-    /**
-     * Generates a random goal
-     * @return an integer that represents the goal target
-     */
-    private int getRandomGoalTarget() {
-        return ThreadLocalRandom.current().nextInt(0, 10_000);
-    }
-
-    /**
-     * Tests whether the target message is shown when the goal target has been met
-     */
     @Test
-    public void targetMetMessageShown() {
-        Assumptions.assumeTrue(goalService.findAll().size() == 0);
-        int randomGoalTarget = getRandomGoalTarget();
-
-        // target met:
-        Assertions.assertEquals(
-                ReadingGoalView.TARGET_MET, goalView.calculateProgress(randomGoalTarget, randomGoalTarget));
-        Assertions.assertEquals(ReadingGoalView.TARGET_MET,
-                goalView.calculateProgress(randomGoalTarget, randomGoalTarget + 1));
-        // target not met:
+    void testTargetMetMessageNotShownWhenGoalNotMet() {
         Assertions.assertNotEquals(ReadingGoalView.TARGET_MET,
-                goalView.calculateProgress(randomGoalTarget, randomGoalTarget - 1));
+                goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET - 1));
     }
 
-    /**
-     * Only books that in the read shelf that have a date finished (which will always be this year)
-     * should count towards the reading goal
-     * @param bookService an Autowired book service to access the book repository
-     */
     @Test
-    public void onlyReadBooksCountTowardsGoal(@Autowired BookService bookService) {
+    void testTargetMetMessageShownWhenGoalMet() {
+        Assumptions.assumeTrue(goalService.findAll().size() == 0);
+        Assertions.assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET));
+    }
+
+    @Test
+    void testTargetMetMessageShownWhenGoalExceeded() {
+        Assertions.assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1));
+    }
+
+    @Test
+    void onlyReadBooksWithAFinishDateCountTowardsGoal(@Autowired BookService bookService) {
         int numberOfShelves = predefinedShelfService.findAll().size();
         Assumptions.assumeTrue(numberOfShelves == 4);
         Assumptions.assumeFalse(bookService == null);
@@ -143,21 +127,26 @@ public class ReadingGoalViewTest {
         for (int i = 0; i < booksToAdd; i++) {
             int random = ThreadLocalRandom.current().nextInt(0, numberOfShelves);
             Book book;
-            if (random == 0) {
-                book = createBook(PredefinedShelf.ShelfName.TO_READ);
-            } else if (random == 1) {
-                book = createBook(PredefinedShelf.ShelfName.READING);
-            } else if (random == 2) {
-                book = createBook(PredefinedShelf.ShelfName.READ);
-                if (ThreadLocalRandom.current().nextInt(0, (1 + 1)) == 0) {
-                    // disregard this book in the goal count as it has no finish date
-                    book.setDateFinishedReading(null);
-                } else {
-                    booksInReadShelf++;
-                    pagesReadInReadShelf += book.getNumberOfPages();
-                }
-            } else {
-                book = createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+
+            switch(random) {
+                case 0:
+                    book = createBook(PredefinedShelf.ShelfName.TO_READ);
+                    break;
+                case 1:
+                    book = createBook(PredefinedShelf.ShelfName.READING);
+                    break;
+                case 2:
+                    book = createBook(PredefinedShelf.ShelfName.READ);
+                    if (ThreadLocalRandom.current().nextInt(0, (1 + 1)) == 0) {
+                        // disregard this book in the goal count as it has no finish date
+                        book.setDateFinishedReading(null);
+                    } else {
+                        booksInReadShelf++;
+                        pagesReadInReadShelf += book.getNumberOfPages();
+                    }
+                    break;
+                default:
+                    book = createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH);
             }
             bookService.save(book);
         }
@@ -180,32 +169,17 @@ public class ReadingGoalViewTest {
         Book book = new Book("Title", new Author("Joe", "Bloggs"),
                 predefinedShelfUtils.findReadShelf());
         if (shelfName.equals(PredefinedShelf.ShelfName.READ)) {
-            book.setDateFinishedReading(generateRandomDate());
+            book.setDateFinishedReading(LocalDate.now());
         }
         book.setNumberOfPages(ThreadLocalRandom.current().nextInt(300, (1000 + 1)));
         return book;
     }
 
-    /**
-     * Generates a new random date that is in the same year as the current year
-     * @return a new random LocalDate
-     */
-    private LocalDate generateRandomDate() {
-        // important to get the current year for the reading goal to work
-        int year = LocalDate.now().getYear();
-        int day = ThreadLocalRandom.current().nextInt(1, (27 + 1));
-        int month = ThreadLocalRandom.current().nextInt(1, (12 + 1));
-        return LocalDate.of(year, month, day);
-    }
-
-    /**
-     * Checks whether the right information is shown depending on whether the goal type is set to pages or books
-     */
     @Test
-    public void correctInformationShownForGoalType() {
+    void correctInformationShownForGoalType() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
 
-        ReadingGoal booksGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
+        ReadingGoal booksGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
         goalService.save(booksGoal);
         goalView.getCurrentGoal();
         // should be visible for both a book or pages goal
@@ -221,7 +195,7 @@ public class ReadingGoalViewTest {
         if (booksGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
             // Additional components that should be visible for a books goal
             Assertions.assertTrue(goalView.goalProgress.isVisible());
-            if(hasReachedGoal) {
+            if (hasReachedGoal) {
                 Assertions.assertFalse(goalView.booksToReadOnAverageToMeetGoal.isVisible());
             } else {
                 Assertions.assertTrue(goalView.booksToReadOnAverageToMeetGoal.isVisible());
@@ -229,14 +203,11 @@ public class ReadingGoalViewTest {
         }
     }
 
-    /**
-     * Checks whether the right information is shown when a goal is set/updated.
-     */
     @Test
-    public void correctInformationShownWhenGoalIsUpdated() {
+    void correctInformationShownWhenGoalIsSetOrUpdated() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
 
-        ReadingGoal readingGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
+        ReadingGoal readingGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
         goalService.save(readingGoal);
         goalView.getCurrentGoal();
         // should be visible for both a book or pages goal

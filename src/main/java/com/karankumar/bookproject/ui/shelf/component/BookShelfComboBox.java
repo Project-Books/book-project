@@ -25,7 +25,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
+import java.util.List;
 import java.util.logging.Level;
+
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
 
 @Log
 public class BookShelfComboBox {
@@ -42,7 +45,9 @@ public class BookShelfComboBox {
     }
 
     public void updateShelfList() {
-        allShelvesList.setItems(ShelfUtils.findAllShelfNames(customShelfService.findAll()));
+        List<String> shelves = ShelfUtils.findAllShelfNames(customShelfService.findAll());
+        shelves.add(0, ALL_BOOKS_SHELF);
+        allShelvesList.setItems(shelves);
     }
 
     public void bind(BooksInShelfView view) {

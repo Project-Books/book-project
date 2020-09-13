@@ -9,19 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @DataJpaIntegrationTest
-public class BookRepositoryTest {
+class BookRepositoryTest {
 
-    @Autowired
-    private PredefinedShelfRepository shelfRepository;
-
-    @Autowired
-    private AuthorRepository authorRepository;
-
-    @Autowired
-    private BookRepository bookRepository;
+    @Autowired private PredefinedShelfRepository shelfRepository;
+    @Autowired private AuthorRepository authorRepository;
+    @Autowired private BookRepository bookRepository;
 
     PredefinedShelf predefinedShelf;
 
