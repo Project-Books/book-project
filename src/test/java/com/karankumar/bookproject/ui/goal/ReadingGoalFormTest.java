@@ -58,17 +58,12 @@ public class ReadingGoalFormTest {
         goalService.deleteAll(); // reset
     }
 
-    private ReadingGoal.GoalType getRandomGoalType() {
-        ReadingGoal.GoalType[] goalTypes = ReadingGoal.GoalType.values();
-        return goalTypes[new Random().nextInt(goalTypes.length)];
-    }
-
     @Test
     public void onlyTargetGoalOfAtLeastOneIsValid() {
         ReadingGoalForm goalForm = new ReadingGoalForm();
 
         goalForm.targetToRead.setValue(1);
-        goalForm.chooseGoalType.setValue(getRandomGoalType());
+        goalForm.chooseGoalType.setValue(ReadingGoal.GoalType.BOOKS);
         goalForm.saveButton.click();
         Assertions.assertTrue(goalForm.binder.isValid());
 
