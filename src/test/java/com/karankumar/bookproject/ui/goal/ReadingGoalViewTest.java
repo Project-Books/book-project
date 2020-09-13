@@ -133,21 +133,26 @@ class ReadingGoalViewTest {
         for (int i = 0; i < booksToAdd; i++) {
             int random = ThreadLocalRandom.current().nextInt(0, numberOfShelves);
             Book book;
-            if (random == 0) {
-                book = createBook(PredefinedShelf.ShelfName.TO_READ);
-            } else if (random == 1) {
-                book = createBook(PredefinedShelf.ShelfName.READING);
-            } else if (random == 2) {
-                book = createBook(PredefinedShelf.ShelfName.READ);
-                if (ThreadLocalRandom.current().nextInt(0, (1 + 1)) == 0) {
-                    // disregard this book in the goal count as it has no finish date
-                    book.setDateFinishedReading(null);
-                } else {
-                    booksInReadShelf++;
-                    pagesReadInReadShelf += book.getNumberOfPages();
-                }
-            } else {
-                book = createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+
+            switch(random) {
+                case 0:
+                    book = createBook(PredefinedShelf.ShelfName.TO_READ);
+                    break;
+                case 1:
+                    book = createBook(PredefinedShelf.ShelfName.READING);
+                    break;
+                case 2:
+                    book = createBook(PredefinedShelf.ShelfName.READ);
+                    if (ThreadLocalRandom.current().nextInt(0, (1 + 1)) == 0) {
+                        // disregard this book in the goal count as it has no finish date
+                        book.setDateFinishedReading(null);
+                    } else {
+                        booksInReadShelf++;
+                        pagesReadInReadShelf += book.getNumberOfPages();
+                    }
+                    break;
+                default:
+                    book = createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH);
             }
             bookService.save(book);
         }
