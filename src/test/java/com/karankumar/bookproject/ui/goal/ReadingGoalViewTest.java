@@ -48,7 +48,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @IntegrationTest
 @WebAppConfiguration
-public class ReadingGoalViewTest {
+class ReadingGoalViewTest {
     private static Routes routes;
 
     @Autowired
@@ -83,7 +83,7 @@ public class ReadingGoalViewTest {
      * Check whether the set goal button text correctly updates when the goal has been updated
      */
     @Test
-    public void setGoalButtonTextIsCorrect() {
+    void setGoalButtonTextIsCorrect() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
         goalService.save(new ReadingGoal(getRandomGoalTarget(), getRandomGoalType()));
@@ -108,7 +108,7 @@ public class ReadingGoalViewTest {
      * Tests whether the target message is shown when the goal target has been met
      */
     @Test
-    public void targetMetMessageShown() {
+    void targetMetMessageShown() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         int randomGoalTarget = getRandomGoalTarget();
 
@@ -128,7 +128,7 @@ public class ReadingGoalViewTest {
      * @param bookService an Autowired book service to access the book repository
      */
     @Test
-    public void onlyReadBooksCountTowardsGoal(@Autowired BookService bookService) {
+    void onlyReadBooksCountTowardsGoal(@Autowired BookService bookService) {
         int numberOfShelves = predefinedShelfService.findAll().size();
         Assumptions.assumeTrue(numberOfShelves == 4);
         Assumptions.assumeFalse(bookService == null);
@@ -202,7 +202,7 @@ public class ReadingGoalViewTest {
      * Checks whether the right information is shown depending on whether the goal type is set to pages or books
      */
     @Test
-    public void correctInformationShownForGoalType() {
+    void correctInformationShownForGoalType() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
 
         ReadingGoal booksGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
@@ -233,7 +233,7 @@ public class ReadingGoalViewTest {
      * Checks whether the right information is shown when a goal is set/updated.
      */
     @Test
-    public void correctInformationShownWhenGoalIsUpdated() {
+    void correctInformationShownWhenGoalIsUpdated() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
 
         ReadingGoal readingGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
