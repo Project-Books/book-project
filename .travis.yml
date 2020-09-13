@@ -1,9 +1,21 @@
 language: java
 jdk:
-  - openjdk11
-  - oraclejdk11
+- openjdk11
+- oraclejdk11
 cache:
   directories:
-    - $HOME/.m2
+  - "$HOME/.m2"
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
+addons:
+  sonarcloud:
+    organization: "project-books"
+    token:
+      secure: "**************************" # encrypted value of your token
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+env:
+  global:
+    secure: rQ8I8bawT21OlBxaEXMlY+puv8Ye6AIyOdUJI00T9296aCAl+y9l6cNfs0fIa1cxLQI2ijJ9RoTXGdmfHyqbSBLZmEPBd8+ta2c8kUiE+REUE5tyL2KBxnveXdlLNbg7zFeacCVyY4z5tyrrGb94XNEQqPm38W+X7Rz+KQ2s7AWQ89KFZH+opY3qAVQVtZHrEsCqTaX8gPu+p2g94X8alj11dKZurfPDiQp7ImnMdzTHmyMT4uH7Wn398dnN4TfDSdgkbTXMTr1NY3qPQYVMZ6hIUro9kvykd4b3d/5rl1lioNcTVJjw1vxJ/9ZUWoRpkF0nRmKZc/UTzUQiIjieQ3nnQsPyWup6HQfatyu2Rxq7YZl/75rn4ujS0rwobG1KNf9wW1xF2onbQJZmyyhYi8Tc6iknCPcVMkelLozLMTjfAkuCUaic4his9EDkzxQZJ67Uah/PBjb+/PQB9DMlD4XsDyHmx7Wq8pqN2BvXRXoss4y13/a4KDXOTwyFYIBBjmcuP6KCct7TOAU7edpJGKD52ioe9x2RPmKf8pGJRLtRkdHLs3tPSC9cBlHJN1DXFs0aoNvxa7KhR7zSPA8Kn3DRElrCKPoxFLMBdd4YXhQ/oeJbniEs1aSTeJLFqUWFVCw/DtG28N2RDgfbrv+eca2Em1IVMhTqx1+S3EZgIg8=
