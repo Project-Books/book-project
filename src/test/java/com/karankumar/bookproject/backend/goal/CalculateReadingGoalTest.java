@@ -23,7 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class CalculateReadingGoalTest {
-    private int booksToRead = 52;
+    private final int BOOKS_TO_READ = 52;
+
     @Test
     public void progressValueCorrect() {
         int toRead = 25;
@@ -37,7 +38,7 @@ public class CalculateReadingGoalTest {
     @Test
     public void testProgressWhenGoalMet() {
         Assertions.assertEquals(
-                CalculateReadingGoal.calculateProgressTowardsReadingGoal(booksToRead, booksToRead),
+                CalculateReadingGoal.calculateProgressTowardsReadingGoal(BOOKS_TO_READ, BOOKS_TO_READ),
                 1.0
         );
     }
@@ -45,7 +46,7 @@ public class CalculateReadingGoalTest {
     @Test
     public void testProgressWhenGoalExceeded() {
         Assertions.assertEquals(
-                CalculateReadingGoal.calculateProgressTowardsReadingGoal(booksToRead, (booksToRead + 1)),
+                CalculateReadingGoal.calculateProgressTowardsReadingGoal(BOOKS_TO_READ, (BOOKS_TO_READ + 1)),
                 1.0
         );
     }
