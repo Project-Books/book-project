@@ -9,13 +9,11 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 addons:
   sonarcloud:
-    organization: "project-books"
+    organization: project-books
     token:
-      secure: "**************************" # encrypted value of your token
-
+      secure: "**************************"
 script:
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 env:
   global:
-    secure: rQ8I8bawT21OlBxaEXMlY+puv8Ye6AIyOdUJI00T9296aCAl+y9l6cNfs0fIa1cxLQI2ijJ9RoTXGdmfHyqbSBLZmEPBd8+ta2c8kUiE+REUE5tyL2KBxnveXdlLNbg7zFeacCVyY4z5tyrrGb94XNEQqPm38W+X7Rz+KQ2s7AWQ89KFZH+opY3qAVQVtZHrEsCqTaX8gPu+p2g94X8alj11dKZurfPDiQp7ImnMdzTHmyMT4uH7Wn398dnN4TfDSdgkbTXMTr1NY3qPQYVMZ6hIUro9kvykd4b3d/5rl1lioNcTVJjw1vxJ/9ZUWoRpkF0nRmKZc/UTzUQiIjieQ3nnQsPyWup6HQfatyu2Rxq7YZl/75rn4ujS0rwobG1KNf9wW1xF2onbQJZmyyhYi8Tc6iknCPcVMkelLozLMTjfAkuCUaic4his9EDkzxQZJ67Uah/PBjb+/PQB9DMlD4XsDyHmx7Wq8pqN2BvXRXoss4y13/a4KDXOTwyFYIBBjmcuP6KCct7TOAU7edpJGKD52ioe9x2RPmKf8pGJRLtRkdHLs3tPSC9cBlHJN1DXFs0aoNvxa7KhR7zSPA8Kn3DRElrCKPoxFLMBdd4YXhQ/oeJbniEs1aSTeJLFqUWFVCw/DtG28N2RDgfbrv+eca2Em1IVMhTqx1+S3EZgIg8=
+  - secure: djMbWesx8rDY81mgKCQCkDXANb9VBaAeNHZYO5pKj4NySewkatw70ph7m5ZFAZ09wFNYPz/vtMP8I6nRWBZ+wXfTurvKNK8fwort5Jc8dnIbLNXx/Y1nThD++pt/pKjrExjE1QJRWpgIwBjH9ipfEYv+cut+9m84rX/sire5+V1NlAfiXEvwuN/1W9Eb2D7QureiHTPaaDl9ze/Pt6q8JDeORMzUEF+WxHmJqiAppC3dPUbmYf/nYkla7RorurCl/opsWB/8L33ZQn5+lRqUaklzbilxx/PQ1rjdG1C5yt4F7GnpPDlfmeigv5EC6UoRjHLgWu9z7JXNyJf6d9sNjObDITu6cQalXxcEAO0VkamxvLR4Z/uMk7IXG8Z0/w0jacUcCu63pgdOXrIylGSPL8b9fcQGq9+fEc7+AAi6VAvyyU3VuF4Kk+EtDlcyBWOAs2v5rKTg/7KLsVHHltsUpKORHy7x+wjbHLdH7xIcw1i8H6/lM32hYVCV8DRFSFy5pgLZ/NcvsdlZI29zyt1iMrB2AbfpgBlqlvJdYAG/w0r6jGqGZpyAlsOAvnfJ3dUR8g16MMOYT1MXzuZoeUl6a/FB84eBZ06cM94t6WwGKgxezeaXDIgWirbKDFMTfMMvfFFup7naMHn9fPjxYvWPwoYN/udJ8zrtKkPfwzLWcvs=
