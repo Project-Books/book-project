@@ -165,23 +165,19 @@ class ReadingGoalViewTest {
 
     /**
      * Creates a book in the specified shelf
-     * @param shelfName the name of the shelf to place the book in
-     * @return a new Book
      */
     private Book createBook(PredefinedShelf.ShelfName shelfName) {
-        // important not to create a new predefined shelf
-        Book book = new Book("Title", new Author("Joe", "Bloggs"),
-                predefinedShelfUtils.findReadShelf());
+        Book book = new Book("Title", new Author("Joe", "Bloggs"), predefinedShelfUtils.findReadShelf());
         if (shelfName.equals(PredefinedShelf.ShelfName.READ)) {
             book.setDateFinishedReading(LocalDate.now());
         }
-        book.setNumberOfPages(ThreadLocalRandom.current().nextInt(300, (1000 + 1)));
+        book.setNumberOfPages(300);
         return book;
     }
 
     @Test
     void correctInformationShownWhenGoalIsSetOrUpdated() {
-        Assumptions.assumeTrue(goalService.findAll().size() == 0);
+        Assumptions.assumeTrue(goalService.findAll().isEmpty());
 
         ReadingGoal readingGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
         goalService.save(readingGoal);
@@ -199,7 +195,7 @@ class ReadingGoalViewTest {
         if (readingGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
             // Additional components that should be visible for a books goal
             Assertions.assertTrue(goalView.goalProgress.isVisible());
-            if(hasReachedGoal) {
+            if (hasReachedGoal) {
                 Assertions.assertFalse(goalView.booksToReadOnAverageToMeetGoal.isVisible());
             } else {
                 Assertions.assertTrue(goalView.booksToReadOnAverageToMeetGoal.isVisible());
