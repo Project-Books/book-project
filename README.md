@@ -15,6 +15,9 @@
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
     <img src="https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab" alt="Code quality" />
   </a>
+  <a href="https://sonarcloud.io/dashboard?id=com.karankumar%3Abook-project">
+	<img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
+  </a>
 </p>
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
