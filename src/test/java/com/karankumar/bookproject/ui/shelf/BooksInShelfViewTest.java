@@ -125,7 +125,7 @@ public class BooksInShelfViewTest {
             case READING:
                 expectedColumns = expectedReadingColumns;
                 break;
-            case DID_NOT_FINISH: // intentional
+            case DID_NOT_FINISH:
                 expectedColumns = expectedDidNotFinishColumns;
                 break;
             case READ:
