@@ -59,6 +59,8 @@ class ReadingGoalViewTest {
     private PredefinedShelfUtils predefinedShelfUtils;
     private ReadingGoalView goalView;
 
+    private final int GOAL_TARGET = 52;
+
     @BeforeAll
     public static void discoverRoutes() {
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
@@ -83,7 +85,7 @@ class ReadingGoalViewTest {
     void testSetGoalButtonTextUpdatesWhenGoalUpdates() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
-        goalService.save(new ReadingGoal(getRandomGoalTarget(), getRandomGoalType()));
+        goalService.save(new ReadingGoal(GOAL_TARGET, getRandomGoalType()));
         goalView.getCurrentGoal();
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.UPDATE_GOAL);
     }
@@ -93,27 +95,18 @@ class ReadingGoalViewTest {
         return goalTypes[new Random().nextInt(goalTypes.length)];
     }
 
-    /**
-     * Generates a random goal
-     * @return an integer that represents the goal target
-     */
-    private int getRandomGoalTarget() {
-        return ThreadLocalRandom.current().nextInt(0, 10_000);
-    }
-
     @Test
     void testTargetMetMessageShownWhenGoalMet() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
-        int randomGoalTarget = getRandomGoalTarget();
 
         // target met:
         Assertions.assertEquals(
-                ReadingGoalView.TARGET_MET, goalView.calculateProgress(randomGoalTarget, randomGoalTarget));
+                ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET));
         Assertions.assertEquals(ReadingGoalView.TARGET_MET,
-                goalView.calculateProgress(randomGoalTarget, randomGoalTarget + 1));
+                goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1));
         // target not met:
         Assertions.assertNotEquals(ReadingGoalView.TARGET_MET,
-                goalView.calculateProgress(randomGoalTarget, randomGoalTarget - 1));
+                goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET - 1));
     }
 
     /**
@@ -196,7 +189,7 @@ class ReadingGoalViewTest {
     void correctInformationShownForGoalType() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
 
-        ReadingGoal booksGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
+        ReadingGoal booksGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
         goalService.save(booksGoal);
         goalView.getCurrentGoal();
         // should be visible for both a book or pages goal
@@ -224,7 +217,7 @@ class ReadingGoalViewTest {
     void correctInformationShownWhenGoalIsSetOrUpdated() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
 
-        ReadingGoal readingGoal = new ReadingGoal(getRandomGoalTarget(), getRandomGoalType());
+        ReadingGoal readingGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
         goalService.save(readingGoal);
         goalView.getCurrentGoal();
         // should be visible for both a book or pages goal
