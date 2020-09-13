@@ -170,22 +170,10 @@ class ReadingGoalViewTest {
         Book book = new Book("Title", new Author("Joe", "Bloggs"),
                 predefinedShelfUtils.findReadShelf());
         if (shelfName.equals(PredefinedShelf.ShelfName.READ)) {
-            book.setDateFinishedReading(generateRandomDate());
+            book.setDateFinishedReading(LocalDate.now());
         }
         book.setNumberOfPages(ThreadLocalRandom.current().nextInt(300, (1000 + 1)));
         return book;
-    }
-
-    /**
-     * Generates a new random date that is in the same year as the current year
-     * @return a new random LocalDate
-     */
-    private LocalDate generateRandomDate() {
-        // important to get the current year for the reading goal to work
-        int year = LocalDate.now().getYear();
-        int day = ThreadLocalRandom.current().nextInt(1, (27 + 1));
-        int month = ThreadLocalRandom.current().nextInt(1, (12 + 1));
-        return LocalDate.of(year, month, day);
     }
 
     @Test
