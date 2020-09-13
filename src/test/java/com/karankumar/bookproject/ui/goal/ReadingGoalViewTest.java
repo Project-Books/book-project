@@ -96,17 +96,20 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void testTargetMetMessageShownWhenGoalMet() {
-        Assumptions.assumeTrue(goalService.findAll().size() == 0);
-
-        // target met:
-        Assertions.assertEquals(
-                ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET));
-        Assertions.assertEquals(ReadingGoalView.TARGET_MET,
-                goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1));
-        // target not met:
+    void testTargetMetMessageNotShownWhenGoalNotMet() {
         Assertions.assertNotEquals(ReadingGoalView.TARGET_MET,
                 goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET - 1));
+    }
+
+    @Test
+    void testTargetMetMessageShownWhenGoalMet() {
+        Assumptions.assumeTrue(goalService.findAll().size() == 0);
+        Assertions.assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET));
+    }
+
+    @Test
+    void testTargetMetMessageShownWhenGoalExceeded() {
+        Assertions.assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1));
     }
 
     /**
