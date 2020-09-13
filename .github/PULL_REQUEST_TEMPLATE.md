@@ -12,7 +12,7 @@
 
 ## Pull request checklist
 
-Please ensure you have done the following:
+Please keep this checklist in & ensure you have done the following:
 
 - [ ] Read, understood and adhered to our [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
   - [ ] Ensure that you were first assigned to a relevant issue before creating this pull request
