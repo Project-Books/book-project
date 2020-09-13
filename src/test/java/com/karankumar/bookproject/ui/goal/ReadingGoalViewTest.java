@@ -51,8 +51,7 @@ import java.util.concurrent.ThreadLocalRandom;
 class ReadingGoalViewTest {
     private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
     private ReadingGoalService goalService;
     private PredefinedShelfService predefinedShelfService;
@@ -112,13 +111,8 @@ class ReadingGoalViewTest {
         Assertions.assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1));
     }
 
-    /**
-     * Only books that in the read shelf that have a date finished (which will always be this year)
-     * should count towards the reading goal
-     * @param bookService an Autowired book service to access the book repository
-     */
     @Test
-    void onlyReadBooksCountTowardsGoal(@Autowired BookService bookService) {
+    void onlyReadBooksWithAFinishDateCountTowardsGoal(@Autowired BookService bookService) {
         int numberOfShelves = predefinedShelfService.findAll().size();
         Assumptions.assumeTrue(numberOfShelves == 4);
         Assumptions.assumeFalse(bookService == null);
