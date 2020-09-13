@@ -17,18 +17,20 @@
 
 package com.karankumar.bookproject.backend.utils;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.Shelf;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import lombok.extern.java.Log;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+import com.karankumar.bookproject.backend.entity.Shelf;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+
+import lombok.extern.java.Log;
 
 @Log
 public class PredefinedShelfUtils {
@@ -88,11 +90,7 @@ public class PredefinedShelfUtils {
     }
 
     public static boolean isPredefinedShelf(String shelfName) {
-        List<String> predefinedShelfNames = new ArrayList<>();
-        for (PredefinedShelf.ShelfName predefinedShelfName : PredefinedShelf.ShelfName.values()) {
-            predefinedShelfNames.add(predefinedShelfName.toString());
-        }
-        return predefinedShelfNames.contains(shelfName);
+        return Arrays.stream(ShelfName.values()).map(ShelfName::toString).anyMatch(shelfName::equalsIgnoreCase);
     }
 
     /**

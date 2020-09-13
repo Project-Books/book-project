@@ -42,7 +42,7 @@ public class PredefinedShelfUtilsTest {
 
         PREDEFINED_SHELVES.stream().map(String::toLowerCase).forEach(shelfName -> {
             String errorMsg = MessageFormat.format(ERROR_MSG, shelfName);
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName)).as(errorMsg).isFalse();
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName)).as(errorMsg).isTrue();
         });
 
         softly.assertAll();
@@ -54,7 +54,7 @@ public class PredefinedShelfUtilsTest {
 
         PREDEFINED_SHELVES.stream().map(String::toUpperCase).forEach(shelfName -> {
             String errorMsg = MessageFormat.format(ERROR_MSG, shelfName);
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName)).as(errorMsg).isFalse();
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName)).as(errorMsg).isTrue();
         });
 
         softly.assertAll();
