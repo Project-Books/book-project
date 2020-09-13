@@ -29,4 +29,4 @@ Please ensure you have done the following:
 
 - [ ] Resolved any merge conflicts
 
-If in doubt, get in touch with us via our [Gitter room](https://gitter.im/book-project-community/community)
+If in doubt, get in touch with us via our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)
