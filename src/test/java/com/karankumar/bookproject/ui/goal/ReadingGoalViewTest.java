@@ -43,8 +43,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.karankumar.bookproject.backend.utils.DateUtils.dateIsInCurrentYear;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -52,6 +56,7 @@ class ReadingGoalViewTest {
     private static Routes routes;
 
     @Autowired private ApplicationContext ctx;
+    @Autowired private BookService bookService;
 
     private ReadingGoalService goalService;
     private PredefinedShelfService predefinedShelfService;
@@ -112,44 +117,20 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void onlyReadBooksWithAFinishDateCountTowardsGoal(@Autowired BookService bookService) {
+    void onlyReadBooksWithAFinishDateCountTowardsGoal() {
         int numberOfShelves = predefinedShelfService.findAll().size();
         Assumptions.assumeTrue(numberOfShelves == 4);
         Assumptions.assumeFalse(bookService == null);
 
         resetBookService(bookService);
-        Assumptions.assumeTrue(bookService.findAll().size() == 0);
+        Assumptions.assumeTrue(bookService.findAll().isEmpty());
 
-        // Add books to all shelves (books in the read shelf must have a non-null finish date)
-        int booksToAdd = ThreadLocalRandom.current().nextInt(10, (100 + 1));
-        int booksInReadShelf = 0;
-        int pagesReadInReadShelf = 0;
-        for (int i = 0; i < booksToAdd; i++) {
-            int random = ThreadLocalRandom.current().nextInt(0, numberOfShelves);
-            Book book;
+        addBooksToAllShelves(numberOfShelves);
 
-            switch(random) {
-                case 0:
-                    book = createBook(PredefinedShelf.ShelfName.TO_READ);
-                    break;
-                case 1:
-                    book = createBook(PredefinedShelf.ShelfName.READING);
-                    break;
-                case 2:
-                    book = createBook(PredefinedShelf.ShelfName.READ);
-                    if (ThreadLocalRandom.current().nextInt(0, (1 + 1)) == 0) {
-                        // disregard this book in the goal count as it has no finish date
-                        book.setDateFinishedReading(null);
-                    } else {
-                        booksInReadShelf++;
-                        pagesReadInReadShelf += book.getNumberOfPages();
-                    }
-                    break;
-                default:
-                    book = createBook(PredefinedShelf.ShelfName.DID_NOT_FINISH);
-            }
-            bookService.save(book);
-        }
+        List<Book> allBooks = bookService.findAll();
+        int booksInReadShelf = findHowManyBooksInReadShelfWithFinishDate(allBooks);
+        int pagesReadInReadShelf = findHowManyPagesInReadShelfWithFinishDate(allBooks);
+        System.out.println("Pages read " + pagesReadInReadShelf);
 
         PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
         Assumptions.assumeTrue(readShelf != null);
@@ -159,6 +140,58 @@ class ReadingGoalViewTest {
                 CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
     }
 
+    private void addBooksToAllShelves(int numberOfShelves) {
+        int booksToAdd = 100;
+        for (int i = 0; i < booksToAdd; i++) {
+            int random = ThreadLocalRandom.current().nextInt(0, numberOfShelves);
+            Book book;
+
+            switch(random) {
+                case 0:
+                    book = createBook(ShelfName.TO_READ);
+                    break;
+                case 1:
+                    book = createBook(ShelfName.READING);
+                    break;
+                case 2:
+                    book = createBook(ShelfName.READ);
+                    if (ThreadLocalRandom.current().nextInt(0, 2) == 0) {
+                        book.setDateFinishedReading(null);
+                    }
+                    break;
+                default:
+                    book = createBook(ShelfName.DID_NOT_FINISH);
+            }
+            bookService.save(book);
+        }
+    }
+
+    private int findHowManyBooksInReadShelfWithFinishDate(List<Book> books) {
+        int count = 0;
+        for (Book book : books) {
+            ShelfName predefinedShelfName = book.getPredefinedShelf().getPredefinedShelfName();
+            if (predefinedShelfName.equals(ShelfName.READ) && book.getDateFinishedReading() != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int findHowManyPagesInReadShelfWithFinishDate(List<Book> books) {
+        int count = 0;
+        for (Book book : books) {
+            ShelfName predefinedShelfName = book.getPredefinedShelf().getPredefinedShelfName();
+            if (book.getDateFinishedReading() != null) {
+                LocalDate dateFinished = book.getDateFinishedReading();
+                if (predefinedShelfName.equals(ShelfName.READ) && book.getNumberOfPages() != null &&
+                        dateFinished != null && dateIsInCurrentYear(dateFinished)) {
+                    count += book.getNumberOfPages();
+                }
+            }
+        }
+        return count;
+    }
+
     private void resetBookService(BookService bookService) {
         bookService.deleteAll();
     }
@@ -166,9 +199,9 @@ class ReadingGoalViewTest {
     /**
      * Creates a book in the specified shelf
      */
-    private Book createBook(PredefinedShelf.ShelfName shelfName) {
+    private Book createBook(ShelfName shelfName) {
         Book book = new Book("Title", new Author("Joe", "Bloggs"), predefinedShelfUtils.findReadShelf());
-        if (shelfName.equals(PredefinedShelf.ShelfName.READ)) {
+        if (shelfName.equals(ShelfName.READ)) {
             book.setDateFinishedReading(LocalDate.now());
         }
         book.setNumberOfPages(300);
@@ -182,6 +215,7 @@ class ReadingGoalViewTest {
         ReadingGoal readingGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
         goalService.save(readingGoal);
         goalView.getCurrentGoal();
+
         // should be visible for both a book or pages goal
         Assertions.assertTrue(goalView.readingGoalSummary.isVisible());
         Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
