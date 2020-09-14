@@ -39,26 +39,17 @@ public class GenreStatisticsTest {
     }
 
     @Test
-    public void mostReadGenreExistsAndIsFound() {
-        Assertions.assertEquals(
-                genreStatistics.findMostReadGenre(),
-                StatisticTestUtils.mostReadGenre
-        );
+    void mostReadGenreExistsAndIsFound() {
+        Assertions.assertEquals(genreStatistics.findMostReadGenre(), StatisticTestUtils.mostReadGenre );
     }
 
     @Test
-    public void mostLikedGenreExistsAndIsFound() {
-        Assertions.assertEquals(
-                genreStatistics.findMostLikedGenre(),
-                StatisticTestUtils.mostLikedGenre
-        );
+    void mostLikedGenreExistsAndIsFound() {
+        Assertions.assertEquals(genreStatistics.findMostLikedGenre(), StatisticTestUtils.mostLikedGenre);
     }
 
     @Test
-    public void leastLikedGenreExistsAndIsFound() {
-        Assertions.assertEquals(
-                genreStatistics.findLeastLikedGenre(),
-                StatisticTestUtils.leastLikedGenre
-        );
+    void leastLikedGenreExistsAndIsFound() {
+        Assertions.assertEquals(genreStatistics.findLeastLikedGenre(), StatisticTestUtils.leastLikedGenre);
     }
 }
