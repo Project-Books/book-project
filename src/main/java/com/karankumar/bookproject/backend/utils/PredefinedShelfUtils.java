@@ -92,7 +92,9 @@ public class PredefinedShelfUtils {
     }
 
     public static boolean isPredefinedShelf(String shelfName) {
-        return Arrays.stream(ShelfName.values()).map(ShelfName::toString).anyMatch(shelfName::equalsIgnoreCase);
+        return Arrays.stream(ShelfName.values())
+                     .map(ShelfName::toString)
+                     .anyMatch(shelfName::equalsIgnoreCase);
     }
 
     /**
