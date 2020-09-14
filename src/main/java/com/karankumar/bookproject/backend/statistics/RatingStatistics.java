@@ -40,7 +40,7 @@ public class RatingStatistics extends Statistics {
      * If there are multiple books with the same highest rating, the first one found will be returned
      */
     public Book findMostLikedBook() {
-        if (readBooksRated.size() == 0) {
+        if (readBooksRated.isEmpty()) {
             return null;
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
@@ -61,7 +61,7 @@ public class RatingStatistics extends Statistics {
      * If there are multiple books with the same lowest rating, the first one found will be returned
      */
     public Book findLeastLikedBook() {
-        if (readBooksRated.size() == 0) {
+        if (readBooksRated.isEmpty()) {
             return null;
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
