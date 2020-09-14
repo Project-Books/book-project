@@ -41,12 +41,8 @@ class PredefinedShelfTest {
         bookService.deleteAll(); // reset
     }
 
-    /**
-     * A {@link com.karankumar.bookproject.backend.entity.PredefinedShelf} without any books should
-     * still exist
-     */
     @Test
-    void orphanShelfExists() {
+    void testBooksWithoutPredefinedShelfShouldStillExist() {
         Assumptions.assumeTrue(shelfService != null);
         List<PredefinedShelf> shelves = PredefinedShelfTest.shelfService.findAll();
 
