@@ -63,7 +63,7 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 
 @IntegrationTest
 @WebAppConfiguration
-public class BookFormTest {
+class BookFormTest {
 
     private static final String firstName = "Nick";
     private static final String lastName = "Bostrom";
@@ -89,12 +89,9 @@ public class BookFormTest {
 
     private static PredefinedShelfUtils predefinedShelfUtils;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
-    @Autowired
-    private BookService bookService;
-
+    @Autowired private BookService bookService;
     @Autowired private PredefinedShelfService predefinedShelfService;
     @Autowired private CustomShelfService customShelfService;
 

@@ -39,7 +39,7 @@ import java.util.Random;
 
 @IntegrationTest
 @WebAppConfiguration
-public class ReadingGoalFormTest {
+class ReadingGoalFormTest {
     private static Routes routes;
 
     @Autowired private ApplicationContext ctx;
@@ -59,7 +59,7 @@ public class ReadingGoalFormTest {
     }
 
     @Test
-    public void onlyTargetGoalOfAtLeastOneIsValid() {
+    void onlyTargetGoalOfAtLeastOneIsValid() {
         ReadingGoalForm goalForm = new ReadingGoalForm();
 
         goalForm.targetToRead.setValue(1);
