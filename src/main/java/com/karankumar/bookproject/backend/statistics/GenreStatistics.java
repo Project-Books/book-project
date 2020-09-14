@@ -85,7 +85,7 @@ public class GenreStatistics extends Statistics {
     public BookGenre findMostLikedGenre() {
         BookGenre mostLikedBookGenre = null;
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
-        if (genreRatings.size() > 0) {
+        if (!genreRatings.isEmpty()) {
             mostLikedBookGenre = genreRatings.get(genreRatings.size() - 1)
                                          .getKey();
         }
@@ -129,11 +129,10 @@ public class GenreStatistics extends Statistics {
         BookGenre leastLikedBookGenre = null;
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
         System.out.println("Genre ratings: " + genreRatings);
-        if (genreRatings.size() > 0) {
+        if (!genreRatings.isEmpty()) {
             leastLikedBookGenre = genreRatings.get(0)
                                           .getKey();
         }
-
         return leastLikedBookGenre;
     }
 
