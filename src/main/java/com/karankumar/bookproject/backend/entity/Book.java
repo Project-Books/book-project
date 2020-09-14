@@ -48,7 +48,7 @@ public class Book extends BaseEntity {
     private String title;
     private Integer numberOfPages;
     private Integer pagesRead;
-    private Genre genre;
+    private BookGenre bookGenre;
     private Integer seriesPosition;
     private String edition;
     private String bookRecommendedBy;

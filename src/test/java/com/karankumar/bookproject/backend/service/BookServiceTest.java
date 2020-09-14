@@ -18,13 +18,8 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.Tag;
-import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
@@ -149,7 +144,7 @@ class BookServiceTest {
         Book book = new Book("Another Book Name", author, toRead);
         book.setNumberOfPages(420);
         book.setPagesRead(42);
-        book.setGenre(Genre.ADVENTURE);
+        book.setBookGenre(BookGenre.ADVENTURE);
         book.setSeriesPosition(3);
         book.setEdition(2);
         book.setBookRecommendedBy("Peter Parker");
