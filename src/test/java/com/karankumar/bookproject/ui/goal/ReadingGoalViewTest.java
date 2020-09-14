@@ -87,11 +87,15 @@ class ReadingGoalViewTest {
 
     @Test
     void testSetGoalButtonTextUpdatesWhenGoalUpdates() {
-        Assumptions.assumeTrue(goalService.findAll().size() == 0);
+        Assumptions.assumeTrue(goalService.findAll().isEmpty());
         Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
+
         goalService.save(new ReadingGoal(GOAL_TARGET, getRandomGoalType()));
         goalView.getCurrentGoal();
-        Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.UPDATE_GOAL);
+
+        String expectedGoalButtonText = ReadingGoalView.UPDATE_GOAL;
+        String actualGoalButtonText = goalView.setGoalButton.getText();
+        Assertions.assertEquals(expectedGoalButtonText, actualGoalButtonText);
     }
 
     private ReadingGoal.GoalType getRandomGoalType() {
