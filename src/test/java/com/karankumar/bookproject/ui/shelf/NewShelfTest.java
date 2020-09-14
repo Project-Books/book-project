@@ -69,8 +69,7 @@ public class NewShelfTest {
             customShelfService.save(test);
             shelfView.whichShelf.updateShelfList();
 
-            Assertions.assertThrows(IllegalStateException.class,
-                    ()->{shelfView.whichShelf.getAllShelvesList().setValue("UnitTest");});
+            Assertions.assertDoesNotThrow(()->shelfView.whichShelf.getAllShelvesList().setValue("UnitTest"));
         } catch (Exception e) {
             e.printStackTrace();
         }
