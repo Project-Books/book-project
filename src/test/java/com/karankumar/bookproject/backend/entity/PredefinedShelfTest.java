@@ -46,7 +46,7 @@ class PredefinedShelfTest {
      * still exist
      */
     @Test
-    public void orphanShelfExists() {
+    void orphanShelfExists() {
         Assumptions.assumeTrue(shelfService != null);
         List<PredefinedShelf> shelves = PredefinedShelfTest.shelfService.findAll();
 

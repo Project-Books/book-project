@@ -67,7 +67,7 @@ class AuthorTest {
      * originally had the same author name
      */
     @Test
-    public void updateAuthorAffectsOneRow() {
+    void updateAuthorAffectsOneRow() {
         // TODO: fix failing test
 //        Author newAuthor = new Author("Matthew", "Walker");
 //        testBook1.setAuthor(newAuthor);
@@ -77,7 +77,7 @@ class AuthorTest {
     }
 
     @Test
-    public void orphanAuthorsRemoved() {
+    void orphanAuthorsRemoved() {
         Assumptions.assumeTrue(bookService != null);
         bookService.deleteAll(); // reset
 
