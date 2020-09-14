@@ -33,7 +33,6 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
-
 @IntegrationTest
 public class PredefinedShelfUtilsTest {
 
@@ -55,9 +54,9 @@ public class PredefinedShelfUtilsTest {
     private static Book book3 = new Book("someOtherTitle", NO_AUTHOR, readShelf);
     private static Book book4 = new Book("yetAnotherTitle", NO_AUTHOR, didNotFinishShelf);
 
-    private static final List<String> PREDEFINED_SHELVES = List.of("To read", "Reading", "Read", "Did not finish");
-    private static final List<String> INVALID_SHELVES = List.of("Too read", "Readin", "Do not finish", "Shelf");
-    private static final String ERROR_MSG = "Shelf with name ''{0}'' does not match any predefined shelf";
+    private static List<String> PREDEFINED_SHELVES;
+    private static List<String> INVALID_SHELVES;
+    private static String ERROR_MESSAGE;
 
     @BeforeAll
     public static void setupBeforeAll(@Autowired PredefinedShelfService predefinedShelfService) {
@@ -83,6 +82,10 @@ public class PredefinedShelfUtilsTest {
         readingShelf.setBooks(Set.of());
         readShelf.setBooks(Set.of(book3));
         didNotFinishShelf.setBooks(Set.of(book4));
+
+        PREDEFINED_SHELVES = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
+        INVALID_SHELVES = List.of("Too read", "Readin", "Do not finish", "Shelf");
+        ERROR_MESSAGE = "Shelf with name ''{0}'' does not match any predefined shelf";
     }
 
     @Test
@@ -141,48 +144,56 @@ public class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void testAllPredefinedShelves() {
+    void testValidPredefinedShelfNames() {
         SoftAssertions softly = new SoftAssertions();
 
-        PREDEFINED_SHELVES.stream().forEach(shelfName -> {
-            String errorMsg = MessageFormat.format(ERROR_MSG, shelfName);
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName)).as(errorMsg).isTrue();
+        PREDEFINED_SHELVES.forEach(shelfName -> {
+            String errorMsg = MessageFormat.format(ERROR_MESSAGE, shelfName);
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
+                .as(errorMsg)
+                .isTrue();
         });
 
         softly.assertAll();
     }
 
     @Test
-    void testAllPredefinedShelvesLowerCase() {
+    void isPredefinedShelfWorksForLowerCase() {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.stream().map(String::toLowerCase).forEach(shelfName -> {
-            String errorMsg = MessageFormat.format(ERROR_MSG, shelfName);
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName)).as(errorMsg).isTrue();
+            String errorMsg = MessageFormat.format(ERROR_MESSAGE, shelfName);
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
+                .as(errorMsg)
+                .isTrue();
         });
 
         softly.assertAll();
     }
 
     @Test
-    void testAllPredefinedShelvesUpperCase() {
+    void isPredefinedShelfWorksForUpperCase() {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.stream().map(String::toUpperCase).forEach(shelfName -> {
-            String errorMsg = MessageFormat.format(ERROR_MSG, shelfName);
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName)).as(errorMsg).isTrue();
+            String errorMsg = MessageFormat.format(ERROR_MESSAGE, shelfName);
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
+                .as(errorMsg)
+                .isTrue();
         });
 
         softly.assertAll();
     }
 
     @Test
-    void testInvalidShelves() {
+    void testInvalidShelfNames() {
         SoftAssertions softly = new SoftAssertions();
 
-        INVALID_SHELVES.stream().forEach(shelfName -> {
-            String errorMsg = MessageFormat.format(ERROR_MSG, shelfName);
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName)).as(errorMsg).isFalse();
+        INVALID_SHELVES.forEach(shelfName -> {
+            String errorMsg = MessageFormat.format(ERROR_MESSAGE, shelfName);
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
+                .as(errorMsg)
+                .isFalse();
         });
 
         softly.assertAll();
