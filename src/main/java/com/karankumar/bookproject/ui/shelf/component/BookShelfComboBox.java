@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.shelf.component;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
@@ -66,5 +67,10 @@ public class BookShelfComboBox {
 
     public void addToLayout(HorizontalLayout layout) {
         layout.add(allShelvesList);
+    }
+
+    @VisibleForTesting
+    public ComboBox<String> getAllShelvesList() {
+        return allShelvesList;
     }
 }

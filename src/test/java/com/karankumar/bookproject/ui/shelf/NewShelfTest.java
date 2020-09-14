@@ -11,6 +11,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -54,9 +55,9 @@ public class NewShelfTest {
     }
 
     /**
-     * This test verifies that when the user creates a new shelf (here, named "Test"), the shelf list
-     * will be updated correctly once saved. The test makes sure that the count of shelves is not the same
-     * before and after saving.
+     * This test verifies that when creating a new shelf and adding it to the shelf list,
+     * the dropdown that shows all shelves contains the new shelf. Otherwise, an
+     * IllegalStateException will be thrown from ComboBox.
      */
     @ParameterizedTest
     @EnumSource(PredefinedShelf.ShelfName.class)
@@ -64,15 +65,12 @@ public class NewShelfTest {
         int before = 0;
         int after = -1;
         try {
-            before = ShelfUtils.findAllShelfNames(customShelfService.findAll()).size();
-
-            CustomShelf test = new CustomShelf("Test");
+            CustomShelf test = new CustomShelf("UnitTest");
             customShelfService.save(test);
             shelfView.whichShelf.updateShelfList();
 
-            after = ShelfUtils.findAllShelfNames(customShelfService.findAll()).size();
-
-            Assertions.assertEquals(before + 1, after, "Shelf list is not updating when a custom shelf is created.");
+            Assertions.assertThrows(IllegalStateException.class,
+                    ()->{shelfView.whichShelf.getAllShelvesList().setValue("UnitTest");});
         } catch (Exception e) {
             e.printStackTrace();
         }
