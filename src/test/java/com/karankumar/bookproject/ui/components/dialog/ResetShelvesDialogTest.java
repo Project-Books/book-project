@@ -29,14 +29,15 @@ import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 class ResetShelvesDialogTest {
@@ -55,13 +56,10 @@ class ResetShelvesDialogTest {
     @BeforeEach
     public void setup(@Autowired BookService bookService,
                       @Autowired PredefinedShelfService predefinedShelfService) {
-
         toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
         this.bookService = bookService;
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
-
-        Assumptions.assumeTrue(bookService != null);
     }
     
     private void populateBookService() {
@@ -83,7 +81,7 @@ class ResetShelvesDialogTest {
         resetShelvesDialog.confirmButton.click();
 
         // then
-        Assertions.assertEquals(bookService.count(), 0);
+        assertThat(bookService.count()).isZero();
     }
 
     @AfterEach
