@@ -33,7 +33,6 @@ import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +45,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import static com.karankumar.bookproject.backend.utils.DateUtils.dateIsInCurrentYear;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
@@ -88,14 +92,14 @@ class ReadingGoalViewTest {
     @Test
     void testSetGoalButtonTextUpdatesWhenGoalUpdates() {
         Assumptions.assumeTrue(goalService.findAll().isEmpty());
-        Assertions.assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
+        assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
 
         goalService.save(new ReadingGoal(GOAL_TARGET, getRandomGoalType()));
         goalView.getCurrentGoal();
 
         String expectedGoalButtonText = ReadingGoalView.UPDATE_GOAL;
         String actualGoalButtonText = goalView.setGoalButton.getText();
-        Assertions.assertEquals(expectedGoalButtonText, actualGoalButtonText);
+        assertEquals(expectedGoalButtonText, actualGoalButtonText);
     }
 
     private ReadingGoal.GoalType getRandomGoalType() {
@@ -105,19 +109,19 @@ class ReadingGoalViewTest {
 
     @Test
     void testTargetMetMessageNotShownWhenGoalNotMet() {
-        Assertions.assertNotEquals(ReadingGoalView.TARGET_MET,
+        assertNotEquals(ReadingGoalView.TARGET_MET,
                 goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET - 1));
     }
 
     @Test
     void testTargetMetMessageShownWhenGoalMet() {
         Assumptions.assumeTrue(goalService.findAll().size() == 0);
-        Assertions.assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET));
+        assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET));
     }
 
     @Test
     void testTargetMetMessageShownWhenGoalExceeded() {
-        Assertions.assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1));
+        assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1));
     }
 
     @Test
@@ -222,8 +226,8 @@ class ReadingGoalViewTest {
         goalView.getCurrentGoal();
 
         // should be visible for both a book or pages goal
-        Assertions.assertTrue(goalView.readingGoalSummary.isVisible());
-        Assertions.assertTrue(goalView.goalProgressPercentage.isVisible());
+        assertTrue(goalView.readingGoalSummary.isVisible());
+        assertTrue(goalView.goalProgressPercentage.isVisible());
 
         PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
         int howManyReadThisYear =
@@ -233,11 +237,11 @@ class ReadingGoalViewTest {
 
         if (readingGoal.getGoalType().equals(ReadingGoal.GoalType.BOOKS)) {
             // Additional components that should be visible for a books goal
-            Assertions.assertTrue(goalView.goalProgress.isVisible());
+            assertTrue(goalView.goalProgress.isVisible());
             if (hasReachedGoal) {
-                Assertions.assertFalse(goalView.booksToReadOnAverageToMeetGoal.isVisible());
+                assertFalse(goalView.booksToReadOnAverageToMeetGoal.isVisible());
             } else {
-                Assertions.assertTrue(goalView.booksToReadOnAverageToMeetGoal.isVisible());
+                assertTrue(goalView.booksToReadOnAverageToMeetGoal.isVisible());
             }
         }
     }
