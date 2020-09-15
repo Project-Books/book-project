@@ -22,9 +22,11 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -42,7 +44,6 @@ class AuthorTest {
     public static void setup(@Autowired PredefinedShelfService predefinedShelfService,
                              @Autowired BookService bookService,
                              @Autowired AuthorService authorService) {
-
         toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
         testBook1 = createBook("How the mind works", toRead);
         testBook2 = createBook("The better angels of our nature", toRead);
@@ -51,10 +52,19 @@ class AuthorTest {
         AuthorTest.bookService = bookService;
         AuthorTest.authorService = authorService;
 
-        bookService.deleteAll(); // reset
+        resetBookService();
 
         AuthorTest.bookService.save(testBook1);
         AuthorTest.bookService.save(testBook2);
+    }
+
+    @BeforeEach
+    public void reset() {
+        resetBookService();
+    }
+
+    private static void resetBookService() {
+        bookService.deleteAll();
     }
 
     private static Book createBook(String title, PredefinedShelf shelf) {
@@ -78,23 +88,11 @@ class AuthorTest {
 
     @Test
     void orphanAuthorsRemoved() {
-        Assumptions.assumeTrue(bookService != null);
-        bookService.deleteAll(); // reset
-
         Author orphan = new Author("Jostein", "Gardner");
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.delete(book);
 
-        boolean idFound;
-        try {
-            Assertions.assertNull(authorService.findById(orphan.getId()));
-            idFound = true;
-        } catch (InvalidDataAccessApiUsageException e) {
-            // If this exception is thrown, then the authorService could not find the id
-            idFound = false;
-        }
-
-        Assertions.assertFalse(idFound);
+        Assertions.assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId()));
         Assertions.assertTrue(authorService.findAll().isEmpty());
     }
 }
