@@ -7,7 +7,6 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,29 +15,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
 
-
 @IntegrationTest
-public class PredefinedShelfUtilsTest {
-
-    @Autowired
-    private PredefinedShelfRepository shelfRepository;
-
-    @Autowired
-    private BookRepository bookRepository;
+class PredefinedShelfUtilsTest {
+    @Autowired private PredefinedShelfRepository shelfRepository;
+    @Autowired private BookRepository bookRepository;
 
     private static PredefinedShelfUtils predefinedShelfUtils;
 
     private static PredefinedShelf toReadShelf;
     private static PredefinedShelf readShelf;
-    private static PredefinedShelf didNotFinishShelf;
     private static final Author NO_AUTHOR = null;
 
-    private static Book book1 = new Book("someTitle", NO_AUTHOR, toReadShelf);
-    private static Book book2 = new Book("someTitle2", NO_AUTHOR, toReadShelf);
-    private static Book book3 = new Book("someOtherTitle", NO_AUTHOR, readShelf);
-    private static Book book4 = new Book("yetAnotherTitle", NO_AUTHOR, didNotFinishShelf);
+    private static Book book1;
+    private static Book book2;
+    private static Book book3;
+    private static Book book4;
 
     @BeforeAll
     public static void setupBeforeAll(@Autowired PredefinedShelfService predefinedShelfService) {
@@ -53,7 +48,8 @@ public class PredefinedShelfUtilsTest {
         toReadShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ));
         PredefinedShelf readingShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READING));
         readShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
-        didNotFinishShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH));
+        PredefinedShelf didNotFinishShelf =
+                shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH));
 
         book1 = bookRepository.save(new Book("someTitle", NO_AUTHOR, toReadShelf));
         book2 = bookRepository.save(new Book("someTitle2", NO_AUTHOR, toReadShelf));
@@ -80,7 +76,7 @@ public class PredefinedShelfUtilsTest {
         List<String> shelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
 
         // then
-        Assertions.assertEquals(expectedShelfNames, shelfNames);
+        assertEquals(expectedShelfNames, shelfNames);
     }
 
     @Test
@@ -92,7 +88,7 @@ public class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf("To read");
 
         // then
-        Assertions.assertEquals(expectedBooks, actualBooks);
+        assertEquals(expectedBooks, actualBooks);
     }
 
     @Test
@@ -104,7 +100,7 @@ public class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
 
         // then
-        Assertions.assertEquals(expectedBooks, actualBooks);
+        assertEquals(expectedBooks, actualBooks);
     }
 
     @Test
@@ -117,8 +113,8 @@ public class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfUtils.getBooksInPredefinedShelves(predefinedShelves);
 
         // then
-        Assertions.assertEquals(expectedBooks.size(), actualBooks.size());
-        Assertions.assertTrue(actualBooks.containsAll(expectedBooks));
+        assertEquals(expectedBooks.size(), actualBooks.size());
+        assertTrue(actualBooks.containsAll(expectedBooks));
     }
 
 }
