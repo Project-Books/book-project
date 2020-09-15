@@ -6,7 +6,7 @@ CREATE TABLE book
     date_finished_reading DATE,
     date_started_reading  DATE,
     edition               VARCHAR(255),
-    bookGenre                 INTEGER,
+    book_genre            INTEGER,
     number_of_pages       INTEGER,
     pages_read            INTEGER,
     predefined_shelf_id   BIGINT,
