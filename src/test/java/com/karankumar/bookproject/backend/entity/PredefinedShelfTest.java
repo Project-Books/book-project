@@ -20,44 +20,34 @@ package com.karankumar.bookproject.backend.entity;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @IntegrationTest
 class PredefinedShelfTest {
+    @Test
+    void testBooksWithoutPredefinedShelfShouldStillExist(
+            @Autowired PredefinedShelfService predefinedShelfService) {
+        List<PredefinedShelf> shelves = predefinedShelfService.findAll();
 
-    private static PredefinedShelfService shelfService;
-
-    @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService shelfService,
-                             @Autowired BookService bookService) {
-        Assumptions.assumeTrue(shelfService != null && bookService != null);
-        PredefinedShelfTest.shelfService = shelfService;
-        bookService.deleteAll(); // reset
+        assertEquals(4, shelves.size());
+        assertEquals(PredefinedShelf.ShelfName.TO_READ, shelves.get(0).getPredefinedShelfName());
+        assertEquals(PredefinedShelf.ShelfName.READING, shelves.get(1).getPredefinedShelfName());
+        assertEquals(PredefinedShelf.ShelfName.READ, shelves.get(2).getPredefinedShelfName());
+        assertEquals(PredefinedShelf.ShelfName.DID_NOT_FINISH, shelves.get(3).getPredefinedShelfName());
     }
 
-    /**
-     * A {@link com.karankumar.bookproject.backend.entity.PredefinedShelf} without any books should
-     * still exist
-     */
-    @Test
-    public void orphanShelfExists() {
-        Assumptions.assumeTrue(shelfService != null);
-        List<PredefinedShelf> shelves = PredefinedShelfTest.shelfService.findAll();
+    @AfterEach
+    public void reset(@Autowired BookService bookService) {
+        resetBookService(bookService);
+    }
 
-        Assertions.assertEquals(4, shelves.size());
-        Assertions.assertEquals(shelves.get(0).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.TO_READ);
-        Assertions.assertEquals(shelves.get(1).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.READING);
-        Assertions.assertEquals(shelves.get(2).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.READ);
-        Assertions.assertEquals(shelves.get(3).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.DID_NOT_FINISH);
+    private void resetBookService(BookService bookService) {
+        bookService.deleteAll();
     }
 }

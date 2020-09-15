@@ -18,7 +18,7 @@
 
 package com.karankumar.bookproject.backend.entity;
 
-public enum Genre {
+public enum BookGenre {
     // This should be kept in alphabetical order
     ADVENTURE("Adventure"),
     ANTHOLOGY("Anthology"),
@@ -63,9 +63,9 @@ public enum Genre {
     TRAVEL("Travel"),
     YOUNG_ADULT("Young adult");
 
-    private String genre;
+    private final String genre;
 
-    Genre(String genre) {
+    BookGenre(String genre) {
         this.genre = genre;
     }
 

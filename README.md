@@ -69,7 +69,7 @@ If you want to use Docker, follow one of the two appoaches (if you use Windows, 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Build the project using `mvn clean install`
-4. Start MySQL database using `docker-compose up -d mysql`
+4. Start MySQL database using `docker-compose up -d mysql phpmyadmin`
 5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
 6. Log in with the details below:
     - Username: `user`

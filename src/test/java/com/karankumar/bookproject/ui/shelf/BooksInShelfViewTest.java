@@ -48,7 +48,7 @@ import java.util.List;
 
 @IntegrationTest
 @WebAppConfiguration
-public class BooksInShelfViewTest {
+class BooksInShelfViewTest {
 
     private static Routes routes;
 
@@ -107,8 +107,7 @@ public class BooksInShelfViewTest {
 
     @ParameterizedTest
     @EnumSource(PredefinedShelf.ShelfName.class)
-    public void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
-        System.out.println("Shelf: " + shelfName);
+    void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
         try {
             shelfView.showOrHideGridColumns(shelfName.toString());
         } catch (NotSupportedException e) {

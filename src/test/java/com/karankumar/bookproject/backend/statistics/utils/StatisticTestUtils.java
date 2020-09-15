@@ -19,7 +19,7 @@ package com.karankumar.bookproject.backend.statistics.utils;
 
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
@@ -30,9 +30,9 @@ import java.util.ArrayList;
 
 public class StatisticTestUtils {
 
-    public static final Genre mostReadGenre = Genre.ADVENTURE;
-    public static final Genre mostLikedGenre = Genre.SCIENCE;
-    public static final Genre leastLikedGenre = Genre.YOUNG_ADULT;
+    public static final BookGenre MOST_READ_BOOK_GENRE = BookGenre.ADVENTURE;
+    public static final BookGenre MOST_LIKED_BOOK_GENRE = BookGenre.SCIENCE;
+    public static final BookGenre LEAST_LIKED_BOOK_GENRE = BookGenre.YOUNG_ADULT;
 
     private static Book bookWithLowestRating;
     private static Book bookWithHighestRating;
@@ -53,19 +53,19 @@ public class StatisticTestUtils {
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
 
         bookWithLowestRating =
-                createReadBook("Book1", RatingScale.NO_RATING, Genre.BUSINESS, 100);
+                createReadBook("Book1", RatingScale.NO_RATING, BookGenre.BUSINESS, 100);
         bookWithHighestRating =
-                createReadBook("Book2", RatingScale.NINE_POINT_FIVE, mostReadGenre, 150);
-        createReadBook("Book3", RatingScale.SIX, mostReadGenre, 200);
-        createReadBook("Book4", RatingScale.ONE, mostReadGenre, 250);
-        createReadBook("Book5", RatingScale.NINE, mostLikedGenre, 300);
-        createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, mostLikedGenre, 350);
-        bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, leastLikedGenre, 400);
+                createReadBook("Book2", RatingScale.NINE_POINT_FIVE, MOST_READ_BOOK_GENRE, 150);
+        createReadBook("Book3", RatingScale.SIX, MOST_READ_BOOK_GENRE, 200);
+        createReadBook("Book4", RatingScale.ONE, MOST_READ_BOOK_GENRE, 250);
+        createReadBook("Book5", RatingScale.NINE, MOST_LIKED_BOOK_GENRE, 300);
+        createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE, 350);
+        bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, LEAST_LIKED_BOOK_GENRE, 400);
     }
 
-    private static Book createReadBook(String bookTitle, RatingScale rating, Genre genre, int pages) {
+    private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages) {
         PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
-        Book book = createBook(bookTitle, readShelf, genre, pages);
+        Book book = createBook(bookTitle, readShelf, bookGenre, pages);
         book.setRating(rating);
 
         saveBook(book); // this should be called here & not in createBook()
@@ -74,10 +74,10 @@ public class StatisticTestUtils {
         return book;
     }
 
-    private static Book createBook(String bookTitle, PredefinedShelf shelf, Genre genre, int pages) {
+    private static Book createBook(String bookTitle, PredefinedShelf shelf, BookGenre bookGenre, int pages) {
         Author author = new Author("Joe", "Bloggs");
         Book book = new Book(bookTitle, author, shelf);
-        book.setGenre(genre);
+        book.setBookGenre(bookGenre);
         book.setNumberOfPages(pages);
         return book;
     }

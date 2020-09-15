@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.ui.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.GenreStatistics;
 import com.karankumar.bookproject.backend.statistics.PageStatistics;
@@ -99,27 +99,27 @@ public class StatisticsView extends VerticalLayout {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
-                Optional<Genre> mostReadGenre =
+                Optional<BookGenre> mostReadGenre =
                         Optional.ofNullable(genreStatistics.findMostReadGenre());
-                return mostReadGenre.map(Genre::toString);
+                return mostReadGenre.map(BookGenre::toString);
             }
         },
         MOST_LIKED_GENRE("Most liked genre read:") {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
-                Optional<Genre> mostLikedGenre =
+                Optional<BookGenre> mostLikedGenre =
                         Optional.ofNullable(genreStatistics.findMostLikedGenre());
-                return mostLikedGenre.map(Genre::toString);
+                return mostLikedGenre.map(BookGenre::toString);
             }
         },
         LEAST_LIKED_GENRE("Least liked genre read:") {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
-                Optional<Genre> leastLikedGenre =
+                Optional<BookGenre> leastLikedGenre =
                         Optional.ofNullable(genreStatistics.findLeastLikedGenre());
-                return leastLikedGenre.map(Genre::toString);
+                return leastLikedGenre.map(BookGenre::toString);
             }
         },
         AVERAGE_PAGE_LENGTH("Average page length:") {

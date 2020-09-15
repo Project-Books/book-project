@@ -103,6 +103,10 @@ The same applies for pull requests where we've requested changes -- mark it as a
 ### Merge conflicts
 
 We expect you to resolve any merge conflicts that appear when you have a pull request. This includes when you first create the pull request and at any point later on if merge conflicts appear before your pull request is merged. This is to minimise the time spent reviewers spend reviewing pull requests, but it is may also provide you with the opportunity to change or adapt your work based on new changes.
+
+### Resolving conversations
+
+It is best to leave resolving a conversation (e.g. a review comment) to the reviewer that created it. This way, they can check for themselves whether the suggestion was implemented as desired.
   
 ## Stale issues & pull requests
 

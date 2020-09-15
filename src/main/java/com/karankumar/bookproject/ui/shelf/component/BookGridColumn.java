@@ -31,7 +31,7 @@ import java.util.Comparator;
 public class BookGridColumn {
     public static final String TITLE_KEY = "title";
     public static final String AUTHOR_KEY = "author";
-    public static final String GENRE_KEY = "genre";
+    public static final String GENRE_KEY = "bookGenre";
     public static final String PAGES_KEY = "numberOfPages";
     public static final String PAGES_READ_KEY = "pagesRead";
     public static final String RATING_KEY = "rating";
