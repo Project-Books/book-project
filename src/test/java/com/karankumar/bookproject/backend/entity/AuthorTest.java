@@ -22,14 +22,13 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 class AuthorTest {
@@ -48,7 +47,6 @@ class AuthorTest {
         testBook1 = createBook("How the mind works", toRead);
         testBook2 = createBook("The better angels of our nature", toRead);
 
-        Assumptions.assumeTrue(predefinedShelfService != null && bookService != null);
         AuthorTest.bookService = bookService;
         AuthorTest.authorService = authorService;
 
@@ -92,7 +90,7 @@ class AuthorTest {
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.delete(book);
 
-        Assertions.assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId()));
-        Assertions.assertTrue(authorService.findAll().isEmpty());
+        assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId()));
+        assertTrue(authorService.findAll().isEmpty());
     }
 }
