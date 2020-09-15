@@ -33,7 +33,6 @@ import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import static com.karankumar.bookproject.backend.utils.DateUtils.dateIsInCurrentYear;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
@@ -80,7 +80,7 @@ class ReadingGoalViewTest {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
-        Assumptions.assumeTrue(goalService != null);
+        assumeTrue(goalService != null);
         goalService.deleteAll(); // reset
 
         this.goalService = goalService;
@@ -91,12 +91,17 @@ class ReadingGoalViewTest {
 
     @Test
     void testSetGoalButtonTextUpdatesWhenGoalUpdates() {
-        Assumptions.assumeTrue(goalService.findAll().isEmpty());
-        assertEquals(goalView.setGoalButton.getText(), ReadingGoalView.SET_GOAL);
+        // given initial state
+        assumeTrue(goalService.findAll().isEmpty());
+        String expected = ReadingGoalView.SET_GOAL;
+        String actual = goalView.setGoalButton.getText();
+        assertEquals(expected, actual);
 
+        // when
         goalService.save(new ReadingGoal(GOAL_TARGET, getRandomGoalType()));
         goalView.getCurrentGoal();
 
+        // then
         String expectedGoalButtonText = ReadingGoalView.UPDATE_GOAL;
         String actualGoalButtonText = goalView.setGoalButton.getText();
         assertEquals(expectedGoalButtonText, actualGoalButtonText);
@@ -109,19 +114,24 @@ class ReadingGoalViewTest {
 
     @Test
     void testTargetMetMessageNotShownWhenGoalNotMet() {
-        assertNotEquals(ReadingGoalView.TARGET_MET,
-                goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET - 1));
+        String expected = ReadingGoalView.TARGET_MET;
+        String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET - 1);
+        assertNotEquals(expected, actual);
     }
 
     @Test
     void testTargetMetMessageShownWhenGoalMet() {
-        Assumptions.assumeTrue(goalService.findAll().size() == 0);
-        assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET));
+        assumeTrue(goalService.findAll().size() == 0);
+        String expected = ReadingGoalView.TARGET_MET;
+        String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET);
+        assertEquals(expected, actual);
     }
 
     @Test
     void testTargetMetMessageShownWhenGoalExceeded() {
-        assertEquals(ReadingGoalView.TARGET_MET, goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1));
+        String expected = ReadingGoalView.TARGET_MET;
+        String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -219,7 +229,7 @@ class ReadingGoalViewTest {
 
     @Test
     void correctInformationShownWhenGoalIsSetOrUpdated() {
-        Assumptions.assumeTrue(goalService.findAll().isEmpty());
+        assumeTrue(goalService.findAll().isEmpty());
 
         ReadingGoal readingGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
         goalService.save(readingGoal);
