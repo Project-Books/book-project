@@ -17,6 +17,20 @@
 
 package com.karankumar.bookproject.backend.utils;
 
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Set;
+
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
@@ -24,17 +38,6 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
 
 @IntegrationTest
 class PredefinedShelfUtilsTest {
@@ -51,6 +54,10 @@ class PredefinedShelfUtilsTest {
     private static Book book2;
     private static Book book3;
     private static Book book4;
+
+    private static List<String> PREDEFINED_SHELVES;
+    private static List<String> INVALID_SHELVES;
+    private static String ERROR_MESSAGE;
 
     @BeforeAll
     public static void setupBeforeAll(@Autowired PredefinedShelfService predefinedShelfService) {
@@ -77,6 +84,10 @@ class PredefinedShelfUtilsTest {
         readingShelf.setBooks(Set.of());
         readShelf.setBooks(Set.of(book3));
         didNotFinishShelf.setBooks(Set.of(book4));
+
+        PREDEFINED_SHELVES = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
+        INVALID_SHELVES = List.of("Too read", "Readin", "Do not finish", "Shelf");
+        ERROR_MESSAGE = "Shelf with name ''{0}'' does not match any predefined shelf";
     }
 
     @Test
@@ -134,4 +145,55 @@ class PredefinedShelfUtilsTest {
         assertTrue(actualBooks.containsAll(expectedBooks));
     }
 
+    @Test
+    void testValidPredefinedShelfNames() {
+        SoftAssertions softly = new SoftAssertions();
+
+        PREDEFINED_SHELVES.forEach(shelfName -> {
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
+                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                .isTrue();
+        });
+
+        softly.assertAll();
+    }
+
+    @Test
+    void isPredefinedShelfWorksForLowerCase() {
+        SoftAssertions softly = new SoftAssertions();
+
+        PREDEFINED_SHELVES.stream().map(String::toLowerCase).forEach(shelfName -> {
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
+                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                .isTrue();
+        });
+
+        softly.assertAll();
+    }
+
+    @Test
+    void isPredefinedShelfWorksForUpperCase() {
+        SoftAssertions softly = new SoftAssertions();
+
+        PREDEFINED_SHELVES.stream().map(String::toUpperCase).forEach(shelfName -> {
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
+                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                .isTrue();
+        });
+
+        softly.assertAll();
+    }
+
+    @Test
+    void testInvalidShelfNames() {
+        SoftAssertions softly = new SoftAssertions();
+
+        INVALID_SHELVES.forEach(shelfName -> {
+            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
+                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                .isFalse();
+        });
+
+        softly.assertAll();
+    }
 }
