@@ -414,7 +414,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowPageNumbersExceeded() {
+    void testNumberOfPagesFieldShouldNotExceedMaxValue() {
         // given
         bookForm.numberOfPages.setValue(Book.MAX_PAGES + 1);
 
@@ -434,7 +434,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowPageReadExceed() {
+    void testPagesReadShouldNotExceedMaxValue() {
         // given
         bookForm.pagesRead.setValue(Book.MAX_PAGES + 1);
 
