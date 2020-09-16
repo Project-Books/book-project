@@ -423,7 +423,7 @@ public class BookFormTest {
     @Test
     void shouldNotAllowPageNumbersExceed() {
         // given
-        bookForm.numberOfPages.setValue(BookFormValidators.MAX_PAGES + 1);
+        bookForm.numberOfPages.setValue(Book.MAX_PAGES + 1);
 
         // when
         bookForm.saveButton.click();
@@ -443,7 +443,7 @@ public class BookFormTest {
     @Test
     void shouldNotAllowPageReadExceed() {
         // given
-        bookForm.pagesRead.setValue(BookFormValidators.MAX_PAGES + 1);
+        bookForm.pagesRead.setValue(Book.MAX_PAGES + 1);
 
         // when
         bookForm.saveButton.click();

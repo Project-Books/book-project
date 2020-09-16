@@ -17,12 +17,12 @@
 
 package com.karankumar.bookproject.ui.book;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.vaadin.flow.function.SerializablePredicate;
 
 import java.time.LocalDate;
 
 public class BookFormValidators {
-    public static final Integer MAX_PAGES = 23_000;
     private BookFormValidators() {}
 
     static SerializablePredicate<Integer> positiveNumberPredicate() {
@@ -38,6 +38,6 @@ public class BookFormValidators {
     }
 
     static SerializablePredicate<Integer> maxPagesPredicate() {
-        return number -> (number == null || number <= MAX_PAGES);
+        return number -> (number == null || number <= Book.MAX_PAGES);
     }
 }

@@ -44,12 +44,14 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
+    public static final int MAX_PAGES = 23_000;
+
     @NotNull
     @NotEmpty
     private String title;
-    @Max(value = 23000)
+    @Max(value = MAX_PAGES)
     private Integer numberOfPages;
-    @Max(value = 23000)
+    @Max(value = MAX_PAGES)
     private Integer pagesRead;
     private Genre genre;
     private Integer seriesPosition;

@@ -674,7 +674,7 @@ public class BookForm extends VerticalLayout {
     private void configureNumberOfPagesFormField() {
         numberOfPages.setPlaceholder("Enter number of pages");
         numberOfPages.setMin(1);
-        numberOfPages.setMax(BookFormValidators.MAX_PAGES);
+        numberOfPages.setMax(Book.MAX_PAGES);
         numberOfPages.setHasControls(true);
         numberOfPages.setClearButtonVisible(true);
     }
@@ -682,7 +682,7 @@ public class BookForm extends VerticalLayout {
     private void configurePagesReadFormField() {
         pagesRead.setPlaceholder("Enter number of pages read");
         pagesRead.setMin(1);
-        pagesRead.setMax(BookFormValidators.MAX_PAGES);
+        pagesRead.setMax(Book.MAX_PAGES);
         pagesRead.setHasControls(true);
         pagesRead.setClearButtonVisible(true);
     }

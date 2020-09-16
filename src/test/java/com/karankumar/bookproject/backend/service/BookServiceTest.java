@@ -54,7 +54,6 @@ public class BookServiceTest {
 
     private Book validBook;
     private PredefinedShelf toRead;
-    private final Integer MAX_PAGES = 23_000;
     private Author author;
 
     @BeforeEach
@@ -97,7 +96,7 @@ public class BookServiceTest {
     @Test
     public void whenTryingToSaveBookWithMaxNumberPageExceedNoSave() {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
-        book.setNumberOfPages(MAX_PAGES + 1);
+        book.setNumberOfPages(Book.MAX_PAGES + 1);
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
         Assertions.assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
         Assertions.assertEquals(0, bookService.count());
@@ -109,7 +108,7 @@ public class BookServiceTest {
     @Test
     public void whenTryingToSaveBookWithPagesReadExceedNoSave() {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
-        book.setPagesRead(MAX_PAGES + 1);
+        book.setPagesRead(Book.MAX_PAGES + 1);
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
         Assertions.assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
         Assertions.assertEquals(0, bookService.count());
@@ -121,8 +120,8 @@ public class BookServiceTest {
     @Test
     public void whenTryingToSaveBookWithPagesInLimitSave() {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
-        book.setPagesRead(MAX_PAGES);
-        book.setNumberOfPages(MAX_PAGES);
+        book.setPagesRead(Book.MAX_PAGES);
+        book.setNumberOfPages(Book.MAX_PAGES);
         bookService.save(book);
         Assertions.assertEquals(1, bookService.count());
     }
