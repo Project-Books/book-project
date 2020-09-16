@@ -21,7 +21,7 @@ import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
@@ -51,8 +51,6 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.binder.Result;
-import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
@@ -87,7 +85,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
             new ComboBox<>();
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
-    @VisibleForTesting final ComboBox<Genre> bookGenre = new ComboBox<>();
+    @VisibleForTesting final ComboBox<BookGenre> bookGenre = new ComboBox<>();
     @VisibleForTesting final IntegerField pagesRead = new IntegerField();
     @VisibleForTesting final IntegerField numberOfPages = new IntegerField();
     @VisibleForTesting final DatePicker dateStartedReading = new DatePicker();
@@ -273,7 +271,7 @@ public class BookForm extends VerticalLayout {
                       BookFormErrors.MAX_PAGES_ERROR)
               .bind(Book::getPagesRead, Book::setPagesRead);
         binder.forField(bookGenre)
-              .bind(Book::getGenre, Book::setGenre);
+              .bind(Book::getBookGenre, Book::setBookGenre);
         binder.forField(rating)
               .withConverter(new DoubleToRatingScaleConverter())
               .bind(Book::getRating, Book::setRating);
@@ -409,7 +407,7 @@ public class BookForm extends VerticalLayout {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
-        book.setGenre(bookGenre.getValue());
+        book.setBookGenre(bookGenre.getValue());
         book.setNumberOfPages(numberOfPages.getValue());
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
@@ -492,7 +490,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureGenreFormField() {
-        bookGenre.setItems(Genre.values());
+        bookGenre.setItems(BookGenre.values());
         bookGenre.setPlaceholder("Choose a book genre");
     }
 

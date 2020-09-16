@@ -1,11 +1,8 @@
 package com.karankumar.bookproject.ui.statistics.util;
 
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.Genre;
-import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.statistics.StatisticsView;
@@ -65,7 +62,7 @@ public class StatisticsViewTestUtils {
 
     public static void populateDataWithBooksWithoutGenre(BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
-        book.setGenre(null);
+        book.setBookGenre(null);
         bookService.save(book);
     }
 
@@ -84,7 +81,7 @@ public class StatisticsViewTestUtils {
         PredefinedShelf readShelf = getReadShelf(predefinedShelfService);
         Author author = new Author("Herman", "Melville");
         Book book = new Book("Moby Dick", author, readShelf);
-        book.setGenre(Genre.ADVENTURE);
+        book.setBookGenre(BookGenre.ADVENTURE);
         book.setNumberOfPages(2000);
         book.setPagesRead(1000);
         book.setRating(RatingScale.EIGHT_POINT_FIVE);

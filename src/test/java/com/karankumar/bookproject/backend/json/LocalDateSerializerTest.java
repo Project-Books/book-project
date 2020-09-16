@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class LocalDateSerializerTest {
     @Test
     void shouldSerializeLocalDate() throws IOException {
@@ -37,9 +39,9 @@ class LocalDateSerializerTest {
         mapper.registerModule(new SimpleModule().addSerializer(serializer));
 
         // when
-        String json = mapper.writeValueAsString(date);
+        String actualJsonString = mapper.writeValueAsString(date);
 
         // then
-        Assertions.assertEquals(expectedJsonString, json);
+        assertEquals(expectedJsonString, actualJsonString);
     }
 }

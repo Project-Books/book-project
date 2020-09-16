@@ -48,12 +48,11 @@ import java.util.List;
 
 @IntegrationTest
 @WebAppConfiguration
-public class BooksInShelfViewTest {
+class BooksInShelfViewTest {
 
     private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
     private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
         BookGridColumn.TITLE_KEY,
@@ -88,16 +87,6 @@ public class BooksInShelfViewTest {
         BookGridColumn.PAGES_KEY
     ));
 
-    private final ArrayList<String> expectedAllShelvesColumns = new ArrayList<>(Arrays.asList(
-        BookGridColumn.TITLE_KEY,
-        BookGridColumn.AUTHOR_KEY,
-        BookGridColumn.GENRE_KEY,
-        BookGridColumn.DATE_STARTED_KEY,
-        BookGridColumn.DATE_FINISHED_KEY,
-        BookGridColumn.RATING_KEY,
-        BookGridColumn.PAGES_KEY,
-        BookGridColumn.PAGES_READ_KEY
-    ));
     private BooksInShelfView shelfView;
 
     @BeforeAll
@@ -118,8 +107,7 @@ public class BooksInShelfViewTest {
 
     @ParameterizedTest
     @EnumSource(PredefinedShelf.ShelfName.class)
-    public void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
-        System.out.println("Shelf: " + shelfName);
+    void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
         try {
             shelfView.showOrHideGridColumns(shelfName.toString());
         } catch (NotSupportedException e) {
@@ -136,7 +124,7 @@ public class BooksInShelfViewTest {
             case READING:
                 expectedColumns = expectedReadingColumns;
                 break;
-            case DID_NOT_FINISH: // intentional
+            case DID_NOT_FINISH:
                 expectedColumns = expectedDidNotFinishColumns;
                 break;
             case READ:

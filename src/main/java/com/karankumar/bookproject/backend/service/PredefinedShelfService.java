@@ -18,12 +18,8 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.Genre;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.karankumar.bookproject.backend.entity.Tag;
+import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
@@ -163,8 +159,8 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         Author author = authors.get(threadLocalRandom.nextInt(authors.size()));
         Book book = new Book(title, author, getRandomPredefinedShelf());
 
-        Genre genre = Genre.values()[threadLocalRandom.nextInt(Genre.values().length)];
-        book.setGenre(genre);
+        BookGenre bookGenre = BookGenre.values()[threadLocalRandom.nextInt(BookGenre.values().length)];
+        book.setBookGenre(bookGenre);
 
         List<String> friends = Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
         String recommendedBy = friends.get(threadLocalRandom.nextInt(friends.size()));

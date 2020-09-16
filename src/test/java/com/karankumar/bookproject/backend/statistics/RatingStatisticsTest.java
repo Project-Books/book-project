@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
-public class RatingStatisticsTest {
+class RatingStatisticsTest {
     private static BookService bookService;
     private static PredefinedShelfService predefinedShelfService;
 
@@ -55,31 +55,31 @@ public class RatingStatisticsTest {
     }
 
     @Test
-    public void lowestRatedBookExistsAndIsFound() {
+    void lowestRatedBookExistsAndIsFound() {
         Assertions.assertEquals(bookWithNoRating.getTitle(),
                 ratingStatistics.findLeastLikedBook().getTitle());
     }
 
     @Test
-    public void testNonExistentLowestRatedBook() {
+    void testNonExistentLowestRatedBook() {
         resetRatingStatistics();
         Assertions.assertNull(ratingStatistics.findLeastLikedBook());
     }
 
     @Test
-    public void highestRatedBookExistsAndIsFound() {
+    void highestRatedBookExistsAndIsFound() {
         Assertions.assertEquals(bookWithHighestRating.getTitle(),
                 ratingStatistics.findMostLikedBook().getTitle());
     }
 
     @Test
-    public void testNonExistentHighestRatedBook() {
+    void testNonExistentHighestRatedBook() {
         resetRatingStatistics();
         Assertions.assertNull(ratingStatistics.findMostLikedBook());
     }
 
     @Test
-    public void averageRatingExistsAndIsCorrect() {
+    void averageRatingExistsAndIsCorrect() {
         int numberOfBooks = StatisticTestUtils.getNumberOfBooks();
         double totalRating = StatisticTestUtils.totalRating;
         double average = totalRating / numberOfBooks;
@@ -87,7 +87,7 @@ public class RatingStatisticsTest {
     }
 
     @Test
-    public void testAverageRatingDivideByZero() {
+    void testAverageRatingDivideByZero() {
         resetRatingStatistics();
         Assertions.assertNull(ratingStatistics.calculateAverageRatingGiven());
     }

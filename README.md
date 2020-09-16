@@ -15,6 +15,9 @@
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
     <img src="https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab" alt="Code quality" />
   </a>
+  <a href="https://sonarcloud.io/dashboard?id=com.karankumar%3Abook-project">
+	<img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
+  </a>
 </p>
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
@@ -66,7 +69,7 @@ If you want to use Docker, follow one of the two appoaches (if you use Windows, 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Build the project using `mvn clean install`
-4. Start MySQL database using `docker-compose up -d mysql`
+4. Start MySQL database using `docker-compose up -d mysql phpmyadmin`
 5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
 6. Log in with the details below:
     - Username: `user`

@@ -19,6 +19,8 @@ package com.karankumar.bookproject.backend.utils;
 
 import com.helger.commons.annotation.VisibleForTesting;
 
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
@@ -37,6 +39,10 @@ public class DateUtils {
 
     public static int calculateWeeksLeftInYearFromCurrentWeek(int currentWeekNumberOfYear) {
         return (WEEKS_IN_YEAR - currentWeekNumberOfYear);
+    }
+
+    public static boolean dateIsInCurrentYear(@NotNull LocalDate date) {
+        return date.getYear() == LocalDate.now().getYear();
     }
 
     @VisibleForTesting

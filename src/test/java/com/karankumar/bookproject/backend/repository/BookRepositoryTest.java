@@ -10,16 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DataJpaIntegrationTest
-public class BookRepositoryTest {
+class BookRepositoryTest {
 
-    @Autowired
-    private PredefinedShelfRepository shelfRepository;
-
-    @Autowired
-    private AuthorRepository authorRepository;
-
-    @Autowired
-    private BookRepository bookRepository;
+    @Autowired private PredefinedShelfRepository shelfRepository;
+    @Autowired private AuthorRepository authorRepository;
+    @Autowired private BookRepository bookRepository;
 
     PredefinedShelf predefinedShelf;
 

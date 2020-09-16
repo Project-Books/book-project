@@ -17,17 +17,19 @@
 
 package com.karankumar.bookproject.backend.statistics;
 
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @IntegrationTest
-public class GenreStatisticsTest {
+class GenreStatisticsTest {
     private static GenreStatistics genreStatistics;
 
     @BeforeAll
@@ -39,26 +41,23 @@ public class GenreStatisticsTest {
     }
 
     @Test
-    public void mostReadGenreExistsAndIsFound() {
-        Assertions.assertEquals(
-                genreStatistics.findMostReadGenre(),
-                StatisticTestUtils.mostReadGenre
-        );
+    void mostReadGenreExistsAndIsFound() {
+        BookGenre expected = StatisticTestUtils.MOST_READ_BOOK_GENRE;
+        BookGenre actual = genreStatistics.findMostReadGenre();
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void mostLikedGenreExistsAndIsFound() {
-        Assertions.assertEquals(
-                genreStatistics.findMostLikedGenre(),
-                StatisticTestUtils.mostLikedGenre
-        );
+    void mostLikedGenreExistsAndIsFound() {
+        BookGenre expected = StatisticTestUtils.MOST_LIKED_BOOK_GENRE;
+        BookGenre actual = genreStatistics.findMostLikedGenre();
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void leastLikedGenreExistsAndIsFound() {
-        Assertions.assertEquals(
-                genreStatistics.findLeastLikedGenre(),
-                StatisticTestUtils.leastLikedGenre
-        );
+    void leastLikedGenreExistsAndIsFound() {
+        BookGenre expected = StatisticTestUtils.LEAST_LIKED_BOOK_GENRE;
+        BookGenre actual = genreStatistics.findLeastLikedGenre();
+        assertEquals(expected, actual);
     }
 }

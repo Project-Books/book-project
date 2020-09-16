@@ -20,12 +20,8 @@ package com.karankumar.bookproject.ui.book;
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.Genre;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -63,12 +59,12 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 
 @IntegrationTest
 @WebAppConfiguration
-public class BookFormTest {
+class BookFormTest {
 
     private static final String firstName = "Nick";
     private static final String lastName = "Bostrom";
     private static final String bookTitle = "Superintelligence: Paths, Dangers, Strategies";
-    private static final Genre genre = Genre.SCIENCE;
+    private static final BookGenre BOOK_GENRE = BookGenre.SCIENCE;
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
     private static final RatingScale ratingVal = RatingScale.NINE;
@@ -89,12 +85,9 @@ public class BookFormTest {
 
     private static PredefinedShelfUtils predefinedShelfUtils;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
-    @Autowired
-    private BookService bookService;
-
+    @Autowired private BookService bookService;
     @Autowired private PredefinedShelfService predefinedShelfService;
     @Autowired private CustomShelfService customShelfService;
 
@@ -136,7 +129,7 @@ public class BookFormTest {
         numberOfPages = generateRandomNumberOfPages();
         seriesPosition = SERIES_POSITION;
 
-        book.setGenre(genre);
+        book.setBookGenre(BOOK_GENRE);
         book.setNumberOfPages(numberOfPages);
         book.setCustomShelf(customShelfService.findAll().get(0));
         if (isInSeries) {
@@ -180,7 +173,7 @@ public class BookFormTest {
         Assertions.assertEquals(lastName, bookForm.authorLastName.getValue());
         Assertions.assertEquals(readShelf.getPredefinedShelfName(),
                 bookForm.predefinedShelfField.getValue());
-        Assertions.assertEquals(genre, bookForm.bookGenre.getValue());
+        Assertions.assertEquals(BOOK_GENRE, bookForm.bookGenre.getValue());
         Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
         Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
         Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
@@ -223,7 +216,7 @@ public class BookFormTest {
         Assertions.assertEquals(readShelf.getShelfName(),
                 savedOrDeletedBook.getPredefinedShelf()
                                   .getShelfName());
-        Assertions.assertEquals(genre, savedOrDeletedBook.getGenre());
+        Assertions.assertEquals(BOOK_GENRE, savedOrDeletedBook.getBookGenre());
         Assertions.assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());
         Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
@@ -237,7 +230,7 @@ public class BookFormTest {
         bookForm.authorLastName.setValue(lastName);
         bookForm.bookTitle.setValue(bookTitle);
         bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
-        bookForm.bookGenre.setValue(genre);
+        bookForm.bookGenre.setValue(BOOK_GENRE);
         bookForm.numberOfPages.setValue(numberOfPages);
         if (isInSeries) {
             bookForm.seriesPosition.setValue(SERIES_POSITION);
@@ -662,7 +655,7 @@ public class BookFormTest {
         // given
         String newTitle = "IT";
         Author newAuthor = new Author("Stephen", "King");
-        Genre newGenre = Genre.HORROR;
+        BookGenre newBookGenre = BookGenre.HORROR;
 
         bookForm = createBookForm(TO_READ, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
@@ -675,7 +668,7 @@ public class BookFormTest {
         bookForm.bookTitle.setValue(newTitle);
         bookForm.authorFirstName.setValue(newAuthor.getFirstName());
         bookForm.authorLastName.setValue(newAuthor.getLastName());
-        bookForm.bookGenre.setValue(newGenre);
+        bookForm.bookGenre.setValue(newBookGenre);
         bookForm.saveButton.click();
 
         // then
@@ -685,7 +678,7 @@ public class BookFormTest {
         Assertions.assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName());
         Assertions.assertEquals(newAuthor.getFirstName(), updatedBook.getAuthor().getFirstName());
         Assertions.assertEquals(newAuthor.getLastName(), updatedBook.getAuthor().getLastName());
-        Assertions.assertEquals(newGenre, updatedBook.getGenre());
+        Assertions.assertEquals(newBookGenre, updatedBook.getBookGenre());
         Assertions.assertEquals(dateStarted, updatedBook.getDateStartedReading());
         Assertions.assertEquals(dateFinished, updatedBook.getDateFinishedReading());
     }
@@ -763,7 +756,7 @@ public class BookFormTest {
         Assertions.assertEquals(shelfName, book.getPredefinedShelf().getPredefinedShelfName());
         Assertions.assertEquals(firstName, book.getAuthor().getFirstName());
         Assertions.assertEquals(lastName, book.getAuthor().getLastName());
-        Assertions.assertEquals(genre, book.getGenre());
+        Assertions.assertEquals(BOOK_GENRE, book.getBookGenre());
         Assertions.assertEquals(numberOfPages, book.getNumberOfPages());
     }
 

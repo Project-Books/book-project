@@ -20,11 +20,12 @@ package com.karankumar.bookproject.backend.goal;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.utils.DateUtils;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+
+import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType;
+import static com.karankumar.bookproject.backend.utils.DateUtils.WEEKS_IN_YEAR;
 
 public class CalculateReadingGoal {
 
@@ -49,7 +50,7 @@ public class CalculateReadingGoal {
      * the year
      */
     public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
-        return ((int) Math.ceil(booksToReadThisYear / DateUtils.WEEKS_IN_YEAR));
+        return ((int) Math.ceil(booksToReadThisYear / WEEKS_IN_YEAR));
     }
 
     /**
@@ -58,14 +59,13 @@ public class CalculateReadingGoal {
      * @param readShelf the predefined read shelf
      * @return the number of books or pages read this year
      */
-    public static int howManyReadThisYear(ReadingGoal.GoalType goalType,
-                                          @NotNull PredefinedShelf readShelf) {
+    public static int howManyReadThisYear(GoalType goalType, @NotNull PredefinedShelf readShelf) {
         int readThisYear = 0;
-        boolean lookingForBooks = goalType.equals(ReadingGoal.GoalType.BOOKS);
+        boolean lookingForBooks = goalType.equals(GoalType.BOOKS);
         for (Book book : readShelf.getBooks()) {
             // only books that have been given a finish date can count towards the reading goal
             if (book != null && book.getDateFinishedReading() != null
-                    && book.getDateFinishedReading().getYear() == LocalDate.now().getYear()) {
+                    && DateUtils.dateIsInCurrentYear(book.getDateFinishedReading())) {
                 int pages = (book.getNumberOfPages() == null) ? 0 : book.getNumberOfPages();
                 readThisYear += (lookingForBooks ? (1) : pages);
             }

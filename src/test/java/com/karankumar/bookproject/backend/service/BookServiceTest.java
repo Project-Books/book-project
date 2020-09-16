@@ -18,13 +18,8 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.Tag;
-import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -45,7 +40,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @IntegrationTest
-public class BookServiceTest {
+class BookServiceTest {
 
     private static AuthorService authorService;
     private static BookService bookService;
@@ -78,13 +73,13 @@ public class BookServiceTest {
     }
 
     @Test
-    public void whenTryingToSaveNullBookExpectNoSave() {
+    void whenTryingToSaveNullBookExpectNoSave() {
         bookService.save(null);
         Assertions.assertEquals(0, bookService.count());
     }
 
     @Test
-    public void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
+    void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
         bookService.save(new Book("Book without author", null, toRead));
         Assertions.assertEquals(0, authorService.count());
         Assertions.assertEquals(0, bookService.count());
@@ -94,7 +89,7 @@ public class BookServiceTest {
      * Tests book is not saved with numberOfPages > max_pages
      */
     @Test
-    public void whenTryingToSaveBookWithMaxNumberPageExceedNoSave() {
+    void whenTryingToSaveBookWithMaxNumberPageExceedNoSave() {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setNumberOfPages(Book.MAX_PAGES + 1);
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
@@ -106,7 +101,7 @@ public class BookServiceTest {
      * Tests book is not saved with pagesRead > max_pages
      */
     @Test
-    public void whenTryingToSaveBookWithPagesReadExceedNoSave() {
+    void whenTryingToSaveBookWithPagesReadExceedNoSave() {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES + 1);
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
@@ -118,7 +113,7 @@ public class BookServiceTest {
      * Tests book is saved with pagesRead and numberOfPages = Max_pages
      */
     @Test
-    public void whenTryingToSaveBookWithPagesInLimitSave() {
+    void whenTryingToSaveBookWithPagesInLimitSave() {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES);
         book.setNumberOfPages(Book.MAX_PAGES);
@@ -130,7 +125,7 @@ public class BookServiceTest {
      * Tests whether the book without shelf can be saved
      */
     @Test
-    public void whenTryingToSaveWithoutShelfExpectNoSave() {
+    void whenTryingToSaveWithoutShelfExpectNoSave() {
         Book bookWithoutShelf = new Book("Title", new Author("First", "Last"), null);
         bookService.save(bookWithoutShelf);
         Assertions.assertEquals(0, authorService.count());
@@ -141,7 +136,7 @@ public class BookServiceTest {
      * Tests whether the book with author and shelf can be saved
      */
     @Test
-    public void whenTryingToSaveMultipleBooksExpectSave() {
+    void whenTryingToSaveMultipleBooksExpectSave() {
         Assertions.assertEquals(0, bookService.count());
         bookService.save(validBook);
         Assertions.assertEquals(1, bookService.count());
@@ -154,17 +149,17 @@ public class BookServiceTest {
     }
 
     @Test
-    public void allBooksReturnedWhenFilterIsEmpty() {
+    void allBooksReturnedWhenFilterIsEmpty() {
         Assertions.assertEquals(bookService.findAll(), bookService.findAll(""));
     }
 
     @Test
-    public void allBooksReturnedWhenFilterIsNull() {
+    void allBooksReturnedWhenFilterIsNull() {
         Assertions.assertEquals(bookService.findAll(), bookService.findAll(null));
     }
 
     @Test
-    public void shouldCreateJsonRepresentationForBooks() throws IOException, JSONException {
+    void shouldCreateJsonRepresentationForBooks() throws IOException, JSONException {
         // given
         Book anotherValidBook = createBookAndSetAllAttributes();
         bookService.save(validBook);
@@ -192,7 +187,7 @@ public class BookServiceTest {
         Book book = new Book("Another Book Name", author, toRead);
         book.setNumberOfPages(420);
         book.setPagesRead(42);
-        book.setGenre(Genre.ADVENTURE);
+        book.setBookGenre(BookGenre.ADVENTURE);
         book.setSeriesPosition(3);
         book.setEdition(2);
         book.setBookRecommendedBy("Peter Parker");
