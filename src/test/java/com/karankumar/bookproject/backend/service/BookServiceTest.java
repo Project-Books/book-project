@@ -101,7 +101,7 @@ class BookServiceTest {
      * Tests book is not saved with pagesRead > max_pages
      */
     @Test
-    void whenTryingToSaveBookWithPagesReadExceedNoSave() {
+    void whenTryingToSaveBookWithPagesReadExceededNoSave() {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES + 1);
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
