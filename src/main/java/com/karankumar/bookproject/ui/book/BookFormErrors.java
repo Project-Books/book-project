@@ -17,6 +17,8 @@
 
 package com.karankumar.bookproject.ui.book;
 
+import com.karankumar.bookproject.backend.entity.Book;
+
 public class BookFormErrors {
     public static final String BOOK_TITLE_ERROR = "Please provide a book title";
     public static final String FIRST_NAME_ERROR = "Please enter the author's first name";
@@ -28,5 +30,6 @@ public class BookFormErrors {
             "cannot be earlier than the date you started reading the book";
     public static final String AFTER_TODAY_ERROR = "The date you %s reading the book cannot be " +
             "after today's date.";
-    public static final String MAX_PAGES_ERROR = "Please enter valid pages (max allowed 23000)";
+    public static final String MAX_PAGES_ERROR = "Please enter valid pages (max allowed " +
+            Book.MAX_PAGES + ")";
 }
