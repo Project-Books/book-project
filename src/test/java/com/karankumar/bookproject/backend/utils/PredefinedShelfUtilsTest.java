@@ -150,9 +150,8 @@ class PredefinedShelfUtilsTest {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.forEach(shelfName -> {
-            String errorMsg = MessageFormat.format(ERROR_MESSAGE, shelfName);
             softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
-                .as(errorMsg)
+                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
                 .isTrue();
         });
 
@@ -164,9 +163,8 @@ class PredefinedShelfUtilsTest {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.stream().map(String::toLowerCase).forEach(shelfName -> {
-            String errorMsg = MessageFormat.format(ERROR_MESSAGE, shelfName);
             softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
-                .as(errorMsg)
+                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
                 .isTrue();
         });
 
@@ -178,9 +176,8 @@ class PredefinedShelfUtilsTest {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.stream().map(String::toUpperCase).forEach(shelfName -> {
-            String errorMsg = MessageFormat.format(ERROR_MESSAGE, shelfName);
             softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
-                .as(errorMsg)
+                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
                 .isTrue();
         });
 
@@ -192,9 +189,8 @@ class PredefinedShelfUtilsTest {
         SoftAssertions softly = new SoftAssertions();
 
         INVALID_SHELVES.forEach(shelfName -> {
-            String errorMsg = MessageFormat.format(ERROR_MESSAGE, shelfName);
             softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
-                .as(errorMsg)
+                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
                 .isFalse();
         });
 
