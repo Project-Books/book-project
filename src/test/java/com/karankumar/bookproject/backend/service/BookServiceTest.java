@@ -21,6 +21,8 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.*;
 import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
@@ -29,6 +31,8 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.validation.ConstraintViolationException;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,6 +85,45 @@ class BookServiceTest {
         Assertions.assertEquals(0, bookService.count());
     }
 
+    /**
+     * Tests book is not saved with numberOfPages > max_pages
+     */
+    @Test
+    void whenTryingToSaveBookWithMaxNumberPageExceedNoSave() {
+        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
+        book.setNumberOfPages(Book.MAX_PAGES + 1);
+        Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
+        Assertions.assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
+        Assertions.assertEquals(0, bookService.count());
+    }
+
+    /**
+     * Tests book is not saved with pagesRead > max_pages
+     */
+    @Test
+    void whenTryingToSaveBookWithPagesReadExceededNoSave() {
+        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
+        book.setPagesRead(Book.MAX_PAGES + 1);
+        Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
+        Assertions.assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
+        Assertions.assertEquals(0, bookService.count());
+    }
+
+    /**
+     * Tests book is saved with pagesRead and numberOfPages = Max_pages
+     */
+    @Test
+    void whenTryingToSaveBookWithPagesInLimitSave() {
+        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
+        book.setPagesRead(Book.MAX_PAGES);
+        book.setNumberOfPages(Book.MAX_PAGES);
+        bookService.save(book);
+        Assertions.assertEquals(1, bookService.count());
+    }
+
+    /**
+     * Tests whether the book without shelf can be saved
+     */
     @Test
     void whenTryingToSaveWithoutShelfExpectNoSave() {
         Book bookWithoutShelf = new Book("Title", new Author("First", "Last"), null);
@@ -155,5 +198,10 @@ class BookServiceTest {
         book.setDateFinishedReading(LocalDate.of(2020, 9, 5));
         book.setBookReview("Very good.");
         return book;
+    }
+
+    @AfterEach
+    void deleteBooks() {
+        bookService.deleteAll();
     }
 }

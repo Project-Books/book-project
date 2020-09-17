@@ -263,8 +263,12 @@ public class BookForm extends VerticalLayout {
         binder.forField(numberOfPages)
               .withValidator(BookFormValidators.positiveNumberPredicate(),
                       BookFormErrors.PAGE_NUMBER_ERROR)
+              .withValidator(BookFormValidators.maxPagesPredicate(),
+                      BookFormErrors.MAX_PAGES_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(pagesRead)
+              .withValidator(BookFormValidators.maxPagesPredicate(),
+                      BookFormErrors.MAX_PAGES_ERROR)
               .bind(Book::getPagesRead, Book::setPagesRead);
         binder.forField(bookGenre)
               .bind(Book::getBookGenre, Book::setBookGenre);
@@ -668,6 +672,7 @@ public class BookForm extends VerticalLayout {
     private void configureNumberOfPagesFormField() {
         numberOfPages.setPlaceholder("Enter number of pages");
         numberOfPages.setMin(1);
+        numberOfPages.setMax(Book.MAX_PAGES);
         numberOfPages.setHasControls(true);
         numberOfPages.setClearButtonVisible(true);
     }
@@ -675,6 +680,7 @@ public class BookForm extends VerticalLayout {
     private void configurePagesReadFormField() {
         pagesRead.setPlaceholder("Enter number of pages read");
         pagesRead.setMin(1);
+        pagesRead.setMax(Book.MAX_PAGES);
         pagesRead.setHasControls(true);
         pagesRead.setClearButtonVisible(true);
     }

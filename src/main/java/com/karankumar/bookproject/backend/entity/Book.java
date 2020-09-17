@@ -32,6 +32,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -43,10 +44,14 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
+    public static final int MAX_PAGES = 23_000;
+
     @NotNull
     @NotEmpty
     private String title;
+    @Max(value = MAX_PAGES)
     private Integer numberOfPages;
+    @Max(value = MAX_PAGES)
     private Integer pagesRead;
     private BookGenre bookGenre;
     private Integer seriesPosition;
