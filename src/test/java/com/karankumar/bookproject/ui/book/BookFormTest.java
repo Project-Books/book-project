@@ -32,8 +32,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +46,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -56,7 +53,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
@@ -77,8 +73,8 @@ class BookFormTest {
     private static final RatingScale ratingVal = RatingScale.NINE;
     private static final String bookReview = "Very good. Would read again.";
     private static final int SERIES_POSITION = 10;
-    private static int pagesRead;
-    private static int numberOfPages;
+    private static final int pagesRead = 450;
+    private static final int numberOfPages = 1000;
     private static int seriesPosition;
     private static final CustomShelf customShelf = new CustomShelf("BookFormTestShelf");
     private static final LocalDate NULL_STARED_DATE = null;
@@ -129,8 +125,6 @@ class BookFormTest {
         PredefinedShelf shelf = predefinedShelfUtils.findPredefinedShelf(shelfName);
         Book book = new Book(bookTitle, author, shelf);
 
-        pagesRead = generateRandomNumberOfPages();
-        numberOfPages = generateRandomNumberOfPages();
         seriesPosition = SERIES_POSITION;
 
         book.setBookGenre(BOOK_GENRE);
@@ -161,10 +155,6 @@ class BookFormTest {
                 break;
         }
         return book;
-    }
-
-    private int generateRandomNumberOfPages() {
-        return ThreadLocalRandom.current().nextInt(300, (2000 + 1));
     }
 
     /**
