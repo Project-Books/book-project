@@ -77,6 +77,7 @@ class BookFormTest {
     private static final int numberOfPages = 1000;
     private static int seriesPosition;
     private static final CustomShelf customShelf = new CustomShelf("BookFormTestShelf");
+
     private static final LocalDate NULL_STARED_DATE = null;
     private static final LocalDate NULL_FINISHED_DATE = null;
     private static final Integer NO_PAGES_READ = null;
@@ -187,7 +188,7 @@ class BookFormTest {
     @EnumSource(EventType.class)
     void saveEventPopulated(EventType eventType) {
         // given
-        populateBookForm(READ, false);
+        populateBookForm();
 
         // when
         AtomicReference<Book> bookReference = new AtomicReference<>(null);
@@ -203,32 +204,18 @@ class BookFormTest {
         Book savedOrDeletedBook = bookReference.get();
 
         // then
-        assertEquals(bookTitle, savedOrDeletedBook.getTitle());
-        assertEquals(firstName, savedOrDeletedBook.getAuthor().getFirstName());
-        assertEquals(lastName, savedOrDeletedBook.getAuthor().getLastName());
-        assertEquals(readShelf.getShelfName(),
-                savedOrDeletedBook.getPredefinedShelf()
-                                  .getShelfName());
-        assertEquals(BOOK_GENRE, savedOrDeletedBook.getBookGenre());
-        assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());
-        assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
-        assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
-        assertEquals(ratingVal, savedOrDeletedBook.getRating());
-        assertEquals(bookReview, savedOrDeletedBook.getBookReview());
-        assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
+        assertThat(createBook(readShelf.getPredefinedShelfName(), true, bookTitle))
+                .isEqualToComparingFieldByField(savedOrDeletedBook);
     }
 
-    private void populateBookForm(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
+    private void populateBookForm() {
         bookForm.authorFirstName.setValue(firstName);
         bookForm.authorLastName.setValue(lastName);
         bookForm.bookTitle.setValue(bookTitle);
         bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.setValue(BOOK_GENRE);
         bookForm.numberOfPages.setValue(numberOfPages);
-        if (isInSeries) {
-            bookForm.seriesPosition.setValue(SERIES_POSITION);
-        }
-        populateBookShelf(shelfName);
+        populateBookShelf(PredefinedShelf.ShelfName.READ);
     }
 
     private void populateBookFormWithExistingBook(PredefinedShelf.ShelfName shelfName,
@@ -267,7 +254,7 @@ class BookFormTest {
     @Test
     void formCanBeCleared() {
         // given
-        populateBookForm(READ, false);
+        populateBookForm();
         assumeAllFormFieldsArePopulated();
 
         // when
@@ -355,7 +342,7 @@ class BookFormTest {
     void fieldsToResetAreCorrectlyPopulated(PredefinedShelf.ShelfName newShelf) throws NotSupportedException {
         // given
         HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
-        populateBookForm(READ, false);
+        populateBookForm();
         bookForm.pagesRead.setValue(pagesRead);
 
         // when
@@ -587,7 +574,7 @@ class BookFormTest {
     @Test
     void shouldDisplaySeriesPosition_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
         // given
-        populateBookForm(READ, false);
+        populateBookForm();
 
         // when
         bookForm.openForm();
@@ -666,6 +653,7 @@ class BookFormTest {
 
         // then
         assertThat(bookService.count()).isOne();
+        
         Book updatedBook = bookService.findAll().get(0);
         assertEquals(newTitle, updatedBook.getTitle());
         assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName());
