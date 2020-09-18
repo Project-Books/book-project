@@ -78,7 +78,9 @@ If you want to use Docker, follow one of the two appoaches (if you use Windows, 
 #### 2. Start using docker-compose in production mode
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Build the project in production mode at the root using `./mvnw clean package -Pproduction` (Unix) or `mvnw.cmd clean package -Pproduction`. In production mode all UI components are packaged in a jar file.
+3. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
+     - `./mvnw clean package -Pproduction` (Unix), or 
+     - `mvnw.cmd clean package -Pproduction` (Windows)
 4. Start the MySQL Database and book project app using docker compose `docker-compose up --build`
 5. Go to `localhost:8080`
 6. Log in with the details below:
