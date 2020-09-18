@@ -68,7 +68,7 @@ If you want to use Docker, follow one of the two appoaches (if you use Windows, 
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Build the project using `mvn clean install`
+3. Build the project at the root using `./mvn clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 4. Start MySQL database using `docker-compose up -d mysql phpmyadmin`
 5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
 6. Log in with the details below:
@@ -78,7 +78,7 @@ If you want to use Docker, follow one of the two appoaches (if you use Windows, 
 #### 2. Start using docker-compose in production mode
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Build the project in production mode using `mvn clean package -Pproduction`. In production mode all UI components are packaged in jar file.
+3. Build the project in production mode at the root using `./mvnw clean package -Pproduction` (Unix) or `mvnw.cmd clean package -Pproduction`. In production mode all UI components are packaged in a jar file.
 4. Start the MySQL Database and book project app using docker compose `docker-compose up --build`
 5. Go to `localhost:8080`
 6. Log in with the details below:
