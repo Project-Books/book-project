@@ -52,6 +52,13 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
@@ -103,13 +110,10 @@ class BookFormTest {
 
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
 
-        Assumptions.assumeTrue(bookService != null);
         bookService.deleteAll();
-
         customShelfService.deleteAll();
         customShelfService.save(customShelf);
 
-        Assumptions.assumeTrue(predefinedShelfService != null);
         bookForm = createBookForm(READ, true);
     }
 
@@ -168,19 +172,18 @@ class BookFormTest {
      */
     @Test
     void formFieldsPopulated() {
-        Assertions.assertEquals(bookTitle, bookForm.bookTitle.getValue());
-        Assertions.assertEquals(firstName, bookForm.authorFirstName.getValue());
-        Assertions.assertEquals(lastName, bookForm.authorLastName.getValue());
-        Assertions.assertEquals(readShelf.getPredefinedShelfName(),
-                bookForm.predefinedShelfField.getValue());
-        Assertions.assertEquals(BOOK_GENRE, bookForm.bookGenre.getValue());
-        Assertions.assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
-        Assertions.assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
-        Assertions.assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
+        assertEquals(bookTitle, bookForm.bookTitle.getValue());
+        assertEquals(firstName, bookForm.authorFirstName.getValue());
+        assertEquals(lastName, bookForm.authorLastName.getValue());
+        assertEquals(readShelf.getPredefinedShelfName(), bookForm.predefinedShelfField.getValue());
+        assertEquals(BOOK_GENRE, bookForm.bookGenre.getValue());
+        assertEquals(numberOfPages, bookForm.numberOfPages.getValue());
+        assertEquals(dateStarted, bookForm.dateStartedReading.getValue());
+        assertEquals(dateFinished, bookForm.dateFinishedReading.getValue());
         double rating = RatingScale.toDouble(ratingVal);
-        Assertions.assertEquals(rating, bookForm.rating.getValue());
-        Assertions.assertEquals(bookReview, bookForm.bookReview.getValue());
-        Assertions.assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
+        assertEquals(rating, bookForm.rating.getValue());
+        assertEquals(bookReview, bookForm.bookReview.getValue());
+        assertEquals(seriesPosition, bookForm.seriesPosition.getValue());
     }
 
     enum EventType { SAVED, DELETED }
@@ -210,19 +213,19 @@ class BookFormTest {
         Book savedOrDeletedBook = bookReference.get();
 
         // then
-        Assertions.assertEquals(bookTitle, savedOrDeletedBook.getTitle());
-        Assertions.assertEquals(firstName, savedOrDeletedBook.getAuthor().getFirstName());
-        Assertions.assertEquals(lastName, savedOrDeletedBook.getAuthor().getLastName());
-        Assertions.assertEquals(readShelf.getShelfName(),
+        assertEquals(bookTitle, savedOrDeletedBook.getTitle());
+        assertEquals(firstName, savedOrDeletedBook.getAuthor().getFirstName());
+        assertEquals(lastName, savedOrDeletedBook.getAuthor().getLastName());
+        assertEquals(readShelf.getShelfName(),
                 savedOrDeletedBook.getPredefinedShelf()
                                   .getShelfName());
-        Assertions.assertEquals(BOOK_GENRE, savedOrDeletedBook.getBookGenre());
-        Assertions.assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());
-        Assertions.assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
-        Assertions.assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
-        Assertions.assertEquals(ratingVal, savedOrDeletedBook.getRating());
-        Assertions.assertEquals(bookReview, savedOrDeletedBook.getBookReview());
-        Assertions.assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
+        assertEquals(BOOK_GENRE, savedOrDeletedBook.getBookGenre());
+        assertEquals(numberOfPages, savedOrDeletedBook.getNumberOfPages());
+        assertEquals(dateStarted, savedOrDeletedBook.getDateStartedReading());
+        assertEquals(dateFinished, savedOrDeletedBook.getDateFinishedReading());
+        assertEquals(ratingVal, savedOrDeletedBook.getRating());
+        assertEquals(bookReview, savedOrDeletedBook.getBookReview());
+        assertEquals(seriesPosition, savedOrDeletedBook.getSeriesPosition());
     }
 
     private void populateBookForm(PredefinedShelf.ShelfName shelfName, boolean isInSeries) {
@@ -281,71 +284,71 @@ class BookFormTest {
         bookForm.reset.click();
 
         // then
-        Assertions.assertTrue(bookForm.authorFirstName.isEmpty());
-        Assertions.assertTrue(bookForm.authorLastName.isEmpty());
-        Assertions.assertTrue(bookForm.bookTitle.isEmpty());
-        Assertions.assertTrue(bookForm.customShelfField.isEmpty());
-        Assertions.assertTrue(bookForm.predefinedShelfField.isEmpty());
-        Assertions.assertTrue(bookForm.bookGenre.isEmpty());
-        Assertions.assertTrue(bookForm.pagesRead.isEmpty());
-        Assertions.assertTrue(bookForm.numberOfPages.isEmpty());
-        Assertions.assertTrue(bookForm.dateStartedReading.isEmpty());
-        Assertions.assertTrue(bookForm.dateFinishedReading.isEmpty());
-        Assertions.assertTrue(bookForm.rating.isEmpty());
-        Assertions.assertTrue(bookForm.bookReview.isEmpty());
+        assertTrue(bookForm.authorFirstName.isEmpty());
+        assertTrue(bookForm.authorLastName.isEmpty());
+        assertTrue(bookForm.bookTitle.isEmpty());
+        assertTrue(bookForm.customShelfField.isEmpty());
+        assertTrue(bookForm.predefinedShelfField.isEmpty());
+        assertTrue(bookForm.bookGenre.isEmpty());
+        assertTrue(bookForm.pagesRead.isEmpty());
+        assertTrue(bookForm.numberOfPages.isEmpty());
+        assertTrue(bookForm.dateStartedReading.isEmpty());
+        assertTrue(bookForm.dateFinishedReading.isEmpty());
+        assertTrue(bookForm.rating.isEmpty());
+        assertTrue(bookForm.bookReview.isEmpty());
     }
 
     private void assumeAllFormFieldsArePopulated() {
-        Assumptions.assumeFalse(bookForm.authorFirstName.isEmpty());
-        Assumptions.assumeFalse(bookForm.authorLastName.isEmpty());
-        Assumptions.assumeFalse(bookForm.bookTitle.isEmpty());
-        Assumptions.assumeFalse(bookForm.predefinedShelfField.isEmpty());
-        Assumptions.assumeFalse(bookForm.bookGenre.isEmpty());
-        Assumptions.assumeFalse(bookForm.numberOfPages.isEmpty());
-        Assumptions.assumeFalse(bookForm.dateStartedReading.isEmpty());
-        Assumptions.assumeFalse(bookForm.dateFinishedReading.isEmpty());
-        Assumptions.assumeFalse(bookForm.rating.isEmpty());
-        Assumptions.assumeFalse(bookForm.bookReview.isEmpty());
+        assumeFalse(bookForm.authorFirstName.isEmpty());
+        assumeFalse(bookForm.authorLastName.isEmpty());
+        assumeFalse(bookForm.bookTitle.isEmpty());
+        assumeFalse(bookForm.predefinedShelfField.isEmpty());
+        assumeFalse(bookForm.bookGenre.isEmpty());
+        assumeFalse(bookForm.numberOfPages.isEmpty());
+        assumeFalse(bookForm.dateStartedReading.isEmpty());
+        assumeFalse(bookForm.dateFinishedReading.isEmpty());
+        assumeFalse(bookForm.rating.isEmpty());
+        assumeFalse(bookForm.bookReview.isEmpty());
     }
 
     @Test
     void correctFormFieldsShowForToReadShelf() {
         bookForm.predefinedShelfField.setValue(TO_READ);
-        Assertions.assertFalse(bookForm.dateStartedReadingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
-        Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible());
+        assertFalse(bookForm.dateStartedReadingFormItem.isVisible());
+        assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        assertFalse(bookForm.ratingFormItem.isVisible());
+        assertFalse(bookForm.bookReviewFormItem.isVisible());
+        assertFalse(bookForm.pagesReadFormItem.isVisible());
     }
 
     @Test
     void correctFormFieldsShowForReadingShelf() {
         bookForm.predefinedShelfField.setValue(READING);
-        Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
-        Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible());
+        assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
+        assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        assertFalse(bookForm.ratingFormItem.isVisible());
+        assertFalse(bookForm.bookReviewFormItem.isVisible());
+        assertFalse(bookForm.pagesReadFormItem.isVisible());
     }
 
     @Test
     void correctFormFieldsShowForReadShelf() {
         bookForm.predefinedShelfField.setValue(READ);
-        Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
-        Assertions.assertTrue(bookForm.dateFinishedReadingFormItem.isVisible());
-        Assertions.assertTrue(bookForm.ratingFormItem.isVisible());
-        Assertions.assertTrue(bookForm.bookReviewFormItem.isVisible());
-        Assertions.assertFalse(bookForm.pagesReadFormItem.isVisible());
+        assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
+        assertTrue(bookForm.dateFinishedReadingFormItem.isVisible());
+        assertTrue(bookForm.ratingFormItem.isVisible());
+        assertTrue(bookForm.bookReviewFormItem.isVisible());
+        assertFalse(bookForm.pagesReadFormItem.isVisible());
     }
 
     @Test
     void correctFormFieldsShowForDidNotFinishShelf() {
         bookForm.predefinedShelfField.setValue(DID_NOT_FINISH);
-        Assertions.assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.ratingFormItem.isVisible());
-        Assertions.assertFalse(bookForm.bookReviewFormItem.isVisible());
-        Assertions.assertTrue(bookForm.pagesReadFormItem.isVisible());
+        assertTrue(bookForm.dateStartedReadingFormItem.isVisible());
+        assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
+        assertFalse(bookForm.ratingFormItem.isVisible());
+        assertFalse(bookForm.bookReviewFormItem.isVisible());
+        assertTrue(bookForm.pagesReadFormItem.isVisible());
     }
 
     private static Stream<Arguments> shelfNames() {
@@ -369,9 +372,9 @@ class BookFormTest {
         bookForm.predefinedShelfField.setValue(newShelf);
 
         // then
-        Assertions.assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
-        Assertions.assertTrue(List.of(bookForm.fieldsToReset)
-                                  .containsAll(List.of(fieldsThatShouldBeReset)));
+        assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length);
+        assertTrue(List.of(bookForm.fieldsToReset)
+                       .containsAll(List.of(fieldsThatShouldBeReset)));
     }
 
     @Test
@@ -384,9 +387,9 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(BookFormErrors.SERIES_POSITION_ERROR,
+        assertTrue(validationStatus.hasErrors());
+        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
+        assertEquals(BookFormErrors.SERIES_POSITION_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -403,9 +406,9 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(BookFormErrors.PAGE_NUMBER_ERROR,
+        assertTrue(validationStatus.hasErrors());
+        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
+        assertEquals(BookFormErrors.PAGE_NUMBER_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -423,9 +426,9 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(BookFormErrors.MAX_PAGES_ERROR,
+        assertTrue(validationStatus.hasErrors());
+        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
+        assertEquals(BookFormErrors.MAX_PAGES_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -443,9 +446,9 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(BookFormErrors.MAX_PAGES_ERROR,
+        assertTrue(validationStatus.hasErrors());
+        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
+        assertEquals(BookFormErrors.MAX_PAGES_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -463,9 +466,9 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(BookFormErrors.BOOK_TITLE_ERROR,
+        assertTrue(validationStatus.hasErrors());
+        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
+        assertEquals(BookFormErrors.BOOK_TITLE_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -483,9 +486,9 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(BookFormErrors.FIRST_NAME_ERROR,
+        assertTrue(validationStatus.hasErrors());
+        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
+        assertEquals(BookFormErrors.FIRST_NAME_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -503,9 +506,9 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(BookFormErrors.LAST_NAME_ERROR,
+        assertTrue(validationStatus.hasErrors());
+        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
+        assertEquals(BookFormErrors.LAST_NAME_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -523,9 +526,9 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(1, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(BookFormErrors.SHELF_ERROR,
+        assertTrue(validationStatus.hasErrors());
+        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
+        assertEquals(BookFormErrors.SHELF_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
@@ -543,15 +546,15 @@ class BookFormTest {
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        Assertions.assertTrue(validationStatus.hasErrors());
-        Assertions.assertEquals(2, validationStatus.getFieldValidationErrors().size());
-        Assertions.assertEquals(String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"),
+        assertTrue(validationStatus.hasErrors());
+        assertEquals(2, validationStatus.getFieldValidationErrors().size());
+        assertEquals(String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"),
                 validationStatus.getFieldValidationErrors()
                                 .get(0)
                                 .getMessage()
                                 .orElseThrow()
         );
-        Assertions.assertEquals(BookFormErrors.FINISH_DATE_ERROR,
+        assertEquals(BookFormErrors.FINISH_DATE_ERROR,
                 validationStatus.getFieldValidationErrors()
                                 .get(1)
                                 .getMessage()
@@ -565,9 +568,9 @@ class BookFormTest {
         bookForm.inSeriesCheckbox.setValue(true);
 
         // then
-        Assertions.assertTrue(bookForm.seriesPositionFormItem.isVisible());
-        Assertions.assertTrue(bookForm.seriesPosition.isVisible());
-        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
+        assertTrue(bookForm.seriesPositionFormItem.isVisible());
+        assertTrue(bookForm.seriesPosition.isVisible());
+        assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
     }
 
     @Test
@@ -576,7 +579,7 @@ class BookFormTest {
         bookForm.inSeriesCheckbox.setValue(false);
 
         // then
-        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        assertFalse(bookForm.seriesPositionFormItem.isVisible());
     }
 
     @Test
@@ -588,7 +591,7 @@ class BookFormTest {
         bookForm.inSeriesCheckbox.setValue(false);
 
         // then
-        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        assertFalse(bookForm.seriesPositionFormItem.isVisible());
     }
 
     @Test
@@ -600,9 +603,9 @@ class BookFormTest {
         bookForm.openForm();
 
         // then
-        Assertions.assertTrue(bookForm.seriesPositionFormItem.isVisible());
-        Assertions.assertTrue(bookForm.seriesPosition.isVisible());
-        Assertions.assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
+        assertTrue(bookForm.seriesPositionFormItem.isVisible());
+        assertTrue(bookForm.seriesPosition.isVisible());
+        assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue());
     }
 
     @Test
@@ -613,7 +616,7 @@ class BookFormTest {
         bookForm.openForm();
 
         // then
-        Assertions.assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        assertFalse(bookForm.seriesPositionFormItem.isVisible());
     }
 
     @Test
@@ -626,7 +629,7 @@ class BookFormTest {
         bookForm.saveButton.click();
 
         // then
-        Assertions.assertEquals(1, bookService.count());
+        assertThat(bookService.count()).isOne();
         Book bookInDatabase = bookService.findAll().get(0);
         correctBookAttributesPresent(TO_READ, bookInDatabase);
     }
@@ -644,10 +647,10 @@ class BookFormTest {
         bookForm.saveButton.click();
 
         // then
-        Assertions.assertEquals(2, bookService.count());
+        assertEquals(2, bookService.count());
         List<Book> booksInDatabase = bookService.findAll();
-        Assertions.assertEquals(bookTitle, booksInDatabase.get(0).getTitle());
-        Assertions.assertEquals("someOtherBook", booksInDatabase.get(1).getTitle());
+        assertEquals(bookTitle, booksInDatabase.get(0).getTitle());
+        assertEquals("someOtherBook", booksInDatabase.get(1).getTitle());
     }
 
     @Test
@@ -672,15 +675,15 @@ class BookFormTest {
         bookForm.saveButton.click();
 
         // then
-        Assertions.assertEquals(1, bookService.count());
+        assertThat(bookService.count()).isOne();
         Book updatedBook = bookService.findAll().get(0);
-        Assertions.assertEquals(newTitle, updatedBook.getTitle());
-        Assertions.assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName());
-        Assertions.assertEquals(newAuthor.getFirstName(), updatedBook.getAuthor().getFirstName());
-        Assertions.assertEquals(newAuthor.getLastName(), updatedBook.getAuthor().getLastName());
-        Assertions.assertEquals(newBookGenre, updatedBook.getBookGenre());
-        Assertions.assertEquals(dateStarted, updatedBook.getDateStartedReading());
-        Assertions.assertEquals(dateFinished, updatedBook.getDateFinishedReading());
+        assertEquals(newTitle, updatedBook.getTitle());
+        assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName());
+        assertEquals(newAuthor.getFirstName(), updatedBook.getAuthor().getFirstName());
+        assertEquals(newAuthor.getLastName(), updatedBook.getAuthor().getLastName());
+        assertEquals(newBookGenre, updatedBook.getBookGenre());
+        assertEquals(dateStarted, updatedBook.getDateStartedReading());
+        assertEquals(dateFinished, updatedBook.getDateFinishedReading());
     }
 
 
@@ -718,7 +721,7 @@ class BookFormTest {
         bookForm.saveButton.click();
 
         // then
-        Assertions.assertEquals(1, bookService.count());
+        assertThat(bookService.count()).isOne();
         Book bookInDatabase = bookService.findAll().get(0);
         correctBookAttributesPresent(newShelf, bookInDatabase);
     }
@@ -752,21 +755,21 @@ class BookFormTest {
 
     private void testBookAttributesPresentForAllShelves(PredefinedShelf.ShelfName shelfName,
                                                         Book book) {
-        Assertions.assertEquals(bookTitle, book.getTitle());
-        Assertions.assertEquals(shelfName, book.getPredefinedShelf().getPredefinedShelfName());
-        Assertions.assertEquals(firstName, book.getAuthor().getFirstName());
-        Assertions.assertEquals(lastName, book.getAuthor().getLastName());
-        Assertions.assertEquals(BOOK_GENRE, book.getBookGenre());
-        Assertions.assertEquals(numberOfPages, book.getNumberOfPages());
+        assertEquals(bookTitle, book.getTitle());
+        assertEquals(shelfName, book.getPredefinedShelf().getPredefinedShelfName());
+        assertEquals(firstName, book.getAuthor().getFirstName());
+        assertEquals(lastName, book.getAuthor().getLastName());
+        assertEquals(BOOK_GENRE, book.getBookGenre());
+        assertEquals(numberOfPages, book.getNumberOfPages());
     }
 
     private void assertStateSpecificFields(Book book, LocalDate dateStarted, LocalDate dateFinished,
                                            RatingScale rating, String bookReview, Integer pagesRead) {
-        Assertions.assertEquals(dateStarted, book.getDateStartedReading());
-        Assertions.assertEquals(dateFinished, book.getDateFinishedReading());
-        Assertions.assertEquals(rating, book.getRating());
-        Assertions.assertEquals(bookReview, book.getBookReview());
-        Assertions.assertEquals(pagesRead, book.getPagesRead());
+        assertEquals(dateStarted, book.getDateStartedReading());
+        assertEquals(dateFinished, book.getDateFinishedReading());
+        assertEquals(rating, book.getRating());
+        assertEquals(bookReview, book.getBookReview());
+        assertEquals(pagesRead, book.getPagesRead());
     }
 
     /**
@@ -778,14 +781,14 @@ class BookFormTest {
         bookForm = createBookForm(TO_READ, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
         bookForm.saveButton.click();
-        Assertions.assertEquals(1, bookService.count());
+        assertThat(bookService.count()).isOne();
 
         // when
         bookForm.addListener(BookForm.DeleteEvent.class, event -> bookService.delete(event.getBook()));
         bookForm.delete.click();
 
         // then
-        Assertions.assertEquals(0, bookService.count());
+        assertThat(bookService.count()).isZero();
     }
 
     @AfterEach
