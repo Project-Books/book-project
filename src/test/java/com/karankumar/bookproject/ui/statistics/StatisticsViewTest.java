@@ -31,11 +31,14 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.Arrays;
 
@@ -72,12 +75,12 @@ public class StatisticsViewTest {
     }
 
     private void valueIsPresent(Statistic currentStatistic) {
-        Assertions.assertFalse(currentStatistic instanceof StatisticNotFound);
+        assertFalse(currentStatistic instanceof StatisticNotFound);
 
     }
     
     private void thereAreNotOtherStatistics() {
-        Assertions.assertEquals(StatisticType.values().length, statisticsView.getComponentCount());
+        assertEquals(StatisticType.values().length, statisticsView.getComponentCount());
     }
 
     @Test
@@ -184,11 +187,11 @@ public class StatisticsViewTest {
     }
 
     private void statisticIsAbsent(StatisticType statisticType) {
-        Assertions.assertTrue(getStatistic(statisticType) instanceof StatisticNotFound);
+        assertTrue(getStatistic(statisticType) instanceof StatisticNotFound);
     }
 
     private void statisticIsPresent(StatisticType statisticType) {
-        Assertions.assertEquals(statisticType.getCaption(), getStatistic(statisticType).getCaption());
+        assertEquals(statisticType.getCaption(), getStatistic(statisticType).getCaption());
     }
 
     private Statistic getStatistic(StatisticType statisticType) {
