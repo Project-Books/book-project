@@ -17,17 +17,18 @@
 
 package com.karankumar.bookproject.backend.utils;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StringUtilsTest {
     @Test
     void pluralizeReturnsSingularString() {
-        Assertions.assertEquals("book", StringUtils.pluralize("book", 1));
+        assertEquals("book", StringUtils.pluralize("book", 1));
     }
 
     @Test
     void pluralizeReturnsPluralString() {
-        Assertions.assertEquals("books", StringUtils.pluralize("book", 2));
+        assertEquals("books", StringUtils.pluralize("book", 2));
     }
 }
