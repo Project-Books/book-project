@@ -75,7 +75,6 @@ class PredefinedShelfUtilsTest {
         findPredefinedShelves();
 
         PredefinedShelfUtilsTest.bookRepository = bookRepository;
-        PredefinedShelfUtilsTest.bookService = bookService;
         resetBookRepository();
         createAndSaveBooks();
 
