@@ -6,20 +6,27 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BookUtilsTest {
-    private Book book = new Book("Title", null, null);
+    private final String bookTitle = "Title";
+    private final Book book = new Book(bookTitle, null, null);
 
     @Test
     void testSeriesPositionNotShownWhenBookIsNotInSeries() {
-        book.setSeriesPosition(0);
-        String expected = "Title";
+        book.setSeriesPosition(null);
         String actual = BookUtils.combineTitleAndSeries(book);
-        assertEquals(expected, actual);
+        assertEquals(bookTitle, actual);
+    }
+
+    @Test
+    void testTitleReturnedWhenSeriesPositionIsZero() {
+        book.setSeriesPosition(0);
+        String actual = BookUtils.combineTitleAndSeries(book);
+        assertEquals(bookTitle, actual);
     }
 
     @Test
     void testSeriesPositionCorrectlyShown() {
         book.setSeriesPosition(1);
-        String expected = "Title (#1)";
+        String expected = bookTitle + " (#1)";
         String actual = BookUtils.combineTitleAndSeries(book);
         assertEquals(expected, actual);
     }
