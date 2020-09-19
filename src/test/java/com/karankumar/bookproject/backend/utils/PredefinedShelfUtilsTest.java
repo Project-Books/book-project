@@ -39,6 +39,12 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPredefinedShelf;
+
 @IntegrationTest
 class PredefinedShelfUtilsTest {
     @Autowired private PredefinedShelfRepository shelfRepository;
@@ -69,11 +75,11 @@ class PredefinedShelfUtilsTest {
         bookRepository.deleteAll();
         shelfRepository.deleteAll();
 
-        toReadShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ));
-        PredefinedShelf readingShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READING));
-        readShelf = shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+        toReadShelf = shelfRepository.save(new PredefinedShelf(TO_READ));
+        PredefinedShelf readingShelf = shelfRepository.save(new PredefinedShelf(READING));
+        readShelf = shelfRepository.save(new PredefinedShelf(READ));
         PredefinedShelf didNotFinishShelf =
-                shelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH));
+                shelfRepository.save(new PredefinedShelf(DID_NOT_FINISH));
 
         book1 = bookRepository.save(new Book("someTitle", NO_AUTHOR, toReadShelf));
         book2 = bookRepository.save(new Book("someTitle2", NO_AUTHOR, toReadShelf));
@@ -94,10 +100,10 @@ class PredefinedShelfUtilsTest {
     void shouldGetAllPredefinedShelfNamesFromDatabase() {
         // given
         List<String> expectedShelfNames = List.of(
-                PredefinedShelf.ShelfName.TO_READ.toString(),
-                PredefinedShelf.ShelfName.READING.toString(),
-                PredefinedShelf.ShelfName.READ.toString(),
-                PredefinedShelf.ShelfName.DID_NOT_FINISH.toString()
+                TO_READ.toString(),
+                READING.toString(),
+                READ.toString(),
+                DID_NOT_FINISH.toString()
         );
 
         // when
@@ -149,11 +155,9 @@ class PredefinedShelfUtilsTest {
     void testValidPredefinedShelfNames() {
         SoftAssertions softly = new SoftAssertions();
 
-        PREDEFINED_SHELVES.forEach(shelfName -> {
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
-                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
-                .isTrue();
-        });
+        PREDEFINED_SHELVES.forEach(shelfName -> softly.assertThat(isPredefinedShelf(shelfName))
+                                                  .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                                                  .isTrue());
 
         softly.assertAll();
     }
@@ -162,11 +166,11 @@ class PredefinedShelfUtilsTest {
     void isPredefinedShelfWorksForLowerCase() {
         SoftAssertions softly = new SoftAssertions();
 
-        PREDEFINED_SHELVES.stream().map(String::toLowerCase).forEach(shelfName -> {
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
-                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
-                .isTrue();
-        });
+        PREDEFINED_SHELVES.stream()
+                          .map(String::toLowerCase)
+                          .forEach(shelfName -> softly.assertThat(isPredefinedShelf(shelfName))
+                                                      .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                                                      .isTrue());
 
         softly.assertAll();
     }
@@ -175,11 +179,12 @@ class PredefinedShelfUtilsTest {
     void isPredefinedShelfWorksForUpperCase() {
         SoftAssertions softly = new SoftAssertions();
 
-        PREDEFINED_SHELVES.stream().map(String::toUpperCase).forEach(shelfName -> {
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
-                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
-                .isTrue();
-        });
+        PREDEFINED_SHELVES.stream()
+                          .map(String::toUpperCase)
+                          .forEach(shelfName ->
+                                  softly.assertThat(isPredefinedShelf(shelfName))
+                                        .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                                        .isTrue());
 
         softly.assertAll();
     }
@@ -188,11 +193,9 @@ class PredefinedShelfUtilsTest {
     void testInvalidShelfNames() {
         SoftAssertions softly = new SoftAssertions();
 
-        INVALID_SHELVES.forEach(shelfName -> {
-            softly.assertThat(PredefinedShelfUtils.isPredefinedShelf(shelfName))
-                .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
-                .isFalse();
-        });
+        INVALID_SHELVES.forEach(shelfName -> softly.assertThat(isPredefinedShelf(shelfName))
+                                               .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                                               .isFalse());
 
         softly.assertAll();
     }
