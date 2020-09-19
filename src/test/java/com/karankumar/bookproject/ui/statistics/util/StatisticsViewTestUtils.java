@@ -49,24 +49,28 @@ public class StatisticsViewTestUtils {
                 .equals(text);
     }
 
-    public static void populateDataWithBooks(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBooks(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
         bookService.save(book);
     }
     
-    public static void populateDataWithBooksWithoutPageCount(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBooksWithoutPageCount(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
         book.setNumberOfPages(null);
         bookService.save(book);
     }
 
-    public static void populateDataWithBooksWithoutGenre(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBooksWithoutGenre(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
         book.setBookGenre(null);
         bookService.save(book);
     }
 
-    public static void populateDataWithBooksWithoutRatings(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBooksWithoutRatings(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
         book.setRating(null);
         bookService.save(book);
