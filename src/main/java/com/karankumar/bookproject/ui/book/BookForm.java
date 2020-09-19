@@ -113,6 +113,21 @@ public class BookForm extends VerticalLayout {
             = new HasValue[]{pagesRead};
     @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
             = new HasValue[]{dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] allFields = {
+            bookTitle,
+            authorFirstName,
+            authorLastName,
+            seriesPosition,
+            dateStartedReading,
+            dateFinishedReading,
+            bookGenre,
+            customShelfField,
+            predefinedShelfField,
+            pagesRead,
+            numberOfPages,
+            rating,
+            bookReview
+    };
 
     @VisibleForTesting Button delete = new Button();
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);

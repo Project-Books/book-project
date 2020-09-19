@@ -261,18 +261,14 @@ class BookFormTest {
         bookForm.reset.click();
 
         // then
-        assertTrue(bookForm.authorFirstName.isEmpty());
-        assertTrue(bookForm.authorLastName.isEmpty());
-        assertTrue(bookForm.bookTitle.isEmpty());
-        assertTrue(bookForm.customShelfField.isEmpty());
-        assertTrue(bookForm.predefinedShelfField.isEmpty());
-        assertTrue(bookForm.bookGenre.isEmpty());
-        assertTrue(bookForm.pagesRead.isEmpty());
-        assertTrue(bookForm.numberOfPages.isEmpty());
-        assertTrue(bookForm.dateStartedReading.isEmpty());
-        assertTrue(bookForm.dateFinishedReading.isEmpty());
-        assertTrue(bookForm.rating.isEmpty());
-        assertTrue(bookForm.bookReview.isEmpty());
+        assertAllFieldsAreEmpty();
+    }
+
+    private void assertAllFieldsAreEmpty() {
+        System.out.println("hi");
+        for (HasValue field : bookForm.allFields) {
+            assertTrue(field.isEmpty(), field.toString() + " is not empty");
+        }
     }
 
     private void assumeAllFormFieldsArePopulated() {
@@ -291,6 +287,10 @@ class BookFormTest {
     @Test
     void correctFormFieldsShowForToReadShelf() {
         bookForm.predefinedShelfField.setValue(TO_READ);
+        assertNonToReadFieldsAreHidden();
+    }
+
+    private void assertNonToReadFieldsAreHidden() {
         assertFalse(bookForm.dateStartedReadingFormItem.isVisible());
         assertFalse(bookForm.dateFinishedReadingFormItem.isVisible());
         assertFalse(bookForm.ratingFormItem.isVisible());
