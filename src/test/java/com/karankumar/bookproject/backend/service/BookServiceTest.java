@@ -39,6 +39,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @IntegrationTest
 class BookServiceTest {
 
@@ -75,14 +79,14 @@ class BookServiceTest {
     @Test
     void whenTryingToSaveNullBookExpectNoSave() {
         bookService.save(null);
-        Assertions.assertEquals(0, bookService.count());
+        assertThat(bookService.count()).isZero();
     }
 
     @Test
     void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
         bookService.save(new Book("Book without author", null, toRead));
-        Assertions.assertEquals(0, authorService.count());
-        Assertions.assertEquals(0, bookService.count());
+        assertThat(authorService.count()).isZero();
+        assertThat(bookService.count()).isZero();
     }
 
     /**
@@ -93,8 +97,8 @@ class BookServiceTest {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setNumberOfPages(Book.MAX_PAGES + 1);
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
-        Assertions.assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
-        Assertions.assertEquals(0, bookService.count());
+        assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
+        assertThat(bookService.count()).isZero();
     }
 
     /**
@@ -105,8 +109,8 @@ class BookServiceTest {
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES + 1);
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
-        Assertions.assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
-        Assertions.assertEquals(0, bookService.count());
+        assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
+        assertThat(bookService.count()).isZero();
     }
 
     /**
@@ -114,11 +118,16 @@ class BookServiceTest {
      */
     @Test
     void whenTryingToSaveBookWithPagesInLimitSave() {
+        // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES);
         book.setNumberOfPages(Book.MAX_PAGES);
+
+        // when
         bookService.save(book);
-        Assertions.assertEquals(1, bookService.count());
+
+        // then
+        assertThat(bookService.count()).isOne();
     }
 
     /**
@@ -126,10 +135,15 @@ class BookServiceTest {
      */
     @Test
     void whenTryingToSaveWithoutShelfExpectNoSave() {
+        // given
         Book bookWithoutShelf = new Book("Title", new Author("First", "Last"), null);
+
+        // when
         bookService.save(bookWithoutShelf);
-        Assertions.assertEquals(0, authorService.count());
-        Assertions.assertEquals(0, bookService.count());
+
+        // then
+        assertThat(authorService.count()).isZero();
+        assertThat(bookService.count()).isZero();
     }
 
     /**
@@ -137,12 +151,17 @@ class BookServiceTest {
      */
     @Test
     void whenTryingToSaveMultipleBooksExpectSave() {
-        Assertions.assertEquals(0, bookService.count());
+        // given
+        assertThat(bookService.count()).isZero();
+
+        // when
         bookService.save(validBook);
-        Assertions.assertEquals(1, bookService.count());
-        Assertions.assertEquals(1, bookService.findAll(validBook.getTitle()).size());
-        Assertions.assertEquals(validBook, bookService.findAll(validBook.getTitle()).get(0));
-        Assertions.assertEquals(validBook.getAuthor(),
+
+        // then
+        assertThat(bookService.count()).isOne();
+        assertThat(bookService.findAll(validBook.getTitle()).size()).isOne();
+        assertEquals(validBook, bookService.findAll(validBook.getTitle()).get(0));
+        assertEquals(validBook.getAuthor(),
                 bookService.findAll(validBook.getTitle())
                            .get(0)
                            .getAuthor());
@@ -150,12 +169,12 @@ class BookServiceTest {
 
     @Test
     void allBooksReturnedWhenFilterIsEmpty() {
-        Assertions.assertEquals(bookService.findAll(), bookService.findAll(""));
+        assertEquals(bookService.findAll(), bookService.findAll(""));
     }
 
     @Test
     void allBooksReturnedWhenFilterIsNull() {
-        Assertions.assertEquals(bookService.findAll(), bookService.findAll(null));
+        assertEquals(bookService.findAll(), bookService.findAll(null));
     }
 
     @Test
