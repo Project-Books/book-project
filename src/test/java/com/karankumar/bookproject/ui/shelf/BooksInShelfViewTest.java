@@ -32,7 +32,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,6 +44,9 @@ import javax.transaction.NotSupportedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -101,7 +103,6 @@ class BooksInShelfViewTest {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
-        Assumptions.assumeTrue(predefinedShelfService != null);
         shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
     }
 
@@ -136,9 +137,9 @@ class BooksInShelfViewTest {
 
         for (Grid.Column<Book> col : columns) {
             if (expectedColumns.contains(col.getKey())) {
-                Assertions.assertTrue(col.isVisible(), col.getKey() + " column is not showing");
+                assertTrue(col.isVisible(), col.getKey() + " column is not showing");
             } else {
-                Assertions.assertFalse(col.isVisible(), col.getKey() + " column is showing");
+                assertFalse(col.isVisible(), col.getKey() + " column is showing");
             }
         }
     }
