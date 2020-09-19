@@ -18,8 +18,8 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,27 +27,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 
 @IntegrationTest
 class PredefinedShelfTest {
+    @Autowired BookService bookService;
+
     @Test
-    void testBooksWithoutPredefinedShelfShouldStillExist(
+    void testPredefinedShelvesWithoutBooksShouldStillExist(
             @Autowired PredefinedShelfService predefinedShelfService) {
+        // given
+        resetBookService();
+
+        // when
         List<PredefinedShelf> shelves = predefinedShelfService.findAll();
 
+        // then
         assertEquals(4, shelves.size());
-        assertEquals(PredefinedShelf.ShelfName.TO_READ, shelves.get(0).getPredefinedShelfName());
-        assertEquals(PredefinedShelf.ShelfName.READING, shelves.get(1).getPredefinedShelfName());
-        assertEquals(PredefinedShelf.ShelfName.READ, shelves.get(2).getPredefinedShelfName());
-        assertEquals(PredefinedShelf.ShelfName.DID_NOT_FINISH, shelves.get(3).getPredefinedShelfName());
+        assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
+                .contains(
+                        ShelfName.TO_READ,
+                        ShelfName.READING,
+                        ShelfName.READ,
+                        ShelfName.DID_NOT_FINISH
+                );
     }
 
-    @AfterEach
-    public void reset(@Autowired BookService bookService) {
-        resetBookService(bookService);
-    }
-
-    private void resetBookService(BookService bookService) {
+    private void resetBookService() {
         bookService.deleteAll();
     }
 }
