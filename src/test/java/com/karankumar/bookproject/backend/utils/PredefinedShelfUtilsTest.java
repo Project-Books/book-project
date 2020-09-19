@@ -29,6 +29,8 @@ import com.karankumar.bookproject.backend.service.BookService;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
@@ -141,7 +143,8 @@ class PredefinedShelfUtilsTest {
         Set<Book> expectedBooks = Set.of(book1, book2, book3, book4);
 
         // when
-        Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
+        Set<Book> actualBooks =
+                predefinedShelfUtils.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
 
         // then
         assertEquals(expectedBooks, actualBooks);
@@ -166,8 +169,9 @@ class PredefinedShelfUtilsTest {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.forEach(shelfName -> softly.assertThat(isPredefinedShelf(shelfName))
-                                                  .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
-                                                  .isTrue());
+                                                      .as(MessageFormat
+                                                              .format(ERROR_MESSAGE, shelfName))
+                                                      .isTrue());
 
         softly.assertAll();
     }
@@ -205,9 +209,33 @@ class PredefinedShelfUtilsTest {
         SoftAssertions softly = new SoftAssertions();
 
         INVALID_SHELVES.forEach(shelfName -> softly.assertThat(isPredefinedShelf(shelfName))
-                                               .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
-                                               .isFalse());
+                                                   .as(MessageFormat
+                                                           .format(ERROR_MESSAGE, shelfName))
+                                                   .isFalse());
 
         softly.assertAll();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"To read", "Reading", "Read", "Did not finish"})
+    void testGetPredefinedShelfNameReturnsCorrectShelf(String shelfName) {
+        System.out.println("Shelf = " + shelfName);
+        PredefinedShelf.ShelfName expectedShelf = null;
+        switch (shelfName) {
+            case "To read":
+                expectedShelf = TO_READ;
+                break;
+            case "Reading":
+                expectedShelf = READING;
+                break;
+            case "Read":
+                expectedShelf = READ;
+                break;
+            case "Did not finish":
+                expectedShelf = DID_NOT_FINISH;
+        }
+        PredefinedShelf.ShelfName actualShelf =
+                predefinedShelfUtils.getPredefinedShelfName(shelfName);
+        assertEquals(expectedShelf, actualShelf);
     }
 }
