@@ -47,7 +47,6 @@ import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPr
 @IntegrationTest
 class PredefinedShelfUtilsTest {
     private static BookRepository bookRepository;
-    private static BookService bookService;
 
     private static PredefinedShelfUtils predefinedShelfUtils;
 
