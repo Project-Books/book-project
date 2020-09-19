@@ -25,9 +25,9 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
 
+import com.karankumar.bookproject.backend.service.BookService;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,7 +36,6 @@ import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
@@ -47,13 +46,15 @@ import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPr
 
 @IntegrationTest
 class PredefinedShelfUtilsTest {
-    @Autowired private PredefinedShelfRepository shelfRepository;
-    @Autowired private BookRepository bookRepository;
+    private static BookRepository bookRepository;
+    private static BookService bookService;
 
     private static PredefinedShelfUtils predefinedShelfUtils;
 
     private static PredefinedShelf toReadShelf;
     private static PredefinedShelf readShelf;
+    private static PredefinedShelf didNotFinishShelf;
+
     private static final Author NO_AUTHOR = null;
 
     private static Book book1;
@@ -62,38 +63,49 @@ class PredefinedShelfUtilsTest {
     private static Book book4;
 
     private static List<String> PREDEFINED_SHELVES;
-    private static List<String> INVALID_SHELVES;
-    private static String ERROR_MESSAGE;
+    private static final List<String> INVALID_SHELVES =
+            List.of("Too read", "Readin", "Do not finish", "Shelf");
+    private static final String ERROR_MESSAGE =
+            "Shelf with name ''{0}'' does not match any predefined shelf";
 
     @BeforeAll
-    public static void setupBeforeAll(@Autowired PredefinedShelfService predefinedShelfService) {
+    public static void setupBeforeAll(@Autowired PredefinedShelfService predefinedShelfService,
+                                      @Autowired BookRepository bookRepository,
+                                      @Autowired BookService bookService) {
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+        findPredefinedShelves();
+
+        PredefinedShelfUtilsTest.bookRepository = bookRepository;
+        PredefinedShelfUtilsTest.bookService = bookService;
+        resetBookRepository();
+        createAndSaveBooks();
+
+        PREDEFINED_SHELVES = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
+
+        setBooksInPredefinedShelves();
     }
 
-    @BeforeEach
-    void setup() {
+    private static void findPredefinedShelves() {
+        toReadShelf = predefinedShelfUtils.findToReadShelf();
+        readShelf = predefinedShelfUtils.findReadShelf();
+        didNotFinishShelf = predefinedShelfUtils.findPredefinedShelf(DID_NOT_FINISH);
+    }
+
+    private static void resetBookRepository() {
         bookRepository.deleteAll();
-        shelfRepository.deleteAll();
+    }
 
-        toReadShelf = shelfRepository.save(new PredefinedShelf(TO_READ));
-        PredefinedShelf readingShelf = shelfRepository.save(new PredefinedShelf(READING));
-        readShelf = shelfRepository.save(new PredefinedShelf(READ));
-        PredefinedShelf didNotFinishShelf =
-                shelfRepository.save(new PredefinedShelf(DID_NOT_FINISH));
+    private static void setBooksInPredefinedShelves() {
+        toReadShelf.setBooks(Set.of(book1, book2));
+        readShelf.setBooks(Set.of(book3));
+        didNotFinishShelf.setBooks(Set.of(book4));
+    }
 
+    private static void createAndSaveBooks() {
         book1 = bookRepository.save(new Book("someTitle", NO_AUTHOR, toReadShelf));
         book2 = bookRepository.save(new Book("someTitle2", NO_AUTHOR, toReadShelf));
         book3 = bookRepository.save(new Book("someOtherTitle", NO_AUTHOR, readShelf));
         book4 = bookRepository.save(new Book("yetAnotherTitle", NO_AUTHOR, didNotFinishShelf));
-
-        toReadShelf.setBooks(Set.of(book1, book2));
-        readingShelf.setBooks(Set.of());
-        readShelf.setBooks(Set.of(book3));
-        didNotFinishShelf.setBooks(Set.of(book4));
-
-        PREDEFINED_SHELVES = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
-        INVALID_SHELVES = List.of("Too read", "Readin", "Do not finish", "Shelf");
-        ERROR_MESSAGE = "Shelf with name ''{0}'' does not match any predefined shelf";
     }
 
     @Test
@@ -168,9 +180,10 @@ class PredefinedShelfUtilsTest {
 
         PREDEFINED_SHELVES.stream()
                           .map(String::toLowerCase)
-                          .forEach(shelfName -> softly.assertThat(isPredefinedShelf(shelfName))
-                                                      .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
-                                                      .isTrue());
+                          .forEach(shelfName ->
+                                  softly.assertThat(isPredefinedShelf(shelfName))
+                                        .as(MessageFormat.format(ERROR_MESSAGE, shelfName))
+                                        .isTrue());
 
         softly.assertAll();
     }
