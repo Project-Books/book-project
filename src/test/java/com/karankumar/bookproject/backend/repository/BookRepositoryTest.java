@@ -4,10 +4,12 @@ import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaIntegrationTest
 class BookRepositoryTest {
@@ -35,8 +37,9 @@ class BookRepositoryTest {
         bookRepository.delete(book1);
 
         // then
-        Assertions.assertEquals(1, bookRepository.findAll().size());
-        Assertions.assertSame(bookRepository.findAll().get(0), book2);
+        assertThat(bookRepository.findAll().size()).isOne();
+        assertThat(bookRepository.findAll().get(0))
+                .isEqualToComparingFieldByField(book2);
     }
 
     @Test
@@ -49,6 +52,6 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        Assertions.assertTrue(bookRepository.findAll().isEmpty());
+        assertTrue(bookRepository.findAll().isEmpty());
     }
 }
