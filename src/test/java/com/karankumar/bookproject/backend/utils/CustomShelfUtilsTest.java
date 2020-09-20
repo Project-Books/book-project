@@ -29,7 +29,6 @@ class CustomShelfUtilsTest {
     private static CustomShelfUtils customShelfUtils;
 
     private static Set<Book> booksInCustomShelf1;
-    private static Set<Book> booksInCustomShelf2;
 
     @BeforeAll
     public static void setUp(@Autowired PredefinedShelfService predefinedShelfService,
@@ -44,10 +43,7 @@ class CustomShelfUtilsTest {
         customShelfUtils = new CustomShelfUtils(customShelfService);
 
         saveCustomShelves(customShelf1, customShelf2, customShelfWithNoBooks);
-
-        booksInCustomShelf1 = createSetOfBooks("Title1", "Title2", toRead, customShelf1);
-        booksInCustomShelf2 = createSetOfBooks("Title3", "Title4", toRead, customShelf2);
-        addBooksToCustomShelves();
+        addBooksToCustomShelves(toRead);
     }
 
     private static void resetServices() {
@@ -72,9 +68,13 @@ class CustomShelfUtilsTest {
         return book;
     }
 
-    private static void addBooksToCustomShelves() {
+    private static void addBooksToCustomShelves(PredefinedShelf predefinedShelf) {
+        booksInCustomShelf1
+                = createSetOfBooks("Title1", "Title2", predefinedShelf, customShelf1);
         customShelf1.setBooks(booksInCustomShelf1);
-        customShelf2.setBooks(booksInCustomShelf2);
+        customShelf2.setBooks(
+                createSetOfBooks("Title3", "Title4", predefinedShelf, customShelf2)
+        );
     }
 
     private static void saveCustomShelves(CustomShelf... customShelves) {
