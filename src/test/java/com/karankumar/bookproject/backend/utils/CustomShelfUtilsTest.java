@@ -95,4 +95,9 @@ class CustomShelfUtilsTest {
                 customShelfUtils.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
         assertThat(actual).isEmpty();
     }
+
+    @Test
+    void givenInvalidCustomShelf_anEmptySetOfBooksAreReturned() {
+        assertThat(customShelfUtils.getBooksInCustomShelf("InvalidShelf")).isEmpty();
+    }
 }
