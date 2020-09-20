@@ -22,16 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CustomShelfUtilsTest {
     private static final CustomShelf customShelf1 = new CustomShelf("CustomShelf1");
     private static final CustomShelf customShelf2 = new CustomShelf("CustomShelf2");
-    private static final CustomShelf customShelf3 = new CustomShelf("CustomShelf3");
+    private static final CustomShelf customShelfWithNoBooks = new CustomShelf("CustomShelf3");
 
     private static BookService bookService;
     private static CustomShelfService customShelfService;
+    private static CustomShelfUtils customShelfUtils;
 
     private static Set<Book> booksInCustomShelf1;
     private static Set<Book> booksInCustomShelf2;
-    private static Set<Book> booksInCustomShelf3;
-
-    private static CustomShelfUtils customShelfUtils;
 
     @BeforeAll
     public static void setUp(@Autowired PredefinedShelfService predefinedShelfService,
@@ -45,12 +43,10 @@ class CustomShelfUtilsTest {
         resetServices();
         customShelfUtils = new CustomShelfUtils(customShelfService);
 
-        saveCustomShelves(customShelf1, customShelf2, customShelf3);
+        saveCustomShelves(customShelf1, customShelf2, customShelfWithNoBooks);
 
         booksInCustomShelf1 = createSetOfBooks("Title1", "Title2", toRead, customShelf1);
         booksInCustomShelf2 = createSetOfBooks("Title3", "Title4", toRead, customShelf2);
-        booksInCustomShelf3 = createSetOfBooks("Title5", "Title5", toRead, customShelf3);
-
         addBooksToCustomShelves();
     }
 
@@ -79,7 +75,6 @@ class CustomShelfUtilsTest {
     private static void addBooksToCustomShelves() {
         customShelf1.setBooks(booksInCustomShelf1);
         customShelf2.setBooks(booksInCustomShelf2);
-        customShelf3.setBooks(booksInCustomShelf3);
     }
 
     private static void saveCustomShelves(CustomShelf... customShelves) {
@@ -89,8 +84,15 @@ class CustomShelfUtilsTest {
     }
 
     @Test
-    void testGetBooksInCustomShelfSuccessfullyReturnsBooks() {
+    void getBooksInCustomShelfSuccessfullyReturnsBooks() {
         Set<Book> actual = customShelfUtils.getBooksInCustomShelf(customShelf1.getShelfName());
         booksInCustomShelf1.forEach(book -> assertThat(actual.contains(book)));
+    }
+
+    @Test
+    void givenNoBooksInCustomShelf_getBooksInCustomShelfReturnsNoBooks() {
+        Set<Book> actual =
+                customShelfUtils.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
+        assertThat(actual).isEmpty();
     }
 }
