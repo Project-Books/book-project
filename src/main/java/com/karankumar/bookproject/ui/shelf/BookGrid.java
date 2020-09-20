@@ -93,7 +93,7 @@ public class BookGrid {
             return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
         }
 
-        return customShelfUtils.getBooksInChosenCustomShelf(chosenShelf);
+        return customShelfUtils.getBooksInCustomShelf(chosenShelf);
     }
 
     private void populateGridWithBooks(Set<Book> books, BookFilters bookFilters) {
