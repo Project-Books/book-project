@@ -10,13 +10,12 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
@@ -57,20 +56,14 @@ public class NewShelfTest {
      * the dropdown that shows all shelves contains the new shelf. Otherwise, an
      * IllegalStateException will be thrown from ComboBox.
      */
-    @ParameterizedTest
+    @Test
     @EnumSource(PredefinedShelf.ShelfName.class)
     public void newShelfShowsInList() {
-        int before = 0;
-        int after = -1;
-        try {
-            CustomShelf test = new CustomShelf("UnitTest");
-            customShelfService.save(test);
-            shelfView.whichShelf.updateShelfList();
+        CustomShelf test = new CustomShelf("UnitTest");
+        customShelfService.save(test);
+        shelfView.whichShelf.updateShelfList();
 
-            Assertions.assertDoesNotThrow(()->shelfView.whichShelf.getAllShelvesList().setValue("UnitTest"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Assertions.assertTrue(()->customShelfService.findAll("UnitTest").size() > 0, "Adding a new custom shelf does not save as expected.");
     }
 
     @AfterEach
