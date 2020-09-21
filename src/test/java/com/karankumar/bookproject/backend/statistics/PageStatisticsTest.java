@@ -25,14 +25,16 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 @IntegrationTest
-public class PageStatisticsTest {
+class PageStatisticsTest {
     private static BookService bookService;
     private static PredefinedShelfService predefinedShelfService;
     private static PageStatistics pageStatistics;
@@ -52,15 +54,15 @@ public class PageStatisticsTest {
     }
 
     @Test
-    public void bookWithMostPagesExistsAndIsFound() {
-        Assertions.assertEquals(
+    void bookWithMostPagesExistsAndIsFound() {
+        assertEquals(
                 StatisticTestUtils.getBookWithMostPages().getTitle(),
                 pageStatistics.findBookWithMostPages().getTitle()
         );
     }
 
     @Test
-    public void onlyReadBooksCountTowardsMostPagesStatistics() {
+    void onlyReadBooksCountTowardsMostPagesStatistics() {
         PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         PredefinedShelf readingShelf = predefinedShelfUtils.findReadingShelf();
 
@@ -70,21 +72,21 @@ public class PageStatisticsTest {
                                                        .getNumberOfPages() + 50);
         bookService.save(readingBook);
 
-        Assertions.assertEquals(StatisticTestUtils.getBookWithMostPages().getTitle(),
+        assertEquals(StatisticTestUtils.getBookWithMostPages().getTitle(),
                 pageStatistics.findBookWithMostPages().getTitle());
     }
 
     @Test
-    public void testAveragePageLengthDivideByZero() {
+    void testAveragePageLengthDivideByZero() {
         resetPageStatistics();
-        Assertions.assertNull(pageStatistics.calculateAveragePageLength());
+        assertNull(pageStatistics.calculateAveragePageLength());
     }
 
     @Test
-    public void averagePageLengthExistsAndIsCorrect() {
+    void averagePageLengthExistsAndIsCorrect() {
         int averagePageLength =
                 StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
-        Assertions.assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
+        assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
     }
 
     private void resetPageStatistics() {

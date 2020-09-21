@@ -28,8 +28,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 @IntegrationTest
-public class RatingStatisticsTest {
+class RatingStatisticsTest {
     private static BookService bookService;
     private static PredefinedShelfService predefinedShelfService;
 
@@ -55,41 +58,40 @@ public class RatingStatisticsTest {
     }
 
     @Test
-    public void lowestRatedBookExistsAndIsFound() {
-        Assertions.assertEquals(bookWithNoRating.getTitle(),
-                ratingStatistics.findLeastLikedBook().getTitle());
+    void lowestRatedBookExistsAndIsFound() {
+        assertEquals(bookWithNoRating.getTitle(), ratingStatistics.findLeastLikedBook().getTitle());
     }
 
     @Test
-    public void testNonExistentLowestRatedBook() {
+    void testNonExistentLowestRatedBook() {
         resetRatingStatistics();
-        Assertions.assertNull(ratingStatistics.findLeastLikedBook());
+        assertNull(ratingStatistics.findLeastLikedBook());
     }
 
     @Test
-    public void highestRatedBookExistsAndIsFound() {
-        Assertions.assertEquals(bookWithHighestRating.getTitle(),
+    void highestRatedBookExistsAndIsFound() {
+        assertEquals(bookWithHighestRating.getTitle(),
                 ratingStatistics.findMostLikedBook().getTitle());
     }
 
     @Test
-    public void testNonExistentHighestRatedBook() {
+    void testNonExistentHighestRatedBook() {
         resetRatingStatistics();
-        Assertions.assertNull(ratingStatistics.findMostLikedBook());
+        assertNull(ratingStatistics.findMostLikedBook());
     }
 
     @Test
-    public void averageRatingExistsAndIsCorrect() {
+    void averageRatingExistsAndIsCorrect() {
         int numberOfBooks = StatisticTestUtils.getNumberOfBooks();
         double totalRating = StatisticTestUtils.totalRating;
         double average = totalRating / numberOfBooks;
-        Assertions.assertEquals(average, ratingStatistics.calculateAverageRatingGiven());
+        assertEquals(average, ratingStatistics.calculateAverageRatingGiven());
     }
 
     @Test
-    public void testAverageRatingDivideByZero() {
+    void testAverageRatingDivideByZero() {
         resetRatingStatistics();
-        Assertions.assertNull(ratingStatistics.calculateAverageRatingGiven());
+        assertNull(ratingStatistics.calculateAverageRatingGiven());
     }
 
     private void resetRatingStatistics() {

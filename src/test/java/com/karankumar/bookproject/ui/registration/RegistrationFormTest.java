@@ -193,7 +193,7 @@ class RegistrationFormTest {
         _setValue(passwordConfirmationField, "asdfASDF1234=");
         _click(registerButton);
 
-        assertThat(userRepository.findByUsername("testusername").isPresent()).isTrue();
+        assertThat(userRepository.findByUsername("testusername")).isPresent();
     }
 
     @AfterEach

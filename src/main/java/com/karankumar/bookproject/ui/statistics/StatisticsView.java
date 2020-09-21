@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.ui.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.GenreStatistics;
 import com.karankumar.bookproject.backend.statistics.PageStatistics;
@@ -30,85 +30,126 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import lombok.Getter;
 import lombok.extern.java.Log;
 
 import java.text.DecimalFormat;
+import java.util.Optional;
+
 
 @Route(value = "statistics", layout = MainView.class)
 @PageTitle("Statistics | Book Project")
 @Log
 public class StatisticsView extends VerticalLayout {
+
     public StatisticsView(PredefinedShelfService predefinedShelfService) {
-        RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
-        GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
-        PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
-
-        Double averageRating = ratingStatistics.calculateAverageRatingGiven();
-        if (averageRating != null) {
-            String averageRatingOutOf10 =
-                    String.format("%s/10", new DecimalFormat("#.00").format(averageRating));
-            add(configureStatistic("Average rating given", averageRatingOutOf10));
+        for (StatisticType statistic : StatisticType.values()) {
+            String caption = statistic.getCaption();
+            Optional<String> value = statistic.calculateStatistic(predefinedShelfService);
+            value.ifPresent(val -> add(configureStatistic(caption, val)));
         }
-
-        Book mostLikedBook = ratingStatistics.findMostLikedBook();
-        if (mostLikedBook != null) {
-            String mostLikedBookStatistic =
-                    formatStatistic(mostLikedBook.getTitle(), mostLikedBook.getRating().toString(),
-                            "rating");
-            add(configureStatistic("Most liked book", mostLikedBookStatistic));
-        }
-
-        Book leastLikedBook = ratingStatistics.findLeastLikedBook();
-        if (leastLikedBook != null) {
-            String leastLikedBookRating =
-                    formatStatistic(leastLikedBook.getTitle(), leastLikedBook.getRating().toString(),
-                            "rating");
-            add(configureStatistic("Least liked book", leastLikedBookRating));
-        }
-
-        Genre mostReadGenre = genreStatistics.findMostReadGenre();
-        if (mostReadGenre != null) {
-            add(configureStatistic("Most read genre", mostReadGenre.toString()));
-        }
-
-        Genre mostLikedGenre = genreStatistics.findMostLikedGenre();
-        if (mostLikedGenre != null) {
-            add(configureStatistic("Most liked genre read", mostLikedGenre.toString()));
-        }
-
-        Genre leastLikedGenre = genreStatistics.findLeastLikedGenre();
-        if (leastLikedGenre != null) {
-            add(configureStatistic("Least liked genre read", leastLikedGenre.toString()));
-        }
-
-        Integer averagePageLength = pageStatistics.calculateAveragePageLength();
-        if (averagePageLength != null) {
-            add(configureStatistic("Average page length", String.format("%d pages",
-                    averagePageLength)));
-        }
-
-        Book longestBook = pageStatistics.findBookWithMostPages();
-        if (longestBook != null) {
-            String longestBookStatistic =
-                    formatStatistic(longestBook.getTitle(),
-                            String.valueOf(longestBook.getNumberOfPages()), "pages");
-            add(configureStatistic("Longest book read", longestBookStatistic));
-        }
-
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
 
     private Div configureStatistic(String caption, String statistic) {
         Div div = new Div();
-        H3 averageRatingGiven = new H3(caption + ":");
+        H3 averageRatingGiven = new H3(caption);
         VerticalLayout verticalLayout = new VerticalLayout(averageRatingGiven, new Text(statistic));
         verticalLayout.setAlignItems(Alignment.CENTER);
         div.add(verticalLayout);
         return div;
     }
 
-    private String formatStatistic(String bookTitle, String statistic, String unit) {
+    private static String formatStatistic(String bookTitle, String statistic, String unit) {
         return String.format("%s (%s %s)", bookTitle, statistic, unit);
+    }
+
+    public enum StatisticType {
+        AVERAGE_RATING("Average rating given:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
+                Optional<Double> averageRating =
+                        Optional.ofNullable(ratingStatistics.calculateAverageRatingGiven());
+                return  averageRating.map(rating ->
+                        String.format("%s/10", new DecimalFormat("#.00").format(rating)));
+            }
+        },
+        MOST_LIKED_BOOK("Most liked book:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
+                Optional<Book> mostLikedBook = Optional.ofNullable(ratingStatistics.findMostLikedBook());
+                return mostLikedBook.map(book ->
+                        formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
+            }
+        },
+        LEAST_LIKED_BOOK("Least liked book:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
+                Optional<Book> leastLikedBook =
+                        Optional.ofNullable(ratingStatistics.findLeastLikedBook());
+                return leastLikedBook.map(book ->
+                        formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
+            }
+        },
+        MOST_READ_GENRE("Most read genre:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
+                Optional<BookGenre> mostReadGenre =
+                        Optional.ofNullable(genreStatistics.findMostReadGenre());
+                return mostReadGenre.map(BookGenre::toString);
+            }
+        },
+        MOST_LIKED_GENRE("Most liked genre read:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
+                Optional<BookGenre> mostLikedGenre =
+                        Optional.ofNullable(genreStatistics.findMostLikedGenre());
+                return mostLikedGenre.map(BookGenre::toString);
+            }
+        },
+        LEAST_LIKED_GENRE("Least liked genre read:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                GenreStatistics genreStatistics = new GenreStatistics(predefinedShelfService);
+                Optional<BookGenre> leastLikedGenre =
+                        Optional.ofNullable(genreStatistics.findLeastLikedGenre());
+                return leastLikedGenre.map(BookGenre::toString);
+            }
+        },
+        AVERAGE_PAGE_LENGTH("Average page length:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
+                Optional<Integer> averagePageLength =
+                        Optional.ofNullable(pageStatistics.calculateAveragePageLength());
+                return averagePageLength.map(pageLength -> String.format("%d pages", pageLength));
+            }
+        },
+        LONGEST_BOOK("Longest book read:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
+                Optional<Book> longestBook =
+                        Optional.ofNullable(pageStatistics.findBookWithMostPages());
+                return longestBook.map(book ->
+                        formatStatistic(book.getTitle(), String.valueOf(book.getNumberOfPages()),
+                        "pages")
+                );
+            }
+        };
+
+        @Getter private final String caption;
+
+        StatisticType(String caption) {
+            this.caption = caption;
+        }
+
+        public abstract Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService);
     }
 }

@@ -18,27 +18,48 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.apache.commons.io.FileUtils;
+import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.ConstraintViolationException;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @IntegrationTest
-public class BookServiceTest {
+class BookServiceTest {
 
     private static AuthorService authorService;
     private static BookService bookService;
+    private static CustomShelfService customShelfService;
+    private static TagService tagService;
 
     private Book validBook;
     private PredefinedShelf toRead;
+    private Author author;
 
     @BeforeEach
     public void setup(@Autowired BookService goalService, @Autowired AuthorService authorService,
-                      @Autowired PredefinedShelfService predefinedShelfService) {
+                      @Autowired PredefinedShelfService predefinedShelfService,
+                      @Autowired CustomShelfService customShelfService,
+                      @Autowired TagService tagService) {
         PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         toRead = predefinedShelfUtils.findToReadShelf();
 
@@ -46,58 +67,160 @@ public class BookServiceTest {
         goalService.deleteAll();
         BookServiceTest.authorService = authorService;
         authorService.deleteAll();
+        BookServiceTest.customShelfService = customShelfService;
+        customShelfService.deleteAll();
+        BookServiceTest.tagService = tagService;
+        tagService.deleteAll();
 
-        Author author = new Author("Test First Name", "Test Last Name");
+        author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author, toRead);
     }
 
     @Test
-    public void whenTryingToSaveNullBookExpectNoSave() {
+    void whenTryingToSaveNullBookExpectNoSave() {
         bookService.save(null);
-        Assertions.assertEquals(0, bookService.count());
+        assertThat(bookService.count()).isZero();
     }
 
     @Test
-    public void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
+    void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
         bookService.save(new Book("Book without author", null, toRead));
-        Assertions.assertEquals(0, authorService.count());
-        Assertions.assertEquals(0, bookService.count());
+        assertThat(authorService.count()).isZero();
+        assertThat(bookService.count()).isZero();
+    }
+
+    /**
+     * Tests book is not saved with numberOfPages > max_pages
+     */
+    @Test
+    void whenTryingToSaveBookWithMaxNumberPageExceedNoSave() {
+        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
+        book.setNumberOfPages(Book.MAX_PAGES + 1);
+        Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
+        assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
+        assertThat(bookService.count()).isZero();
+    }
+
+    /**
+     * Tests book is not saved with pagesRead > max_pages
+     */
+    @Test
+    void whenTryingToSaveBookWithPagesReadExceededNoSave() {
+        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
+        book.setPagesRead(Book.MAX_PAGES + 1);
+        Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
+        assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
+        assertThat(bookService.count()).isZero();
+    }
+
+    /**
+     * Tests book is saved with pagesRead and numberOfPages = Max_pages
+     */
+    @Test
+    void whenTryingToSaveBookWithPagesInLimitSave() {
+        // given
+        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
+        book.setPagesRead(Book.MAX_PAGES);
+        book.setNumberOfPages(Book.MAX_PAGES);
+
+        // when
+        bookService.save(book);
+
+        // then
+        assertThat(bookService.count()).isOne();
     }
 
     /**
      * Tests whether the book without shelf can be saved
      */
     @Test
-    public void whenTryingToSaveWithoutShelfExpectNoSave() {
+    void whenTryingToSaveWithoutShelfExpectNoSave() {
+        // given
         Book bookWithoutShelf = new Book("Title", new Author("First", "Last"), null);
+
+        // when
         bookService.save(bookWithoutShelf);
-        Assertions.assertEquals(0, authorService.count());
-        Assertions.assertEquals(0, bookService.count());
+
+        // then
+        assertThat(authorService.count()).isZero();
+        assertThat(bookService.count()).isZero();
     }
 
     /**
      * Tests whether the book with author and shelf can be saved
      */
     @Test
-    public void whenTryingToSaveMultipleBooksExpectSave() {
-        Assertions.assertEquals(0, bookService.count());
+    void whenTryingToSaveMultipleBooksExpectSave() {
+        // given
+        assertThat(bookService.count()).isZero();
+
+        // when
         bookService.save(validBook);
-        Assertions.assertEquals(1, bookService.count());
-        Assertions.assertEquals(1, bookService.findAll(validBook.getTitle()).size());
-        Assertions.assertEquals(validBook, bookService.findAll(validBook.getTitle()).get(0));
-        Assertions.assertEquals(validBook.getAuthor(),
+
+        // then
+        assertThat(bookService.count()).isOne();
+        assertThat(bookService.findAll(validBook.getTitle()).size()).isOne();
+        assertEquals(validBook, bookService.findAll(validBook.getTitle()).get(0));
+        assertEquals(validBook.getAuthor(),
                 bookService.findAll(validBook.getTitle())
                            .get(0)
                            .getAuthor());
     }
 
     @Test
-    public void allBooksReturnedWhenFilterIsEmpty() {
-        Assertions.assertEquals(bookService.findAll(), bookService.findAll(""));
+    void allBooksReturnedWhenFilterIsEmpty() {
+        assertEquals(bookService.findAll(), bookService.findAll(""));
     }
 
     @Test
-    public void allBooksReturnedWhenFilterIsNull() {
-        Assertions.assertEquals(bookService.findAll(), bookService.findAll(null));
+    void allBooksReturnedWhenFilterIsNull() {
+        assertEquals(bookService.findAll(), bookService.findAll(null));
+    }
+
+    @Test
+    void shouldCreateJsonRepresentationForBooks() throws IOException, JSONException {
+        // given
+        Book anotherValidBook = createBookAndSetAllAttributes();
+        bookService.save(validBook);
+        bookService.save(anotherValidBook);
+
+        String expectedJsonString = FileUtils.readFileToString(
+                new File("src/test/resources/exportedBooksSample.json"), "UTF8");
+
+        // when
+        String jsonAsString = bookService.getJsonRepresentationForBooksAsString();
+
+        // then
+        JSONAssert.assertEquals(expectedJsonString, jsonAsString, JSONCompareMode.NON_EXTENSIBLE);
+    }
+
+    private Book createBookAndSetAllAttributes() {
+        CustomShelf customShelf = new CustomShelf("My Shelf");
+        customShelfService.save(customShelf);
+
+        Tag tag1 = new Tag("book");
+        Tag tag2 = new Tag("adventure");
+        tagService.save(tag1);
+        tagService.save(tag2);
+
+        Book book = new Book("Another Book Name", author, toRead);
+        book.setNumberOfPages(420);
+        book.setPagesRead(42);
+        book.setBookGenre(BookGenre.ADVENTURE);
+        book.setSeriesPosition(3);
+        book.setEdition(2);
+        book.setBookRecommendedBy("Peter Parker");
+        book.setCustomShelf(customShelf);
+        book.setTags(Set.of(tag1, tag2));
+        book.setRating(RatingScale.EIGHT);
+        book.setDateStartedReading(LocalDate.of(2020, 7, 5));
+        book.setDateFinishedReading(LocalDate.of(2020, 9, 5));
+        book.setBookReview("Very good.");
+        return book;
+    }
+
+    @AfterEach
+    void deleteBooks() {
+        bookService.deleteAll();
     }
 }

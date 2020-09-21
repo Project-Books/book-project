@@ -23,9 +23,9 @@ import com.vaadin.flow.component.HasValue;
 public class ComponentUtil {
     private ComponentUtil() {}
 
-    public static void setComponentMinWidth(HasSize[] components) {
+    public static void setComponentClassName(HasSize[] components, String className) {
         for (HasSize h : components) {
-            h.setMinWidth("23em");
+            h.getElement().getClassList().add(className);
         }
     }
 

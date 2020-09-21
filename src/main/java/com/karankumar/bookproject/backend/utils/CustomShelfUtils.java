@@ -44,7 +44,7 @@ public class CustomShelfUtils {
     /**
      * Gets all of the books in the specified custom shelf
      */
-    public Set<Book> getBooksInChosenCustomShelf(String shelfName) {
+    public Set<Book> getBooksInCustomShelf(String shelfName) {
         Set<Book> books;
         List<CustomShelf> customShelves = customShelfService.findAll(shelfName);
         if (customShelves.isEmpty()) {

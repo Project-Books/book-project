@@ -19,12 +19,13 @@ package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
 class CustomShelfRepositoryTest {
@@ -41,7 +42,7 @@ class CustomShelfRepositoryTest {
     @Test
     void whenShelfExistsFindByShelfNameReturnsOneShelf() {
         List<CustomShelf> shelves = repository.findByShelfName(test1);
-        Assertions.assertEquals(1, shelves.size());
+        assertThat(shelves.size()).isOne();
     }
 }
 

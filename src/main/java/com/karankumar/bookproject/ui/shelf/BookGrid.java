@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
+
 @Log
 public class BookGrid {
     private final Grid<Book> bookGrid;
@@ -83,11 +85,15 @@ public class BookGrid {
     }
 
     private Set<Book> getBooks(String chosenShelf) {
+        if (isAllBooksShelf(chosenShelf)) {
+            return predefinedShelfUtils.getBooksInAllPredefinedShelves();
+        }
+
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
             return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
         }
 
-        return customShelfUtils.getBooksInChosenCustomShelf(chosenShelf);
+        return customShelfUtils.getBooksInCustomShelf(chosenShelf);
     }
 
     private void populateGridWithBooks(Set<Book> books, BookFilters bookFilters) {

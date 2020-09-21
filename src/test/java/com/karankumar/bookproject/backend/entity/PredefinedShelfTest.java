@@ -18,46 +18,44 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+
 @IntegrationTest
 class PredefinedShelfTest {
+    @Autowired BookService bookService;
 
-    private static PredefinedShelfService shelfService;
+    @Test
+    void testPredefinedShelvesWithoutBooksShouldStillExist(
+            @Autowired PredefinedShelfService predefinedShelfService) {
+        // given
+        resetBookService();
 
-    @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService shelfService,
-                             @Autowired BookService bookService) {
-        Assumptions.assumeTrue(shelfService != null && bookService != null);
-        PredefinedShelfTest.shelfService = shelfService;
-        bookService.deleteAll(); // reset
+        // when
+        List<PredefinedShelf> shelves = predefinedShelfService.findAll();
+
+        // then
+        assertEquals(4, shelves.size());
+        assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
+                .contains(
+                        ShelfName.TO_READ,
+                        ShelfName.READING,
+                        ShelfName.READ,
+                        ShelfName.DID_NOT_FINISH
+                );
     }
 
-    /**
-     * A {@link com.karankumar.bookproject.backend.entity.PredefinedShelf} without any books should
-     * still exist
-     */
-    @Test
-    public void orphanShelfExists() {
-        Assumptions.assumeTrue(shelfService != null);
-        List<PredefinedShelf> shelves = PredefinedShelfTest.shelfService.findAll();
-
-        Assertions.assertEquals(4, shelves.size());
-        Assertions.assertEquals(shelves.get(0).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.TO_READ);
-        Assertions.assertEquals(shelves.get(1).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.READING);
-        Assertions.assertEquals(shelves.get(2).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.READ);
-        Assertions.assertEquals(shelves.get(3).getPredefinedShelfName(),
-                PredefinedShelf.ShelfName.DID_NOT_FINISH);
+    private void resetBookService() {
+        bookService.deleteAll();
     }
 }

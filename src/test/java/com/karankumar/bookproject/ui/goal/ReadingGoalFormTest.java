@@ -35,15 +35,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @IntegrationTest
 @WebAppConfiguration
-public class ReadingGoalFormTest {
+class ReadingGoalFormTest {
     private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -59,22 +59,17 @@ public class ReadingGoalFormTest {
         goalService.deleteAll(); // reset
     }
 
-    private ReadingGoal.GoalType getRandomGoalType() {
-        ReadingGoal.GoalType[] goalTypes = ReadingGoal.GoalType.values();
-        return goalTypes[new Random().nextInt(goalTypes.length)];
-    }
-
     @Test
-    public void onlyTargetGoalOfAtLeastOneIsValid() {
+    void onlyTargetGoalOfAtLeastOneIsValid() {
         ReadingGoalForm goalForm = new ReadingGoalForm();
 
         goalForm.targetToRead.setValue(1);
-        goalForm.chooseGoalType.setValue(getRandomGoalType());
+        goalForm.chooseGoalType.setValue(ReadingGoal.GoalType.BOOKS);
         goalForm.saveButton.click();
-        Assertions.assertTrue(goalForm.binder.isValid());
+        assertTrue(goalForm.binder.isValid());
 
         goalForm.targetToRead.setValue(0);
-        Assertions.assertFalse(goalForm.binder.isValid());
+        assertFalse(goalForm.binder.isValid());
     }
 
     @AfterEach

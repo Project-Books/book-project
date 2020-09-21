@@ -1,0 +1,57 @@
+{
+  "AllBooks": [
+    {
+      "title": "Book Name",
+      "numberOfPages": null,
+      "pagesRead": null,
+      "bookGenre": null,
+      "seriesPosition": null,
+      "edition": null,
+      "bookRecommendedBy": null,
+      "author": {
+        "firstName": "Test First Name",
+        "lastName": "Test Last Name"
+      },
+      "predefinedShelf": {
+        "shelfName": "To read"
+      },
+      "customShelf": null,
+      "tags": [],
+      "rating": null,
+      "dateStartedReading": null,
+      "dateFinishedReading": null,
+      "bookReview": null
+    },
+    {
+      "title": "Another Book Name",
+      "numberOfPages": 420,
+      "pagesRead": 42,
+      "bookGenre": "ADVENTURE",
+      "seriesPosition": 3,
+      "edition": "2nd edition",
+      "bookRecommendedBy": "Peter Parker",
+      "author": {
+        "firstName": "Test First Name",
+        "lastName": "Test Last Name"
+      },
+      "predefinedShelf": {
+        "shelfName": "To read"
+      },
+      "customShelf": {
+        "shelfName" : "My Shelf"
+      },
+      "tags": [
+        {
+          "name": "adventure"
+        },
+        {
+          "name": "book"
+        }
+      ],
+      "rating": "EIGHT",
+      "dateStartedReading": "2020-07-05",
+      "dateFinishedReading": "2020-09-05",
+      "bookReview": "Very good."
+    }
+  ]
+}

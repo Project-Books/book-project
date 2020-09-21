@@ -18,6 +18,7 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomShelf extends Shelf {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customShelf")

@@ -28,11 +28,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaIntegrationTest
 class PredefinedShelfRepositoryTest {
 
-    @Autowired
-    private PredefinedShelfRepository repository;
+    @Autowired private PredefinedShelfRepository repository;
 
     @BeforeEach
     void setup() {
@@ -47,14 +50,14 @@ class PredefinedShelfRepositoryTest {
     void whenShelfExistsFindByShelfNameReturnsOneShelf() {
         List<PredefinedShelf> shelves =
                 repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+        assertThat(shelves.size()).isOne();
 
-        Assertions.assertEquals(1, shelves.size());
         PredefinedShelf shelf = shelves.get(0);
-        Assertions.assertNotNull(shelf);
+        assertThat(shelf).isNotNull();
+
         Assertions.assertAll(
-            () -> Assertions.assertEquals(PredefinedShelf.ShelfName.TO_READ,
-                    shelf.getPredefinedShelfName()),
-            () -> Assertions.assertNull(shelf.getBooks())
+            () -> assertEquals(PredefinedShelf.ShelfName.TO_READ, shelf.getPredefinedShelfName()),
+            () -> assertNull(shelf.getBooks())
         );
     }
 }

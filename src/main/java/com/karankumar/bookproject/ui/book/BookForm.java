@@ -21,7 +21,7 @@ import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
@@ -33,6 +33,7 @@ import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -46,11 +47,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.binder.Result;
-import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
@@ -59,6 +59,7 @@ import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 
 /**
@@ -67,6 +68,9 @@ import java.util.logging.Level;
 @CssImport(
         value = "./styles/vaadin-dialog-overlay-styles.css",
         themeFor = "vaadin-dialog-overlay"
+)
+@CssImport(
+        value = "./styles/book-form-styles.css"
 )
 @Log
 public class BookForm extends VerticalLayout {
@@ -81,12 +85,13 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
             new ComboBox<>();
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
-    @VisibleForTesting final ComboBox<Genre> bookGenre = new ComboBox<>();
+    @VisibleForTesting final ComboBox<BookGenre> bookGenre = new ComboBox<>();
     @VisibleForTesting final IntegerField pagesRead = new IntegerField();
     @VisibleForTesting final IntegerField numberOfPages = new IntegerField();
     @VisibleForTesting final DatePicker dateStartedReading = new DatePicker();
     @VisibleForTesting final DatePicker dateFinishedReading = new DatePicker();
     @VisibleForTesting final NumberField rating = new NumberField();
+    @VisibleForTesting final TextArea bookReview = new TextArea();
     @VisibleForTesting final Button saveButton = new Button();
     @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
     @VisibleForTesting final Button reset = new Button();
@@ -94,8 +99,35 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting FormLayout.FormItem dateStartedReadingFormItem;
     @VisibleForTesting FormLayout.FormItem dateFinishedReadingFormItem;
     @VisibleForTesting FormLayout.FormItem ratingFormItem;
+    @VisibleForTesting FormLayout.FormItem bookReviewFormItem;
     @VisibleForTesting FormLayout.FormItem seriesPositionFormItem;
     @VisibleForTesting FormLayout.FormItem pagesReadFormItem;
+
+    @VisibleForTesting HasValue[] fieldsToReset;
+
+    @VisibleForTesting final HasValue[] fieldsToResetForToRead
+            = new HasValue[]{pagesRead, dateStartedReading, dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] fieldsToResetForReading
+            = new HasValue[]{pagesRead, dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] fieldsToResetForRead
+            = new HasValue[]{pagesRead};
+    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
+            = new HasValue[]{dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] allFields = {
+            bookTitle,
+            authorFirstName,
+            authorLastName,
+            seriesPosition,
+            dateStartedReading,
+            dateFinishedReading,
+            bookGenre,
+            customShelfField,
+            predefinedShelfField,
+            pagesRead,
+            numberOfPages,
+            rating,
+            bookReview
+    };
 
     @VisibleForTesting Button delete = new Button();
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
@@ -127,6 +159,7 @@ public class BookForm extends VerticalLayout {
         configureDateStartedFormField();
         configureDateFinishedFormField();
         configureRatingFormField();
+        configureBookReviewFormField();
         configureInSeriesFormField();
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
@@ -142,8 +175,9 @@ public class BookForm extends VerticalLayout {
                 pagesRead,
                 numberOfPages,
                 rating,
+                bookReview
         };
-        ComponentUtil.setComponentMinWidth(components);
+        ComponentUtil.setComponentClassName(components, "bookFormInputField");
         configureFormLayout(formLayout, buttons);
 
         add(dialog);
@@ -164,7 +198,12 @@ public class BookForm extends VerticalLayout {
      * @param buttonLayout a layout consisting of buttons
      */
     private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
-        formLayout.setResponsiveSteps();
+        formLayout.setResponsiveSteps(
+                new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP),
+                new FormLayout.ResponsiveStep("31em", 1),
+                new FormLayout.ResponsiveStep("62em", 2)
+        );
+
         formLayout.addFormItem(bookTitle, "Book title *");
         formLayout.addFormItem(predefinedShelfField, "Book shelf *");
         formLayout.addFormItem(customShelfField, "Secondary shelf");
@@ -178,6 +217,7 @@ public class BookForm extends VerticalLayout {
         ratingFormItem = formLayout.addFormItem(rating, "Book rating");
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
         seriesPositionFormItem = formLayout.addFormItem(seriesPosition, "Series number");
+        bookReviewFormItem = formLayout.addFormItem(bookReview, "Book review");
         formLayout.add(buttonLayout, 3);
         seriesPositionFormItem.setVisible(false);
     }
@@ -185,6 +225,15 @@ public class BookForm extends VerticalLayout {
     public void openForm() {
         dialog.open();
         showSeriesPositionFormIfSeriesPositionAvailable();
+        addClassNameToForm();
+    }
+
+    private void addClassNameToForm() {
+        UI.getCurrent().getPage()
+                .executeJs("document.getElementById(\"overlay\")" +
+                            ".shadowRoot" +
+                            ".getElementById('overlay')" +
+                            ".classList.add('bookFormOverlay');\n");
     }
 
     private void showSeriesPositionFormIfSeriesPositionAvailable() {
@@ -229,14 +278,20 @@ public class BookForm extends VerticalLayout {
         binder.forField(numberOfPages)
               .withValidator(BookFormValidators.positiveNumberPredicate(),
                       BookFormErrors.PAGE_NUMBER_ERROR)
+              .withValidator(BookFormValidators.maxPagesPredicate(),
+                      BookFormErrors.MAX_PAGES_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
         binder.forField(pagesRead)
+              .withValidator(BookFormValidators.maxPagesPredicate(),
+                      BookFormErrors.MAX_PAGES_ERROR)
               .bind(Book::getPagesRead, Book::setPagesRead);
         binder.forField(bookGenre)
-              .bind(Book::getGenre, Book::setGenre);
+              .bind(Book::getBookGenre, Book::setBookGenre);
         binder.forField(rating)
               .withConverter(new DoubleToRatingScaleConverter())
               .bind(Book::getRating, Book::setRating);
+        binder.forField(bookReview)
+              .bind(Book::getBookReview, Book::setBookReview);
     }
 
     /**
@@ -249,7 +304,9 @@ public class BookForm extends VerticalLayout {
 
         binder.addStatusChangeListener(event -> saveButton.setEnabled(binder.isValid()));
 
-        return new HorizontalLayout(saveButton, reset, delete);
+        HorizontalLayout buttonLayout = new HorizontalLayout(saveButton, reset, delete);
+        buttonLayout.addClassName("formButtonLayout");
+        return buttonLayout;
     }
 
     private void configureSaveFormButton() {
@@ -277,18 +334,24 @@ public class BookForm extends VerticalLayout {
     private void validateOnSave() {
         if (binder.isValid()) {
             LOGGER.log(Level.INFO, "Valid binder");
-            if (binder.getBean() == null) {
-                LOGGER.log(Level.SEVERE, "Binder book bean is null");
-                setBookBean();
-            } else {
+            if (binder.getBean() != null && isMovedToDifferentShelf()) {
                 LOGGER.log(Level.INFO, "Binder.getBean() is not null");
                 moveBookToDifferentShelf();
+                ComponentUtil.clearComponentFields(fieldsToReset);
                 fireEvent(new SaveEvent(this, binder.getBean()));
                 closeForm();
+            } else {
+                setBookBean();
             }
         } else {
             LOGGER.log(Level.SEVERE, "Invalid binder");
         }
+    }
+
+    private boolean isMovedToDifferentShelf() {
+        PredefinedShelf.ShelfName shelfName = predefinedShelfField.getValue();
+        PredefinedShelf.ShelfName bookInShelf = binder.getBean().getPredefinedShelf().getPredefinedShelfName();
+        return !shelfName.equals(bookInShelf);
     }
 
     private void setBookBean() {
@@ -299,6 +362,7 @@ public class BookForm extends VerticalLayout {
 
         if (binder.getBean() != null) {
             LOGGER.log(Level.INFO, "Written bean. Not Null.");
+            ComponentUtil.clearComponentFields(fieldsToReset);
             fireEvent(new SaveEvent(this, binder.getBean()));
             showSavedConfirmation();
         } else {
@@ -358,15 +422,15 @@ public class BookForm extends VerticalLayout {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
-        book.setGenre(bookGenre.getValue());
+        book.setBookGenre(bookGenre.getValue());
         book.setNumberOfPages(numberOfPages.getValue());
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
 
-        Result<RatingScale> result =
-                new DoubleToRatingScaleConverter().convertToModel(rating.getValue(), null);
-        result.ifOk((SerializableConsumer<RatingScale>) book::setRating);
+        Optional<RatingScale> ratingScale = RatingScale.of(rating.getValue());
+        ratingScale.ifPresent(book::setRating);
 
+        book.setBookReview(bookReview.getValue());
         book.setPagesRead(pagesRead.getValue());
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
@@ -441,7 +505,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureGenreFormField() {
-        bookGenre.setItems(Genre.values());
+        bookGenre.setItems(BookGenre.values());
         bookGenre.setPlaceholder("Choose a book genre");
     }
 
@@ -468,8 +532,9 @@ public class BookForm extends VerticalLayout {
             if (event.getValue() != null) {
                 try {
                     hideDates(predefinedShelfField.getValue());
-                    showOrHideRating(predefinedShelfField.getValue());
+                    showOrHideRatingAndBookReview(predefinedShelfField.getValue());
                     showOrHidePagesRead(predefinedShelfField.getValue());
+                    setFieldsToReset(predefinedShelfField.getValue());
                 } catch (NotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -545,24 +610,53 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * Toggles showing the rating depending on which shelf this new book is going into
+     * Toggles showing the rating and the bookReview depending on which shelf this new book is going into
      *
      * @param name the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of
      *                               a @see PredefinedShelf
      */
-    private void showOrHideRating(PredefinedShelf.ShelfName name) throws NotSupportedException {
+    private void showOrHideRatingAndBookReview(PredefinedShelf.ShelfName name) throws NotSupportedException {
         switch (name) {
             case TO_READ:
             case READING:
             case DID_NOT_FINISH:
                 ratingFormItem.setVisible(false);
+                bookReviewFormItem.setVisible(false);
                 break;
             case READ:
                 ratingFormItem.setVisible(true);
+                bookReviewFormItem.setVisible(true);
                 break;
             default:
                 throw new NotSupportedException("Shelf " + name + " not yet supported");
+        }
+    }
+
+    /**
+     * Populates the fieldsToReset array with state-specific fields depending on which shelf the book is going into
+     *
+     * @param shelfName the name of the shelf that was selected in this book form
+     * @throws NotSupportedException if the shelf name parameter does not match the name of
+     *                               a @see PredefinedShelf
+     */
+    private void setFieldsToReset(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
+        fieldsToReset = getFieldsToReset(shelfName);
+    }
+
+    @VisibleForTesting
+    HasValue[] getFieldsToReset(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
+        switch (shelfName) {
+            case TO_READ:
+                return fieldsToResetForToRead;
+            case READING:
+                return fieldsToResetForReading;
+            case READ:
+                return fieldsToResetForRead;
+            case DID_NOT_FINISH:
+                return fieldsToResetForDidNotFinish;
+            default:
+                throw new NotSupportedException("Shelf " + shelfName + " not yet supported");
         }
     }
 
@@ -573,6 +667,11 @@ public class BookForm extends VerticalLayout {
         rating.setMax(10);
         rating.setStep(0.5f);
         rating.setClearButtonVisible(true);
+    }
+
+    private void configureBookReviewFormField() {
+        bookReview.setPlaceholder("Enter your review for the book");
+        bookReview.setClearButtonVisible(true);
     }
 
     private void configureDateStartedFormField() {
@@ -588,6 +687,7 @@ public class BookForm extends VerticalLayout {
     private void configureNumberOfPagesFormField() {
         numberOfPages.setPlaceholder("Enter number of pages");
         numberOfPages.setMin(1);
+        numberOfPages.setMax(Book.MAX_PAGES);
         numberOfPages.setHasControls(true);
         numberOfPages.setClearButtonVisible(true);
     }
@@ -595,6 +695,7 @@ public class BookForm extends VerticalLayout {
     private void configurePagesReadFormField() {
         pagesRead.setPlaceholder("Enter number of pages read");
         pagesRead.setMin(1);
+        pagesRead.setMax(Book.MAX_PAGES);
         pagesRead.setHasControls(true);
         pagesRead.setClearButtonVisible(true);
     }
@@ -614,6 +715,7 @@ public class BookForm extends VerticalLayout {
                 dateStartedReading,
                 dateFinishedReading,
                 rating,
+                bookReview
         };
         resetSaveButtonText();
         ComponentUtil.clearComponentFields(components);

@@ -17,6 +17,9 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.karankumar.bookproject.backend.json.LocalDateSerializer;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,6 +32,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -36,21 +40,26 @@ import java.util.Set;
 
 @Entity
 @Data
+@JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
+    public static final int MAX_PAGES = 23_000;
+
     @NotNull
     @NotEmpty
     private String title;
+    @Max(value = MAX_PAGES)
     private Integer numberOfPages;
+    @Max(value = MAX_PAGES)
     private Integer pagesRead;
-    private Genre genre;
+    private BookGenre bookGenre;
     private Integer seriesPosition;
     private String edition;
     private String bookRecommendedBy;
 
     @ManyToOne(cascade =
-            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}
+            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
@@ -79,7 +88,9 @@ public class Book extends BaseEntity {
 
     // For books that have been read
     private RatingScale rating;
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateStartedReading;
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateFinishedReading;
     private String bookReview;
 
@@ -97,16 +108,16 @@ public class Book extends BaseEntity {
         int lastDigit = edition % 10;
         switch (lastDigit) {
             case 1:
-                bookEdition = getEdition() + "st edition";
+                bookEdition = edition + "st edition";
                 break;
             case 2:
-                bookEdition = getEdition() + "nd edition";
+                bookEdition = edition + "nd edition";
                 break;
             case 3:
-                bookEdition = getEdition() + "rd edition";
+                bookEdition = edition + "rd edition";
                 break;
             default:
-                bookEdition = getEdition() + "th edition";
+                bookEdition = edition + "th edition";
                 break;
         }
         this.edition = bookEdition;

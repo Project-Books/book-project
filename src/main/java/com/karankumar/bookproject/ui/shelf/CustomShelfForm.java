@@ -24,8 +24,10 @@ import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H3;
@@ -40,6 +42,7 @@ import org.hibernate.sql.Delete;
 
 import java.util.List;
 
+@CssImport(value = "./styles/shelf-form-styles.css")
 public class CustomShelfForm extends VerticalLayout {
     private final Dialog dialog;
 
@@ -69,6 +72,9 @@ public class CustomShelfForm extends VerticalLayout {
 
         configureShelfNameField();
         formLayout.addFormItem(shelfNameField, "Shelf name");
+        formLayout.setResponsiveSteps(
+                new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP)
+        );
         formLayout.add(createSaveButton());
         formLayout.add(createDeleteButton());
     }
@@ -100,13 +106,14 @@ public class CustomShelfForm extends VerticalLayout {
     private void configureShelfNameField() {
         shelfNameField.setClearButtonVisible(true);
         shelfNameField.setPlaceholder("Enter shelf name");
-        shelfNameField.setMinWidth("13em");
+        shelfNameField.addClassName("shelfFormInputField");
     }
 
     private Button createSaveButton() {
         Button save = new Button();
-        save.setText("Save shelf");
+        save.setText("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.addClassName("shelfFormSaveButton");
         save.addClickListener(event -> validateOnSave());
         return save;
     }
@@ -183,6 +190,15 @@ public class CustomShelfForm extends VerticalLayout {
         deletingShelf = "";
         shelfNameField.setValue(deletingShelf);
         dialog.open();
+        addClassNameToForm();
+    }
+
+    private void addClassNameToForm() {
+        UI.getCurrent().getPage()
+                .executeJs("document.getElementById(\"overlay\")" +
+                            ".shadowRoot" +
+                            ".getElementById('overlay')" +
+                            ".classList.add('shelfFormOverlay');\n");
     }
 
     public void editShelf(String chosenShelf) {

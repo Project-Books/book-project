@@ -19,39 +19,28 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeEach;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @IntegrationTest
-public class ReadingGoalServiceTest {
-    private ReadingGoalService goalService;
-    @BeforeEach
-    public void setup(@Autowired ReadingGoalService goalService) {
-        Assumptions.assumeTrue(goalService != null);
-        this.goalService = goalService;
-        resetBooks();
-    }
-
-    private void resetBooks() {
-        goalService.deleteAll();
-    }
-
-    /**
-     * Tests whether save() in the reading goal service overwrites an existing goal with a new goal
-     */
+class ReadingGoalServiceTest {
     @Test
-    public void expectSavingGoalToOverwriteExistingGoal() {
-        ReadingGoal readingGoal1 = new ReadingGoal(20, ReadingGoal.GoalType.BOOKS);
-        goalService.save(readingGoal1);
-        Assertions.assertEquals(1, (long) goalService.count());
+    void expectSavingGoalToOverwriteExistingGoal(@NotNull @Autowired ReadingGoalService goalService) {
+        // given
+        ReadingGoal oldReadingGoal = new ReadingGoal(20, ReadingGoal.GoalType.BOOKS);
+        goalService.save(oldReadingGoal);
+        assertThat(goalService.count()).isOne();
 
-        ReadingGoal readingGoal2 = new ReadingGoal(40, ReadingGoal.GoalType.PAGES);
-        goalService.save(readingGoal2);
-        Assertions.assertEquals(1, (long) goalService.count());
-        // check reading goal 2 overwrote reading goal 1
-        Assertions.assertEquals(readingGoal2, goalService.findAll().get(0));
+        // when
+        ReadingGoal newReadingGoal = new ReadingGoal(40, ReadingGoal.GoalType.PAGES);
+        goalService.save(newReadingGoal);
+
+        // then (check reading goal 2 overwrote reading goal 1)
+        assertThat(goalService.count()).isOne();
+        ReadingGoal actual = goalService.findAll().get(0);
+        assertThat(newReadingGoal).isEqualToComparingFieldByField(actual);
     }
 }

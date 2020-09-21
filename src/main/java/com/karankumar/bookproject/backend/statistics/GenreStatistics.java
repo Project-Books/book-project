@@ -18,10 +18,9 @@
 package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.Genre;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,12 +30,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GenreStatistics extends Statistics {
-    private final DoubleToRatingScaleConverter converter;
     private final List<Book> readBooksWithGenresAndRatings;
 
     public GenreStatistics(PredefinedShelfService predefinedShelfService) {
         super(predefinedShelfService);
-        converter = new DoubleToRatingScaleConverter();
         readBooksWithGenresAndRatings = findReadBooksWithGenresAndRatings();
     }
 
@@ -44,40 +41,40 @@ public class GenreStatistics extends Statistics {
      * @return the Genre that has been read the most (of all time)
      * If no such genre exists, null is returned
      */
-    public Genre findMostReadGenre() {
-        HashMap<Genre, Integer> genresReadCount = countGenreReadOccurrences();
-        Genre mostReadGenre = null;
-        for (Genre genre : genresReadCount.keySet()) {
-            int genreCount = genresReadCount.get(genre);
+    public BookGenre findMostReadGenre() {
+        HashMap<BookGenre, Integer> genresReadCount = countGenreReadOccurrences();
+        BookGenre mostReadBookGenre = null;
+        for (BookGenre bookGenre : genresReadCount.keySet()) {
+            int genreCount = genresReadCount.get(bookGenre);
             if (genreCount != 0) {
-                if (mostReadGenre == null || genresReadCount.get(mostReadGenre) < genreCount) {
-                    mostReadGenre = genre;
+                if (mostReadBookGenre == null || genresReadCount.get(mostReadBookGenre) < genreCount) {
+                    mostReadBookGenre = bookGenre;
                 }
             }
         }
-        return mostReadGenre;
+        return mostReadBookGenre;
     }
 
-    private HashMap<Genre, Integer> populateEmptyGenreCount() {
-        HashMap<Genre, Integer> genreMap = new HashMap<>();
-        for (Genre genre : Genre.values()) {
-            genreMap.put(genre, 0);
+    private HashMap<BookGenre, Integer> populateEmptyGenreCount() {
+        HashMap<BookGenre, Integer> genreMap = new HashMap<>();
+        for (BookGenre bookGenre : BookGenre.values()) {
+            genreMap.put(bookGenre, 0);
         }
         return genreMap;
     }
 
-    private HashMap<Genre, Integer> countGenreReadOccurrences() {
-        HashMap<Genre, Integer> genresReadCount = populateEmptyGenreCount();
-        for (Genre genre : genresReadCount.keySet()) {
-            genresReadCount.replace(genre, Collections.frequency(genresRead(), genre));
+    private HashMap<BookGenre, Integer> countGenreReadOccurrences() {
+        HashMap<BookGenre, Integer> genresReadCount = populateEmptyGenreCount();
+        for (BookGenre bookGenre : genresReadCount.keySet()) {
+            genresReadCount.replace(bookGenre, Collections.frequency(genresRead(), bookGenre));
         }
         return genresReadCount;
     }
 
-    private List<Genre> genresRead() {
+    private List<BookGenre> genresRead() {
         return readShelfBooks.stream()
-                             .takeWhile(book -> book.getGenre() != null)
-                             .map(Book::getGenre)
+                             .takeWhile(book -> book.getBookGenre() != null)
+                             .map(Book::getBookGenre)
                              .collect(Collectors.toList());
     }
 
@@ -85,41 +82,41 @@ public class GenreStatistics extends Statistics {
      * @return the Genre with the highest total rating across all books in the read shelf
      * If no such genre exists, null is returned
      */
-    public Genre findMostLikedGenre() {
-        Genre mostLikedGenre = null;
-        List<Map.Entry<Genre, Double>> genreRatings = sortGenresByRatings();
-        if (genreRatings.size() > 0) {
-            mostLikedGenre = genreRatings.get(genreRatings.size() - 1)
+    public BookGenre findMostLikedGenre() {
+        BookGenre mostLikedBookGenre = null;
+        List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
+        if (!genreRatings.isEmpty()) {
+            mostLikedBookGenre = genreRatings.get(genreRatings.size() - 1)
                                          .getKey();
         }
-        return mostLikedGenre;
+        return mostLikedBookGenre;
     }
 
-    private List<Map.Entry<Genre, Double>> sortGenresByRatings() {
+    private List<Map.Entry<BookGenre, Double>> sortGenresByRatings() {
         return totalRatingForReadGenre().entrySet().stream()
                                         .sorted(Map.Entry.comparingByValue())
                                         .collect(Collectors.toList());
     }
 
-    private Map<Genre, Double> totalRatingForReadGenre() {
-        Map<Genre, Double> totalRatingForReadGenre = populateEmptyGenreRatings();
+    private Map<BookGenre, Double> totalRatingForReadGenre() {
+        Map<BookGenre, Double> totalRatingForReadGenre = populateEmptyGenreRatings();
 
         for (Book book : readBooksWithGenresAndRatings) {
-            Genre genre = book.getGenre();
-            double totalGenreRating = totalRatingForReadGenre.get(genre);
-            double genreRating = converter.convertToPresentation(book.getRating(), null);
+            BookGenre bookGenre = book.getBookGenre();
+            double totalGenreRating = totalRatingForReadGenre.get(bookGenre);
+            double genreRating = RatingScale.toDouble(book.getRating());
             totalGenreRating += genreRating;
-            totalRatingForReadGenre.replace(genre, totalGenreRating);
+            totalRatingForReadGenre.replace(bookGenre, totalGenreRating);
         }
 
         return totalRatingForReadGenre;
     }
 
-    private Map<Genre, Double> populateEmptyGenreRatings() {
+    private Map<BookGenre, Double> populateEmptyGenreRatings() {
         // we only want genres int this map that exist in the read books shelf
-        Map<Genre, Double> genreMap = new HashMap<>();
+        Map<BookGenre, Double> genreMap = new HashMap<>();
         for (Book book : readBooksWithGenresAndRatings) {
-            genreMap.put(book.getGenre(), 0.0);
+            genreMap.put(book.getBookGenre(), 0.0);
         }
         return genreMap;
     }
@@ -128,22 +125,21 @@ public class GenreStatistics extends Statistics {
      * @return the Genre with the lowest total rating across all books in the read shelf
      * If no such genre exists, null is returned
      */
-    public Genre findLeastLikedGenre() {
-        Genre leastLikedGenre = null;
-        List<Map.Entry<Genre, Double>> genreRatings = sortGenresByRatings();
+    public BookGenre findLeastLikedGenre() {
+        BookGenre leastLikedBookGenre = null;
+        List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
         System.out.println("Genre ratings: " + genreRatings);
-        if (genreRatings.size() > 0) {
-            leastLikedGenre = genreRatings.get(0)
+        if (!genreRatings.isEmpty()) {
+            leastLikedBookGenre = genreRatings.get(0)
                                           .getKey();
         }
-
-        return leastLikedGenre;
+        return leastLikedBookGenre;
     }
 
     private List<Book> findReadBooksWithGenresAndRatings() {
         List<Book> booksWithGenresAndRatings = new ArrayList<>();
         for (Book book : readShelfBooks) {
-            if (book.getGenre() != null && book.getRating() != null &&
+            if (book.getBookGenre() != null && book.getRating() != null &&
                     book.getRating() != RatingScale.NO_RATING) {
                 booksWithGenresAndRatings.add(book);
             }

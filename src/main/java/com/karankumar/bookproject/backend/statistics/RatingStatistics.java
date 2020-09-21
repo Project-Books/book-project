@@ -18,8 +18,8 @@
 package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
 import lombok.extern.java.Log;
 
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ import java.util.List;
 
 @Log
 public class RatingStatistics extends Statistics {
-    private static final DoubleToRatingScaleConverter converter = new DoubleToRatingScaleConverter();
     private List<Book> readBooksRated = new ArrayList<>();
 
     public RatingStatistics(PredefinedShelfService predefinedShelfService) {
@@ -41,7 +40,7 @@ public class RatingStatistics extends Statistics {
      * If there are multiple books with the same highest rating, the first one found will be returned
      */
     public Book findMostLikedBook() {
-        if (readBooksRated.size() == 0) {
+        if (readBooksRated.isEmpty()) {
             return null;
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
@@ -62,7 +61,7 @@ public class RatingStatistics extends Statistics {
      * If there are multiple books with the same lowest rating, the first one found will be returned
      */
     public Book findLeastLikedBook() {
-        if (readBooksRated.size() == 0) {
+        if (readBooksRated.isEmpty()) {
             return null;
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
@@ -84,8 +83,7 @@ public class RatingStatistics extends Statistics {
     private double calculateTotalRating() {
         return readBooksRated.stream()
                              .mapToDouble(book -> {
-                                 Double rating =
-                                         converter.convertToPresentation(book.getRating(), null);
+                                 Double rating = RatingScale.toDouble(book.getRating());
                                  rating = (rating == null) ? 0.0 : rating;
                                  return rating;
                              })

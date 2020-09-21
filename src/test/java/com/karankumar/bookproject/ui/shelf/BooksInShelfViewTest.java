@@ -32,7 +32,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,14 +45,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 @IntegrationTest
 @WebAppConfiguration
-public class BooksInShelfViewTest {
+class BooksInShelfViewTest {
 
     private static Routes routes;
 
-    @Autowired
-    private ApplicationContext ctx;
+    @Autowired private ApplicationContext ctx;
 
     private final ArrayList<String> expectedToReadColumns = new ArrayList<>(Arrays.asList(
         BookGridColumn.TITLE_KEY,
@@ -87,6 +88,7 @@ public class BooksInShelfViewTest {
         BookGridColumn.RATING_KEY,
         BookGridColumn.PAGES_KEY
     ));
+
     private BooksInShelfView shelfView;
 
     @BeforeAll
@@ -101,14 +103,12 @@ public class BooksInShelfViewTest {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
-        Assumptions.assumeTrue(predefinedShelfService != null);
         shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
     }
 
     @ParameterizedTest
     @EnumSource(PredefinedShelf.ShelfName.class)
-    public void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
-        System.out.println("Shelf: " + shelfName);
+    void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
         try {
             shelfView.showOrHideGridColumns(shelfName.toString());
         } catch (NotSupportedException e) {
@@ -125,7 +125,7 @@ public class BooksInShelfViewTest {
             case READING:
                 expectedColumns = expectedReadingColumns;
                 break;
-            case DID_NOT_FINISH: // intentional
+            case DID_NOT_FINISH:
                 expectedColumns = expectedDidNotFinishColumns;
                 break;
             case READ:
@@ -137,9 +137,9 @@ public class BooksInShelfViewTest {
 
         for (Grid.Column<Book> col : columns) {
             if (expectedColumns.contains(col.getKey())) {
-                Assertions.assertTrue(col.isVisible(), col.getKey() + " column is not showing");
+                assertTrue(col.isVisible(), col.getKey() + " column is not showing");
             } else {
-                Assertions.assertFalse(col.isVisible(), col.getKey() + " column is showing");
+                assertFalse(col.isVisible(), col.getKey() + " column is showing");
             }
         }
     }

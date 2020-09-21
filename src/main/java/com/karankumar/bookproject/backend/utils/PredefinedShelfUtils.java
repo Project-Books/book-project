@@ -17,18 +17,22 @@
 
 package com.karankumar.bookproject.backend.utils;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.Shelf;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import lombok.extern.java.Log;
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+import com.karankumar.bookproject.backend.entity.Shelf;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+
+import lombok.extern.java.Log;
 
 @Log
 public class PredefinedShelfUtils {
@@ -38,9 +42,6 @@ public class PredefinedShelfUtils {
         this.predefinedShelfService = predefinedShelfService;
     }
 
-    /**
-     * Convenience method for accessing the read shelf
-     */
     public PredefinedShelf findToReadShelf() {
         return findPredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
     }
@@ -49,9 +50,6 @@ public class PredefinedShelfUtils {
         return findPredefinedShelf(PredefinedShelf.ShelfName.READING);
     }
 
-    /**
-     * Convenience method for accessing the read shelf
-     */
     public PredefinedShelf findReadShelf() {
         return findPredefinedShelf(PredefinedShelf.ShelfName.READ);
     }
@@ -88,19 +86,21 @@ public class PredefinedShelfUtils {
     }
 
     public static boolean isPredefinedShelf(String shelfName) {
-        List<String> predefinedShelfNames = new ArrayList<>();
-        for (PredefinedShelf.ShelfName predefinedShelfName : PredefinedShelf.ShelfName.values()) {
-            predefinedShelfNames.add(predefinedShelfName.toString());
-        }
-        return predefinedShelfNames.contains(shelfName);
+        return Arrays.stream(ShelfName.values())
+                     .map(ShelfName::toString)
+                     .anyMatch(shelfName::equalsIgnoreCase);
     }
 
     /**
      * Fetches all of the books in the chosen predefined shelf
      */
     public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
-        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
         Set<Book> books;
+        if (isAllBooksShelf(chosenShelf)) {
+            return getBooksInAllPredefinedShelves();
+        }
+
+        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
         List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAll(predefinedShelfName);
         if (predefinedShelves.isEmpty()) {
             books = new HashSet<>();
@@ -109,5 +109,18 @@ public class PredefinedShelfUtils {
             books = customShelf.getBooks();
         }
         return books;
+    }
+
+    public Set<Book> getBooksInAllPredefinedShelves() {
+        return getBooksInPredefinedShelves(predefinedShelfService.findAll());
+    }
+
+    /**
+     * Fetches all of the books in the chosen predefined shelves
+     */
+    public Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
+        return predefinedShelves.stream()
+                .map(PredefinedShelf::getBooks)
+                .collect(HashSet::new, Set::addAll, Set::addAll);
     }
 }
