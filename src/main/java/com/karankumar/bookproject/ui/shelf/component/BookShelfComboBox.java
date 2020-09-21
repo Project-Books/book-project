@@ -32,10 +32,12 @@ import java.util.logging.Level;
 public class BookShelfComboBox {
     private final ComboBox<String> allShelvesList;
     private final CustomShelfService customShelfService;
+    private final BooksInShelfView owner;
 
-    public BookShelfComboBox(CustomShelfService customShelfService) {
+    public BookShelfComboBox(CustomShelfService customShelfService, BooksInShelfView owner) {
         this.allShelvesList = new ComboBox<>();
         this.customShelfService = customShelfService;
+        this.owner = owner;
 
         allShelvesList.setPlaceholder("Select shelf");
         updateShelfList();
@@ -52,6 +54,10 @@ public class BookShelfComboBox {
             if (chosenShelf == null) {
                 LOGGER.log(Level.FINE, "No choice selected");
                 return;
+            } else if(customShelfService.findAll(chosenShelf).size() > 0) {
+                owner.setEditEnabled(true);
+            } else {
+                owner.setEditEnabled(false);
             }
 
             view.setChosenShelf(chosenShelf);

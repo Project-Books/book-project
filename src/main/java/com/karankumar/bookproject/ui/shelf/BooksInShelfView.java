@@ -74,6 +74,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     private String chosenShelf;
     private final BookFilters bookFilters;
+    private Button editShelf;
 
     private final PredefinedShelfUtils predefinedShelfUtils;
 
@@ -87,7 +88,7 @@ public class BooksInShelfView extends VerticalLayout {
         this.bookGrid = new BookGrid(predefinedShelfUtils, customShelfUtils);
         this.bookFilters = new BookFilters();
 
-        this.whichShelf = new BookShelfComboBox(customShelfService);
+        this.whichShelf = new BookShelfComboBox(customShelfService, this);
         this.filterByTitle = new TitleFilterText();
         this.filterByAuthorName = new AuthorFilterText();
 
@@ -127,7 +128,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     private CustomShelfForm createCustomShelfForm() {
         CustomShelfForm customShelfForm =
-                new CustomShelfForm(customShelfService, predefinedShelfService);
+                new CustomShelfForm(customShelfService, predefinedShelfService, this);
         new CustomShelfListener(this, customShelfService).bind(customShelfForm);
         return customShelfForm;
     }
@@ -139,12 +140,18 @@ public class BooksInShelfView extends VerticalLayout {
         Button addShelf = new Button("Add shelf");
         addShelf.addClickListener(e -> customShelfForm.addShelf());
 
+        editShelf = new Button("Edit shelf");
+        editShelf.addClickListener(e -> customShelfForm.editShelf(chosenShelf));
+        // Disable shelf edit by default - should only be enabled when a custom shelf is selected.
+        editShelf.setEnabled(false);
+
         HorizontalLayout layout = new HorizontalLayout(addBook);
 
         whichShelf.addToLayout(layout);
         filterByTitle.addToLayout(layout);
         filterByAuthorName.addToLayout(layout);
         layout.add(addShelf);
+        layout.add(editShelf);
         layout.add(addBook);
 
         layout.setAlignItems(Alignment.END);
@@ -185,6 +192,10 @@ public class BooksInShelfView extends VerticalLayout {
 
     public void setBookFilterTitle(String title) {
         bookFilters.setBookTitle(title);
+    }
+
+    public void setEditEnabled(Boolean isEnabled) {
+        editShelf.setEnabled(isEnabled);
     }
 
     @VisibleForTesting
