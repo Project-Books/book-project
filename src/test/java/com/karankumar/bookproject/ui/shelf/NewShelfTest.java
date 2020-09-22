@@ -4,16 +4,18 @@ import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.spring.SpringServlet;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -57,13 +59,12 @@ public class NewShelfTest {
      * IllegalStateException will be thrown from ComboBox.
      */
     @Test
-    @EnumSource(PredefinedShelf.ShelfName.class)
     public void newShelfShowsInList() {
         CustomShelf test = new CustomShelf("UnitTest");
         customShelfService.save(test);
         shelfView.whichShelf.updateShelfList();
 
-        Assertions.assertTrue(()->customShelfService.findAll("UnitTest").size() > 0, "Adding a new custom shelf does not save as expected.");
+        Assertions.assertTrue(customShelfService.findAll("UnitTest").size() > 0, "Adding a new custom shelf does not save as expected.");
     }
 
     @AfterEach
