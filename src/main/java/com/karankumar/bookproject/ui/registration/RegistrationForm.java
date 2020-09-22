@@ -74,9 +74,11 @@ public class RegistrationForm extends FormLayout {
 
         passwordField.setRequired(true);
         passwordField.setId("password");
+        passwordField.setMaxLength(128);
 
         passwordConfirmationField.setRequired(true);
         passwordConfirmationField.setId("password-confirmation");
+        passwordConfirmationField.setMaxLength(128);
 
         errorMessage.setId("error-message");
 
