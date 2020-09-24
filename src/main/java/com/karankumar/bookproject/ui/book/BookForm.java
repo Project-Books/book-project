@@ -234,6 +234,8 @@ public class BookForm extends VerticalLayout {
         } catch (NotSupportedException ex) {
             ex.printStackTrace(); // try-catch is only needed because of the signature of display method, this exception will never be thrown
         }
+
+        inSeries.setValue(this.binder);
     }
 
     private void closeForm() {
@@ -479,24 +481,6 @@ public class BookForm extends VerticalLayout {
     private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
         readingStartDate.display(name);
         readingEndDate.display(name);
-    }
-
-    private void hideFinishDate() {
-        if (readingEndDate.isVisible()) {
-            readingEndDate.hide();
-        }
-    }
-
-    private void showStartDate() {
-        if (!readingStartDate.isVisible()) {
-            readingStartDate.show();
-        }
-    }
-
-    private void showFinishDate() { //TODO: Buralar inline edilmeli... Hatta show her türlü çağırılsın nolcak
-        if (!readingEndDate.isVisible()) {
-            readingEndDate.show();
-        }
     }
 
     /**

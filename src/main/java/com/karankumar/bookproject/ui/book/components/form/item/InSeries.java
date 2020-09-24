@@ -54,4 +54,9 @@ public class InSeries extends FormItem<Checkbox> {
     public void setValue(Boolean value) {
         getField().setValue(value);
     }
+
+    public void setValue(Binder<Book> binder){
+        boolean isInSeries = binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
+        this.setValue(isInSeries);
+    }
 }
