@@ -30,7 +30,7 @@ public class InSeries extends FormItem<Checkbox> {
                 seriesPosition.show();
             } else {
                 seriesPosition.hide();
-                seriesPosition.getField().clear();
+                seriesPosition.clear();
             }
         });
     }

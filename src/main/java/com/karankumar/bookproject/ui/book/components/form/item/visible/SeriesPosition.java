@@ -37,4 +37,16 @@ public class SeriesPosition extends VisibleFormItem<IntegerField> {
     private SerializablePredicate<Integer> isNumberPositive() {
         return number -> (number == null || number > 0);
     }
+
+    public void show() {
+        item.setVisible(true);
+    }
+
+    public void hide() {
+        item.setVisible(false);
+    }
+
+    public void clear() {
+        getField().clear();
+    }
 }

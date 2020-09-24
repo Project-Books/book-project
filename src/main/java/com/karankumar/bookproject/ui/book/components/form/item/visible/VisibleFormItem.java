@@ -9,7 +9,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import javax.transaction.NotSupportedException;
 
 public abstract class VisibleFormItem<T extends Component> extends FormItem<T> {
-    private FormLayout.FormItem item;
+    protected FormLayout.FormItem item;
     private final VisibleFormItemStrategyFactory strategyFactory;
 
     protected VisibleFormItem(T field, VisibleFormItemStrategyFactory strategyFactory) {
@@ -24,14 +24,6 @@ public abstract class VisibleFormItem<T extends Component> extends FormItem<T> {
 
     public void display(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
         strategyFactory.getVisibilityStrategy(shelfName).display(item);
-    }
-
-    public void show() {
-        item.setVisible(true);
-    }
-
-    public void hide() {    //TODO: Muhtemelen hide() ve show() methodlarının uçurulması gerekiyor aslında
-        item.setVisible(false);
     }
 
     public boolean isVisible() {
