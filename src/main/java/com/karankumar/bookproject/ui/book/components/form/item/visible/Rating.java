@@ -2,12 +2,13 @@ package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.DoubleToRatingScaleConverter;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.factory.RatingStrategyFactory;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.data.binder.Binder;
 
 public class Rating extends VisibleFormItem<NumberField> {
-    public Rating() {
-        super(new NumberField());
+    public Rating(RatingStrategyFactory factory) {
+        super(new NumberField(), factory);
     }
 
     @Override

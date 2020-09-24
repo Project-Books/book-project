@@ -1,13 +1,14 @@
 package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.factory.PagesReadStrategyFactory;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 
 public class PagesRead extends VisibleFormItem<IntegerField> {
 
-    public PagesRead() {
-        super(new IntegerField());
+    public PagesRead(PagesReadStrategyFactory factory) {
+        super(new IntegerField(), factory);
     }
 
     @Override

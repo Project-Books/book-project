@@ -2,14 +2,15 @@ package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.BookFormErrors;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.factory.SeriesPositionStrategyFactory;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.function.SerializablePredicate;
 
 public class SeriesPosition extends VisibleFormItem<IntegerField> {
 
-    public SeriesPosition() {
-        super(new IntegerField());
+    public SeriesPosition(SeriesPositionStrategyFactory factory) {
+        super(new IntegerField(), factory);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.BookFormErrors;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.factory.ReadingStartDateStrategyFactory;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.function.SerializablePredicate;
@@ -10,8 +11,8 @@ import java.time.LocalDate;
 
 public class ReadingStartDate extends VisibleFormItem<DatePicker> {
 
-    public ReadingStartDate() {
-        super(new DatePicker());
+    public ReadingStartDate(ReadingStartDateStrategyFactory factory) {
+        super(new DatePicker(), factory);
     }
 
     @Override
