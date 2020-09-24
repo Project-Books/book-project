@@ -30,6 +30,10 @@ import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
 import com.karankumar.bookproject.ui.book.components.form.item.*;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.*;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.factory.*;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.BookSeriesVisibilityStrategy;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.HideStrategy;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.ShowStrategy;
 import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -74,26 +78,26 @@ public class BookForm extends VerticalLayout {
     //TODO: Ya da decorator pattern uygulanabilir. Ya da iste bir interface yazariz bu interface gider FormItem'ı extend
     //TODO: edip yapılabilir wrap etmek yerine decoratordaki gibi ...
     @VisibleForTesting final BookTitle bookTitle = new BookTitle();
-    @VisibleForTesting final SeriesPosition seriesPosition = new SeriesPosition();
+    @VisibleForTesting SeriesPosition seriesPosition;
     @VisibleForTesting final AuthorFirstName authorFirstName = new AuthorFirstName();
 
     @VisibleForTesting final AuthorLastName authorLastName = new AuthorLastName();
     @VisibleForTesting final PredefinedShelves predefinedShelf = new PredefinedShelves();
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
     @VisibleForTesting final BookGenreComboBox bookGenre = new BookGenreComboBox();
-    @VisibleForTesting final PagesRead pagesRead = new PagesRead();
-    @VisibleForTesting final PageCount pageCount = new PageCount();
-    @VisibleForTesting final ReadingStartDate readingStartDate = new ReadingStartDate();
-    @VisibleForTesting final ReadingEndDate readingEndDate = new ReadingEndDate();
-    @VisibleForTesting final Rating rating = new Rating();
-    @VisibleForTesting final BookReview bookReview = new BookReview();
+    @VisibleForTesting PagesRead pagesRead;
+    @VisibleForTesting PageCount pageCount;
+    @VisibleForTesting ReadingStartDate readingStartDate;
+    @VisibleForTesting ReadingEndDate readingEndDate;
+    @VisibleForTesting Rating rating;
+    @VisibleForTesting BookReview bookReview;
     @VisibleForTesting final SaveButton saveButton = new SaveButton();
     @VisibleForTesting final InSeries inSeries = new InSeries();
     @VisibleForTesting final Button reset = new Button();
 
     @VisibleForTesting HasValue[] fieldsToReset;
 
-    @VisibleForTesting final HasValue[] fieldsToResetForToRead
+    @VisibleForTesting final HasValue[] fieldsToResetForToRead  //TODO: Buralar patlıyor ne yazık ki ... Duzeltmek gerekecek
             = new HasValue[]{pagesRead.getField(), readingStartDate.getField(), readingEndDate.getField(), rating.getField(), bookReview.getField()};
     @VisibleForTesting final HasValue[] fieldsToResetForReading
             = new HasValue[]{pagesRead.getField(), readingEndDate.getField(), rating.getField(), bookReview.getField()};
@@ -112,6 +116,8 @@ public class BookForm extends VerticalLayout {
 
     public BookForm(PredefinedShelfService predefinedShelfService,
                     CustomShelfService customShelfService) {
+        initVisibleViews();
+
         this.predefinedShelfService = predefinedShelfService;
         this.customShelfService = customShelfService;
 
@@ -156,6 +162,26 @@ public class BookForm extends VerticalLayout {
         configureFormLayout(formLayout, buttons);
 
         add(dialog);
+    }
+
+    private void initVisibleViews() {
+        ShowStrategy showStrategy = new ShowStrategy();
+        HideStrategy hideStrategy = new HideStrategy();
+        BookSeriesVisibilityStrategy bookSeriesStrategy = new BookSeriesVisibilityStrategy(this.binder);
+
+        BookReviewStrategyFactory bookReviewFactory = new BookReviewStrategyFactory(hideStrategy, showStrategy);
+        PagesReadStrategyFactory pagesReadFactory = new PagesReadStrategyFactory(hideStrategy, showStrategy);
+        RatingStrategyFactory ratingFactory = new RatingStrategyFactory(hideStrategy, showStrategy);
+        ReadingEndDateStrategyFactory readingEndDateFactory = new ReadingEndDateStrategyFactory(hideStrategy, showStrategy);
+        ReadingStartDateStrategyFactory readingStartDateFactory = new ReadingStartDateStrategyFactory(hideStrategy, showStrategy);
+        SeriesPositionStrategyFactory seriesPositionFactory = new SeriesPositionStrategyFactory(bookSeriesStrategy);
+
+        this.bookReview = new BookReview(bookReviewFactory);
+        this.pagesRead = new PagesRead(pagesReadFactory);
+        this.rating = new Rating(ratingFactory);
+        this.readingEndDate = new ReadingEndDate(readingEndDateFactory);
+        this.readingStartDate = new ReadingStartDate(readingStartDateFactory);
+        this.seriesPosition = new SeriesPosition(seriesPositionFactory);
     }
 
     /**
@@ -203,15 +229,10 @@ public class BookForm extends VerticalLayout {
     }
 
     private void showSeriesPositionFormIfSeriesPositionAvailable() {
-        boolean isInSeries =
-                binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
-
-        inSeries.setValue(isInSeries);
-
-        if (isInSeries) {
-            seriesPosition.show();
-        } else {
-            seriesPosition.hide();
+        try {
+            seriesPosition.display(null);
+        } catch (NotSupportedException ex) {
+            ex.printStackTrace(); // try-catch is only needed because of the signature of display method, this exception will never be thrown
         }
     }
 
@@ -456,23 +477,8 @@ public class BookForm extends VerticalLayout {
      *                               a @see PredefinedShelf
      */
     private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
-        switch (name) { // TODO: 7.09.2020 Can state pattern be applied ? - kaansonmezoz
-            case TO_READ:
-                readingStartDate.hide();
-                hideFinishDate();
-                break;
-            case READING:
-            case DID_NOT_FINISH:
-                showStartDate();
-                hideFinishDate();
-                break;
-            case READ:
-                showStartDate();
-                showFinishDate();
-                break;
-            default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
-        }
+        readingStartDate.display(name);
+        readingEndDate.display(name);
     }
 
     private void hideFinishDate() {
@@ -501,18 +507,7 @@ public class BookForm extends VerticalLayout {
      *                               a @see PredefinedShelf
      */
     private void showOrHidePagesRead(PredefinedShelf.ShelfName name) throws NotSupportedException {
-        switch (name) {
-            case TO_READ:
-            case READING:
-            case READ:
-                pagesRead.hide();
-                break;
-            case DID_NOT_FINISH:
-                pagesRead.show();
-                break;
-            default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
-        }
+        pagesRead.display(name);
     }
 
     /**
@@ -523,20 +518,25 @@ public class BookForm extends VerticalLayout {
      *                               a @see PredefinedShelf
      */
     private void showOrHideRatingAndBookReview(PredefinedShelf.ShelfName name) throws NotSupportedException {
-        switch (name) {
-            case TO_READ:
-            case READING:
-            case DID_NOT_FINISH:
-                rating.hide();
-                bookReview.hide();
-                break;
-            case READ:
-                rating.show();
-                bookReview.show();
-                break;
-            default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
-        }
+        //TODO: Bu kısım strategy pattern uygulamak gerekebilir. Strategy pattern uygularsak ama run-time'da surekli olarak
+        //TODO: degisecek ya surekli olarak gidip cekmek gerekecek ya da en basta alayı yaratilip enum map tarzında bir seyde saklanacak
+        //TODO: Buradaki ilgili degere gore ilgili strategy calisacak
+        //TODO: Strategy icerisinde hangi stateler icin uygunlugunu tutabiliriz diye dusunmustuk ama class'ın tipine göre de değişebiliyor
+        //TODO: Decorator pattern ile wrap edebiliriz en temizi. Display diye bir decorator olur o decorate eder. Sonra da gider decorate ettiği
+        //TODO: Objedeki ilgili yeri çağırır.
+
+        //TODO: Abstract factory gerekebilir pattern olarak factory'dense çünkü bir tip için algoritmalar ailesi yaratacak factory gerekiyor gibi sanki
+        //TODO: yani x icin ve y icin olan strategyler aynı degil tipleri farklı oldugu icin, bir varyasyon var ve bu kısım design pattern olarak ona uyuyor aslında
+
+
+        //TODO: Decorator topuna girersek eğer decorate edebileceğimiz bir ton şey var onları da yapmak gerekecek ...
+        //TODO: Decorator getirirsek eger display ya da show gibi özellikler de yer alacak, hide vs garip olmaz mı ?
+        //TODO: aynı sekilde decorator sadece bir yerde kullanılacak bir methodda ne kadar mantıklı decorate etmek ?
+        //TODO: Decorator'un da decorate edilebilmesi gerekiyor ama benim durumumda bu olmamalı ....
+        //TODO: Strategy pattern daha mantıklı bu yüzden.
+
+        rating.display(name);
+        bookReview.display(name);
     }
 
     /**
