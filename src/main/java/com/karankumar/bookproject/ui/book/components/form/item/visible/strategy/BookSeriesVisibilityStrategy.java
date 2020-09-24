@@ -9,7 +9,7 @@ public class BookSeriesVisibilityStrategy extends FieldExistenceStrategy<Binder<
     }
 
     @Override
-    public boolean isFieldExist(Binder<Book> binder) {
+    protected boolean isFieldExist(Binder<Book> binder) {
         return binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
     }
 }

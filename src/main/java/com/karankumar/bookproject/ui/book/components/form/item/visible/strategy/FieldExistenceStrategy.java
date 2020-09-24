@@ -18,7 +18,7 @@ public abstract class FieldExistenceStrategy<T> implements VisibilityStrategy {
         }
     }
 
-    public abstract boolean isFieldExist(T field);
+    protected abstract boolean isFieldExist(T field);
 
     private void hide(FormLayout.FormItem formItem) {
         formItem.setVisible(false);
