@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.utils.DateUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,9 +58,10 @@ class CalculateReadingGoalTest {
         assertThat(CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0)).isZero();
     }
 
+    // ensure 0, and not an arithmetic exception, is returned
     @Test
     void testCalculateProgressTowardsReadingGoalDivideByZero() {
-        // ensure 0, and not an arithmetic exception, is returned
+        assertDoesNotThrow(() -> CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0));
         assertThat(CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0)).isZero();
     }
 
