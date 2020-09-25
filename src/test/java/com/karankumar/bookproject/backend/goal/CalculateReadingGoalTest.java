@@ -61,8 +61,12 @@ class CalculateReadingGoalTest {
     // ensure 0, and not an arithmetic exception, is returned
     @Test
     void testCalculateProgressTowardsReadingGoalDivideByZero() {
-        assertDoesNotThrow(() -> CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0));
-        assertThat(CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0)).isZero();
+        int toRead = 5;
+        int read = 0;
+        assertDoesNotThrow(() ->
+                CalculateReadingGoal.calculateProgressTowardsReadingGoal(toRead, read)
+        );
+        assertThat(CalculateReadingGoal.calculateProgressTowardsReadingGoal(toRead, read)).isZero();
     }
 
     @Test
