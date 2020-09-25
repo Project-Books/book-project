@@ -19,7 +19,7 @@ package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,19 +30,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaIntegrationTest
 class CustomShelfRepositoryTest {
     @Autowired private CustomShelfRepository repository;
-    private final String test1 = "Test1";
-
-    @BeforeEach
-    void setup() {
-        repository.save(new CustomShelf(test1));
-        repository.save(new CustomShelf("Test2"));
-        repository.save(new CustomShelf("Test3"));
-    }
+    private final String customShelf1 = "Test1";
 
     @Test
-    void whenShelfExistsFindByShelfNameReturnsOneShelf() {
-        List<CustomShelf> shelves = repository.findByShelfName(test1);
+    @DisplayName("When shelf exists, findByShelfName returns one shelf")
+    void findByShelfNameCorrectlyReturnsOneShelf() {
+        // given
+        saveCustomShelves();
+
+        // when
+        List<CustomShelf> shelves = repository.findByShelfName(customShelf1);
+
+        // then
         assertThat(shelves.size()).isOne();
+    }
+
+    private void saveCustomShelves() {
+        repository.save(new CustomShelf(customShelf1));
+        repository.save(new CustomShelf("Test2"));
+        repository.save(new CustomShelf("Test3"));
     }
 }
 
