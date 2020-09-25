@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.goal;
 
 import com.karankumar.bookproject.backend.utils.DateUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -58,8 +59,8 @@ class CalculateReadingGoalTest {
         assertThat(CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0)).isZero();
     }
 
-    // ensure 0, and not an arithmetic exception, is returned
     @Test
+    @DisplayName("Ensure 0, and not an arithmetic exception, is returned")
     void testCalculateProgressTowardsReadingGoalDivideByZero() {
         int toRead = 5;
         int read = 0;
@@ -69,6 +70,7 @@ class CalculateReadingGoalTest {
         assertThat(CalculateReadingGoal.calculateProgressTowardsReadingGoal(toRead, read)).isZero();
     }
 
+    // TODO: refactor this method to test for two boundary cases and one normal case
     @Test
     void testHowFarAheadOrBehindSchedule(){
         Mockito.mockStatic(DateUtils.class);
