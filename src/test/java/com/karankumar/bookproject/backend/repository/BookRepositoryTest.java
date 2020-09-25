@@ -13,12 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaIntegrationTest
 class BookRepositoryTest {
-
     @Autowired private PredefinedShelfRepository shelfRepository;
     @Autowired private AuthorRepository authorRepository;
     @Autowired private BookRepository bookRepository;
 
-    PredefinedShelf predefinedShelf;
+    private PredefinedShelf predefinedShelf;
 
     @BeforeEach
     void setup() {
@@ -52,6 +51,6 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        assertTrue(bookRepository.findAll().isEmpty());
+        assertThat(bookRepository.findAll()).isEmpty();
     }
 }
