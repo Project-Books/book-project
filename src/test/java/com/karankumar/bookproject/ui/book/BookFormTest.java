@@ -62,7 +62,6 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 import static com.karankumar.bookproject.ui.book.BookFormErrors.MAX_PAGES_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -712,9 +711,6 @@ class BookFormTest {
 
     private void testBookAttributesPresentForAllShelves(PredefinedShelf.ShelfName shelfName,
                                                         Book book) {
-        assertAll(
-        );
-
         assertSoftly(softly -> {
             softly.assertThat(book.getTitle()).isEqualTo(bookTitle);
             softly.assertThat(shelfName).isEqualTo(book.getPredefinedShelf().getPredefinedShelfName());
