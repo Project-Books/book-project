@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -45,7 +46,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 class BookServiceTest {
-
     private static AuthorService authorService;
     private static BookService bookService;
     private static CustomShelfService customShelfService;
@@ -84,19 +84,25 @@ class BookServiceTest {
 
     @Test
     void whenTryingToSaveBookWithoutAuthorExpectNoSave() {
+        // when
         bookService.save(new Book("Book without author", null, toRead));
+
+        // then
         assertThat(authorService.count()).isZero();
         assertThat(bookService.count()).isZero();
     }
 
-    /**
-     * Tests book is not saved with numberOfPages > max_pages
-     */
     @Test
-    void whenTryingToSaveBookWithMaxNumberPageExceedNoSave() {
+    @DisplayName("Tests book is not saved with numberOfPages > max_pages")
+    void whenTryingToSaveBookWithMaxNumberPageExceededNoSave() {
+        // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setNumberOfPages(Book.MAX_PAGES + 1);
+
+        // when
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
+
+        // then
         assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
         assertThat(bookService.count()).isZero();
     }
@@ -106,9 +112,14 @@ class BookServiceTest {
      */
     @Test
     void whenTryingToSaveBookWithPagesReadExceededNoSave() {
+        // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES + 1);
+
+        // when
         Exception exception  = Assertions.assertThrows(RuntimeException.class, () -> bookService.save(book));
+
+        // then
         assertTrue(ExceptionUtils.getRootCause(exception) instanceof ConstraintViolationException);
         assertThat(bookService.count()).isZero();
     }
@@ -130,10 +141,8 @@ class BookServiceTest {
         assertThat(bookService.count()).isOne();
     }
 
-    /**
-     * Tests whether the book without shelf can be saved
-     */
     @Test
+    @DisplayName("A book without a predefined shelf should not be saved")
     void whenTryingToSaveWithoutShelfExpectNoSave() {
         // given
         Book bookWithoutShelf = new Book("Title", new Author("First", "Last"), null);
