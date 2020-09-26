@@ -20,8 +20,12 @@ package com.karankumar.bookproject.ui.book;
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -30,10 +34,12 @@ import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
+import com.vaadin.flow.data.binder.BindingValidationStatus;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -49,17 +55,18 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.MAX_PAGES_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
-
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -166,21 +173,21 @@ class BookFormTest {
     @Test
     void formFieldsPopulated() {
         double rating = RatingScale.toDouble(ratingVal);
-        assertAll(
-                () -> assertEquals(bookTitle, bookForm.bookTitle.getValue()),
-                () -> assertEquals(firstName, bookForm.authorFirstName.getValue()),
-                () -> assertEquals(lastName, bookForm.authorLastName.getValue()),
-                () -> assertEquals(readShelf.getPredefinedShelfName(),
-                        bookForm.predefinedShelfField.getValue()),
-                () -> assertEquals(BOOK_GENRE, bookForm.bookGenre.getValue()),
-                () -> assertEquals(numberOfPages, bookForm.numberOfPages.getValue()),
-                () -> assertEquals(dateStarted, bookForm.dateStartedReading.getValue()),
-                () -> assertEquals(dateFinished, bookForm.dateFinishedReading.getValue()),
-                () -> assertEquals(rating, bookForm.rating.getValue()),
-                () -> assertEquals(bookReview, bookForm.bookReview.getValue()),
-                () -> assertEquals(seriesPosition, bookForm.seriesPosition.getValue())
-        );
 
+        assertSoftly(softly -> {
+            softly.assertThat(bookTitle).isEqualTo(bookForm.bookTitle.getValue());
+            softly.assertThat(firstName).isEqualTo(bookForm.authorFirstName.getValue());
+            softly.assertThat(lastName).isEqualTo(bookForm.authorLastName.getValue());
+            softly.assertThat(readShelf.getPredefinedShelfName())
+                  .isEqualTo(bookForm.predefinedShelfField.getValue());
+            softly.assertThat(BOOK_GENRE).isEqualTo(bookForm.bookGenre.getValue());
+            softly.assertThat(numberOfPages).isEqualTo(bookForm.numberOfPages.getValue());
+            softly.assertThat(dateStarted).isEqualTo(bookForm.dateStartedReading.getValue());
+            softly.assertThat(dateFinished).isEqualTo(bookForm.dateFinishedReading.getValue());
+            softly.assertThat(rating).isEqualTo(bookForm.rating.getValue());
+            softly.assertThat(bookReview).isEqualTo(bookForm.bookReview.getValue());
+            softly.assertThat(seriesPosition).isEqualTo(bookForm.seriesPosition.getValue());
+        });
     }
 
     enum EventType {SAVED, DELETED}
@@ -256,10 +263,8 @@ class BookFormTest {
         }
     }
 
-    /**
-     * Tests whether the reset button correctly clears all fields when clicked
-     */
     @Test
+    @DisplayName("When the reset button is clicked, all fields are cleared")
     void formCanBeCleared() {
         // given
         populateBookForm();
@@ -299,49 +304,49 @@ class BookFormTest {
     }
 
     private void assertNonToReadFieldsAreHidden() {
-        assertAll(
-                () -> assertFalse(bookForm.dateStartedReadingFormItem.isVisible()),
-                () -> assertFalse(bookForm.dateFinishedReadingFormItem.isVisible()),
-                () -> assertFalse(bookForm.ratingFormItem.isVisible()),
-                () -> assertFalse(bookForm.bookReviewFormItem.isVisible()),
-                () -> assertFalse(bookForm.pagesReadFormItem.isVisible())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.dateFinishedReadingFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.ratingFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.bookReviewFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.pagesReadFormItem.isVisible()).isFalse();
+        });
     }
 
     @Test
     void correctFormFieldsShowForReadingShelf() {
         bookForm.predefinedShelfField.setValue(READING);
-        assertAll(
-                () -> assertTrue(bookForm.dateStartedReadingFormItem.isVisible()),
-                () -> assertFalse(bookForm.dateFinishedReadingFormItem.isVisible()),
-                () -> assertFalse(bookForm.ratingFormItem.isVisible()),
-                () -> assertFalse(bookForm.bookReviewFormItem.isVisible()),
-                () -> assertFalse(bookForm.pagesReadFormItem.isVisible())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
+            softly.assertThat(bookForm.dateFinishedReadingFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.ratingFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.bookReviewFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.pagesReadFormItem.isVisible()).isFalse();
+        });
     }
 
     @Test
     void correctFormFieldsShowForReadShelf() {
         bookForm.predefinedShelfField.setValue(READ);
-        assertAll(
-                () -> assertTrue(bookForm.dateStartedReadingFormItem.isVisible()),
-                () -> assertTrue(bookForm.dateFinishedReadingFormItem.isVisible()),
-                () -> assertTrue(bookForm.ratingFormItem.isVisible()),
-                () -> assertTrue(bookForm.bookReviewFormItem.isVisible()),
-                () -> assertFalse(bookForm.pagesReadFormItem.isVisible())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
+            softly.assertThat(bookForm.dateFinishedReadingFormItem.isVisible()).isTrue();
+            softly.assertThat(bookForm.ratingFormItem.isVisible()).isTrue();
+            softly.assertThat(bookForm.bookReviewFormItem.isVisible()).isTrue();
+            softly.assertThat(bookForm.pagesReadFormItem.isVisible()).isFalse();
+        });
     }
 
     @Test
     void correctFormFieldsShowForDidNotFinishShelf() {
         bookForm.predefinedShelfField.setValue(DID_NOT_FINISH);
-        assertAll(
-                () -> assertTrue(bookForm.dateStartedReadingFormItem.isVisible()),
-                () -> assertFalse(bookForm.dateFinishedReadingFormItem.isVisible()),
-                () -> assertFalse(bookForm.ratingFormItem.isVisible()),
-                () -> assertFalse(bookForm.bookReviewFormItem.isVisible()),
-                () -> assertTrue(bookForm.pagesReadFormItem.isVisible())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
+            softly.assertThat(bookForm.dateFinishedReadingFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.ratingFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.bookReviewFormItem.isVisible()).isFalse();
+            softly.assertThat(bookForm.pagesReadFormItem.isVisible()).isTrue();
+        });
     }
 
     private static Stream<Arguments> shelfNames() {
@@ -366,11 +371,10 @@ class BookFormTest {
         bookForm.predefinedShelfField.setValue(newShelf);
 
         // then
-        assertAll(
-                () -> assertEquals(fieldsThatShouldBeReset.length, bookForm.fieldsToReset.length),
-                () -> assertTrue(List.of(bookForm.fieldsToReset)
-                                     .containsAll(List.of(fieldsThatShouldBeReset)))
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(fieldsThatShouldBeReset).hasSameSizeAs(bookForm.fieldsToReset);
+            softly.assertThat(bookForm.fieldsToReset).containsAll(List.of(fieldsThatShouldBeReset));
+        });
     }
 
     @Test
@@ -380,16 +384,24 @@ class BookFormTest {
 
         // when
         bookForm.saveButton.click();
-        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
-        assertEquals(BookFormErrors.SERIES_POSITION_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow());
+        assertErrorShown(BookFormErrors.SERIES_POSITION_ERROR);
+    }
+
+    private void assertErrorShown(String errorMessage) {
+        // when
+        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+        List<BindingValidationStatus<?>> fieldValidationErrors =
+                validationStatus.getFieldValidationErrors();
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(validationStatus.hasErrors()).isTrue();
+            softly.assertThat(fieldValidationErrors.size()).isOne();
+            softly.assertThat(fieldValidationErrors.get(0).getMessage().orElseThrow())
+                  .isEqualTo(errorMessage);
+        });
     }
 
     @Test
@@ -399,17 +411,9 @@ class BookFormTest {
 
         // when
         bookForm.saveButton.click();
-        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
-        assertEquals(BookFormErrors.PAGE_NUMBER_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow()
-        );
+        assertErrorShown(BookFormErrors.PAGE_NUMBER_ERROR);
     }
 
     @Test
@@ -419,17 +423,9 @@ class BookFormTest {
 
         // when
         bookForm.saveButton.click();
-        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
-        assertEquals(BookFormErrors.MAX_PAGES_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow()
-        );
+        assertErrorShown(MAX_PAGES_ERROR);
     }
 
     @Test
@@ -439,17 +435,9 @@ class BookFormTest {
 
         // when
         bookForm.saveButton.click();
-        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
-        assertEquals(BookFormErrors.MAX_PAGES_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow()
-        );
+        assertErrorShown(MAX_PAGES_ERROR);
     }
 
     @Test
@@ -459,17 +447,9 @@ class BookFormTest {
 
         // when
         bookForm.saveButton.click();
-        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
-        assertEquals(BookFormErrors.BOOK_TITLE_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow()
-        );
+        assertErrorShown(BookFormErrors.BOOK_TITLE_ERROR);
     }
 
     @Test
@@ -479,17 +459,9 @@ class BookFormTest {
 
         // when
         bookForm.saveButton.click();
-        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
-        assertEquals(BookFormErrors.FIRST_NAME_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow()
-        );
+        assertErrorShown(BookFormErrors.FIRST_NAME_ERROR);
     }
 
     @Test
@@ -499,17 +471,9 @@ class BookFormTest {
 
         // when
         bookForm.saveButton.click();
-        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
-        assertEquals(BookFormErrors.LAST_NAME_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow()
-        );
+        assertErrorShown(BookFormErrors.LAST_NAME_ERROR);
     }
 
     @Test
@@ -519,17 +483,9 @@ class BookFormTest {
 
         // when
         bookForm.saveButton.click();
-        BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertThat(validationStatus.getFieldValidationErrors().size()).isOne();
-        assertEquals(BookFormErrors.SHELF_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow()
-        );
+        assertErrorShown(BookFormErrors.SHELF_ERROR);
     }
 
     @Test
@@ -540,22 +496,18 @@ class BookFormTest {
         // when
         bookForm.saveButton.click();
         BinderValidationStatus<Book> validationStatus = bookForm.binder.validate();
+        List<BindingValidationStatus<?>> fieldValidationErrors =
+                validationStatus.getFieldValidationErrors();
 
         // then
-        assertTrue(validationStatus.hasErrors());
-        assertEquals(2, validationStatus.getFieldValidationErrors().size());
-        assertEquals(String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"),
-                validationStatus.getFieldValidationErrors()
-                                .get(0)
-                                .getMessage()
-                                .orElseThrow()
-        );
-        assertEquals(BookFormErrors.FINISH_DATE_ERROR,
-                validationStatus.getFieldValidationErrors()
-                                .get(1)
-                                .getMessage()
-                                .orElseThrow()
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(validationStatus.hasErrors()).isTrue();
+            softly.assertThat(validationStatus.getFieldValidationErrors()).hasSize(2);
+            softly.assertThat(fieldValidationErrors.get(0).getMessage().orElseThrow())
+                  .isEqualTo(String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"));
+            softly.assertThat(fieldValidationErrors.get(1).getMessage().orElseThrow())
+                  .isEqualTo(BookFormErrors.FINISH_DATE_ERROR);
+        });
     }
 
     @Test
@@ -563,12 +515,13 @@ class BookFormTest {
         // given
         bookForm.inSeriesCheckbox.setValue(true);
 
-        // then
-        assertAll(
-                () -> assertTrue(bookForm.seriesPositionFormItem.isVisible()),
-                () -> assertTrue(bookForm.seriesPosition.isVisible()),
-                () -> assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(bookForm.seriesPositionFormItem.isVisible()).isTrue();
+            softly.assertThat(bookForm.seriesPosition.isVisible()).isTrue();
+            softly.assertThat(SERIES_POSITION).isEqualTo(bookForm.seriesPosition.getValue());
+            softly.assertAll();
+        });
+
     }
 
     @Test
@@ -601,11 +554,11 @@ class BookFormTest {
         bookForm.openForm();
 
         // then
-        assertAll(
-                () -> assertTrue(bookForm.seriesPositionFormItem.isVisible()),
-                () -> assertTrue(bookForm.seriesPosition.isVisible()),
-                () -> assertEquals(SERIES_POSITION, bookForm.seriesPosition.getValue())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(bookForm.seriesPositionFormItem.isVisible()).isTrue();
+            softly.assertThat(bookForm.seriesPosition.isVisible()).isTrue();
+            softly.assertThat(SERIES_POSITION).isEqualTo(bookForm.seriesPosition.getValue());
+        });
     }
 
     @Test
@@ -683,7 +636,8 @@ class BookFormTest {
         assertAll(
                 () -> assertEquals(newTitle, updatedBook.getTitle()),
                 () -> assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName()),
-                () -> assertEquals(newAuthor.getFirstName(), updatedBook.getAuthor().getFirstName()),
+                () -> assertEquals(newAuthor.getFirstName(),
+                        updatedBook.getAuthor().getFirstName()),
                 () -> assertEquals(newAuthor.getLastName(), updatedBook.getAuthor().getLastName()),
                 () -> assertEquals(newBookGenre, updatedBook.getBookGenre()),
                 () -> assertEquals(dateStarted, updatedBook.getDateStartedReading()),
