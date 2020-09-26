@@ -17,9 +17,8 @@
 
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
-import org.junit.jupiter.api.Assertions;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,9 +28,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
 class PredefinedShelfRepositoryTest {
@@ -56,7 +56,7 @@ class PredefinedShelfRepositoryTest {
         PredefinedShelf shelf = shelves.get(0);
         assertThat(shelf).isNotNull();
 
-        Assertions.assertAll(
+        assertAll(
             () -> assertEquals(PredefinedShelf.ShelfName.TO_READ, shelf.getPredefinedShelfName()),
             () -> assertNull(shelf.getBooks())
         );
