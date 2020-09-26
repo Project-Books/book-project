@@ -37,7 +37,7 @@ public class StatisticTestUtils {
     private static Book bookWithLowestRating;
     private static Book bookWithHighestRating;
     private static Book bookWithMostPages;
-    private static ArrayList<Book> savedBooks = new ArrayList<>();
+    private static final ArrayList<Book> savedBooks = new ArrayList<>();
 
     private static BookService bookService;
     private static PredefinedShelfUtils predefinedShelfUtils;

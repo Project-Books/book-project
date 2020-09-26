@@ -28,7 +28,7 @@ import org.springframework.transaction.TransactionSystemException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
-public class UserTest {
+class UserTest {
     private static UserRepository userRepository;
     private long initialNumberOfUsers;
 

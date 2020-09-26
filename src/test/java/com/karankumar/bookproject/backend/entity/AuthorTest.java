@@ -22,13 +22,16 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @IntegrationTest
 class AuthorTest {
@@ -75,13 +78,14 @@ class AuthorTest {
      * originally had the same author name
      */
     @Test
+    @Disabled
+    // TODO: fix failing test
     void updateAuthorAffectsOneRow() {
-        // TODO: fix failing test
-//        Author newAuthor = new Author("Matthew", "Walker");
-//        testBook1.setAuthor(newAuthor);
-//        bookService.save(testBook1);
-//
-//        Assertions.assertNotEquals(testBook1.getAuthor(), testBook2.getAuthor());
+        Author newAuthor = new Author("Matthew", "Walker");
+        testBook1.setAuthor(newAuthor);
+        bookService.save(testBook1);
+
+        Assertions.assertNotEquals(testBook1.getAuthor(), testBook2.getAuthor());
     }
 
     @Test
@@ -90,7 +94,9 @@ class AuthorTest {
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.delete(book);
 
-        assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId()));
-        assertTrue(authorService.findAll().isEmpty());
+        assertAll(
+                () -> assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId())),
+                () -> assertTrue(authorService.findAll().isEmpty())
+        );
     }
 }
