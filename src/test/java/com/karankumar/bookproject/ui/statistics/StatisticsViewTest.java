@@ -104,7 +104,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutPageCountTheViewShouldShowOtherStatistics() {
+    void withoutPageCountOtherStatisticsStillShown() {
         // given
         populateDataWithBooksWithoutPageCount(bookService, predefinedShelfService);
 
@@ -119,7 +119,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutGenreInformationTheViewShouldShowOtherStatistics() {
+    void withoutGenreInformationOtherStatisticsStillShown() {
         // given
         populateDataWithBooksWithoutGenre(bookService, predefinedShelfService);
 
