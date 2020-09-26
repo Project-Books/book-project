@@ -29,6 +29,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.Arrays;
 
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.AVERAGE_PAGE_LENGTH;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.AVERAGE_RATING;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.LEAST_LIKED_BOOK;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.LEAST_LIKED_GENRE;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.LONGEST_BOOK;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_LIKED_BOOK;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_LIKED_GENRE;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_READ_GENRE;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.StatisticNotFound;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooks;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutGenre;
@@ -67,7 +75,7 @@ class StatisticsViewTest {
 
     private void allStatisticsAreShown() {
         Arrays.asList(StatisticType.values())
-                .forEach(statisticType -> valueIsPresent(getStatistic(statisticType)));
+              .forEach(statisticType -> valueIsPresent(getStatistic(statisticType)));
     }
 
     private void valueIsPresent(StatisticsViewTestUtils.Statistic currentStatistic) {
@@ -141,56 +149,50 @@ class StatisticsViewTest {
     }
 
     private void pageStatisticsArePresent() {
-        statisticIsPresent(StatisticType.LONGEST_BOOK);
-        statisticIsPresent(StatisticType.AVERAGE_PAGE_LENGTH);
+        statisticsArePresent(LONGEST_BOOK, AVERAGE_PAGE_LENGTH);
     }
 
     private void pageStatisticsAreAbsent() {
-        statisticIsAbsent(StatisticType.LONGEST_BOOK);
-        statisticIsAbsent(StatisticType.AVERAGE_PAGE_LENGTH);
+        statisticsAreAbsent(LONGEST_BOOK, AVERAGE_PAGE_LENGTH);
     }
 
     private void ratingStatisticsArePresent() {
-        statisticIsPresent(StatisticType.AVERAGE_RATING);
-        statisticIsPresent(StatisticType.MOST_LIKED_BOOK);
-        statisticIsPresent(StatisticType.LEAST_LIKED_BOOK);
+        statisticsArePresent(AVERAGE_RATING, MOST_LIKED_BOOK, LEAST_LIKED_BOOK);
     }
 
     private void ratingStatisticsAreAbsent() {
-        statisticIsAbsent(StatisticType.AVERAGE_RATING);
-        statisticIsAbsent(StatisticType.MOST_LIKED_BOOK);
-        statisticIsAbsent(StatisticType.LEAST_LIKED_BOOK);
+        statisticsAreAbsent(StatisticType.AVERAGE_RATING, MOST_LIKED_BOOK, LEAST_LIKED_BOOK);
     }
 
     private void genreStatisticIsPresent() {
-        statisticIsPresent(StatisticType.MOST_READ_GENRE);
+        statisticsArePresent(MOST_READ_GENRE);
     }
 
     private void genreStatisticIsAbsent() {
-        statisticIsAbsent(StatisticType.MOST_READ_GENRE);
+        statisticsAreAbsent(MOST_READ_GENRE);
     }
 
     private void genreAndRatingStatisticsArePresent() {
-        statisticIsPresent(StatisticType.MOST_LIKED_GENRE);
-        statisticIsPresent(StatisticType.LEAST_LIKED_GENRE);
+        statisticsArePresent(MOST_LIKED_GENRE, LEAST_LIKED_GENRE);
     }
 
     private void genreAndRatingStatisticsAreAbsent() {
-        statisticIsAbsent(StatisticType.MOST_LIKED_GENRE);
-        statisticIsAbsent(StatisticType.LEAST_LIKED_GENRE);
+        statisticsAreAbsent(MOST_LIKED_GENRE, LEAST_LIKED_GENRE);
     }
 
-    private void statisticIsAbsent(StatisticType statisticType) {
-        assertTrue(getStatistic(statisticType) instanceof StatisticNotFound);
+    private void statisticsAreAbsent(StatisticType... statisticTypes) {
+        for (StatisticType statisticType : statisticTypes) {
+            assertTrue(getStatistic(statisticType) instanceof StatisticNotFound);
+        }
     }
 
-    private void statisticIsPresent(StatisticType statisticType) {
-        assertEquals(statisticType.getCaption(), getStatistic(statisticType).getCaption());
+    private void statisticsArePresent(StatisticType... statisticTypes) {
+        for (StatisticType statisticType : statisticTypes) {
+            assertEquals(statisticType.getCaption(), getStatistic(statisticType).getCaption());
+        }
     }
 
     private StatisticsViewTestUtils.Statistic getStatistic(StatisticType statisticType) {
         return StatisticsViewTestUtils.getStatistic(statisticType, statisticsView);
     }
-
-
 }
