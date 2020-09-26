@@ -18,14 +18,14 @@
 package com.karankumar.bookproject.backend.goal;
 
 import com.karankumar.bookproject.backend.utils.DateUtils;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFarAheadOrBehindSchedule;
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.calculateProgressTowardsReadingGoal;
+import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFarAheadOrBehindSchedule;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CalculateReadingGoalTest {
@@ -65,8 +65,12 @@ class CalculateReadingGoalTest {
         int toRead = 5;
         int read = 0;
 
-        assertThatCode(() -> calculateProgressTowardsReadingGoal(toRead, read)).doesNotThrowAnyException();
-        assertThat(calculateProgressTowardsReadingGoal(toRead, read)).isZero();
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThatCode(() ->
+                calculateProgressTowardsReadingGoal(toRead, read)
+        ).doesNotThrowAnyException();
+        softly.assertThat(calculateProgressTowardsReadingGoal(toRead, read)).isZero();
+        softly.assertAll();
     }
 
     // TODO: refactor this method to test for two boundary cases and one normal case
