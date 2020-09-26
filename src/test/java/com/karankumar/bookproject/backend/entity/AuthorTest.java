@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @IntegrationTest
 class AuthorTest {
@@ -93,7 +94,9 @@ class AuthorTest {
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.delete(book);
 
-        assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId()));
-        assertTrue(authorService.findAll().isEmpty());
+        assertAll(
+                () -> assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId())),
+                () -> assertTrue(authorService.findAll().isEmpty())
+        );
     }
 }
