@@ -63,7 +63,6 @@ import static com.karankumar.bookproject.ui.book.BookFormErrors.MAX_PAGES_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -601,11 +600,11 @@ class BookFormTest {
 
         // then
         List<Book> booksInDatabase = bookService.findAll();
-        assertAll(
-                () -> assertEquals(2, bookService.count()),
-                () -> assertEquals(bookTitle, booksInDatabase.get(0).getTitle()),
-                () -> assertEquals("someOtherBook", booksInDatabase.get(1).getTitle())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(bookService.count()).isEqualTo(2);
+            softly.assertThat(booksInDatabase.get(0).getTitle()).isEqualTo(bookTitle);
+            softly.assertThat(booksInDatabase.get(1).getTitle()).isEqualTo("someOtherBook");
+        });
     }
 
     @Test
@@ -630,19 +629,18 @@ class BookFormTest {
         bookForm.saveButton.click();
 
         // then
-        assertThat(bookService.count()).isOne();
-
         Book updatedBook = bookService.findAll().get(0);
-        assertAll(
-                () -> assertEquals(newTitle, updatedBook.getTitle()),
-                () -> assertEquals(READ, updatedBook.getPredefinedShelf().getPredefinedShelfName()),
-                () -> assertEquals(newAuthor.getFirstName(),
-                        updatedBook.getAuthor().getFirstName()),
-                () -> assertEquals(newAuthor.getLastName(), updatedBook.getAuthor().getLastName()),
-                () -> assertEquals(newBookGenre, updatedBook.getBookGenre()),
-                () -> assertEquals(dateStarted, updatedBook.getDateStartedReading()),
-                () -> assertEquals(dateFinished, updatedBook.getDateFinishedReading())
-        );
+
+        assertSoftly(softly -> {
+            softly.assertThat(bookService.count()).isOne();
+            softly.assertThat(newTitle).isEqualTo(updatedBook.getTitle());
+            softly.assertThat(READ).isEqualTo(updatedBook.getPredefinedShelf().getPredefinedShelfName());
+            softly.assertThat((newAuthor.getFirstName())).isEqualTo(updatedBook.getAuthor().getFirstName());
+            softly.assertThat(newAuthor.getLastName()).isEqualTo(updatedBook.getAuthor().getLastName());
+            softly.assertThat(newBookGenre).isEqualTo(updatedBook.getBookGenre());
+            softly.assertThat(dateStarted).isEqualTo(updatedBook.getDateStartedReading());
+            softly.assertThat(dateFinished).isEqualTo(updatedBook.getDateFinishedReading());
+        });
     }
 
     private static Stream<Arguments> shelfCombinations() {
@@ -715,25 +713,28 @@ class BookFormTest {
     private void testBookAttributesPresentForAllShelves(PredefinedShelf.ShelfName shelfName,
                                                         Book book) {
         assertAll(
-                () -> assertEquals(bookTitle, book.getTitle()),
-                () -> assertEquals(shelfName, book.getPredefinedShelf().getPredefinedShelfName()),
-                () -> assertEquals(firstName, book.getAuthor().getFirstName()),
-                () -> assertEquals(lastName, book.getAuthor().getLastName()),
-                () -> assertEquals(BOOK_GENRE, book.getBookGenre()),
-                () -> assertEquals(numberOfPages, book.getNumberOfPages())
         );
+
+        assertSoftly(softly -> {
+            softly.assertThat(book.getTitle()).isEqualTo(bookTitle);
+            softly.assertThat(shelfName).isEqualTo(book.getPredefinedShelf().getPredefinedShelfName());
+            softly.assertThat(firstName).isEqualTo(book.getAuthor().getFirstName());
+            softly.assertThat(lastName).isEqualTo(book.getAuthor().getLastName());
+            softly.assertThat(BOOK_GENRE).isEqualTo(book.getBookGenre());
+            softly.assertThat(numberOfPages).isEqualTo(book.getNumberOfPages());
+        });
     }
 
     private void assertStateSpecificFields(Book book, LocalDate dateStarted, LocalDate dateFinished,
                                            RatingScale rating, String bookReview,
                                            Integer pagesRead) {
-        assertAll(
-                () -> assertEquals(dateStarted, book.getDateStartedReading()),
-                () -> assertEquals(dateFinished, book.getDateFinishedReading()),
-                () -> assertEquals(rating, book.getRating()),
-                () -> assertEquals(bookReview, book.getBookReview()),
-                () -> assertEquals(pagesRead, book.getPagesRead())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(book.getDateStartedReading()).isEqualTo(dateStarted);
+            softly.assertThat(dateFinished).isEqualTo(book.getDateFinishedReading());
+            softly.assertThat(rating).isEqualTo(book.getRating());
+            softly.assertThat(bookReview).isEqualTo(book.getBookReview());
+            softly.assertThat(pagesRead).isEqualTo(book.getPagesRead());
+        });
     }
 
     /**
