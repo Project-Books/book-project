@@ -80,6 +80,16 @@ For every patch (i.e. pull request) you make, please ensure it solves one proble
 
 This makes it easier to keep track of what changes were made in what branch or pull request when looking back. Additionally, it makes code reviews go a lot quicker and smoother.
 
+### Squashing commits
+
+If you need to fix a small issue (e.g. fixing typos), address review feedback or fix a failing build, please squash your commits. This can be done using an interactive rebase:
+```
+$ git rebase -i HEAD~n
+```
+where _n_ represents the number of last commits.
+
+You can then change the commit that you want to squash with the previous by changing the word 'pick' to 'squash'. When pushing the changes, you'll need to force push (e.g. `git push -f origin add-avatar`).
+
 ## Code contributions
 
 Please adhere to [our code style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
