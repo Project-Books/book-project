@@ -22,9 +22,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFarAheadOrBehindSchedule;
+import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.calculateProgressTowardsReadingGoal;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CalculateReadingGoalTest {
     private final int BOOKS_TO_READ = 52;
@@ -34,29 +36,27 @@ class CalculateReadingGoalTest {
         int toRead = 25;
         int read = 5;
         double expected = 0.2;
-        double actual = CalculateReadingGoal.calculateProgressTowardsReadingGoal(toRead, read);
+        double actual = calculateProgressTowardsReadingGoal(toRead, read);
         assertEquals(expected, actual);
     }
 
     @Test
     void testProgressValueIsCorrectWhenGoalMet() {
         double expected = 1.0;
-        double actual = CalculateReadingGoal
-                .calculateProgressTowardsReadingGoal(BOOKS_TO_READ, BOOKS_TO_READ);
+        double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, BOOKS_TO_READ);
         assertEquals(expected, actual);
     }
 
     @Test
     void testProgressIsCorrectWhenGoalExceeded() {
         double expected = 1.0;
-        double actual = CalculateReadingGoal
-                .calculateProgressTowardsReadingGoal(BOOKS_TO_READ, (BOOKS_TO_READ + 1));
+        double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, (BOOKS_TO_READ + 1));
         assertEquals(expected, actual);
     }
 
     @Test
     void testNoProgressMadeTowardsGoal() {
-        assertThat(CalculateReadingGoal.calculateProgressTowardsReadingGoal(5, 0)).isZero();
+        assertThat(calculateProgressTowardsReadingGoal(5, 0)).isZero();
     }
 
     @Test
@@ -64,10 +64,9 @@ class CalculateReadingGoalTest {
     void testCalculateProgressTowardsReadingGoalDivideByZero() {
         int toRead = 5;
         int read = 0;
-        assertDoesNotThrow(() ->
-                CalculateReadingGoal.calculateProgressTowardsReadingGoal(toRead, read)
-        );
-        assertThat(CalculateReadingGoal.calculateProgressTowardsReadingGoal(toRead, read)).isZero();
+
+        assertThatCode(() -> calculateProgressTowardsReadingGoal(toRead, read)).doesNotThrowAnyException();
+        assertThat(calculateProgressTowardsReadingGoal(toRead, read)).isZero();
     }
 
     // TODO: refactor this method to test for two boundary cases and one normal case
@@ -76,36 +75,25 @@ class CalculateReadingGoalTest {
         Mockito.mockStatic(DateUtils.class);
 
         Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
-        assertThat(CalculateReadingGoal.howFarAheadOrBehindSchedule(52, 1)).isZero();
-        assertThat(CalculateReadingGoal.howFarAheadOrBehindSchedule(52,0)).isOne();
-        assertEquals(9,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(52,10));
-        assertEquals(9,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(199,12));
-        assertEquals(2,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(199,5));
+        assertThat(howFarAheadOrBehindSchedule(52, 1)).isZero();
+        assertThat(howFarAheadOrBehindSchedule(52,0)).isOne();
+        assertEquals(9, howFarAheadOrBehindSchedule(52,10));
+        assertEquals(9, howFarAheadOrBehindSchedule(199,12));
+        assertEquals(2, howFarAheadOrBehindSchedule(199,5));
 
         Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(15);
-        assertEquals(12,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(52,3));
-        assertEquals(9,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(52,24));
-        assertEquals(5,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(52,20));
+        assertEquals(12, howFarAheadOrBehindSchedule(52,3));
+        assertEquals(9, howFarAheadOrBehindSchedule(52,24));
+        assertEquals(5, howFarAheadOrBehindSchedule(52,20));
 
         Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(10);
-        assertEquals(20,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(199,50));
-        assertEquals(22,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(199,8));
-        assertEquals(70,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(199,100));
+        assertEquals(20, howFarAheadOrBehindSchedule(199,50));
+        assertEquals(22, howFarAheadOrBehindSchedule(199,8));
+        assertEquals(70, howFarAheadOrBehindSchedule(199,100));
 
         Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(43);
-        assertEquals(7,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(113,79));
-        assertEquals(45,
-                CalculateReadingGoal.howFarAheadOrBehindSchedule(113,41));
-        assertThat(CalculateReadingGoal.howFarAheadOrBehindSchedule(113,86)).isZero();
+        assertEquals(7, howFarAheadOrBehindSchedule(113,79));
+        assertEquals(45, howFarAheadOrBehindSchedule(113,41));
+        assertThat(howFarAheadOrBehindSchedule(113,86)).isZero();
     }
 }
