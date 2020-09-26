@@ -26,7 +26,6 @@ import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

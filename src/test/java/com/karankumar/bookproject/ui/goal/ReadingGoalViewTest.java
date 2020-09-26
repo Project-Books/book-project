@@ -33,8 +33,11 @@ import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -45,14 +48,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+import static com.karankumar.bookproject.backend.utils.DateUtils.dateIsInCurrentYear;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
-import static com.karankumar.bookproject.backend.utils.DateUtils.dateIsInCurrentYear;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -135,28 +137,29 @@ class ReadingGoalViewTest {
     }
 
     @Test
+    @Disabled
+    // TODO: fix failing test. This runs fine in IntelliJ, but fails when `mvn clean install` is executed on Windows
     void onlyReadBooksWithAFinishDateCountTowardsGoal() {
-        // TODO: fix failing test. This runs fine in IntelliJ, but fails when `mvn clean install` is executed on Windows
-//        int numberOfShelves = predefinedShelfService.findAll().size();
-//        Assumptions.assumeTrue(numberOfShelves == 4);
-//        Assumptions.assumeFalse(bookService == null);
-//
-//        resetBookService(bookService);
-//        Assumptions.assumeTrue(bookService.findAll().isEmpty());
-//
-//        addBooksToAllShelves(numberOfShelves);
-//
-//        List<Book> allBooks = bookService.findAll();
-//        int booksInReadShelf = findHowManyBooksInReadShelfWithFinishDate(allBooks);
-//        int pagesReadInReadShelf = findHowManyPagesInReadShelfWithFinishDate(allBooks);
-//        System.out.println("Pages read " + pagesReadInReadShelf);
-//
-//        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
-//        Assumptions.assumeTrue(readShelf != null);
-//        Assertions.assertEquals(booksInReadShelf,
-//                CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
-//        Assertions.assertEquals(pagesReadInReadShelf,
-//                CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
+        int numberOfShelves = predefinedShelfService.findAll().size();
+        Assumptions.assumeTrue(numberOfShelves == 4);
+        Assumptions.assumeFalse(bookService == null);
+
+        resetBookService(bookService);
+        Assumptions.assumeTrue(bookService.findAll().isEmpty());
+
+        addBooksToAllShelves(numberOfShelves);
+
+        List<Book> allBooks = bookService.findAll();
+        int booksInReadShelf = findHowManyBooksInReadShelfWithFinishDate(allBooks);
+        int pagesReadInReadShelf = findHowManyPagesInReadShelfWithFinishDate(allBooks);
+        System.out.println("Pages read " + pagesReadInReadShelf);
+
+        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
+        Assumptions.assumeTrue(readShelf != null);
+        Assertions.assertEquals(booksInReadShelf,
+                CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.BOOKS, readShelf));
+        Assertions.assertEquals(pagesReadInReadShelf,
+                CalculateReadingGoal.howManyReadThisYear(ReadingGoal.GoalType.PAGES, readShelf));
     }
 
     private void addBooksToAllShelves(int numberOfShelves) {
