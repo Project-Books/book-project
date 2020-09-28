@@ -511,13 +511,45 @@ public String toString() {
 
 Wherever possible, try to keep methods short (under 15 lines). This makes it easier to test, comprehend and reuse.
 
-### JUnit
+## JUnit
 
-#### Fewest number of assertions in every test
+### Given/when/then pattern
+The pattern we follow for JUnit tests are given/when/then. For example, given some input some setup, when an action occurs, then assert as desired. Concrete example:
 
-In every test method, try to minimise the number of assertions. Generally speaking, ideally, there should only be one.
+```java
+    @Test
+    void errorShownWhenEmailInUse() {
+        // given
+        userRepository.save(VALID_TEST_USER);
+        EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
-#### Avoid randomness
+        // when
+        _setValue(emailField, VALID_TEST_USER.getEmail());
+
+        // then
+        assertThat(emailField.getErrorMessage()).isNotBlank();
+    }
+```
+
+In general, we add comments to separate out the given, when and then sections. We find that this greatly improves readability.
+
+### Fewest number of assertions in every test
+
+In every test method, try to minimise the number of assertions. Ideally, there should only be one.
+
+### Assert all for multiple assertions
+
+If a test method needs multiple assertions, `assertAll()` (or `assertSoftly()`) should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
+
+### Disabling failing tests
+
+Instead of commenting out tests, we use the `@Disable` annotation. Please note that if a test fails, you are generally expected to fix it. This should be used as a last resort if you are unable to fix the failing test.
+
+### Using DisplayName
+
+Where it would add value, a `@DisplayName` annotation should be used. For example, you could replace a Javadoc comment with a display name. This is also useful if the method name is concise but not comprehensive. Adding a display name should be used where it serves as useful documentation.
+
+### Avoid randomness
 
 While it may seem better to use pseudorandom bounded values so that you can test more cases, it rarely improves coverage. It's better to use fixed input data with well-defined edge cases.
 
