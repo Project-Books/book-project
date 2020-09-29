@@ -42,10 +42,10 @@ import java.util.stream.Stream;
 @Log
 public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
-    private BookRepository bookRepository;
-    private PredefinedShelfRepository predefinedShelfRepository;
-    private AuthorRepository authorRepository;
-    private TagRepository tagRepository;
+    private final BookRepository bookRepository;
+    private final PredefinedShelfRepository predefinedShelfRepository;
+    private final AuthorRepository authorRepository;
+    private final TagRepository tagRepository;
 
     public PredefinedShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
             PredefinedShelfRepository shelfRepository, TagRepository tagRepository) {
