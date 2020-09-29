@@ -511,6 +511,10 @@ public String toString() {
 
 Wherever possible, try to keep methods short (under 15 lines). This makes it easier to test, comprehend and reuse.
 
+### TODOs
+
+TODO comments are acceptable and encouraged if they are useful. However, we ask that if you create a TODO, please also create a new corresponding issue.
+
 ## JUnit
 
 ### Given/when/then pattern
@@ -552,10 +556,6 @@ Where it would add value, a `@DisplayName` annotation should be used. For exampl
 ### Avoid randomness
 
 While it may seem better to use pseudorandom bounded values so that you can test more cases, it rarely improves coverage. It's better to use fixed input data with well-defined edge cases.
-
-### TODOs
-
-TODO comments are acceptable and encouraged if they are useful. However, we ask that if you create a TODO, please also create a new corresponding issue.
 
 ## Recommended reading
 
