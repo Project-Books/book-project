@@ -32,7 +32,6 @@ import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -165,7 +164,7 @@ class BookServiceTest {
     }
 
     @Test
-    @Disabled("Book with author and predefined shelf can be saved")
+    @DisplayName("Book with author and predefined shelf can be saved")
     void validBookSaved() {
         SoftAssertions softly = new SoftAssertions();
 
