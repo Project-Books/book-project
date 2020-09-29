@@ -515,6 +515,10 @@ Wherever possible, try to keep methods short (under 15 lines). This makes it eas
 
 TODO comments are acceptable and encouraged if they are useful. However, we ask that if you create a TODO, please also create a new corresponding issue.
 
+### Prefer Optional over null
+
+`Optional` provides useful semantics that something may be `null`. If you need to use `null`s, consider using `Optional`s instead.
+
 ## JUnit
 
 ### Given/when/then pattern
