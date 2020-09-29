@@ -301,6 +301,11 @@ This section is to do with implementation comments, not Javadoc.
 
 Comments should not be decorated with asterisks or any other characters.
 
+#### Do you need the comment?
+
+Only add comments where they add value. Comments should be used as a last resort. We prefer to make code readable by making the code trivial such that
+having a comment is redundant. Alternatively,  we prefer to extract code into a method with a descriptive method name such that the method name makes the comment redundant.
+
 ### Modifiers
 
 Where applicable, class and member modifiers should appear in the following order, as recommended by the Java Language Specification:
