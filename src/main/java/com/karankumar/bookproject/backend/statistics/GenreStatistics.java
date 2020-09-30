@@ -24,7 +24,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class GenreStatistics extends Statistics {
      * If no such genre exists, null is returned
      */
     public BookGenre findMostReadGenre() {
-        HashMap<BookGenre, Integer> genresReadCount = countGenreReadOccurrences();
+        EnumMap<BookGenre, Integer> genresReadCount = countGenreReadOccurrences();
         BookGenre mostReadBookGenre = null;
         for (BookGenre bookGenre : genresReadCount.keySet()) {
             int genreCount = genresReadCount.get(bookGenre);
@@ -54,21 +54,21 @@ public class GenreStatistics extends Statistics {
     }
 
     private boolean isGenreTheMostRead(int genreReadCount, BookGenre mostReadGenre,
-                                       HashMap<BookGenre, Integer> genresReadCount) {
+                                       EnumMap<BookGenre, Integer> genresReadCount) {
         return genreReadCount != 0 &&
                 (mostReadGenre == null || genresReadCount.get(mostReadGenre) < genreReadCount);
     }
 
-    private HashMap<BookGenre, Integer> populateEmptyGenreCount() {
-        HashMap<BookGenre, Integer> genreMap = new HashMap<>();
+    private EnumMap<BookGenre, Integer> populateEmptyGenreCount() {
+        EnumMap<BookGenre, Integer> genreMap = new EnumMap<>(BookGenre.class);
         for (BookGenre bookGenre : BookGenre.values()) {
             genreMap.put(bookGenre, 0);
         }
         return genreMap;
     }
 
-    private HashMap<BookGenre, Integer> countGenreReadOccurrences() {
-        HashMap<BookGenre, Integer> genresReadCount = populateEmptyGenreCount();
+    private EnumMap<BookGenre, Integer> countGenreReadOccurrences() {
+        EnumMap<BookGenre, Integer> genresReadCount = populateEmptyGenreCount();
         for (BookGenre bookGenre : genresReadCount.keySet()) {
             genresReadCount.replace(bookGenre, Collections.frequency(genresRead(), bookGenre));
         }
@@ -118,7 +118,7 @@ public class GenreStatistics extends Statistics {
 
     private Map<BookGenre, Double> populateEmptyGenreRatings() {
         // we only want genres in this map that exist in the read books shelf
-        Map<BookGenre, Double> genreMap = new HashMap<>();
+        Map<BookGenre, Double> genreMap = new EnumMap<>(BookGenre.class);
         for (Book book : readBooksWithGenresAndRatings) {
             genreMap.put(book.getBookGenre(), 0.0);
         }
