@@ -47,6 +47,8 @@ public class DateUtils {
 
     @VisibleForTesting
     static class TimeUtils {
+        private TimeUtils() {}
+
         static LocalDateTime now() {
             return LocalDateTime.now();
         }
