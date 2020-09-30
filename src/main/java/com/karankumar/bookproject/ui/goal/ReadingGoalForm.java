@@ -167,7 +167,7 @@ public class ReadingGoalForm extends VerticalLayout {
      * is fired
      */
     public static abstract class GoalFormEvent extends ComponentEvent<ReadingGoalForm> {
-        private ReadingGoal readingGoal;
+        private final ReadingGoal readingGoal;
 
         protected GoalFormEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
             super(source, false);
