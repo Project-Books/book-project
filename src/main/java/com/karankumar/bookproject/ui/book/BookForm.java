@@ -747,7 +747,7 @@ public class BookForm extends VerticalLayout {
     }
 
     public static abstract class BookFormEvent extends ComponentEvent<BookForm> {
-        private Book book;
+        private final Book book;
 
         protected BookFormEvent(BookForm source, Book book) {
             super(source, false);
