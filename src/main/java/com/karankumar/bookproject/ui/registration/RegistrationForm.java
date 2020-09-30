@@ -56,7 +56,7 @@ public class RegistrationForm extends FormLayout {
     private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
     private final Button registerButton = new Button("Register");
 
-    private static final int NUMBER_OF_PASSWORD_STRENGTH_INDICATORS = 5;
+    private static final int NUMBER_OF_PASSWORD_STRENGTH_INDICATORS = PasswordStrength.values().length;
     private static final String BLANK_PASSWORD_MESSAGE = "Password is blank";
     private final Span errorMessage = new Span();
 
