@@ -53,7 +53,7 @@ public class ReadingGoalView extends VerticalLayout {
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
 
-    private ReadingGoalService goalService;
+    private final ReadingGoalService goalService;
 
     @VisibleForTesting H1 readingGoalSummary;
     @VisibleForTesting H3 goalProgress;
