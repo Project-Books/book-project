@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -66,6 +67,21 @@ class TagServiceTest {
         // then
         assertThatThrownBy(() -> tagService.findById(tagId)).isInstanceOf(
                 JpaObjectRetrievalFailureException.class);
+    }
+
+    @Test
+    void findAllSavedTags() {
+        // given
+        Tag tag1 = new Tag("favourites");
+        Tag tag2 = new Tag("dystopian");
+        tagService.save(tag1);
+        tagService.save(tag2);
+
+        // when
+        List<Tag> allTags = tagService.findAll();
+
+        // then
+        assertThat(allTags).contains(tag1, tag2);
     }
 
     @AfterEach
