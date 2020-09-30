@@ -6,8 +6,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+
+import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
@@ -45,6 +49,23 @@ class TagServiceTest {
 
         // then
         assertThat(tagService.count()).isZero();
+    }
+
+    @Test
+    @Transactional
+    void deleteExistingTag() {
+        // given
+        Tag tag = new Tag("dystopian");
+        tagService.save(tag);
+
+        Long tagId = tag.getId();
+
+        // when
+        tagService.delete(tag);
+
+        // then
+        assertThatThrownBy(() -> tagService.findById(tagId)).isInstanceOf(
+                JpaObjectRetrievalFailureException.class);
     }
 
     @AfterEach

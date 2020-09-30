@@ -15,7 +15,6 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.karankumar.bookproject.backend.goal;
 
 import com.karankumar.bookproject.backend.entity.Book;
