@@ -54,10 +54,9 @@ public class RegistrationForm extends FormLayout {
     private final EmailField emailField = new EmailField("Email Address");
     private final PasswordField passwordField = new PasswordField("Password");
     private final ProgressBar passwordStrengthMeter = new ProgressBar();
-    private final String blankPasswordMessage = "Password is blank";
-    private final Text passwordStrengthDescriptor = new Text(blankPasswordMessage);
+    private static final String BLANK_PASSWORD_MESSAGE = "Password is blank";
+    private final Text passwordStrengthDescriptor = new Text(BLANK_PASSWORD_MESSAGE);
     private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
-    private final Button registerButton = new Button("Register");
     private final Span errorMessage = new Span();
 
     // Flag for disabling first run for password validation
@@ -80,6 +79,7 @@ public class RegistrationForm extends FormLayout {
 
         errorMessage.setId("error-message");
 
+        Button registerButton = new Button("Register");
         registerButton.setId("register");
         registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         registerButton.addClickListener(buttonClickEvent -> {
@@ -108,7 +108,7 @@ public class RegistrationForm extends FormLayout {
             int passwordScore = new Zxcvbn().measure(passwordField.getValue()).getScore();
             passwordStrengthMeter.setValue((passwordScore + 1) / 5.0);
             if(passwordField.isEmpty()) {
-        	passwordStrengthDescriptor.setText(blankPasswordMessage);
+        	passwordStrengthDescriptor.setText(BLANK_PASSWORD_MESSAGE);
         	passwordStrengthMeter.setValue(0);
             } else {
         	setPasswordStrengthMeterColor(passwordScore);
@@ -181,7 +181,7 @@ public class RegistrationForm extends FormLayout {
     }
     
     private void setPasswordStrengthMeterColor(int passwordScore) {
-	switch(passwordScore){
+	switch(passwordScore) {
         case 0:
             passwordStrengthMeter.setClassName("weak-indicator");
             break;
