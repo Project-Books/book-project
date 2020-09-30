@@ -83,13 +83,14 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
     @Override
     public void delete(PredefinedShelf shelf) {
-        predefinedShelfRepository.delete(shelf);
+        // Don't want to delete a predefined shelf
+        LOGGER.severe("delete() should not be called");
     }
 
     @Override
     public void deleteAll() {
         // Don't want to delete the predefined shelves
-        LOGGER.log(Level.INFO, "deleteAll() should not be called");
+        LOGGER.severe("deleteAll() should not be called");
     }
 
     @PostConstruct
