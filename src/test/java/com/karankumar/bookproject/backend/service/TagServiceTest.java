@@ -1,30 +1,58 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.Tag;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
 @DisplayName("TagService should")
 class TagServiceTest {
     private final TagService tagService;
 
-    TagServiceTest(@Autowired TagService tagService) {
+    TagServiceTest(@Autowired BookService bookService, @Autowired TagService tagService) {
+        // Tags can only be deleted if it does not belong to a book, hence why the bookService needs
+        // to be reset
+        bookService.deleteAll();
+        tagService.deleteAll();
         this.tagService = tagService;
+    }
+
+    @Test
+    void saveAValidTag() {
+        // given
+        Tag tag = new Tag("dystopian");
+
+        // when
+        tagService.save(tag);
+
+        // then
+        assertThat(tagService.findById(tag.getId())).isNotNull();
     }
 
     @Test
     void notSaveANullTag() {
         // given
-        int initialSize = tagService.findAll().size();
+        assumeThat(tagService.count()).isZero();
 
         // when
         tagService.save(null);
 
         // then
-        assertThat(tagService.findAll()).hasSize(initialSize);
+        assertThat(tagService.count()).isZero();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        resetTagService();
+    }
+
+    private void resetTagService() {
+        tagService.deleteAll();
     }
 }
