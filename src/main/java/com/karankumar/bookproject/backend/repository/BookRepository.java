@@ -30,6 +30,7 @@ import java.util.Set;
 public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select b from Book b " + "where lower(b.title) like lower(concat('%', :filterText, '%'))")
     List<Book> search(@Param("filterText") String filterText);
-    
+
+    // TODO: implement
     Set<Book> findByAuthor(Author author);
 }
