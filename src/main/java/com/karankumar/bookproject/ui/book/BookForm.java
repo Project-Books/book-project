@@ -746,7 +746,7 @@ public class BookForm extends VerticalLayout {
         return getEventBus().addListener(eventType, listener);
     }
 
-    public static abstract class BookFormEvent extends ComponentEvent<BookForm> {
+    public abstract static class BookFormEvent extends ComponentEvent<BookForm> {
         private final Book book;
 
         protected BookFormEvent(BookForm source, Book book) {
