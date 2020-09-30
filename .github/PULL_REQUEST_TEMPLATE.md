@@ -8,7 +8,7 @@
 
 ## Related issue
 
-Closes issue #[issue number]
+Closes #[issue number]
 
 ## Pull request checklist
 
