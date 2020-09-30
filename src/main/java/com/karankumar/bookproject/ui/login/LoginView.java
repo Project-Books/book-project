@@ -32,7 +32,7 @@ import java.util.Collections;
 @PageTitle("Login | Book Project")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
-    private LoginForm loginForm = new LoginForm();
+    private final LoginForm loginForm = new LoginForm();
 
     public LoginView() {
         addClassName("login-view");

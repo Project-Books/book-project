@@ -524,6 +524,10 @@ TODO comments are acceptable and encouraged if they are useful. However, we ask 
 
 `Optional` provides useful semantics that something may be `null`. If you need to use `null`s, consider using `Optional`s instead.
 
+### Favor EnumMap over HashMap
+
+For enums, favor `EnumMap` over `HashMap` for [performance reasons](https://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html).
+
 ## JUnit
 
 ### Given/when/then pattern
