@@ -166,7 +166,7 @@ public class ReadingGoalForm extends VerticalLayout {
      * Vaadin's event bus system. A registered listener can be notified when a save or delete event
      * is fired
      */
-    public static abstract class GoalFormEvent extends ComponentEvent<ReadingGoalForm> {
+    public abstract static class GoalFormEvent extends ComponentEvent<ReadingGoalForm> {
         private final ReadingGoal readingGoal;
 
         protected GoalFormEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
