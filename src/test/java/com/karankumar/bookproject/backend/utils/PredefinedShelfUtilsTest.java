@@ -17,6 +17,11 @@
 
 package com.karankumar.bookproject.backend.utils;
 
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPredefinedShelf;
 import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,8 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.karankumar.bookproject.backend.service.BookService;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,14 +43,10 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
-import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPredefinedShelf;
 
 @IntegrationTest
 class PredefinedShelfUtilsTest {
@@ -237,5 +239,13 @@ class PredefinedShelfUtilsTest {
         PredefinedShelf.ShelfName actualShelf =
                 predefinedShelfUtils.getPredefinedShelfName(shelfName);
         assertEquals(expectedShelf, actualShelf);
+    }
+    
+    @Test
+    void testGetPredefinedShelfNamesAsStrings() {
+    	List<String> actualShelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
+    	List<String> expectedShelfNames = Stream.of(ShelfName.values()).map(Enum::toString).collect(Collectors.toList());
+    	assertEquals(expectedShelfNames.size(), actualShelfNames.size());
+    	assertTrue(expectedShelfNames.containsAll(actualShelfNames));
     }
 }
