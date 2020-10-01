@@ -26,7 +26,7 @@ import java.util.logging.Level;
 
 @Log
 public enum RatingScale {
-    NO_RATING("No rating", null),
+    NO_RATING("No", null),
     ZERO("0/10", 0.0),
     ZERO_POINT_FIVE("0.5/10", 0.5),
     ONE("1/10", 1.0),
