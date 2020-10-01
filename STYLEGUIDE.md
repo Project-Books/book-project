@@ -88,7 +88,7 @@ IDE-specific code style files have been exported and can be imported into your I
 ### IntelliJ
 
 <p align="center">
-  <img src="/media/styleguide/intellij_code_style.png" alt="Import IntelliJ code style file"/>
+  <img src="/media/docs/styleguide/intellij_code_style.png" alt="Import IntelliJ code style file"/>
 </p>
 
 For IntelliJ, you can use import the [code style file](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml).
@@ -98,7 +98,7 @@ Import Scheme > IntelliJ IDEA code style XML.
 ### Eclipse
 
 <p align="center">
-  <img src="/media/styleguide/eclipse_code_style.png" alt="Import Eclipse code style file"/>
+  <img src="/media/docs/styleguide/eclipse_code_style.png" alt="Import Eclipse code style file"/>
 </p>
 
 If you use Eclipse, you can import the formatter file by going to Window > Preferences > Java > Code Style > Formatter
@@ -528,7 +528,11 @@ TODO comments are acceptable and encouraged if they are useful. However, we ask 
 
 For enums, favor `EnumMap` over `HashMap` for [performance reasons](https://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html).
 
-## JUnit
+## JUnit tests
+
+### Use AssertJ
+
+For assertions and assumptions, we're using AssertJ. We find this to be more readable (it flows nicer as it reads like a sentence) and it's easier to have a consistent team style.
 
 ### Given/when/then pattern
 The pattern we follow for JUnit tests are given/when/then. For example, given some input some setup, when an action occurs, then assert as desired. Concrete example:
@@ -556,7 +560,7 @@ In every test method, try to minimise the number of assertions. Ideally, there s
 
 ### Assert all for multiple assertions
 
-If a test method needs multiple assertions, `assertAll()` (or `assertSoftly()`) should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
+If a test method needs multiple assertions, `assertSoftly()` should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
 
 ### Disabling failing tests
 
@@ -564,7 +568,11 @@ Instead of commenting out tests, we use the `@Disable` annotation. Please note t
 
 ### Using DisplayName
 
-Where it would add value, a `@DisplayName` annotation should be used. For example, you could replace a Javadoc comment with a display name. This is also useful if the method name is concise but not comprehensive. Adding a display name should be used where it serves as useful documentation.
+All test classes should be annotated with a `@DisplayName`. For example, the test class `TagServiceTest` should
+be annotated with the display name `TagService should`. We find this greatly improves readability as the method
+names can be read like a sentence (e.g. `TagService should` `findAllTags()` or `deleteExistingTag()`).
+
+A `@DisplayName` annotation should be used at a method level where it adds value. For example, you could replace a Javadoc comment with a display name. This is also useful if the method name is concise but not comprehensive. Adding a display name should be used where it serves as useful documentation.
 
 ### Avoid randomness
 
