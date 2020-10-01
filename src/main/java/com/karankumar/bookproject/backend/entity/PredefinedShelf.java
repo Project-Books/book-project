@@ -41,7 +41,7 @@ import java.util.Optional;
 public class PredefinedShelf extends Shelf {
     // This field must not have a setter as it should not be possible to rename a PredefinedShelf
     @Getter
-    private Optional<ShelfName> predefinedShelfName = Optional.ofNullable(null);
+    private ShelfName predefinedShelfName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "predefinedShelf")
     @Getter

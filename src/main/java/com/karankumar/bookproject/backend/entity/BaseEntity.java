@@ -31,7 +31,7 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Getter
-    private Optional<Long> id = Optional.ofNullable(null);
+    private Long id;
 
     /**
      * To be used sparingly and cautiously.
