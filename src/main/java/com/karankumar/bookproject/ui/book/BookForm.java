@@ -355,8 +355,8 @@ public class BookForm extends VerticalLayout {
     }
 
     private void setBookBean() {
-        Book book = populateBookBean();
-        if (book != null) {
+        Optional<Book> book = populateBookBean();
+        if (book.isPresent()) {
             binder.setBean(book);
         }
 
@@ -372,11 +372,11 @@ public class BookForm extends VerticalLayout {
         closeForm();
     }
 
-    private Book populateBookBean() {
+    private Optional<Book> populateBookBean() {
         String title;
         if (bookTitle.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
-            return Optional.ofNullable(null);
+            return Optional.empty();
         } else {
             title = bookTitle.getValue();
         }
@@ -387,13 +387,13 @@ public class BookForm extends VerticalLayout {
             firstName = authorFirstName.getValue();
         } else {
             LOGGER.log(Level.SEVERE, "Null first name");
-            return Optional.ofNullable(null);
+            return Optional.empty();
         }
         if (authorLastName.getValue() != null) {
             lastName = authorLastName.getValue();
         } else {
             LOGGER.log(Level.SEVERE, "Null last name");
-            return Optional.ofNullable(null);
+            return Optional.empty();
         }
         Author author = new Author(firstName, lastName);
 
@@ -405,7 +405,7 @@ public class BookForm extends VerticalLayout {
                     predefinedShelfUtils.findPredefinedShelf(predefinedShelfField.getValue());
         } else {
             LOGGER.log(Level.SEVERE, "Null shelf");
-            return Optional.ofNullable(null);
+            return Optional.empty();
         }
         Book book = new Book(title, author, predefinedShelf);
 

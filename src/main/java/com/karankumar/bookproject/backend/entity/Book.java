@@ -55,7 +55,7 @@ public class Book extends BaseEntity {
     private Integer pagesRead;
     private BookGenre bookGenre;
     private Integer seriesPosition;
-    private Optional<String> edition = Optional.ofNullable(null);
+    private String edition;
     private String bookRecommendedBy;
 
     @ManyToOne(cascade =
@@ -101,26 +101,25 @@ public class Book extends BaseEntity {
     }
     
     public void setEdition(Integer edition) {
-        if (edition.isEmpty()) {
-            return;
+        if (edition != null) {
+            String bookEdition = "";
+            int lastDigit = edition % 10;
+            switch (lastDigit) {
+                case 1:
+                    bookEdition = edition + "st edition";
+                    break;
+                case 2:
+                    bookEdition = edition + "nd edition";
+                    break;
+                case 3:
+                    bookEdition = edition + "rd edition";
+                    break;
+                default:
+                    bookEdition = edition + "th edition";
+                    break;
+            }
+            this.edition = bookEdition;
         }
-        String bookEdition = "";
-        int lastDigit = edition % 10;
-        switch (lastDigit) {
-            case 1:
-                bookEdition = edition + "st edition";
-                break;
-            case 2:
-                bookEdition = edition + "nd edition";
-                break;
-            case 3:
-                bookEdition = edition + "rd edition";
-                break;
-            default:
-                bookEdition = edition + "th edition";
-                break;
-        }
-        this.edition = bookEdition;
     }
 
     @Override
