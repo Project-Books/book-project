@@ -43,4 +43,18 @@ class ReadingGoalServiceTest {
         ReadingGoal actual = goalService.findAll().get(0);
         assertThat(newReadingGoal).isEqualToComparingFieldByField(actual);
     }
+
+    @Test
+    void expectDeleteExistingGoal(@NotNull @Autowired ReadingGoalService goalService) {
+        // given
+        ReadingGoal existingReadingGoal = new ReadingGoal(20, ReadingGoal.GoalType.BOOKS);
+        goalService.save(existingReadingGoal);
+        assertThat(goalService.count()).isOne();
+
+        // when
+        goalService.delete(existingReadingGoal);
+
+        // then (check that the deletion removed the existingReadingGoal)
+        assertThat(goalService.count()).isZero();
+    }
 }
