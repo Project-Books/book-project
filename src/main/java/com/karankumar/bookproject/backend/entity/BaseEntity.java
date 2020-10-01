@@ -30,14 +30,8 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Getter
-    private Long id;
+    private Long id = null;
 
-    /**
-     * To be used sparingly and cautiously.
-     */
-    public void removeId() {
-        id = null;
-    }
 
     @Override
     public boolean equals(Object o) {
