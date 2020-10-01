@@ -24,13 +24,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
+import java.util.Optional;
 
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Getter
-    private Long id;
+    private Optional<Long> id = Optional.ofNullable(null);
 
     /**
      * To be used sparingly and cautiously.
@@ -55,6 +56,9 @@ public abstract class BaseEntity {
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        if (id.isEmpty())
+            return id.hashCode();
+        else
+            return 0;
     }
 }

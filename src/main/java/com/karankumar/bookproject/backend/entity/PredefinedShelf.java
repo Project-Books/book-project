@@ -29,6 +29,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.Set;
+import java.util.Optional;
 
 /**
  * A predefined shelf is a shelf that is created by the app and will always exist (cannot be
@@ -40,7 +41,7 @@ import java.util.Set;
 public class PredefinedShelf extends Shelf {
     // This field must not have a setter as it should not be possible to rename a PredefinedShelf
     @Getter
-    private ShelfName predefinedShelfName;
+    private Optional<ShelfName> predefinedShelfName = Optional.ofNullable(null);
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "predefinedShelf")
     @Getter
@@ -49,7 +50,7 @@ public class PredefinedShelf extends Shelf {
 
     public PredefinedShelf(ShelfName predefinedShelfName) {
         super(predefinedShelfName.toString());
-        this.predefinedShelfName = predefinedShelfName;
+        this.predefinedShelfName = Optional.of(predefinedShelfName);
     }
 
     /**
@@ -58,7 +59,7 @@ public class PredefinedShelf extends Shelf {
      * @param predefinedShelfName the name of the shelf
      */
     public void setPredefinedShelfName(ShelfName predefinedShelfName) {
-        if (this.predefinedShelfName == null) {
+        if (this.predefinedShelfName.isEmpty()) {
             this.predefinedShelfName = predefinedShelfName;
         }
     }

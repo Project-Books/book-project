@@ -376,7 +376,7 @@ public class BookForm extends VerticalLayout {
         String title;
         if (bookTitle.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
-            return null;
+            return Optional.ofNullable(null);
         } else {
             title = bookTitle.getValue();
         }
@@ -387,13 +387,13 @@ public class BookForm extends VerticalLayout {
             firstName = authorFirstName.getValue();
         } else {
             LOGGER.log(Level.SEVERE, "Null first name");
-            return null;
+            return Optional.ofNullable(null);
         }
         if (authorLastName.getValue() != null) {
             lastName = authorLastName.getValue();
         } else {
             LOGGER.log(Level.SEVERE, "Null last name");
-            return null;
+            return Optional.ofNullable(null);
         }
         Author author = new Author(firstName, lastName);
 
@@ -405,7 +405,7 @@ public class BookForm extends VerticalLayout {
                     predefinedShelfUtils.findPredefinedShelf(predefinedShelfField.getValue());
         } else {
             LOGGER.log(Level.SEVERE, "Null shelf");
-            return null;
+            return Optional.ofNullable(null);
         }
         Book book = new Book(title, author, predefinedShelf);
 

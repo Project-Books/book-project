@@ -41,7 +41,7 @@ public class RatingStatistics extends Statistics {
      */
     public Book findMostLikedBook() {
         if (readBooksRated.isEmpty()) {
-            return null;
+            return Optional.ofNullable(null);
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
         return readBooksRated.get(readBooksRated.size() - 1);
@@ -62,7 +62,7 @@ public class RatingStatistics extends Statistics {
      */
     public Book findLeastLikedBook() {
         if (readBooksRated.isEmpty()) {
-            return null;
+            return Optional.ofNullable(null);
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
         return readBooksRated.get(0);
@@ -75,7 +75,7 @@ public class RatingStatistics extends Statistics {
     public Double calculateAverageRatingGiven() {
         int numberOfRatings = readBooksRated.size();
         if (numberOfRatings == 0) {
-            return null;
+            return Optional.ofNullable(null);
         }
         return (calculateTotalRating() / numberOfRatings);
     }
