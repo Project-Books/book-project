@@ -55,7 +55,7 @@ public class Book extends BaseEntity {
     private Integer pagesRead;
     private BookGenre bookGenre;
     private Integer seriesPosition;
-    private String edition;
+    private Optional<String> edition = Optional.ofNullable(null);
     private String bookRecommendedBy;
 
     @ManyToOne(cascade =
@@ -101,7 +101,7 @@ public class Book extends BaseEntity {
     }
     
     public void setEdition(Integer edition) {
-        if (edition == null) {
+        if (edition.isEmpty()) {
             return;
         }
         String bookEdition = "";

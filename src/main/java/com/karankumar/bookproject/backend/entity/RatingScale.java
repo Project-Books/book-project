@@ -62,10 +62,10 @@ public enum RatingScale {
         return rating;
     }
 
-    public static Double toDouble(RatingScale ratingScale) {
+    public static Optional<Double> toDouble(RatingScale ratingScale) {
         if (ratingScale == null) {
             LOGGER.log(Level.INFO, "Returning null as rating was null");
-            return null;
+            return Optional.of(Double.NO_RATING);
         }
 
         return ratingScale.value;

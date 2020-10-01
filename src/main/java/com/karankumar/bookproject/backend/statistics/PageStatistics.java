@@ -64,7 +64,7 @@ public class PageStatistics extends Statistics {
                                                    .sum();
         int booksWithPagesSpecified = booksWithPageCount.size();
         if (booksWithPagesSpecified == 0) {
-            return null;
+            return Optional.ofNullable(null);
         }
         return (booksWithPagesSpecified == 0) ? 0 :
                 (int) Math.ceil(totalNumberOfPages / booksWithPagesSpecified);
