@@ -59,4 +59,12 @@ class BookRepositoryTest {
         // then
         assertThat(bookRepository.findAll()).isEmpty();
     }
+
+    @Test
+    @DisplayName("should successfully find list of books by their title")
+    void findBookByTitle() {
+        assertThat(bookRepository.findByTitleContainingIgnoreCase("someTitle").size()).isOne();
+        assertThat(bookRepository.findByTitleContainingIgnoreCase("some").size()).isOne();
+        assertThat(bookRepository.findByTitleContainingIgnoreCase("title").size()).isOne();
+    }
 }

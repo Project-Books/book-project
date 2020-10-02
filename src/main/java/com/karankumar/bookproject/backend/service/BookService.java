@@ -79,7 +79,7 @@ public class BookService extends BaseService<Book, Long> {
         if (filterText == null || filterText.isEmpty()) {
             return bookRepository.findAll();
         }
-        return bookRepository.search(filterText);
+        return bookRepository.findByTitleContainingIgnoreCase(filterText);
     }
 
     @Override
