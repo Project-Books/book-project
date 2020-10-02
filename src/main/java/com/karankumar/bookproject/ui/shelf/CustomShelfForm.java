@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -36,6 +37,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 
@@ -49,7 +51,11 @@ public class CustomShelfForm extends VerticalLayout {
     private final PredefinedShelfService predefinedShelfService;
 
     private Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
-    private final TextField shelfNameField = new TextField();
+
+    @VisibleForTesting
+    final TextField shelfNameField = new TextField();
+    @VisibleForTesting
+    final Button saveButton = new Button();
 
     public CustomShelfForm(CustomShelfService customShelfService,
                            PredefinedShelfService predefinedShelfService) {
@@ -57,6 +63,7 @@ public class CustomShelfForm extends VerticalLayout {
         dialog = new Dialog();
         dialog.add(new H3("Add custom shelf"), formLayout);
         dialog.setCloseOnOutsideClick(true);
+        dialog.addDialogCloseActionListener(dialogCloseActionEvent -> closeForm());
         add(dialog);
 
         this.customShelfService = customShelfService;
@@ -100,16 +107,18 @@ public class CustomShelfForm extends VerticalLayout {
         shelfNameField.setClearButtonVisible(true);
         shelfNameField.setPlaceholder("Enter shelf name");
         shelfNameField.addClassName("shelfFormInputField");
+        shelfNameField.setValueChangeMode(ValueChangeMode.EAGER);
+        shelfNameField.addValueChangeListener(event -> saveButton.setEnabled(binder.isValid()));
     }
 
     private Button createSaveButton() {
-        Button save = new Button();
-        save.setText("Save");
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        save.setDisableOnClick(true);
-        save.addClassName("shelfFormSaveButton");
-        save.addClickListener(event -> validateOnSave());
-        return save;
+        saveButton.setText("Save");
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        saveButton.setDisableOnClick(true);
+        saveButton.addClassName("shelfFormSaveButton");
+        saveButton.addClickListener(event -> validateOnSave());
+        saveButton.setEnabled(binder.isValid());
+        return saveButton;
     }
 
     private void validateOnSave() {
@@ -129,7 +138,10 @@ public class CustomShelfForm extends VerticalLayout {
         binder.setBean(new CustomShelf(shelfNameField.getValue()));
     }
 
-    private void closeForm() {
+    @VisibleForTesting
+    void closeForm() {
+        shelfNameField.clear();
+        shelfNameField.setInvalid(false);
         dialog.close();
     }
 
