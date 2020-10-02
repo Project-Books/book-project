@@ -110,6 +110,7 @@ public class RegistrationForm extends FormLayout {
     private void configurePasswordField() {
         passwordField.setRequired(true);
         passwordField.setId("password");
+        passwordField.setMaxLength(129);
         passwordField.addValueChangeListener(e -> {
             int passwordScore = new Zxcvbn().measure(passwordField.getValue()).getScore();
             passwordStrengthMeter.setValue(
@@ -129,6 +130,7 @@ public class RegistrationForm extends FormLayout {
     private void configurePasswordConfirmationField() {
         passwordConfirmationField.setRequired(true);
         passwordConfirmationField.setId("password-confirmation");
+        passwordConfirmationField.setMaxLength(129);
     }
 
     private void configureRegisterButton() {
@@ -187,6 +189,10 @@ public class RegistrationForm extends FormLayout {
         if (!enablePasswordValidation) {
             // user hasn't visited the field yet, so don't validate just yet
             return ValidationResult.ok();
+        }
+
+        if(password.length() > 128) {
+            return ValidationResult.error("Password is too long");
         }
 
         String passwordConfirmation = passwordConfirmationField.getValue();
