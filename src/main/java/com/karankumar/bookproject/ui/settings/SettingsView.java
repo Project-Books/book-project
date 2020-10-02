@@ -20,11 +20,13 @@ package com.karankumar.bookproject.ui.settings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
-import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
+import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
+import com.vaadin.flow.component.HtmlComponent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -47,10 +49,16 @@ import java.util.logging.Level;
 public class SettingsView extends HorizontalLayout {
 
     private static final String ENABLE_DARK_MODE = "Enable dark mode";
+    private static final String APPEARANCE = "Appearance:";
+    private static final String MYBOOKS = "My books:";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
     private static final SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
+    private static final H3 appearanceH3 = new H3(APPEARANCE);
+    private static final H3 myBooksH3 = new H3(MYBOOKS);
+    private static final HtmlComponent br = new HtmlComponent("br");
+
 
     // Clear Shelves
     private static ResetShelvesDialog resetShelvesDialog;
@@ -97,7 +105,7 @@ public class SettingsView extends HorizontalLayout {
 
         configureExportBooksAnchor();
 
-        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelvesButton, exportBooksAnchor);
+        VerticalLayout verticalLayout = new VerticalLayout(appearanceH3, horizontalLayout, br, myBooksH3, clearShelvesButton, exportBooksAnchor);
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 
@@ -131,9 +139,9 @@ public class SettingsView extends HorizontalLayout {
             final StreamResource resource = new StreamResource("bookExport.json",
                     () -> new ByteArrayInputStream(jsonRepresentationForBooks));
             final StreamRegistration registration = UI.getCurrent()
-                                                    .getSession()
-                                                    .getResourceRegistry()
-                                                    .registerResource(resource);
+                    .getSession()
+                    .getResourceRegistry()
+                    .registerResource(resource);
 
             return registration.getResourceUri().toString();
         } catch (JsonProcessingException e) {
