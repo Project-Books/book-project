@@ -86,7 +86,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
     @VisibleForTesting final BookGenreComboBox bookGenre = new BookGenreComboBox();
     @VisibleForTesting PagesRead pagesRead;
-    @VisibleForTesting PageCount pageCount;
+    @VisibleForTesting PageCount pageCount = new PageCount();
     @VisibleForTesting ReadingStartDate readingStartDate;
     @VisibleForTesting ReadingEndDate readingEndDate;
     @VisibleForTesting Rating rating;
