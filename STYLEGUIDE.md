@@ -34,7 +34,7 @@ the version on the master branch should be followed, as this version should be t
       1. [Comment fall-through](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#comment-fall-through)
       2. [Enumerate all cases or have a default case](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#enumerate-all-cases-or-have-a-default-case)
    8. [Annotations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#annotations)
-   9.  [Comments](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#comments)
+   9. [Comments](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#comments)
       1.  [Do you need the comment?](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#do-you-need-the-comment)
    10. [Modifiers](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#modifiers)
    11. [Numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#numeric-literals)
