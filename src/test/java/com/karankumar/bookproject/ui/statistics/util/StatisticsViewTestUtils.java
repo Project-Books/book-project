@@ -65,22 +65,30 @@ public class StatisticsViewTestUtils {
 
     public static void populateDataWithBooks(
             BookService bookService, PredefinedShelfService predefinedShelfService) {
-        Book book = createMobyDickBook(predefinedShelfService);
-        bookService.save(book);
+        Book mobyDickBook = createMobyDickBook(predefinedShelfService);
+        Book hobbitBook = createHobbitBook(predefinedShelfService);
+        bookService.save(mobyDickBook);
+        bookService.save(hobbitBook);
     }
     
     public static void populateDataWithBooksWithoutPageCount(
             BookService bookService, PredefinedShelfService predefinedShelfService) {
-        Book book = createMobyDickBook(predefinedShelfService);
-        book.setNumberOfPages(null);
-        bookService.save(book);
+        Book mobyDickBook = createMobyDickBook(predefinedShelfService);
+        Book hobbitBook = createHobbitBook(predefinedShelfService);
+        mobyDickBook.setNumberOfPages(null);
+        hobbitBook.setNumberOfPages(null);
+        bookService.save(mobyDickBook);
+        bookService.save(hobbitBook);
     }
 
     public static void populateDataWithBooksWithoutGenre(
             BookService bookService, PredefinedShelfService predefinedShelfService) {
-        Book book = createMobyDickBook(predefinedShelfService);
-        book.setBookGenre(null);
-        bookService.save(book);
+        Book mobyDickBook = createMobyDickBook(predefinedShelfService);
+        Book hobbitBook = createHobbitBook(predefinedShelfService);
+        mobyDickBook.setBookGenre(null);
+        hobbitBook.setBookGenre(null);
+        bookService.save(mobyDickBook);
+        bookService.save(hobbitBook);
     }
 
     public static void populateDataWithBooksWithoutRatings(
@@ -103,6 +111,17 @@ public class StatisticsViewTestUtils {
         book.setNumberOfPages(2000);
         book.setPagesRead(1000);
         book.setRating(RatingScale.EIGHT_POINT_FIVE);
+        return book;
+    }
+
+    private static Book createHobbitBook(PredefinedShelfService predefinedShelfService) {
+        PredefinedShelf readShelf = getReadShelf(predefinedShelfService);
+        Author author = new Author("J.R.R", "Tolkien");
+        Book book = new Book("The Hobbit", author, readShelf);
+        book.setBookGenre(BookGenre.FANTASY);
+        book.setNumberOfPages(2000);
+        book.setPagesRead(1000);
+        book.setRating(RatingScale.EIGHT);
         return book;
     }
 }
