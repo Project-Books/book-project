@@ -292,7 +292,7 @@ public class BookFormTest {
         Assertions.assertTrue(bookForm.authorFirstName.getField().isEmpty());
         Assertions.assertTrue(bookForm.authorLastName.getField().isEmpty());
         Assertions.assertTrue(bookForm.bookTitle.getField().isEmpty());
-        Assertions.assertTrue(bookForm.customShelfField.isEmpty());
+        Assertions.assertTrue(bookForm.customShelfField.getField().isEmpty());
         Assertions.assertTrue(bookForm.predefinedShelf.getField().isEmpty());
         Assertions.assertTrue(bookForm.bookGenre.isEmpty());
         Assertions.assertTrue(bookForm.pagesRead.getField().isEmpty());

@@ -25,7 +25,6 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.components.form.item.BookGenre;
 import com.karankumar.bookproject.ui.book.components.form.item.*;
@@ -41,7 +40,6 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -83,7 +81,7 @@ public class BookForm extends VerticalLayout {
 
     @VisibleForTesting final AuthorLastName authorLastName = new AuthorLastName();
     @VisibleForTesting final PredefinedShelves predefinedShelf = new PredefinedShelves();
-    @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
+    @VisibleForTesting final CustomShelfFormItem customShelfField;
     @VisibleForTesting final BookGenre bookGenre = new BookGenre();
     @VisibleForTesting PagesRead pagesRead;
     @VisibleForTesting PageCount pageCount = new PageCount();
@@ -117,9 +115,11 @@ public class BookForm extends VerticalLayout {
 
     public BookForm(PredefinedShelfService predefinedShelfService,
                     CustomShelfService customShelfService) {
-        initVisibleViews();
 
-        binder = new BeanValidationBinder<>(Book.class);
+        customShelfField = new CustomShelfFormItem(customShelfService);
+
+        binder = new BeanValidationBinder<>(Book.class); //TODO: Order is so strict ...
+        initVisibleViews();
 
         fieldsToResetForToRead = new HasValue[]{pagesRead.getField(), readingStartDate.getField(),
                 readingEndDate.getField(), rating.getField(), bookReview.getField()};
@@ -129,7 +129,6 @@ public class BookForm extends VerticalLayout {
         fieldsToResetForDidNotFinish = new HasValue[]{readingEndDate.getField(), rating.getField(), bookReview.getField()};
 
         this.predefinedShelfService = predefinedShelfService;
-        this.customShelfService = customShelfService;
 
         dialog = new Dialog();
         dialog.setCloseOnOutsideClick(true);
@@ -343,7 +342,7 @@ public class BookForm extends VerticalLayout {
         Book book = createBook();
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
-            List<CustomShelf> shelves = customShelfService.findAll(customShelfField.getValue());
+            List<CustomShelf> shelves = customShelfField.getAllShelves();
             if (shelves.size() == 1) {
                 book.setCustomShelf(shelves.get(0));
             }
