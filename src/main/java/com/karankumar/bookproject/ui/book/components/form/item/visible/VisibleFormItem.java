@@ -2,7 +2,7 @@ package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.ui.book.components.form.item.FormItem;
-import com.karankumar.bookproject.ui.book.components.form.item.visible.factory.VisibleFormItemStrategyFactory;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.VisibilityStrategy;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.formlayout.FormLayout;
 
@@ -10,11 +10,9 @@ import javax.transaction.NotSupportedException;
 
 public abstract class VisibleFormItem<T extends Component> extends FormItem<T> {
     protected FormLayout.FormItem item;
-    private final VisibleFormItemStrategyFactory strategyFactory;
 
-    protected VisibleFormItem(T field, VisibleFormItemStrategyFactory strategyFactory) {
+    protected VisibleFormItem(T field) {
         super(field);
-        this.strategyFactory = strategyFactory;
     }
 
     @Override
@@ -23,11 +21,16 @@ public abstract class VisibleFormItem<T extends Component> extends FormItem<T> {
     }
 
     public void display(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
-        strategyFactory.getVisibilityStrategy(shelfName).display(item);
+        getVisibilityStrategy(shelfName).display(item);
+    }
+
+    protected abstract VisibilityStrategy getVisibilityStrategy(PredefinedShelf.ShelfName shelfName) throws NotSupportedException;
+
+    protected NotSupportedException unsupportedVisibilityStrategy(PredefinedShelf.ShelfName name) {
+        return new NotSupportedException("Shelf " + name + " not yet supported");
     }
 
     public boolean isVisible() {
         return item.isVisible();
     }
-
 }

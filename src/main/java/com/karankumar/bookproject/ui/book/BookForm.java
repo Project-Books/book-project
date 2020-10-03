@@ -30,7 +30,6 @@ import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
 import com.karankumar.bookproject.ui.book.components.form.item.*;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.*;
-import com.karankumar.bookproject.ui.book.components.form.item.visible.factory.*;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.BookSeriesVisibilityStrategy;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.HideStrategy;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.ShowStrategy;
@@ -169,19 +168,12 @@ public class BookForm extends VerticalLayout {
         HideStrategy hideStrategy = new HideStrategy();
         BookSeriesVisibilityStrategy bookSeriesStrategy = new BookSeriesVisibilityStrategy(this.binder);
 
-        BookReviewStrategyFactory bookReviewFactory = new BookReviewStrategyFactory(hideStrategy, showStrategy);
-        PagesReadStrategyFactory pagesReadFactory = new PagesReadStrategyFactory(hideStrategy, showStrategy);
-        RatingStrategyFactory ratingFactory = new RatingStrategyFactory(hideStrategy, showStrategy);
-        ReadingEndDateStrategyFactory readingEndDateFactory = new ReadingEndDateStrategyFactory(hideStrategy, showStrategy);
-        ReadingStartDateStrategyFactory readingStartDateFactory = new ReadingStartDateStrategyFactory(hideStrategy, showStrategy);
-        SeriesPositionStrategyFactory seriesPositionFactory = new SeriesPositionStrategyFactory(bookSeriesStrategy);
-
-        this.bookReview = new BookReview(bookReviewFactory);
-        this.pagesRead = new PagesRead(pagesReadFactory);
-        this.rating = new Rating(ratingFactory);
-        this.readingEndDate = new ReadingEndDate(readingEndDateFactory);
-        this.readingStartDate = new ReadingStartDate(readingStartDateFactory);
-        this.seriesPosition = new SeriesPosition(seriesPositionFactory);
+        this.bookReview = new BookReview(hideStrategy, showStrategy);
+        this.pagesRead = new PagesRead(showStrategy, hideStrategy);
+        this.rating = new Rating(hideStrategy, showStrategy);
+        this.readingEndDate = new ReadingEndDate(hideStrategy, showStrategy);
+        this.readingStartDate = new ReadingStartDate(hideStrategy, showStrategy);
+        this.seriesPosition = new SeriesPosition(bookSeriesStrategy);
     }
 
     /**

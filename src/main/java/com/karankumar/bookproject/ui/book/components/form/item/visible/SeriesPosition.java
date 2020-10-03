@@ -1,16 +1,22 @@
 package com.karankumar.bookproject.ui.book.components.form.item.visible;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.ui.book.BookFormErrors;
-import com.karankumar.bookproject.ui.book.components.form.item.visible.factory.SeriesPositionStrategyFactory;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.BookSeriesVisibilityStrategy;
+import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.VisibilityStrategy;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.function.SerializablePredicate;
 
-public class SeriesPosition extends VisibleFormItem<IntegerField> {
+import javax.transaction.NotSupportedException;
 
-    public SeriesPosition(SeriesPositionStrategyFactory factory) {
-        super(new IntegerField(), factory);
+public class SeriesPosition extends VisibleFormItem<IntegerField> {
+    private final BookSeriesVisibilityStrategy visibilityStrategy;
+
+    public SeriesPosition(BookSeriesVisibilityStrategy visibilityStrategy) {
+        super(new IntegerField());
+        this.visibilityStrategy = visibilityStrategy;
     }
 
     @Override
@@ -30,8 +36,8 @@ public class SeriesPosition extends VisibleFormItem<IntegerField> {
     @Override
     public void bind(Binder<Book> binder, IntegerField fieldToCompare) {
         binder.forField(super.getField())
-              .withValidator(isNumberPositive(), BookFormErrors.SERIES_POSITION_ERROR)
-              .bind(Book::getSeriesPosition, Book::setSeriesPosition);
+                .withValidator(isNumberPositive(), BookFormErrors.SERIES_POSITION_ERROR)
+                .bind(Book::getSeriesPosition, Book::setSeriesPosition);
     }
 
     private SerializablePredicate<Integer> isNumberPositive() {
@@ -48,5 +54,10 @@ public class SeriesPosition extends VisibleFormItem<IntegerField> {
 
     public void clear() {
         getField().clear();
+    }
+
+    @Override
+    protected VisibilityStrategy getVisibilityStrategy(PredefinedShelf.ShelfName shelfName) throws NotSupportedException {
+        return visibilityStrategy;
     }
 }
