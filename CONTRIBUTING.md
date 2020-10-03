@@ -36,6 +36,17 @@ For suggestions, please vote on, or add to, the existing relevant issue. If no s
 
 If in doubt, talk to us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)!
 
+## Open-ended discussions
+
+Open-ended discussions are best made over our public #book-project channel on our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). Unless specified otherwise, this applies when you're not assigned to the issue at hand.
+
+Examples of when to take a discussion over to Slack
+- If you disagree with an issue (e.g. if you don't think it's needed or there is a better way of doing something)
+- If you would like to make comments, suggestions or amendments to our style guide
+- If you would like to comment on the overall direction of the project
+
+The reason for this is because we don't want to make discussions on issues or pull requests longer than they need to be. For example, creating an open-ended discussion on a pull-request code review can distract away from the actual code review and confuse the contributor assigned to the pull request (i.e. it's off-topic).
+
 ## Before making changes
 
 ### Tell us which issue you want to work on
