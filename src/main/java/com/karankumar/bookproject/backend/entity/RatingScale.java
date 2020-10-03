@@ -63,17 +63,12 @@ public enum RatingScale {
     }
 
     public static Optional<Double> toDouble(RatingScale ratingScale) {
-        if (ratingScale == null) {
-            LOGGER.log(Level.INFO, "Returning null as rating was null");
-            return Optional.of(Double.NO_RATING);
-        }
-
-        return ratingScale.value;
+        return Optional.of(ratingScale.value);
     }
 
     public static Optional<RatingScale> of(Double ratingValue) {
         if (ratingValue == null) {
-            return Optional.of(RatingScale.NO_RATING);
+            return Optional.empty();
         }
 
         return Arrays.stream(values())

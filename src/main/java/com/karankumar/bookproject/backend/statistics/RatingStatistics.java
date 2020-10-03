@@ -45,7 +45,7 @@ public class RatingStatistics extends Statistics {
             return Optional.empty();
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
-        return readBooksRated.get(readBooksRated.size() - 1);
+        return Optional.of(readBooksRated.get(readBooksRated.size() - 1));
     }
 
     private List<Book> findReadBooksWithRatings() {
@@ -66,19 +66,19 @@ public class RatingStatistics extends Statistics {
             return Optional.empty();
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
-        return readBooksRated.get(0);
+        return Optional.ofNullable(readBooksRated.get(0));
     }
 
     /**
      * @return the average rating given to all books in the 'read'
      * If a book in the 'read' shelf does not have a rating, it is not included in the sum
      */
-    public Double calculateAverageRatingGiven() {
+    public Optional<Double> calculateAverageRatingGiven() {
         int numberOfRatings = readBooksRated.size();
         if (numberOfRatings == 0) {
-            return Optional.ofNullable(null);
+            return Optional.empty();
         }
-        return (calculateTotalRating() / numberOfRatings);
+        return Optional.of(calculateTotalRating() / numberOfRatings);
     }
 
     private double calculateTotalRating() {

@@ -50,7 +50,7 @@ public class PredefinedShelf extends Shelf {
 
     public PredefinedShelf(ShelfName predefinedShelfName) {
         super(predefinedShelfName.toString());
-        this.predefinedShelfName = Optional.of(predefinedShelfName);
+        this.predefinedShelfName = predefinedShelfName;
     }
 
     /**
@@ -59,7 +59,7 @@ public class PredefinedShelf extends Shelf {
      * @param predefinedShelfName the name of the shelf
      */
     public void setPredefinedShelfName(ShelfName predefinedShelfName) {
-        if (this.predefinedShelfName.isEmpty()) {
+        if (this.predefinedShelfName == null) {
             this.predefinedShelfName = predefinedShelfName;
         }
     }
