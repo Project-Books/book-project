@@ -9,21 +9,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
 class BookRepositoryTest {
     @Autowired private BookRepository bookRepository;
 
+    private final AuthorRepository authorRepository;
     private final PredefinedShelf readShelf;
     private final Author author;
     private Book book1;
 
     BookRepositoryTest(@Autowired AuthorRepository authorRepository,
                        @Autowired PredefinedShelfRepository predefinedShelfRepository) {
+        this.authorRepository = authorRepository;
         author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
-        readShelf =
-                predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+        readShelf = predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
     }
 
     @BeforeEach
@@ -58,6 +61,13 @@ class BookRepositoryTest {
 
         // then
         assertThat(bookRepository.findAll()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should successfully find list of the books written by a given author")
+    void findByAuthor() {
+        Optional<Author> authorOptional = authorRepository.findById(1L);
+        authorOptional.ifPresent(author1 -> assertThat(bookRepository.findByAuthor(author1)).size().isOne());
     }
 
     @Test

@@ -27,6 +27,7 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -80,6 +81,15 @@ public class BookService extends BaseService<Book, Long> {
             return bookRepository.findAll();
         }
         return bookRepository.findByTitleContainingIgnoreCase(filterText);
+    }
+
+    public Set<Book> findByAuthor(Author author) {
+        if (author == null) {
+            LOGGER.log(Level.SEVERE, "Cannot search books over null author.");
+            return new HashSet<>();
+        }
+
+        return bookRepository.findByAuthor(author);
     }
 
     @Override

@@ -30,6 +30,6 @@ import java.util.Set;
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByTitleContainingIgnoreCase(String title);
 
-    // TODO: implement
-    Set<Book> findByAuthor(Author author);
+    @Query("SELECT b FROM Book b INNER JOIN Author a ON b.author = :author")
+    Set<Book> findByAuthor(@Param("author") Author author);
 }
