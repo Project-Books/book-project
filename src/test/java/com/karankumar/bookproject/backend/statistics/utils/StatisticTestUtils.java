@@ -50,6 +50,8 @@ public class StatisticTestUtils {
                                          PredefinedShelfService predefinedShelfService) {
         StatisticTestUtils.bookService = bookService;
         bookService.deleteAll();
+        savedBooks.clear();
+        totalRating = 0.0;
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
 
         bookWithLowestRating =
@@ -94,6 +96,13 @@ public class StatisticTestUtils {
         }
     }
 
+    private static void reduceTotalRating(RatingScale ratingScale) {
+        Double rating = RatingScale.toDouble(ratingScale);
+        if (rating != null) {
+            totalRating -= rating;
+        }
+    }
+
     public static Book getBookWithLowestRating() {
         return bookWithLowestRating;
     }
@@ -116,5 +125,13 @@ public class StatisticTestUtils {
             pages += book.getNumberOfPages();
         }
         return pages;
+    }
+
+    public static void deleteBook(Book bookToDelete) {
+        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
+        bookToDelete.setPredefinedShelf(readShelf);
+        bookService.delete(bookToDelete);
+        savedBooks.remove(bookToDelete);
+        reduceTotalRating(bookToDelete.getRating());
     }
 }

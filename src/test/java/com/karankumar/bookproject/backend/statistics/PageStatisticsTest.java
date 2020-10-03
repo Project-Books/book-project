@@ -89,6 +89,14 @@ class PageStatisticsTest {
         assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
     }
 
+    @Test
+    void averagePageLengthWhenRoundedToHigherNumber() {
+        StatisticTestUtils.deleteBook(StatisticTestUtils.getBookWithHighestRating());
+        pageStatistics = new PageStatistics(predefinedShelfService);
+        int averagePageLength = (int) Math.ceil(StatisticTestUtils.getTotalNumberOfPages() / (float) StatisticTestUtils.getNumberOfBooks());
+        assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
+    }
+
     private void resetPageStatistics() {
         bookService.deleteAll();
         pageStatistics = new PageStatistics(predefinedShelfService);
