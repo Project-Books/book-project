@@ -25,6 +25,7 @@ import org.mockito.Mockito;
 
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.calculateProgressTowardsReadingGoal;
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFarAheadOrBehindSchedule;
+import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.booksToReadFromStartOfYear;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -99,5 +100,11 @@ class CalculateReadingGoalTest {
         assertEquals(7, howFarAheadOrBehindSchedule(113,79));
         assertEquals(45, howFarAheadOrBehindSchedule(113,41));
         assertThat(howFarAheadOrBehindSchedule(113,86)).isZero();
+    }
+
+    @Test
+    void testBooksToReadFromStartOfYear(){
+        double booksToReadFromStartOfYear = booksToReadFromStartOfYear(26);
+        assertEquals(0.5, booksToReadFromStartOfYear);
     }
 }
