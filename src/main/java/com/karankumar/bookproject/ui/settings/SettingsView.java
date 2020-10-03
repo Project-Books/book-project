@@ -50,15 +50,14 @@ public class SettingsView extends HorizontalLayout {
 
     private static final String ENABLE_DARK_MODE = "Enable dark mode";
     private static final String APPEARANCE = "Appearance:";
-    private static final String MYBOOKS = "My books:";
+    private static final String MY_BOOKS = "My books:";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
     private static final SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
-    private static final H3 appearanceH3 = new H3(APPEARANCE);
-    private static final H3 myBooksH3 = new H3(MYBOOKS);
-    private static final HtmlComponent br = new HtmlComponent("br");
-
+    private static final H3 appearanceHeading = new H3(APPEARANCE);
+    private static final H3 myBooksHeading = new H3(MY_BOOKS);
+    private static final HtmlComponent lineBreak = new HtmlComponent("br");
 
     // Clear Shelves
     private static ResetShelvesDialog resetShelvesDialog;
@@ -105,7 +104,14 @@ public class SettingsView extends HorizontalLayout {
 
         configureExportBooksAnchor();
 
-        VerticalLayout verticalLayout = new VerticalLayout(appearanceH3, horizontalLayout, br, myBooksH3, clearShelvesButton, exportBooksAnchor);
+        VerticalLayout verticalLayout = new VerticalLayout(
+                appearanceHeading,
+                horizontalLayout,
+                lineBreak,
+                myBooksHeading,
+                clearShelvesButton,
+                exportBooksAnchor
+        );
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 
@@ -139,9 +145,9 @@ public class SettingsView extends HorizontalLayout {
             final StreamResource resource = new StreamResource("bookExport.json",
                     () -> new ByteArrayInputStream(jsonRepresentationForBooks));
             final StreamRegistration registration = UI.getCurrent()
-                    .getSession()
-                    .getResourceRegistry()
-                    .registerResource(resource);
+                                                    .getSession()
+                                                    .getResourceRegistry()
+                                                    .registerResource(resource);
 
             return registration.getResourceUri().toString();
         } catch (JsonProcessingException e) {
