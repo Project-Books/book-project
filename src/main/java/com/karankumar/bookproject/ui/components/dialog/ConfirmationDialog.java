@@ -27,7 +27,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
  * All dialogs that request confirmation from a user should extend this class.
  */
 abstract class ConfirmationDialog extends Dialog {
-    private String descriptionText;
+    private final String descriptionText;
     protected Button confirmButton;
     protected Button cancelButton;
 
