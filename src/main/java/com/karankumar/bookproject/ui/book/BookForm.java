@@ -109,7 +109,6 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting Binder<Book> binder;
 
     private final PredefinedShelfService predefinedShelfService;
-    private final CustomShelfService customShelfService;
 
     private final Dialog dialog;
 
@@ -160,7 +159,7 @@ public class BookForm extends VerticalLayout {
                 readingStartDate.getField(),
                 readingEndDate.getField(),
                 bookGenre.getField(),
-                customShelfField,
+                customShelfField.getField(),
                 predefinedShelf.getField(),
                 pagesRead.getField(),
                 pageCount.getField(),
@@ -199,7 +198,7 @@ public class BookForm extends VerticalLayout {
 
         bookTitle.add(formLayout);
         predefinedShelf.add(formLayout);
-        formLayout.addFormItem(customShelfField, "Secondary shelf");
+        customShelfField.add(formLayout);
 
         authorFirstName.add(formLayout);
         authorLastName.add(formLayout);
@@ -249,10 +248,7 @@ public class BookForm extends VerticalLayout {
         authorFirstName.bind(binder);
         authorLastName.bind(binder);
         predefinedShelf.bind(binder);
-        binder.forField(customShelfField)
-              .bind("customShelf.shelfName");
-
-
+        customShelfField.bind(binder);
         seriesPosition.bind(binder);
         readingStartDate.bind(binder);
         readingEndDate.bind(binder, readingStartDate.getField());
@@ -450,11 +446,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureCustomShelfField() {
-        customShelfField.setPlaceholder("Choose a shelf");
-        customShelfField.setClearButtonVisible(true);
-
-        CustomShelfUtils customShelfUtils = new CustomShelfUtils(customShelfService);
-        customShelfField.setItems(customShelfUtils.getCustomShelfNames());
+        customShelfField.configure();
     }
 
     private void configurePredefinedShelfField() {
@@ -513,11 +505,11 @@ public class BookForm extends VerticalLayout {
                 bookTitle.getField(),
                 authorFirstName.getField(),
                 authorLastName.getField(),
-                customShelfField,
+                customShelfField.getField(),
                 predefinedShelf.getField(),
                 inSeries.getField(),
                 seriesPosition.getField(),
-                bookGenre.getComponent(),
+                bookGenre.getField(),
                 pagesRead.getField(),
                 pageCount.getField(),
                 readingStartDate.getField(),
