@@ -27,7 +27,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import com.karankumar.bookproject.ui.book.components.BookGenreComboBox;
+import com.karankumar.bookproject.ui.book.components.form.item.BookGenre;
 import com.karankumar.bookproject.ui.book.components.form.item.*;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.*;
 import com.karankumar.bookproject.ui.book.components.form.item.visible.strategy.BookSeriesVisibilityStrategy;
@@ -84,7 +84,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final AuthorLastName authorLastName = new AuthorLastName();
     @VisibleForTesting final PredefinedShelves predefinedShelf = new PredefinedShelves();
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
-    @VisibleForTesting final BookGenreComboBox bookGenre = new BookGenreComboBox();
+    @VisibleForTesting final BookGenre bookGenre = new BookGenre();
     @VisibleForTesting PagesRead pagesRead;
     @VisibleForTesting PageCount pageCount = new PageCount();
     @VisibleForTesting ReadingStartDate readingStartDate;
@@ -160,7 +160,7 @@ public class BookForm extends VerticalLayout {
                 seriesPosition.getField(),
                 readingStartDate.getField(),
                 readingEndDate.getField(),
-                bookGenre.getComponent(),
+                bookGenre.getField(),
                 customShelfField,
                 predefinedShelf.getField(),
                 pagesRead.getField(),

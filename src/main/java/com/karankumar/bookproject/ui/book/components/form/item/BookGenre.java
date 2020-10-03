@@ -1,14 +1,13 @@
-package com.karankumar.bookproject.ui.book.components;
+package com.karankumar.bookproject.ui.book.components.form.item;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Genre;
-import com.karankumar.bookproject.ui.book.components.form.item.FormItem;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.data.binder.Binder;
 
-public class BookGenreComboBox extends FormItem<ComboBox<Genre>> {
+public class BookGenre extends FormItem<ComboBox<Genre>> {
 
-    public BookGenreComboBox() {
+    public BookGenre() {
         super(new ComboBox<>());
     }
 
