@@ -452,67 +452,19 @@ public class BookForm extends VerticalLayout {
         predefinedShelf.getField().addValueChangeListener(event -> {
             if (event.getValue() != null) {
                 try {
-                    hideDates(predefinedShelf.getValue());
-                    showOrHideRatingAndBookReview(predefinedShelf.getValue());
-                    showOrHidePagesRead(predefinedShelf.getValue());
+                    PredefinedShelf.ShelfName name = predefinedShelf.getValue();
+                    readingStartDate.display(name);
+                    readingEndDate.display(name);
+                    PredefinedShelf.ShelfName name1 = predefinedShelf.getValue();
+                    rating.display(name1);
+                    bookReview.display(name1);
+                    pagesRead.display(predefinedShelf.getValue());
                     setFieldsToReset(predefinedShelf.getValue());
                 } catch (NotSupportedException e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
-
-    /**
-     * Toggles whether the date started reading and date finished reading form fields should show
-     *
-     * @param name the name of the @see PredefinedShelf that was chosen in the book form
-     * @throws NotSupportedException if the shelf name parameter does not match the name of
-     *                               a @see PredefinedShelf
-     */
-    private void hideDates(PredefinedShelf.ShelfName name) throws NotSupportedException {
-        readingStartDate.display(name);
-        readingEndDate.display(name);
-    }
-
-    /**
-     * Toggles showing the pages read depending on which shelf this new book is going into
-     *
-     * @param name the name of the shelf that was selected in this book form
-     * @throws NotSupportedException if the shelf name parameter does not match the name of
-     *                               a @see PredefinedShelf
-     */
-    private void showOrHidePagesRead(PredefinedShelf.ShelfName name) throws NotSupportedException {
-        pagesRead.display(name);
-    }
-
-    /**
-     * Toggles showing the rating and the bookReview depending on which shelf this new book is going into
-     *
-     * @param name the name of the shelf that was selected in this book form
-     * @throws NotSupportedException if the shelf name parameter does not match the name of
-     *                               a @see PredefinedShelf
-     */
-    private void showOrHideRatingAndBookReview(PredefinedShelf.ShelfName name) throws NotSupportedException {
-        //TODO: Bu kısım strategy pattern uygulamak gerekebilir. Strategy pattern uygularsak ama run-time'da surekli olarak
-        //TODO: degisecek ya surekli olarak gidip cekmek gerekecek ya da en basta alayı yaratilip enum map tarzında bir seyde saklanacak
-        //TODO: Buradaki ilgili degere gore ilgili strategy calisacak
-        //TODO: Strategy icerisinde hangi stateler icin uygunlugunu tutabiliriz diye dusunmustuk ama class'ın tipine göre de değişebiliyor
-        //TODO: Decorator pattern ile wrap edebiliriz en temizi. Display diye bir decorator olur o decorate eder. Sonra da gider decorate ettiği
-        //TODO: Objedeki ilgili yeri çağırır.
-
-        //TODO: Abstract factory gerekebilir pattern olarak factory'dense çünkü bir tip için algoritmalar ailesi yaratacak factory gerekiyor gibi sanki
-        //TODO: yani x icin ve y icin olan strategyler aynı degil tipleri farklı oldugu icin, bir varyasyon var ve bu kısım design pattern olarak ona uyuyor aslında
-
-
-        //TODO: Decorator topuna girersek eğer decorate edebileceğimiz bir ton şey var onları da yapmak gerekecek ...
-        //TODO: Decorator getirirsek eger display ya da show gibi özellikler de yer alacak, hide vs garip olmaz mı ?
-        //TODO: aynı sekilde decorator sadece bir yerde kullanılacak bir methodda ne kadar mantıklı decorate etmek ?
-        //TODO: Decorator'un da decorate edilebilmesi gerekiyor ama benim durumumda bu olmamalı ....
-        //TODO: Strategy pattern daha mantıklı bu yüzden.
-
-        rating.display(name);
-        bookReview.display(name);
     }
 
     /**
