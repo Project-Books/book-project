@@ -49,7 +49,7 @@ public class CalculateReadingGoal {
      * the year
      */
     public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
-        return ((int) Math.ceil(booksToReadThisYear / WEEKS_IN_YEAR));
+        return ((int) Math.ceil((float)booksToReadThisYear / WEEKS_IN_YEAR));
     }
 
     /**

@@ -100,4 +100,12 @@ class CalculateReadingGoalTest {
         assertEquals(45, howFarAheadOrBehindSchedule(113,41));
         assertThat(howFarAheadOrBehindSchedule(113,86)).isZero();
     }
+
+    //Test to test the change in the method booksToReadFromStartOfYear
+    @Test
+    void testBooksToReadFromStartOfYear(){
+        int booksToReadThisYear = 104;
+        int booksToReadFromStartOfYear = CalculateReadingGoal.booksToReadFromStartOfYear(booksToReadThisYear);
+        assertEquals(2, booksToReadFromStartOfYear);
+    }
 }
