@@ -76,6 +76,7 @@ public class BookForm extends VerticalLayout {
     //TODO: O yüzden seni digerlerinden ayırmak lazım yani visibility özelligi bir interface olmalu
     //TODO: Ya da decorator pattern uygulanabilir. Ya da iste bir interface yazariz bu interface gider FormItem'ı extend
     //TODO: edip yapılabilir wrap etmek yerine decoratordaki gibi ...
+    //TODO: An itibariyle bayağı büyük bu sınıf birazcık daha parçalamak gerekiyor...
     @VisibleForTesting final BookTitle bookTitle = new BookTitle();
     @VisibleForTesting SeriesPosition seriesPosition;
     @VisibleForTesting final AuthorFirstName authorFirstName = new AuthorFirstName();
@@ -94,19 +95,20 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final InSeries inSeries = new InSeries();
     @VisibleForTesting final Button reset = new Button();
 
+
+    //TODO: HasValue[] fieldlarını ucurabiliriz gibi aslında bunlar strategy pattern ile cozdugumuz yerde enum degere gore
+    //TODO: belli fieldların resetlenmesini sagliyor. Bunu da ayni sekilde yapabiliriz aslında :)
+    //TODO: alamıyorsak da buraları initialize etmek lazım ...
+    //TODO: fieldsToReset'ten kurtulamayacagiz gibi ama en azindan geri kalan kısımlardan sanki kurtulabiliriz gibi ne dersin ...
     @VisibleForTesting HasValue[] fieldsToReset;
 
-    @VisibleForTesting final HasValue[] fieldsToResetForToRead  //TODO: Buralar patlıyor ne yazık ki ... Duzeltmek gerekecek
-            = new HasValue[]{pagesRead.getField(), readingStartDate.getField(), readingEndDate.getField(), rating.getField(), bookReview.getField()};
-    @VisibleForTesting final HasValue[] fieldsToResetForReading
-            = new HasValue[]{pagesRead.getField(), readingEndDate.getField(), rating.getField(), bookReview.getField()};
-    @VisibleForTesting final HasValue[] fieldsToResetForRead
-            = new HasValue[]{pagesRead.getField()};
-    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
-            = new HasValue[]{readingEndDate.getField(), rating.getField(), bookReview.getField()};
+    @VisibleForTesting final HasValue[] fieldsToResetForToRead;
+    @VisibleForTesting final HasValue[] fieldsToResetForReading;
+    @VisibleForTesting final HasValue[] fieldsToResetForRead;
+    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish;
 
     @VisibleForTesting Button delete = new Button();
-    @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
+    @VisibleForTesting Binder<Book> binder;
 
     private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
@@ -116,6 +118,15 @@ public class BookForm extends VerticalLayout {
     public BookForm(PredefinedShelfService predefinedShelfService,
                     CustomShelfService customShelfService) {
         initVisibleViews();
+
+        binder = new BeanValidationBinder<>(Book.class);
+
+        fieldsToResetForToRead = new HasValue[]{pagesRead.getField(), readingStartDate.getField(),
+                readingEndDate.getField(), rating.getField(), bookReview.getField()};
+        fieldsToResetForReading = new HasValue[]{pagesRead.getField(), readingEndDate.getField(),
+                rating.getField(), bookReview.getField()};
+        fieldsToResetForRead = new HasValue[]{pagesRead.getField()};
+        fieldsToResetForDidNotFinish = new HasValue[]{readingEndDate.getField(), rating.getField(), bookReview.getField()};
 
         this.predefinedShelfService = predefinedShelfService;
         this.customShelfService = customShelfService;
