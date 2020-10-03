@@ -56,9 +56,6 @@ public abstract class BaseEntity {
 
     @Override
     public int hashCode() {
-        if (id.isEmpty())
-            return id.hashCode();
-        else
-            return 0;
+        return id != null ? id.hashCode() : 0;
     }
 }

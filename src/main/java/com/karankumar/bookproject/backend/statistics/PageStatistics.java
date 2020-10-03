@@ -67,7 +67,6 @@ public class PageStatistics extends Statistics {
         if (booksWithPagesSpecified == 0) {
             return Optional.empty();
         }
-        return (booksWithPagesSpecified == 0) ? 0 :
-                (int) Math.ceil(totalNumberOfPages / booksWithPagesSpecified);
+        return Optional.of((int) Math.ceil(totalNumberOfPages / booksWithPagesSpecified));
     }
 }
