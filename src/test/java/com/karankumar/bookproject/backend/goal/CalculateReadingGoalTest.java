@@ -22,11 +22,11 @@ import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFa
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.booksToReadFromStartOfYear;
 import com.karankumar.bookproject.backend.utils.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import static org.assertj.core.api.Assertions.assertThat;
 
 class CalculateReadingGoalTest {
     private final int BOOKS_TO_READ = 52;
@@ -73,7 +73,6 @@ class CalculateReadingGoalTest {
         softly.assertAll();
     }
 
-    // TODO: refactor this method to test for two boundary cases and one normal case
     @Test
     void testHowFarAheadOrBehindSchedule(){
         Mockito.mockStatic(DateUtils.class);
@@ -81,24 +80,17 @@ class CalculateReadingGoalTest {
         Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
         assertThat(howFarAheadOrBehindSchedule(52, 1)).isZero();
         assertThat(howFarAheadOrBehindSchedule(52,0)).isOne();
-        assertThat(howFarAheadOrBehindSchedule(52,10)).isEqualTo(9);
-        assertThat(howFarAheadOrBehindSchedule(199,12)).isEqualTo(9);
-        assertThat(howFarAheadOrBehindSchedule(199,5)).isEqualTo(2);
+        assertEquals(9, howFarAheadOrBehindSchedule(52,10));
 
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(15);
-        assertThat(howFarAheadOrBehindSchedule(52,3)).isEqualTo(12);
-        assertThat(howFarAheadOrBehindSchedule(52,24)).isEqualTo(9);
-        assertThat(howFarAheadOrBehindSchedule(52,20)).isEqualTo(5);
+        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(52);
+        assertEquals(25, howFarAheadOrBehindSchedule(113,79));
+        assertEquals(63, howFarAheadOrBehindSchedule(113,41));
+        assertThat(howFarAheadOrBehindSchedule(113,104)).isZero();
 
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(10);
-        assertThat(howFarAheadOrBehindSchedule(199,50)).isEqualTo(20);
-        assertThat(howFarAheadOrBehindSchedule(199,8)).isEqualTo(22);
-        assertThat(howFarAheadOrBehindSchedule(199,100)).isEqualTo(70);
-
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(43);
-        assertThat(howFarAheadOrBehindSchedule(113,79)).isEqualTo(7);
-        assertThat(howFarAheadOrBehindSchedule(113,41)).isEqualTo(45);
-        assertThat(howFarAheadOrBehindSchedule(113,86)).isZero();
+        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(26);
+        assertEquals(20, howFarAheadOrBehindSchedule(40,20));
+        assertEquals(55, howFarAheadOrBehindSchedule(40,55));
+        assertThat(howFarAheadOrBehindSchedule(40,0)).isZero();
     }
 
     @Test
