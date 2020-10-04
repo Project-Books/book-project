@@ -51,8 +51,9 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType.PAGES;
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType.BOOKS;
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howManyReadThisYear;
-import static com.karankumar.bookproject.ui.goal.ReadingGoalViewTestUtils.findHowManyBooksInReadShelfWithFinishDate;
-import static com.karankumar.bookproject.ui.goal.ReadingGoalViewTestUtils.findHowManyPagesInReadShelfWithFinishDate;
+import static com.karankumar.bookproject.utils.ReadingGoalTestUtils.resetGoalService;
+import static com.karankumar.bookproject.utils.ReadingGoalTestUtils.findHowManyBooksInReadShelfWithFinishDate;
+import static com.karankumar.bookproject.utils.ReadingGoalTestUtils.findHowManyPagesInReadShelfWithFinishDate;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -93,10 +94,6 @@ class ReadingGoalViewTest {
         this.predefinedShelfService = predefinedShelfService;
         this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         goalView = new ReadingGoalView(goalService, predefinedShelfService);
-    }
-
-    private void resetGoalService(ReadingGoalService goalService) {
-        goalService.deleteAll();
     }
 
     @Test

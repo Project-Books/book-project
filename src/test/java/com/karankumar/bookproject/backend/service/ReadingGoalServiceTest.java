@@ -19,23 +19,40 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.karankumar.bookproject.utils.ReadingGoalTestUtils.resetGoalService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
 @DisplayName("ReadingGoalService should")
 class ReadingGoalServiceTest {
+    private final ReadingGoalService goalService;
+    private ReadingGoal existingReadingGoal;
+
+    private ReadingGoalServiceTest(@Autowired ReadingGoalService goalService) {
+        this.goalService = goalService;
+    }
+
+    @BeforeEach
+    void beforeEach(){
+        resetGoalService(goalService);
+        initReadingGoalServiceTest();
+    }
+
+    private void initReadingGoalServiceTest() {
+        existingReadingGoal = new ReadingGoal(20, ReadingGoal.GoalType.BOOKS);
+        goalService.save(existingReadingGoal);
+    }
 
     @Test
-    void overwriteExistingGoalWhenSavingGoal(@NotNull @Autowired ReadingGoalService goalService) {
-        // given
-        ReadingGoal oldReadingGoal = new ReadingGoal(20, ReadingGoal.GoalType.BOOKS);
-        goalService.save(oldReadingGoal);
-        assertThat(goalService.count()).isOne();
+    void overwriteExistingGoalWhenSavingGoal() {
+        // given we have a reading goal
+        assumeThat(goalService.count()).isOne();
 
         // when
         ReadingGoal newReadingGoal = new ReadingGoal(40, ReadingGoal.GoalType.PAGES);
@@ -45,5 +62,17 @@ class ReadingGoalServiceTest {
         assertThat(goalService.count()).isOne();
         ReadingGoal actual = goalService.findAll().get(0);
         assertThat(newReadingGoal).isEqualToComparingFieldByField(actual);
+    }
+
+    @Test
+    void deleteExistingGoal() {
+        // given we have a reading goal
+        assumeThat(goalService.count()).isOne();
+
+        // when we delete that reading goal
+        goalService.delete(existingReadingGoal);
+
+        // then we no longer have a reading goal set
+        assertThat(goalService.count()).isZero();
     }
 }

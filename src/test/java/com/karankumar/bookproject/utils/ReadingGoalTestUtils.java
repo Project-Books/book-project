@@ -1,16 +1,16 @@
-package com.karankumar.bookproject.ui.goal;
+package com.karankumar.bookproject.utils;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import org.junit.jupiter.api.DisplayName;
+import com.karankumar.bookproject.backend.service.ReadingGoalService;
 
 import java.util.List;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.backend.utils.DateUtils.dateIsInCurrentYear;
 
-class ReadingGoalViewTestUtils {
-    private ReadingGoalViewTestUtils() {}
+public class ReadingGoalTestUtils {
+    private ReadingGoalTestUtils() {}
 
     static boolean wasBookReadThisYearAndHasPageCount(Book book) {
         return hasBookBeenRead(book) && book.getNumberOfPages() != null &&
@@ -22,7 +22,7 @@ class ReadingGoalViewTestUtils {
         return predefinedShelfName.equals(READ) && book.getDateFinishedReading() != null;
     }
 
-    static int findHowManyBooksInReadShelfWithFinishDate(List<Book> books) {
+    public static int findHowManyBooksInReadShelfWithFinishDate(List<Book> books) {
         int count = 0;
         for (Book book : books) {
             if (hasBookBeenRead(book)) {
@@ -32,7 +32,7 @@ class ReadingGoalViewTestUtils {
         return count;
     }
 
-    static int findHowManyPagesInReadShelfWithFinishDate(List<Book> books) {
+    public static int findHowManyPagesInReadShelfWithFinishDate(List<Book> books) {
         int count = 0;
         for (Book book : books) {
             if (wasBookReadThisYearAndHasPageCount(book)) {
@@ -40,5 +40,9 @@ class ReadingGoalViewTestUtils {
             }
         }
         return count;
+    }
+
+    public static void resetGoalService(ReadingGoalService goalService) {
+        goalService.deleteAll();
     }
 }
