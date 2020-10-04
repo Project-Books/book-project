@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
+@DisplayName("BookRepository should")
 class BookRepositoryTest {
     @Autowired private BookRepository bookRepository;
 
@@ -37,7 +38,7 @@ class BookRepositoryTest {
     }
 
     @Test
-    void successfullyDeleteABook_whenAuthorHasOtherBooks() {
+    void successfullyDeleteABookWhenAuthorHasOtherBooks() {
         // given
         Book book2 = bookRepository.save(new Book("someOtherTitle", author, readShelf));
 
@@ -51,7 +52,6 @@ class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("should successfully delete a book when the author has no other books")
     void successfullyDeleteSingleAuthoredBook() {
         // when
         bookRepository.delete(book1);
@@ -61,8 +61,7 @@ class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("should successfully find list of books by their title")
-    void findBookByTitle() {
+    void findListOfBooksByTitle() {
         assertThat(bookRepository.findByTitleContainingIgnoreCase("someTitle").size()).isOne();
         assertThat(bookRepository.findByTitleContainingIgnoreCase("some").size()).isOne();
         assertThat(bookRepository.findByTitleContainingIgnoreCase("title").size()).isOne();

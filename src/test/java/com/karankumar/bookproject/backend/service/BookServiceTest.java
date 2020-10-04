@@ -49,6 +49,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
+@DisplayName("BookService should")
 class BookServiceTest {
     @Autowired private AuthorService authorService;
     @Autowired private BookService bookService;
@@ -84,13 +85,13 @@ class BookServiceTest {
     }
 
     @Test
-    void nullBookNotSaved() {
+    void notSaveBookWhenNull() {
         bookService.save(null);
         assertThat(bookService.count()).isZero();
     }
 
     @Test
-    void bookWithoutAuthorNotSaved() {
+    void notSavedBookWhenNoAuthorIsPresent() {
         SoftAssertions softly = new SoftAssertions();
 
         // when
@@ -103,8 +104,7 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Tests book with numberOfPages > max_pages is not saved")
-    void bookWithMaxNumberOfPagesExceededNotSaved() {
+    void notSaveBookWhenMaxPagesIsReached() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -119,7 +119,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookOutsidePageLimitNotSaved() {
+    void notSaveBookWhenMaxPagesReadIsReached() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -134,7 +134,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookWithinPageLimitIsSaved() {
+    void saveBookWhenPageLimitIsNotReached() {
         // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES);
@@ -148,7 +148,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookWithoutPredefinedShelfNotSaved() {
+    void notSaveBookWithoutPredefinedShelf() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -164,8 +164,7 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Book with author and predefined shelf can be saved")
-    void validBookSaved() {
+    void saveBookWithAuthorAndPredefinedShelf() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -184,17 +183,17 @@ class BookServiceTest {
     }
 
     @Test
-    void allBooksReturnedWhenFilterIsEmpty() {
+    void returnAllBooksWhenFilterIsEmpty() {
         assertEquals(bookService.findAll(), bookService.findAll(""));
     }
 
     @Test
-    void allBooksReturnedWhenFilterIsNull() {
+    void returnAllBooksWhenFilterIsNull() {
         assertEquals(bookService.findAll(), bookService.findAll(null));
     }
 
     @Test
-    void shouldCreateJsonRepresentationForBooks() throws IOException, JSONException {
+    void createJsonRepresentationForBooks() throws IOException, JSONException {
         // given
         Book anotherValidBook = createBookAndSetAllAttributes();
         bookService.save(validBook);

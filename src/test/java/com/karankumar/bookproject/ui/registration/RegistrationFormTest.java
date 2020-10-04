@@ -35,6 +35,7 @@ import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -47,6 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("RegistrationForm should")
 class RegistrationFormTest {
     private final static User VALID_TEST_USER = User.builder()
                                                     .username("validTestUser")
@@ -83,7 +85,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void passwordFieldNotMatchingTheRulesHasError() {
+    void showErrorWhenPasswordFieldNotMatching() {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
 
         _setValue(passwordField, "asdf");
@@ -92,7 +94,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void passwordConfirmationWrongHasError() {
+    void showErrorWhenPasswordConfirmationIsWrong() {
         // given
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
         PasswordField passwordConfirmationField =
@@ -107,7 +109,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void passwordFieldMatchingTheRulesIsAccepted() {
+    void acceptPasswordFieldMatching() {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
 
         _setValue(passwordField, "asdfASDF1234=");
@@ -116,7 +118,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void errorShownWhenUsernameFieldLessThanFiveChars() {
+    void showErrorWhenUsernameFieldIsLessThanFiveChars() {
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
         _setValue(usernameField, "asdf");
@@ -125,7 +127,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void errorShownWhenUsernameInUse() {
+    void showErrorWhenUsernameIsInUse() {
         userRepository.save(VALID_TEST_USER);
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
@@ -135,7 +137,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void validUsernameIsAccepted() {
+    void acceptValidUsername() {
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
         _setValue(usernameField, "asdfgh");
@@ -144,7 +146,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void errorShownWhenEmailIsInvalid() {
+    void showErrorWhenEmailIsInvalid() {
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
         _setValue(emailField, "thisisnotanemail");
@@ -153,7 +155,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void errorShownWhenEmailInUse() {
+    void showErrorWhenEmailIsInUse() {
         // given
         userRepository.save(VALID_TEST_USER);
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
@@ -166,7 +168,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void validEmailIsAccepted() {
+    void acceptValidEmail() {
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
         _setValue(emailField, "asdf@asdf.de");
@@ -175,7 +177,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_withError_cannotBeSent() {
+    void notSendRegistrationFormWithError() {
         // given
         Span errorMessage = _get(Span.class, spec -> spec.withId("error-message"));
         Button registerButton = _get(Button.class, spec -> spec.withId("register"));
@@ -188,7 +190,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_withoutError_getsSent() {
+    void sendRegistrationFormWithoutError() {
         // given
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));

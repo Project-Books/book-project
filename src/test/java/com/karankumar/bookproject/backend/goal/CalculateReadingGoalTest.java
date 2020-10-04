@@ -28,11 +28,12 @@ import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFa
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("CalculateReadingGoal should")
 class CalculateReadingGoalTest {
     private final int BOOKS_TO_READ = 52;
 
     @Test
-    void testProgressValueIsCorrect() {
+    void haveCorrectProgressValue() {
         int toRead = 25;
         int read = 5;
         double expected = 0.2;
@@ -41,27 +42,27 @@ class CalculateReadingGoalTest {
     }
 
     @Test
-    void testProgressValueIsCorrectWhenGoalMet() {
+    void haveCorrectProgressValueWhenGoalMet() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, BOOKS_TO_READ);
         assertEquals(expected, actual);
     }
 
     @Test
-    void testProgressIsCorrectWhenGoalExceeded() {
+    void haveCorrectProgressWhenGoalExceeded() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, (BOOKS_TO_READ + 1));
         assertEquals(expected, actual);
     }
 
     @Test
-    void testNoProgressMadeTowardsGoal() {
+    void haveNoProgressMadeTowardsGoal() {
         assertThat(calculateProgressTowardsReadingGoal(5, 0)).isZero();
     }
 
     @Test
-    @DisplayName("Ensure 0, and not an arithmetic exception, is returned")
-    void testCalculateProgressTowardsReadingGoalDivideByZero() {
+    @DisplayName("ensure that 0 is returned, and not an arithmetic exception.")
+    void canHandleDividingByZero() {
         int toRead = 5;
         int read = 0;
 
@@ -75,7 +76,7 @@ class CalculateReadingGoalTest {
 
     // TODO: refactor this method to test for two boundary cases and one normal case
     @Test
-    void testHowFarAheadOrBehindSchedule(){
+    void calculateHowFarAheadOrBehindSchedule(){
         Mockito.mockStatic(DateUtils.class);
 
         Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);

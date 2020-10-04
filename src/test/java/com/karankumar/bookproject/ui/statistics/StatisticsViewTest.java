@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -48,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("StatisticsView should")
 class StatisticsViewTest {
 
     @Autowired private PredefinedShelfService predefinedShelfService;
@@ -61,7 +63,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void shouldCreateCompleteStatisticsView() {
+    void createCompleteStatisticsView() {
         // given
         populateDataWithBooks(bookService, predefinedShelfService);
 
@@ -87,7 +89,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void eachStatisticShouldHaveAValue() {
+    void populateStatistics() {
         // given
         populateDataWithBooks(bookService, predefinedShelfService);
 
@@ -104,7 +106,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutPageCountOtherStatisticsStillShown() {
+    void showOtherStatisticsWithoutPageCount() {
         // given
         populateDataWithBooksWithoutPageCount(bookService, predefinedShelfService);
 
@@ -119,7 +121,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutGenreInformationOtherStatisticsStillShown() {
+    void showOtherStatisticsWithoutGenreInformation() {
         // given
         populateDataWithBooksWithoutGenre(bookService, predefinedShelfService);
 
@@ -134,7 +136,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutRatingInformationTheViewShouldShowOtherStatistics() {
+    void showOtherStatisticsWithoutRatingInformation() {
         // given
         populateDataWithBooksWithoutRatings(bookService, predefinedShelfService);
 

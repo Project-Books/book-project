@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -61,6 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("ReadingGoalView should")
 class ReadingGoalViewTest {
     private static Routes routes;
 
@@ -98,7 +100,7 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void testSetGoalButtonTextUpdatesWhenGoalUpdates() {
+    void updateGoalButtonTextWhenGoalUpdated() {
         // given initial state
         assumeThat(goalService.findAll()).isEmpty();
         String expected = ReadingGoalView.SET_GOAL;
@@ -121,14 +123,14 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void testTargetMetMessageNotShownWhenGoalNotMet() {
+    void notShownTargetMetMessageWhenGoalNotMet() {
         String expected = ReadingGoalView.TARGET_MET;
         String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET - 1);
         assertNotEquals(expected, actual);
     }
 
     @Test
-    void testTargetMetMessageShownWhenGoalMet() {
+    void shownTargetMetMessageWhenGoalMet() {
         assumeThat(goalService.findAll()).isEmpty();
         String expected = ReadingGoalView.TARGET_MET;
         String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET);
@@ -136,7 +138,7 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void testTargetMetMessageShownWhenGoalExceeded() {
+    void showTargetMetMessageWhenGoalExceeded() {
         String expected = ReadingGoalView.TARGET_MET;
         String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1);
         assertEquals(expected, actual);
@@ -208,7 +210,7 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void correctInformationShownWhenGoalIsSetOrUpdated() {
+    void correctInformationWhenGoalIsSetOrUpdated() {
         assumeThat(goalService.findAll()).isEmpty();
 
         // given

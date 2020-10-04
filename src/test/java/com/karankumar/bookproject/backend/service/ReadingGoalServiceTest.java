@@ -20,15 +20,18 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
+@DisplayName("ReadingGoalService should")
 class ReadingGoalServiceTest {
+
     @Test
-    void expectSavingGoalToOverwriteExistingGoal(@NotNull @Autowired ReadingGoalService goalService) {
+    void overwriteExistingGoalWhenSavingGoal(@NotNull @Autowired ReadingGoalService goalService) {
         // given
         ReadingGoal oldReadingGoal = new ReadingGoal(20, ReadingGoal.GoalType.BOOKS);
         goalService.save(oldReadingGoal);

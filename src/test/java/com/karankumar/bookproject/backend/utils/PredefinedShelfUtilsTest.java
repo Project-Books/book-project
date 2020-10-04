@@ -34,6 +34,7 @@ import java.util.stream.Stream;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -49,6 +50,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 @IntegrationTest
+@DisplayName("PredefinedShelfUtils should")
 class PredefinedShelfUtilsTest {
     private static BookRepository bookRepository;
 
@@ -111,7 +113,7 @@ class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void shouldGetAllPredefinedShelfNamesFromDatabase() {
+    void getAllPredefinedShelfNamesFromDatabase() {
         // given
         List<String> expectedShelfNames = List.of(
                 TO_READ.toString(),
@@ -128,7 +130,7 @@ class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void shouldGetBooksInOneChosenShelf() {
+    void getBooksInOneChosenShelf() {
         // given
         Set<Book> expectedBooks = Set.of(book1, book2);
 
@@ -140,7 +142,7 @@ class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void shouldGetAllBooksWhenChosenShelfIsAllShelves() {
+    void getAllBooksWhenChosenShelfIsAllShelves() {
         // given
         Set<Book> expectedBooks = Set.of(book1, book2, book3, book4);
 
@@ -153,7 +155,7 @@ class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void shouldGetAllBooksInChosenShelves() {
+    void getAllBooksInChosenShelves() {
         // given
         List<PredefinedShelf> predefinedShelves = List.of(toReadShelf, readShelf);
         Set<Book> expectedBooks = Set.of(book1, book2, book3);
@@ -167,7 +169,7 @@ class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void testValidPredefinedShelfNames() {
+    void validPredefinedShevesNames() {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.forEach(shelfName -> softly.assertThat(isPredefinedShelf(shelfName))
@@ -179,7 +181,7 @@ class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void isPredefinedShelfWorksForLowerCase() {
+    void workWithLowerCasePredefinedShelves() {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.stream()
@@ -193,7 +195,7 @@ class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void isPredefinedShelfWorksForUpperCase() {
+    void workWithUpperCasePredefinedShelves() {
         SoftAssertions softly = new SoftAssertions();
 
         PREDEFINED_SHELVES.stream()
@@ -207,7 +209,7 @@ class PredefinedShelfUtilsTest {
     }
 
     @Test
-    void testInvalidShelfNames() {
+    void workWithInvalidShelves() {
         SoftAssertions softly = new SoftAssertions();
 
         INVALID_SHELVES.forEach(shelfName -> softly.assertThat(isPredefinedShelf(shelfName))
@@ -220,7 +222,7 @@ class PredefinedShelfUtilsTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"To read", "Reading", "Read", "Did not finish"})
-    void testGetPredefinedShelfNameReturnsCorrectShelf(String shelfName) {
+    void correctShelvesName(String shelfName) {
         System.out.println("Shelf = " + shelfName);
         PredefinedShelf.ShelfName expectedShelf = null;
         switch (shelfName) {
@@ -242,7 +244,7 @@ class PredefinedShelfUtilsTest {
     }
     
     @Test
-    void testGetPredefinedShelfNamesAsStrings() {
+    void getPredefinedShelfNamesAsStrings() {
     	List<String> actualShelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
     	List<String> expectedShelfNames =
                 Stream.of(ShelfName.values()).map(Enum::toString).collect(Collectors.toList());

@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.entity;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,11 +31,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
+@DisplayName("PredefinedShelf should")
 class PredefinedShelfTest {
     @Autowired BookService bookService;
 
     @Test
-    void testPredefinedShelvesWithoutBooksShouldStillExist(
+    void stillExistWithoutBooks(
             @Autowired PredefinedShelfService predefinedShelfService) {
         // given
         resetBookService();

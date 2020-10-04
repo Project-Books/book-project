@@ -23,6 +23,7 @@ import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -36,6 +37,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
+@DisplayName("UserService should")
 class UserServiceTest {
     private final UserService userService;
     private final UserRepository userRepository;
@@ -63,7 +65,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withBeanViolations_throwsException() {
+    void throwsExceptionWhenRegisterWithBeanViolations() {
         final User invalidUser = User.builder()
                                      .username("testuser")
                                      .email("testmail")
@@ -74,7 +76,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withUsernameTaken_throwsException() {
+    void throwsExceptionrWhenRegisterWithUsernameTaken() {
         userRepository.save(validUser);
         validUser.setEmail("anotherEmail@testmail.com");
 
@@ -82,7 +84,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withEmailTaken_throwsException() {
+    void throwsExceptionrWhenRegisterWithEmailTaken() {
         userRepository.save(validUser);
         validUser.setUsername("anotherUsername");
 
@@ -90,12 +92,12 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withoutUserRole_throwsError() {
+    void throwsErrorWhenRegisterWithoutUserRole() {
         assertThrows(AuthenticationServiceException.class, () -> userService.register(validUser));
     }
 
     @Test
-    void register_registersUser() {
+    void registerAUser() {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
@@ -104,7 +106,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_logsUserIn() {
+    void logUserWhenRegister() {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
@@ -113,49 +115,37 @@ class UserServiceTest {
     }
 
     @Test
-    void usernameIsInUse_UsernameNotInUse_returnsFalse() {
+    @Transactional
+    void tellUserNameIsInUse() {
         assertThat(userService.usernameIsInUse("notAtestuser"), equalTo(false));
-    }
 
-    @Test
-    void usernameIsInUse_UsernameInUse_returnsTrue() {
         userRepository.save(validUser);
-
         assertThat(userService.usernameIsInUse(validUser.getUsername()), equalTo(true));
     }
 
     @Test
-    void usernameIsNotInUse_UsernameNotInUse_returnsTrue() {
-        assertThat(userService.usernameIsNotInUse("testuser"), equalTo(true));
-    }
-
-    @Test
     @Transactional
-    void usernameIsNotInUse_UsernameInUse_returnsFalse() {
-        userRepository.save(validUser);
+    void tellUserNameIsNotInUse() {
+        assertThat(userService.usernameIsNotInUse("testuser"), equalTo(true));
 
+        userRepository.save(validUser);
         assertThat(userService.usernameIsNotInUse(validUser.getUsername()), equalTo(false));
     }
 
     @Test
-    void emailIsInUse_EmailNotInUse_returnsFalse() {
+    @Transactional
+    void tellEmailIsInUse() {
         assertThat(userService.emailIsInUse("testmail"), equalTo(false));
-    }
 
-    @Test
-    void emailIsInUse_EmailInUse_returnsTrue() {
         userRepository.save(validUser);
-
         assertThat(userService.emailIsInUse(validUser.getEmail()), equalTo(true));
     }
 
-    @Test
-    void emailIsNotInUse_EmailNotInUse_returnsTrue() {
-        assertThat(userService.emailIsNotInUse("testmail"), equalTo(true));
-    }
 
     @Test
-    void emailIsNotInUse_EmailInUse_returnsFalse() {
+    @Transactional
+    void telEmailIsNotInUse() {
+        assertThat(userService.emailIsNotInUse("testmail"), equalTo(true));
         userRepository.save(validUser);
 
         assertThat(userService.emailIsNotInUse(validUser.getEmail()), equalTo(false));

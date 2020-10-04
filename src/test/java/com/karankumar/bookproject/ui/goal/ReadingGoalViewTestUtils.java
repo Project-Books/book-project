@@ -2,6 +2,7 @@ package com.karankumar.bookproject.ui.goal;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import org.junit.jupiter.api.DisplayName;
 
 import java.util.List;
 

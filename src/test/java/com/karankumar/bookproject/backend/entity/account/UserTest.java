@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.entity.account;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
@@ -27,6 +28,7 @@ import org.springframework.transaction.TransactionSystemException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
+@DisplayName("User should")
 class UserTest {
     private final UserRepository userRepository;
     private long initialNumberOfUsers;
@@ -41,7 +43,7 @@ class UserTest {
     }
 
     @Test
-    void testValidUserSaved() {
+    void beSaved() {
         // given
         User user = userWithoutPassword().password("passwordP1&132")
                                          .email("abc@def.com")
@@ -61,7 +63,7 @@ class UserTest {
     }
 
     @Test
-    void testWeakPasswordIsInvalid() {
+    void notHaveWeakPassword() {
         // given
         User user = userWithoutPassword().password("123456789")
                                          .build();
@@ -74,7 +76,7 @@ class UserTest {
     }
     
     @Test
-    void testFairPasswordIsInvalid() {
+    void notHaveFairPassword() {
         // given
         User user = userWithoutPassword().password("aPassWorD")
                                          .build();
@@ -87,7 +89,7 @@ class UserTest {
     }
     
     @Test
-    void testGoodPasswordIsInvalid() {
+    void notHaveBadPassword() {
         // given
         User user = userWithoutPassword().password("testPa$$123")
                                          .build();
@@ -106,7 +108,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithMailWithoutDomain() {
+    void notHaveMailWithoutDomain() {
         // given
         User user = userWithEmailWithoutDomain().build();
 
@@ -129,7 +131,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithoutAt() {
+    void notHaveEmailWithoutAt() {
         // given
         User user = userWithEmailWithoutAt().build();
 
@@ -146,7 +148,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithoutTopLevelDomain() {
+    void notHaveEmailWithoutTopLevelDomain() {
         // given
         User user = userWithEmailWithoutTopLevelDomain().build();
 
@@ -163,7 +165,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithoutLocalPart() {
+    void notHaveEmailWithoutLocalPart() {
         // given
         User user = userWithEmailWithoutLocalPart().build();
 
@@ -180,7 +182,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithSpace() {
+    void notHaveEmailWithSpace() {
         // given
         User user = userWithEmailWithSpace().build();
 
@@ -197,7 +199,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithQuotes() {
+    void notHaveEmailWithQuotes() {
         // given
         User user = userWithEmailWithQuotes().build();
 

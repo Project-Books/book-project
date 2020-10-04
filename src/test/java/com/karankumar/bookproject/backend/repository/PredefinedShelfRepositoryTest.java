@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaIntegrationTest
+@DisplayName("PredefinedShelfRepository should")
 class PredefinedShelfRepositoryTest {
     @Autowired private PredefinedShelfRepository repository;
 
@@ -47,8 +48,7 @@ class PredefinedShelfRepositoryTest {
     }
 
     @Test
-    @DisplayName("When a shelf exists, findByShelfName correctly returns one shelf")
-    void findByShelfNameReturnsOneShelf() {
+    void returnOneShelfWhenFindingShelfsByName() {
         List<PredefinedShelf> shelves =
                 repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
         assertThat(shelves.size()).isOne();

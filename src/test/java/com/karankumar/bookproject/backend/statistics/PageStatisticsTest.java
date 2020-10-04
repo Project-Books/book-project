@@ -27,6 +27,7 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @IntegrationTest
+@DisplayName("PageStatistics should")
 class PageStatisticsTest {
     private static BookService bookService;
     private static PredefinedShelfService predefinedShelfService;
@@ -54,7 +56,7 @@ class PageStatisticsTest {
     }
 
     @Test
-    void bookWithMostPagesExistsAndIsFound() {
+    void findBookWithMostPages() {
         assertEquals(
                 StatisticTestUtils.getBookWithMostPages().getTitle(),
                 pageStatistics.findBookWithMostPages().getTitle()
@@ -77,13 +79,13 @@ class PageStatisticsTest {
     }
 
     @Test
-    void testAveragePageLengthDivideByZero() {
+    void calculateAveragePageLengthDivideByZero() {
         resetPageStatistics();
         assertNull(pageStatistics.calculateAveragePageLength());
     }
 
     @Test
-    void averagePageLengthExistsAndIsCorrect() {
+    void calculateAveragePageLength() {
         int averagePageLength =
                 StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
         assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());

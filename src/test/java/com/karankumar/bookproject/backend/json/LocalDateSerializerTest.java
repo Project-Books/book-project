@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -26,9 +27,10 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("LocalDateSerializer should")
 class LocalDateSerializerTest {
     @Test
-    void shouldSerializeLocalDate() throws IOException {
+    void serializeLocalDate() throws IOException {
         // given
         LocalDateSerializer serializer = new LocalDateSerializer();
         LocalDate date = LocalDate.of(2020, 9, 5);

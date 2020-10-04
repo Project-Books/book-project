@@ -28,13 +28,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
+@DisplayName("CustomShelfRepository should")
 class CustomShelfRepositoryTest {
     @Autowired private CustomShelfRepository repository;
     private final String customShelf1 = "Test1";
 
     @Test
-    @DisplayName("When shelf exists, findByShelfName returns one shelf")
-    void findByShelfNameCorrectlyReturnsOneShelf() {
+    void returnOneShelfWhenFindingShelfByName() {
         // given
         saveCustomShelves();
 

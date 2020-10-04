@@ -34,6 +34,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("BooksInShelfView should")
 class BooksInShelfViewTest {
 
     private static Routes routes;
@@ -108,7 +110,7 @@ class BooksInShelfViewTest {
 
     @ParameterizedTest
     @EnumSource(PredefinedShelf.ShelfName.class)
-    void correctGridColumnsShow(PredefinedShelf.ShelfName shelfName) {
+    void showCorrectGridColumn(PredefinedShelf.ShelfName shelfName) {
         try {
             shelfView.showOrHideGridColumns(shelfName.toString());
         } catch (NotSupportedException e) {

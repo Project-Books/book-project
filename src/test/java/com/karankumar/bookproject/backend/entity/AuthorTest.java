@@ -22,11 +22,7 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @IntegrationTest
+@DisplayName("Author should")
 class AuthorTest {
     private static BookService bookService;
 
@@ -80,7 +77,7 @@ class AuthorTest {
     @Test
     @Disabled
     // TODO: fix failing test
-    void updateAuthorAffectsOneRow() {
+    void affectOnlyOneBookWhenUpdated() {
         Author newAuthor = new Author("Matthew", "Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
@@ -89,7 +86,7 @@ class AuthorTest {
     }
 
     @Test
-    void orphanAuthorsRemoved() {
+    void beRemovedWhenOrphan() {
         Author orphan = new Author("Jostein", "Gardner");
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.delete(book);

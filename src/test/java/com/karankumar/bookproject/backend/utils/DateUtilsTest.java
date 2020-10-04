@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -27,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 
+@DisplayName("DateUtils should")
 class DateUtilsTest {
     @BeforeAll
     static void setup() {
@@ -56,7 +58,7 @@ class DateUtilsTest {
     @Test
     @Disabled
     // TODO: fix failing test
-    void testCurrentWeekNumberOfYearAndWeeksLeftInYear() {
+    void giveCurrentWeekNumberOfYearAndWeeksLeftInYear() {
         Assertions.assertEquals(1, mockFirstWeekOfYear());
         Assertions.assertEquals(40, mockFortiethWeekOfYear());
         Assertions.assertEquals(52, mockLastWeekOfYear());
@@ -65,7 +67,7 @@ class DateUtilsTest {
     @Test
     @Disabled
     // TODO: fix failing test
-    void testWeeksLeftInYearFromCurrentWeek() {
+    void giveWeeksLeftInYearFromCurrentWeek() {
         Assertions.assertEquals(calculateWeeksLeftInYear(1),
                 DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFirstWeekOfYear()));
 
