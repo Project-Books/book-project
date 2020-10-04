@@ -244,7 +244,8 @@ class PredefinedShelfUtilsTest {
     @Test
     void testGetPredefinedShelfNamesAsStrings() {
     	List<String> actualShelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
-    	List<String> expectedShelfNames = Stream.of(ShelfName.values()).map(Enum::toString).collect(Collectors.toList());
+    	List<String> expectedShelfNames =
+                Stream.of(ShelfName.values()).map(Enum::toString).collect(Collectors.toList());
     	assertEquals(expectedShelfNames.size(), actualShelfNames.size());
     	assertTrue(expectedShelfNames.containsAll(actualShelfNames));
     }
