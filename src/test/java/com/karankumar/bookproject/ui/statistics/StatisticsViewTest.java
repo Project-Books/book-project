@@ -143,7 +143,7 @@ class StatisticsViewTest {
         statisticsView = new StatisticsView(predefinedShelfService);
 
         // then
-        likedBookStatisticsAreAbsent();
+        ratingStatisticsAreAbsent();
     }
 
     @Test
@@ -191,10 +191,6 @@ class StatisticsViewTest {
 
     private void genreAndRatingStatisticsAreAbsent() {
         statisticsAreAbsent(MOST_LIKED_GENRE, LEAST_LIKED_GENRE);
-    }
-
-    private void likedBookStatisticsAreAbsent() {
-        statisticsAreAbsent(MOST_LIKED_BOOK, LEAST_LIKED_BOOK);
     }
 
     private void statisticsAreAbsent(StatisticType... statisticTypes) {

@@ -74,7 +74,7 @@ public class RatingStatistics extends Statistics {
      */
     public Double calculateAverageRatingGiven() {
         int numberOfRatings = readBooksRated.size();
-        if (numberOfRatings == 0) {
+        if (numberOfRatings <= 1) {
             return null;
         }
         return (calculateTotalRating() / numberOfRatings);
