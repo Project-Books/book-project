@@ -21,16 +21,14 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import org.junit.jupiter.api.Assertions;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @IntegrationTest
 class AuthorTest {
@@ -85,7 +83,7 @@ class AuthorTest {
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
 
-        Assertions.assertNotEquals(testBook1.getAuthor(), testBook2.getAuthor());
+        assertThat(testBook1.getAuthor()).isNotEqualTo(testBook2.getAuthor());
     }
 
     @Test
@@ -96,9 +94,11 @@ class AuthorTest {
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.delete(book);
 
-        assertAll(
-                () -> assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId())),
-                () -> assertTrue(authorService.findAll().isEmpty())
-        );
+        assertSoftly(
+                softly -> {
+                    softly.assertThatThrownBy(() -> authorService.findById(orphan.getId()))
+                    .isInstanceOf(RuntimeException.class);
+                    softly.assertThat(authorService.findAll()).isEmpty();
+                });
     }
 }

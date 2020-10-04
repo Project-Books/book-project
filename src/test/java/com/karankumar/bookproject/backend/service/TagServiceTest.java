@@ -2,6 +2,9 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Tag;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assumptions.assumeThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,10 +13,6 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
 import javax.transaction.Transactional;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
 @DisplayName("TagService should")
