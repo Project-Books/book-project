@@ -69,6 +69,56 @@ After having been assigned to a ticket, please discuss your implementation appro
 
 This step can help to save both your time and our time in the long run :)
 
+### Ensure your email address on your commits are correct
+
+If your email address that you are committing with does not match the email address associated with your GitHub
+account, you won't show up as a contributor on our repository or on your profile.
+
+![Books in shelf](/media/docs/contributing/git-email.png)
+
+In the above image, the contributor's avatar is the same as the avatar on their GitHub profile. In addition, their username (highlighted) is a link to their GitHub profile. This won't be the case if you haven't set things up correctly.
+
+You can check the email address in your git config with the following command:
+
+```
+$ git config user.email
+```
+
+You can then ensure that this matches the email address on your GitHub account (look in 'Settings').
+
+For more information, see GitHub's documentation page on 
+['Why are my contributions not showing up on my profile?'](https://docs.github.com/en/free-pro-team@latest/github/setting-up-and-managing-your-github-profile/why-are-my-contributions-not-showing-up-on-my-profile).
+
+
+#### Rewriting pushed commits with a different email address
+
+_Step 1:_
+
+While on your feature branch, run 
+`$ git rebase -i -HEAD~n` where _n_ are the number of commits you would like to change
+
+This will then open your commits in the default text editor for Git (which may be Vim or Vi, so you may wish to change this if you prefer a different editor).
+
+_Step 2:_ 
+
+Change the lines with 'pick' to 'edit' and then save and quit the file
+
+_Step 3:_
+
+`$ git commit --amend --author= "[Your name] [your email address as shown on GitHub]" --no-edit`
+
+_Step 4:_
+
+`$ git rebase --continue`
+
+You'll need to run steps 3 and 4 _n_ number of times, where n represents the number of commits that you are rewriting.
+
+_Step 5:_ 
+
+Once you've finished with the rebase, force push: 
+
+`$ git push -f origin [your-branch-name]`
+
 ## Workflow
 
 Please follow the process below:
