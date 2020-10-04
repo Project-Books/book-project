@@ -568,7 +568,11 @@ Instead of commenting out tests, we use the `@Disable` annotation. Please note t
 
 ### Using DisplayName
 
-Where it would add value, a `@DisplayName` annotation should be used. For example, you could replace a Javadoc comment with a display name. This is also useful if the method name is concise but not comprehensive. Adding a display name should be used where it serves as useful documentation.
+All test classes should be annotated with a `@DisplayName`. For example, the test class `TagServiceTest` should
+be annotated with the display name `TagService should`. We find this greatly improves readability as the method
+names can be read like a sentence (e.g. `TagService should` `findAllTags()` or `deleteExistingTag()`).
+
+A `@DisplayName` annotation should be used at a method level where it adds value. For example, you could replace a Javadoc comment with a display name. This is also useful if the method name is concise but not comprehensive. Adding a display name should be used where it serves as useful documentation.
 
 ### Avoid randomness
 
