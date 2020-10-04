@@ -117,26 +117,23 @@ public class StatisticsViewTestUtils {
     }
 
     private static Book createBook(String title, Author author,
-                                   PredefinedShelfService predefinedShelfService, BookGenre genre,
-                                   int numberOfPages, int pagesRead, RatingScale rating) {
+                                   PredefinedShelfService predefinedShelfService) {
         PredefinedShelf readShelf = getReadShelf(predefinedShelfService);
         final var book = new Book(title, author, readShelf);
-        book.setBookGenre(genre);
-        book.setNumberOfPages(numberOfPages);
-        book.setPagesRead(pagesRead);
-        book.setRating(rating);
+        book.setBookGenre(BookGenre.FANTASY);
+        book.setNumberOfPages(2000);
+        book.setPagesRead(1000);
+        book.setRating(RatingScale.EIGHT_POINT_FIVE);
         return book;
     }
 
     private static Book createMobyDickBook(PredefinedShelfService predefinedShelfService) {
         final var author = new Author("Herman", "Melville");
-        return createBook("Moby Dick", author, predefinedShelfService, BookGenre.ADVENTURE, 2000,
-                1000, RatingScale.EIGHT);
+        return createBook("Moby Dick", author, predefinedShelfService);
     }
 
     private static Book createHobbitBook(PredefinedShelfService predefinedShelfService) {
         final var author = new Author("J.R.R", "Tolkien");
-        return createBook("The Hobbit", author, predefinedShelfService, BookGenre.FANTASY, 1999,
-                1110, RatingScale.EIGHT_POINT_FIVE);
+        return createBook("The Hobbit", author, predefinedShelfService);
     }
 }
