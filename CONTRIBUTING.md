@@ -74,6 +74,10 @@ This step can help to save both your time and our time in the long run :)
 If your email address that you are committing with does not match the email address associated with your GitHub
 account, you won't show up as a contributor on our repository or on your profile.
 
+![Books in shelf](/media/docs/contributing/git-email.png)
+
+In the above image, the contributor's avatar is the same as the avatar on their GitHub profile. In addition, their username (highlighted) is a link to their GitHub profile. This won't be the case if you haven't set things up correctly.
+
 You can check the email address in your git config with the following command:
 
 ```
