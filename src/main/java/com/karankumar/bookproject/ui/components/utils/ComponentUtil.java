@@ -31,9 +31,7 @@ public class ComponentUtil {
 
     public static void clearComponentFields(HasValue... components) {
         for (HasValue component : components) {
-            if (component != null && !component.isEmpty()) {
-                component.clear();
-            }
+            component.clear();
         }
     }
 }
