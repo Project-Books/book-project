@@ -81,7 +81,7 @@ class StatisticsViewTest {
     private void valueIsPresent(StatisticsViewTestUtils.Statistic currentStatistic) {
         assertFalse(currentStatistic instanceof StatisticNotFound);
     }
-    
+
     private void thereAreNotOtherStatistics() {
         assertEquals(StatisticType.values().length, statisticsView.getComponentCount());
     }
