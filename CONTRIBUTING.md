@@ -69,7 +69,7 @@ After having been assigned to a ticket, please discuss your implementation appro
 
 This step can help to save both your time and our time in the long run :)
 
-### Ensure your Git credentials are correct
+### Ensure your email address on your commits are correct
 
 If your email address that you are committing with does not match the email address associated with your GitHub
 account, you won't show up as a contributor on our repository or on your profile.
