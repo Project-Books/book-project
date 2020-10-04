@@ -7,7 +7,6 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.statistics.StatisticsView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.dom.Element;
@@ -110,15 +109,10 @@ public class StatisticsViewTestUtils {
         bookService.save(book);
     }
 
-    private static PredefinedShelf getReadShelf(PredefinedShelfService predefinedShelfService) {
-        PredefinedShelfUtils predefinedShelfUtils =
-                new PredefinedShelfUtils(predefinedShelfService);
-        return predefinedShelfUtils.findReadShelf();
-    }
-
     private static Book createBook(String title, Author author,
                                    PredefinedShelfService predefinedShelfService) {
-        PredefinedShelf readShelf = getReadShelf(predefinedShelfService);
+        PredefinedShelf readShelf =
+                predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
         final var book = new Book(title, author, readShelf);
         book.setBookGenre(BookGenre.FANTASY);
         book.setNumberOfPages(2000);

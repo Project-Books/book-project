@@ -23,7 +23,6 @@ import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.goal.CalculateReadingGoal;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.backend.utils.StringUtils;
 import com.karankumar.bookproject.backend.utils.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
@@ -120,7 +119,8 @@ public class ReadingGoalView extends VerticalLayout {
     }
 
     private void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
-        PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
+        PredefinedShelf readShelf =
+                predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
         if (readShelf == null || readShelf.getBooks() == null) {
             return;
         }

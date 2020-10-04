@@ -21,8 +21,6 @@ package com.karankumar.bookproject.backend.repository;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf, Long> {
-    List<PredefinedShelf> findByPredefinedShelfName(PredefinedShelf.ShelfName shelfName);
+    PredefinedShelf findByPredefinedShelfName(PredefinedShelf.ShelfName shelfName);
 }

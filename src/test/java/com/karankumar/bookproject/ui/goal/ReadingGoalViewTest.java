@@ -27,7 +27,6 @@ import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
@@ -70,7 +69,6 @@ class ReadingGoalViewTest {
 
     private ReadingGoalService goalService;
     private PredefinedShelfService predefinedShelfService;
-    private PredefinedShelfUtils predefinedShelfUtils;
     private ReadingGoalView goalView;
 
     private final int GOAL_TARGET = 52;
@@ -90,7 +88,6 @@ class ReadingGoalViewTest {
 
         this.goalService = goalService;
         this.predefinedShelfService = predefinedShelfService;
-        this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         goalView = new ReadingGoalView(goalService, predefinedShelfService);
     }
 
@@ -158,7 +155,7 @@ class ReadingGoalViewTest {
         int pagesReadInReadShelf = findHowManyPagesInReadShelfWithFinishDate(allBooks);
         System.out.println("Pages read " + pagesReadInReadShelf);
 
-        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
+        PredefinedShelf readShelf = predefinedShelfService.findByPredefinedShelfName(ShelfName.READ);
         Assumptions.assumeTrue(readShelf != null);
         assertEquals(booksInReadShelf, howManyReadThisYear(BOOKS, readShelf));
         assertEquals(pagesReadInReadShelf, howManyReadThisYear(PAGES, readShelf));
@@ -196,7 +193,7 @@ class ReadingGoalViewTest {
 
     private Book createBook(ShelfName shelfName) {
         Book book = new Book("Title", new Author("Joe", "Bloggs"),
-                predefinedShelfUtils.findReadShelf());
+                predefinedShelfService.findByPredefinedShelfName(ShelfName.READ));
         if (shelfName.equals(ShelfName.READ)) {
             book.setDateFinishedReading(LocalDate.now());
         }
@@ -230,7 +227,7 @@ class ReadingGoalViewTest {
     }
 
     private void assertGoalOnlyComponentsShown(ReadingGoal goal) {
-        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
+        PredefinedShelf readShelf = predefinedShelfService.findByPredefinedShelfName(ShelfName.READ);
         int howManyReadThisYear = howManyReadThisYear(goal.getGoalType(), readShelf);
         boolean hasReachedGoal = (goal.getTarget() <= howManyReadThisYear);
 

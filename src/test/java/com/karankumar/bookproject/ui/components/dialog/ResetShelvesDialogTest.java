@@ -25,7 +25,6 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
@@ -55,7 +54,7 @@ class ResetShelvesDialogTest {
     @BeforeEach
     public void setup(@Autowired BookService bookService,
                       @Autowired PredefinedShelfService predefinedShelfService) {
-        toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
+        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
         this.bookService = bookService;
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);

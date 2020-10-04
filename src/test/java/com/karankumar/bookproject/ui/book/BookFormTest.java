@@ -29,7 +29,6 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
@@ -93,8 +92,6 @@ class BookFormTest {
     private static PredefinedShelf readShelf;
     private static BookForm bookForm;
 
-    private static PredefinedShelfUtils predefinedShelfUtils;
-
     @Autowired private ApplicationContext ctx;
 
     @Autowired private BookService bookService;
@@ -111,8 +108,6 @@ class BookFormTest {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
-        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
-
         bookService.deleteAll();
         customShelfService.deleteAll();
         customShelfService.save(customShelf);
@@ -122,7 +117,7 @@ class BookFormTest {
 
     private BookForm createBookForm(PredefinedShelf.ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
-        readShelf = predefinedShelfUtils.findReadShelf();
+        readShelf = predefinedShelfService.findByPredefinedShelfName(READ);
         bookForm.setBook(createBook(shelf, isInSeries, bookTitle));
         return bookForm;
     }
@@ -130,7 +125,7 @@ class BookFormTest {
     private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries,
                             String bookTitle) {
         Author author = new Author(firstName, lastName);
-        PredefinedShelf shelf = predefinedShelfUtils.findPredefinedShelf(shelfName);
+        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfName(shelfName);
         Book book = new Book(bookTitle, author, shelf);
 
         seriesPosition = SERIES_POSITION;
