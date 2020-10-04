@@ -13,11 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @DisplayName("PredefinedShelfService should")
 class PredefinedShelfServiceTest {
-    private static PredefinedShelfService predefinedShelfService;
+    private PredefinedShelfService predefinedShelfService;
 
-    @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService predefinedShelfService) {
-        PredefinedShelfServiceTest.predefinedShelfService = predefinedShelfService;
+    @Autowired
+    PredefinedShelfServiceTest(PredefinedShelfService predefinedShelfService) {
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     @Test
@@ -36,12 +36,12 @@ class PredefinedShelfServiceTest {
     @Test
     void notDeleteAllPredefinedShelves() {
         // given
-        int expected = predefinedShelfService.findAll().size();
+        Long expected = predefinedShelfService.count();
 
         // when
         predefinedShelfService.deleteAll();
 
         // then
-        assertThat(predefinedShelfService.findAll()).hasSize(expected);
+        assertThat(predefinedShelfService.count()).isEqualTo(expected);
     }
 }
