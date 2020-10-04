@@ -528,7 +528,11 @@ TODO comments are acceptable and encouraged if they are useful. However, we ask 
 
 For enums, favor `EnumMap` over `HashMap` for [performance reasons](https://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html).
 
-## JUnit
+## JUnit tests
+
+### Use AssertJ
+
+For assertions and assumptions, we're using AssertJ. We find this to be more readable (it flows nicer as it reads like a sentence) and it's easier to have a consistent team style.
 
 ### Given/when/then pattern
 The pattern we follow for JUnit tests are given/when/then. For example, given some input some setup, when an action occurs, then assert as desired. Concrete example:
@@ -556,7 +560,7 @@ In every test method, try to minimise the number of assertions. Ideally, there s
 
 ### Assert all for multiple assertions
 
-If a test method needs multiple assertions, `assertAll()` (or `assertSoftly()`) should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
+If a test method needs multiple assertions, `assertSoftly()` should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
 
 ### Disabling failing tests
 
