@@ -42,6 +42,7 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutGenre;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutPageCount;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutRatings;
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithOnlyOneBook;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -134,6 +135,18 @@ class StatisticsViewTest {
     }
 
     @Test
+    void withOnlyOneBookTheMostLikedAndLeastLikedBookShouldBeAbsent() {
+        // given
+        populateDataWithOnlyOneBook(bookService, predefinedShelfService);
+
+        // when
+        statisticsView = new StatisticsView(predefinedShelfService);
+
+        // then
+        likedBookStatisticsAreAbsent();
+    }
+
+    @Test
     void withoutRatingInformationTheViewShouldShowOtherStatistics() {
         // given
         populateDataWithBooksWithoutRatings(bookService, predefinedShelfService);
@@ -178,6 +191,10 @@ class StatisticsViewTest {
 
     private void genreAndRatingStatisticsAreAbsent() {
         statisticsAreAbsent(MOST_LIKED_GENRE, LEAST_LIKED_GENRE);
+    }
+
+    private void likedBookStatisticsAreAbsent() {
+        statisticsAreAbsent(MOST_LIKED_BOOK, LEAST_LIKED_BOOK);
     }
 
     private void statisticsAreAbsent(StatisticType... statisticTypes) {

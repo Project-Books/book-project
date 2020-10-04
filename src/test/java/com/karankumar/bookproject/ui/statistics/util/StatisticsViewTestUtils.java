@@ -77,6 +77,12 @@ public class StatisticsViewTestUtils {
         bookService.save(hobbitBook);
     }
 
+    public static void populateDataWithOnlyOneBook(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
+        Book mobyDickBook = createMobyDickBook(predefinedShelfService);
+        bookService.save(mobyDickBook);
+    }
+
     public static void populateDataWithBooksWithoutPageCount(
             BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book mobyDickBook = createMobyDickBook(predefinedShelfService);
