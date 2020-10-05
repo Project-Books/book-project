@@ -311,6 +311,7 @@ public class BookForm extends VerticalLayout {
 
     private void configureSaveFormButton() {
         saveButton.setText(LABEL_ADD_BOOK);
+        saveButton.setEnabled(binder.isValid());
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         saveButton.addClickListener(click -> validateOnSave());
         saveButton.setDisableOnClick(true);
