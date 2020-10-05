@@ -32,6 +32,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -59,5 +60,9 @@ public class Author extends BaseEntity {
     @Override
     public String toString() {
         return firstName + " " + lastName;
+    }
+
+    public void removeBook(Book book) {
+        books = books.stream().filter(it -> !it.equals(book)).collect(Collectors.toSet());
     }
 }

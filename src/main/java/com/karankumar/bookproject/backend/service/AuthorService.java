@@ -44,14 +44,6 @@ public class AuthorService {
     }
 
     public void save(@NonNull Author author) {
-        if (author.getId() != null) {
-            Author existingAuthor = findById(author.getId());
-            if (existingAuthor != null) {
-                LOGGER.log(Level.INFO, "Matching authorIds: " + existingAuthor.getId());
-                author = new Author(author.getFirstName(), author.getLastName());
-            }
-        }
-
         authorRepository.save(author);
     }
 
