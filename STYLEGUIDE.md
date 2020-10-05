@@ -71,7 +71,7 @@ the version on the master branch should be followed, as this version should be t
    7. [TODOs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#todos)
    8. [Prefer Optional over null](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#prefer-optional-over-null)
    9. [Favor EnumMap over HashMap](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#favor-enummap-over-hashmap)
-9. [JUnit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#junit)
+9. [JUnit tests](https://github.com/Project-Books/book-project/blob/master/STYLEGUIDE.md#junit-tests)
    1. [Given/when/then pattern](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#givenwhenthen-pattern)
    2. [Fewest number of assertions in every test](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fewest-number-of-assertions-in-every-test)
    3. [Assert all for multiple assertions](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#assert-all-for-multiple-assertions)
