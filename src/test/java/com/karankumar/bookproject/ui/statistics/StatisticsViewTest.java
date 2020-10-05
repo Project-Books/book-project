@@ -43,6 +43,7 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutGenre;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutPageCount;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutRatings;
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithOnlyOneBook;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -83,7 +84,7 @@ class StatisticsViewTest {
     private void valueIsPresent(StatisticsViewTestUtils.Statistic currentStatistic) {
         assertFalse(currentStatistic instanceof StatisticNotFound);
     }
-    
+
     private void thereAreNotOtherStatistics() {
         assertEquals(StatisticType.values().length, statisticsView.getComponentCount());
     }
@@ -136,7 +137,19 @@ class StatisticsViewTest {
     }
 
     @Test
-    void showOtherStatisticsWithoutRatingInformation() {
+    void withOnlyOneBookTheMostLikedAndLeastLikedBookShouldBeAbsent() {
+        // given
+        populateDataWithOnlyOneBook(bookService, predefinedShelfService);
+
+        // when
+        statisticsView = new StatisticsView(predefinedShelfService);
+
+        // then
+        ratingStatisticsAreAbsent();
+    }
+
+    @Test
+    void ShouldShowOtherStatisticswithoutRatingInformationTheView() {
         // given
         populateDataWithBooksWithoutRatings(bookService, predefinedShelfService);
 

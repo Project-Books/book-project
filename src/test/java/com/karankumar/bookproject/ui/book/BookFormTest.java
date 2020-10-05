@@ -753,6 +753,19 @@ class BookFormTest {
         assertThat(bookService.count()).isZero();
     }
 
+    @Test
+    void shouldOnlyEnableSaveWhenValid() {
+        // given
+        bookForm = new BookForm(predefinedShelfService,customShelfService);
+        assertThat(bookForm.saveButton.isEnabled()).isFalse();
+
+        // when
+        bookForm.setBook(createBook(READ, true, "title"));
+
+        // then
+        assertThat(bookForm.saveButton.isEnabled()).isTrue();
+    }
+
     @AfterEach
     public void tearDown() {
         MockVaadin.tearDown();

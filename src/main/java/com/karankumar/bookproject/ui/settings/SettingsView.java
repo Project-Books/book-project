@@ -20,11 +20,13 @@ package com.karankumar.bookproject.ui.settings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
-import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
+import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
+import com.vaadin.flow.component.HtmlComponent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -47,10 +49,15 @@ import java.util.logging.Level;
 public class SettingsView extends HorizontalLayout {
 
     private static final String ENABLE_DARK_MODE = "Enable dark mode";
+    private static final String APPEARANCE = "Appearance:";
+    private static final String MY_BOOKS = "My books:";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
     private static final SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
+    private static final H3 appearanceHeading = new H3(APPEARANCE);
+    private static final H3 myBooksHeading = new H3(MY_BOOKS);
+    private static final HtmlComponent lineBreak = new HtmlComponent("br");
 
     // Clear Shelves
     private static ResetShelvesDialog resetShelvesDialog;
@@ -97,7 +104,14 @@ public class SettingsView extends HorizontalLayout {
 
         configureExportBooksAnchor();
 
-        VerticalLayout verticalLayout = new VerticalLayout(horizontalLayout, clearShelvesButton, exportBooksAnchor);
+        VerticalLayout verticalLayout = new VerticalLayout(
+                appearanceHeading,
+                horizontalLayout,
+                lineBreak,
+                myBooksHeading,
+                clearShelvesButton,
+                exportBooksAnchor
+        );
 
         verticalLayout.setAlignItems(Alignment.CENTER);
 

@@ -75,4 +75,16 @@ class ReadingGoalServiceTest {
         // then we no longer have a reading goal set
         assertThat(goalService.count()).isZero();
     }
+
+    @Test
+    void shouldNotSaveANullGoal() {
+        // given we have a reading goal
+        assumeThat(goalService.count()).isOne();
+
+        // when we try to save null
+        goalService.save(null);
+
+        // then we have same number of records as before
+        assertThat(goalService.count()).isOne();
+    }
 }

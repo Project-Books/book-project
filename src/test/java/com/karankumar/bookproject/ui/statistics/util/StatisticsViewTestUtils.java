@@ -18,22 +18,26 @@ import java.util.function.Predicate;
 
 public class StatisticsViewTestUtils {
 
-    private StatisticsViewTestUtils() {}
+    private StatisticsViewTestUtils() {
+    }
 
     @AllArgsConstructor
     public static class Statistic {
         @Getter private final String caption;
         @Getter private final String value;
     }
+
     public static class StatisticNotFound extends Statistic {
         public StatisticNotFound() {
             super("statistic", "not found");
         }
     }
 
-    public static Statistic getStatistic(StatisticsView.StatisticType statisticType, StatisticsView statisticsView) {
+    public static Statistic getStatistic(StatisticsView.StatisticType statisticType,
+                                         StatisticsView statisticsView) {
         try {
-            Element verticalLayoutInDiv = getVerticalLayoutWithStatistic(statisticType, statisticsView);
+            Element verticalLayoutInDiv =
+                    getVerticalLayoutWithStatistic(statisticType, statisticsView);
             // statistic caption is in VL -> H3 -> Text
             String caption = verticalLayoutInDiv.getChild(0)
                                                 .getText();
@@ -45,42 +49,58 @@ public class StatisticsViewTestUtils {
         }
     }
 
-    private static Element getVerticalLayoutWithStatistic(StatisticsView.StatisticType statisticType, StatisticsView statisticsView) {
+    private static Element getVerticalLayoutWithStatistic(
+            StatisticsView.StatisticType statisticType, StatisticsView statisticsView) {
         var divContainingStatistic = statisticsView.getChildren()
-                                                            .filter(textWithinH3EqualsTo(statisticType.getCaption()))
-                                                            .findFirst()
-                                                            .get()
-                                                            .getElement();
+                                                   .filter(textWithinH3EqualsTo(
+                                                           statisticType.getCaption()))
+                                                   .findFirst()
+                                                   .get()
+                                                   .getElement();
         var verticalLayoutInDiv = divContainingStatistic.getChild(0);
         return verticalLayoutInDiv;
     }
 
     private static Predicate<Component> textWithinH3EqualsTo(String text) {
         return x -> x.getElement() // DIV ->
-                .getChild(0) // VerticalLayout ->
-                .getChild(0) // H3 ->
-                .getText() // Text
-                .equals(text);
+                     .getChild(0) // VerticalLayout ->
+                     .getChild(0) // H3 ->
+                     .getText() // Text
+                     .equals(text);
     }
 
     public static void populateDataWithBooks(
             BookService bookService, PredefinedShelfService predefinedShelfService) {
-        Book book = createMobyDickBook(predefinedShelfService);
-        bookService.save(book);
+        Book mobyDickBook = createMobyDickBook(predefinedShelfService);
+        Book hobbitBook = createHobbitBook(predefinedShelfService);
+        bookService.save(mobyDickBook);
+        bookService.save(hobbitBook);
     }
-    
+
+    public static void populateDataWithOnlyOneBook(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
+        Book mobyDickBook = createMobyDickBook(predefinedShelfService);
+        bookService.save(mobyDickBook);
+    }
+
     public static void populateDataWithBooksWithoutPageCount(
             BookService bookService, PredefinedShelfService predefinedShelfService) {
-        Book book = createMobyDickBook(predefinedShelfService);
-        book.setNumberOfPages(null);
-        bookService.save(book);
+        Book mobyDickBook = createMobyDickBook(predefinedShelfService);
+        Book hobbitBook = createHobbitBook(predefinedShelfService);
+        mobyDickBook.setNumberOfPages(null);
+        hobbitBook.setNumberOfPages(null);
+        bookService.save(mobyDickBook);
+        bookService.save(hobbitBook);
     }
 
     public static void populateDataWithBooksWithoutGenre(
             BookService bookService, PredefinedShelfService predefinedShelfService) {
-        Book book = createMobyDickBook(predefinedShelfService);
-        book.setBookGenre(null);
-        bookService.save(book);
+        Book mobyDickBook = createMobyDickBook(predefinedShelfService);
+        Book hobbitBook = createHobbitBook(predefinedShelfService);
+        mobyDickBook.setBookGenre(null);
+        hobbitBook.setBookGenre(null);
+        bookService.save(mobyDickBook);
+        bookService.save(hobbitBook);
     }
 
     public static void populateDataWithBooksWithoutRatings(
@@ -91,18 +111,29 @@ public class StatisticsViewTestUtils {
     }
 
     private static PredefinedShelf getReadShelf(PredefinedShelfService predefinedShelfService) {
-        PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+        PredefinedShelfUtils predefinedShelfUtils =
+                new PredefinedShelfUtils(predefinedShelfService);
         return predefinedShelfUtils.findReadShelf();
     }
 
-    private static Book createMobyDickBook(PredefinedShelfService predefinedShelfService) {
+    private static Book createBook(String title, Author author,
+                                   PredefinedShelfService predefinedShelfService) {
         PredefinedShelf readShelf = getReadShelf(predefinedShelfService);
-        Author author = new Author("Herman", "Melville");
-        Book book = new Book("Moby Dick", author, readShelf);
-        book.setBookGenre(BookGenre.ADVENTURE);
+        final var book = new Book(title, author, readShelf);
+        book.setBookGenre(BookGenre.FANTASY);
         book.setNumberOfPages(2000);
         book.setPagesRead(1000);
         book.setRating(RatingScale.EIGHT_POINT_FIVE);
         return book;
+    }
+
+    private static Book createMobyDickBook(PredefinedShelfService predefinedShelfService) {
+        final var author = new Author("Herman", "Melville");
+        return createBook("Moby Dick", author, predefinedShelfService);
+    }
+
+    private static Book createHobbitBook(PredefinedShelfService predefinedShelfService) {
+        final var author = new Author("J.R.R", "Tolkien");
+        return createBook("The Hobbit", author, predefinedShelfService);
     }
 }
