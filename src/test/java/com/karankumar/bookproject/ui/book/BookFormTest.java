@@ -760,7 +760,7 @@ class BookFormTest {
         assertThat(bookForm.saveButton.isEnabled()).isFalse();
 
         // when
-        bookForm.setBook(createBook(READ,true,"title"));
+        bookForm.setBook(createBook(READ, true, "title"));
 
         // then
         assertThat(bookForm.saveButton.isEnabled()).isTrue();
