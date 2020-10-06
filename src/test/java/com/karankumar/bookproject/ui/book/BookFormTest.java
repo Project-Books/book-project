@@ -117,7 +117,7 @@ class BookFormTest {
 
     private BookForm createBookForm(PredefinedShelf.ShelfName shelf, boolean isInSeries) {
         BookForm bookForm = new BookForm(predefinedShelfService, customShelfService);
-        readShelf = predefinedShelfService.findByPredefinedShelfName(READ);
+        readShelf = predefinedShelfService.findReadShelf();
         bookForm.setBook(createBook(shelf, isInSeries, bookTitle));
         return bookForm;
     }

@@ -45,7 +45,7 @@ class AuthorTest {
     public static void setup(@Autowired PredefinedShelfService predefinedShelfService,
                              @Autowired BookService bookService,
                              @Autowired AuthorService authorService) {
-        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+        toRead = predefinedShelfService.findToReadShelf();
         testBook1 = createBook("How the mind works", toRead);
         testBook2 = createBook("The better angels of our nature", toRead);
 

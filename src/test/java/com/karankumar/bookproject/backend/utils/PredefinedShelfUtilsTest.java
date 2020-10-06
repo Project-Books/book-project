@@ -88,9 +88,9 @@ class PredefinedShelfUtilsTest {
     }
 
     private static void findPredefinedShelves(PredefinedShelfService predefinedShelfService) {
-        toReadShelf = predefinedShelfService.findByPredefinedShelfName(TO_READ);
-        readShelf =  predefinedShelfService.findByPredefinedShelfName(READ);
-        didNotFinishShelf = predefinedShelfService.findByPredefinedShelfName(DID_NOT_FINISH);
+        toReadShelf = predefinedShelfService.findToReadShelf();
+        readShelf =  predefinedShelfService.findReadShelf();
+        didNotFinishShelf = predefinedShelfService.findDidNotFinishShelf();
     }
 
     private static void resetBookRepository() {

@@ -155,7 +155,7 @@ class ReadingGoalViewTest {
         int pagesReadInReadShelf = findHowManyPagesInReadShelfWithFinishDate(allBooks);
         System.out.println("Pages read " + pagesReadInReadShelf);
 
-        PredefinedShelf readShelf = predefinedShelfService.findByPredefinedShelfName(ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         Assumptions.assumeTrue(readShelf != null);
         assertEquals(booksInReadShelf, howManyReadThisYear(BOOKS, readShelf));
         assertEquals(pagesReadInReadShelf, howManyReadThisYear(PAGES, readShelf));
@@ -193,7 +193,7 @@ class ReadingGoalViewTest {
 
     private Book createBook(ShelfName shelfName) {
         Book book = new Book("Title", new Author("Joe", "Bloggs"),
-                predefinedShelfService.findByPredefinedShelfName(ShelfName.READ));
+                predefinedShelfService.findReadShelf());
         if (shelfName.equals(ShelfName.READ)) {
             book.setDateFinishedReading(LocalDate.now());
         }
@@ -227,7 +227,7 @@ class ReadingGoalViewTest {
     }
 
     private void assertGoalOnlyComponentsShown(ReadingGoal goal) {
-        PredefinedShelf readShelf = predefinedShelfService.findByPredefinedShelfName(ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         int howManyReadThisYear = howManyReadThisYear(goal.getGoalType(), readShelf);
         boolean hasReachedGoal = (goal.getTarget() <= howManyReadThisYear);
 

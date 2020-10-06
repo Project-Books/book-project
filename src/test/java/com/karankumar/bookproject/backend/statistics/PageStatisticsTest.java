@@ -62,8 +62,7 @@ class PageStatisticsTest {
 
     @Test
     void onlyReadBooksCountTowardsMostPagesStatistics() {
-        PredefinedShelf readingShelf =
-                predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.READING);
+        PredefinedShelf readingShelf = predefinedShelfService.findReadingShelf();
 
         Book readingBook = new Book("More pages than any read book",
                 new Author("Joe", "Bloggs"), readingShelf);

@@ -111,8 +111,7 @@ public class StatisticsViewTestUtils {
 
     private static Book createBook(String title, Author author,
                                    PredefinedShelfService predefinedShelfService) {
-        PredefinedShelf readShelf =
-                predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         final var book = new Book(title, author, readShelf);
         book.setBookGenre(BookGenre.FANTASY);
         book.setNumberOfPages(2000);

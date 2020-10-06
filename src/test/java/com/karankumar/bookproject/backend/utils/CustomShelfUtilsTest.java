@@ -34,7 +34,7 @@ class CustomShelfUtilsTest {
     public static void setUp(@Autowired PredefinedShelfService predefinedShelfService,
                              @Autowired CustomShelfService customShelfService,
                              @Autowired BookService bookService) {
-        PredefinedShelf toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+        PredefinedShelf toRead = predefinedShelfService.findToReadShelf();
 
         CustomShelfUtilsTest.bookService = bookService;
         CustomShelfUtilsTest.customShelfService = customShelfService;

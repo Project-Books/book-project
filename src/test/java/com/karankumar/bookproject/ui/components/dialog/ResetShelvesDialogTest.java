@@ -54,7 +54,7 @@ class ResetShelvesDialogTest {
     @BeforeEach
     public void setup(@Autowired BookService bookService,
                       @Autowired PredefinedShelfService predefinedShelfService) {
-        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+        toRead = predefinedShelfService.findToReadShelf();
         this.bookService = bookService;
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);

@@ -27,8 +27,7 @@ public class Statistics {
     protected final Set<Book> readShelfBooks;
 
     public Statistics(PredefinedShelfService predefinedShelfService) {
-        PredefinedShelf readShelf =
-                predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         readShelfBooks = readShelf.getBooks();
     }
 }

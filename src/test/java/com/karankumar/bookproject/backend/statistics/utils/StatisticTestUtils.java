@@ -63,7 +63,7 @@ public class StatisticTestUtils {
     }
 
     private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages) {
-        PredefinedShelf readShelf = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         Book book = createBook(bookTitle, readShelf, bookGenre, pages);
         book.setRating(rating);
 

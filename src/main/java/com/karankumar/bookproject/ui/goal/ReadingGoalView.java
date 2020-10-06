@@ -119,8 +119,7 @@ public class ReadingGoalView extends VerticalLayout {
     }
 
     private void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
-        PredefinedShelf readShelf =
-                predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         if (readShelf == null || readShelf.getBooks() == null) {
             return;
         }

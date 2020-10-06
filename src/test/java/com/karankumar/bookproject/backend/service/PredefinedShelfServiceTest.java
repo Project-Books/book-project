@@ -22,7 +22,7 @@ class PredefinedShelfServiceTest {
     @Test
     void notDeleteAPredefinedShelf() {
         // given
-        PredefinedShelf read = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
+        PredefinedShelf read = predefinedShelfService.findReadShelf();
 
         // when
         predefinedShelfService.delete(read);
