@@ -2,7 +2,6 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,18 +12,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @DisplayName("PredefinedShelfService should")
 class PredefinedShelfServiceTest {
-    private static PredefinedShelfService predefinedShelfService;
+    private final PredefinedShelfService predefinedShelfService;
 
-    @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService predefinedShelfService) {
-        PredefinedShelfServiceTest.predefinedShelfService = predefinedShelfService;
+    @Autowired
+    PredefinedShelfServiceTest(PredefinedShelfService predefinedShelfService) {
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     @Test
     void notDeleteAPredefinedShelf() {
         // given
-        PredefinedShelfUtils utils = new PredefinedShelfUtils(predefinedShelfService);
-        PredefinedShelf read = utils.findReadShelf();
+        PredefinedShelf read = predefinedShelfService.findReadShelf();
 
         // when
         predefinedShelfService.delete(read);
@@ -36,12 +34,12 @@ class PredefinedShelfServiceTest {
     @Test
     void notDeleteAllPredefinedShelves() {
         // given
-        int expected = predefinedShelfService.findAll().size();
+        Long expected = predefinedShelfService.count();
 
         // when
         predefinedShelfService.deleteAll();
 
         // then
-        assertThat(predefinedShelfService.findAll()).hasSize(expected);
+        assertThat(predefinedShelfService.count()).isEqualTo(expected);
     }
 }
