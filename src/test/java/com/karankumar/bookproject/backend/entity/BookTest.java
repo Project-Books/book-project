@@ -21,7 +21,6 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.TagService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ class BookTest {
                     BookService bookService,
                     TagService tagService) {
 
-        PredefinedShelf toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
+        PredefinedShelf toRead = predefinedShelfService.findToReadShelf();
         BookTest.bookService = bookService;
         BookTest.tagService = tagService;
 
