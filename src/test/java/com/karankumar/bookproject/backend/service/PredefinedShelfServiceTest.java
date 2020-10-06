@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @DisplayName("PredefinedShelfService should")
 class PredefinedShelfServiceTest {
-    private PredefinedShelfService predefinedShelfService;
+    private final PredefinedShelfService predefinedShelfService;
 
     @Autowired
     PredefinedShelfServiceTest(PredefinedShelfService predefinedShelfService) {
