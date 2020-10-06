@@ -126,9 +126,9 @@ public class StatisticsView extends VerticalLayout {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
-                Optional<Integer> averagePageLength =
+                Optional<Double> averagePageLength =
                         Optional.ofNullable(pageStatistics.calculateAveragePageLength());
-                return averagePageLength.map(pageLength -> String.format("%d pages", pageLength));
+                return averagePageLength.map(pageLength -> String.format("%f pages", pageLength));
             }
         },
         LONGEST_BOOK("Longest book read:") {

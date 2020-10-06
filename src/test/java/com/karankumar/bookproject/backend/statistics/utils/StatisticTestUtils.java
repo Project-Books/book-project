@@ -128,8 +128,6 @@ public class StatisticTestUtils {
     }
 
     public static void deleteBook(Book bookToDelete) {
-        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
-        bookToDelete.setPredefinedShelf(readShelf);
         bookService.delete(bookToDelete);
         savedBooks.remove(bookToDelete);
         reduceTotalRating(bookToDelete.getRating());

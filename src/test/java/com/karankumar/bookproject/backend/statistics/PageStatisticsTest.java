@@ -90,10 +90,10 @@ class PageStatisticsTest {
     }
 
     @Test
-    void averagePageLengthWhenRoundedToHigherNumber() {
+    void testAveragePageLengthWithFloatPointCalculation() {
         StatisticTestUtils.deleteBook(StatisticTestUtils.getBookWithHighestRating());
         pageStatistics = new PageStatistics(predefinedShelfService);
-        int averagePageLength = (int) Math.ceil(StatisticTestUtils.getTotalNumberOfPages() / (float) StatisticTestUtils.getNumberOfBooks());
+        Double averagePageLength = 267.0;
         assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
     }
 
