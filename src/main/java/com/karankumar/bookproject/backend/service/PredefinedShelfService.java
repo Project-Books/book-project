@@ -105,6 +105,10 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         LOGGER.severe("deleteAll() should not be called");
     }
 
+    public Long count() {
+        return predefinedShelfRepository.count();
+    }
+
     @PostConstruct
     public void populateTestData() {
         if (authorRepository.count() == 0) {
