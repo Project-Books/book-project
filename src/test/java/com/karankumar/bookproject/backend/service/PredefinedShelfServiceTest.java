@@ -2,7 +2,6 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,7 @@ class PredefinedShelfServiceTest {
     @Test
     void notDeleteAPredefinedShelf() {
         // given
-        PredefinedShelfUtils utils = new PredefinedShelfUtils(predefinedShelfService);
-        PredefinedShelf read = utils.findReadShelf();
+        PredefinedShelf read = predefinedShelfService.findReadShelf();
 
         // when
         predefinedShelfService.delete(read);

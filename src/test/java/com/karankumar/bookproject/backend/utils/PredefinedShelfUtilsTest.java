@@ -76,7 +76,7 @@ class PredefinedShelfUtilsTest {
                                       @Autowired BookRepository bookRepository,
                                       @Autowired BookService bookService) {
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
-        findPredefinedShelves();
+        findPredefinedShelves(predefinedShelfService);
 
         PredefinedShelfUtilsTest.bookRepository = bookRepository;
         resetBookRepository();
@@ -87,10 +87,10 @@ class PredefinedShelfUtilsTest {
         setBooksInPredefinedShelves();
     }
 
-    private static void findPredefinedShelves() {
-        toReadShelf = predefinedShelfUtils.findToReadShelf();
-        readShelf = predefinedShelfUtils.findReadShelf();
-        didNotFinishShelf = predefinedShelfUtils.findPredefinedShelf(DID_NOT_FINISH);
+    private static void findPredefinedShelves(PredefinedShelfService predefinedShelfService) {
+        toReadShelf = predefinedShelfService.findToReadShelf();
+        readShelf =  predefinedShelfService.findReadShelf();
+        didNotFinishShelf = predefinedShelfService.findDidNotFinishShelf();
     }
 
     private static void resetBookRepository() {

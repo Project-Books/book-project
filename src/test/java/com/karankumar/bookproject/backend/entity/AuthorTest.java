@@ -21,7 +21,6 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +45,7 @@ class AuthorTest {
     public static void setup(@Autowired PredefinedShelfService predefinedShelfService,
                              @Autowired BookService bookService,
                              @Autowired AuthorService authorService) {
-        toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
+        toRead = predefinedShelfService.findToReadShelf();
         testBook1 = createBook("How the mind works", toRead);
         testBook2 = createBook("The better angels of our nature", toRead);
 

@@ -27,7 +27,6 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.components.utils.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -400,10 +399,8 @@ public class BookForm extends VerticalLayout {
 
         PredefinedShelf predefinedShelf;
         if (predefinedShelfField.getValue() != null) {
-            PredefinedShelfUtils predefinedShelfUtils =
-                    new PredefinedShelfUtils(predefinedShelfService);
             predefinedShelf =
-                    predefinedShelfUtils.findPredefinedShelf(predefinedShelfField.getValue());
+                    predefinedShelfService.findByPredefinedShelfName(predefinedShelfField.getValue());
         } else {
             LOGGER.log(Level.SEVERE, "Null shelf");
             return null;
@@ -454,15 +451,13 @@ public class BookForm extends VerticalLayout {
     }
 
     private void moveBookToDifferentShelf() {
-        List<PredefinedShelf> shelves =
-                predefinedShelfService.findAll(predefinedShelfField.getValue());
-        if (shelves.size() == 1) {
+        PredefinedShelf shelf =
+                predefinedShelfService.findByPredefinedShelfName(predefinedShelfField.getValue());
+        if (shelf != null) {
             Book book = binder.getBean();
-            book.setPredefinedShelf(shelves.get(0));
-            LOGGER.log(Level.INFO, "2) Shelf: " + shelves.get(0));
+            book.setPredefinedShelf(shelf);
+            LOGGER.log(Level.INFO, "2) Shelf: " + shelf);
             binder.setBean(book);
-        } else {
-            LOGGER.log(Level.INFO, "2) Shelves count = " + shelves.size());
         }
     }
 

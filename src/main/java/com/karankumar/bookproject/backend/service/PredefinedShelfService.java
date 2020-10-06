@@ -73,12 +73,24 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         return predefinedShelfRepository.findAll();
     }
 
-    public List<PredefinedShelf> findAll(PredefinedShelf.ShelfName shelfName) {
-        if (shelfName == null) {
-            return predefinedShelfRepository.findAll();
-        } else {
-            return predefinedShelfRepository.findByPredefinedShelfName(shelfName);
-        }
+    public PredefinedShelf findToReadShelf() {
+        return predefinedShelfRepository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+    }
+
+    public PredefinedShelf findReadingShelf() {
+        return predefinedShelfRepository.findByPredefinedShelfName(PredefinedShelf.ShelfName.READING);
+    }
+
+    public PredefinedShelf findReadShelf() {
+        return predefinedShelfRepository.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
+    }
+
+    public PredefinedShelf findDidNotFinishShelf() {
+        return predefinedShelfRepository.findByPredefinedShelfName(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+    }
+
+    public PredefinedShelf findByPredefinedShelfName(PredefinedShelf.ShelfName shelfName) {
+        return predefinedShelfRepository.findByPredefinedShelfName(shelfName);
     }
 
     @Override
