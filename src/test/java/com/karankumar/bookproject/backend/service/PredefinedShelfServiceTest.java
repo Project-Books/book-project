@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License along with this program.
     If not, see <https://www.gnu.org/licenses/>.
  */
+
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
@@ -65,12 +66,11 @@ class PredefinedShelfServiceTest {
     void notSaveNullPredefinedShelf() {
         // given
         int initialCount = predefinedShelfService.findAll().size();
-        PredefinedShelf shelf = null;
 
         // when
-        predefinedShelfService.save(shelf);
+        predefinedShelfService.save(null);
 
         // then
-        assertThat(predefinedShelfService.findAll().size()).isEqualTo(initialCount);
+        assertThat(predefinedShelfService.findAll()).hasSize(initialCount);
     }
 }
