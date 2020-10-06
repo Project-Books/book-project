@@ -33,7 +33,8 @@ import java.util.logging.Level;
 
 @Service
 @Log
-public class BookService extends BaseService<Book, Long> {
+public class BookService implements Findable<Book, Long>, Savable<Book>, Deletable<Book> {
+
     private final AuthorService authorService;
     private final BookRepository bookRepository;
 
@@ -42,12 +43,10 @@ public class BookService extends BaseService<Book, Long> {
         this.authorService = authorService;
     }
 
-    @Override
     public Book findById(Long id) {
         return bookRepository.getOne(id);
     }
 
-    @Override
     public void save(Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
             addBookToAuthor(book);
@@ -82,7 +81,6 @@ public class BookService extends BaseService<Book, Long> {
         return bookRepository.findByTitleContainingIgnoreCase(filterText);
     }
 
-    @Override
     public void delete(Book book) {
         if (book == null) {
             LOGGER.log(Level.SEVERE, "Cannot delete an null book.");
@@ -101,7 +99,6 @@ public class BookService extends BaseService<Book, Long> {
         }
     }
 
-    @Override
     public void deleteAll() {
         if (bookRepository.count() == 0) {
             LOGGER.log(Level.INFO, "All books already deleted");

@@ -27,7 +27,7 @@ import java.util.logging.Level;
 
 @Service
 @Log
-public class TagService extends BaseService<Tag, Long> {
+public class TagService implements Findable<Tag, Long>, Savable<Tag>, Deletable<Tag> {
 
     private final TagRepository tagRepository;
     
@@ -35,12 +35,10 @@ public class TagService extends BaseService<Tag, Long> {
         this.tagRepository = tagRepository;
     }
 
-    @Override
     public Tag findById(Long id) {
         return tagRepository.getOne(id);
     }
 
-    @Override
     public void save(Tag tag) {
         if (tag != null) {
             tagRepository.save(tag);
@@ -57,12 +55,10 @@ public class TagService extends BaseService<Tag, Long> {
         return tagRepository.findAll();
     }
 
-    @Override
     public void delete(Tag tag) {
         tagRepository.delete(tag);
     }
 
-    @Override
     public void deleteAll() {
         tagRepository.deleteAll();
     }

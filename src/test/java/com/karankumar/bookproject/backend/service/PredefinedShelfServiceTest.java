@@ -2,10 +2,12 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import org.junit.jupiter.api.BeforeAll;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,26 +22,8 @@ class PredefinedShelfServiceTest {
     }
 
     @Test
-    void notDeleteAPredefinedShelf() {
-        // given
-        PredefinedShelf read = predefinedShelfService.findReadShelf();
-
-        // when
-        predefinedShelfService.delete(read);
-
-        // then
-        assertThat(predefinedShelfService.findAll()).contains(read);
+    void checkNumberOfAutoPredefinedShelves() {
+        assertThat(predefinedShelfService.count()).isEqualTo(4);
     }
 
-    @Test
-    void notDeleteAllPredefinedShelves() {
-        // given
-        Long expected = predefinedShelfService.count();
-
-        // when
-        predefinedShelfService.deleteAll();
-
-        // then
-        assertThat(predefinedShelfService.count()).isEqualTo(expected);
-    }
 }
