@@ -27,7 +27,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.Set;
-import java.util.Optional;
 
 /**
  * A predefined shelf is a shelf that is created by the app and will always exist (cannot be
