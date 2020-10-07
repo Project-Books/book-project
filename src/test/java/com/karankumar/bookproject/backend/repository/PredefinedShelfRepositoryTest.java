@@ -47,13 +47,9 @@ class PredefinedShelfRepositoryTest {
     }
 
     @Test
-    @DisplayName("When a shelf exists, findByShelfName correctly returns one shelf")
+    @DisplayName("When a shelf exists, findByPredefinedShelfName correctly returns the shelf")
     void findByShelfNameReturnsOneShelf() {
-        List<PredefinedShelf> shelves =
-                repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
-        assertThat(shelves.size()).isOne();
-
-        PredefinedShelf shelf = shelves.get(0);
+        PredefinedShelf shelf = repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
         assertThat(shelf).isNotNull();
 
         assertAll(

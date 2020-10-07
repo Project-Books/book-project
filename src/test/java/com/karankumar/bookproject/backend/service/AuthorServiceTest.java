@@ -13,21 +13,33 @@
 
     You should have received a copy of the GNU General Public License along with this program.
     If not, see <https://www.gnu.org/licenses/>.
- */
+*/
 
-package com.karankumar.bookproject.backend.statistics;
+package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.Author;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.Set;
+@IntegrationTest
+class AuthorServiceTest {
+    private final AuthorService authorService;
 
-public class Statistics {
-    protected final Set<Book> readShelfBooks;
+    AuthorServiceTest(@Autowired AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
-    public Statistics(PredefinedShelfService predefinedShelfService) {
-        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
-        readShelfBooks = readShelf.getBooks();
+    @Test
+    void savedAuthorCanBeFound() {
+         // given
+        Author author = new Author("First", "Last");
+
+        // when
+        authorService.save(author);
+
+        // then
+        assertNotNull(authorService.findById(author.getId()));
     }
 }

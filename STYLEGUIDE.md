@@ -8,70 +8,79 @@ the version on the master branch should be followed, as this version should be t
 ## Table of Contents
 
 1. [Introduction](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#introduction)
-1. [IDE formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#ide-formatting)
+2. [IDE formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#ide-formatting)
    1. [IntelliJ](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#intellij)
-   1. [Eclipse](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#eclipse)
-1. [Checking for violations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#checking-for-violations)
-1. [Source files](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-files)
+   2. [Eclipse](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#eclipse)
+3. [Checking for violations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#checking-for-violations)
+4. [Source files](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-files)
    1. [American English](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-american-english)
-   1. [Source file structure](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-file-structure)
+   2. [Source file structure](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#source-file-structure)
       1. [No wildcard imports](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-wildcard-imports)
-      1. [No line-wrapping for package & import statements](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-line-wrapping-for-package-and-import-statements)
-   1. [Fields at the top](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fields-at-the-top)
-   1. [Overloads together](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overloads-together)
-   1. [Newline at end of file](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#newline-at-end-of-file)
-1. [Formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#formatting)
-   1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces)
-   1. [120 character column limit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#120-character-column-limit)
-   1. [One statement per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-statement-per-line)
-   1. [Empty blocks can be concise](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#empty-blocks-can-be-concise)
-   1. [Whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#whitespace)
+      2. [No line-wrapping for package & import statements](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-line-wrapping-for-package-and-import-statements)
+   3. [Fields at the top](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fields-at-the-top)
+   4. [Overloads together](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overloads-together)
+   5. [Newline at end of file](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#newline-at-end-of-file)
+5. [Formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#formatting)
+   1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces) 
+      1. [One true brace style (1TBS)](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-true-brace-style-1TBS) 
+   2. [100 character column limit ](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#100-character-column-limit)
+   3. [One statement per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-statement-per-line)
+   4. [Empty blocks can be concise](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#empty-blocks-can-be-concise)
+   5. [Whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#whitespace)
       1. [Vertical whitespace](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#vertical-whitespace)
-      1. [No horizontal alignment](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-horizontal-alignment)
-   1. [Optional grouping parentheses: recommended](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#optional-grouping-parentheses-recommended)
-   1. [Enum classes](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md)
-      1. [Comment fall-through](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md)
-      1. [Enumerate all cases or have a default case](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#enumerate-all-cases-or-have-a-default-case)
-   1. [Annotations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#annotations)
-   1. [Comments](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#comments)
-   1. [Modifiers](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#modifiers)
-   1. [Numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#numeric-literals)
-      1. [Underscores in numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#underscores-in-numeric-literals)
-      1. [Long suffixes](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#long-suffixes)
-   1. [Variable declarations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#variable-declarations)
-      1. [One variable declaration per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-variable-declaration-per-line)
-      1. [Declare as close as possible to use](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#declare-as-close-as-possible-to-use)
-   1. [Arrays](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#arrays)
-      1. [No C-style array declarations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-c-style-array-declarations)
-   1. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
-      1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
-      1. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
-   1. [Naming](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#naming)
-      1. [Package names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#package-names)
-      1. [Class names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#class-names)
-      1. [Method names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#method-names)
-      1. [Constant names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#constant-names)
-      1. [Non-constant field names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#non-constant-field-names)
-      1. [Parameter names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#parameter-names)
-      1. [Local variable names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#local-variables-names)
-      1. [Type variable names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#type-variables-names)
-1. [Javadoc](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#javadoc)
+      2. [No horizontal alignment](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-horizontal-alignment)
+   6. [Optional grouping parentheses: recommended](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#optional-grouping-parentheses-recommended)
+   7. [Enum classes](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#enum-classes)
+      1. [Comment fall-through](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#comment-fall-through)
+      2. [Enumerate all cases or have a default case](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#enumerate-all-cases-or-have-a-default-case)
+   8. [Annotations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#annotations)
+   9. [Comments](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#comments)
+      1.  [Do you need the comment?](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#do-you-need-the-comment)
+   10. [Modifiers](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#modifiers)
+   11. [Numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#numeric-literals)
+       1. [Underscores in numeric literals](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#underscores-in-numeric-literals)
+       2. [Long suffixes](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#long-suffixes)
+   12. [Variable declarations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#variable-declarations)
+       1. [One variable declaration per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-variable-declaration-per-line)
+       2. [Declare as close as possible to use](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#declare-as-close-as-possible-to-use)
+   13. [Arrays](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#arrays)
+       1. [No C-style array declarations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-c-style-array-declarations)
+   14. [Indentation](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#indentation)
+       1. [4 Spaces, no tabs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#4-spaces-no-tabs)
+       2. [Aligning method calls](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#aligning-method-calls)
+6. [Naming](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#naming)
+    1. [Package names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#package-names)
+    2. [Class names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#class-names)
+    3. [Method names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#method-names)
+    4. [Constant names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#constant-names)
+    5. [Non-constant field names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#non-constant-field-names)
+    6. [Parameter names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#parameter-names)
+    7. [Local variable names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#local-variables-names)
+    8. [Type variable names](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#type-variables-names)
+7. [Javadoc](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#javadoc)
    1. [No @author tag](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#no-author-tag)
-1. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
+8. [Programming practices](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#programming-practices)
    1. [Annotations](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#annotations-1)
       1. [Use @Override](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-override)
-      1. [Use @VisibleForTesting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-visiblefortesting)
-   1. [Don't swallow exceptions](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#dont-swallow-exceptions)
-   1. [StringBuilder over StringBuffer](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#stringbuilder-over-stringbuffer)
-   1. [Overriding hashCode() and equals()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-hashcode-and-equals)
-   1. [Overriding toString()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-tostring)
-   1. [Short methods](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#short-methods)
-   1. [JUnit](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#junit)
-      1. [Fewest number of assertions in every test](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fewest-number-of-assertions-in-every-test)
-      1. [Avoid randomness](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#avoid-randomness)
-   1. [TODOs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#todos)
-1. [Recommended reading](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#recommended-reading)
-1. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
+      2. [Use @VisibleForTesting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#use-visiblefortesting)
+   2. [Don't swallow exceptions](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#dont-swallow-exceptions)
+   3. [StringBuilder over StringBuffer](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#stringbuilder-over-stringbuffer)
+   4. [Overriding hashCode() and equals()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-hashcode-and-equals)
+   5. [Overriding toString()](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overriding-tostring)
+   6. [Short methods](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#short-methods)
+   7. [TODOs](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#todos)
+   8. [Prefer Optional over null](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#prefer-optional-over-null)
+   9. [Favor EnumMap over HashMap](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#favor-enummap-over-hashmap)
+9. [JUnit tests](https://github.com/Project-Books/book-project/blob/master/STYLEGUIDE.md#junit-tests)
+   1. [Given/when/then pattern](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#givenwhenthen-pattern)
+   2. [Fewest number of assertions in every test](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#fewest-number-of-assertions-in-every-test)
+   3. [Assert all for multiple assertions](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#assert-all-for-multiple-assertions)
+   4. [Disabling failing tests](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#disabling-failing-tests)
+   5. [Using DisplayName](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#using-displayname)
+   6. [Avoid randomness](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#avoid-randomness)
+10.  [Recommended reading](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#recommended-reading)
+11. [Updates to this document](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#updates-to-this-document)
+12. [Acknowledgements](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#acknowledgements)
 
 ## Introduction
 
@@ -88,7 +97,7 @@ IDE-specific code style files have been exported and can be imported into your I
 ### IntelliJ
 
 <p align="center">
-  <img src="/media/styleguide/intellij_code_style.png" alt="Import IntelliJ code style file"/>
+  <img src="/media/docs/styleguide/intellij_code_style.png" alt="Import IntelliJ code style file"/>
 </p>
 
 For IntelliJ, you can use import the [code style file](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml).
@@ -98,7 +107,7 @@ Import Scheme > IntelliJ IDEA code style XML.
 ### Eclipse
 
 <p align="center">
-  <img src="/media/styleguide/eclipse_code_style.png" alt="Import Eclipse code style file"/>
+  <img src="/media/docs/styleguide/eclipse_code_style.png" alt="Import Eclipse code style file"/>
 </p>
 
 If you use Eclipse, you can import the formatter file by going to Window > Preferences > Java > Code Style > Formatter
@@ -528,7 +537,11 @@ TODO comments are acceptable and encouraged if they are useful. However, we ask 
 
 For enums, favor `EnumMap` over `HashMap` for [performance reasons](https://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html).
 
-## JUnit
+## JUnit tests
+
+### Use AssertJ
+
+For assertions and assumptions, we're using AssertJ. We find this to be more readable (it flows nicer as it reads like a sentence) and it's easier to have a consistent team style.
 
 ### Given/when/then pattern
 The pattern we follow for JUnit tests are given/when/then. For example, given some input some setup, when an action occurs, then assert as desired. Concrete example:
@@ -556,7 +569,7 @@ In every test method, try to minimise the number of assertions. Ideally, there s
 
 ### Assert all for multiple assertions
 
-If a test method needs multiple assertions, `assertAll()` (or `assertSoftly()`) should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
+If a test method needs multiple assertions, `assertSoftly()` should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
 
 ### Disabling failing tests
 
@@ -564,7 +577,11 @@ Instead of commenting out tests, we use the `@Disable` annotation. Please note t
 
 ### Using DisplayName
 
-Where it would add value, a `@DisplayName` annotation should be used. For example, you could replace a Javadoc comment with a display name. This is also useful if the method name is concise but not comprehensive. Adding a display name should be used where it serves as useful documentation.
+All test classes should be annotated with a `@DisplayName`. For example, the test class `TagServiceTest` should
+be annotated with the display name `TagService should`. We find this greatly improves readability as the method
+names can be read like a sentence (e.g. `TagService should` `findAllTags()` or `deleteExistingTag()`).
+
+A `@DisplayName` annotation should be used at a method level where it adds value. For example, you could replace a Javadoc comment with a display name. This is also useful if the method name is concise but not comprehensive. Adding a display name should be used where it serves as useful documentation.
 
 ### Avoid randomness
 
