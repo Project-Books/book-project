@@ -89,7 +89,7 @@ public class TestData {
                                   List<PredefinedShelf> predefinedShelves) {
         Book book = new Book(
                 title,
-                generateRnadomAuthor(authors),
+                generateRandomAuthor(authors),
                 generateRandomPredefinedShelf(predefinedShelves)
         );
 
@@ -104,7 +104,7 @@ public class TestData {
         return book;
     }
 
-    private static Author generateRnadomAuthor(List<Author> authors) {
+    private static Author generateRandomAuthor(List<Author> authors) {
         return authors.get(threadLocalRandom.nextInt(authors.size()));
     }
 
