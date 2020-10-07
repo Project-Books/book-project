@@ -17,7 +17,11 @@
 
 package com.karankumar.bookproject.ui.components.utils;
 
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import org.junit.jupiter.api.Test;
 
@@ -28,14 +32,36 @@ class ComponentUtilTest {
 
     @Test
     void shouldClearComponentFields() {
+        // given a variety of form fields
         TextField bookTitle = new TextField("Book title");
+
+        ComboBox<PredefinedShelf.ShelfName> predefinedShelf = new ComboBox<>();
+        predefinedShelf.setItems(PredefinedShelf.ShelfName.values());
+        predefinedShelf.setValue(PredefinedShelf.ShelfName.READ);
+
+        IntegerField numberOfPages = new IntegerField();
+        numberOfPages.setValue(400);
+
+        Checkbox inSeries = new Checkbox(false);
+
         HasValue[] components = {
-                bookTitle
+                bookTitle,
+                predefinedShelf,
+                numberOfPages,
+                inSeries
         };
 
+        // when
         ComponentUtil.clearComponentFields(components);
 
-        assertThat(bookTitle.getValue()).isEmpty();
+        // then
+        assertAllEmpty(components);
+    }
+
+    private void assertAllEmpty(HasValue[] fields) {
+        for (HasValue field : fields) {
+            assertThat(field.isEmpty()).isTrue();
+        }
     }
 
     @Test
