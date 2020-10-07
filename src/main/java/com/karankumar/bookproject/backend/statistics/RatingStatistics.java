@@ -40,7 +40,7 @@ public class RatingStatistics extends Statistics {
      * @return the Book in the 'read' shelf with the highest rating
      * If there are multiple books with the same highest rating, the first one found will be returned
      */
-    public Book findMostLikedBook() {
+    public Optional<Book> findMostLikedBook() {
         if (readBooksRated.size() <= 1) {
             return Optional.empty();
         }
@@ -62,7 +62,6 @@ public class RatingStatistics extends Statistics {
      * If there are multiple books with the same lowest rating, the first one found will be returned
      */
     public Optional<Book> findLeastLikedBook() {
-    public Book findLeastLikedBook() {
         if (readBooksRated.size() <= 1) {
             return Optional.empty();
         }

@@ -22,15 +22,13 @@ import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
-<<<<<<< Updated upstream
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-=======
 import java.util.*;
->>>>>>> Stashed changes
 import java.util.stream.Collectors;
 
 public class GenreStatistics extends Statistics {

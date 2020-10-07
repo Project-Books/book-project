@@ -26,23 +26,21 @@ import lombok.extern.java.Log;
 import java.util.Optional;
 
 @Log
-public class DoubleToRatingScaleConverter implements Converter<Optional<Optional<Double>>, RatingScale> {
+public class DoubleToRatingScaleConverter implements Converter<Optional<Double>, RatingScale> {
 
     @Override
-    public Result<RatingScale> convertToModel(Optional<Optional<Double>> ratingVal, ValueContext valueContext) {
-        return RatingScale.of(ratingVal)
-                          .map(Result::ok)
-                          .orElseGet(() -> Result.error("Invalid rating"));
+    public Result<RatingScale> convertToModel(Optional<Double> ratingVal, ValueContext valueContext) {
+        return RatingScale.of(Optional.ofNullable(ratingVal).flatMap(val -> val
+                .map(Result::ok))
+                          .orElseGet(() -> Result.error("Invalid rating")));
     }
 
     @Override
     public Optional<Double> convertToPresentation(RatingScale rating, ValueContext valueContext) {
-        return Optional.of(RatingScale.toDouble(rating));
+        return  Optional.of(RatingScale.toDouble(rating));
     }
 
-    @Override
-    public <T> Converter<Optional<Optional<Double>>, T> chain(Converter<RatingScale, T> other) {
+    public <T> Converter<Optional<Double>, T> chain(Converter<RatingScale, T> other) {
         return null;
     }
-
 }

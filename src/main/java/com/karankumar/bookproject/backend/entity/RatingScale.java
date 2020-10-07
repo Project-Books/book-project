@@ -18,6 +18,7 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import com.vaadin.flow.data.binder.Result;
 import lombok.extern.java.Log;
 
 import java.util.Arrays;
@@ -65,7 +66,7 @@ public enum RatingScale {
         return ratingScale.value;
     }
 
-    public static Object of(Optional<Optional<Double>> ratingValue) {
+    public static Result<RatingScale> of(Result<Double> ratingValue) {
         if (ratingValue.isPresent()) {
             return Arrays.stream(values())
                          .filter(ratingScale -> ratingScale.value != null)

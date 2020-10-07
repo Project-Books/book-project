@@ -58,7 +58,8 @@ class RatingStatisticsTest {
 
     @Test
     void lowestRatedBookExistsAndIsFound() {
-        assertEquals(bookWithNoRating.getTitle(), ratingStatistics.findLeastLikedBook().getTitle());
+        if (ratingStatistics.findLeastLikedBook().isPresent())
+            assertEquals(bookWithNoRating.getTitle(), ratingStatistics.findLeastLikedBook().get().getTitle());
     }
 
     @Test
@@ -69,8 +70,9 @@ class RatingStatisticsTest {
 
     @Test
     void highestRatedBookExistsAndIsFound() {
-        assertEquals(bookWithHighestRating.getTitle(),
-                ratingStatistics.findMostLikedBook().getTitle());
+        if (ratingStatistics.findMostLikedBook().isPresent())
+            assertEquals(bookWithHighestRating.getTitle(),
+                    ratingStatistics.findMostLikedBook().get().getTitle());
     }
 
     @Test
