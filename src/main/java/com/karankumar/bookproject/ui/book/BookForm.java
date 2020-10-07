@@ -53,6 +53,7 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
+import org.springframework.data.util.Optionals;
 
 import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
@@ -287,8 +288,8 @@ public class BookForm extends VerticalLayout {
         binder.forField(bookGenre)
               .bind(Book::getBookGenre, Book::setBookGenre);
         binder.forField(rating)
-              .withConverter(new DoubleToRatingScaleConverter())
-              .bind(Book::getRating, Book::setRating);
+              .withConverter(new DoubleToRatingScaleConverter()
+              .bind(Book::getRating, Book::setRating));
         binder.forField(bookReview)
               .bind(Book::getBookReview, Book::setBookReview);
     }
@@ -355,10 +356,8 @@ public class BookForm extends VerticalLayout {
     }
 
     private void setBookBean() {
-        Optional<Book> book = populateBookBean();
-        if (book.isPresent()) {
-            binder.setBean(book);
-        }
+        Optional<Object> book = populateBookBean();
+        if (book.isEmpty()) binder.setBean(book);
 
         if (binder.getBean() != null) {
             LOGGER.log(Level.INFO, "Written bean. Not Null.");
@@ -372,7 +371,7 @@ public class BookForm extends VerticalLayout {
         closeForm();
     }
 
-    private Optional<Book> populateBookBean() {
+    private Optional<Object> populateBookBean() {
         String title;
         if (bookTitle.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
@@ -425,7 +424,7 @@ public class BookForm extends VerticalLayout {
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
 
-        Optional<RatingScale> ratingScale = RatingScale.of(rating.getValue());
+        Optional<RatingScale> ratingScale = RatingScale.of(Optional.ofNullable(rating.getValue()));
         ratingScale.ifPresent(book::setRating);
 
         book.setBookReview(bookReview.getValue());
@@ -437,7 +436,7 @@ public class BookForm extends VerticalLayout {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
-        return book;
+        return Optional.of(book);
     }
 
     private void showErrorMessage() {

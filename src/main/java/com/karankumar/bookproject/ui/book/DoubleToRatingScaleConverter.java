@@ -23,18 +23,26 @@ import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 import lombok.extern.java.Log;
 
+import java.util.Optional;
+
 @Log
-public class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
+public class DoubleToRatingScaleConverter implements Converter<Optional<Optional<Double>>, RatingScale> {
 
     @Override
-    public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
+    public Result<RatingScale> convertToModel(Optional<Optional<Double>> ratingVal, ValueContext valueContext) {
         return RatingScale.of(ratingVal)
                           .map(Result::ok)
                           .orElseGet(() -> Result.error("Invalid rating"));
     }
 
     @Override
-    public Double convertToPresentation(RatingScale rating, ValueContext valueContext) {
-        return RatingScale.toDouble(rating);
+    public Optional<Double> convertToPresentation(RatingScale rating, ValueContext valueContext) {
+        return Optional.of(RatingScale.toDouble(rating));
     }
+
+    @Override
+    public <T> Converter<Optional<Optional<Double>>, T> chain(Converter<RatingScale, T> other) {
+        return null;
+    }
+
 }

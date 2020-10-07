@@ -86,8 +86,10 @@ public class RatingStatistics extends Statistics {
         return readBooksRated.stream()
                              .mapToDouble(book -> {
                                  Double rating = RatingScale.toDouble(book.getRating());
-                                 rating = (rating == null) ? 0.0 : rating;
-                                 return rating;
+                                 if (rating == null)
+                                     return 0.0;
+                                 else
+                                     return Double.parseDouble(String.valueOf(rating));
                              })
                              .sum();
     }

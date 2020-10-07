@@ -26,6 +26,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class StatisticTestUtils {
 
@@ -87,10 +88,8 @@ public class StatisticTestUtils {
     }
 
     private static void updateTotalRating(RatingScale ratingScale) {
-        Double rating = RatingScale.toDouble(ratingScale);
-        if (rating != null) {
-            totalRating += rating;
-        }
+        Optional<Double> rating = Optional.of(RatingScale.toDouble(ratingScale));
+        totalRating = totalRating + Double.parseDouble(String.valueOf(rating));
     }
 
     public static Book getBookWithLowestRating() {

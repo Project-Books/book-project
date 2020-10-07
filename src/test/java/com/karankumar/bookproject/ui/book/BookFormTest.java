@@ -51,6 +51,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -58,6 +59,7 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.entity.RatingScale.*;
 import static com.karankumar.bookproject.ui.book.BookFormErrors.MAX_PAGES_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -75,7 +77,7 @@ class BookFormTest {
     private static final BookGenre BOOK_GENRE = BookGenre.SCIENCE;
     private static final LocalDate dateStarted = LocalDate.now().minusDays(4);
     private static final LocalDate dateFinished = LocalDate.now();
-    private static final RatingScale ratingVal = RatingScale.NINE;
+    private static final RatingScale ratingVal = NINE;
     private static final String bookReview = "Very good. Would read again.";
     private static final int SERIES_POSITION = 10;
     private static final int pagesRead = 450;
@@ -165,7 +167,7 @@ class BookFormTest {
      */
     @Test
     void formFieldsPopulated() {
-        double rating = RatingScale.toDouble(ratingVal);
+        Optional<Double> rating = Optional.of(toDouble(ratingVal));
 
         assertSoftly(softly -> {
             softly.assertThat(bookTitle).isEqualTo(bookForm.bookTitle.getValue());
@@ -245,7 +247,7 @@ class BookFormTest {
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.dateStartedReading.setValue(dateStarted);
                 bookForm.dateFinishedReading.setValue(dateFinished);
-                bookForm.rating.setValue(RatingScale.toDouble(ratingVal));
+                bookForm.rating.setValue(RatingScale.toDouble(ratingVal)));
                 bookForm.bookReview.setValue(bookReview);
                 break;
             case DID_NOT_FINISH:
@@ -687,11 +689,11 @@ class BookFormTest {
         switch (shelfName) {
             case TO_READ:
                 assertStateSpecificFields(book, NULL_STARED_DATE, NULL_FINISHED_DATE,
-                        RatingScale.NO_RATING, NO_BOOK_REVIEW, NO_PAGES_READ);
+                        NO_RATING, NO_BOOK_REVIEW, NO_PAGES_READ);
                 break;
             case READING:
                 assertStateSpecificFields(book, dateStarted, NULL_FINISHED_DATE,
-                        RatingScale.NO_RATING, NO_BOOK_REVIEW, NO_PAGES_READ);
+                        NO_RATING, NO_BOOK_REVIEW, NO_PAGES_READ);
                 break;
             case READ:
                 assertStateSpecificFields(book, dateStarted, dateFinished, ratingVal,
@@ -699,7 +701,7 @@ class BookFormTest {
                 break;
             case DID_NOT_FINISH:
                 assertStateSpecificFields(book, dateStarted, NULL_FINISHED_DATE,
-                        RatingScale.NO_RATING, NO_BOOK_REVIEW, pagesRead);
+                        NO_RATING, NO_BOOK_REVIEW, pagesRead);
                 break;
         }
     }

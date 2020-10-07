@@ -70,8 +70,7 @@ public class StatisticsView extends VerticalLayout {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
-                Optional<Double> averageRating =
-                        Optional.ofNullable(ratingStatistics.calculateAverageRatingGiven());
+                Optional<Double> averageRating = ratingStatistics.calculateAverageRatingGiven();
                 return  averageRating.map(rating ->
                         String.format("%s/10", new DecimalFormat("#.00").format(rating)));
             }
@@ -80,7 +79,7 @@ public class StatisticsView extends VerticalLayout {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
-                Optional<Book> mostLikedBook = Optional.ofNullable(ratingStatistics.findMostLikedBook());
+                Optional<Book> mostLikedBook = ratingStatistics.findMostLikedBook();
                 return mostLikedBook.map(book ->
                         formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
             }
@@ -89,8 +88,7 @@ public class StatisticsView extends VerticalLayout {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 RatingStatistics ratingStatistics = new RatingStatistics(predefinedShelfService);
-                Optional<Book> leastLikedBook =
-                        Optional.ofNullable(ratingStatistics.findLeastLikedBook());
+                Optional<Book> leastLikedBook = ratingStatistics.findLeastLikedBook();
                 return leastLikedBook.map(book ->
                         formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
             }
@@ -126,8 +124,7 @@ public class StatisticsView extends VerticalLayout {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
-                Optional<Integer> averagePageLength =
-                        Optional.ofNullable(pageStatistics.calculateAveragePageLength());
+                Optional<Integer> averagePageLength = pageStatistics.calculateAveragePageLength();
                 return averagePageLength.map(pageLength -> String.format("%d pages", pageLength));
             }
         },

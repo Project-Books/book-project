@@ -22,7 +22,6 @@ import lombok.extern.java.Log;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.logging.Level;
 
 @Log
 public enum RatingScale {
@@ -62,18 +61,18 @@ public enum RatingScale {
         return rating;
     }
 
-    public static Optional<Double> toDouble(RatingScale ratingScale) {
-        return Optional.of(ratingScale.value);
+    public static Double toDouble(RatingScale ratingScale) {
+        return ratingScale.value;
     }
 
-    public static Optional<RatingScale> of(Double ratingValue) {
-        if (ratingValue == null) {
-            return Optional.empty();
+    public static Object of(Optional<Optional<Double>> ratingValue) {
+        if (ratingValue.isPresent()) {
+            return Arrays.stream(values())
+                         .filter(ratingScale -> ratingScale.value != null)
+                         .filter(ratingScale -> ratingScale.value.equals(Double.valueOf(String.valueOf(ratingValue))))
+                         .findFirst();
         }
+        return Optional.empty();
 
-        return Arrays.stream(values())
-                     .filter(ratingScale -> ratingScale.value != null)
-                     .filter(ratingScale -> ratingScale.value.doubleValue() == ratingValue.doubleValue())
-                     .findFirst();
     }
 }
