@@ -125,4 +125,8 @@ public class BookService extends BaseService<Book, Long> {
 
         return jsonWriter.writeValueAsString(books);
     }
+
+    public List<Book> findByTitleOrAuthor(String title, Author author){
+        return bookRepository.findByTitleOrAuthor(title, author);
+    }
 }

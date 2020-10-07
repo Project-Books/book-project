@@ -32,4 +32,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     // TODO: implement
     Set<Book> findByAuthor(Author author);
+
+    List<Book> findByTitleOrAuthor(String title, Author author);
 }

@@ -14,16 +14,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaIntegrationTest
 class BookRepositoryTest {
     @Autowired private BookRepository bookRepository;
+    @Autowired AuthorRepository authorRepository;
+    @Autowired PredefinedShelfRepository predefinedShelfRepository;
 
-    private final PredefinedShelf readShelf;
-    private final Author author;
+    private PredefinedShelf readShelf;
+    private Author author;
     private Book book1;
 
-    BookRepositoryTest(@Autowired AuthorRepository authorRepository,
-                       @Autowired PredefinedShelfRepository predefinedShelfRepository) {
-        author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
-        readShelf =
-                predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+    BookRepositoryTest() {
+//        author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
+//        readShelf =
+//                predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
     }
 
     @BeforeEach
@@ -32,8 +33,11 @@ class BookRepositoryTest {
     }
 
     private void resetBookService() {
+        author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
+        readShelf = predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+
         bookRepository.deleteAll();
-        book1 = bookRepository.save(new Book("someTitle", author, readShelf));
+        book1 = bookRepository.saveAndFlush(new Book("someTitle", author, readShelf));
     }
 
     @Test
@@ -67,4 +71,16 @@ class BookRepositoryTest {
         assertThat(bookRepository.findByTitleContainingIgnoreCase("some").size()).isOne();
         assertThat(bookRepository.findByTitleContainingIgnoreCase("title").size()).isOne();
     }
+
+    @Test
+    @DisplayName("should successfully find list of books by title or author filter")
+    void findBookByAuthor(){
+        assertThat(bookRepository.findByTitleOrAuthor("someTitle", author).size()).isOne();
+        assertThat(bookRepository.findByTitleOrAuthor("", author).size()).isOne();
+        assertThat(bookRepository.findByTitleOrAuthor("someTitle", null).size()).isOne();
+        assertThat(bookRepository.findByTitleOrAuthor("", null).size()).isZero();
+        assertThat(bookRepository.findByTitleOrAuthor(null, null).size()).isZero();
+    }
+
 }
+
