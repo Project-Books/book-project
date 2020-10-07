@@ -95,7 +95,7 @@ For more information, see GitHub's documentation page on
 _Step 1:_
 
 While on your feature branch, run 
-`$ git rebase -i -HEAD~n` where _n_ are the number of commits you would like to change
+`$ git rebase -i HEAD~n` where _n_ are the number of commits you would like to change
 
 This will then open your commits in the default text editor for Git (which may be Vim or Vi, so you may wish to change this if you prefer a different editor).
 
