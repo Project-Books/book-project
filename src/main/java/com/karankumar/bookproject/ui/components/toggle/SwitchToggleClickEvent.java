@@ -26,8 +26,8 @@ import com.vaadin.flow.component.EventData;
  */
 @DomEvent("click")
 public class SwitchToggleClickEvent extends ComponentEvent<SwitchToggle> {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public SwitchToggleClickEvent(SwitchToggle source,
                                   boolean fromClient,

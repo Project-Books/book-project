@@ -29,7 +29,7 @@ public class DoubleToRatingScaleConverter implements Converter<Double, RatingSca
     @Override
     public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
         return RatingScale.of(ratingVal)
-                          .map(value -> Result.ok(value))
+                          .map(Result::ok)
                           .orElseGet(() -> Result.error("Invalid rating"));
     }
 

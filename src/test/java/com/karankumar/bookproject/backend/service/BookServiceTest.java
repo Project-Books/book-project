@@ -25,7 +25,6 @@ import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.entity.Tag;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
@@ -61,8 +60,7 @@ class BookServiceTest {
 
     @BeforeAll
     public static void beforeAllSetup(@Autowired PredefinedShelfService predefinedShelfService) {
-        PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
-        toRead = predefinedShelfUtils.findToReadShelf();
+        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
     }
 
     @BeforeEach
