@@ -34,9 +34,8 @@ import java.util.logging.Level;
 @Service
 @Log
 public class BookService extends BaseService<Book, Long> {
-
     private final AuthorService authorService;
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     public BookService(BookRepository bookRepository, AuthorService authorService) {
         this.bookRepository = bookRepository;
@@ -50,14 +49,15 @@ public class BookService extends BaseService<Book, Long> {
 
     @Override
     public void save(Book book) {
-        if (book == null || book.getAuthor() == null || book.getPredefinedShelf() == null ||
-                book.getPredefinedShelf().getShelfName() == null) {
-            return;
+        if (bookHasAuthorAndPredefinedShelf(book)) {
+            addBookToAuthor(book);
+            authorService.save(book.getAuthor());
+            bookRepository.save(book);
         }
+    }
 
-        addBookToAuthor(book);
-        authorService.save(book.getAuthor());
-        bookRepository.save(book);
+    private boolean bookHasAuthorAndPredefinedShelf(Book book) {
+        return book != null && book.getAuthor() != null && book.getPredefinedShelf() != null;
     }
 
     private void addBookToAuthor(Book book) {
@@ -79,7 +79,7 @@ public class BookService extends BaseService<Book, Long> {
         if (filterText == null || filterText.isEmpty()) {
             return bookRepository.findAll();
         }
-        return bookRepository.search(filterText);
+        return bookRepository.findByTitleContainingIgnoreCase(filterText);
     }
 
     @Override

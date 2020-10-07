@@ -40,8 +40,8 @@ public class RatingStatistics extends Statistics {
      * @return the Book in the 'read' shelf with the highest rating
      * If there are multiple books with the same highest rating, the first one found will be returned
      */
-    public Optional<Book> findMostLikedBook() {
-        if (readBooksRated.isEmpty()) {
+    public Book findMostLikedBook() {
+        if (readBooksRated.size() <= 1) {
             return Optional.empty();
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
@@ -62,7 +62,8 @@ public class RatingStatistics extends Statistics {
      * If there are multiple books with the same lowest rating, the first one found will be returned
      */
     public Optional<Book> findLeastLikedBook() {
-        if (readBooksRated.isEmpty()) {
+    public Book findLeastLikedBook() {
+        if (readBooksRated.size() <= 1) {
             return Optional.empty();
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
@@ -75,7 +76,7 @@ public class RatingStatistics extends Statistics {
      */
     public Optional<Double> calculateAverageRatingGiven() {
         int numberOfRatings = readBooksRated.size();
-        if (numberOfRatings == 0) {
+        if (numberOfRatings <= 1) {
             return Optional.empty();
         }
         return Optional.of(calculateTotalRating() / numberOfRatings);

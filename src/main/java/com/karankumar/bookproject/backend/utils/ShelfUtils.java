@@ -27,7 +27,7 @@ import java.util.Objects;
 public class ShelfUtils {
     private ShelfUtils() {}
 
-    public static String ALL_BOOKS_SHELF = "All books";
+    public static final String ALL_BOOKS_SHELF = "All books";
 
     public static List<String> findAllShelfNames(List<CustomShelf> allCustomShelves) {
         List<String> shelves = new ArrayList<>();

@@ -23,7 +23,6 @@ import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.goal.CalculateReadingGoal;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.backend.utils.StringUtils;
 import com.karankumar.bookproject.backend.utils.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
@@ -53,7 +52,7 @@ public class ReadingGoalView extends VerticalLayout {
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
 
-    private ReadingGoalService goalService;
+    private final ReadingGoalService goalService;
 
     @VisibleForTesting H1 readingGoalSummary;
     @VisibleForTesting H3 goalProgress;
@@ -120,7 +119,7 @@ public class ReadingGoalView extends VerticalLayout {
     }
 
     private void updateReadingGoal(int targetToRead, ReadingGoal.GoalType goalType) {
-        PredefinedShelf readShelf = new PredefinedShelfUtils(predefinedShelfService).findReadShelf();
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         if (readShelf == null || readShelf.getBooks() == null) {
             return;
         }
@@ -184,9 +183,10 @@ public class ReadingGoalView extends VerticalLayout {
             int howManyBehindOrAhead =
                     CalculateReadingGoal.howFarAheadOrBehindSchedule(booksToReadThisYear,
                             booksReadThisYear);
-            schedule = String.format("You are %d "+ StringUtils.pluralize("book",
-                    howManyBehindOrAhead) + " %s schedule",
-                    howManyBehindOrAhead, CalculateReadingGoal.behindOrAheadSchedule(booksReadThisYear,
+            schedule = String.format("You are %d %s %s schedule",
+                    howManyBehindOrAhead,
+                    StringUtils.pluralize("book", howManyBehindOrAhead),
+                    CalculateReadingGoal.behindOrAheadSchedule(booksReadThisYear,
                             CalculateReadingGoal.shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;

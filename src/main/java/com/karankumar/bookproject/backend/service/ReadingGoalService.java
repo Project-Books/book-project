@@ -27,8 +27,7 @@ import java.util.List;
 @Service
 @Log
 public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
-
-    private ReadingGoalRepository goalRepository;
+    private final ReadingGoalRepository goalRepository;
 
     public ReadingGoalService(ReadingGoalRepository goalRepository) {
         this.goalRepository = goalRepository;

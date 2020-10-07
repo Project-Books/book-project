@@ -19,7 +19,6 @@ package com.karankumar.bookproject.backend.entity.account;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +28,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 class UserTest {
-    private static UserRepository userRepository;
+    private final UserRepository userRepository;
     private long initialNumberOfUsers;
 
-    @BeforeAll
-    public static void setup(@Autowired UserRepository userRepository) {
-        UserTest.userRepository = userRepository;
+    UserTest(@Autowired UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @BeforeEach
-    void beforeEachSetup() {
-        initialNumberOfUsers = UserTest.userRepository.count();
+    void setUp() {
+        initialNumberOfUsers = userRepository.count();
     }
 
     @Test

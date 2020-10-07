@@ -13,23 +13,33 @@
 
     You should have received a copy of the GNU General Public License along with this program.
     If not, see <https://www.gnu.org/licenses/>.
- */
+*/
 
+package com.karankumar.bookproject.backend.service;
 
-package com.karankumar.bookproject.backend.repository;
-
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.List;
-import java.util.Set;
+@IntegrationTest
+class AuthorServiceTest {
+    private final AuthorService authorService;
 
-public interface BookRepository extends JpaRepository<Book, Long> {
-    List<Book> findByTitleContainingIgnoreCase(String title);
+    AuthorServiceTest(@Autowired AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
-    // TODO: implement
-    Set<Book> findByAuthor(Author author);
+    @Test
+    void savedAuthorCanBeFound() {
+         // given
+        Author author = new Author("First", "Last");
+
+        // when
+        authorService.save(author);
+
+        // then
+        assertNotNull(authorService.findById(author.getId()));
+    }
 }
