@@ -22,10 +22,14 @@ import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
 import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPredefinedShelf;
 import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
 import static org.assertj.core.api.Assertions.assertThat;
