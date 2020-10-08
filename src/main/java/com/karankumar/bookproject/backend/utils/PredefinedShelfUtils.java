@@ -18,11 +18,11 @@
 package com.karankumar.bookproject.backend.utils;
 
 import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -42,18 +42,18 @@ public class PredefinedShelfUtils {
         this.predefinedShelfService = predefinedShelfService;
     }
 
-    public PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
+    public Optional<PredefinedShelf.ShelfName> getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
             case "To read":
-                return PredefinedShelf.ShelfName.TO_READ;
+                return of(PredefinedShelf.ShelfName.TO_READ);
             case "Reading":
-                return PredefinedShelf.ShelfName.READING;
+                return of(PredefinedShelf.ShelfName.READING);
             case "Read":
-                return PredefinedShelf.ShelfName.READ;
+                return of(PredefinedShelf.ShelfName.READ);
             case "Did not finish":
-                return PredefinedShelf.ShelfName.DID_NOT_FINISH;
+                return of(PredefinedShelf.ShelfName.DID_NOT_FINISH);
             default:
-                return null;
+                return empty();
         }
     }
 
@@ -78,15 +78,11 @@ public class PredefinedShelfUtils {
             return getBooksInAllPredefinedShelves();
         }
 
-        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
-        PredefinedShelf predefinedShelf =
-                predefinedShelfService.findByPredefinedShelfName(predefinedShelfName);
-        if (predefinedShelf == null) {
-            books = new HashSet<>();
-        } else {
-            books = predefinedShelf.getBooks();
-        }
-        return books;
+        return getPredefinedShelfName(chosenShelf)
+                .map(predefinedShelfName -> predefinedShelfService.findByPredefinedShelfName(predefinedShelfName))
+                .map(repository -> repository.getBooks())
+                .orElse(new HashSet<>());
+
     }
 
     public Set<Book> getBooksInAllPredefinedShelves() {
