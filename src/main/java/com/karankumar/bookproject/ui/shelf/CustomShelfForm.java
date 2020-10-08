@@ -99,7 +99,7 @@ public class CustomShelfForm extends VerticalLayout {
 
     private boolean customShelfNameMatchesPredefinedShelfName(String shelfName) {
         List<String> predefinedShelfNames =
-                new PredefinedShelfUtils(predefinedShelfService).getPredefinedShelfNamesAsStrings();
+                PredefinedShelfUtils.getPredefinedShelfNamesAsStrings();
         return predefinedShelfNames.contains(shelfName);
     }
 
