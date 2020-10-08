@@ -22,19 +22,23 @@ import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 
 import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CustomShelfUtils {
-    private final CustomShelfService customShelfService;
+	@Autowired
+    private static CustomShelfService customShelfService;
 
     public CustomShelfUtils(CustomShelfService customShelfService) {
         this.customShelfService = customShelfService;
     }
 
-    public List<@NotNull String> getCustomShelfNames() {
+    public static List<@NotNull String> getCustomShelfNames() {
         return customShelfService.findAll()
                                  .stream()
                                  .map(CustomShelf::getShelfName)
@@ -44,7 +48,7 @@ public class CustomShelfUtils {
     /**
      * Gets all of the books in the specified custom shelf
      */
-    public Set<Book> getBooksInCustomShelf(String shelfName) {
+    public static Set<Book> getBooksInCustomShelf(String shelfName) {
         Set<Book> books;
         List<CustomShelf> customShelves = customShelfService.findAll(shelfName);
         if (customShelves.isEmpty()) {

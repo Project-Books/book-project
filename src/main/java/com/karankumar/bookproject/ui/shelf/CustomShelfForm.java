@@ -93,7 +93,7 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     private boolean customShelfNameAlreadyUsed(String customShelfName) {
-        List<String> customShelfNames = new CustomShelfUtils(customShelfService).getCustomShelfNames();
+        List<String> customShelfNames = CustomShelfUtils.getCustomShelfNames();
         return customShelfNames.contains(customShelfName);
     }
 

@@ -515,8 +515,7 @@ public class BookForm extends VerticalLayout {
         customShelfField.setPlaceholder("Choose a shelf");
         customShelfField.setClearButtonVisible(true);
 
-        CustomShelfUtils customShelfUtils = new CustomShelfUtils(customShelfService);
-        customShelfField.setItems(customShelfUtils.getCustomShelfNames());
+        customShelfField.setItems(CustomShelfUtils.getCustomShelfNames());
     }
 
     private void configurePredefinedShelfField() {

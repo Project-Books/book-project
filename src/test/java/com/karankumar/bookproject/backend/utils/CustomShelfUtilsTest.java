@@ -84,19 +84,19 @@ class CustomShelfUtilsTest {
 
     @Test
     void getBooksInCustomShelfSuccessfullyReturnsBooks() {
-        Set<Book> actual = customShelfUtils.getBooksInCustomShelf(customShelf1.getShelfName());
+        Set<Book> actual = CustomShelfUtils.getBooksInCustomShelf(customShelf1.getShelfName());
         booksInCustomShelf1.forEach(book -> assertThat(actual.contains(book)));
     }
 
     @Test
     void givenNoBooksInCustomShelf_getBooksInCustomShelfReturnsNoBooks() {
         Set<Book> actual =
-                customShelfUtils.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
+                CustomShelfUtils.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
         assertThat(actual).isEmpty();
     }
 
     @Test
     void givenInvalidCustomShelf_anEmptySetOfBooksAreReturned() {
-        assertThat(customShelfUtils.getBooksInCustomShelf("InvalidShelf")).isEmpty();
+        assertThat(CustomShelfUtils.getBooksInCustomShelf("InvalidShelf")).isEmpty();
     }
 }
