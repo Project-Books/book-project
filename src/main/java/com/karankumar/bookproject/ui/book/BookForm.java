@@ -355,9 +355,12 @@ public class BookForm extends VerticalLayout {
     }
 
     private void setBookBean() {
-        Book book = populateBookBean();
-        if (book != null) {
-            binder.setBean(book);
+        // Only repopulate if we create a new Book
+        if (binder.getBean() == null) {
+            Book book = populateBookBean();
+            if (book != null) {
+                binder.setBean(book);
+            }
         }
 
         if (binder.getBean() != null) {

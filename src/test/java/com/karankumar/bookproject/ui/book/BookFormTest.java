@@ -453,6 +453,31 @@ class BookFormTest {
     }
 
     @Test
+    void changeAuthorNameShouldBeSaved() {
+        // given
+        Book book = createBook(READ, false, "Title");
+        bookService.save(book);
+        bookForm.setBook(book);
+
+        AtomicReference<Book> bookReference = new AtomicReference<>(null);
+        bookForm
+                .addListener(BookForm.SaveEvent.class,
+                        event -> bookReference.set(event.getBook()));
+
+        // when
+        bookForm.authorFirstName.setValue("James");
+        bookForm.authorLastName.setValue("Dean");
+        bookForm.saveButton.click();
+
+        // then
+        Book savedBook = bookReference.get();
+
+        assertThat(savedBook.getId()).isEqualTo(book.getId()); // Still the same book
+        assertThat(savedBook.getAuthor().getFirstName()).isEqualTo("James"); // Author name changed
+        assertThat(savedBook.getAuthor().getLastName()).isEqualTo("Dean");
+    }
+
+    @Test
     void shouldNotAllowEmptyAuthorLastName() {
         // given
         bookForm.authorLastName.setValue("");
