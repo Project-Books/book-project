@@ -18,11 +18,14 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,15 +49,15 @@ class PredefinedShelfTest {
                 softly -> {
                     softly.assertThat(shelves).hasSize(4);
                     softly.assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
-                    .contains(
-                        ShelfName.TO_READ,
-                        ShelfName.READING,
-                        ShelfName.READ,
-                        ShelfName.DID_NOT_FINISH
-                    );
+                          .contains(
+                                  ShelfName.TO_READ,
+                                  ShelfName.READING,
+                                  ShelfName.READ,
+                                  ShelfName.DID_NOT_FINISH
+                          );
                 }
-            );
-        
+        );
+
     }
 
     private void resetBookService() {

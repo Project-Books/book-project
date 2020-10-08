@@ -163,7 +163,6 @@ class PredefinedShelfUtilsTest {
                     softly.assertThat(actualBooks).containsAll(expectedBooks);
                 }
         );
-       
     }
 
     @Test

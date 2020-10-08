@@ -22,8 +22,10 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -97,8 +99,9 @@ class AuthorTest {
         assertSoftly(
                 softly -> {
                     softly.assertThatThrownBy(() -> authorService.findById(orphan.getId()))
-                    .isInstanceOf(RuntimeException.class);
+                          .isInstanceOf(RuntimeException.class);
                     softly.assertThat(authorService.findAll()).isEmpty();
-                });
+                }
+        );
     }
 }

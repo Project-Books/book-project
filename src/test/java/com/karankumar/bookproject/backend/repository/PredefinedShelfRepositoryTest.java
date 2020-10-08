@@ -56,12 +56,11 @@ class PredefinedShelfRepositoryTest {
 
         assertSoftly(
                 softly -> {
-                    softly.assertThat(shelf.getPredefinedShelfName()).isEqualTo(PredefinedShelf.ShelfName.TO_READ);
+                    softly.assertThat(shelf.getPredefinedShelfName())
+                          .isEqualTo(PredefinedShelf.ShelfName.TO_READ);
                     softly.assertThat(shelf.getBooks()).isNull();
                 }
-            );
-
-       
+        );
     }
 }
 

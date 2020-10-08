@@ -56,9 +56,9 @@ class RatingStatisticsTest {
 
     @Test
     void lowestRatedBookExistsAndIsFound() {
-        String title = ratingStatistics.findLeastLikedBook().getTitle();
+        String actualTitle = ratingStatistics.findLeastLikedBook().getTitle();
         String expectedTitle = bookWithNoRating.getTitle();
-        assertThat(title).isEqualTo(expectedTitle);
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
@@ -69,9 +69,9 @@ class RatingStatisticsTest {
 
     @Test
     void highestRatedBookExistsAndIsFound() {
-        String title = ratingStatistics.findMostLikedBook().getTitle();
+        String actualTitle = ratingStatistics.findMostLikedBook().getTitle();
         String expectedTitle = bookWithHighestRating.getTitle();
-        assertThat(title).isEqualTo(expectedTitle);
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
