@@ -22,6 +22,8 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +32,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
 class UserServiceTest {
@@ -70,7 +68,8 @@ class UserServiceTest {
                                      .password("invalidpassword")
                                      .build();
 
-        assertThrows(ConstraintViolationException.class, () -> userService.register(invalidUser));
+        assertThatThrownBy(() -> userService.register(invalidUser))
+                .isInstanceOf(ConstraintViolationException.class);
     }
 
     @Test
@@ -78,7 +77,8 @@ class UserServiceTest {
         userRepository.save(validUser);
         validUser.setEmail("anotherEmail@testmail.com");
 
-        assertThrows(UserAlreadyRegisteredException.class, () -> userService.register(validUser));
+        assertThatThrownBy(() -> userService.register(validUser))
+                .isInstanceOf(UserAlreadyRegisteredException.class);
     }
 
     @Test
@@ -86,12 +86,14 @@ class UserServiceTest {
         userRepository.save(validUser);
         validUser.setUsername("anotherUsername");
 
-        assertThrows(UserAlreadyRegisteredException.class, () -> userService.register(validUser));
+        assertThatThrownBy(() -> userService.register(validUser))
+                .isInstanceOf(UserAlreadyRegisteredException.class);
     }
 
     @Test
     void register_withoutUserRole_throwsError() {
-        assertThrows(AuthenticationServiceException.class, () -> userService.register(validUser));
+        assertThatThrownBy(() -> userService.register(validUser))
+                .isInstanceOf(AuthenticationServiceException.class);
     }
 
     @Test
@@ -99,8 +101,7 @@ class UserServiceTest {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
-        assertThat(userRepository.findByUsername(validUser.getUsername()).isPresent(),
-                equalTo(true));
+        assertThat(userRepository.findByUsername(validUser.getUsername()).isPresent()).isTrue();
     }
 
     @Test
@@ -108,25 +109,23 @@ class UserServiceTest {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
-        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated(),
-                equalTo(true));
+        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated()).isTrue();
     }
 
     @Test
     void usernameIsInUse_UsernameNotInUse_returnsFalse() {
-        assertThat(userService.usernameIsInUse("notAtestuser"), equalTo(false));
+        assertThat(userService.usernameIsInUse("notAtestuser")).isFalse();
     }
 
     @Test
     void usernameIsInUse_UsernameInUse_returnsTrue() {
         userRepository.save(validUser);
-
-        assertThat(userService.usernameIsInUse(validUser.getUsername()), equalTo(true));
+        assertThat(userService.usernameIsInUse(validUser.getUsername())).isTrue();
     }
 
     @Test
     void usernameIsNotInUse_UsernameNotInUse_returnsTrue() {
-        assertThat(userService.usernameIsNotInUse("testuser"), equalTo(true));
+        assertThat(userService.usernameIsNotInUse("testuser")).isTrue();
     }
 
     @Test
@@ -134,30 +133,30 @@ class UserServiceTest {
     void usernameIsNotInUse_UsernameInUse_returnsFalse() {
         userRepository.save(validUser);
 
-        assertThat(userService.usernameIsNotInUse(validUser.getUsername()), equalTo(false));
+        assertThat(userService.usernameIsNotInUse(validUser.getUsername())).isFalse();
     }
 
     @Test
     void emailIsInUse_EmailNotInUse_returnsFalse() {
-        assertThat(userService.emailIsInUse("testmail"), equalTo(false));
+        assertThat(userService.emailIsInUse("testmail")).isFalse();
     }
 
     @Test
     void emailIsInUse_EmailInUse_returnsTrue() {
         userRepository.save(validUser);
 
-        assertThat(userService.emailIsInUse(validUser.getEmail()), equalTo(true));
+        assertThat(userService.emailIsInUse(validUser.getEmail())).isTrue();
     }
 
     @Test
     void emailIsNotInUse_EmailNotInUse_returnsTrue() {
-        assertThat(userService.emailIsNotInUse("testmail"), equalTo(true));
+        assertThat(userService.emailIsNotInUse("testmail")).isTrue();
     }
 
     @Test
     void emailIsNotInUse_EmailInUse_returnsFalse() {
         userRepository.save(validUser);
 
-        assertThat(userService.emailIsNotInUse(validUser.getEmail()), equalTo(false));
+        assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
     }
 }

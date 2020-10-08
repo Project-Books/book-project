@@ -17,18 +17,16 @@
 
 package com.karankumar.bookproject.backend.statistics;
 
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
-import com.karankumar.bookproject.annotations.IntegrationTest;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @IntegrationTest
 class RatingStatisticsTest {
@@ -58,25 +56,28 @@ class RatingStatisticsTest {
 
     @Test
     void lowestRatedBookExistsAndIsFound() {
-        assertEquals(bookWithNoRating.getTitle(), ratingStatistics.findLeastLikedBook().getTitle());
+        String actualTitle = ratingStatistics.findLeastLikedBook().getTitle();
+        String expectedTitle = bookWithNoRating.getTitle();
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
     void testNonExistentLowestRatedBook() {
         resetRatingStatistics();
-        assertNull(ratingStatistics.findLeastLikedBook());
+        assertThat(ratingStatistics.findLeastLikedBook()).isNull();
     }
 
     @Test
     void highestRatedBookExistsAndIsFound() {
-        assertEquals(bookWithHighestRating.getTitle(),
-                ratingStatistics.findMostLikedBook().getTitle());
+        String actualTitle = ratingStatistics.findMostLikedBook().getTitle();
+        String expectedTitle = bookWithHighestRating.getTitle();
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
     void testNonExistentHighestRatedBook() {
         resetRatingStatistics();
-        assertNull(ratingStatistics.findMostLikedBook());
+        assertThat(ratingStatistics.findMostLikedBook()).isNull();
     }
 
     @Test
@@ -84,13 +85,13 @@ class RatingStatisticsTest {
         int numberOfBooks = StatisticTestUtils.getNumberOfBooks();
         double totalRating = StatisticTestUtils.totalRating;
         double average = totalRating / numberOfBooks;
-        assertEquals(average, ratingStatistics.calculateAverageRatingGiven());
+        assertThat(ratingStatistics.calculateAverageRatingGiven()).isEqualTo(average);
     }
 
     @Test
     void testAverageRatingDivideByZero() {
         resetRatingStatistics();
-        assertNull(ratingStatistics.calculateAverageRatingGiven());
+        assertThat(ratingStatistics.calculateAverageRatingGiven()).isNull();
     }
 
     private void resetRatingStatistics() {
