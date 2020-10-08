@@ -38,6 +38,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -208,6 +209,14 @@ class BookServiceTest {
 
         // then
         JSONAssert.assertEquals(expectedJsonString, actualJsonString, JSONCompareMode.NON_EXTENSIBLE);
+    }
+
+    @Test
+    @Transactional
+    void testSavedBookFoundByFoundById() {
+        Book bookToSave = new Book("Book Name To Save", author, toRead);
+        bookService.save(bookToSave);
+        assertEquals(bookService.findById(bookToSave.getId()),bookToSave);
     }
 
     private Book createBookAndSetAllAttributes() {
