@@ -22,7 +22,6 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -35,31 +34,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
+@Transactional
 class UserServiceTest {
-    private final UserService userService;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    @Autowired private UserService userService;
+    @Autowired private UserRepository userRepository;
+    @Autowired private RoleRepository roleRepository;
 
     private final User validUser = User.builder()
                                        .username("validUser")
                                        .email("valid@testmail.com")
                                        .password("aaaaAAAA1234@")
                                        .build();
-
-    @Autowired
-    UserServiceTest(UserService userService,
-                    UserRepository userRepository,
-                    RoleRepository roleRepository) {
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-    }
 
     @Test
     void register_withBeanViolations_throwsException() {
@@ -130,7 +115,6 @@ class UserServiceTest {
     }
 
     @Test
-    @Transactional
     void usernameIsNotInUse_UsernameInUse_returnsFalse() {
         userRepository.save(validUser);
 

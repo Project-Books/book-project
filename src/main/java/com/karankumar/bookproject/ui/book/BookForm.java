@@ -56,7 +56,6 @@ import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -414,9 +413,9 @@ public class BookForm extends VerticalLayout {
         Book book = new Book(title, author, predefinedShelf);
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
-            List<CustomShelf> shelves = customShelfService.findAll(customShelfField.getValue());
-            if (shelves.size() == 1) {
-                book.setCustomShelf(shelves.get(0));
+            CustomShelf shelf = customShelfService.findByShelfName(customShelfField.getValue());
+            if (shelf != null) {
+                book.setCustomShelf(shelf);
             }
         }
 
@@ -476,12 +475,6 @@ public class BookForm extends VerticalLayout {
         if (binder == null) {
             LOGGER.log(Level.SEVERE, "Null binder");
             return;
-        }
-
-        // TODO: this should be removed. A custom shelf should not be mandatory, so it should
-        // be acceptable to the custom shelf to be null
-        if (book.getCustomShelf() == null) {
-            book.setCustomShelf(new CustomShelf("ShelfName"));
         }
 
         binder.setBean(book);

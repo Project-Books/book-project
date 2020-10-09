@@ -4,6 +4,8 @@ import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.utils.SecurityTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,10 +22,12 @@ class BookRepositoryTest {
     private Book book1;
 
     BookRepositoryTest(@Autowired AuthorRepository authorRepository,
+                       @Autowired UserRepository userRepository,
                        @Autowired PredefinedShelfRepository predefinedShelfRepository) {
+        User user = SecurityTestUtils.getTestUser(userRepository);
         author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
         readShelf =
-                predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+                predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ, user));
     }
 
     @BeforeEach

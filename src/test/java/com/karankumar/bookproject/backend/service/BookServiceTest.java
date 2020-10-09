@@ -19,9 +19,8 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Tag;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import com.karankumar.bookproject.backend.entity.Author;	
-import com.karankumar.bookproject.backend.entity.Book;	
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;	
 import com.karankumar.bookproject.backend.entity.CustomShelf;	
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
@@ -32,7 +31,6 @@ import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,15 +52,11 @@ class BookServiceTest {
     @Autowired private BookService bookService;
     @Autowired private CustomShelfService customShelfService;
     @Autowired private TagService tagService;
+    @Autowired private PredefinedShelfService predefinedShelfService;
 
     private Book validBook;
-    private static PredefinedShelf toRead;
+    private PredefinedShelf toRead;
     private Author author;
-
-    @BeforeAll
-    public static void beforeAllSetup(@Autowired PredefinedShelfService predefinedShelfService) {
-        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
-    }
 
     @BeforeEach
     public void setup() {
@@ -71,6 +65,7 @@ class BookServiceTest {
     }
 
     private void resetAuthorAndBook() {
+        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
         author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author, toRead);
     }
@@ -218,7 +213,7 @@ class BookServiceTest {
     }
 
     private Book createBookAndSetAllAttributes() {
-        CustomShelf customShelf = new CustomShelf("My Shelf");
+        CustomShelf customShelf = customShelfService.createCustomShelf("My Shelf");
         customShelfService.save(customShelf);
 
         Tag tag1 = new Tag("book");

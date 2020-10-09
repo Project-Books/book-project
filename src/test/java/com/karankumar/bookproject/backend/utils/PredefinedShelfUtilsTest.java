@@ -18,12 +18,10 @@
 package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
@@ -35,7 +33,7 @@ import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHEL
 import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.SoftAssertions;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -49,35 +47,32 @@ import java.util.stream.Stream;
 
 @IntegrationTest
 class PredefinedShelfUtilsTest {
-    private static BookRepository bookRepository;
+    @Autowired private BookRepository bookRepository;
+    @Autowired private PredefinedShelfService predefinedShelfService;
 
-    private static PredefinedShelfUtils predefinedShelfUtils;
+    private PredefinedShelfUtils predefinedShelfUtils;
 
-    private static PredefinedShelf toReadShelf;
-    private static PredefinedShelf readShelf;
-    private static PredefinedShelf didNotFinishShelf;
+    private PredefinedShelf toReadShelf;
+    private PredefinedShelf readShelf;
+    private PredefinedShelf didNotFinishShelf;
 
-    private static final Author NO_AUTHOR = null;
+    private Book book1;
+    private Book book2;
+    private Book book3;
+    private Book book4;
 
-    private static Book book1;
-    private static Book book2;
-    private static Book book3;
-    private static Book book4;
-
-    private static List<String> PREDEFINED_SHELVES;
+    private List<String> PREDEFINED_SHELVES;
     private static final List<String> INVALID_SHELVES =
             List.of("Too read", "Readin", "Do not finish", "Shelf");
     private static final String ERROR_MESSAGE =
             "Shelf with name ''{0}'' does not match any predefined shelf";
 
-    @BeforeAll
-    public static void setupBeforeAll(@Autowired PredefinedShelfService predefinedShelfService,
-                                      @Autowired BookRepository bookRepository,
-                                      @Autowired BookService bookService) {
+    @BeforeEach
+    public void setup() {
+        if (predefinedShelfUtils != null) return;
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         findPredefinedShelves(predefinedShelfService);
 
-        PredefinedShelfUtilsTest.bookRepository = bookRepository;
         resetBookRepository();
         createAndSaveBooks();
 
@@ -86,27 +81,27 @@ class PredefinedShelfUtilsTest {
         setBooksInPredefinedShelves();
     }
 
-    private static void findPredefinedShelves(PredefinedShelfService predefinedShelfService) {
+    private void findPredefinedShelves(PredefinedShelfService predefinedShelfService) {
         toReadShelf = predefinedShelfService.findToReadShelf();
         readShelf =  predefinedShelfService.findReadShelf();
         didNotFinishShelf = predefinedShelfService.findDidNotFinishShelf();
     }
 
-    private static void resetBookRepository() {
+    private void resetBookRepository() {
         bookRepository.deleteAll();
     }
 
-    private static void setBooksInPredefinedShelves() {
+    private void setBooksInPredefinedShelves() {
         toReadShelf.setBooks(Set.of(book1, book2));
         readShelf.setBooks(Set.of(book3));
         didNotFinishShelf.setBooks(Set.of(book4));
     }
 
-    private static void createAndSaveBooks() {
-        book1 = bookRepository.save(new Book("someTitle", NO_AUTHOR, toReadShelf));
-        book2 = bookRepository.save(new Book("someTitle2", NO_AUTHOR, toReadShelf));
-        book3 = bookRepository.save(new Book("someOtherTitle", NO_AUTHOR, readShelf));
-        book4 = bookRepository.save(new Book("yetAnotherTitle", NO_AUTHOR, didNotFinishShelf));
+    private void createAndSaveBooks() {
+        book1 = bookRepository.save(new Book("someTitle", null, toReadShelf));
+        book2 = bookRepository.save(new Book("someTitle2", null, toReadShelf));
+        book3 = bookRepository.save(new Book("someOtherTitle", null, readShelf));
+        book4 = bookRepository.save(new Book("yetAnotherTitle", null, didNotFinishShelf));
     }
 
     @Test

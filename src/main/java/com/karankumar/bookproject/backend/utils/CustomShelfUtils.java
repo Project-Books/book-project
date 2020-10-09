@@ -45,14 +45,10 @@ public class CustomShelfUtils {
      * Gets all of the books in the specified custom shelf
      */
     public Set<Book> getBooksInCustomShelf(String shelfName) {
-        Set<Book> books;
-        List<CustomShelf> customShelves = customShelfService.findAll(shelfName);
-        if (customShelves.isEmpty()) {
-            books = new HashSet<>();
-        } else {
-            CustomShelf customShelf = customShelves.get(0);
-            books = customShelf.getBooks();
+        CustomShelf customShelf = customShelfService.findByShelfName(shelfName);
+        if (customShelf == null) {
+            return new HashSet<>();
         }
-        return books;
+        return customShelf.getBooks();
     }
 }

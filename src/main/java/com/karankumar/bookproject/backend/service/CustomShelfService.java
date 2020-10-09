@@ -28,9 +28,15 @@ import java.util.List;
 @Log
 public class CustomShelfService {
     private final CustomShelfRepository customShelfRepository;
+    private final UserService userService;
 
-    public CustomShelfService(CustomShelfRepository customShelfRepository) {
+    public CustomShelfService(CustomShelfRepository customShelfRepository, UserService userService) {
         this.customShelfRepository = customShelfRepository;
+        this.userService = userService;
+    }
+
+    public CustomShelf createCustomShelf(String shelfName) {
+        return new CustomShelf(shelfName, userService.getCurrentUser());
     }
 
     public CustomShelf findById(Long id) {
@@ -38,15 +44,11 @@ public class CustomShelfService {
     }
 
     public List<CustomShelf> findAll() {
-        return customShelfRepository.findAll();
+        return customShelfRepository.findAllByUser(userService.getCurrentUser());
     }
 
-    public List<CustomShelf> findAll(String shelfName) {
-        if (shelfName == null) {
-            return customShelfRepository.findAll();
-        } else {
-            return customShelfRepository.findByShelfName(shelfName);
-        }
+    public CustomShelf findByShelfName(String shelfName) {
+        return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
     public void save(CustomShelf customShelf) {

@@ -32,25 +32,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
+@Transactional
 class BookTest {
-    private static BookService bookService;
-    private static TagService tagService;
+    @Autowired private BookService bookService;
+    @Autowired private TagService tagService;
+    @Autowired private PredefinedShelfService predefinedShelfService;
 
-    private static Book testBook;
-    private static Tag testTag;
-
-    @Autowired
-    public BookTest(PredefinedShelfService predefinedShelfService,
-                    BookService bookService,
-                    TagService tagService) {
-
-        PredefinedShelf toRead = predefinedShelfService.findToReadShelf();
-        BookTest.bookService = bookService;
-        BookTest.tagService = tagService;
-
-        testTag = new Tag("Test Tag");
-        testBook = createBook(toRead);
-    }
+    private Book testBook;
+    private Tag testTag;
 
     private Book createBook(PredefinedShelf shelf) {
         Author author = new Author("Firstname", "Lastname");
@@ -63,22 +52,16 @@ class BookTest {
 
     @BeforeEach
     void setUp() {
-        resetBookService();
-        resetTagService();
-    }
-
-    private static void resetTagService() {
+        testTag = new Tag("Test Tag");
         tagService.deleteAll();
         tagService.save(testTag);
-    }
 
-    private static void resetBookService() {
+        testBook = createBook(predefinedShelfService.findToReadShelf());
         bookService.deleteAll();
         bookService.save(testBook);
     }
 
     @Test
-    @Transactional
     void testOrphanedTagsNotRemoved() {
         // given
         assumeThat(tagService.findAll().size()).isOne();

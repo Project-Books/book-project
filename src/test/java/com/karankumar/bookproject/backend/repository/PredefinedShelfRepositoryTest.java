@@ -19,31 +19,31 @@ package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import org.assertj.core.api.SoftAssertions;
+import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.utils.SecurityTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaIntegrationTest
 class PredefinedShelfRepositoryTest {
+    @Autowired private UserRepository userRepository;
     @Autowired private PredefinedShelfRepository repository;
+    private User user;
 
     @BeforeEach
     void setup() {
+        user = SecurityTestUtils.getTestUser(userRepository);
         repository.saveAll(
             Arrays.stream(PredefinedShelf.ShelfName.values())
-                  .map(PredefinedShelf::new)
+                  .map(shelfName -> new PredefinedShelf(shelfName, user))
                   .collect(Collectors.toList())
         );
     }
@@ -51,7 +51,7 @@ class PredefinedShelfRepositoryTest {
     @Test
     @DisplayName("When a shelf exists, findByPredefinedShelfName correctly returns the shelf")
     void findByShelfNameReturnsOneShelf() {
-        PredefinedShelf shelf = repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.TO_READ, user);
         assertThat(shelf).isNotNull();
 
         assertSoftly(

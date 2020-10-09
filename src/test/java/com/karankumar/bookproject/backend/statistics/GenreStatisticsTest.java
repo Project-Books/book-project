@@ -24,21 +24,23 @@ import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @IntegrationTest
 class GenreStatisticsTest {
-    private static GenreStatistics genreStatistics;
+    @Autowired private BookService bookService;
+    @Autowired private PredefinedShelfService predefinedShelfService;
 
-    @BeforeAll
-    public static void setup(@Autowired BookService bookService,
-                             @Autowired PredefinedShelfService predefinedShelfService) {
+    private GenreStatistics genreStatistics;
+
+    @BeforeEach
+    public void setup() {
+        if (genreStatistics != null) return;
         bookService.deleteAll();
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
-        GenreStatisticsTest.genreStatistics = new GenreStatistics(predefinedShelfService);
+        genreStatistics = new GenreStatistics(predefinedShelfService);
     }
 
     @Test

@@ -21,12 +21,10 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -34,27 +32,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 class AuthorTest {
-    private final BookService bookService;
+    @Autowired private BookService bookService;
+    @Autowired private AuthorService authorService;
+    @Autowired private PredefinedShelfService predefinedShelfService;
 
-    private static Book testBook1;
-    private static Book testBook2;
-    private final AuthorService authorService;
-    private static PredefinedShelf toRead;
-
-    @Autowired
-    public AuthorTest(PredefinedShelfService predefinedShelfService,
-                      BookService bookService,
-                      AuthorService authorService) {
-        toRead = predefinedShelfService.findToReadShelf();
-        testBook1 = createBook("How the mind works", toRead);
-        testBook2 = createBook("The better angels of our nature", toRead);
-
-        this.bookService = bookService;
-        this.authorService = authorService;
-    }
+    private Book testBook1;
+    private Book testBook2;
+    private PredefinedShelf toRead;
 
     @BeforeEach
     public void setUp() {
+        toRead = predefinedShelfService.findToReadShelf();
+        testBook1 = createBook("How the mind works", toRead);
+        testBook2 = createBook("The better angels of our nature", toRead);
         resetBookService();
         saveBooks();
     }
