@@ -13,7 +13,7 @@ By contributing to this project, you are expected to adhere to the [Book Project
 ## Contents
 
 1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
-1. [Open-minded discussions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#open-minded-discussions) 
+1. [Open-ended discussions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#open-ended-discussions) 
 1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
    1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
    1. [New contributors assigned to at most one issue at a time](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#new-contributors-assigned-to-at-most-one-isse-at-a-time)
@@ -28,8 +28,8 @@ By contributing to this project, you are expected to adhere to the [Book Project
    1. [Writing tests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#writing-tests)
    1. [New files](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#new-files)
 1. [Pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#pull-requests)
-1. [Merge conflicts](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#merge-conflicts)
-1. [Resolving conversations](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#resolving-conversations)
+   1. [Merge conflicts](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#merge-conflicts)
+   1. [Resolving conversations](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#resolving-conversations)
 1. [Stale issues & pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#stale-issues--pull-requests)
 1. [Unassigning yourself](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#unassigning-yourself)
 1. [Ways to contribute](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#ways-to-contribute)
