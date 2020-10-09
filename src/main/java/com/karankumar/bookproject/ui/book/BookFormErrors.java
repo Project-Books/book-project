@@ -19,7 +19,9 @@ package com.karankumar.bookproject.ui.book;
 
 import com.karankumar.bookproject.backend.entity.Book;
 
-public class BookFormErrors {
+public final class BookFormErrors {
+    private BookFormErrors() { }
+
     public static final String BOOK_TITLE_ERROR = "Please provide a book title";
     public static final String FIRST_NAME_ERROR = "Please enter the author's first name";
     public static final String LAST_NAME_ERROR = "Please enter the author's last name";
