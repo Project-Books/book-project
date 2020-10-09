@@ -67,7 +67,8 @@ public class MainView extends AppLayout implements RouterLayout, PageConfigurato
         addToNavbar(true, centreTabs, h);
     }
 
-    private Tab createTab(VaadinIcon icon, Class<? extends Component> viewClass, String title) {
+    private static Tab createTab(VaadinIcon icon, Class<? extends Component> viewClass,
+                                 String title) {
         return createTab(addLink(new RouterLink(null, viewClass), icon, title));
     }
 
