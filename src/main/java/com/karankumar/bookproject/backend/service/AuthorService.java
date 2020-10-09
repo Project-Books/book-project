@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Log
-public class AuthorService extends BaseService<Author, Long> {
+public class AuthorService {
 
     private AuthorRepository authorRepository;
 
@@ -38,7 +38,6 @@ public class AuthorService extends BaseService<Author, Long> {
         this.authorRepository = authorRepository;
     }
 
-    @Override
     public Author findById(Long id) {
         return authorRepository.getOne(id);
     }
@@ -47,7 +46,6 @@ public class AuthorService extends BaseService<Author, Long> {
         return authorRepository.findAll();
     }
 
-    @Override
     public void save(Author author) {
         if (author != null) {
             List<Long> matchingAuthors = findAll().stream()
@@ -64,17 +62,15 @@ public class AuthorService extends BaseService<Author, Long> {
         }
     }
 
-    @Override
     public void delete(Author author) {
         authorRepository.delete(author);
     }
 
-    public Long count() {
-        return authorRepository.count();
-    }
-
-    @Override
     public void deleteAll() {
         authorRepository.deleteAll();
+    }
+
+    public Long count() {
+        return authorRepository.count();
     }
 }

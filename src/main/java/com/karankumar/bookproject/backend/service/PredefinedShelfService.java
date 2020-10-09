@@ -38,7 +38,7 @@ import static com.karankumar.bookproject.backend.utils.TestData.setPredefinedShe
 
 @Service
 @Log
-public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
+public class PredefinedShelfService {
 
     private final BookRepository bookRepository;
     private final PredefinedShelfRepository predefinedShelfRepository;
@@ -54,12 +54,10 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
         this.tagRepository = tagRepository;
     }
 
-    @Override
     public PredefinedShelf findById(Long id) {
         return predefinedShelfRepository.getOne(id);
     }
 
-    @Override
     public void save(PredefinedShelf shelf) {
         if (shelf != null) {
             LOGGER.log(Level.INFO, "Saving shelf: " + shelf);
@@ -91,18 +89,6 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
     public PredefinedShelf findByPredefinedShelfName(PredefinedShelf.ShelfName shelfName) {
         return predefinedShelfRepository.findByPredefinedShelfName(shelfName);
-    }
-
-    @Override
-    public void delete(PredefinedShelf shelf) {
-        // Don't want to delete a predefined shelf
-        LOGGER.severe("delete() should not be called");
-    }
-
-    @Override
-    public void deleteAll() {
-        // Don't want to delete the predefined shelves
-        LOGGER.severe("deleteAll() should not be called");
     }
 
     public Long count() {
