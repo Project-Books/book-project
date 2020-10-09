@@ -22,8 +22,6 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
 class UserServiceTest {
@@ -101,7 +102,7 @@ class UserServiceTest {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
-        assertThat(userRepository.findByUsername(validUser.getUsername()).isPresent()).isTrue();
+        assertThat(userRepository.findByUsername(validUser.getUsername())).isPresent();
     }
 
     @Test
