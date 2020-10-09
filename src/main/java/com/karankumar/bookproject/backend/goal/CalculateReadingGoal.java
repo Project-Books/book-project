@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType;
 import static com.karankumar.bookproject.backend.utils.DateUtils.WEEKS_IN_YEAR;
 
-public class CalculateReadingGoal {
+public final class CalculateReadingGoal {
 
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";

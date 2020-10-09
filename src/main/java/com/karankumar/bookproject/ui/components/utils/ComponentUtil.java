@@ -20,7 +20,7 @@ package com.karankumar.bookproject.ui.components.utils;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValue;
 
-public class ComponentUtil {
+public final class ComponentUtil {
     private ComponentUtil() {}
 
     public static void setComponentClassName(HasSize[] components, String className) {
