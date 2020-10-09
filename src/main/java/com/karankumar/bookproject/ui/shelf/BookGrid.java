@@ -18,12 +18,15 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Shelf;
+import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 import com.vaadin.flow.component.grid.Grid;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
@@ -35,7 +38,8 @@ import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShel
 @Log
 public class BookGrid {
     private final Grid<Book> bookGrid;
-    
+    @Autowired
+    private BookService bookService;
     private final PredefinedShelfUtils predefinedShelfUtils;
     private final CustomShelfUtils customShelfUtils;
 
@@ -80,30 +84,25 @@ public class BookGrid {
             return;
         }
 
-        Set<Book> books = getBooks(chosenShelf);
-        populateGridWithBooks(books, bookFilters);
+        Shelf shelf = findShelf(chosenShelf);
+        LOGGER.log(Level.FINEST, "Shelf is " + shelf.toString());
+        populateGridWithBooks(shelf, bookFilters.getBookTitle(), bookFilters.getBookAuthor());
     }
 
-    private Set<Book> getBooks(String chosenShelf) {
+    private Shelf findShelf(String chosenShelf) {
         if (isAllBooksShelf(chosenShelf)) {
-            return predefinedShelfUtils.getBooksInAllPredefinedShelves();
+            return null;
         }
 
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
-            return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
+            return predefinedShelfUtils.findPredefinedShelf(predefinedShelfUtils.getPredefinedShelfName(chosenShelf));
         }
 
-        return customShelfUtils.getBooksInCustomShelf(chosenShelf);
+        return customShelfUtils.findShelfByName(chosenShelf);
     }
 
-    private void populateGridWithBooks(Set<Book> books, BookFilters bookFilters) {
-        List<Book> items = filterShelf(books, bookFilters);
+    private void populateGridWithBooks(Shelf shelf, String title, String author) {
+        List<Book> items = bookService.findByShelfAndTitleOrAuthor(shelf, title, author);
         bookGrid.setItems(items);
-    }
-
-    private List<Book> filterShelf(Set<Book> books, BookFilters bookFilters) {
-        return books.stream()
-                    .filter(bookFilters::apply)
-                    .collect(Collectors.toList());
     }
 }

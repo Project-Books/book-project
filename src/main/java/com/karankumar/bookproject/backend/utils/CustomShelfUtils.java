@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 
 import javax.validation.constraints.NotNull;
@@ -54,5 +55,9 @@ public class CustomShelfUtils {
             books = customShelf.getBooks();
         }
         return books;
+    }
+
+    public Shelf findShelfByName(String chosenShelf){
+        return customShelfService.findAll(chosenShelf).get(0);
     }
 }

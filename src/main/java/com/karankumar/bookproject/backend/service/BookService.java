@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -126,7 +128,7 @@ public class BookService extends BaseService<Book, Long> {
         return jsonWriter.writeValueAsString(books);
     }
 
-    public List<Book> findByTitleOrAuthor(String title, Author author){
-        return bookRepository.findByTitleOrAuthor(title, author);
+    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
+        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
     }
 }

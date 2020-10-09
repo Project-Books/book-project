@@ -18,9 +18,9 @@
 
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -33,5 +33,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     // TODO: implement
     Set<Book> findByAuthor(Author author);
 
-    List<Book> findByTitleOrAuthor(String title, Author author);
+    @Query("SELECT b " +
+            "FROM Book b " +
+            "LEFT OUTER JOIN b.author a " +
+            "WHERE (b.predefinedShelf = ?1 or b.customShelf = ?1) and (b.title Like ?2 OR a.firstName Like ?3 Or a.lastName Like ?3)")
+    List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName);
 }

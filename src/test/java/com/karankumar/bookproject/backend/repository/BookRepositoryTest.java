@@ -3,7 +3,9 @@ package com.karankumar.bookproject.backend.repository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,16 +18,13 @@ class BookRepositoryTest {
     @Autowired private BookRepository bookRepository;
     @Autowired AuthorRepository authorRepository;
     @Autowired PredefinedShelfRepository predefinedShelfRepository;
+    @Autowired CustomShelfRepository customShelfRepository;
 
     private PredefinedShelf readShelf;
+    private CustomShelf customShelf;
     private Author author;
     private Book book1;
-
-    BookRepositoryTest() {
-//        author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
-//        readShelf =
-//                predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
-    }
+    private Book customBook;
 
     @BeforeEach
     void setup() {
@@ -34,10 +33,15 @@ class BookRepositoryTest {
 
     private void resetBookService() {
         author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
-        readShelf = predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+        readShelf = predefinedShelfRepository.saveAndFlush(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+        customBook = new Book("someTitle", author, null);
+        customShelf = new CustomShelf("MyShelf");
+        customShelfRepository.saveAndFlush(customShelf);
 
         bookRepository.deleteAll();
         book1 = bookRepository.saveAndFlush(new Book("someTitle", author, readShelf));
+
+        customBook = bookRepository.saveAndFlush(customBook);
     }
 
     @Test
@@ -73,13 +77,17 @@ class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("should successfully find list of books by title or author filter")
-    void findBookByAuthor(){
-        assertThat(bookRepository.findByTitleOrAuthor("someTitle", author).size()).isOne();
-        assertThat(bookRepository.findByTitleOrAuthor("", author).size()).isOne();
-        assertThat(bookRepository.findByTitleOrAuthor("someTitle", null).size()).isOne();
-        assertThat(bookRepository.findByTitleOrAuthor("", null).size()).isZero();
-        assertThat(bookRepository.findByTitleOrAuthor(null, null).size()).isZero();
+    @DisplayName("should successfully find list of books by predefined shelf, title or author")
+    void findBookByPredefinedShelfAndTitleOrAuthor(){
+        PredefinedShelf shelf = predefinedShelfRepository.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ).get(0);
+        String title = "someTitle";
+        String authorsName = "firstName lastName";
+        String wildcard = "%"; //considering empty string from UI a wildcard for any result
+
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(shelf,title, authorsName).size()).isOne();
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(shelf, wildcard, authorsName).size()).isOne();
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(shelf, wildcard, wildcard).size()).isOne();
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(null, wildcard, wildcard).size()).isZero();
     }
 
 }
