@@ -71,6 +71,11 @@ If you want to use Docker, follow one of the two appoaches (if you use Windows, 
 3. Build the project at the root using `./mvn clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 4. Start MySQL database using `docker-compose up -d mysql phpmyadmin`
 5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
+
+***Live reload:*** See  your UI changes in the browser without manual refresh.
+To activate this feature start the application with `mvn spring-boot:run` (Unix) 
+or `mvnw.cmd spring-boot:run` (Windows). Please note that this feature doesn't work
+when application is started as JAR.
 6. Log in with the details below:
     - Username: `user`
     - Password: `password`
