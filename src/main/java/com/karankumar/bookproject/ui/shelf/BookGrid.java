@@ -99,6 +99,8 @@ public class BookGrid {
     private void populateGridWithBooks(Set<Book> books, BookFilters bookFilters) {
         List<Book> items = filterShelf(books, bookFilters);
         bookGrid.setItems(items);
+	bookGrid.setHeightByRows(true);
+
     }
 
     private List<Book> filterShelf(Set<Book> books, BookFilters bookFilters) {
