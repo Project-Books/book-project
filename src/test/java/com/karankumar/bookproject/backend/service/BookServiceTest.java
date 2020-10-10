@@ -213,7 +213,7 @@ class BookServiceTest {
 
     @Test
     @Transactional
-    void testSavedBookFoundByFoundById() {
+    void findSavedBook() {
         Book bookToSave = new Book("Book Name To Save", author, toRead);
         bookService.save(bookToSave);
         assertEquals(bookService.findById(bookToSave.getId()),bookToSave);
