@@ -25,6 +25,10 @@ import lombok.extern.java.Log;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 @Log
 public class RatingStatistics extends Statistics {
@@ -39,12 +43,12 @@ public class RatingStatistics extends Statistics {
      * @return the Book in the 'read' shelf with the highest rating
      * If there are multiple books with the same highest rating, the first one found will be returned
      */
-    public Book findMostLikedBook() {
+    public Optional<Book> findMostLikedBook() {
         if (readBooksRated.size() <= 1) {
-            return null;
+            return empty();
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
-        return readBooksRated.get(readBooksRated.size() - 1);
+        return of(readBooksRated.get(readBooksRated.size() - 1));
     }
 
     private List<Book> findReadBooksWithRatings() {
@@ -60,33 +64,31 @@ public class RatingStatistics extends Statistics {
      * @return the Book in the 'read' shelf with the lowest rating
      * If there are multiple books with the same lowest rating, the first one found will be returned
      */
-    public Book findLeastLikedBook() {
+    public Optional<Book> findLeastLikedBook() {
         if (readBooksRated.size() <= 1) {
-            return null;
+            return empty();
         }
         readBooksRated.sort(Comparator.comparing(Book::getRating));
-        return readBooksRated.get(0);
+        return of(readBooksRated.get(0));
     }
 
     /**
      * @return the average rating given to all books in the 'read'
      * If a book in the 'read' shelf does not have a rating, it is not included in the sum
      */
-    public Double calculateAverageRatingGiven() {
+    public Optional<Double> calculateAverageRatingGiven() {
         int numberOfRatings = readBooksRated.size();
         if (numberOfRatings <= 1) {
-            return null;
+            return empty();
         }
-        return (calculateTotalRating() / numberOfRatings);
+        return of((calculateTotalRating() / numberOfRatings));
     }
 
     private double calculateTotalRating() {
         return readBooksRated.stream()
-                             .mapToDouble(book -> {
-                                 Double rating = RatingScale.toDouble(book.getRating());
-                                 rating = (rating == null) ? 0.0 : rating;
-                                 return rating;
-                             })
+                             .mapToDouble(book -> RatingScale.toDouble(book.getRating())
+                                     .orElse(0.0)
+                             )
                              .sum();
     }
 }

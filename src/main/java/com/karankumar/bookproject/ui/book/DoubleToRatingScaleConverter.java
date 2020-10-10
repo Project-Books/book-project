@@ -35,6 +35,6 @@ public class DoubleToRatingScaleConverter implements Converter<Double, RatingSca
 
     @Override
     public Double convertToPresentation(RatingScale rating, ValueContext valueContext) {
-        return RatingScale.toDouble(rating);
+        return RatingScale.toDouble(rating).orElse(0.0);
     }
 }

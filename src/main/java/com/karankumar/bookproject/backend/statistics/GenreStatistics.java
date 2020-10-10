@@ -108,7 +108,7 @@ public class GenreStatistics extends Statistics {
         for (Book book : readBooksWithGenresAndRatings) {
             BookGenre bookGenre = book.getBookGenre();
             double totalGenreRating = totalRatingForReadGenre.get(bookGenre);
-            double genreRating = RatingScale.toDouble(book.getRating());
+            double genreRating = RatingScale.toDouble(book.getRating()).orElse(0.0);
             totalGenreRating += genreRating;
             totalRatingForReadGenre.replace(bookGenre, totalGenreRating);
         }

@@ -24,6 +24,9 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.logging.Level;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
+
 @Log
 public enum RatingScale {
     NO_RATING("No rating", null),
@@ -52,6 +55,7 @@ public enum RatingScale {
     private String rating;
     private Double value;
 
+
     RatingScale(String rating, Double value) {
         this.rating = rating;
         this.value = value;
@@ -62,13 +66,13 @@ public enum RatingScale {
         return rating;
     }
 
-    public static Double toDouble(RatingScale ratingScale) {
+    public static Optional<Double> toDouble(RatingScale ratingScale) {
         if (ratingScale == null) {
-            LOGGER.log(Level.INFO, "Returning null as rating was null");
-            return null;
+            LOGGER.log(Level.INFO, "Returning optional as rating was null");
+            return empty();
         }
 
-        return ratingScale.value;
+        return ofNullable(ratingScale.value);
     }
 
     public static Optional<RatingScale> of(Double ratingValue) {

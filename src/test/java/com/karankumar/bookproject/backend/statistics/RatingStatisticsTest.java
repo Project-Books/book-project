@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 class RatingStatisticsTest {
@@ -58,25 +58,32 @@ class RatingStatisticsTest {
 
     @Test
     void lowestRatedBookExistsAndIsFound() {
-        assertEquals(bookWithNoRating.getTitle(), ratingStatistics.findLeastLikedBook().getTitle());
+        assertEquals(bookWithNoRating.getTitle(), ratingStatistics.findLeastLikedBook()
+                .map(Book::getTitle)
+                .orElse("")
+        );
     }
 
     @Test
     void testNonExistentLowestRatedBook() {
         resetRatingStatistics();
-        assertNull(ratingStatistics.findLeastLikedBook());
+        assertTrue(ratingStatistics.findLeastLikedBook().isEmpty());
     }
 
     @Test
     void highestRatedBookExistsAndIsFound() {
         assertEquals(bookWithHighestRating.getTitle(),
-                ratingStatistics.findMostLikedBook().getTitle());
+                ratingStatistics
+                        .findMostLikedBook()
+                        .map(Book::getTitle)
+                        .orElse("")
+        );
     }
 
     @Test
     void testNonExistentHighestRatedBook() {
         resetRatingStatistics();
-        assertNull(ratingStatistics.findMostLikedBook());
+        assertTrue(ratingStatistics.findMostLikedBook().isEmpty());
     }
 
     @Test
@@ -84,13 +91,13 @@ class RatingStatisticsTest {
         int numberOfBooks = StatisticTestUtils.getNumberOfBooks();
         double totalRating = StatisticTestUtils.totalRating;
         double average = totalRating / numberOfBooks;
-        assertEquals(average, ratingStatistics.calculateAverageRatingGiven());
+        assertEquals(average, ratingStatistics.calculateAverageRatingGiven().orElse(0.0));
     }
 
     @Test
     void testAverageRatingDivideByZero() {
         resetRatingStatistics();
-        assertNull(ratingStatistics.calculateAverageRatingGiven());
+        assertTrue(ratingStatistics.calculateAverageRatingGiven().isEmpty());
     }
 
     private void resetRatingStatistics() {

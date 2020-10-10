@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 class PageStatisticsTest {
@@ -77,14 +77,14 @@ class PageStatisticsTest {
     @Test
     void testAveragePageLengthDivideByZero() {
         resetPageStatistics();
-        assertNull(pageStatistics.calculateAveragePageLength());
+        assertTrue(pageStatistics.calculateAveragePageLength().isEmpty());
     }
 
     @Test
     void averagePageLengthExistsAndIsCorrect() {
         int averagePageLength =
                 StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
-        assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
+        assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength().orElse(0.0));
     }
 
     @Test
@@ -92,7 +92,7 @@ class PageStatisticsTest {
         StatisticTestUtils.deleteBook(StatisticTestUtils.getBookWithHighestRating());
         pageStatistics = new PageStatistics(predefinedShelfService);
         Double averagePageLength = 267.0;
-        assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength());
+        assertEquals(averagePageLength, pageStatistics.calculateAveragePageLength().orElse(0.0));
     }
 
     private void resetPageStatistics() {

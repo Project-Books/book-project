@@ -61,6 +61,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
 /**
  * A Vaadin form for adding a new @see Book.
  */
@@ -355,9 +358,11 @@ public class BookForm extends VerticalLayout {
     }
 
     private void setBookBean() {
-        Book book = populateBookBean();
-        if (book != null) {
-            binder.setBean(book);
+
+
+        Optional<Book> book = populateBookBean();
+        if (book.isPresent()) {
+            binder.setBean(book.get());
         }
 
         if (binder.getBean() != null) {
@@ -372,11 +377,11 @@ public class BookForm extends VerticalLayout {
         closeForm();
     }
 
-    private Book populateBookBean() {
+    private Optional<Book> populateBookBean() {
         String title;
         if (bookTitle.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
-            return null;
+            return empty();
         } else {
             title = bookTitle.getValue();
         }
@@ -387,13 +392,13 @@ public class BookForm extends VerticalLayout {
             firstName = authorFirstName.getValue();
         } else {
             LOGGER.log(Level.SEVERE, "Null first name");
-            return null;
+            return empty();
         }
         if (authorLastName.getValue() != null) {
             lastName = authorLastName.getValue();
         } else {
             LOGGER.log(Level.SEVERE, "Null last name");
-            return null;
+            return empty();
         }
         Author author = new Author(firstName, lastName);
 
@@ -403,7 +408,7 @@ public class BookForm extends VerticalLayout {
                     predefinedShelfService.findByPredefinedShelfName(predefinedShelfField.getValue());
         } else {
             LOGGER.log(Level.SEVERE, "Null shelf");
-            return null;
+            return empty();
         }
         Book book = new Book(title, author, predefinedShelf);
 
@@ -437,7 +442,7 @@ public class BookForm extends VerticalLayout {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
-        return book;
+        return of(book);
     }
 
     private void showErrorMessage() {
