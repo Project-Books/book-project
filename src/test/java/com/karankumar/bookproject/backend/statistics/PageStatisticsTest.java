@@ -17,13 +17,15 @@
 
 package com.karankumar.bookproject.backend.statistics;
 
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
-import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @IntegrationTest
 class PageStatisticsTest {
     private static BookService bookService;
@@ -54,10 +55,8 @@ class PageStatisticsTest {
 
     @Test
     void bookWithMostPagesExistsAndIsFound() {
-        assertEquals(
-                StatisticTestUtils.getBookWithMostPages().getTitle(),
-                pageStatistics.findBookWithMostPages().getTitle()
-        );
+        assertThat(pageStatistics.findBookWithMostPages().getTitle())
+                .isEqualTo(StatisticTestUtils.getBookWithMostPages().getTitle());
     }
 
     @Test
@@ -70,8 +69,8 @@ class PageStatisticsTest {
                                                        .getNumberOfPages() + 50);
         bookService.save(readingBook);
 
-        assertEquals(StatisticTestUtils.getBookWithMostPages().getTitle(),
-                pageStatistics.findBookWithMostPages().getTitle());
+        assertThat(pageStatistics.findBookWithMostPages().getTitle())
+                .isEqualTo(StatisticTestUtils.getBookWithMostPages().getTitle());
     }
 
     @Test

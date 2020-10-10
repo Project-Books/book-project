@@ -21,6 +21,7 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,7 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutPageCount;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutRatings;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithOnlyOneBook;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @IntegrationTest
 @WebAppConfiguration
@@ -80,11 +79,11 @@ class StatisticsViewTest {
     }
 
     private void valueIsPresent(StatisticsViewTestUtils.Statistic currentStatistic) {
-        assertFalse(currentStatistic instanceof StatisticNotFound);
+        assertThat(currentStatistic instanceof StatisticNotFound).isFalse();
     }
 
     private void thereAreNotOtherStatistics() {
-        assertEquals(StatisticType.values().length, statisticsView.getComponentCount());
+        assertThat(statisticsView.getComponentCount()).isEqualTo(StatisticType.values().length);
     }
 
     @Test
@@ -195,13 +194,13 @@ class StatisticsViewTest {
 
     private void statisticsAreAbsent(StatisticType... statisticTypes) {
         for (StatisticType statisticType : statisticTypes) {
-            assertTrue(getStatistic(statisticType) instanceof StatisticNotFound);
+            assertThat(getStatistic(statisticType)).isInstanceOf(StatisticNotFound.class);
         }
     }
 
     private void statisticsArePresent(StatisticType... statisticTypes) {
         for (StatisticType statisticType : statisticTypes) {
-            assertEquals(statisticType.getCaption(), getStatistic(statisticType).getCaption());
+            assertThat(getStatistic(statisticType).getCaption()).isEqualTo(statisticType.getCaption());
         }
     }
 

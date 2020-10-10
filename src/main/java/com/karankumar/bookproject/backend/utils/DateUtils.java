@@ -26,7 +26,7 @@ import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 
-public class DateUtils {
+public final class DateUtils {
     public static final int WEEKS_IN_YEAR = 52;
 
     private DateUtils() {}
@@ -46,7 +46,7 @@ public class DateUtils {
     }
 
     @VisibleForTesting
-    static class TimeUtils {
+    static final class TimeUtils {
         private TimeUtils() {}
 
         static LocalDateTime now() {

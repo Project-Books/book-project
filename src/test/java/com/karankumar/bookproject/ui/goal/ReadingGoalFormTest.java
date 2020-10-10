@@ -25,6 +25,7 @@ import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,9 +34,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -65,10 +63,10 @@ class ReadingGoalFormTest {
         goalForm.targetToRead.setValue(1);
         goalForm.chooseGoalType.setValue(ReadingGoal.GoalType.BOOKS);
         goalForm.saveButton.click();
-        assertTrue(goalForm.binder.isValid());
+        assertThat(goalForm.binder.isValid()).isTrue();
 
         goalForm.targetToRead.setValue(0);
-        assertFalse(goalForm.binder.isValid());
+        assertThat(goalForm.binder.isValid()).isFalse();
     }
 
     @AfterEach

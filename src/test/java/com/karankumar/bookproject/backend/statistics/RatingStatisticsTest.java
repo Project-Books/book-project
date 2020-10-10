@@ -17,11 +17,12 @@
 
 package com.karankumar.bookproject.backend.statistics;
 
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
-import com.karankumar.bookproject.annotations.IntegrationTest;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 class RatingStatisticsTest {
@@ -58,10 +60,11 @@ class RatingStatisticsTest {
 
     @Test
     void lowestRatedBookExistsAndIsFound() {
-        assertEquals(bookWithNoRating.getTitle(), ratingStatistics.findLeastLikedBook()
+        String actualTitle = ratingStatistics.findLeastLikedBook()
                 .map(Book::getTitle)
-                .orElse("")
-        );
+                .orElse("");
+        String expectedTitle = bookWithNoRating.getTitle();
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
@@ -72,12 +75,12 @@ class RatingStatisticsTest {
 
     @Test
     void highestRatedBookExistsAndIsFound() {
-        assertEquals(bookWithHighestRating.getTitle(),
-                ratingStatistics
-                        .findMostLikedBook()
-                        .map(Book::getTitle)
-                        .orElse("")
-        );
+        String actualTitle = ratingStatistics
+                .findMostLikedBook()
+                .map(Book::getTitle)
+                .orElse("");
+        String expectedTitle = bookWithHighestRating.getTitle();
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test

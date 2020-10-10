@@ -43,12 +43,7 @@ import java.util.HashMap;
 @CssImport("./styles/shared-styles.css")
 public class MainView extends AppLayout implements RouterLayout, PageConfigurator {
     public MainView() {
-        Tabs tabs = new Tabs();
-        Tab myBooks = createTab(VaadinIcon.BOOK, BooksInShelfView.class, "My books");
-        Tab readingChallenge = createTab(VaadinIcon.HOURGLASS, ReadingGoalView.class, "Goal");
-        Tab stats = createTab(VaadinIcon.TRENDING_UP, StatisticsView.class, "Statistics");
-        Tab settings = createTab(VaadinIcon.COG_O, SettingsView.class, "Settings");
-        tabs.add(myBooks, readingChallenge, stats, settings);
+        Tabs tabs = addTabs();
 
         Anchor logout = new Anchor("/logout", "Log out");
         logout.addClassName("logout");
@@ -67,7 +62,20 @@ public class MainView extends AppLayout implements RouterLayout, PageConfigurato
         addToNavbar(true, centreTabs, h);
     }
 
-    private Tab createTab(VaadinIcon icon, Class<? extends Component> viewClass, String title) {
+    private Tabs addTabs() {
+        Tab myBooks = createTab(VaadinIcon.BOOK, BooksInShelfView.class, "My books");
+        Tab readingChallenge = createTab(VaadinIcon.HOURGLASS, ReadingGoalView.class, "Goal");
+        Tab stats = createTab(VaadinIcon.TRENDING_UP, StatisticsView.class, "Statistics");
+        Tab settings = createTab(VaadinIcon.COG_O, SettingsView.class, "Settings");
+
+        Tabs tabs = new Tabs();
+        tabs.add(myBooks, readingChallenge, stats, settings);
+
+        return tabs;
+    }
+
+    private static Tab createTab(VaadinIcon icon, Class<? extends Component> viewClass,
+                                 String title) {
         return createTab(addLink(new RouterLink(null, viewClass), icon, title));
     }
 
@@ -82,6 +90,10 @@ public class MainView extends AppLayout implements RouterLayout, PageConfigurato
         a.add(icon.create());
         a.add(title);
         return a;
+    }
+
+    private void centreTabs() {
+
     }
 
     @Override

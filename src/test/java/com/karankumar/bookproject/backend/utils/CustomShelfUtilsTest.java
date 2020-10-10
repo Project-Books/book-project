@@ -8,6 +8,7 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 class CustomShelfUtilsTest {
@@ -85,7 +84,7 @@ class CustomShelfUtilsTest {
     @Test
     void getBooksInCustomShelfSuccessfullyReturnsBooks() {
         Set<Book> actual = customShelfUtils.getBooksInCustomShelf(customShelf1.getShelfName());
-        booksInCustomShelf1.forEach(book -> assertThat(actual.contains(book)));
+        booksInCustomShelf1.forEach(book -> assertThat(actual).contains(book));
     }
 
     @Test

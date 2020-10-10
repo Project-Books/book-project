@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,20 +45,20 @@ class GenreStatisticsTest {
     void mostReadGenreExistsAndIsFound() {
         BookGenre expected = StatisticTestUtils.MOST_READ_BOOK_GENRE;
         BookGenre actual = genreStatistics.findMostReadGenre();
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     void mostLikedGenreExistsAndIsFound() {
         BookGenre expected = StatisticTestUtils.MOST_LIKED_BOOK_GENRE;
         BookGenre actual = genreStatistics.findMostLikedGenre();
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     void leastLikedGenreExistsAndIsFound() {
         BookGenre expected = StatisticTestUtils.LEAST_LIKED_BOOK_GENRE;
         BookGenre actual = genreStatistics.findLeastLikedGenre();
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }

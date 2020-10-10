@@ -33,7 +33,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class TestData {
+public final class TestData {
     private static final ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
     private static final List<String> recommenders =
             Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");

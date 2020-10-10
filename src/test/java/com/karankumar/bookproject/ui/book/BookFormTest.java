@@ -22,19 +22,24 @@ import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.BookGenre;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.BookGenre;	
+import com.karankumar.bookproject.backend.entity.CustomShelf;	
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
 import com.karankumar.bookproject.backend.entity.RatingScale;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
+import static com.karankumar.bookproject.ui.book.BookFormErrors.MAX_PAGES_ERROR;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
 import com.vaadin.flow.spring.SpringServlet;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,16 +59,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.MAX_PAGES_ERROR;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -273,21 +268,21 @@ class BookFormTest {
     private void assertAllFieldsAreEmpty() {
         System.out.println("hi");
         for (HasValue field : bookForm.allFields) {
-            assertTrue(field.isEmpty(), field.toString() + " is not empty");
+            assertThat(field.isEmpty()).isTrue();
         }
     }
 
     private void assumeAllFormFieldsArePopulated() {
-        assumeFalse(bookForm.authorFirstName.isEmpty());
-        assumeFalse(bookForm.authorLastName.isEmpty());
-        assumeFalse(bookForm.bookTitle.isEmpty());
-        assumeFalse(bookForm.predefinedShelfField.isEmpty());
-        assumeFalse(bookForm.bookGenre.isEmpty());
-        assumeFalse(bookForm.numberOfPages.isEmpty());
-        assumeFalse(bookForm.dateStartedReading.isEmpty());
-        assumeFalse(bookForm.dateFinishedReading.isEmpty());
-        assumeFalse(bookForm.rating.isEmpty());
-        assumeFalse(bookForm.bookReview.isEmpty());
+        assumeThat(bookForm.authorFirstName.isEmpty()).isFalse();
+        assumeThat(bookForm.authorLastName.isEmpty()).isFalse();
+        assumeThat(bookForm.bookTitle.isEmpty()).isFalse();
+        assumeThat(bookForm.predefinedShelfField.isEmpty()).isFalse();
+        assumeThat(bookForm.bookGenre.isEmpty()).isFalse();
+        assumeThat(bookForm.numberOfPages.isEmpty()).isFalse();
+        assumeThat(bookForm.dateStartedReading.isEmpty()).isFalse();
+        assumeThat(bookForm.dateFinishedReading.isEmpty()).isFalse();
+        assumeThat(bookForm.rating.isEmpty()).isFalse();
+        assumeThat(bookForm.bookReview.isEmpty()).isFalse();
     }
 
     @Test
@@ -523,7 +518,7 @@ class BookFormTest {
         bookForm.inSeriesCheckbox.setValue(false);
 
         // then
-        assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        assertThat(bookForm.seriesPositionFormItem.isVisible()).isFalse();
     }
 
     @Test
@@ -535,7 +530,7 @@ class BookFormTest {
         bookForm.inSeriesCheckbox.setValue(false);
 
         // then
-        assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        assertThat(bookForm.seriesPositionFormItem.isVisible()).isFalse();
     }
 
     @Test
@@ -562,7 +557,7 @@ class BookFormTest {
         bookForm.openForm();
 
         // then
-        assertFalse(bookForm.seriesPositionFormItem.isVisible());
+        assertThat(bookForm.seriesPositionFormItem.isVisible()).isFalse();
     }
 
     @Test

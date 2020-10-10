@@ -22,7 +22,7 @@ import com.vaadin.flow.function.SerializablePredicate;
 
 import java.time.LocalDate;
 
-public class BookFormValidators {
+public final class BookFormValidators {
     private BookFormValidators() {}
 
     static SerializablePredicate<Integer> positiveNumberPredicate() {
