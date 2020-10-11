@@ -78,3 +78,4 @@ class NewShelfTest {
         MockVaadin.tearDown();
     }
 }
+
