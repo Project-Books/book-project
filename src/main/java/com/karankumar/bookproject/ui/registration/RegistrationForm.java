@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.registration;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.constraints.PasswordStrength;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
@@ -58,6 +59,7 @@ public class RegistrationForm extends FormLayout {
 
     private static final int NUMBER_OF_PASSWORD_STRENGTH_INDICATORS = PasswordStrength.values().length;
     private static final String BLANK_PASSWORD_MESSAGE = "Password is blank";
+    @VisibleForTesting static final int MAX_PASSWORD_LENGTH = 128;
     private final Span errorMessage = new Span();
 
     // Flag for disabling first run for password validation
@@ -110,6 +112,7 @@ public class RegistrationForm extends FormLayout {
     private void configurePasswordField() {
         passwordField.setRequired(true);
         passwordField.setId("password");
+        passwordField.setMaxLength(MAX_PASSWORD_LENGTH + 1);
         passwordField.addValueChangeListener(e -> {
             int passwordScore = new Zxcvbn().measure(passwordField.getValue()).getScore();
             passwordStrengthMeter.setValue(
@@ -129,6 +132,7 @@ public class RegistrationForm extends FormLayout {
     private void configurePasswordConfirmationField() {
         passwordConfirmationField.setRequired(true);
         passwordConfirmationField.setId("password-confirmation");
+        passwordConfirmationField.setMaxLength(MAX_PASSWORD_LENGTH + 1);
     }
 
     private void configureRegisterButton() {
@@ -187,6 +191,10 @@ public class RegistrationForm extends FormLayout {
         if (!enablePasswordValidation) {
             // user hasn't visited the field yet, so don't validate just yet
             return ValidationResult.ok();
+        }
+
+        if (password.length() > MAX_PASSWORD_LENGTH) {
+            return ValidationResult.error("Password is too long");
         }
 
         String passwordConfirmation = passwordConfirmationField.getValue();
