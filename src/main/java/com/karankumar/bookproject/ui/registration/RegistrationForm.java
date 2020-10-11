@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.registration;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.constraints.PasswordStrength;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
@@ -58,7 +59,7 @@ public class RegistrationForm extends FormLayout {
 
     private static final int NUMBER_OF_PASSWORD_STRENGTH_INDICATORS = PasswordStrength.values().length;
     private static final String BLANK_PASSWORD_MESSAGE = "Password is blank";
-    private static final int MAX_PASSWORD_LENGTH = 128;
+    @VisibleForTesting static final int MAX_PASSWORD_LENGTH = 128;
     private final Span errorMessage = new Span();
 
     // Flag for disabling first run for password validation
@@ -192,7 +193,7 @@ public class RegistrationForm extends FormLayout {
             return ValidationResult.ok();
         }
 
-        if(password.length() > 128) {
+        if (password.length() > MAX_PASSWORD_LENGTH) {
             return ValidationResult.error("Password is too long");
         }
 

@@ -208,6 +208,22 @@ class RegistrationFormTest {
         assertThat(userRepository.findByUsername("testusername")).isPresent();
     }
 
+    @Test
+    void showErrorWhenPasswordIsTooLong() {
+        // given
+        PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
+
+        // when
+        _setValue(passwordField, generateInvalidPassword(RegistrationForm.MAX_PASSWORD_LENGTH));
+
+        // then
+        assertThat(passwordField.getErrorMessage()).isNotBlank();
+    }
+
+    String generateInvalidPassword(int n) {
+        return ".".repeat(n);
+    }
+
     @AfterEach
     public void tearDown() {
         userRepository.deleteAll();
