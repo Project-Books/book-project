@@ -25,30 +25,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @WebAppConfiguration
 class NewShelfTest {
-    private BooksInShelfView shelfView;
+    private final BooksInShelfView shelfView;
     private static Routes routes;
-    private CustomShelfService customShelfService;
+    private final CustomShelfService customShelfService;
+
+    @Autowired private ApplicationContext ctx;
 
     @Autowired
-    private ApplicationContext ctx;
+    NewShelfTest(BookService bookService,
+                 PredefinedShelfService predefinedShelfService,
+                 CustomShelfService customShelfService) {
+        this.customShelfService = customShelfService;
+        shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
+    }
 
     @BeforeAll
     public static void discoverRoutes() {
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
     }
 
-    /**
-     * setup here has been copied from BooksInShelfViewTest, as this test requires a shelf view as well.
-     */
     @BeforeEach
-    public void setup(@Autowired BookService bookService,
-                      @Autowired PredefinedShelfService predefinedShelfService,
-                      @Autowired CustomShelfService customShelfService) {
+    public void setUp() {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
-
-        this.customShelfService = customShelfService;
-        shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
     }
 
     /**
