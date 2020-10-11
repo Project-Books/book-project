@@ -73,9 +73,11 @@ public class RegistrationForm extends FormLayout {
         emailField.setId("email");
 
         passwordField.setRequired(true);
+        passwordField.setMaxLength(129);
         passwordField.setId("password");
 
         passwordConfirmationField.setRequired(true);
+        passwordConfirmationField.setMaxLength(129);
         passwordConfirmationField.setId("password-confirmation");
 
         errorMessage.setId("error-message");
@@ -169,6 +171,10 @@ public class RegistrationForm extends FormLayout {
         if (!enablePasswordValidation) {
             // user hasn't visited the field yet, so don't validate just yet
             return ValidationResult.ok();
+        }
+
+        if(password.length() > 128) {
+            return ValidationResult.error("Password is too long");
         }
 
         String passwordConfirmation = passwordConfirmationField.getValue();
