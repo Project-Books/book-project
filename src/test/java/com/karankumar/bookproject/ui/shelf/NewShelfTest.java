@@ -9,10 +9,8 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,10 +48,6 @@ class NewShelfTest {
         MockVaadin.setup(UI::new, servlet);
     }
 
-    /**
-     * This test verifies that when creating a new shelf and adding it to the shelf list,
-     * the dropdown that shows all shelves contains the new shelf.
-     */
     @Test
     void newShelfShowsInList() {
         CustomShelf test = new CustomShelf("UnitTest");
@@ -67,7 +61,6 @@ class NewShelfTest {
         customShelfService.save(test);
         shelfView.whichShelf.updateShelfList();
 
-        //////////////////////////////////////////////////////                                   ADD STATIC IMPORT FOR assertTrue      /////////////////
         assertThat(customShelfService.findAll("UnitTest").size() > 0).isTrue();
         //, "Adding a new custom shelf does not save as expected."
     }
