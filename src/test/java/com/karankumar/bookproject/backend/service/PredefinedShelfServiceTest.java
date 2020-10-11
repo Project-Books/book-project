@@ -19,12 +19,15 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeAll;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @DisplayName("PredefinedShelfService should")
@@ -70,5 +73,24 @@ class PredefinedShelfServiceTest {
 
         // then
         assertThat(predefinedShelfService.findAll()).hasSize(initialCount);
+    }
+
+    @Test
+    void saveValidPredefinedShelf() {
+        SoftAssertions softly = new SoftAssertions();
+
+        // given
+        long initialCount = predefinedShelfService.count();
+        PredefinedShelf existingToReadShelf = predefinedShelfService.findToReadShelf();
+        PredefinedShelf testShelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
+        List<PredefinedShelf> expected = Arrays.asList(existingToReadShelf, testShelf);
+
+        // when
+        predefinedShelfService.save(testShelf);
+
+        // then
+        softly.assertThat(predefinedShelfService.count()).isEqualTo(initialCount + 1);
+        softly.assertThat(predefinedShelfService.findAll()).containsAll(expected);
+        softly.assertAll();
     }
 }
