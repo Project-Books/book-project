@@ -58,6 +58,7 @@ public class RegistrationForm extends FormLayout {
 
     private static final int NUMBER_OF_PASSWORD_STRENGTH_INDICATORS = PasswordStrength.values().length;
     private static final String BLANK_PASSWORD_MESSAGE = "Password is blank";
+    private static final int MAX_PASSWORD_LENGTH = 128;
     private final Span errorMessage = new Span();
 
     // Flag for disabling first run for password validation
@@ -110,7 +111,7 @@ public class RegistrationForm extends FormLayout {
     private void configurePasswordField() {
         passwordField.setRequired(true);
         passwordField.setId("password");
-        passwordField.setMaxLength(129);
+        passwordField.setMaxLength(MAX_PASSWORD_LENGTH + 1);
         passwordField.addValueChangeListener(e -> {
             int passwordScore = new Zxcvbn().measure(passwordField.getValue()).getScore();
             passwordStrengthMeter.setValue(
@@ -130,7 +131,7 @@ public class RegistrationForm extends FormLayout {
     private void configurePasswordConfirmationField() {
         passwordConfirmationField.setRequired(true);
         passwordConfirmationField.setId("password-confirmation");
-        passwordConfirmationField.setMaxLength(129);
+        passwordConfirmationField.setMaxLength(MAX_PASSWORD_LENGTH + 1);
     }
 
     private void configureRegisterButton() {
