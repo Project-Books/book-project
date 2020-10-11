@@ -220,7 +220,7 @@ class RegistrationFormTest {
         assertThat(passwordField.getErrorMessage()).isNotBlank();
     }
 
-    String generateInvalidPassword(int n) {
+    private String generateInvalidPassword(int n) {
         return ".".repeat(n);
     }
 
