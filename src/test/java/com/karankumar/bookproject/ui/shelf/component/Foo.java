@@ -15,17 +15,16 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.shelf;
+package com.karankumar.bookproject.ui.shelf.component;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,25 +32,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
-@WebAppConfiguration
-class NewShelfTest {
-    private final BooksInShelfView shelfView;
+class BookShelfComboBoxTest {
     private static Routes routes;
     private final CustomShelfService customShelfService;
 
     @Autowired private ApplicationContext ctx;
+    private final BookShelfComboBox comboBox;
 
     @Autowired
-    NewShelfTest(BookService bookService,
-                 PredefinedShelfService predefinedShelfService,
-                 CustomShelfService customShelfService) {
+    BookShelfComboBoxTest(CustomShelfService customShelfService) {
         this.customShelfService = customShelfService;
-        shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
+        comboBox = new BookShelfComboBox(customShelfService);
     }
 
     @BeforeAll
@@ -67,19 +65,20 @@ class NewShelfTest {
 
     @Test
     void newShelfShowsInList() {
+        // given
         CustomShelf test = new CustomShelf("UnitTest");
-        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ** * * * * * * * * * * ** * * * * * * * * * * ** * * * * * * * * * * * * * * * * * * * * * * *
-        WRONG TEST - DON'T LOOK AT CUSTOM SHELF REPOSITORY HAVING THIS SHELF
-        USE A LISTDATAPROVIDER TO GET ITEMS FROM A ComboBox
-        REACH OUT TO KARAN FOR HELP
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-         */
-
         customShelfService.save(test);
-        shelfView.whichShelf.updateShelfList();
 
-        assertThat(customShelfService.findAll("UnitTest").size() > 0).isTrue();
-        //, "Adding a new custom shelf does not save as expected."
+        // when
+        comboBox.updateShelfList();
+
+        // then
+        List<String> shelvesList = comboBox.allShelvesList
+                .getDataProvider()
+                .fetch(new Query<>())
+                .collect( Collectors.toList());
+
+        // TODO: assert that the new custom shelf added shows in the list above
     }
 
     @AfterEach
