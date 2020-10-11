@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ShelfUtils {
+public final class ShelfUtils {
     private ShelfUtils() {}
 
     public static final String ALL_BOOKS_SHELF = "All books";

@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Stream;
 
 // From https://vaadin.com/learn/tutorials/modern-web-apps-with-spring-boot-and-vaadin/adding-a-login-screen-to-a-vaadin-app-with-spring-security
-public class SecurityUtils {
+public final class SecurityUtils {
     private SecurityUtils() {
     }
 

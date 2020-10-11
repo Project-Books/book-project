@@ -35,8 +35,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -80,8 +78,8 @@ class CustomShelfFormTest {
 
     private void formIsInInitialState() {
         assertThat(customShelfForm.shelfNameField.getValue()).isEmpty();
-        assertFalse(customShelfForm.shelfNameField.isInvalid());
-        assertFalse(customShelfForm.saveButton.isEnabled());
+        assertThat(customShelfForm.shelfNameField.isInvalid()).isFalse();
+        assertThat(customShelfForm.saveButton.isEnabled()).isFalse();
     }
 
     @Test
@@ -101,8 +99,8 @@ class CustomShelfFormTest {
     }
 
     private void formsIsInErrorState() {
-        assertTrue(customShelfForm.shelfNameField.isInvalid());
-        assertFalse(customShelfForm.saveButton.isEnabled());
+        assertThat(customShelfForm.shelfNameField.isInvalid()).isTrue();
+        assertThat(customShelfForm.saveButton.isEnabled()).isFalse();
     }
 
     @Test
@@ -123,8 +121,8 @@ class CustomShelfFormTest {
 
     private void formIsInValidState() {
         assertThat(customShelfForm.shelfNameField.getValue()).isNotEmpty();
-        assertFalse(customShelfForm.shelfNameField.isInvalid());
-        assertTrue(customShelfForm.saveButton.isEnabled());
+        assertThat(customShelfForm.shelfNameField.isInvalid()).isFalse();
+        assertThat(customShelfForm.saveButton.isEnabled()).isTrue();
     }
 
     @Test
