@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
 import com.karankumar.bookproject.ui.login.LoginView;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
+import com.nulabinc.zxcvbn.Zxcvbn;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -29,20 +30,17 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.validator.EmailValidator;
 import lombok.extern.java.Log;
-
 import org.apache.commons.lang3.StringUtils;
-
-import com.nulabinc.zxcvbn.Zxcvbn;
 
 @Log
 @CssImport(value = "./styles/custom-bar-styles.css", themeFor = "vaadin-progress-bar")
@@ -54,10 +52,12 @@ public class RegistrationForm extends FormLayout {
     private final EmailField emailField = new EmailField("Email Address");
     private final PasswordField passwordField = new PasswordField("Password");
     private final ProgressBar passwordStrengthMeter = new ProgressBar();
-    private final String blankPasswordMessage = "Password is blank";
-    private final Text passwordStrengthDescriptor = new Text(blankPasswordMessage);
+    private final Text passwordStrengthDescriptor = new Text(BLANK_PASSWORD_MESSAGE);
     private final PasswordField passwordConfirmationField = new PasswordField("Confirm Password");
     private final Button registerButton = new Button("Register");
+
+    private static final int NUMBER_OF_PASSWORD_STRENGTH_INDICATORS = PasswordStrength.values().length;
+    private static final String BLANK_PASSWORD_MESSAGE = "Password is blank";
     private final Span errorMessage = new Span();
 
     // Flag for disabling first run for password validation
@@ -66,57 +66,14 @@ public class RegistrationForm extends FormLayout {
     public RegistrationForm(UserService userService) {
         this.userService = userService;
 
-        usernameField.setRequired(true);
-        usernameField.setId("username");
-
-        emailField.setRequiredIndicatorVisible(true);
-        emailField.setId("email");
-
-        passwordField.setRequired(true);
-        passwordField.setMaxLength(129);
-        passwordField.setId("password");
-
-        passwordConfirmationField.setRequired(true);
-        passwordConfirmationField.setMaxLength(129);
-        passwordConfirmationField.setId("password-confirmation");
-
+        configureUsernameField();
+        configureEmailField();
+        configurePasswordField();
+        configurePasswordConfirmationField();
         errorMessage.setId("error-message");
-
-        registerButton.setId("register");
-        registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        registerButton.addClickListener(buttonClickEvent -> {
-            User user = User.builder()
-                            .build();
-
-            if (binder.writeBeanIfValid(user)) {
-                try {
-                    this.userService.register(user);
-                    getUI().ifPresent(ui -> ui.navigate(BooksInShelfView.class));
-                } catch (Exception e) {
-                    LOGGER.severe("Could not register the user " + user);
-                    e.printStackTrace();
-
-                    errorMessage.setText(
-                            "A server error occurred when registering. Please try again later.");
-                }
-            } else {
-                errorMessage.setText("There are errors in the registration form.");
-            }
-        });
+        configureRegisterButton();
 
         addFieldValidations(userService);
-        
-        passwordField.addValueChangeListener(e -> {
-            int passwordScore = new Zxcvbn().measure(passwordField.getValue()).getScore();
-            passwordStrengthMeter.setValue((passwordScore + 1) / 5.0);
-            if(passwordField.isEmpty()) {
-        	passwordStrengthDescriptor.setText(blankPasswordMessage);
-        	passwordStrengthMeter.setValue(0);
-            } else {
-        	setPasswordStrengthMeterColor(passwordScore);
-        	passwordStrengthDescriptor.setText("Password Strength: " + PasswordStrength.values()[passwordScore]);
-            }
-        });
 
         this.setMaxWidth("360px");
         this.getStyle()
@@ -139,6 +96,69 @@ public class RegistrationForm extends FormLayout {
                         e -> getUI().ifPresent(ui -> ui.navigate(LoginView.class)))
         );
     }
+
+    private void configureUsernameField() {
+        usernameField.setRequired(true);
+        usernameField.setId("username");
+    }
+
+    private void configureEmailField() {
+        emailField.setRequiredIndicatorVisible(true);
+        emailField.setId("email");
+    }
+
+    private void configurePasswordField() {
+        passwordField.setRequired(true);
+        passwordField.setMaxLength(129);
+        passwordField.setId("password");
+        passwordField.setMaxLength(129);
+        passwordField.addValueChangeListener(e -> {
+            int passwordScore = new Zxcvbn().measure(passwordField.getValue()).getScore();
+            passwordStrengthMeter.setValue(
+                    (float) (passwordScore + 1) / NUMBER_OF_PASSWORD_STRENGTH_INDICATORS
+            );
+            if (passwordField.isEmpty()) {
+                passwordStrengthDescriptor.setText(BLANK_PASSWORD_MESSAGE);
+                passwordStrengthMeter.setValue(0);
+            } else {
+                setPasswordStrengthMeterColor(passwordScore);
+                passwordStrengthDescriptor.setText("Password Strength: " +
+                        PasswordStrength.values()[passwordScore]);
+            }
+        });
+    }
+
+    private void configurePasswordConfirmationField() {
+        passwordConfirmationField.setRequired(true);
+        passwordConfirmationField.setMaxLength(129);
+        passwordConfirmationField.setId("password-confirmation");
+        passwordConfirmationField.setMaxLength(129);
+    }
+
+    private void configureRegisterButton() {
+        registerButton.setId("register");
+        registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        registerButton.addClickListener(buttonClickEvent -> {
+            User user = User.builder()
+                            .build();
+
+            if (binder.writeBeanIfValid(user)) {
+                try {
+                    this.userService.register(user);
+                    getUI().ifPresent(ui -> ui.navigate(BooksInShelfView.class));
+                } catch (Exception e) {
+                    LOGGER.severe("Could not register the user " + user);
+                    e.printStackTrace();
+
+                    errorMessage.setText(
+                            "A server error occurred when registering. Please try again later.");
+                }
+            } else {
+                errorMessage.setText("There are errors in the registration form.");
+            }
+        });
+    }
+
 
     private void addFieldValidations(UserService userService) {
         binder.forField(usernameField)
@@ -187,7 +207,7 @@ public class RegistrationForm extends FormLayout {
     }
     
     private void setPasswordStrengthMeterColor(int passwordScore) {
-	switch(passwordScore){
+	switch (passwordScore) {
         case 0:
             passwordStrengthMeter.setClassName("weak-indicator");
             break;

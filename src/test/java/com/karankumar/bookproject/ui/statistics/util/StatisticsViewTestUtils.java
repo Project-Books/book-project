@@ -1,21 +1,35 @@
 package com.karankumar.bookproject.ui.statistics.util;
 
-import com.karankumar.bookproject.backend.entity.*;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.statistics.StatisticsView;
-import com.karankumar.bookproject.ui.statistics.StatisticsViewTest.Statistic;
-import com.karankumar.bookproject.ui.statistics.StatisticsViewTest.StatisticNotFound;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.dom.Element;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.function.Predicate;
 
 public class StatisticsViewTestUtils {
 
     private StatisticsViewTestUtils() {}
+
+    @AllArgsConstructor
+    public static class Statistic {
+        @Getter private final String caption;
+        @Getter private final String value;
+    }
+    public static class StatisticNotFound extends Statistic {
+        public StatisticNotFound() {
+            super("statistic", "not found");
+        }
+    }
 
     public static Statistic getStatistic(StatisticsView.StatisticType statisticType, StatisticsView statisticsView) {
         try {
@@ -49,24 +63,28 @@ public class StatisticsViewTestUtils {
                 .equals(text);
     }
 
-    public static void populateDataWithBooks(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBooks(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
         bookService.save(book);
     }
     
-    public static void populateDataWithBooksWithoutPageCount(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBooksWithoutPageCount(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
         book.setNumberOfPages(null);
         bookService.save(book);
     }
 
-    public static void populateDataWithBooksWithoutGenre(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBooksWithoutGenre(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
         book.setBookGenre(null);
         bookService.save(book);
     }
 
-    public static void populateDataWithBooksWithoutRatings(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBooksWithoutRatings(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
         Book book = createMobyDickBook(predefinedShelfService);
         book.setRating(null);
         bookService.save(book);

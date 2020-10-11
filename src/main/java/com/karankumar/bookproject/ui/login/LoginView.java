@@ -32,7 +32,7 @@ import java.util.Collections;
 @PageTitle("Login | Book Project")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
-    private LoginForm loginForm = new LoginForm();
+    private final LoginForm loginForm = new LoginForm();
 
     public LoginView() {
         addClassName("login-view");
@@ -43,6 +43,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setAlignItems(Alignment.CENTER);
 
         loginForm.setAction("login");
+        loginForm.setForgotPasswordButtonVisible(false);
 
         add(
             new H1("Book Project"),

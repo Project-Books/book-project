@@ -301,6 +301,11 @@ This section is to do with implementation comments, not Javadoc.
 
 Comments should not be decorated with asterisks or any other characters.
 
+#### Do you need the comment?
+
+Only add comments where they add value. Comments should be used as a last resort. We prefer to make code readable by making the code trivial such that
+having a comment is redundant. Alternatively,  we prefer to extract code into a method with a descriptive method name such that the method name makes the comment redundant.
+
 ### Modifiers
 
 Where applicable, class and member modifiers should appear in the following order, as recommended by the Java Language Specification:
@@ -511,19 +516,59 @@ public String toString() {
 
 Wherever possible, try to keep methods short (under 15 lines). This makes it easier to test, comprehend and reuse.
 
-### JUnit
-
-#### Fewest number of assertions in every test
-
-In every test method, try to minimise the number of assertions. Generally speaking, ideally, there should only be one.
-
-#### Avoid randomness
-
-While it may seem better to use pseudorandom bounded values so that you can test more cases, it rarely improves coverage. It's better to use fixed input data with well-defined edge cases.
-
 ### TODOs
 
 TODO comments are acceptable and encouraged if they are useful. However, we ask that if you create a TODO, please also create a new corresponding issue.
+
+### Prefer Optional over null
+
+`Optional` provides useful semantics that something may be `null`. If you need to use `null`s, consider using `Optional`s instead.
+
+### Favor EnumMap over HashMap
+
+For enums, favor `EnumMap` over `HashMap` for [performance reasons](https://docs.oracle.com/javase/7/docs/api/java/util/EnumMap.html).
+
+## JUnit
+
+### Given/when/then pattern
+The pattern we follow for JUnit tests are given/when/then. For example, given some input some setup, when an action occurs, then assert as desired. Concrete example:
+
+```java
+    @Test
+    void errorShownWhenEmailInUse() {
+        // given
+        userRepository.save(VALID_TEST_USER);
+        EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
+
+        // when
+        _setValue(emailField, VALID_TEST_USER.getEmail());
+
+        // then
+        assertThat(emailField.getErrorMessage()).isNotBlank();
+    }
+```
+
+In general, we add comments to separate out the given, when and then sections. We find that this greatly improves readability.
+
+### Fewest number of assertions in every test
+
+In every test method, try to minimise the number of assertions. Ideally, there should only be one.
+
+### Assert all for multiple assertions
+
+If a test method needs multiple assertions, `assertAll()` (or `assertSoftly()`) should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
+
+### Disabling failing tests
+
+Instead of commenting out tests, we use the `@Disable` annotation. Please note that if a test fails, you are generally expected to fix it. This should be used as a last resort if you are unable to fix the failing test.
+
+### Using DisplayName
+
+Where it would add value, a `@DisplayName` annotation should be used. For example, you could replace a Javadoc comment with a display name. This is also useful if the method name is concise but not comprehensive. Adding a display name should be used where it serves as useful documentation.
+
+### Avoid randomness
+
+While it may seem better to use pseudorandom bounded values so that you can test more cases, it rarely improves coverage. It's better to use fixed input data with well-defined edge cases.
 
 ## Recommended reading
 

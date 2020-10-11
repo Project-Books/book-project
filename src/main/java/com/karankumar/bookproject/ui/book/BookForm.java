@@ -113,6 +113,21 @@ public class BookForm extends VerticalLayout {
             = new HasValue[]{pagesRead};
     @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
             = new HasValue[]{dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] allFields = {
+            bookTitle,
+            authorFirstName,
+            authorLastName,
+            seriesPosition,
+            dateStartedReading,
+            dateFinishedReading,
+            bookGenre,
+            customShelfField,
+            predefinedShelfField,
+            pagesRead,
+            numberOfPages,
+            rating,
+            bookReview
+    };
 
     @VisibleForTesting Button delete = new Button();
     @VisibleForTesting Binder<Book> binder = new BeanValidationBinder<>(Book.class);
@@ -731,8 +746,8 @@ public class BookForm extends VerticalLayout {
         return getEventBus().addListener(eventType, listener);
     }
 
-    public static abstract class BookFormEvent extends ComponentEvent<BookForm> {
-        private Book book;
+    public abstract static class BookFormEvent extends ComponentEvent<BookForm> {
+        private final Book book;
 
         protected BookFormEvent(BookForm source, Book book) {
             super(source, false);

@@ -15,11 +15,10 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.*;
-import com.karankumar.bookproject.backend.entity.BookGenre;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
@@ -28,24 +27,23 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static com.karankumar.bookproject.backend.utils.TestData.createPredefinedShelves;
+import static com.karankumar.bookproject.backend.utils.TestData.generateAuthors;
+import static com.karankumar.bookproject.backend.utils.TestData.generateBooks;
+import static com.karankumar.bookproject.backend.utils.TestData.generateListOfTags;
+import static com.karankumar.bookproject.backend.utils.TestData.setPredefinedShelfForBooks;
 
 @Service
 @Log
 public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
-    private BookRepository bookRepository;
-    private PredefinedShelfRepository predefinedShelfRepository;
-    private AuthorRepository authorRepository;
-    private TagRepository tagRepository;
+    private final BookRepository bookRepository;
+    private final PredefinedShelfRepository predefinedShelfRepository;
+    private final AuthorRepository authorRepository;
+    private final TagRepository tagRepository;
 
     public PredefinedShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
             PredefinedShelfRepository shelfRepository, TagRepository tagRepository) {
@@ -85,13 +83,14 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
 
     @Override
     public void delete(PredefinedShelf shelf) {
-        predefinedShelfRepository.delete(shelf);
+        // Don't want to delete a predefined shelf
+        LOGGER.severe("delete() should not be called");
     }
 
     @Override
     public void deleteAll() {
         // Don't want to delete the predefined shelves
-        LOGGER.log(Level.INFO, "deleteAll() should not be called");
+        LOGGER.severe("deleteAll() should not be called");
     }
 
     @PostConstruct
@@ -112,141 +111,33 @@ public class PredefinedShelfService extends BaseService<PredefinedShelf, Long> {
             populateBookRepository();
         }
 
-        setShelfForAllBooks();
+        setShelfForEveryBookInBookRepository();
     }
 
     private void populateAuthorRepository() {
-        authorRepository.saveAll(
-                Stream.of(
-                        "J.K. Rowling",
-                        "Neil Gaiman",
-                        "J.R.R Tolkien",
-                        "Roald Dahl",
-                        "Robert Galbraith",
-                        "Dan Brown"
-                )
-                        .map(name -> {
-                            String[] fullName = name.split(" ");
-                            return new Author(fullName[0], fullName[1]);
-                        })
-                        .collect(Collectors.toList())
-        );
-    }
-
-    private void populateBookRepository() {
-        List<Author> authors = authorRepository.findAll();
-        List<Tag> tags = tagRepository.findAll();
-        bookRepository.saveAll(
-                Stream.of(
-                        "Harry Potter and the Philosopher's stone",
-                        "Stardust",
-                        "Harry Potter and the Chamber of Secrets",
-                        "Harry Potter and the Prisoner of Azkaban",
-                        "Origin",
-                        "Harry Potter and the Goblet of Fire",
-                        "Harry Potter and the Order of Phoenix",
-                        "Matilda",
-                        "Harry Potter and the Half-Blood Prince",
-                        "The Hobbit",
-                        "Harry Potter and the Deathly Hallows"
-                )
-                      .map(title -> createBook(authors, title, tags)).collect(Collectors.toList()));
-    }
-
-    private Book createBook(List<Author> authors, String title, List<Tag> tags) {
-        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
-
-        Author author = authors.get(threadLocalRandom.nextInt(authors.size()));
-        Book book = new Book(title, author, getRandomPredefinedShelf());
-
-        BookGenre bookGenre = BookGenre.values()[threadLocalRandom.nextInt(BookGenre.values().length)];
-        book.setBookGenre(bookGenre);
-
-        List<String> friends = Arrays.asList("John", "Thomas", "Christina", "Luke", "Sally");
-        String recommendedBy = friends.get(threadLocalRandom.nextInt(friends.size()));
-        book.setBookRecommendedBy(recommendedBy);
-
-        Tag tag = tags.get(threadLocalRandom.nextInt(tags.size()));
-        book.setTags(new HashSet<>(Collections.singletonList(tag)));
-
-        int series = (threadLocalRandom.nextInt(1, 10 + 1));
-        book.setSeriesPosition(series);
-
-        book.setBookReview("Must Read Book. Really Enjoyed it");
-
-        int min = 300;
-        int max = 1000;
-        int pages = (threadLocalRandom.nextInt(min, max + 1));
-        int pagesRead = (threadLocalRandom.nextInt(min, max + 1));
-        book.setNumberOfPages(pages);
-        book.setPagesRead(pagesRead);
-
-        return book;
-    }
-
-    private PredefinedShelf getRandomPredefinedShelf() {
-        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
-        List<PredefinedShelf> shelves = predefinedShelfRepository.findAll();
-        return shelves.get(threadLocalRandom.nextInt(shelves.size()));
-    }
-
-    private void populateShelfRepository() {
-        List<Book> books = bookRepository.findAll();
-        predefinedShelfRepository.saveAll(
-                Stream.of(PredefinedShelf.ShelfName.values())
-                      .map(shelfName -> {
-                          PredefinedShelf shelf = new PredefinedShelf(shelfName);
-                          shelf.setBooks(new HashSet<>(books));
-                            return shelf;
-                        }).collect(Collectors.toList())
-        );
+        authorRepository.saveAll(generateAuthors());
     }
 
     private void populateTagRepository() {
-        tagRepository.saveAll(
-                Stream.of(
-                        "Adventure",
-                        "Interesting",
-                        "Tolkien",
-                        "Pokemon"
-                ).map(Tag::new).collect(Collectors.toList())
+        tagRepository.saveAll(generateListOfTags());
+    }
+
+    private void populateShelfRepository() {
+        predefinedShelfRepository.saveAll(createPredefinedShelves(bookRepository.findAll()));
+    }
+
+    private void populateBookRepository() {
+        bookRepository.saveAll(
+                generateBooks(
+                        authorRepository.findAll(), tagRepository.findAll(),
+                        predefinedShelfRepository.findAll()
+                )
         );
     }
 
-    /**
-     * Assigns a shelf to every book in the book repository
-     */
-    private void setShelfForAllBooks() {
-        List<Book> books = bookRepository.findAll();
+    private void setShelfForEveryBookInBookRepository() {
         List<PredefinedShelf> shelves = predefinedShelfRepository.findAll();
-
-        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
-
-        for (Book book : books) {
-            PredefinedShelf shelf = shelves.get(threadLocalRandom.nextInt(shelves.size()));
-            PredefinedShelf.ShelfName predefinedShelfName = shelf.getPredefinedShelfName();
-            book.setPredefinedShelf(shelf);
-            switch (predefinedShelfName) {
-                case TO_READ:
-                    book.setDateStartedReading(null);
-                    book.setDateFinishedReading(null);
-                    book.setRating(RatingScale.NO_RATING);
-                    break;
-                case READING:
-                case DID_NOT_FINISH:
-                    book.setDateStartedReading(LocalDate.now().minusDays(2));
-                    book.setDateFinishedReading(null);
-                    book.setRating(RatingScale.NO_RATING);
-                    break;
-                case READ:
-                    book.setRating(RatingScale.values()
-                            [threadLocalRandom.nextInt(RatingScale.values().length)]);
-                    book.setDateStartedReading(LocalDate.now().minusDays(2));
-                    book.setDateFinishedReading(LocalDate.now());
-                    break;
-                default:
-            }
-        }
+        List<Book> books = setPredefinedShelfForBooks(bookRepository.findAll(), shelves);
         bookRepository.saveAll(books);
     }
 }

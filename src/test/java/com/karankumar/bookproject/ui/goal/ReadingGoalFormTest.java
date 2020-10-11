@@ -26,7 +26,6 @@ import com.karankumar.bookproject.ui.MockSpringServlet;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -65,10 +65,10 @@ class ReadingGoalFormTest {
         goalForm.targetToRead.setValue(1);
         goalForm.chooseGoalType.setValue(ReadingGoal.GoalType.BOOKS);
         goalForm.saveButton.click();
-        Assertions.assertTrue(goalForm.binder.isValid());
+        assertTrue(goalForm.binder.isValid());
 
         goalForm.targetToRead.setValue(0);
-        Assertions.assertFalse(goalForm.binder.isValid());
+        assertFalse(goalForm.binder.isValid());
     }
 
     @AfterEach

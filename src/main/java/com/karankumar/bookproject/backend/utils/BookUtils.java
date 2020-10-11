@@ -23,12 +23,14 @@ public class BookUtils {
     private BookUtils() {}
 
     public static String combineTitleAndSeries(Book book) {
-        String result;
-        if (book.getSeriesPosition() != null && book.getSeriesPosition() > 0) {
-            result = String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
-        } else {
-            result = book.getTitle();
-        }
-        return result;
+        return (bookHasSeriesPosition(book)) ? addSeriesToTitle(book) : book.getTitle();
+    }
+
+    private static boolean bookHasSeriesPosition(Book book) {
+        return book.getSeriesPosition() != null && book.getSeriesPosition() > 0;
+    }
+
+    private static String addSeriesToTitle(Book book) {
+        return String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
     }
 }

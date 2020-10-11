@@ -53,7 +53,7 @@ public class ReadingGoalView extends VerticalLayout {
     private final PredefinedShelfService predefinedShelfService;
     private final ProgressBar progressBar;
 
-    private ReadingGoalService goalService;
+    private final ReadingGoalService goalService;
 
     @VisibleForTesting H1 readingGoalSummary;
     @VisibleForTesting H3 goalProgress;
@@ -184,9 +184,10 @@ public class ReadingGoalView extends VerticalLayout {
             int howManyBehindOrAhead =
                     CalculateReadingGoal.howFarAheadOrBehindSchedule(booksToReadThisYear,
                             booksReadThisYear);
-            schedule = String.format("You are %d "+ StringUtils.pluralize("book",
-                    howManyBehindOrAhead) + " %s schedule",
-                    howManyBehindOrAhead, CalculateReadingGoal.behindOrAheadSchedule(booksReadThisYear,
+            schedule = String.format("You are %d %s %s schedule",
+                    howManyBehindOrAhead,
+                    StringUtils.pluralize("book", howManyBehindOrAhead),
+                    CalculateReadingGoal.behindOrAheadSchedule(booksReadThisYear,
                             CalculateReadingGoal.shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;

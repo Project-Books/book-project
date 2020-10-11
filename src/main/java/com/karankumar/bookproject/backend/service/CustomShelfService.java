@@ -27,8 +27,7 @@ import java.util.List;
 @Service
 @Log
 public class CustomShelfService extends BaseService<CustomShelf, Long> {
-
-    private CustomShelfRepository customShelfRepository;
+    private final CustomShelfRepository customShelfRepository;
 
     public CustomShelfService(CustomShelfRepository customShelfRepository) {
         this.customShelfRepository = customShelfRepository;

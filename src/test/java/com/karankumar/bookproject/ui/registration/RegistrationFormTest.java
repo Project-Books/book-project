@@ -83,7 +83,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_passwordFieldNotMatchingTheRules_hasError() {
+    void passwordFieldNotMatchingTheRulesHasError() {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
 
         _setValue(passwordField, "asdf");
@@ -92,19 +92,22 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_passwordConfirmationWrong_hasError() {
+    void passwordConfirmationWrongHasError() {
+        // given
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
         PasswordField passwordConfirmationField =
                 _get(PasswordField.class, spec -> spec.withId("password-confirmation"));
 
+        // when
         _setValue(passwordField, "asdfASDF1234=");
         _setValue(passwordConfirmationField, "somethingelse");
 
+        // then
         assertThat(passwordField.getErrorMessage()).isNotBlank();
     }
 
     @Test
-    void registrationForm_passwordFieldMatchingTheRules_successful() {
+    void passwordFieldMatchingTheRulesIsAccepted() {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
 
         _setValue(passwordField, "asdfASDF1234=");
@@ -113,7 +116,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_usernameFieldLessThanFiveChars_hasError() {
+    void errorShownWhenUsernameFieldLessThanFiveChars() {
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
         _setValue(usernameField, "asdf");
@@ -122,7 +125,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_usernameInUse_hasError() {
+    void errorShownWhenUsernameInUse() {
         userRepository.save(VALID_TEST_USER);
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
@@ -132,7 +135,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_usernameCorrect_successful() {
+    void validUsernameIsAccepted() {
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
         _setValue(usernameField, "asdfgh");
@@ -141,7 +144,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_emailInvalid_hasError() {
+    void errorShownWhenEmailIsInvalid() {
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
         _setValue(emailField, "thisisnotanemail");
@@ -150,17 +153,20 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_emailInUse_hasError() {
+    void errorShownWhenEmailInUse() {
+        // given
         userRepository.save(VALID_TEST_USER);
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
+        // when
         _setValue(emailField, VALID_TEST_USER.getEmail());
 
+        // then
         assertThat(emailField.getErrorMessage()).isNotBlank();
     }
 
     @Test
-    void registrationForm_emailCorrect_successful() {
+    void validEmailIsAccepted() {
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
         _setValue(emailField, "asdf@asdf.de");
@@ -170,16 +176,20 @@ class RegistrationFormTest {
 
     @Test
     void registrationForm_withError_cannotBeSent() {
+        // given
         Span errorMessage = _get(Span.class, spec -> spec.withId("error-message"));
         Button registerButton = _get(Button.class, spec -> spec.withId("register"));
 
+        // when
         _click(registerButton);
 
+        // then
         assertThat(errorMessage.getText()).contains("There are errors in the registration form.");
     }
 
     @Test
     void registrationForm_withoutError_getsSent() {
+        // given
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
@@ -187,12 +197,14 @@ class RegistrationFormTest {
                 _get(PasswordField.class, spec -> spec.withId("password-confirmation"));
         Button registerButton = _get(Button.class, spec -> spec.withId("register"));
 
+        // when
         _setValue(usernameField, "testusername");
         _setValue(emailField, "testusername@test.mail");
         _setValue(passwordField, "asdfASDF1234=");
         _setValue(passwordConfirmationField, "asdfASDF1234=");
         _click(registerButton);
 
+        // then
         assertThat(userRepository.findByUsername("testusername")).isPresent();
     }
 

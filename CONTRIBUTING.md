@@ -46,7 +46,11 @@ If an issue already exists for what you want to work and it is unassigned, and i
 
 Letting us know which issue you want to work on before working on it helps to minimise the chances of duplicated work.
 
-If you have a new contributor (have not yet contributed to the project), we ask that you only request to be assigned to one issue. Only once your corresponding pull has been merged can you request to be assigned to other issues (more than one). The reason for this restriction is because we have had people ask to be assigned to an issue but then, for whatever reason, not work on it. We don't want to find ourselves in a situation where multiple issues are assigned to one person who then does not deliver. We want to keep our project alive at a good pace.
+### New contributors assigned to at most one issue at a time
+
+If you have a new contributor (have not yet contributed to the project), we ask that you only request to be assigned to one issue. Only once your corresponding pull has been merged can you request to be assigned to other issues (more than one). 
+
+The reason for this restriction is because we have had people ask to be assigned to an issue but then, for whatever reason, not work on it. We don't want to find ourselves in a situation where multiple issues are assigned to one person who then does not deliver. We want to keep our project alive at a good pace.
 
 ### Discuss your implementation approach
 
@@ -79,6 +83,16 @@ Please follow the process below:
 For every patch (i.e. pull request) you make, please ensure it solves one problem. If you want to solve multiple problems, please spread them across multiple patches -- one patch per problem.
 
 This makes it easier to keep track of what changes were made in what branch or pull request when looking back. Additionally, it makes code reviews go a lot quicker and smoother.
+
+### Squashing commits
+
+If you need to fix a small issue (e.g. fixing typos), address review feedback or fix a failing build, please squash your commits. This can be done using an interactive rebase:
+```
+$ git rebase -i HEAD~n
+```
+where _n_ represents the number of last commits.
+
+You can then change the commit that you want to squash with the previous by changing the word 'pick' to 'squash'. When pushing the changes, you'll need to force push (e.g. `git push -f origin add-avatar`).
 
 ## Code contributions
 

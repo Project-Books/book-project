@@ -29,7 +29,7 @@ import java.util.logging.Level;
 @Log
 public class TagService extends BaseService<Tag, Long> {
 
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
     
     public TagService(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
@@ -44,7 +44,7 @@ public class TagService extends BaseService<Tag, Long> {
     public void save(Tag tag) {
         if (tag != null) {
             tagRepository.save(tag);
-        }else {
+        } else {
             LOGGER.log(Level.SEVERE, "Null tag");
         }
     }

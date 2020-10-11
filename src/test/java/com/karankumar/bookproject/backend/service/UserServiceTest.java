@@ -41,12 +41,6 @@ class UserServiceTest {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    private final User testUser = User.builder()
-                                      .username("testuser")
-                                      .email("testmail")
-                                      .password("aaaaAAAA1234@")
-                                      .build();
-
     private final User validUser = User.builder()
                                        .username("validUser")
                                        .email("valid@testmail.com")

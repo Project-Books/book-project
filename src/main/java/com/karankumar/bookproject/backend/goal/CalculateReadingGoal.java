@@ -15,7 +15,6 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.karankumar.bookproject.backend.goal;
 
 import com.karankumar.bookproject.backend.entity.Book;
@@ -64,13 +63,17 @@ public class CalculateReadingGoal {
         boolean lookingForBooks = goalType.equals(GoalType.BOOKS);
         for (Book book : readShelf.getBooks()) {
             // only books that have been given a finish date can count towards the reading goal
-            if (book != null && book.getDateFinishedReading() != null
-                    && DateUtils.dateIsInCurrentYear(book.getDateFinishedReading())) {
+            if (bookHasFinishDateInThisYear(book)) {
                 int pages = (book.getNumberOfPages() == null) ? 0 : book.getNumberOfPages();
                 readThisYear += (lookingForBooks ? (1) : pages);
             }
         }
         return readThisYear;
+    }
+
+    private static boolean bookHasFinishDateInThisYear(Book book) {
+        return book != null && book.getDateFinishedReading() != null &&
+                DateUtils.dateIsInCurrentYear(book.getDateFinishedReading());
     }
 
     public static int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {

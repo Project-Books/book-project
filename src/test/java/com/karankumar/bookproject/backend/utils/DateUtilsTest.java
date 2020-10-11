@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 
-public class DateUtilsTest {
+class DateUtilsTest {
     @BeforeAll
     static void setup() {
         Mockito.mockStatic(DateUtils.TimeUtils.class);
@@ -53,24 +54,26 @@ public class DateUtilsTest {
     }
 
     @Test
+    @Disabled
+    // TODO: fix failing test
     void testCurrentWeekNumberOfYearAndWeeksLeftInYear() {
-        // TODO: fix failing test
-//        Assertions.assertEquals(1, mockFirstWeekOfYear());
-//        Assertions.assertEquals(40, mockFortiethWeekOfYear());
-//        Assertions.assertEquals(52, mockLastWeekOfYear());
+        Assertions.assertEquals(1, mockFirstWeekOfYear());
+        Assertions.assertEquals(40, mockFortiethWeekOfYear());
+        Assertions.assertEquals(52, mockLastWeekOfYear());
     }
 
     @Test
+    @Disabled
+    // TODO: fix failing test
     void testWeeksLeftInYearFromCurrentWeek() {
-        // TODO: fix failing test
-//        Assertions.assertEquals(calculateWeeksLeftInYear(1),
-//                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFirstWeekOfYear()));
-//
-//        Assertions.assertEquals(calculateWeeksLeftInYear(mockFortiethWeekOfYear()),
-//                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFortiethWeekOfYear()));
-//
-//        Assertions.assertEquals(calculateWeeksLeftInYear(mockLastWeekOfYear()),
-//                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockLastWeekOfYear()));
+        Assertions.assertEquals(calculateWeeksLeftInYear(1),
+                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFirstWeekOfYear()));
+
+        Assertions.assertEquals(calculateWeeksLeftInYear(mockFortiethWeekOfYear()),
+                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFortiethWeekOfYear()));
+
+        Assertions.assertEquals(calculateWeeksLeftInYear(mockLastWeekOfYear()),
+                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockLastWeekOfYear()));
     }
 
     private int calculateWeeksLeftInYear(int currentWeekNumber) {
