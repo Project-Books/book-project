@@ -24,12 +24,22 @@ import com.karankumar.bookproject.backend.utils.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+@DisplayName("CalculateReadingGoal should")
 class CalculateReadingGoalTest {
     private final int BOOKS_TO_READ = 52;
+
+    @BeforeAll
+    static void setUp() {
+        Mockito.mockStatic(DateUtils.class);
+        System.out.println("Hi1");
+    }
 
     @Test
     void testProgressValueIsCorrect() {
@@ -73,20 +83,47 @@ class CalculateReadingGoalTest {
         softly.assertAll();
     }
 
+    @Nested
+    @DisplayName("show correct progress value for lower bound (1st week of the year) when")
+    class LowerBoundProgressTests {
+        @BeforeEach
+        void setFirstWeek() {
+            Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
+            System.out.println("Hi");
+        }
+
+        @Test
+        void behindSchedule() {
+            // one book behind schedule
+            assertThat(howFarAheadOrBehindSchedule(52,0)).isOne();
+        }
+
+        @Test
+        void onSchedule() {
+            assertThat(howFarAheadOrBehindSchedule(52, 1)).isZero();
+        }
+
+        @Test
+        void aheadOfSchedule() {
+            // 9 books ahead of schedule
+            assertEquals(9, howFarAheadOrBehindSchedule(52,10));
+        }
+    }
+
     @Test
-    void testHowFarAheadOrBehindSchedule(){
-        Mockito.mockStatic(DateUtils.class);
-
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
-        assertThat(howFarAheadOrBehindSchedule(52, 1)).isZero();
-        assertThat(howFarAheadOrBehindSchedule(52,0)).isOne();
-        assertEquals(9, howFarAheadOrBehindSchedule(52,10));
-
+    @DisplayName("show correct progress value for upper bound (last week of the year)")
+    void showCorrectValueForUpperBound() {
         Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(52);
+
+        //
         assertEquals(25, howFarAheadOrBehindSchedule(113,79));
         assertEquals(63, howFarAheadOrBehindSchedule(113,41));
         assertThat(howFarAheadOrBehindSchedule(113,104)).isZero();
+    }
 
+    @Test
+    @DisplayName("show correct progress value for a normal case")
+    void showCorrectValueForNormalCase(){
         Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(26);
         assertEquals(20, howFarAheadOrBehindSchedule(40,20));
         assertEquals(55, howFarAheadOrBehindSchedule(40,55));
