@@ -78,7 +78,7 @@ class BookShelfComboBoxTest {
         List<String> shelvesList = comboBox.allShelvesList
                 .getDataProvider()
                 .fetch(new Query<>())
-                .collect( Collectors.toList());
+                .collect(Collectors.toList());
 
         // TODO: assert that the new custom shelf added shows in the list above
     }
