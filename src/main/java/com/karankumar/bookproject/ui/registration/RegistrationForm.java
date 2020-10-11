@@ -109,7 +109,6 @@ public class RegistrationForm extends FormLayout {
 
     private void configurePasswordField() {
         passwordField.setRequired(true);
-        passwordField.setMaxLength(129);
         passwordField.setId("password");
         passwordField.setMaxLength(129);
         passwordField.addValueChangeListener(e -> {
@@ -130,7 +129,6 @@ public class RegistrationForm extends FormLayout {
 
     private void configurePasswordConfirmationField() {
         passwordConfirmationField.setRequired(true);
-        passwordConfirmationField.setMaxLength(129);
         passwordConfirmationField.setId("password-confirmation");
         passwordConfirmationField.setMaxLength(129);
     }
