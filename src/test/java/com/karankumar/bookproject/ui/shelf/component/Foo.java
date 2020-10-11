@@ -29,6 +29,7 @@ import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
+@DisplayName("BookShelfComboBox should")
 class BookShelfComboBoxTest {
     private static Routes routes;
     private final CustomShelfService customShelfService;
@@ -64,7 +66,7 @@ class BookShelfComboBoxTest {
     }
 
     @Test
-    void newShelfShowsInList() {
+    void displayNewShelfInList() {
         // given
         CustomShelf test = new CustomShelf("UnitTest");
         customShelfService.save(test);
