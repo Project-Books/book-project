@@ -19,8 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.*;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import com.karankumar.bookproject.ui.book.BookForm;
+
 import org.apache.commons.io.FileUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.SoftAssertions;
