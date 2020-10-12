@@ -31,7 +31,7 @@ public class ComponentUtil {
         }
     }
 
-    public static void clearComponentFields(Binder<Book> binder) {
+    public static void clearComponentFields(Binder<?> binder) {
         binder.getFields().forEach(HasValue::clear);
     }
 }
