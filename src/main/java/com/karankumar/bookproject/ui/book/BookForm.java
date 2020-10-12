@@ -337,7 +337,7 @@ public class BookForm extends VerticalLayout {
             if (binder.getBean() != null && isMovedToDifferentShelf()) {
                 LOGGER.log(Level.INFO, "Binder.getBean() is not null");
                 moveBookToDifferentShelf();
-                ComponentUtil.clearComponentFields(fieldsToReset);
+                ComponentUtil.clearComponentFields(binder);
                 fireEvent(new SaveEvent(this, binder.getBean()));
                 closeForm();
             } else {
@@ -362,7 +362,7 @@ public class BookForm extends VerticalLayout {
 
         if (binder.getBean() != null) {
             LOGGER.log(Level.INFO, "Written bean. Not Null.");
-            ComponentUtil.clearComponentFields(fieldsToReset);
+            ComponentUtil.clearComponentFields(binder);
             fireEvent(new SaveEvent(this, binder.getBean()));
             showSavedConfirmation();
         } else {
@@ -717,8 +717,9 @@ public class BookForm extends VerticalLayout {
                 rating,
                 bookReview
         };
+        binder.bindInstanceFields(components);
         resetSaveButtonText();
-        ComponentUtil.clearComponentFields(components);
+        ComponentUtil.clearComponentFields(binder);
     }
 
     private void resetSaveButtonText() {

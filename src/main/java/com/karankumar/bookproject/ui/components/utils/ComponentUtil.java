@@ -17,8 +17,10 @@
 
 package com.karankumar.bookproject.ui.components.utils;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.data.binder.Binder;
 
 public class ComponentUtil {
     private ComponentUtil() {}
@@ -29,9 +31,7 @@ public class ComponentUtil {
         }
     }
 
-    public static void clearComponentFields(HasValue... components) {
-        for (HasValue component : components) {
-            component.clear();
-        }
+    public static void clearComponentFields(Binder<Book> binder) {
+        binder.getFields().forEach(HasValue::clear);
     }
 }
