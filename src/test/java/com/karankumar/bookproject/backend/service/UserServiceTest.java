@@ -30,6 +30,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static com.karankumar.bookproject.utils.SecurityTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -143,5 +148,26 @@ class UserServiceTest {
         userRepository.save(validUser);
 
         assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
+    }
+
+    @Test
+    void getLoggedUser() {
+        Optional<User> dbUser = userRepository.findByUsername(TEST_USER_NAME);
+        User currentUser = userService.getCurrentUser();
+
+        assertThat(currentUser.getUsername()).isEqualTo(TEST_USER_NAME);
+        assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
+    }
+
+    @Test
+    void findAll() {
+        List<User> users = Arrays.asList(
+                getTestUser(userRepository),
+                insertTestUser(userRepository, "test1"),
+                insertTestUser(userRepository, "test2"),
+                insertTestUser(userRepository, "test3")
+        );
+
+        assertThat(userService.findAll()).containsAll(users);
     }
 }

@@ -6,8 +6,11 @@ import com.karankumar.bookproject.backend.repository.UserRepository;
 public class SecurityTestUtils {
     private SecurityTestUtils() {}
 
+    // this has to be the same value as in data.sql
+    public static final String TEST_USER_NAME = "testUser";
+
     public static User getTestUser(UserRepository repository) {
-        return repository.findByUsername("user").orElseThrow();
+        return repository.findByUsername(TEST_USER_NAME).orElseThrow();
     }
 
     public static User insertTestUser(UserRepository repository, String username) {

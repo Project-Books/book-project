@@ -20,21 +20,20 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 
+import static com.karankumar.bookproject.utils.SecurityTestUtils.TEST_USER_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @IntegrationTest
 @DisplayName("PredefinedShelfService should")
 class PredefinedShelfServiceTest {
-    private final PredefinedShelfService predefinedShelfService;
-
-    @Autowired
-    PredefinedShelfServiceTest(PredefinedShelfService predefinedShelfService) {
-        this.predefinedShelfService = predefinedShelfService;
-    }
+    @Autowired private PredefinedShelfService predefinedShelfService;
 
     @Test
     void notSaveNullPredefinedShelf() {
@@ -46,5 +45,29 @@ class PredefinedShelfServiceTest {
 
         // then
         assertThat(predefinedShelfService.count()).isEqualTo(initialCount);
+    }
+
+    @Test
+    void findAllPredefinedShelvesForLoggedInUser() {
+        List<PredefinedShelf> shelves = predefinedShelfService.findAllForLoggedInUser();
+        assertThat(shelves).isNotNull().hasSameSizeAs(PredefinedShelf.ShelfName.values());
+
+        assertSoftly(softly ->
+                softly.assertThat(shelves).allSatisfy(shelf ->
+                        assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME)
+                )
+        );
+    }
+
+    @Test
+    void findAllPredefinedShelvesForPredefinedShelfNameAndLoggedInUser() {
+        PredefinedShelf shelf = predefinedShelfService
+                .findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
+        assertThat(shelf).isNotNull();
+
+        assertSoftly(softly -> {
+            softly.assertThat(shelf.getPredefinedShelfName()).isEqualTo(PredefinedShelf.ShelfName.TO_READ);
+            softly.assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME);
+        });
     }
 }
