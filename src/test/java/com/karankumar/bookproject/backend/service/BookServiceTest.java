@@ -65,7 +65,7 @@ class BookServiceTest {
     }
 
     private void resetAuthorAndBook() {
-        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+        toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
         author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author, toRead);
     }

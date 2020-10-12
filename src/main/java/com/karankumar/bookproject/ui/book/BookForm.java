@@ -405,7 +405,7 @@ public class BookForm extends VerticalLayout {
         PredefinedShelf predefinedShelf;
         if (predefinedShelfField.getValue() != null) {
             predefinedShelf =
-                    predefinedShelfService.findByPredefinedShelfName(predefinedShelfField.getValue());
+                    predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfField.getValue());
         } else {
             LOGGER.log(Level.SEVERE, "Null shelf");
             return null;
@@ -413,7 +413,7 @@ public class BookForm extends VerticalLayout {
         Book book = new Book(title, author, predefinedShelf);
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
-            CustomShelf shelf = customShelfService.findByShelfName(customShelfField.getValue());
+            CustomShelf shelf = customShelfService.findByShelfNameAndLoggedInUser(customShelfField.getValue());
             if (shelf != null) {
                 book.setCustomShelf(shelf);
             }
@@ -457,7 +457,7 @@ public class BookForm extends VerticalLayout {
 
     private void moveBookToDifferentShelf() {
         PredefinedShelf shelf =
-                predefinedShelfService.findByPredefinedShelfName(predefinedShelfField.getValue());
+                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfField.getValue());
         if (shelf != null) {
             Book book = binder.getBean();
             book.setPredefinedShelf(shelf);

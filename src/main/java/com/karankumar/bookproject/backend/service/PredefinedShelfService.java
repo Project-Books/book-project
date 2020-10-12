@@ -71,27 +71,27 @@ public class PredefinedShelfService {
         }
     }
 
-    public List<PredefinedShelf> findAll() {
+    public List<PredefinedShelf> findAllForLoggedInUser() {
         return predefinedShelfRepository.findAllByUser(userService.getCurrentUser());
     }
 
     public PredefinedShelf findToReadShelf() {
-        return findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+        return findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
     }
 
     public PredefinedShelf findReadingShelf() {
-        return findByPredefinedShelfName(PredefinedShelf.ShelfName.READING);
+        return findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.READING);
     }
 
     public PredefinedShelf findReadShelf() {
-        return findByPredefinedShelfName(PredefinedShelf.ShelfName.READ);
+        return findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.READ);
     }
 
     public PredefinedShelf findDidNotFinishShelf() {
-        return findByPredefinedShelfName(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+        return findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.DID_NOT_FINISH);
     }
 
-    public PredefinedShelf findByPredefinedShelfName(PredefinedShelf.ShelfName shelfName) {
+    public PredefinedShelf findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName shelfName) {
         return predefinedShelfRepository.findByPredefinedShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 

@@ -20,38 +20,82 @@ package com.karankumar.bookproject.backend.repository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.account.User;
-import com.karankumar.bookproject.utils.SecurityTestUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.karankumar.bookproject.utils.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.utils.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
 class CustomShelfRepositoryTest {
+    private static final String CUSTOM_SHELF_NAME = "Test1";
+
     @Autowired private UserRepository userRepository;
     @Autowired private CustomShelfRepository repository;
-    private final String customShelf1 = "Test1";
     private User user;
 
-    @Test
-    @DisplayName("When shelf exists, findByShelfName returns one shelf")
-    void findByShelfNameCorrectlyReturnsOneShelf() {
-        // given
-        saveCustomShelves();
-
-        // when
-        CustomShelf shelf = repository.findByShelfNameAndUser(customShelf1, user);
-
-        // then
-        assertThat(shelf).isNotNull();
+    @BeforeEach
+    void setup() {
+        user = getTestUser(userRepository);
+        createShelvesForUser(user);
+        createShelvesForUser(insertTestUser(userRepository, "anotherUser"));
     }
 
-    private void saveCustomShelves() {
-        user = SecurityTestUtils.getTestUser(userRepository);
-        repository.save(new CustomShelf(customShelf1, user));
-        repository.save(new CustomShelf("Test2", user));
-        repository.save(new CustomShelf("Test3", user));
+    @Test
+    @DisplayName("findByShelfNameAndUser correctly returns the shelf if exists")
+    void findByShelfNameAndUser() {
+        CustomShelf shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
+        assertThat(shelf).isNotNull();
+
+        assertSoftly(softly -> {
+            softly.assertThat(shelf.getShelfName()).isEqualTo(CUSTOM_SHELF_NAME);
+            softly.assertThat(shelf.getUser().getId()).isEqualTo(user.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("findByShelfNameAndUser correctly returns null if shelf doesn't exist")
+    void findByShelfNameAndUserReturnsNull() {
+        repository.deleteAll();
+        CustomShelf shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
+        assertThat(shelf).isNull();
+    }
+
+    @Test
+    @DisplayName("findAllByUser correctly returns shelves for a user")
+    void findAllByUser() {
+        List<CustomShelf> shelves = repository.findAllByUser(user);
+        assertThat(shelves).isNotNull().isNotEmpty();
+
+        assertSoftly(softly ->
+                softly.assertThat(shelves).allSatisfy(shelf ->
+                        assertThat(shelf.getUser().getId()).isEqualTo(user.getId())
+                )
+        );
+    }
+
+    @Test
+    @DisplayName("findAllByUser correctly returns empty list for a user")
+    void findAllByUserIsEmpty() {
+        repository.deleteAll();
+        List<CustomShelf> shelves = repository.findAllByUser(user);
+        assertThat(shelves).isNotNull().isEmpty();
+    }
+
+    private void createShelvesForUser(User user) {
+        repository.saveAll(
+                Stream.of(CUSTOM_SHELF_NAME, "Test2", "Test3")
+                        .map(shelfName -> new CustomShelf(shelfName, user))
+                        .collect(Collectors.toList())
+        );
     }
 }
 

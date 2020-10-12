@@ -43,11 +43,11 @@ public class CustomShelfService {
         return customShelfRepository.getOne(id);
     }
 
-    public List<CustomShelf> findAll() {
+    public List<CustomShelf> findAllForLoggedInUser() {
         return customShelfRepository.findAllByUser(userService.getCurrentUser());
     }
 
-    public CustomShelf findByShelfName(String shelfName) {
+    public CustomShelf findByShelfNameAndLoggedInUser(String shelfName) {
         return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 

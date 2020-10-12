@@ -35,7 +35,7 @@ public class CustomShelfUtils {
     }
 
     public List<@NotNull String> getCustomShelfNames() {
-        return customShelfService.findAll()
+        return customShelfService.findAllForLoggedInUser()
                                  .stream()
                                  .map(CustomShelf::getShelfName)
                                  .collect(Collectors.toList());
@@ -45,7 +45,7 @@ public class CustomShelfUtils {
      * Gets all of the books in the specified custom shelf
      */
     public Set<Book> getBooksInCustomShelf(String shelfName) {
-        CustomShelf customShelf = customShelfService.findByShelfName(shelfName);
+        CustomShelf customShelf = customShelfService.findByShelfNameAndLoggedInUser(shelfName);
         if (customShelf == null) {
             return new HashSet<>();
         }

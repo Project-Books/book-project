@@ -27,7 +27,6 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
 
-import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -120,14 +119,14 @@ class BookFormTest {
     private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries,
                             String bookTitle) {
         Author author = new Author(firstName, lastName);
-        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfName(shelfName);
+        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(shelfName);
         Book book = new Book(bookTitle, author, shelf);
 
         seriesPosition = SERIES_POSITION;
 
         book.setBookGenre(BOOK_GENRE);
         book.setNumberOfPages(numberOfPages);
-        book.setCustomShelf(customShelfService.findAll().get(0));
+        book.setCustomShelf(customShelfService.findAllForLoggedInUser().get(0));
         if (isInSeries) {
             book.setSeriesPosition(SERIES_POSITION);
         }

@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
@@ -61,6 +62,8 @@ class PredefinedShelfUtilsTest {
     private Book book3;
     private Book book4;
 
+    private static final Author NO_AUTHOR = null;
+
     private List<String> PREDEFINED_SHELVES;
     private static final List<String> INVALID_SHELVES =
             List.of("Too read", "Readin", "Do not finish", "Shelf");
@@ -98,10 +101,10 @@ class PredefinedShelfUtilsTest {
     }
 
     private void createAndSaveBooks() {
-        book1 = bookRepository.save(new Book("someTitle", null, toReadShelf));
-        book2 = bookRepository.save(new Book("someTitle2", null, toReadShelf));
-        book3 = bookRepository.save(new Book("someOtherTitle", null, readShelf));
-        book4 = bookRepository.save(new Book("yetAnotherTitle", null, didNotFinishShelf));
+        book1 = bookRepository.save(new Book("someTitle", NO_AUTHOR, toReadShelf));
+        book2 = bookRepository.save(new Book("someTitle2", NO_AUTHOR, toReadShelf));
+        book3 = bookRepository.save(new Book("someOtherTitle", NO_AUTHOR, readShelf));
+        book4 = bookRepository.save(new Book("yetAnotherTitle", NO_AUTHOR, didNotFinishShelf));
     }
 
     @Test

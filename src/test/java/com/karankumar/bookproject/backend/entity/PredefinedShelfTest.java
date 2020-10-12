@@ -42,7 +42,7 @@ class PredefinedShelfTest {
         resetBookService();
 
         // when
-        List<PredefinedShelf> shelves = predefinedShelfService.findAll();
+        List<PredefinedShelf> shelves = predefinedShelfService.findAllForLoggedInUser();
 
         // then
         assertSoftly(
