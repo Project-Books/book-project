@@ -118,7 +118,8 @@ class CalculateReadingGoalTest {
 
         @Test
         void behindSchedule() {
-            // TODO: implement
+            // 10 books behind schedule
+            assertEquals(10, howFarAheadOrBehindSchedule(40,10));
         }
 
         @Test
@@ -126,8 +127,10 @@ class CalculateReadingGoalTest {
             assertEquals(20, howFarAheadOrBehindSchedule(40,20));
         }
 
+        @Test
         void aheadOfSchedule() {
-            // TODO: implement
+            // 30 books ahead of schedule
+            assertEquals(30, howFarAheadOrBehindSchedule(40,30));
         }
     }
 
@@ -147,28 +150,14 @@ class CalculateReadingGoalTest {
 
         @Test
         void onSchedule() {
-            // TODO: implement
+            assertThat(howFarAheadOrBehindSchedule(113,104)).isZero();
         }
 
         @Test
         void aheadOfSchedule() {
-            assertThat(howFarAheadOrBehindSchedule(113,104)).isZero();
+            // 46 books ahead of schedule
+            assertEquals(46, howFarAheadOrBehindSchedule(113,150));
         }
-    }
-
-    @Test
-    void showCorrectValueForUpperBound() {
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(52);
-        // TODO: move to UpperBoundProgressTests
-        assertEquals(63, howFarAheadOrBehindSchedule(113,41));
-    }
-
-    @Test
-    // TODO: move to NormalCaseProgressTests
-    void showCorrectValueForNormalCase(){
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(26);
-        assertEquals(55, howFarAheadOrBehindSchedule(40,55));
-        assertThat(howFarAheadOrBehindSchedule(40,0)).isZero();
     }
 
     @Test
