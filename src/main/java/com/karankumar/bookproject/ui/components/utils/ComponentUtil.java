@@ -22,7 +22,7 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.data.binder.Binder;
 
-public class ComponentUtil {
+public final class ComponentUtil {
     private ComponentUtil() {}
 
     public static void setComponentClassName(HasSize[] components, String className) {

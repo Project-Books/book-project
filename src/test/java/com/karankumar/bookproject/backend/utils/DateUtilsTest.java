@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.utils;
 
-import org.junit.jupiter.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -57,23 +57,23 @@ class DateUtilsTest {
     @Disabled
     // TODO: fix failing test
     void testCurrentWeekNumberOfYearAndWeeksLeftInYear() {
-        Assertions.assertEquals(1, mockFirstWeekOfYear());
-        Assertions.assertEquals(40, mockFortiethWeekOfYear());
-        Assertions.assertEquals(52, mockLastWeekOfYear());
+        assertThat(mockFirstWeekOfYear()).isOne();
+        assertThat(mockFortiethWeekOfYear()).isEqualTo(40);
+        assertThat(mockLastWeekOfYear()).isEqualTo(52);
     }
 
     @Test
     @Disabled
     // TODO: fix failing test
     void testWeeksLeftInYearFromCurrentWeek() {
-        Assertions.assertEquals(calculateWeeksLeftInYear(1),
-                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFirstWeekOfYear()));
+        assertThat(DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFirstWeekOfYear()))
+                .isEqualTo(calculateWeeksLeftInYear(1));
 
-        Assertions.assertEquals(calculateWeeksLeftInYear(mockFortiethWeekOfYear()),
-                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFortiethWeekOfYear()));
+        assertThat(DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFortiethWeekOfYear()))
+                .isEqualTo(calculateWeeksLeftInYear(mockFortiethWeekOfYear()));
 
-        Assertions.assertEquals(calculateWeeksLeftInYear(mockLastWeekOfYear()),
-                DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockLastWeekOfYear()));
+        assertThat(DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockLastWeekOfYear()))
+                .isEqualTo(calculateWeeksLeftInYear(mockLastWeekOfYear()));
     }
 
     private int calculateWeeksLeftInYear(int currentWeekNumber) {

@@ -50,7 +50,7 @@ public class CustomShelfForm extends VerticalLayout {
     private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
 
-    private Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
+    private final Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
 
     @VisibleForTesting
     final TextField shelfNameField = new TextField();
@@ -172,7 +172,7 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     public static abstract class CustomShelfFormEvent extends ComponentEvent<CustomShelfForm> {
-        private CustomShelf customShelf;
+        private final CustomShelf customShelf;
 
         protected CustomShelfFormEvent(CustomShelfForm source, CustomShelf customShelf) {
             super(source, false);

@@ -24,7 +24,6 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 
 import java.util.ArrayList;
 
@@ -40,7 +39,7 @@ public class StatisticTestUtils {
     private static final ArrayList<Book> savedBooks = new ArrayList<>();
 
     private static BookService bookService;
-    private static PredefinedShelfUtils predefinedShelfUtils;
+    private static PredefinedShelfService predefinedShelfService;
 
     public static double totalRating = 0.0;
 
@@ -50,7 +49,9 @@ public class StatisticTestUtils {
                                          PredefinedShelfService predefinedShelfService) {
         StatisticTestUtils.bookService = bookService;
         bookService.deleteAll();
-        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+        savedBooks.clear();
+        totalRating = 0.0;
+        StatisticTestUtils.predefinedShelfService = predefinedShelfService;
 
         bookWithLowestRating =
                 createReadBook("Book1", RatingScale.NO_RATING, BookGenre.BUSINESS, 100);
@@ -64,7 +65,7 @@ public class StatisticTestUtils {
     }
 
     private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages) {
-        PredefinedShelf readShelf = predefinedShelfUtils.findReadShelf();
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         Book book = createBook(bookTitle, readShelf, bookGenre, pages);
         book.setRating(rating);
 
@@ -94,6 +95,13 @@ public class StatisticTestUtils {
         }
     }
 
+    private static void reduceTotalRating(RatingScale ratingScale) {
+        Double rating = RatingScale.toDouble(ratingScale);
+        if (rating != null) {
+            totalRating -= rating;
+        }
+    }
+
     public static Book getBookWithLowestRating() {
         return bookWithLowestRating;
     }
@@ -116,5 +124,11 @@ public class StatisticTestUtils {
             pages += book.getNumberOfPages();
         }
         return pages;
+    }
+
+    public static void deleteBook(Book bookToDelete) {
+        bookService.delete(bookToDelete);
+        savedBooks.remove(bookToDelete);
+        reduceTotalRating(bookToDelete.getRating());
     }
 }

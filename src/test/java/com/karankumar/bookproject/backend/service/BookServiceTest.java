@@ -18,35 +18,35 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.BookGenre;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.entity.Tag;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.backend.entity.Author;	
+import com.karankumar.bookproject.backend.entity.Book;	
+import com.karankumar.bookproject.backend.entity.BookGenre;	
+import com.karankumar.bookproject.backend.entity.CustomShelf;	
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import org.apache.commons.io.FileUtils;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 class BookServiceTest {
@@ -61,8 +61,7 @@ class BookServiceTest {
 
     @BeforeAll
     public static void beforeAllSetup(@Autowired PredefinedShelfService predefinedShelfService) {
-        PredefinedShelfUtils predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
-        toRead = predefinedShelfUtils.findToReadShelf();
+        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
     }
 
     @BeforeEach
@@ -208,6 +207,14 @@ class BookServiceTest {
 
         // then
         JSONAssert.assertEquals(expectedJsonString, actualJsonString, JSONCompareMode.NON_EXTENSIBLE);
+    }
+
+    @Test
+    @Transactional
+    void findSavedBook() {
+        Book bookToSave = new Book("Book Name To Save", author, toRead);
+        bookService.save(bookToSave);
+        assertEquals(bookService.findById(bookToSave.getId()),bookToSave);
     }
 
     private Book createBookAndSetAllAttributes() {

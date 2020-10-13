@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType;
 import static com.karankumar.bookproject.backend.utils.DateUtils.WEEKS_IN_YEAR;
 
-public class CalculateReadingGoal {
+public final class CalculateReadingGoal {
 
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
@@ -39,7 +39,7 @@ public class CalculateReadingGoal {
      * @param booksToReadThisYear the number of books to read by the end of the year (the goal)
      * @return the number of books that the user should have read by this point in the year
      */
-    public static int shouldHaveRead(int booksToReadThisYear) {
+    public static double shouldHaveRead(int booksToReadThisYear) {
         return booksToReadFromStartOfYear(booksToReadThisYear) * DateUtils.getCurrentWeekNumberOfYear();
     }
 
@@ -48,8 +48,8 @@ public class CalculateReadingGoal {
      * @return the number of books that should have been read a week (on average) from the start of
      * the year
      */
-    public static int booksToReadFromStartOfYear(int booksToReadThisYear) {
-        return ((int) Math.ceil(booksToReadThisYear / WEEKS_IN_YEAR));
+    public static double booksToReadFromStartOfYear(int booksToReadThisYear) {
+        return ((double) booksToReadThisYear / WEEKS_IN_YEAR);
     }
 
     /**
@@ -77,7 +77,7 @@ public class CalculateReadingGoal {
     }
 
     public static int howFarAheadOrBehindSchedule(int booksToReadThisYear, int booksReadThisYear) {
-        int shouldHaveRead = booksToReadFromStartOfYear(booksToReadThisYear) *
+        int shouldHaveRead = (int)(booksToReadFromStartOfYear(booksToReadThisYear)) *
                 DateUtils.getCurrentWeekNumberOfYear();
         return Math.abs(shouldHaveRead - booksReadThisYear);
     }
@@ -102,7 +102,7 @@ public class CalculateReadingGoal {
      *                       schedule
      * @return a String denoting that the user is ahead or behind schedule
      */
-    public static String behindOrAheadSchedule(int booksReadThisYear, int shouldHaveRead) {
-        return (booksReadThisYear < shouldHaveRead) ? BEHIND : AHEAD_OF;
+    public static String behindOrAheadSchedule(int booksReadThisYear, double shouldHaveRead) {
+        return (booksReadThisYear >= shouldHaveRead) ? AHEAD_OF : BEHIND;
     }
 }
