@@ -214,14 +214,14 @@ class RegistrationFormTest {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
 
         // when
-        _setValue(passwordField, generateInvalidPassword(RegistrationForm.MAX_PASSWORD_LENGTH));
+        _setValue(passwordField, generateInvalidPassword());
 
         // then
         assertThat(passwordField.getErrorMessage()).isNotBlank();
     }
 
-    private String generateInvalidPassword(int n) {
-        return ".".repeat(n);
+    private String generateInvalidPassword() {
+        return ".".repeat(RegistrationForm.MAX_PASSWORD_LENGTH);
     }
 
     @AfterEach
