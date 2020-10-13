@@ -33,7 +33,7 @@ import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHEL
 
 @Log
 public class BookShelfComboBox {
-    public final ComboBox<String> allShelvesList;
+    @VisibleForTesting final ComboBox<String> allShelvesList;
     private final CustomShelfService customShelfService;
 
     public BookShelfComboBox(CustomShelfService customShelfService) {
