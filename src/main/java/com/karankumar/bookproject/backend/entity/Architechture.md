@@ -1,6 +1,6 @@
-# Architechture of the Book_Project
+# Architechture of the Book_Project 
 
 <p align="center">
-	<img src="book-project/media/docs/readme/Architechture.png"/>
+	<img src="/media/docs/readme/Architechture.png" alt="Architechture"/>
   </p>
 
