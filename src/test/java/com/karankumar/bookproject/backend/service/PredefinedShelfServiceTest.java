@@ -37,38 +37,14 @@ class PredefinedShelfServiceTest {
     }
 
     @Test
-    void notDeleteAPredefinedShelf() {
-        // given
-        PredefinedShelf read = predefinedShelfService.findReadShelf();
-
-        // when
-        predefinedShelfService.delete(read);
-
-        // then
-        assertThat(predefinedShelfService.findAll()).contains(read);
-    }
-
-    @Test
-    void notDeleteAllPredefinedShelves() {
-        // given
-        Long expected = predefinedShelfService.count();
-
-        // when
-        predefinedShelfService.deleteAll();
-
-        // then
-        assertThat(predefinedShelfService.count()).isEqualTo(expected);
-    }
-
-    @Test
     void notSaveNullPredefinedShelf() {
         // given
-        int initialCount = predefinedShelfService.findAll().size();
+        Long initialCount = predefinedShelfService.count();
 
         // when
         predefinedShelfService.save(null);
 
         // then
-        assertThat(predefinedShelfService.findAll()).hasSize(initialCount);
+        assertThat(predefinedShelfService.count()).isEqualTo(initialCount);
     }
 }
