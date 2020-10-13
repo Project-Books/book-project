@@ -82,7 +82,8 @@ class BookShelfComboBoxTest {
                 .collect(Collectors.toList());
 
         assertThat(shelvesList.contains(name))
-                .withFailMessage("Adding a custom shelf is not properly showing in the shelf combo box")
+                .withFailMessage("Adding a custom shelf is not properly showing in " +
+                        "the shelf combo box")
                 .isTrue();
     }
 
