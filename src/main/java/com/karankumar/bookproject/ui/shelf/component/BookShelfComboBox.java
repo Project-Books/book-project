@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.shelf.component;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
@@ -32,7 +33,7 @@ import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHEL
 
 @Log
 public class BookShelfComboBox {
-    private final ComboBox<String> allShelvesList;
+    @VisibleForTesting final ComboBox<String> allShelvesList;
     private final CustomShelfService customShelfService;
 
     public BookShelfComboBox(CustomShelfService customShelfService) {
