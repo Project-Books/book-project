@@ -15,7 +15,6 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.Author;
@@ -30,8 +29,7 @@ import java.util.logging.Level;
 @Service
 @Log
 public class AuthorService extends BaseService<Author, Long> {
-
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
