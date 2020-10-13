@@ -68,7 +68,8 @@ class BookShelfComboBoxTest {
     @Test
     void displayNewShelfInList() {
         // given
-        CustomShelf test = new CustomShelf("UnitTest");
+        String name = "UnitTest";
+        CustomShelf test = new CustomShelf(name);
         customShelfService.save(test);
 
         // when
@@ -81,6 +82,9 @@ class BookShelfComboBoxTest {
                 .collect(Collectors.toList());
 
         // TODO: assert that the new custom shelf added shows in the list above
+        assertThat(shelvesList.contains(name))
+                .withFailMessage("Adding a custom shelf is not properly showing in the shelf combo box")
+                .isTrue();
     }
 
     @AfterEach
