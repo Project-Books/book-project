@@ -81,7 +81,6 @@ class BookShelfComboBoxTest {
                 .fetch(new Query<>())
                 .collect(Collectors.toList());
 
-        // TODO: assert that the new custom shelf added shows in the list above
         assertThat(shelvesList.contains(name))
                 .withFailMessage("Adding a custom shelf is not properly showing in the shelf combo box")
                 .isTrue();
