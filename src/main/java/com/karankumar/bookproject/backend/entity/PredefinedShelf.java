@@ -36,7 +36,6 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id", "books", "predefinedShelfName"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PredefinedShelf extends Shelf {
-    // This field must not have a setter as it should not be possible to rename a PredefinedShelf
     @Getter
     private ShelfName predefinedShelfName;
 
