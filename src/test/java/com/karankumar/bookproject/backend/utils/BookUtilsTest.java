@@ -1,9 +1,8 @@
 package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BookUtilsTest {
     private final String bookTitle = "Title";
@@ -13,14 +12,14 @@ class BookUtilsTest {
     void testSeriesPositionNotShownWhenBookIsNotInSeries() {
         book.setSeriesPosition(null);
         String actual = BookUtils.combineTitleAndSeries(book);
-        assertEquals(bookTitle, actual);
+        assertThat(actual).isEqualTo(bookTitle);
     }
 
     @Test
     void testTitleReturnedWhenSeriesPositionIsZero() {
         book.setSeriesPosition(0);
         String actual = BookUtils.combineTitleAndSeries(book);
-        assertEquals(bookTitle, actual);
+        assertThat(actual).isEqualTo(bookTitle);
     }
 
     @Test
@@ -28,6 +27,6 @@ class BookUtilsTest {
         book.setSeriesPosition(1);
         String expected = bookTitle + " (#1)";
         String actual = BookUtils.combineTitleAndSeries(book);
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }

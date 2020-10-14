@@ -42,28 +42,6 @@ public class PredefinedShelfUtils {
         this.predefinedShelfService = predefinedShelfService;
     }
 
-    public PredefinedShelf findToReadShelf() {
-        return findPredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
-    }
-
-    public PredefinedShelf findReadingShelf() {
-        return findPredefinedShelf(PredefinedShelf.ShelfName.READING);
-    }
-
-    public PredefinedShelf findReadShelf() {
-        return findPredefinedShelf(PredefinedShelf.ShelfName.READ);
-    }
-
-    public PredefinedShelf findPredefinedShelf(PredefinedShelf.ShelfName shelfName) {
-        LOGGER.log(Level.INFO, "Shelves: " + predefinedShelfService.findAll());
-        return predefinedShelfService.findAll()
-                                     .stream()
-                                     .filter(shelf ->
-                                             shelf.getPredefinedShelfName().equals(shelfName))
-                                     .collect(Collectors.toList())
-                                     .get(0); // there should only be one
-    }
-
     public PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
             case "To read":
@@ -101,12 +79,12 @@ public class PredefinedShelfUtils {
         }
 
         PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
-        List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAll(predefinedShelfName);
-        if (predefinedShelves.isEmpty()) {
+        PredefinedShelf predefinedShelf =
+                predefinedShelfService.findByPredefinedShelfName(predefinedShelfName);
+        if (predefinedShelf == null) {
             books = new HashSet<>();
         } else {
-            PredefinedShelf customShelf = predefinedShelves.get(0);
-            books = customShelf.getBooks();
+            books = predefinedShelf.getBooks();
         }
         return books;
     }

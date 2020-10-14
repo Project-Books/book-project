@@ -45,20 +45,20 @@ public class PageStatistics extends Statistics {
     }
 
     private List<Book> findBooksWithPageCountSpecified() {
-        List<Book> booksWithPageCount = new ArrayList<>();
+        List<Book> booksWithNonEmptyPageCount = new ArrayList<>();
         for (Book book : readShelfBooks) {
             if (book.getNumberOfPages() != null) {
-                booksWithPageCount.add(book);
+                booksWithNonEmptyPageCount.add(book);
             }
         }
-        return booksWithPageCount;
+        return booksWithNonEmptyPageCount;
     }
 
     /**
      * @return the average page length for all books in the 'read' shelf
      * This average only includes books that have a page length specified
      */
-    public Integer calculateAveragePageLength() {
+    public Double calculateAveragePageLength() {
         int totalNumberOfPages = booksWithPageCount.stream()
                                                    .mapToInt(Book::getNumberOfPages)
                                                    .sum();
@@ -67,6 +67,6 @@ public class PageStatistics extends Statistics {
             return null;
         }
         return (booksWithPagesSpecified == 0) ? 0 :
-                (int) Math.ceil(totalNumberOfPages / booksWithPagesSpecified);
+                Math.ceil(totalNumberOfPages / (float) booksWithPagesSpecified);
     }
 }

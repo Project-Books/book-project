@@ -19,21 +19,69 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.java.Log;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Log
 @IntegrationTest
 class AuthorServiceTest {
     private final AuthorService authorService;
+    private final BookService bookService;
 
-    AuthorServiceTest(@Autowired AuthorService authorService) {
+    @Autowired
+    AuthorServiceTest(AuthorService authorService, BookService bookService) {
         this.authorService = authorService;
+        this.bookService = bookService;
+    }
+
+    @BeforeEach
+    void reset() {
+        bookService.deleteAll();
+        authorService.deleteAll();
+    }
+
+    @Test
+    void testSaveAndConfirmDuplicateNameWithDifferentId() {
+        // given
+        Author author = new Author("Nyor", "Ja");
+        authorService.save(author);
+
+        Author authorCopy = author;
+        authorService.save(authorCopy);
+
+        // when
+        List<Author> savedAuthors = authorService.findAll();
+
+        // then
+        assertEquals(2, savedAuthors.size());
+    }
+
+    @Transactional
+    @Test
+    void testSaveIntegrity() {
+        // given
+        Author author = new Author("daks", "oten");
+        authorService.save(author);
+
+        // when
+        Author existingAuthor = authorService.findById(author.getId());
+        authorService.save(existingAuthor);
+
+        // then
+        assertEquals(2, authorService.count());
     }
 
     @Test
     void savedAuthorCanBeFound() {
-         // given
+        // given
         Author author = new Author("First", "Last");
 
         // when

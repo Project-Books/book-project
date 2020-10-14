@@ -26,14 +26,13 @@ import java.util.List;
 
 @Service
 @Log
-public class CustomShelfService extends BaseService<CustomShelf, Long> {
+public class CustomShelfService {
     private final CustomShelfRepository customShelfRepository;
 
     public CustomShelfService(CustomShelfRepository customShelfRepository) {
         this.customShelfRepository = customShelfRepository;
     }
 
-    @Override
     public CustomShelf findById(Long id) {
         return customShelfRepository.getOne(id);
     }
@@ -50,22 +49,19 @@ public class CustomShelfService extends BaseService<CustomShelf, Long> {
         }
     }
 
-    @Override
     public void save(CustomShelf customShelf) {
         customShelfRepository.save(customShelf);
     }
 
-    @Override
     public void delete(CustomShelf customShelf) {
         customShelfRepository.delete(customShelf);
     }
 
-    public Long count() {
-        return customShelfRepository.count();
-    }
-
-    @Override
     public void deleteAll() {
         customShelfRepository.deleteAll();
+    }
+
+    public Long count() {
+        return customShelfRepository.count();
     }
 }

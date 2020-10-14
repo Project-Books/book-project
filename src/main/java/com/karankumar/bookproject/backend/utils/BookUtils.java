@@ -19,7 +19,7 @@ package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.backend.entity.Book;
 
-public class BookUtils {
+public final class BookUtils {
     private BookUtils() {}
 
     public static String combineTitleAndSeries(Book book) {

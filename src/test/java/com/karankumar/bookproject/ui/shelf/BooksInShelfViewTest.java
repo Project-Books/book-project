@@ -30,6 +30,7 @@ import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.spring.SpringServlet;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,8 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+
 
 @IntegrationTest
 @WebAppConfiguration
@@ -137,9 +137,13 @@ class BooksInShelfViewTest {
 
         for (Grid.Column<Book> col : columns) {
             if (expectedColumns.contains(col.getKey())) {
-                assertTrue(col.isVisible(), col.getKey() + " column is not showing");
+                assertThat(col.isVisible())
+                        .withFailMessage(col.getKey() + " column is not showing")
+                        .isTrue();
             } else {
-                assertFalse(col.isVisible(), col.getKey() + " column is showing");
+                assertThat(col.isVisible())
+                        .withFailMessage(col.getKey() + " column is showing")
+                        .isFalse();
             }
         }
     }
