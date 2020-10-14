@@ -131,4 +131,8 @@ public class BookService extends BaseService<Book, Long> {
     public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
         return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
     }
+
+    public List<Book> findByTitleOrAuthor(String title, String authorsName){
+        return bookRepository.findByTitleOrAuthor(title, authorsName);
+    }
 }

@@ -32,16 +32,15 @@ class BookRepositoryTest {
     }
 
     private void resetBookService() {
-        author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
+        author = authorRepository.save(new Author("firstName", "lastName"));
+        Author author2 = authorRepository.saveAndFlush(new Author("author", "test"));
         readShelf = predefinedShelfRepository.saveAndFlush(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
-        customBook = new Book("someTitle", author, null);
-        customShelf = new CustomShelf("MyShelf");
-        customShelfRepository.saveAndFlush(customShelf);
 
         bookRepository.deleteAll();
-        book1 = bookRepository.saveAndFlush(new Book("someTitle", author, readShelf));
+        book1 = bookRepository.save(new Book("someTitle", author, readShelf));
+        bookRepository.save(new Book("title", author, readShelf));
+        bookRepository.saveAndFlush(new Book("test", author2, readShelf));
 
-        customBook = bookRepository.saveAndFlush(customBook);
     }
 
     @Test
@@ -88,6 +87,19 @@ class BookRepositoryTest {
         assertThat(bookRepository.findByShelfAndTitleOrAuthor(shelf, wildcard, authorsName).size()).isOne();
         assertThat(bookRepository.findByShelfAndTitleOrAuthor(shelf, wildcard, wildcard).size()).isOne();
         assertThat(bookRepository.findByShelfAndTitleOrAuthor(null, wildcard, wildcard).size()).isZero();
+    }
+
+    @Test
+    @DisplayName("should successfully find list of books by title or author")
+    void findBookByTitleOrAuthor(){
+
+        assertThat(bookRepository.findByTitleOrAuthor("%", "%").size()).isEqualTo(3);
+        assertThat(bookRepository.findByTitleOrAuthor("title", "%").size()).isEqualTo(2);
+        assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size()).isEqualTo(2);
+        assertThat(bookRepository.findByTitleOrAuthor("%", "lastName").size()).isEqualTo(2);
+        assertThat(bookRepository.findByTitleOrAuthor("%", "author").size()).isOne();
+        assertThat(bookRepository.findByTitleOrAuthor("title", "firstName").size()).isEqualTo(2);
+        assertThat(bookRepository.findByTitleOrAuthor("te", "au").size()).isOne();
     }
 
 }

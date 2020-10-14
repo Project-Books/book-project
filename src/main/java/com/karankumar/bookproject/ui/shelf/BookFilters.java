@@ -19,24 +19,33 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import lombok.Getter;
-import lombok.Setter;
 
 class BookFilters {
-
-    @Getter
-    @Setter
     private String bookTitle;
-
-    @Getter
-    @Setter
     private String bookAuthor;
 
-    private boolean isBookTitleNull() {
+    public void init() {
+        bookTitle = "%";
+        bookAuthor = "%";
+    }
+
+    void setBookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
+    }
+
+    void setBookAuthor(String bookAuthor) {
+        this.bookAuthor = bookAuthor;
+    }
+
+    public String getBookTitle() { return bookTitle; }
+
+    public String getBookAuthor(){ return bookAuthor;}
+
+    public boolean isBookTitleNull() {
         return bookTitle == null;
     }
 
-    private boolean isBookAuthorNull() {
+    public boolean isBookAuthorNull() {
         return bookAuthor == null;
     }
 

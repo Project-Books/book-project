@@ -35,7 +35,18 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT b " +
             "FROM Book b " +
-            "LEFT OUTER JOIN b.author a " +
-            "WHERE (b.predefinedShelf = ?1 or b.customShelf = ?1) and (b.title Like ?2 OR a.firstName Like ?3 Or a.lastName Like ?3)")
-    List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName);
+            "LEFT JOIN b.author a " +
+            "WHERE (b.predefinedShelf = :shelf OR b.customShelf = :shelf) AND " +
+            "LOWER(b.title) LIKE LOWER(CONCAT('%',:title,'%')) AND " +
+            "(LOWER(a.firstName) LIKE LOWER(CONCAT('%',:authorsName,'%')) OR " +
+            "LOWER(a.lastName) LIKE LOWER(CONCAT('%',:authorsName,'%')))")
+    List<Book> findByShelfAndTitleOrAuthor(@Param("shelf") Shelf shelf,@Param("title") String title,@Param("authorsName") String authorsName);
+
+@Query("SELECT b " +
+        "FROM Book b " +
+        "LEFT JOIN b.author AS a " +
+        "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%',:title,'%')) AND " +
+        "(LOWER(a.firstName) LIKE LOWER(CONCAT('%',:authorsName,'%')) OR " +
+        "LOWER(a.lastName) LIKE LOWER(CONCAT('%',:authorsName,'%')))")
+    List<Book> findByTitleOrAuthor(@Param("title") String title, @Param("authorsName") String authorsName);
 }

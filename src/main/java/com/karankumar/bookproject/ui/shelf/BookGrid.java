@@ -29,24 +29,22 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
 
 @Log
 public class BookGrid {
     private final Grid<Book> bookGrid;
-    @Autowired
-    private BookService bookService;
     private final PredefinedShelfUtils predefinedShelfUtils;
     private final CustomShelfUtils customShelfUtils;
+    private final BookService bookService;
 
-    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfUtils customShelfUtils) {
+    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfUtils customShelfUtils, BookService bookService) {
         this.bookGrid = new Grid<>(Book.class);
         this.predefinedShelfUtils = predefinedShelfUtils;
         this.customShelfUtils = customShelfUtils;
+        this.bookService = bookService;
         configure();
     }
 
@@ -84,15 +82,16 @@ public class BookGrid {
             return;
         }
 
+        if(bookFilters.getBookAuthor() == null || bookFilters.getBookTitle() == null || bookFilters.getBookAuthor().isEmpty() || bookFilters.getBookTitle().isEmpty()){
+            bookFilters.init();
+        }
+
         Shelf shelf = findShelf(chosenShelf);
-        LOGGER.log(Level.FINEST, "Shelf is " + shelf.toString());
         populateGridWithBooks(shelf, bookFilters.getBookTitle(), bookFilters.getBookAuthor());
     }
 
     private Shelf findShelf(String chosenShelf) {
-        if (isAllBooksShelf(chosenShelf)) {
-            return null;
-        }
+        if (isAllBooksShelf(chosenShelf)) { return null; }
 
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
             return predefinedShelfUtils.findPredefinedShelf(predefinedShelfUtils.getPredefinedShelfName(chosenShelf));
@@ -102,7 +101,13 @@ public class BookGrid {
     }
 
     private void populateGridWithBooks(Shelf shelf, String title, String author) {
-        List<Book> items = bookService.findByShelfAndTitleOrAuthor(shelf, title, author);
+        List<Book> items;
+        if(shelf == null){
+            items = bookService.findByTitleOrAuthor(title, author);
+        }
+        else {
+            items = bookService.findByShelfAndTitleOrAuthor(shelf, title, author);
+        }
         bookGrid.setItems(items);
     }
 }

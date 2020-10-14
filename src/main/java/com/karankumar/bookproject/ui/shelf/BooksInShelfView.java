@@ -88,7 +88,7 @@ public class BooksInShelfView extends VerticalLayout {
         this.customShelfService = customShelfService;
         this.visibilityStrategies = initVisibilityStrategies();
         CustomShelfUtils customShelfUtils = new CustomShelfUtils(customShelfService);
-        this.bookGrid = new BookGrid(predefinedShelfUtils, customShelfUtils);
+        this.bookGrid = new BookGrid(predefinedShelfUtils, customShelfUtils, bookService);
         this.bookFilters = new BookFilters();
 
         this.whichShelf = new BookShelfComboBox(customShelfService);
