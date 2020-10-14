@@ -1,11 +1,7 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.entity.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,12 +30,13 @@ class BookRepositoryTest {
     private void resetBookService() {
         author = authorRepository.save(new Author("firstName", "lastName"));
         Author author2 = authorRepository.saveAndFlush(new Author("author", "test"));
-        readShelf = predefinedShelfRepository.saveAndFlush(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+        readShelf = predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ));
+        PredefinedShelf toRead = predefinedShelfRepository.saveAndFlush(new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ));
 
         bookRepository.deleteAll();
         book1 = bookRepository.save(new Book("someTitle", author, readShelf));
         bookRepository.save(new Book("title", author, readShelf));
-        bookRepository.saveAndFlush(new Book("test", author2, readShelf));
+        bookRepository.saveAndFlush(new Book("test", author2, toRead));
 
     }
 
@@ -52,9 +49,8 @@ class BookRepositoryTest {
         bookRepository.delete(book1);
 
         // then
-        assertThat(bookRepository.findAll().size()).isOne();
-        assertThat(bookRepository.findAll().get(0))
-                .isEqualToComparingFieldByField(book2);
+        assertThat(bookRepository.findAll().size()).isEqualTo(3);
+
     }
 
     @Test
@@ -64,7 +60,7 @@ class BookRepositoryTest {
         bookRepository.delete(book1);
 
         // then
-        assertThat(bookRepository.findAll()).isEmpty();
+        assertThat(bookRepository.findAll().size()).isEqualTo(2);
     }
 
     @Test
@@ -72,21 +68,20 @@ class BookRepositoryTest {
     void findBookByTitle() {
         assertThat(bookRepository.findByTitleContainingIgnoreCase("someTitle").size()).isOne();
         assertThat(bookRepository.findByTitleContainingIgnoreCase("some").size()).isOne();
-        assertThat(bookRepository.findByTitleContainingIgnoreCase("title").size()).isOne();
+        assertThat(bookRepository.findByTitleContainingIgnoreCase("title").size()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("should successfully find list of books by predefined shelf, title or author")
     void findBookByPredefinedShelfAndTitleOrAuthor(){
-        PredefinedShelf shelf = predefinedShelfRepository.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ).get(0);
-        String title = "someTitle";
-        String authorsName = "firstName lastName";
-        String wildcard = "%"; //considering empty string from UI a wildcard for any result
+        PredefinedShelf readShelf = predefinedShelfRepository.findByPredefinedShelfName(PredefinedShelf.ShelfName.READ).get(0);
+        PredefinedShelf toReadShelf = predefinedShelfRepository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ).get(0);
 
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(shelf,title, authorsName).size()).isOne();
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(shelf, wildcard, authorsName).size()).isOne();
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(shelf, wildcard, wildcard).size()).isOne();
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(null, wildcard, wildcard).size()).isZero();
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf,"%", "%").size()).isEqualTo(2);
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toReadShelf, "%", "%").size()).isOne();
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf, "some", "%").size()).isOne();
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf, "title", "%").size()).isEqualTo(2);
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toReadShelf, "title", "%").size()).isZero();
     }
 
     @Test
