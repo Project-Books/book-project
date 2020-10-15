@@ -12,6 +12,7 @@
         "firstName": "Test First Name",
         "lastName": "Test Last Name"
       },
+      "publisher":null,
       "predefinedShelf": {
         "shelfName": "To read"
       },
@@ -33,6 +34,9 @@
       "author": {
         "firstName": "Test First Name",
         "lastName": "Test Last Name"
+      },
+      "publisher":{
+        "name":"Test Publisher"
       },
       "predefinedShelf": {
         "shelfName": "To read"

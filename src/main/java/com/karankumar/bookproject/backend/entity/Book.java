@@ -63,6 +63,12 @@ public class Book extends BaseEntity {
     )
     @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
+    
+    @ManyToOne(cascade =
+        {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
+    )
+    @JoinColumn(name = "publisher_id", referencedColumnName = "ID")
+    private Publisher publisher;
 
     @ManyToOne(
             fetch = FetchType.EAGER,

@@ -23,7 +23,10 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Publisher;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.karankumar.bookproject.backend.repository.PublisherRepository;
+
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +39,12 @@ import java.util.logging.Level;
 public class BookService {
     private final AuthorService authorService;
     private final BookRepository bookRepository;
+    private final PublisherService publisherService;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService) {
+    public BookService(BookRepository bookRepository, AuthorService authorService, PublisherService publisherService) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
+        this.publisherService = publisherService;
     }
 
     public Book findById(Long id) {
@@ -48,6 +53,10 @@ public class BookService {
 
     public void save(Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
+        	if(bookHasPublisher(book)) {
+        		addBookToPublisher(book);
+        		publisherService.save(book.getPublisher());
+        	}
             addBookToAuthor(book);
             authorService.save(book.getAuthor());
             bookRepository.save(book);
@@ -57,12 +66,23 @@ public class BookService {
     private boolean bookHasAuthorAndPredefinedShelf(Book book) {
         return book != null && book.getAuthor() != null && book.getPredefinedShelf() != null;
     }
+    
+    private boolean bookHasPublisher(Book book) {
+    	return book.getPublisher() != null;
+    }
 
     private void addBookToAuthor(Book book) {
         Author author = book.getAuthor();
         Set<Book> authorBooks = author.getBooks();
         authorBooks.add(book);
         author.setBooks(authorBooks);
+    }
+    
+    private void addBookToPublisher(Book book) {
+        Publisher publisher = book.getPublisher();
+        Set<Book> publisherBooks = publisher.getBooks();
+        publisherBooks.add(book);
+        publisher.setBooks(publisherBooks);
     }
 
     public Long count() {
@@ -118,7 +138,6 @@ public class BookService {
         mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
-
         return jsonWriter.writeValueAsString(books);
     }
 }

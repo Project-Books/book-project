@@ -24,7 +24,8 @@ import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;	
 import com.karankumar.bookproject.backend.entity.BookGenre;	
 import com.karankumar.bookproject.backend.entity.CustomShelf;	
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Publisher;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import org.apache.commons.io.FileUtils;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,6 +51,7 @@ import java.util.Set;
 
 @IntegrationTest
 class BookServiceTest {
+	@Autowired private PublisherService publisherService;
     @Autowired private AuthorService authorService;
     @Autowired private BookService bookService;
     @Autowired private CustomShelfService customShelfService;
@@ -58,6 +60,7 @@ class BookServiceTest {
     private Book validBook;
     private static PredefinedShelf toRead;
     private Author author;
+    private Publisher publisher;
 
     @BeforeAll
     public static void beforeAllSetup(@Autowired PredefinedShelfService predefinedShelfService) {
@@ -67,18 +70,21 @@ class BookServiceTest {
     @BeforeEach
     public void setup() {
         resetServices();
-        resetAuthorAndBook();
+        resetAuthorPublisherAndBook();
     }
 
-    private void resetAuthorAndBook() {
+    private void resetAuthorPublisherAndBook() {
         author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author, toRead);
+        publisher = new Publisher("Test Publisher");
+        
     }
 
     private void resetServices() {
         bookService.deleteAll();
         authorService.deleteAll();
         customShelfService.deleteAll();
+        publisherService.deleteAll();
         tagService.deleteAll();
     }
 
@@ -227,6 +233,7 @@ class BookServiceTest {
         tagService.save(tag2);
 
         Book book = new Book("Another Book Name", author, toRead);
+        book.setPublisher(publisher);
         book.setNumberOfPages(420);
         book.setPagesRead(42);
         book.setBookGenre(BookGenre.ADVENTURE);
@@ -245,5 +252,52 @@ class BookServiceTest {
     @AfterEach
     void deleteBooks() {
         bookService.deleteAll();
+    }
+    
+    @Test
+    void bookWithoutPublisherWithAuthorSaved() {
+    	SoftAssertions softly = new SoftAssertions();
+
+        // when
+    	Book book = new Book("Book without author", author, toRead);
+    	book.setPublisher(null);
+        bookService.save(book);
+
+        // then
+        softly.assertThat(authorService.count()).isOne();
+        softly.assertThat(bookService.count()).isOne();
+        softly.assertAll();
+    }
+    
+    @Test
+    void bookWithPublisherWithAuthorSaved() {
+    	SoftAssertions softly = new SoftAssertions();
+
+        // when
+    	Book book = new Book("Book without author", author, toRead);
+    	book.setPublisher(publisher);
+        bookService.save(book);
+
+        // then
+        softly.assertThat(authorService.count()).isOne();
+        softly.assertThat(bookService.count()).isOne();
+        softly.assertAll();
+    }
+    
+    @Test
+    void testUnsavedPublisher() {
+    	SoftAssertions softly = new SoftAssertions();
+    	
+    	// first
+    	softly.assertThat(publisherService.count()).isZero();
+    	
+    	// when
+    	Book book = new Book("Book without author", author, toRead);
+    	book.setPublisher(publisher);
+        bookService.save(book);
+        
+        // then
+        softly.assertThat(publisherService.count()).isOne();
+                
     }
 }
