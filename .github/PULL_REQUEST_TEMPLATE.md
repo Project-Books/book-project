@@ -4,7 +4,7 @@
 
 ## Additional context
 
-[If a screenshot would be useful (e.g. for UI changes), please provide one.]
+[If a screenshot would be useful (e.g. for UI changes), please provide one. If not, please remove this section]
 
 ## Related issue
 
@@ -29,4 +29,6 @@ Please keep this checklist in & ensure you have done the following:
 
 - [ ] Resolved any merge conflicts
 
-If in doubt, get in touch with us via our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)
+For any of the optional checkboxes (e.g. the screenshots one), still check it if it does not apply.
+
+If in doubt, get in touch with us via our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-i7lept44-rgJ9yB0A2vedJTLyyfkjKQ)
