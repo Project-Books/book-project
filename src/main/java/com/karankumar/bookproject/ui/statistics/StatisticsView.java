@@ -62,7 +62,11 @@ public class StatisticsView extends VerticalLayout {
     }
 
     private static String formatStatistic(String bookTitle, String statistic, String unit) {
-        return String.format("%s (%s %s)", bookTitle, statistic, unit);
+        if (statistic.endsWith(unit)) {
+            return String.format("%s (%s)", bookTitle, statistic);
+        } else {
+            return String.format("%s (%s %s)", bookTitle, statistic, unit);
+        }
     }
 
     public enum StatisticType {
