@@ -36,13 +36,11 @@ import lombok.extern.java.Log;
 
 @Log
 public class PredefinedShelfUtils {
-    private final PredefinedShelfService predefinedShelfService;
+    private static PredefinedShelfService predefinedShelfService;
 
-    public PredefinedShelfUtils(PredefinedShelfService predefinedShelfService) {
-        this.predefinedShelfService = predefinedShelfService;
-    }
 
-    public PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
+
+    public static PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
             case "To read":
                 return PredefinedShelf.ShelfName.TO_READ;
@@ -57,7 +55,7 @@ public class PredefinedShelfUtils {
         }
     }
 
-    public List<String> getPredefinedShelfNamesAsStrings() {
+    public static List<String> getPredefinedShelfNamesAsStrings() {
        return predefinedShelfService.findAll().stream()
                .map(Shelf::getShelfName)
                .collect(Collectors.toList());
@@ -72,7 +70,7 @@ public class PredefinedShelfUtils {
     /**
      * Fetches all of the books in the chosen predefined shelf
      */
-    public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
+    public static Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
         Set<Book> books;
         if (isAllBooksShelf(chosenShelf)) {
             return getBooksInAllPredefinedShelves();
@@ -89,14 +87,14 @@ public class PredefinedShelfUtils {
         return books;
     }
 
-    public Set<Book> getBooksInAllPredefinedShelves() {
+    public static Set<Book> getBooksInAllPredefinedShelves() {
         return getBooksInPredefinedShelves(predefinedShelfService.findAll());
     }
 
     /**
      * Fetches all of the books in the chosen predefined shelves
      */
-    public Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
+    public static Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
         return predefinedShelves.stream()
                 .map(PredefinedShelf::getBooks)
                 .collect(HashSet::new, Set::addAll, Set::addAll);
