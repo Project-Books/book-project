@@ -37,10 +37,7 @@ import lombok.extern.java.Log;
 @Log
 public class PredefinedShelfUtils {
     private static PredefinedShelfService predefinedShelfService;
-
-    public PredefinedShelfUtils(PredefinedShelfService predefinedShelfService) {
-        this.predefinedShelfService = predefinedShelfService;
-    }
+    
 
     public static PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
