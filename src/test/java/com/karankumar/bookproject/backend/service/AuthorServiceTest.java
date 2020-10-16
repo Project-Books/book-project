@@ -19,13 +19,16 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
+
 import lombok.extern.java.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+import java.awt.print.Book;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -90,4 +93,21 @@ class AuthorServiceTest {
         // then
         assertNotNull(authorService.findById(author.getId()));
     }
+
+    @Test
+    void authorWithoutBooksCanBeDeleted() {
+        //given
+        Author author = new Author("First", "Last");
+        authorService.save(author);
+
+        //when
+        Set<Book> authorBooks = author.getBooks();
+        if(authorBooks.size() == 0)
+            authorService.delete(author);
+
+        //then
+        assertEquals(0, authorService.count());
+
+    }
+
 }
