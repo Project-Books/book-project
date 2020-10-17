@@ -62,36 +62,48 @@ Prerequisites:
  
 ### Running the app
   
-If you want to use Docker, follow one of the two appoaches (if you use Windows, follow the first approach):
+If you want to use Docker, follow one of the approaches below:
 
 #### 1. Start locally with only MySQL running in docker
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Build the project at the root using `./mvn clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-4. Start MySQL database using `docker-compose up -d mysql phpmyadmin`
+4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
 5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
-
-***Live reload:*** See  your UI changes in the browser without manual refresh.
-To activate this feature start the application with `mvn spring-boot:run` (Unix) 
-or `mvnw.cmd spring-boot:run` (Windows). Please note that this feature doesn't work
-when application is started as JAR.
 6. Log in with the details below:
-    - Username: `user`
-    - Password: `password`
+   - Username: `user`
+   - Password: `password`
 
 #### 2. Start using docker-compose in production mode
+
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
-     - `./mvnw clean package -Pproduction` (Unix), or 
-     - `mvnw.cmd clean package -Pproduction` (Windows)
+    - `./mvnw clean package -Pproduction` (Unix), or 
+    - `mvnw.cmd clean package -Pproduction` (Windows)
 4. Start the MySQL Database and book project app using docker compose `docker-compose up --build`
 5. Go to `localhost:8080`
 6. Log in with the details below:
-    - Username: `user`
-    - Password: `password`
+   - Username: `user`
+   - Password: `password`
+    
+#### 3. Run app without the tests    
 
+We recommended this approach if you need to work on the frontend with Vaadin. This approach allows you to use 
+Vaadin Live reload which prevents you from needing to re-run the server every time (i.e. it's a lot quicker) or manually
+refresh your browser. 
+
+1. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+2. Run the project from your IDE or with Maven:
+   - `./mvnw spring-boot:run` on Unix
+   - `mvnw.cmd spring-boot:run` on Windows
+3. Log in with the details below:
+   - Username: `user`
+   - Password: `password`
+   
+If you're running the app from your IDE, after making a Vaadin-related change, build the app from your IDE after making
+any changes.
     
 You may find lots of errors for things like the log statements, or the entities not having constructors. You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). Other common errors and solutions are also detailed in the troubleshooting page.
 
