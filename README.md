@@ -67,10 +67,6 @@ Prerequisites:
   
 Then, if you want to use Docker, follow one of the approaches below:
 
-You may find lots of errors for things like the log statements, or the entities not having constructors. 
-You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
-Other common errors and solutions are also in the troubleshooting page.
-
 #### 1. Start locally with only MySQL running in docker
 
 3. Build the project at the root using `./mvn clean install` (Unix) or `mvnw.cmd clean install` (Windows)
@@ -107,6 +103,12 @@ Vaadin Live reload which prevents you from needing to re-run the server every ti
    
 If you're running the app from your IDE, after making a Vaadin-related change, build the app from your IDE after making
 any changes.
+
+#### Fixing Lombok errors
+
+You may find lots of errors for things like the log statements, or the entities not having constructors. 
+You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+Other common errors and solutions are also in the troubleshooting page.
 
 ### Access database
 
