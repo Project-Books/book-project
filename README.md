@@ -90,11 +90,11 @@ If you want to use Docker, follow one of the approaches below:
    - Username: `user`
    - Password: `password`
     
-#### 3. Run app without the tests    
+#### 3. Start locally with Vaadin live reload (the tests do not run)
 
 We recommended this approach if you need to work on the frontend with Vaadin. This approach allows you to use 
-Vaadin Live reload which prevents you from needing to re-run the server every time (i.e. it's a lot quicker) or manually
-refresh your browser. 
+Vaadin Live reload which prevents you from needing to re-run the server every time or manually refresh your browser 
+(i.e. it's a lot quicker). 
 
 1. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
 2. Run the project from your IDE or with Maven:
