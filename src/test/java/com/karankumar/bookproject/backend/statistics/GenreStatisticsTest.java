@@ -36,8 +36,7 @@ class GenreStatisticsTest {
     private GenreStatistics genreStatistics;
 
     @BeforeEach
-    public void setup() {
-        if (genreStatistics != null) return;
+    public void setUp() {
         bookService.deleteAll();
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         genreStatistics = new GenreStatistics(predefinedShelfService);
