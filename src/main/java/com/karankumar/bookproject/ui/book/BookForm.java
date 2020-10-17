@@ -477,6 +477,13 @@ public class BookForm extends VerticalLayout {
             return;
         }
 
+        // TODO: this should be removed. A custom shelf should not be mandatory, so it should be acceptable to the custom shelf to be null
+        if (book.getCustomShelf() == null) {
+//            book.setCustomShelf(new CustomShelf("ShelfName"));
+            CustomShelf customShelf = customShelfService.createCustomShelf("ShelfName");
+            book.setCustomShelf(customShelf);
+        }
+
         binder.setBean(book);
     }
 
