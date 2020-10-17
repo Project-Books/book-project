@@ -71,8 +71,7 @@ class PredefinedShelfUtilsTest {
             "Shelf with name ''{0}'' does not match any predefined shelf";
 
     @BeforeEach
-    public void setup() {
-        if (predefinedShelfUtils != null) return;
+    public void setUp() {
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         findPredefinedShelves(predefinedShelfService);
 
