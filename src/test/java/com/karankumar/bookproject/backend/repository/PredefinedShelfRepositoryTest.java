@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
+@DisplayName("PredefinedShelfRepository should")
 class PredefinedShelfRepositoryTest {
     private final UserRepository userRepository;
     private final PredefinedShelfRepository repository;
@@ -55,9 +56,9 @@ class PredefinedShelfRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByPredefinedShelfName correctly returns the shelf if exists")
-    void findByPredefinedShelfNameAndUser() {
+    void correctlyReturnExistingShelf() {
         PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.TO_READ, user);
+
         assertThat(shelf).isNotNull();
 
         assertSoftly(softly -> {

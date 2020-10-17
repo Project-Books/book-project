@@ -26,12 +26,14 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @IntegrationTest
+@DisplayName("PredefinedShelf should")
 class PredefinedShelfTest {
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
@@ -43,7 +45,7 @@ class PredefinedShelfTest {
     }
 
     @Test
-    void testPredefinedShelvesWithoutBooksShouldStillExist() {
+    void stillExistWithoutBooks() {
         // given
         resetBookService();
 

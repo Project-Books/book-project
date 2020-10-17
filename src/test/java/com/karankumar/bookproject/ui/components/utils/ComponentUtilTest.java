@@ -23,15 +23,17 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+@DisplayName("ComponentUtil should")
 class ComponentUtilTest {
 
     @Test
-    void shouldClearComponentFields() {
+    void clearComponentFields() {
         // given a variety of form fields
         TextField bookTitle = new TextField("Book title");
 
@@ -65,7 +67,7 @@ class ComponentUtilTest {
     }
 
     @Test
-    void shouldNotThrowExceptionWhenClearingNullComponents() {
+    void notThrowExceptionWhenClearingNullComponents() {
         TextField book = null;
         HasValue[] components = {
                 book

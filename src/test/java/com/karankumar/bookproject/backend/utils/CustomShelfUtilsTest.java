@@ -10,6 +10,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @IntegrationTest
+@DisplayName("CustomShelfUtils should")
 class CustomShelfUtilsTest {
     private final BookService bookService;
     private final CustomShelfService customShelfService;
@@ -88,20 +90,20 @@ class CustomShelfUtilsTest {
     }
 
     @Test
-    void getBooksInCustomShelfSuccessfullyReturnsBooks() {
+    void returnBooksSuccessfully() {
         Set<Book> actual = customShelfUtils.getBooksInCustomShelf(customShelf1.getShelfName());
         booksInCustomShelf1.forEach(book -> assertThat(actual).contains(book));
     }
 
     @Test
-    void givenNoBooksInCustomShelf_getBooksInCustomShelfReturnsNoBooks() {
+    void returnNoBooksIfNoBooksInCustomShelf() {
         Set<Book> actual =
                 customShelfUtils.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
         assertThat(actual).isEmpty();
     }
 
     @Test
-    void givenInvalidCustomShelf_anEmptySetOfBooksAreReturned() {
+    void returnEmptySetOfBooksWhenCustomShelfIsInvalid() {
         assertThat(customShelfUtils.getBooksInCustomShelf("InvalidShelf")).isEmpty();
     }
 }

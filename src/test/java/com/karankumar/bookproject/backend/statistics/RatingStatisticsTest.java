@@ -25,10 +25,12 @@ import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
+@DisplayName("RatingStatistics should")
 class RatingStatisticsTest {
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
@@ -55,33 +57,33 @@ class RatingStatisticsTest {
     }
 
     @Test
-    void lowestRatedBookExistsAndIsFound() {
+    void findLowestRatedBookExists() {
         String actualTitle = ratingStatistics.findLeastLikedBook().getTitle();
         String expectedTitle = bookWithNoRating.getTitle();
         assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
-    void testNonExistentLowestRatedBook() {
+    void notFindNonExistentLowestRatedBook() {
         resetRatingStatistics();
         assertThat(ratingStatistics.findLeastLikedBook()).isNull();
     }
 
     @Test
-    void highestRatedBookExistsAndIsFound() {
+    void findHighestRatedBook() {
         String actualTitle = ratingStatistics.findMostLikedBook().getTitle();
         String expectedTitle = bookWithHighestRating.getTitle();
         assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
-    void testNonExistentHighestRatedBook() {
+    void notFindNonExistentHighestRatedBook() {
         resetRatingStatistics();
         assertThat(ratingStatistics.findMostLikedBook()).isNull();
     }
 
     @Test
-    void averageRatingExistsAndIsCorrect() {
+    void findAverageRating() {
         int numberOfBooks = StatisticTestUtils.getNumberOfBooks();
         double totalRating = StatisticTestUtils.totalRating;
         double average = totalRating / numberOfBooks;
@@ -89,7 +91,7 @@ class RatingStatisticsTest {
     }
 
     @Test
-    void testAverageRatingDivideByZero() {
+    void notDivideAverageRatingByZero() {
         resetRatingStatistics();
         assertThat(ratingStatistics.calculateAverageRatingGiven()).isNull();
     }

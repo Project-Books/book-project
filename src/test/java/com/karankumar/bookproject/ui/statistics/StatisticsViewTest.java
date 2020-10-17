@@ -23,6 +23,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -48,6 +49,7 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("StatisticsView should")
 class StatisticsViewTest {
 
     @Autowired private PredefinedShelfService predefinedShelfService;
@@ -61,7 +63,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void shouldCreateCompleteStatisticsView() {
+    void createCompleteStatisticsView() {
         // given
         populateDataWithBooks(bookService, predefinedShelfService);
 
@@ -87,7 +89,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void eachStatisticShouldHaveAValue() {
+    void haveAValueForEachStatistic() {
         // given
         populateDataWithBooks(bookService, predefinedShelfService);
 
@@ -104,7 +106,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutPageCountOtherStatisticsStillShown() {
+    void showStillOtherStatisticsWithoutPageCount() {
         // given
         populateDataWithBooksWithoutPageCount(bookService, predefinedShelfService);
 
@@ -119,7 +121,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutGenreInformationOtherStatisticsStillShown() {
+    void showStillOtherStatisticsWithoutGenreInformation() {
         // given
         populateDataWithBooksWithoutGenre(bookService, predefinedShelfService);
 
@@ -134,7 +136,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withOnlyOneBookTheMostLikedAndLeastLikedBookShouldBeAbsent() {
+    void notShowTheMostLikedAndLeastLikedBookWithOnlyOneBook() {
         // given
         populateDataWithOnlyOneBook(bookService, predefinedShelfService);
 
@@ -146,7 +148,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutRatingInformationTheViewShouldShowOtherStatistics() {
+    void showOtherStatisticsWithoutRatingInformation() {
         // given
         populateDataWithBooksWithoutRatings(bookService, predefinedShelfService);
 

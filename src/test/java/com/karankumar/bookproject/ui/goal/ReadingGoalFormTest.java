@@ -30,6 +30,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -37,6 +38,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("ReadingGoalForm should")
 class ReadingGoalFormTest {
     private static Routes routes;
 
@@ -57,7 +59,7 @@ class ReadingGoalFormTest {
     }
 
     @Test
-    void onlyTargetGoalOfAtLeastOneIsValid() {
+    void onlyHaveATargetGoalOfAtLeastOne() {
         ReadingGoalForm goalForm = new ReadingGoalForm();
 
         goalForm.targetToRead.setValue(1);

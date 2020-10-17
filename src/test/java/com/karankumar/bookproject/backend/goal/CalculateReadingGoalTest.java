@@ -41,7 +41,7 @@ class CalculateReadingGoalTest {
     }
 
     @Test
-    void testProgressValueIsCorrect() {
+    void calculateCorrectProgressValue() {
         int toRead = 25;
         int read = 5;
         double expected = 0.2;
@@ -50,14 +50,14 @@ class CalculateReadingGoalTest {
     }
 
     @Test
-    void testProgressValueIsCorrectWhenGoalMet() {
+    void calculateCorrectProgressValueWhenGoaldMet() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, BOOKS_TO_READ);
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void testProgressIsCorrectWhenGoalExceeded() {
+    void calculateCorrectProgressValueWhenGoalExceeded() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, (BOOKS_TO_READ + 1));
         assertThat(actual).isEqualTo(expected);
@@ -70,7 +70,7 @@ class CalculateReadingGoalTest {
 
     @Test
     @DisplayName("Ensure 0, and not an arithmetic exception, is returned")
-    void testCalculateProgressTowardsReadingGoalDivideByZero() {
+    void shouldNotThrowExceptionOnZeroDivision() {
         int toRead = 5;
         int read = 0;
 
