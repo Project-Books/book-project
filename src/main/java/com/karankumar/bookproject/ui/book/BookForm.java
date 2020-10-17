@@ -355,10 +355,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void setBookBean() {
-        Book book = populateBookBean();
-        if (book != null) {
-            binder.setBean(book);
-        }
+        repopulateIfCreatingANewBook();
 
         if (binder.getBean() != null) {
             LOGGER.log(Level.INFO, "Written bean. Not Null.");
@@ -370,6 +367,15 @@ public class BookForm extends VerticalLayout {
             showErrorMessage();
         }
         closeForm();
+    }
+
+    private void repopulateIfCreatingANewBook() {
+        if (binder.getBean() == null) {
+            Book book = populateBookBean();
+            if (book != null) {
+                binder.setBean(book);
+            }
+        }
     }
 
     private Book populateBookBean() {

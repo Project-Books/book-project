@@ -195,9 +195,8 @@ class BookFormTest {
         // when
         AtomicReference<Book> bookReference = new AtomicReference<>(null);
         if (eventType.equals(EventType.SAVED)) {
-            bookForm
-                    .addListener(BookForm.SaveEvent.class,
-                            event -> bookReference.set(event.getBook()));
+            bookForm.addListener(BookForm.SaveEvent.class,
+                    event -> bookReference.set(event.getBook()));
             bookForm.saveButton.click();
         } else if (eventType.equals(EventType.DELETED)) {
             bookForm.addListener(BookForm.DeleteEvent.class,
@@ -450,6 +449,29 @@ class BookFormTest {
 
         // then
         assertErrorShown(BookFormErrors.FIRST_NAME_ERROR);
+    }
+
+    @Test
+    void changeAuthorNameShouldBeSaved() {
+        // given
+        Book book = createBook(READ, false, "Title");
+        bookService.save(book);
+        bookForm.setBook(book);
+
+        AtomicReference<Book> bookReference = new AtomicReference<>(null);
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookReference.set(event.getBook()));
+
+        // when
+        bookForm.authorFirstName.setValue("James");
+        bookForm.authorLastName.setValue("Dean");
+        bookForm.saveButton.click();
+
+        // then
+        Book savedBook = bookReference.get();
+
+        assertThat(savedBook.getId()).isEqualTo(book.getId()); // Still the same book
+        assertThat(savedBook.getAuthor().getFirstName()).isEqualTo("James"); // Author name changed
+        assertThat(savedBook.getAuthor().getLastName()).isEqualTo("Dean");
     }
 
     @Test
