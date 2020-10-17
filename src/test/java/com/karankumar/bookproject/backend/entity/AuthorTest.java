@@ -49,7 +49,8 @@ class AuthorTest {
     public void reset(@Autowired PredefinedShelfService predefinedShelfService) {
         resetBookService();
 
-        toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
+
+        toRead = predefinedShelfService.findToReadShelf();
     }
 
     private static void resetBookService() {

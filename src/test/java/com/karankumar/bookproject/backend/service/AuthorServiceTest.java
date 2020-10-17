@@ -54,7 +54,7 @@ class AuthorServiceTest {
         Author author = new Author("Nyor", "Ja");
         authorService.save(author);
 
-        Author authorCopy = author;
+        Author authorCopy = new Author(author.getFirstName(), author.getLastName());
         authorService.save(authorCopy);
 
         // when
@@ -76,7 +76,7 @@ class AuthorServiceTest {
         authorService.save(existingAuthor);
 
         // then
-        assertEquals(2, authorService.count());
+        assertEquals(1, authorService.count());
     }
 
     @Test
