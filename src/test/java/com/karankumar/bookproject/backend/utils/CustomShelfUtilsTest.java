@@ -32,14 +32,15 @@ class CustomShelfUtilsTest {
     private Set<Book> booksInCustomShelf1;
 
     @BeforeEach
-    public void setup() {
-        if (customShelfUtils != null) return;
+    public void setUp() {
         customShelfUtils = new CustomShelfUtils(customShelfService);
         resetServices();
+
         customShelf1 = customShelfService.createCustomShelf("CustomShelf1");
         customShelf2 = customShelfService.createCustomShelf("CustomShelf2");
         customShelfWithNoBooks = customShelfService.createCustomShelf("CustomShelf3");
         saveCustomShelves(customShelf1, customShelf2, customShelfWithNoBooks);
+
         addBooksToCustomShelves(predefinedShelfService.findToReadShelf());
     }
 
