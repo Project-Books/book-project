@@ -195,9 +195,8 @@ class BookFormTest {
         // when
         AtomicReference<Book> bookReference = new AtomicReference<>(null);
         if (eventType.equals(EventType.SAVED)) {
-            bookForm
-                    .addListener(BookForm.SaveEvent.class,
-                            event -> bookReference.set(event.getBook()));
+            bookForm.addListener(BookForm.SaveEvent.class,
+                    event -> bookReference.set(event.getBook()));
             bookForm.saveButton.click();
         } else if (eventType.equals(EventType.DELETED)) {
             bookForm.addListener(BookForm.DeleteEvent.class,
@@ -460,9 +459,7 @@ class BookFormTest {
         bookForm.setBook(book);
 
         AtomicReference<Book> bookReference = new AtomicReference<>(null);
-        bookForm
-                .addListener(BookForm.SaveEvent.class,
-                        event -> bookReference.set(event.getBook()));
+        bookForm.addListener(BookForm.SaveEvent.class, event -> bookReference.set(event.getBook()));
 
         // when
         bookForm.authorFirstName.setValue("James");
