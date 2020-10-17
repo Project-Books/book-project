@@ -23,17 +23,23 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 class GenreStatisticsTest {
-    @Autowired private BookService bookService;
-    @Autowired private PredefinedShelfService predefinedShelfService;
+    private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
 
-    private GenreStatistics genreStatistics;
+    private static GenreStatistics genreStatistics;
+
+    @Autowired
+    GenreStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
+    }
 
     @BeforeEach
     public void setUp() {

@@ -34,22 +34,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.karankumar.bookproject.utils.SecurityTestUtils.*;
+import static com.karankumar.bookproject.utils.SecurityTestUtils.TEST_USER_NAME;
+import static com.karankumar.bookproject.utils.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.utils.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
 @Transactional
 class UserServiceTest {
-    @Autowired private UserService userService;
-    @Autowired private UserRepository userRepository;
-    @Autowired private RoleRepository roleRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     private final User validUser = User.builder()
                                        .username("validUser")
                                        .email("valid@testmail.com")
                                        .password("aaaaAAAA1234@")
                                        .build();
+
+    @Autowired
+    UserServiceTest(UserService userService, UserRepository userRepository, RoleRepository roleRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+    }
 
     @Test
     void register_withBeanViolations_throwsException() {

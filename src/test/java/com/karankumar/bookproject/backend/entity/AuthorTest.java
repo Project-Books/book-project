@@ -32,13 +32,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 class AuthorTest {
-    @Autowired private BookService bookService;
-    @Autowired private AuthorService authorService;
-    @Autowired private PredefinedShelfService predefinedShelfService;
+    private final BookService bookService;
+    private final AuthorService authorService;
+    private final PredefinedShelfService predefinedShelfService;
 
     private Book testBook1;
     private Book testBook2;
     private PredefinedShelf toRead;
+
+    @Autowired
+    AuthorTest(BookService bookService, AuthorService authorService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.authorService = authorService;
+        this.predefinedShelfService = predefinedShelfService;
+    }
 
     @BeforeEach
     public void setUp() {

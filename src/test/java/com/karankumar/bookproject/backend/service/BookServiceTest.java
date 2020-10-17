@@ -48,15 +48,24 @@ import java.util.Set;
 
 @IntegrationTest
 class BookServiceTest {
-    @Autowired private AuthorService authorService;
-    @Autowired private BookService bookService;
-    @Autowired private CustomShelfService customShelfService;
-    @Autowired private TagService tagService;
-    @Autowired private PredefinedShelfService predefinedShelfService;
+    private final AuthorService authorService;
+    private final BookService bookService;
+    private final CustomShelfService customShelfService;
+    private final TagService tagService;
+    private final PredefinedShelfService predefinedShelfService;
 
     private Book validBook;
     private PredefinedShelf toRead;
     private Author author;
+
+    @Autowired
+    BookServiceTest(AuthorService authorService, BookService bookService, CustomShelfService customShelfService, TagService tagService, PredefinedShelfService predefinedShelfService) {
+        this.authorService = authorService;
+        this.bookService = bookService;
+        this.customShelfService = customShelfService;
+        this.tagService = tagService;
+        this.predefinedShelfService = predefinedShelfService;
+    }
 
     @BeforeEach
     public void setup() {

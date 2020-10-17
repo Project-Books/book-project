@@ -15,14 +15,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
 class BookRepositoryTest {
-    @Autowired private BookRepository bookRepository;
-    @Autowired private AuthorRepository authorRepository;
-    @Autowired private UserRepository userRepository;
-    @Autowired private PredefinedShelfRepository predefinedShelfRepository;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final UserRepository userRepository;
+    private final PredefinedShelfRepository predefinedShelfRepository;
 
     private PredefinedShelf readShelf;
     private Author author;
     private Book book;
+
+    @Autowired
+    BookRepositoryTest(BookRepository bookRepository, AuthorRepository authorRepository, UserRepository userRepository, PredefinedShelfRepository predefinedShelfRepository) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+        this.userRepository = userRepository;
+        this.predefinedShelfRepository = predefinedShelfRepository;
+    }
 
     @BeforeEach
     void setup() {

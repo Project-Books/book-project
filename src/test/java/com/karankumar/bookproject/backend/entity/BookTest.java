@@ -34,12 +34,19 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 @IntegrationTest
 @Transactional
 class BookTest {
-    @Autowired private BookService bookService;
-    @Autowired private TagService tagService;
-    @Autowired private PredefinedShelfService predefinedShelfService;
+    private final BookService bookService;
+    private final TagService tagService;
+    private final PredefinedShelfService predefinedShelfService;
 
     private Book testBook;
     private Tag testTag;
+
+    @Autowired
+    BookTest(BookService bookService, TagService tagService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.tagService = tagService;
+        this.predefinedShelfService = predefinedShelfService;
+    }
 
     private Book createBook(PredefinedShelf shelf) {
         Author author = new Author("Firstname", "Lastname");

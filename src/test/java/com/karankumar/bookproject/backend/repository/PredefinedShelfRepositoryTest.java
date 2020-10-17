@@ -36,9 +36,16 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
 class PredefinedShelfRepositoryTest {
-    @Autowired private UserRepository userRepository;
-    @Autowired private PredefinedShelfRepository repository;
+    private final UserRepository userRepository;
+    private final PredefinedShelfRepository repository;
+
     private User user;
+
+    @Autowired
+    PredefinedShelfRepositoryTest(UserRepository userRepository, PredefinedShelfRepository repository) {
+        this.userRepository = userRepository;
+        this.repository = repository;
+    }
 
     @BeforeEach
     void setup() {

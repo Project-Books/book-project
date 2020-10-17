@@ -33,7 +33,12 @@ import java.util.List;
 @IntegrationTest
 @DisplayName("PredefinedShelfService should")
 class PredefinedShelfServiceTest {
-    @Autowired private PredefinedShelfService predefinedShelfService;
+    private final PredefinedShelfService predefinedShelfService;
+
+    @Autowired
+    PredefinedShelfServiceTest(PredefinedShelfService predefinedShelfService) {
+        this.predefinedShelfService = predefinedShelfService;
+    }
 
     @Test
     void notSaveNullPredefinedShelf() {

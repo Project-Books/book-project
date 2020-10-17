@@ -19,11 +19,10 @@ import java.util.Set;
 
 @IntegrationTest
 class CustomShelfUtilsTest {
-    @Autowired private BookService bookService;
-    @Autowired private CustomShelfService customShelfService;
-    @Autowired private PredefinedShelfService predefinedShelfService;
-
-    private CustomShelfUtils customShelfUtils;
+    private final BookService bookService;
+    private final CustomShelfService customShelfService;
+    private final PredefinedShelfService predefinedShelfService;
+    private final CustomShelfUtils customShelfUtils;
 
     private CustomShelf customShelf1;
     private CustomShelf customShelf2;
@@ -31,9 +30,16 @@ class CustomShelfUtilsTest {
 
     private Set<Book> booksInCustomShelf1;
 
+    @Autowired
+    CustomShelfUtilsTest(BookService bookService, CustomShelfService customShelfService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.customShelfService = customShelfService;
+        this.predefinedShelfService = predefinedShelfService;
+        this.customShelfUtils = new CustomShelfUtils(customShelfService);
+    }
+
     @BeforeEach
     public void setUp() {
-        customShelfUtils = new CustomShelfUtils(customShelfService);
         resetServices();
 
         customShelf1 = customShelfService.createCustomShelf("CustomShelf1");

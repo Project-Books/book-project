@@ -24,28 +24,28 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 class PageStatisticsTest {
-    private static BookService bookService;
-    private static PredefinedShelfService predefinedShelfService;
+    private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
+
     private static PageStatistics pageStatistics;
 
-    @BeforeAll
-    public static void setupBeforeAll(@Autowired BookService bookService,
-                                      @Autowired PredefinedShelfService predefinedShelfService) {
-        PageStatisticsTest.bookService = bookService;
-        PageStatisticsTest.predefinedShelfService = predefinedShelfService;
+    @Autowired
+    PageStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     @BeforeEach
-    public void beforeEachSetup() {
+    public void setUp() {
         bookService.deleteAll();
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         PageStatisticsTest.pageStatistics = new PageStatistics(predefinedShelfService);

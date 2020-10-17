@@ -38,9 +38,16 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class CustomShelfRepositoryTest {
     private static final String CUSTOM_SHELF_NAME = "Test1";
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private CustomShelfRepository repository;
+    private final UserRepository userRepository;
+    private final CustomShelfRepository repository;
+
     private User user;
+
+    @Autowired
+    CustomShelfRepositoryTest(UserRepository userRepository, CustomShelfRepository repository) {
+        this.userRepository = userRepository;
+        this.repository = repository;
+    }
 
     @BeforeEach
     void setup() {

@@ -48,10 +48,9 @@ import java.util.stream.Stream;
 
 @IntegrationTest
 class PredefinedShelfUtilsTest {
-    @Autowired private BookRepository bookRepository;
-    @Autowired private PredefinedShelfService predefinedShelfService;
-
-    private PredefinedShelfUtils predefinedShelfUtils;
+    private final BookRepository bookRepository;
+    private final PredefinedShelfService predefinedShelfService;
+    private final PredefinedShelfUtils predefinedShelfUtils;
 
     private PredefinedShelf toReadShelf;
     private PredefinedShelf readShelf;
@@ -70,9 +69,15 @@ class PredefinedShelfUtilsTest {
     private static final String ERROR_MESSAGE =
             "Shelf with name ''{0}'' does not match any predefined shelf";
 
+    @Autowired
+    PredefinedShelfUtilsTest(BookRepository bookRepository, PredefinedShelfService predefinedShelfService) {
+        this.bookRepository = bookRepository;
+        this.predefinedShelfService = predefinedShelfService;
+        this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
+    }
+
     @BeforeEach
     public void setUp() {
-        predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         findPredefinedShelves(predefinedShelfService);
 
         resetBookRepository();
