@@ -27,14 +27,13 @@ class CustomShelfServiceTest {
     private static final List<String> SHELF_NAMES = List.of("CustomShelf1", "CustomShelf2", "CustomShelf3");
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         customShelfRepository.deleteAll();
         customShelfRepository.saveAll(
                 SHELF_NAMES.stream()
                         .map(customShelfService::createCustomShelf)
                         .collect(Collectors.toList())
         );
-
     }
 
     @Test
