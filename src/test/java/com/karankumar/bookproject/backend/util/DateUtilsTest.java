@@ -32,7 +32,8 @@ class DateUtilsTest {
     @BeforeAll
     static void setup() {
         Mockito.mockStatic(DateUtils.TimeUtils.class);
-        Mockito.when(DateUtils.TimeUtils.getWeekFields()).thenReturn(WeekFields.of(Locale.getDefault()));
+        Mockito.when(DateUtils.TimeUtils.getWeekFields())
+               .thenReturn(WeekFields.of(Locale.getDefault()));
     }
 
     private int mockFirstWeekOfYear() {

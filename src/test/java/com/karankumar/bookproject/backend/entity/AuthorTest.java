@@ -43,7 +43,8 @@ class AuthorTest {
     private PredefinedShelf toRead;
 
     @Autowired
-    AuthorTest(BookService bookService, AuthorService authorService, PredefinedShelfService predefinedShelfService) {
+    AuthorTest(BookService bookService, AuthorService authorService,
+               PredefinedShelfService predefinedShelfService) {
         this.bookService = bookService;
         this.authorService = authorService;
         this.predefinedShelfService = predefinedShelfService;

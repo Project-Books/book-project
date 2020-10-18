@@ -44,7 +44,8 @@ class CustomShelfServiceTest {
     private static final List<String> SHELF_NAMES = List.of("CustomShelf1", "CustomShelf2", "CustomShelf3");
 
     @Autowired
-    CustomShelfServiceTest(CustomShelfService customShelfService, CustomShelfRepository customShelfRepository) {
+    CustomShelfServiceTest(CustomShelfService customShelfService,
+                           CustomShelfRepository customShelfRepository) {
         this.customShelfService = customShelfService;
         this.customShelfRepository = customShelfRepository;
     }

@@ -56,7 +56,8 @@ class UserServiceTest {
                                        .build();
 
     @Autowired
-    UserServiceTest(UserService userService, UserRepository userRepository, RoleRepository roleRepository) {
+    UserServiceTest(UserService userService, UserRepository userRepository,
+                    RoleRepository roleRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;

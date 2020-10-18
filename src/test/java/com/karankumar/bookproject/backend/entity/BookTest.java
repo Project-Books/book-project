@@ -44,7 +44,8 @@ class BookTest {
     private Tag testTag;
 
     @Autowired
-    BookTest(BookService bookService, TagService tagService, PredefinedShelfService predefinedShelfService) {
+    BookTest(BookService bookService, TagService tagService,
+             PredefinedShelfService predefinedShelfService) {
         this.bookService = bookService;
         this.tagService = tagService;
         this.predefinedShelfService = predefinedShelfService;

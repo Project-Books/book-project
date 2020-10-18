@@ -26,6 +26,8 @@ import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import org.apache.commons.io.FileUtils;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
@@ -60,7 +62,9 @@ class BookServiceTest {
     private Author author;
 
     @Autowired
-    BookServiceTest(AuthorService authorService, BookService bookService, CustomShelfService customShelfService, TagService tagService, PredefinedShelfService predefinedShelfService) {
+    BookServiceTest(AuthorService authorService, BookService bookService,
+                    CustomShelfService customShelfService, TagService tagService,
+                    PredefinedShelfService predefinedShelfService) {
         this.authorService = authorService;
         this.bookService = bookService;
         this.customShelfService = customShelfService;
@@ -75,7 +79,7 @@ class BookServiceTest {
     }
 
     private void resetAuthorAndBook() {
-        toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
+        toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
         author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author, toRead);
     }

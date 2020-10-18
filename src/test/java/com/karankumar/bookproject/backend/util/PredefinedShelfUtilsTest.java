@@ -72,7 +72,8 @@ class PredefinedShelfUtilsTest {
             "Shelf with name ''{0}'' does not match any predefined shelf";
 
     @Autowired
-    PredefinedShelfUtilsTest(BookRepository bookRepository, PredefinedShelfService predefinedShelfService) {
+    PredefinedShelfUtilsTest(BookRepository bookRepository,
+                             PredefinedShelfService predefinedShelfService) {
         this.bookRepository = bookRepository;
         this.predefinedShelfService = predefinedShelfService;
         this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);

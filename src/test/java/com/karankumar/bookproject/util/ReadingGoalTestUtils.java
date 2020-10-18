@@ -18,7 +18,8 @@ public class ReadingGoalTestUtils {
     }
 
     static boolean hasBookBeenRead(Book book) {
-        PredefinedShelf.ShelfName predefinedShelfName = book.getPredefinedShelf().getPredefinedShelfName();
+        PredefinedShelf.ShelfName predefinedShelfName =
+                book.getPredefinedShelf().getPredefinedShelfName();
         return predefinedShelfName.equals(READ) && book.getDateFinishedReading() != null;
     }
 
