@@ -95,7 +95,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void showErrorOnPasswordConfirmationWrong() {
+    void showErrorOnWrongPasswordConfirmation() {
         // given
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
         PasswordField passwordConfirmationField =
