@@ -97,7 +97,7 @@ class StatisticsViewTest {
         statisticsView = new StatisticsView(predefinedShelfService);
 
         //then
-        ratingStatisticsAreAbsent();
+        genreAndRatingStatisticsAreAbsent();
     }
 
     private void allStatisticsAreShown() {
