@@ -21,6 +21,9 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
+
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksDifferentGenres;
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksDifferentGenresWithoutPageCount;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +66,7 @@ class StatisticsViewTest {
     @Test
     void shouldCreateCompleteStatisticsView() {
         // given
-        populateDataWithBooks(bookService, predefinedShelfService);
+        populateDataWithBooksDifferentGenres(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
@@ -71,6 +74,30 @@ class StatisticsViewTest {
         // then
         allStatisticsAreShown();
         thereAreNotOtherStatistics();
+    }
+
+    @Test
+    void shouldShowGenreAndRatingStatisticsWhenMoreThanOneGenre() {
+        // given
+        populateDataWithBooksDifferentGenres(bookService, predefinedShelfService);
+
+        //when
+        statisticsView = new StatisticsView(predefinedShelfService);
+
+        //then
+        ratingStatisticsArePresent();
+    }
+
+    @Test
+    void shouldNotShowGenreAndRatingStatisticsWhenLessThanOneGenre() {
+        // given
+        populateDataWithBooks(bookService, predefinedShelfService);
+
+        //when
+        statisticsView = new StatisticsView(predefinedShelfService);
+
+        //then
+        ratingStatisticsAreAbsent();
     }
 
     private void allStatisticsAreShown() {
@@ -89,7 +116,7 @@ class StatisticsViewTest {
     @Test
     void eachStatisticShouldHaveAValue() {
         // given
-        populateDataWithBooks(bookService, predefinedShelfService);
+        populateDataWithBooksDifferentGenres(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
@@ -106,7 +133,7 @@ class StatisticsViewTest {
     @Test
     void withoutPageCountOtherStatisticsStillShown() {
         // given
-        populateDataWithBooksWithoutPageCount(bookService, predefinedShelfService);
+        populateDataWithBooksDifferentGenresWithoutPageCount(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
