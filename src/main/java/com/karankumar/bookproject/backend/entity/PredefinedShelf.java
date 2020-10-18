@@ -34,7 +34,7 @@ import java.util.Set;
  * deleted or renamed)
  */
 @Entity
-@JsonIgnoreProperties(value = {"id", "books", "predefinedShelfName"})
+@JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PredefinedShelf extends Shelf {
     @Getter
@@ -75,6 +75,22 @@ public class PredefinedShelf extends Shelf {
 
         public String toString() {
             return name;
+        }
+
+
+        public static ShelfName getShelfName(String value){
+            switch(value) {
+                case "To read":
+                    return TO_READ;
+                case "Reading":
+                    return READING;
+                case "Read":
+                    return READ;
+                case "Did not finish":
+                    return DID_NOT_FINISH;
+                default:
+                    return TO_READ;
+            }
         }
     }
 }

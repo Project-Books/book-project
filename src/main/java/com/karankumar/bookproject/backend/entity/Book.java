@@ -18,7 +18,10 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.karankumar.bookproject.backend.json.EditionDeserializer;
+import com.karankumar.bookproject.backend.json.LocalDateDeserializer;
 import com.karankumar.bookproject.backend.json.LocalDateSerializer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -61,6 +64,7 @@ public class Book extends BaseEntity {
     private BookGenre bookGenre;
     private BookFormat bookFormat;
     private Integer seriesPosition;
+    @JsonDeserialize(using = EditionDeserializer.class)
     private String edition;
     private String bookRecommendedBy;
     @ISBN
@@ -98,8 +102,10 @@ public class Book extends BaseEntity {
     // For books that have been read
     private RatingScale rating;
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateStartedReading;
     @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate dateFinishedReading;
     private String bookReview;
 

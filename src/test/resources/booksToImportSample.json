@@ -1,0 +1,40 @@
+{
+  "AllBooks": [
+    {
+      "title": "Testing Book",
+      "numberOfPages": 1,
+      "pagesRead": 2,
+      "bookGenre": "ART",
+      "edition": "1st edition",
+      "author": {
+        "firstName": "John",
+        "lastName": "Arthur"
+      },
+      "predefinedShelf": {
+        "shelfName": "To read",
+        "predefinedShelfName" : "TO_READ"
+      },
+      "customShelf": {
+        "shelfName": "Testing Shelf"
+      }
+    },
+    {
+      "title": "Testing Book 2",
+      "numberOfPages": 1,
+      "pagesRead": 2,
+      "bookGenre": "ART",
+      "edition": "2nd edition",
+      "author": {
+        "firstName": "John",
+        "lastName": "Arthur"
+      },
+      "predefinedShelf": {
+        "shelfName": "To read",
+        "predefinedShelfName" : "TO_READ"
+      },
+      "customShelf": {
+        "shelfName": "Testing Shelf"
+      }
+    }
+  ]
+}

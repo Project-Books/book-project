@@ -242,6 +242,24 @@ class BookServiceTest {
     }
 
     @Test
+    void readBooksFromJsonRepresentationCorrectly() throws IOException {
+        // given
+        Book anotherValidBook = createBookAndSetAllAttributes();
+        bookService.save(anotherValidBook);
+        String validJsonString = bookService.getJsonRepresentationForBooksAsString();
+        // when
+        List<Book> readBooks = bookService.readJsonRepresentationFromString(validJsonString);
+        // then
+        assertThat(readBooks).isNotEmpty();
+        assertThat(readBooks.get(0).getTitle()).isEqualTo(anotherValidBook.getTitle());
+        assertThat(readBooks.get(0).getAuthor().getFirstName()).isEqualTo(anotherValidBook.getAuthor().getFirstName());
+        assertThat(readBooks.get(0).getAuthor().getLastName()).isEqualTo(anotherValidBook.getAuthor().getLastName());
+        assertThat(readBooks.get(0).getPagesRead()).isEqualTo(anotherValidBook.getPagesRead());
+        assertThat(readBooks.get(0).getNumberOfPages()).isEqualTo(anotherValidBook.getNumberOfPages());
+        assertThat(readBooks.get(0).getCustomShelf().getShelfName()).isEqualTo(anotherValidBook.getCustomShelf().getShelfName());
+    }
+
+    @Test
     @Transactional
     void findSavedBook() {
         // given

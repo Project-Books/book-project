@@ -93,6 +93,7 @@ class BooksInShelfViewTest {
 
     @BeforeAll
     public static void discoverRoutes() {
+        UI.setCurrent(new UI()); // UI.getCurrent can be null and throw NPE in SettingsView
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
     }
 

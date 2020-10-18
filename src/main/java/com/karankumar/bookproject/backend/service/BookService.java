@@ -18,7 +18,10 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
@@ -37,8 +40,10 @@ import java.util.logging.Level;
 public class BookService {
     private final AuthorService authorService;
     private final BookRepository bookRepository;
+    private final CustomShelfService customShelfService;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService) {
+    public BookService(BookRepository bookRepository, AuthorService authorService, CustomShelfService customShelfService) {
+        this.customShelfService = customShelfService;
         this.bookRepository = bookRepository;
         this.authorService = authorService;
     }
@@ -132,4 +137,13 @@ public class BookService {
 
         return jsonWriter.writeValueAsString(books);
     }
+
+    public List<Book> readJsonRepresentationFromString(String content) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        ObjectReader reader = mapper.reader().forType(mapper.getTypeFactory().constructCollectionType(List.class, Book.class)).withRootName("AllBooks");
+        return reader.readValue(content);
+    }
+
 }
