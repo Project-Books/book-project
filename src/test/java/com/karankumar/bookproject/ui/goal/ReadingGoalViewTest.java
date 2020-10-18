@@ -42,6 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
@@ -137,32 +138,26 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    @Disabled
-    // TODO: fix failing test. This runs fine in IntelliJ, but fails when `mvn clean install` is executed on Windows
+    @Transactional
     void countOnlyReadBooksWithAFinishDateTowardsGoal() {
-        int numberOfShelves = predefinedShelfService.findAllForLoggedInUser().size();
-        assumeThat(numberOfShelves).isEqualTo(4);
-
-        Assumptions.assumeTrue(numberOfShelves == 4);
-
+        // given
         resetBookService(bookService);
-        assumeThat(bookService.findAll()).isEmpty();
+        addBooksToAllShelves();
 
-        addBooksToAllShelves(numberOfShelves);
-
+        // when
         List<Book> allBooks = bookService.findAll();
         int booksInReadShelf = findHowManyBooksInReadShelfWithFinishDate(allBooks);
         int pagesReadInReadShelf = findHowManyPagesInReadShelfWithFinishDate(allBooks);
-        System.out.println("Pages read " + pagesReadInReadShelf);
 
+        // then
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
-        Assumptions.assumeTrue(readShelf != null);
         assertThat(howManyReadThisYear(BOOKS, readShelf)).isEqualTo(booksInReadShelf);
         assertThat(howManyReadThisYear(PAGES, readShelf)).isEqualTo(pagesReadInReadShelf);
     }
 
-    private void addBooksToAllShelves(int numberOfShelves) {
+    private void addBooksToAllShelves() {
         int booksToAdd = 10;
+        int numberOfShelves = predefinedShelfService.findAllForLoggedInUser().size();
         for (int i = 0; i < booksToAdd; i++) {
             int random = ThreadLocalRandom.current().nextInt(0, numberOfShelves);
             Book book;
