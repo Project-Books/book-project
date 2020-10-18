@@ -79,13 +79,13 @@ class PredefinedShelfServiceTest {
     void saveValidPredefinedShelf() {
         // given
         long initialCount = predefinedShelfService.count();
+        PredefinedShelf existingToReadShelf = predefinedShelfService.findToReadShelf();
         PredefinedShelf testShelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ);
 
         // when
         predefinedShelfService.save(testShelf);
 
         // then
-        PredefinedShelf existingToReadShelf = predefinedShelfService.findToReadShelf();
         List<PredefinedShelf> expected = Arrays.asList(existingToReadShelf, testShelf);
 
         assertSoftly(softly -> {
