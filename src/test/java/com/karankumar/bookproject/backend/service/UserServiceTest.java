@@ -100,7 +100,7 @@ class UserServiceTest {
     }
 
     @Test
-    void registerUser() {
+    void registerValidUser() {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
