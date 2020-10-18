@@ -131,6 +131,15 @@ public class StatisticsView extends VerticalLayout {
                 return averagePageLength.map(pageLength -> String.format("%f pages", pageLength));
             }
         },
+        AVERAGE_PAGE_LENGTH_THIS_YEAR("Average page length this year:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
+                Optional<Double> averagePageLength =
+                        Optional.ofNullable(pageStatistics.calculateAveragePageLengthThisYear());
+                return averagePageLength.map(pageLength -> String.format("%f pages", pageLength));
+            }
+        },
         LONGEST_BOOK("Longest book read:") {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
@@ -138,6 +147,42 @@ public class StatisticsView extends VerticalLayout {
                 Optional<Book> longestBook =
                         Optional.ofNullable(pageStatistics.findBookWithMostPages());
                 return longestBook.map(book ->
+                        formatStatistic(book.getTitle(), String.valueOf(book.getNumberOfPages()),
+                        "pages")
+                );
+            }
+        },
+        LONGEST_BOOK_THIS_YEAR("Longest book read this year:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
+                Optional<Book> longestBookThisYear =
+                        Optional.ofNullable(pageStatistics.findBookWithMostPagesThisYear());
+                return longestBookThisYear.map(book ->
+                        formatStatistic(book.getTitle(), String.valueOf(book.getNumberOfPages()),
+                        "pages")
+                );
+            }
+        },
+        SHORTEST_BOOK("Shortest book read:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
+                Optional<Book> shortestBook =
+                        Optional.ofNullable(pageStatistics.findBookWithLeastPages());
+                return shortestBook.map(book ->
+                        formatStatistic(book.getTitle(), String.valueOf(book.getNumberOfPages()),
+                        "pages")
+                );
+            }
+        },
+        SHORTEST_BOOK_THIS_YEAR("Shortest book read this year:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
+                Optional<Book> shortestBookThisYear =
+                        Optional.ofNullable(pageStatistics.findBookWithLeastPagesThisYear());
+                return shortestBookThisYear.map(book ->
                         formatStatistic(book.getTitle(), String.valueOf(book.getNumberOfPages()),
                         "pages")
                 );
