@@ -104,7 +104,7 @@ public class BookGrid {
 
     private List<Book> filterShelf(Set<Book> books, BookFilters bookFilters) {
         return books.stream()
-                    .filter(bookFilters::applyBookFilter)
+                    .filter(bookFilters::applyFilter)
                     .collect(Collectors.toList());
     }
 }
