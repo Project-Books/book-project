@@ -18,11 +18,16 @@
 
 package com.karankumar.bookproject.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.karankumar.bookproject.backend.entity.account.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
@@ -31,10 +36,17 @@ import javax.validation.constraints.NotNull;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Shelf extends BaseEntity {
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @NotNull
+    @JsonIgnore
+    protected User user;
+
     @NotNull
     protected String shelfName;
 
-    protected Shelf(String shelfName) {
+    protected Shelf(String shelfName, User user) {
         this.shelfName = shelfName;
+        this.user = user;
     }
 }

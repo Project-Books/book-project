@@ -23,10 +23,10 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;	
-import com.karankumar.bookproject.backend.entity.CustomShelf;	
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
+
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -76,7 +76,6 @@ class BookFormTest {
     private static final int pagesRead = 450;
     private static final int numberOfPages = 1000;
     private static int seriesPosition;
-    private static final CustomShelf customShelf = new CustomShelf("BookFormTestShelf");
 
     private static final LocalDate NULL_STARED_DATE = null;
     private static final LocalDate NULL_FINISHED_DATE = null;
@@ -105,7 +104,7 @@ class BookFormTest {
 
         bookService.deleteAll();
         customShelfService.deleteAll();
-        customShelfService.save(customShelf);
+        customShelfService.save(customShelfService.createCustomShelf("BookFormTestShelf"));
 
         bookForm = createBookForm(READ, true);
     }
@@ -120,14 +119,14 @@ class BookFormTest {
     private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries,
                             String bookTitle) {
         Author author = new Author(firstName, lastName);
-        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfName(shelfName);
+        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(shelfName);
         Book book = new Book(bookTitle, author, shelf);
 
         seriesPosition = SERIES_POSITION;
 
         book.setBookGenre(BOOK_GENRE);
         book.setNumberOfPages(numberOfPages);
-        book.setCustomShelf(customShelfService.findAll().get(0));
+        book.setCustomShelf(customShelfService.findAllForLoggedInUser().get(0));
         if (isInSeries) {
             book.setSeriesPosition(SERIES_POSITION);
         }

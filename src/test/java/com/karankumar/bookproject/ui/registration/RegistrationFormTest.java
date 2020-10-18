@@ -32,13 +32,13 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.spring.SpringServlet;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ._click;
 import static com.github.mvysny.kaributesting.v10.LocatorJ._get;
@@ -47,6 +47,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @WebAppConfiguration
+@Transactional
 class RegistrationFormTest {
     private final static User VALID_TEST_USER = User.builder()
                                                     .username("validTestUser")
@@ -222,11 +223,5 @@ class RegistrationFormTest {
 
     private String generateInvalidPassword() {
         return ".".repeat(RegistrationForm.MAX_PASSWORD_LENGTH);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
     }
 }
