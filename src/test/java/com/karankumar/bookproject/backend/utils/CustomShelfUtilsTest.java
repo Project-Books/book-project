@@ -33,7 +33,8 @@ class CustomShelfUtilsTest {
     private Set<Book> booksInCustomShelf1;
 
     @Autowired
-    CustomShelfUtilsTest(BookService bookService, CustomShelfService customShelfService, PredefinedShelfService predefinedShelfService) {
+    CustomShelfUtilsTest(BookService bookService, CustomShelfService customShelfService,
+                         PredefinedShelfService predefinedShelfService) {
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.predefinedShelfService = predefinedShelfService;
@@ -103,7 +104,7 @@ class CustomShelfUtilsTest {
     }
 
     @Test
-    void returnEmptySetOfBooksWhenCustomShelfIsInvalid() {
+    void returnEmptySetOfBooksForNonExistentCustomShelf() {
         assertThat(customShelfUtils.getBooksInCustomShelf("InvalidShelf")).isEmpty();
     }
 }
