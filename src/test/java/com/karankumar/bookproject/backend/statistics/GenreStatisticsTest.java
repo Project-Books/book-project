@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.BookGenre;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
@@ -67,5 +68,21 @@ class GenreStatisticsTest {
         BookGenre expected = StatisticTestUtils.LEAST_LIKED_BOOK_GENRE;
         BookGenre actual = genreStatistics.findLeastLikedGenre();
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void genreStatisticsShouldNotShowWhenBookCountIsLessThanTwo() {
+        bookService.deleteAll();
+        for (int i = 0; i < GenreStatistics.DEFAULT_MINIMUM_CALCULATE_GENRE_STATISTICS; i++) {
+            StatisticTestUtils.addReadBook(bookService, predefinedShelfService,
+                "Book #"+i, RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200);
+        }
+        genreStatistics = new GenreStatistics(predefinedShelfService);
+        BookGenre mostLiked = genreStatistics.findMostLikedGenre();
+        BookGenre leastLiked = genreStatistics.findLeastLikedGenre();
+        BookGenre mostRead = genreStatistics.findMostReadGenre();
+        assertThat(mostLiked).isEqualTo(null);
+        assertThat(leastLiked).isEqualTo(null);
+        assertThat(mostRead).isEqualTo(BookGenre.ANTHOLOGY);
     }
 }

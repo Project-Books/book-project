@@ -47,11 +47,7 @@ public class StatisticTestUtils {
 
     public static void populateReadBooks(BookService bookService,
                                          PredefinedShelfService predefinedShelfService) {
-        StatisticTestUtils.bookService = bookService;
-        bookService.deleteAll();
-        savedBooks.clear();
-        totalRating = 0.0;
-        StatisticTestUtils.predefinedShelfService = predefinedShelfService;
+        init(bookService, predefinedShelfService);
 
         bookWithLowestRating =
                 createReadBook("Book1", RatingScale.NO_RATING, BookGenre.BUSINESS, 100);
@@ -62,6 +58,22 @@ public class StatisticTestUtils {
         createReadBook("Book5", RatingScale.NINE, MOST_LIKED_BOOK_GENRE, 300);
         createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE, 350);
         bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, LEAST_LIKED_BOOK_GENRE, 400);
+    }
+
+    private static void init(BookService bookService,
+        PredefinedShelfService predefinedShelfService) {
+        StatisticTestUtils.bookService = bookService;
+        bookService.deleteAll();
+        savedBooks.clear();
+        totalRating = 0.0;
+        StatisticTestUtils.predefinedShelfService = predefinedShelfService;
+    }
+
+    public static void addReadBook(BookService bookService, PredefinedShelfService
+        predefinedShelfService, String bookTitle, RatingScale rating, BookGenre bookGenre,
+        int pages) {
+        init(bookService, predefinedShelfService);
+        createReadBook(bookTitle, rating, bookGenre, pages);
     }
 
     private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages) {
