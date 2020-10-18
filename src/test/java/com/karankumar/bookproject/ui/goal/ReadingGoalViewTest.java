@@ -137,6 +137,7 @@ class ReadingGoalViewTest {
 
     @Test
     @Transactional
+    @Disabled
     void countOnlyReadBooksWithAFinishDateTowardsGoal() {
         // given
         resetBookService(bookService);
