@@ -50,7 +50,7 @@ class CalculateReadingGoalTest {
     }
 
     @Test
-    void calculateCorrectProgressValueWhenGoaldMet() {
+    void calculateCorrectProgressValueWhenGoalMet() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, BOOKS_TO_READ);
         assertThat(actual).isEqualTo(expected);
