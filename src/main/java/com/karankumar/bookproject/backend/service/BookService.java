@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.book.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;

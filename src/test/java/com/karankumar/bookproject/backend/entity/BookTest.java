@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.book.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.TagService;

@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.goal;
 
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.book.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.utils.DateUtils;
 

@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.book.Book;
 import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.BookForm;

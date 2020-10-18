@@ -1,6 +1,6 @@
 package com.karankumar.bookproject.utils;
 
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.book.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 

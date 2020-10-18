@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.statistics;
 
-import com.karankumar.bookproject.backend.entity.BookGenre;
+import com.karankumar.bookproject.backend.entity.book.BookGenre;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;

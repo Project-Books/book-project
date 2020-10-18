@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.ui.book;
 
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.book.Book;
 
 public final class BookFormErrors {
     private BookFormErrors() { }

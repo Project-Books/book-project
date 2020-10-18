@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.utils;
 
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.book.Book;
 
 public final class BookUtils {
     private BookUtils() {}
