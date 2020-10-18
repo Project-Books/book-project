@@ -30,10 +30,13 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - Statistics about your reading habits
 - Add your own shelves
 - Export your saved data to JSON
+- User registration and accounts
 - And much more!
 
 *Coming soon:*
-- User registration and accounts
+- Search from a catalogue of books
+- 2-factor authentication
+- Magic links
 - And much more!
 
 <p align="center">
