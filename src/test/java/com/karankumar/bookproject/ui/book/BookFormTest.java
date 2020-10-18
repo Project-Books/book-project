@@ -346,7 +346,7 @@ class BookFormTest {
 
     @ParameterizedTest
     @MethodSource("shelfNames")
-    void populateCorrectlyFieldsToReset(
+    void populateFieldsToResetCorrectly(
             PredefinedShelf.ShelfName newShelf) throws NotSupportedException {
         // given
         HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
@@ -403,7 +403,7 @@ class BookFormTest {
     }
 
     @Test
-    void notAllowToExceedMaxValueNumberOfPagesField() {
+    void notAllowPagesFieldToExceedMax() {
         // given
         bookForm.numberOfPages.setValue(Book.MAX_PAGES + 1);
 
