@@ -24,20 +24,29 @@ import static com.karankumar.bookproject.utils.SecurityTestUtils.TEST_USER_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import com.karankumar.bookproject.backend.repository.UserRepository;
+import com.karankumar.bookproject.utils.SecurityTestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.util.List;
+
+import java.util.Arrays;
 
 @IntegrationTest
 @DisplayName("PredefinedShelfService should")
+@Transactional
 class PredefinedShelfServiceTest {
     private final PredefinedShelfService predefinedShelfService;
+    private final UserRepository userRepository;
 
     @Autowired
-    PredefinedShelfServiceTest(PredefinedShelfService predefinedShelfService) {
+    PredefinedShelfServiceTest(PredefinedShelfService predefinedShelfService,
+                               UserRepository userRepository) {
         this.predefinedShelfService = predefinedShelfService;
+        this.userRepository = userRepository;
     }
 
     @Test
@@ -71,8 +80,29 @@ class PredefinedShelfServiceTest {
         assertThat(shelf).isNotNull();
 
         assertSoftly(softly -> {
-            softly.assertThat(shelf.getPredefinedShelfName()).isEqualTo(PredefinedShelf.ShelfName.TO_READ);
+            softly.assertThat(shelf.getPredefinedShelfName())
+                  .isEqualTo(PredefinedShelf.ShelfName.TO_READ);
             softly.assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME);
+        });
+    }
+
+    @Test
+    void saveValidPredefinedShelf() {
+        // given
+        long initialCount = predefinedShelfService.count();
+        PredefinedShelf existingToReadShelf = predefinedShelfService.findToReadShelf();
+        PredefinedShelf testShelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ,
+                SecurityTestUtils.getTestUser(userRepository));
+
+        // when
+        predefinedShelfService.save(testShelf);
+
+        // then
+        List<PredefinedShelf> expected = Arrays.asList(existingToReadShelf, testShelf);
+
+        assertSoftly(softly -> {
+            softly.assertThat(predefinedShelfService.count()).isEqualTo(initialCount + 1);
+            softly.assertThat(predefinedShelfService.findAllForLoggedInUser()).containsAll(expected);
         });
     }
 }
