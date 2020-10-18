@@ -152,3 +152,5 @@ If you need help with anything, we'll be happy to help you in our [Slack workspa
 [paper-toggle-button](https://www.webcomponents.org/element/@polymer/paper-toggle-button) - [BSD-3 clause](https://spdx.org/licenses/BSD-3-Clause)
 
 [jackson](https://github.com/FasterXML/jackson) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
+
+[Flyway](https://github.com/flyway/flyway) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
