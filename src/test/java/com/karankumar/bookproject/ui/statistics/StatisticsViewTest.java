@@ -31,10 +31,14 @@ import java.util.Arrays;
 
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.AVERAGE_PAGE_LENGTH;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.AVERAGE_PAGE_LENGTH_THIS_YEAR;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.AVERAGE_RATING;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.LEAST_LIKED_BOOK;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.LEAST_LIKED_GENRE;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.LONGEST_BOOK;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.LONGEST_BOOK_THIS_YEAR;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.SHORTEST_BOOK;
+import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.SHORTEST_BOOK_THIS_YEAR;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_LIKED_BOOK;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_LIKED_GENRE;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_READ_GENRE;
@@ -44,7 +48,7 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutPageCount;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutRatings;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithOnlyOneBook;
-
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksReadDifferentYear;
 
 @IntegrationTest
 @WebAppConfiguration
@@ -159,6 +163,18 @@ class StatisticsViewTest {
         genreStatisticIsPresent();
         pageStatisticsArePresent();
     }
+    
+    @Test
+    void withoutBooksThatWereReadThisYear() {
+        // given
+        populateDataWithBooksReadDifferentYear(bookService, predefinedShelfService);
+
+        // when
+        statisticsView = new StatisticsView(predefinedShelfService);
+
+        // then
+        yearStatisticsAreAbsent();
+    }
 
     private void pageStatisticsArePresent() {
         statisticsArePresent(LONGEST_BOOK, AVERAGE_PAGE_LENGTH);
@@ -190,6 +206,12 @@ class StatisticsViewTest {
 
     private void genreAndRatingStatisticsAreAbsent() {
         statisticsAreAbsent(MOST_LIKED_GENRE, LEAST_LIKED_GENRE);
+    }
+    
+    private void yearStatisticsAreAbsent() {
+        statisticsAreAbsent(AVERAGE_PAGE_LENGTH_THIS_YEAR,
+                            LONGEST_BOOK_THIS_YEAR,
+                            SHORTEST_BOOK_THIS_YEAR);
     }
 
     private void statisticsAreAbsent(StatisticType... statisticTypes) {

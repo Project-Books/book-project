@@ -12,7 +12,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.dom.Element;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
+import java.time.LocalDate;
 import java.util.function.Predicate;
 
 public class StatisticsViewTestUtils {
@@ -108,6 +108,18 @@ public class StatisticsViewTestUtils {
         book.setRating(null);
         bookService.save(book);
     }
+    
+    public static void populateDataWithBooksReadDifferentYear(
+            BookService bookService, PredefinedShelfService predefinedShelfService) {
+        Book book = createMobyDickBook(predefinedShelfService);
+        book.setBookGenre(BookGenre.CLASSIC);
+        book.setDateStartedReading(LocalDate.now().minusYears(2));
+        book.setDateFinishedReading(LocalDate.now().minusYears(1));
+        book.setNumberOfPages(2000);
+        book.setPagesRead(1000);
+        book.setRating(RatingScale.EIGHT_POINT_FIVE);
+        bookService.save(book);
+    }
 
     private static Book createBook(String title, Author author,
                                    PredefinedShelfService predefinedShelfService) {
@@ -117,6 +129,8 @@ public class StatisticsViewTestUtils {
         book.setNumberOfPages(2000);
         book.setPagesRead(1000);
         book.setRating(RatingScale.EIGHT_POINT_FIVE);
+        book.setDateStartedReading(LocalDate.now().minusDays(3));
+        book.setDateFinishedReading(LocalDate.now().minusDays(2));
         return book;
     }
 

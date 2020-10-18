@@ -26,6 +26,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import static org.assertj.core.api.Assertions.assertThat;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -91,6 +92,109 @@ class PageStatisticsTest {
         Double averagePageLength = 267.0;
         assertThat(pageStatistics.calculateAveragePageLength()).isEqualTo(averagePageLength);
     }
+    
+    @Test
+    void testNoBooksReadThisYear() {
+        // given
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
+    	
+        // when
+        Book shortBook = new Book("Shortest book this year",
+                new Author("Joe", "Bloggs"), readShelf);
+        shortBook.setNumberOfPages(10);
+        shortBook.setDateStartedReading(LocalDate.now().minusYears(3));
+        shortBook.setDateFinishedReading(LocalDate.now().minusYears(2));
+        bookService.save(shortBook);
+        
+        pageStatistics = new PageStatistics(predefinedShelfService);
+        
+        // then
+        assertThat(pageStatistics.findBookWithMostPagesThisYear()).isEqualTo(null);
+    }
+    
+    @Test
+    void testLongestBookReadThisYear() {
+        // given
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
+
+        // when
+        Book longBook = new Book("Longest book this year",
+                new Author("Joe", "Bloggs"), readShelf);
+        longBook.setNumberOfPages(100);
+        longBook.setDateStartedReading(LocalDate.now().minusDays(3));
+        longBook.setDateFinishedReading(LocalDate.now().minusDays(2));
+        bookService.save(longBook);
+        
+        Book shortBook = new Book("Shortest book this year",
+                new Author("Joe", "Bloggs"), readShelf);
+        shortBook.setNumberOfPages(10);
+        shortBook.setDateStartedReading(LocalDate.now().minusDays(3));
+        shortBook.setDateFinishedReading(LocalDate.now().minusDays(2));
+        bookService.save(shortBook);
+        
+        pageStatistics = new PageStatistics(predefinedShelfService);
+        
+        // then
+        assertThat(pageStatistics.findBookWithMostPagesThisYear().getTitle())
+                                 .isEqualTo(longBook.getTitle());
+    }
+    
+    @Test
+    void testShortestBookReadThisYear() {
+        // given
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
+
+        // when
+        Book longBook = new Book("Longest book this year",
+                new Author("Joe", "Bloggs"), readShelf);
+        longBook.setNumberOfPages(100);
+        longBook.setDateStartedReading(LocalDate.now().minusDays(3));
+        longBook.setDateFinishedReading(LocalDate.now().minusDays(2));
+        bookService.save(longBook);
+        
+        Book shortBook = new Book("Shortest book this year",
+                new Author("Joe", "Bloggs"), readShelf);
+        shortBook.setNumberOfPages(10);
+        shortBook.setDateStartedReading(LocalDate.now().minusDays(3));
+        shortBook.setDateFinishedReading(LocalDate.now().minusDays(2));
+        bookService.save(shortBook);
+        
+        pageStatistics = new PageStatistics(predefinedShelfService);
+        
+        // then
+        assertThat(pageStatistics.findBookWithLeastPagesThisYear().getTitle())
+                                 .isEqualTo(shortBook.getTitle());
+   }
+    
+   @Test
+   void testAverageBookLengthReadThisYear() {
+        // given
+        PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
+
+        // when
+        Book longBook = new Book("Longest book this year",
+                new Author("Joe", "Bloggs"), readShelf);
+        longBook.setNumberOfPages(100);
+        longBook.setDateStartedReading(LocalDate.now().minusDays(3));
+        longBook.setDateFinishedReading(LocalDate.now().minusDays(2));
+        bookService.save(longBook);
+        
+        Book shortBook = new Book("Shortest book this year",
+                new Author("Joe", "Bloggs"), readShelf);
+        shortBook.setNumberOfPages(10);
+        shortBook.setDateStartedReading(LocalDate.now().minusDays(3));
+        shortBook.setDateFinishedReading(LocalDate.now().minusDays(2));
+        bookService.save(shortBook);
+        
+        pageStatistics = new PageStatistics(predefinedShelfService);
+        
+        // then
+        Double expectedAverage;
+        expectedAverage = (double) ((longBook.getNumberOfPages() + 
+                                     shortBook.getNumberOfPages()) / 2);
+        assertThat(pageStatistics.calculateAveragePageLengthThisYear())
+                                 .isEqualTo(expectedAverage);
+   }
 
     private void resetPageStatistics() {
         bookService.deleteAll();
