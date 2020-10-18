@@ -33,10 +33,10 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.backend.utils.TestData.generateAuthors;
-import static com.karankumar.bookproject.backend.utils.TestData.generateBooks;
-import static com.karankumar.bookproject.backend.utils.TestData.generateListOfTags;
-import static com.karankumar.bookproject.backend.utils.TestData.setPredefinedShelfForBooks;
+import static com.karankumar.bookproject.backend.util.TestData.generateAuthors;
+import static com.karankumar.bookproject.backend.util.TestData.generateBooks;
+import static com.karankumar.bookproject.backend.util.TestData.generateListOfTags;
+import static com.karankumar.bookproject.backend.util.TestData.setPredefinedShelfForBooks;
 
 @Service
 @Log

@@ -51,9 +51,9 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType.PAGES;
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType.BOOKS;
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howManyReadThisYear;
-import static com.karankumar.bookproject.utils.ReadingGoalTestUtils.resetGoalService;
-import static com.karankumar.bookproject.utils.ReadingGoalTestUtils.findHowManyBooksInReadShelfWithFinishDate;
-import static com.karankumar.bookproject.utils.ReadingGoalTestUtils.findHowManyPagesInReadShelfWithFinishDate;
+import static com.karankumar.bookproject.util.ReadingGoalTestUtils.resetGoalService;
+import static com.karankumar.bookproject.util.ReadingGoalTestUtils.findHowManyBooksInReadShelfWithFinishDate;
+import static com.karankumar.bookproject.util.ReadingGoalTestUtils.findHowManyPagesInReadShelfWithFinishDate;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.karankumar.bookproject.utils.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest

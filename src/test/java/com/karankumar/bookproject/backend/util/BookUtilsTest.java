@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import static org.assertj.core.api.Assertions.assertThat;

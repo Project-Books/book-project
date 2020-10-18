@@ -20,7 +20,7 @@ package com.karankumar.bookproject.backend.statistics;
 import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
+import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;

@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
@@ -29,8 +29,8 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPredefinedShelf;
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
+import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.isPredefinedShelf;
+import static com.karankumar.bookproject.backend.util.ShelfUtils.ALL_BOOKS_SHELF;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.SoftAssertions;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;

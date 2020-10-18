@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.utils;
+package com.karankumar.bookproject.util;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
@@ -7,7 +7,7 @@ import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import java.util.List;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.utils.DateUtils.dateIsInCurrentYear;
+import static com.karankumar.bookproject.backend.util.DateUtils.dateIsInCurrentYear;
 
 public class ReadingGoalTestUtils {
     private ReadingGoalTestUtils() {}

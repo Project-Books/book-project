@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.components.utils;
+package com.karankumar.bookproject.ui.components.util;
 
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.vaadin.flow.component.HasValue;

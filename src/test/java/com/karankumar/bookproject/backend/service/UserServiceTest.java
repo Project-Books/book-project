@@ -22,7 +22,6 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.karankumar.bookproject.utils.SecurityTestUtils.TEST_USER_NAME;
-import static com.karankumar.bookproject.utils.SecurityTestUtils.getTestUser;
-import static com.karankumar.bookproject.utils.SecurityTestUtils.insertTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
+import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

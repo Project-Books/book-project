@@ -19,12 +19,12 @@ package com.karankumar.bookproject.backend.goal;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.utils.DateUtils;
+import com.karankumar.bookproject.backend.util.DateUtils;
 
 import javax.validation.constraints.NotNull;
 
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType;
-import static com.karankumar.bookproject.backend.utils.DateUtils.WEEKS_IN_YEAR;
+import static com.karankumar.bookproject.backend.util.DateUtils.WEEKS_IN_YEAR;
 
 public final class CalculateReadingGoal {
 
