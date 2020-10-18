@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -59,6 +60,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("ReadingGoalView should")
 class ReadingGoalViewTest {
     private static Routes routes;
 
@@ -90,7 +92,7 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void testSetGoalButtonTextUpdatesWhenGoalUpdates() {
+    void updateSetGoalButtonTextWhenGoalUpdates() {
         // given initial state
         assumeThat(goalService.findAll()).isEmpty();
         String expected = ReadingGoalView.SET_GOAL;
@@ -113,14 +115,14 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void testTargetMetMessageNotShownWhenGoalNotMet() {
+    void notShowTargetMetMessageWhenGoalNotMet() {
         String expected = ReadingGoalView.TARGET_MET;
         String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET - 1);
         assertThat(actual).isNotEqualTo(expected);
     }
 
     @Test
-    void testTargetMetMessageShownWhenGoalMet() {
+    void showTargetMetMessageWhenGoalMet() {
         assumeThat(goalService.findAll()).isEmpty();
         String expected = ReadingGoalView.TARGET_MET;
         String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET);
@@ -128,7 +130,7 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void testTargetMetMessageShownWhenGoalExceeded() {
+    void showTargetMetMessageWhenGoalExceeded() {
         String expected = ReadingGoalView.TARGET_MET;
         String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET + 1);
         assertThat(actual).isEqualTo(expected);
@@ -137,7 +139,7 @@ class ReadingGoalViewTest {
     @Test
     @Disabled
         // TODO: fix failing test. This runs fine in IntelliJ, but fails when `mvn clean install` is executed on Windows
-    void onlyReadBooksWithAFinishDateCountTowardsGoal() {
+    void countOnlyReadBooksWithAFinishDateTowardsGoal() {
         int numberOfShelves = predefinedShelfService.findAllForLoggedInUser().size();
         assumeThat(numberOfShelves).isEqualTo(4);
 
@@ -200,7 +202,7 @@ class ReadingGoalViewTest {
     }
 
     @Test
-    void correctInformationShownWhenGoalIsSetOrUpdated() {
+    void showCorrectInformationWhenGoalIsSetOrUpdated() {
         assumeThat(goalService.findAll()).isEmpty();
 
         // given

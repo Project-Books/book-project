@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Set;
 
 @IntegrationTest
+@DisplayName("BookService should")
 class BookServiceTest {
     private final AuthorService authorService;
     private final BookService bookService;
@@ -87,13 +88,13 @@ class BookServiceTest {
     }
 
     @Test
-    void nullBookNotSaved() {
+    void notSaveNullBook() {
         bookService.save(null);
         assertThat(bookService.count()).isZero();
     }
 
     @Test
-    void bookWithoutAuthorNotSaved() {
+    void notSaveBookWithout() {
         SoftAssertions softly = new SoftAssertions();
 
         // when
@@ -106,8 +107,7 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Tests book with numberOfPages > max_pages is not saved")
-    void bookWithMaxNumberOfPagesExceededNotSaved() {
+    void notSaveBookWithMaxNumberOfPagesExceeded() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -122,7 +122,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookOutsidePageLimitNotSaved() {
+    void notSaveBookOutsidePageLimit() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -137,7 +137,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookWithinPageLimitIsSaved() {
+    void saveBookWithinPageLimit() {
         // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES);
@@ -151,7 +151,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookWithoutPredefinedShelfNotSaved() {
+    void notSaveBookWithoutPredefinedShelf() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -167,8 +167,7 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Book with author and predefined shelf can be saved")
-    void validBookSaved() {
+    void saveValidBook() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -187,12 +186,12 @@ class BookServiceTest {
     }
 
     @Test
-    void allBooksReturnedWhenFilterIsEmpty() {
+    void returnAllBooksWhenFilterIsEmpty() {
         assertEquals(bookService.findAll(), bookService.findAll(""));
     }
 
     @Test
-    void allBooksReturnedWhenFilterIsNull() {
+    void returnAllBooksWhenFilterIsNull() {
         assertEquals(bookService.findAll(), bookService.findAll(null));
     }
 

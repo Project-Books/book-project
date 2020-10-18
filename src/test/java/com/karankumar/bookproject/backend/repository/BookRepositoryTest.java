@@ -14,6 +14,7 @@ import static com.karankumar.bookproject.utils.SecurityTestUtils.getTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
+@DisplayName("BookRepository should")
 class BookRepositoryTest {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
