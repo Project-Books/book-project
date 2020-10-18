@@ -56,7 +56,7 @@ class PredefinedShelfRepositoryTest {
     }
 
     @Test
-    void correctlyReturnExistingShelf() {
+    void findCorrectShelf() {
         PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.TO_READ, user);
 
         assertThat(shelf).isNotNull();
