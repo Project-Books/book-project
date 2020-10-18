@@ -56,7 +56,6 @@ import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -406,7 +405,7 @@ public class BookForm extends VerticalLayout {
         PredefinedShelf predefinedShelf;
         if (predefinedShelfField.getValue() != null) {
             predefinedShelf =
-                    predefinedShelfService.findByPredefinedShelfName(predefinedShelfField.getValue());
+                    predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfField.getValue());
         } else {
             LOGGER.log(Level.SEVERE, "Null shelf");
             return null;
@@ -414,9 +413,9 @@ public class BookForm extends VerticalLayout {
         Book book = new Book(title, author, predefinedShelf);
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
-            List<CustomShelf> shelves = customShelfService.findAll(customShelfField.getValue());
-            if (shelves.size() == 1) {
-                book.setCustomShelf(shelves.get(0));
+            CustomShelf shelf = customShelfService.findByShelfNameAndLoggedInUser(customShelfField.getValue());
+            if (shelf != null) {
+                book.setCustomShelf(shelf);
             }
         }
 
@@ -458,7 +457,7 @@ public class BookForm extends VerticalLayout {
 
     private void moveBookToDifferentShelf() {
         PredefinedShelf shelf =
-                predefinedShelfService.findByPredefinedShelfName(predefinedShelfField.getValue());
+                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfField.getValue());
         if (shelf != null) {
             Book book = binder.getBean();
             book.setPredefinedShelf(shelf);
@@ -478,10 +477,11 @@ public class BookForm extends VerticalLayout {
             return;
         }
 
-        // TODO: this should be removed. A custom shelf should not be mandatory, so it should
-        // be acceptable to the custom shelf to be null
+        // TODO: this should be removed. A custom shelf should not be mandatory, so it should be acceptable to the custom shelf to be null
         if (book.getCustomShelf() == null) {
-            book.setCustomShelf(new CustomShelf("ShelfName"));
+//            book.setCustomShelf(new CustomShelf("ShelfName"));
+            CustomShelf customShelf = customShelfService.createCustomShelf("ShelfName");
+            book.setCustomShelf(customShelf);
         }
 
         binder.setBean(book);

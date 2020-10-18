@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.karankumar.bookproject.backend.entity.account.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,8 +45,8 @@ public class PredefinedShelf extends Shelf {
     @Setter
     protected Set<Book> books;
 
-    public PredefinedShelf(ShelfName predefinedShelfName) {
-        super(predefinedShelfName.toString());
+    public PredefinedShelf(ShelfName predefinedShelfName, User user) {
+        super(predefinedShelfName.toString(), user);
         this.predefinedShelfName = predefinedShelfName;
     }
 

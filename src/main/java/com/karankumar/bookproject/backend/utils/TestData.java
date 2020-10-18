@@ -157,13 +157,4 @@ public final class TestData {
         }
         return books;
     }
-
-    public static List<PredefinedShelf> createPredefinedShelves(List<Book> books) {
-        return Stream.of(PredefinedShelf.ShelfName.values())
-              .map(shelfName -> {
-                  PredefinedShelf shelf = new PredefinedShelf(shelfName);
-                  shelf.setBooks(new HashSet<>(books));
-                  return shelf;
-              }).collect(Collectors.toList());
-    }
 }

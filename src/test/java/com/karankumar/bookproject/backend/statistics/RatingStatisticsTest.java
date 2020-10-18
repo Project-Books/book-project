@@ -23,29 +23,29 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 class RatingStatisticsTest {
-    private static BookService bookService;
-    private static PredefinedShelfService predefinedShelfService;
+    private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
 
     private static RatingStatistics ratingStatistics;
-    private static Book bookWithNoRating;
-    private static Book bookWithHighestRating;
 
-    @BeforeAll
-    public static void setup(@Autowired BookService bookService,
-                             @Autowired PredefinedShelfService predefinedShelfService) {
-        RatingStatisticsTest.bookService = bookService;
-        RatingStatisticsTest.predefinedShelfService = predefinedShelfService;
+    private Book bookWithNoRating;
+    private Book bookWithHighestRating;
+
+    @Autowired
+    RatingStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     @BeforeEach
-    public void beforeEachSetup() {
+    public void setUp() {
         bookService.deleteAll(); // reset
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         bookWithNoRating = StatisticTestUtils.getBookWithLowestRating();

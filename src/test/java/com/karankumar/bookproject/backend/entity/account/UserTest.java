@@ -31,7 +31,8 @@ class UserTest {
     private final UserRepository userRepository;
     private long initialNumberOfUsers;
 
-    UserTest(@Autowired UserRepository userRepository) {
+    @Autowired
+    UserTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
