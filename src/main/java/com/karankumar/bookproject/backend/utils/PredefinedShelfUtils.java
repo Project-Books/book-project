@@ -21,9 +21,11 @@ import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShel
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.logging.Level;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.karankumar.bookproject.backend.entity.Book;
@@ -42,16 +44,16 @@ public class PredefinedShelfUtils {
         this.predefinedShelfService = predefinedShelfService;
     }
 
-    public Optional<PredefinedShelf.ShelfName> getPredefinedShelfName(String predefinedShelfName) {
+    public Optional<ShelfName> getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
             case "To read":
-                return of(PredefinedShelf.ShelfName.TO_READ);
+                return of(ShelfName.TO_READ);
             case "Reading":
-                return of(PredefinedShelf.ShelfName.READING);
+                return of(ShelfName.READING);
             case "Read":
-                return of(PredefinedShelf.ShelfName.READ);
+                return of(ShelfName.READ);
             case "Did not finish":
-                return of(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+                return of(ShelfName.DID_NOT_FINISH);
             default:
                 return empty();
         }
