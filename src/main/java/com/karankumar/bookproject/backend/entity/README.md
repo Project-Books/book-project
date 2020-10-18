@@ -1,6 +1,6 @@
-# Architechture of the project Book_Project
+# Architecture of the project Book Project
 
 <p align="center">
-	<img src="/media/docs/readme/Architechture.png" alt="Architechture"/>
+	<img src="/media/docs/readme/entity_class_diagram.png" alt="Entity class diagram"/>
 </p>
 
