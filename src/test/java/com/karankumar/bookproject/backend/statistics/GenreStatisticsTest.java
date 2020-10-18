@@ -50,14 +50,14 @@ class GenreStatisticsTest {
     }
 
     @Test
-    void findExistingMostReadGenre() {
+    void findMostReadGenre() {
         BookGenre expected = StatisticTestUtils.MOST_READ_BOOK_GENRE;
         BookGenre actual = genreStatistics.findMostReadGenre();
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void findMostLikedGenreExists() {
+    void findMostLikedGenre() {
         BookGenre expected = StatisticTestUtils.MOST_LIKED_BOOK_GENRE;
         BookGenre actual = genreStatistics.findMostLikedGenre();
         assertThat(actual).isEqualTo(expected);
