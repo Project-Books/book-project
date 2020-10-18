@@ -22,7 +22,6 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -31,10 +30,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static com.karankumar.bookproject.utils.SecurityTestUtils.TEST_USER_NAME;
+import static com.karankumar.bookproject.utils.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.utils.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
+@Transactional
 class UserServiceTest {
     private final UserService userService;
     private final UserRepository userRepository;
@@ -47,18 +54,10 @@ class UserServiceTest {
                                        .build();
 
     @Autowired
-    UserServiceTest(UserService userService,
-                    UserRepository userRepository,
-                    RoleRepository roleRepository) {
+    UserServiceTest(UserService userService, UserRepository userRepository, RoleRepository roleRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-    }
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
     }
 
     @Test
@@ -130,7 +129,6 @@ class UserServiceTest {
     }
 
     @Test
-    @Transactional
     void usernameIsNotInUse_UsernameInUse_returnsFalse() {
         userRepository.save(validUser);
 
@@ -159,5 +157,26 @@ class UserServiceTest {
         userRepository.save(validUser);
 
         assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
+    }
+
+    @Test
+    void getLoggedUser() {
+        Optional<User> dbUser = userRepository.findByUsername(TEST_USER_NAME);
+        User currentUser = userService.getCurrentUser();
+
+        assertThat(currentUser.getUsername()).isEqualTo(TEST_USER_NAME);
+        assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
+    }
+
+    @Test
+    void findAll() {
+        List<User> users = Arrays.asList(
+                getTestUser(userRepository),
+                insertTestUser(userRepository, "test1"),
+                insertTestUser(userRepository, "test2"),
+                insertTestUser(userRepository, "test3")
+        );
+
+        assertThat(userService.findAll()).containsAll(users);
     }
 }

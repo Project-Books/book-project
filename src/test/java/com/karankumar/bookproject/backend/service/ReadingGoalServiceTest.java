@@ -32,7 +32,8 @@ class ReadingGoalServiceTest {
     private final ReadingGoalService goalService;
     private ReadingGoal existingReadingGoal;
 
-    private ReadingGoalServiceTest(@Autowired ReadingGoalService goalService) {
+    @Autowired
+    ReadingGoalServiceTest(ReadingGoalService goalService) {
         this.goalService = goalService;
     }
 

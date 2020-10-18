@@ -33,16 +33,22 @@ import java.util.List;
 
 @IntegrationTest
 class PredefinedShelfTest {
-    @Autowired BookService bookService;
+    private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
+
+    @Autowired
+    PredefinedShelfTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
+    }
 
     @Test
-    void testPredefinedShelvesWithoutBooksShouldStillExist(
-            @Autowired PredefinedShelfService predefinedShelfService) {
+    void testPredefinedShelvesWithoutBooksShouldStillExist() {
         // given
         resetBookService();
 
         // when
-        List<PredefinedShelf> shelves = predefinedShelfService.findAll();
+        List<PredefinedShelf> shelves = predefinedShelfService.findAllForLoggedInUser();
 
         // then
         assertSoftly(

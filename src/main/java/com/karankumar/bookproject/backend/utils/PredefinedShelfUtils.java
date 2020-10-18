@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import com.karankumar.bookproject.backend.entity.Book;
@@ -58,7 +57,7 @@ public class PredefinedShelfUtils {
     }
 
     public List<String> getPredefinedShelfNamesAsStrings() {
-       return predefinedShelfService.findAll().stream()
+       return predefinedShelfService.findAllForLoggedInUser().stream()
                .map(Shelf::getShelfName)
                .collect(Collectors.toList());
     }
@@ -80,7 +79,7 @@ public class PredefinedShelfUtils {
 
         PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
         PredefinedShelf predefinedShelf =
-                predefinedShelfService.findByPredefinedShelfName(predefinedShelfName);
+                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfName);
         if (predefinedShelf == null) {
             books = new HashSet<>();
         } else {
@@ -90,7 +89,7 @@ public class PredefinedShelfUtils {
     }
 
     public Set<Book> getBooksInAllPredefinedShelves() {
-        return getBooksInPredefinedShelves(predefinedShelfService.findAll());
+        return getBooksInPredefinedShelves(predefinedShelfService.findAllForLoggedInUser());
     }
 
     /**
