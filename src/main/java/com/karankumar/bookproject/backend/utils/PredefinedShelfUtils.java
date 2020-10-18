@@ -73,16 +73,14 @@ public class PredefinedShelfUtils {
      * Fetches all of the books in the chosen predefined shelf
      */
     public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
-        Set<Book> books;
         if (isAllBooksShelf(chosenShelf)) {
             return getBooksInAllPredefinedShelves();
         }
 
         return getPredefinedShelfName(chosenShelf)
-                .map(predefinedShelfName -> predefinedShelfService.findByPredefinedShelfName(predefinedShelfName))
-                .map(repository -> repository.getBooks())
+                .map(predefinedShelfService::findByPredefinedShelfName)
+                .map(PredefinedShelf::getBooks)
                 .orElse(new HashSet<>());
-
     }
 
     public Set<Book> getBooksInAllPredefinedShelves() {
