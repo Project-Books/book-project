@@ -95,8 +95,10 @@ class PageStatisticsTest {
     
     @Test
     void testNoBooksReadThisYear() {
+        // given
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
     	
+        // when
         Book shortBook = new Book("Shortest book this year",
                 new Author("Joe", "Bloggs"), readShelf);
         shortBook.setNumberOfPages(10);
@@ -105,13 +107,17 @@ class PageStatisticsTest {
         bookService.save(shortBook);
         
         pageStatistics = new PageStatistics(predefinedShelfService);
+        
+        // then
         assertThat(pageStatistics.findBookWithMostPagesThisYear()).isEqualTo(null);
     }
     
     @Test
     void testLongestBookReadThisYear() {
+        // given
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
 
+        // when
         Book longBook = new Book("Longest book this year",
                 new Author("Joe", "Bloggs"), readShelf);
         longBook.setNumberOfPages(100);
@@ -127,13 +133,19 @@ class PageStatisticsTest {
         bookService.save(shortBook);
         
         pageStatistics = new PageStatistics(predefinedShelfService);
-        assertThat(pageStatistics.findBookWithMostPagesThisYear().getTitle()).isEqualTo(longBook.getTitle());
+        
+        // then
+        assertThat(pageStatistics.findBookWithMostPagesThisYear()
+                                 .getTitle())
+                                 .isEqualTo(longBook.getTitle());
     }
     
     @Test
     void testShortestBookReadThisYear() {
+        // given
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
 
+        // when
         Book longBook = new Book("Longest book this year",
                 new Author("Joe", "Bloggs"), readShelf);
         longBook.setNumberOfPages(100);
@@ -149,13 +161,19 @@ class PageStatisticsTest {
         bookService.save(shortBook);
         
         pageStatistics = new PageStatistics(predefinedShelfService);
-        assertThat(pageStatistics.findBookWithLeastPagesThisYear().getTitle()).isEqualTo(shortBook.getTitle());
+        
+        // then
+        assertThat(pageStatistics.findBookWithLeastPagesThisYear()
+                                 .getTitle())
+                                 .isEqualTo(shortBook.getTitle());
    }
     
    @Test
    void testAverageBookLengthReadThisYear() {
+        // given
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
 
+        // when
         Book longBook = new Book("Longest book this year",
                 new Author("Joe", "Bloggs"), readShelf);
         longBook.setNumberOfPages(100);
@@ -171,8 +189,13 @@ class PageStatisticsTest {
         bookService.save(shortBook);
         
         pageStatistics = new PageStatistics(predefinedShelfService);
-        Double expectedAverage = (double) ((longBook.getNumberOfPages() + shortBook.getNumberOfPages()) / 2);
-        assertThat(pageStatistics.calculateAveragePageLengthThisYear()).isEqualTo(expectedAverage);
+        
+        // then
+        Double expectedAverage;
+        expectedAverage = (double) ((longBook.getNumberOfPages() + 
+                                     shortBook.getNumberOfPages()) / 2);
+        assertThat(pageStatistics.calculateAveragePageLengthThisYear())
+                                 .isEqualTo(expectedAverage);
    }
 
     private void resetPageStatistics() {

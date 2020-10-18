@@ -209,7 +209,9 @@ class StatisticsViewTest {
     }
     
     private void yearStatisticsAreAbsent() {
-        statisticsAreAbsent(AVERAGE_PAGE_LENGTH_THIS_YEAR,LONGEST_BOOK_THIS_YEAR,SHORTEST_BOOK_THIS_YEAR);
+        statisticsAreAbsent(AVERAGE_PAGE_LENGTH_THIS_YEAR,
+                            LONGEST_BOOK_THIS_YEAR,
+                            SHORTEST_BOOK_THIS_YEAR);
     }
 
     private void statisticsAreAbsent(StatisticType... statisticTypes) {

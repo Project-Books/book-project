@@ -51,10 +51,11 @@ public class PageStatistics extends Statistics {
      */
     public Book findBookWithMostPagesThisYear() {
         Book bookWithMostPages = null;
-    	booksWithPageCount.removeIf(book -> (book.getDateStartedReading() == null || 
-				 							 book.getDateStartedReading()
-				 							 	 .getYear() != Year.now().getValue()));        
-    	if (!booksWithPageCount.isEmpty()) {
+        booksWithPageCount.removeIf(book -> 
+        (book.getDateStartedReading() == null || 
+         book.getDateStartedReading()
+             .getYear() != Year.now().getValue()));
+        if (!booksWithPageCount.isEmpty()) {
             booksWithPageCount.sort(Comparator.comparing(Book::getNumberOfPages));
             bookWithMostPages = booksWithPageCount.get(booksWithPageCount.size() - 1);
         }
@@ -78,10 +79,11 @@ public class PageStatistics extends Statistics {
      */
     public Book findBookWithLeastPagesThisYear() {
         Book bookWithMostPages = null;
-    	booksWithPageCount.removeIf(book -> (book.getDateStartedReading() == null || 
-				 							 book.getDateStartedReading()
-				 							 	 .getYear() != Year.now().getValue()));        
-    	if (!booksWithPageCount.isEmpty()) {
+        booksWithPageCount.removeIf(book -> 
+        (book.getDateStartedReading() == null || 
+         book.getDateStartedReading()
+             .getYear() != Year.now().getValue()));
+        if (!booksWithPageCount.isEmpty()) {
             booksWithPageCount.sort(Comparator.comparing(Book::getNumberOfPages));
             bookWithMostPages = booksWithPageCount.get(0);
         }
@@ -119,9 +121,10 @@ public class PageStatistics extends Statistics {
      * This average only includes books that have a page length specified
      */
     public Double calculateAveragePageLengthThisYear() {
-    	booksWithPageCount.removeIf(book -> (book.getDateStartedReading() == null || 
-    										 book.getDateStartedReading()
-    										 	 .getYear() != Year.now().getValue()));
+    	booksWithPageCount.removeIf(book -> 
+    	(book.getDateStartedReading() == null || 
+	     book.getDateStartedReading()
+             .getYear() != Year.now().getValue()));
         int totalNumberOfPages = booksWithPageCount.stream()
                                                    .mapToInt(Book::getNumberOfPages)
                                                    .sum();
