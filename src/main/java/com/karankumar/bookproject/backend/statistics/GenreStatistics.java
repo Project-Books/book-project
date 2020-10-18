@@ -91,7 +91,7 @@ public class GenreStatistics extends Statistics {
         BookGenre mostLikedBookGenre = null;
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
         if (!genreRatings.isEmpty() && genreRatings.size() > DEFAULT_MINIMUM_CALCULATE_GENRE_STATISTICS) {
-            mostLikedBookGenre = genreRatings.get(genreRatings.size() - DEFAULT_MINIMUM_CALCULATE_GENRE_STATISTICS)
+            mostLikedBookGenre = genreRatings.get(genreRatings.size() - 1)
                                              .getKey();
         }
         return mostLikedBookGenre;
