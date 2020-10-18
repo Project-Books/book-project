@@ -138,7 +138,7 @@ class ReadingGoalViewTest {
     @Disabled
         // TODO: fix failing test. This runs fine in IntelliJ, but fails when `mvn clean install` is executed on Windows
     void onlyReadBooksWithAFinishDateCountTowardsGoal() {
-        int numberOfShelves = predefinedShelfService.findAll().size();
+        int numberOfShelves = predefinedShelfService.findAllForLoggedInUser().size();
         assumeThat(numberOfShelves).isEqualTo(4);
 
         Assumptions.assumeTrue(numberOfShelves == 4);

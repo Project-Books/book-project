@@ -15,35 +15,27 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
+package com.karankumar.bookproject.utils;
 
-package com.karankumar.bookproject.backend.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.karankumar.bookproject.backend.entity.account.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.karankumar.bookproject.backend.repository.UserRepository;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.util.Set;
+public class SecurityTestUtils {
+    private SecurityTestUtils() {}
 
-@Entity
-@JsonIgnoreProperties(value = {"id", "books"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CustomShelf extends Shelf {
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customShelf")
-    @Getter
-    @Setter
-    protected Set<Book> books;
+    // this has to be the same value as in data.sql
+    public static final String TEST_USER_NAME = "testUser";
 
-    public CustomShelf(String shelfName, User user) {
-        super(shelfName, user);
+    public static User getTestUser(UserRepository repository) {
+        return repository.findByUsername(TEST_USER_NAME).orElseThrow();
     }
 
-    public void setShelfName(String shelfName) {
-        super.shelfName = shelfName;
+    public static User insertTestUser(UserRepository repository, String username) {
+        User user = User.builder()
+                .username(username)
+                .email(username + "@user.user")
+                .password("testPa$$123_Paf1")
+                .build();
+        return repository.save(user);
     }
 }

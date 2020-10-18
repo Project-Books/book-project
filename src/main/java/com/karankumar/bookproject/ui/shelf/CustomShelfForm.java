@@ -135,7 +135,7 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     private void setCustomShelfBean() {
-        binder.setBean(new CustomShelf(shelfNameField.getValue()));
+        binder.setBean(customShelfService.createCustomShelf(shelfNameField.getValue()));
     }
 
     @VisibleForTesting
