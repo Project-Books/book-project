@@ -37,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +123,6 @@ class ReadingGoalViewTest {
 
     @Test
     void showTargetMetMessageWhenGoalMet() {
-        assumeThat(goalService.findAll()).isEmpty();
         String expected = ReadingGoalView.TARGET_MET;
         String actual = goalView.calculateProgress(GOAL_TARGET, GOAL_TARGET);
         assertThat(actual).isEqualTo(expected);
@@ -178,8 +176,6 @@ class ReadingGoalViewTest {
 
     @Test
     void showCorrectInformationWhenGoalIsSetOrUpdated() {
-        assumeThat(goalService.findAll()).isEmpty();
-
         // given
         ReadingGoal readingGoal = new ReadingGoal(GOAL_TARGET, getRandomGoalType());
 
