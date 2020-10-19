@@ -25,8 +25,12 @@ public class BookProgressId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BookProgressId bookProgressId = (BookProgressId) o;
         return bookId.equals(bookProgressId.bookId) &&
                 userId.equals(bookProgressId.userId);
