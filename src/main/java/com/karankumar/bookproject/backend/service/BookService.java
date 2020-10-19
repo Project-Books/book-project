@@ -28,6 +28,8 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PublisherRepository;
 
 import lombok.extern.java.Log;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,22 +55,21 @@ public class BookService {
 
     public void save(Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
-        	if(bookHasPublisher(book)) {
-        		addBookToPublisher(book);
-        		publisherService.save(book.getPublisher());
-        	}
+        	addBookToPublisher(book);
+        	savePublisher(book.getPublisher());
             addBookToAuthor(book);
             authorService.save(book.getAuthor());
             bookRepository.save(book);
         }
     }
+    
 
     private boolean bookHasAuthorAndPredefinedShelf(Book book) {
         return book != null && book.getAuthor() != null && book.getPredefinedShelf() != null;
     }
     
     private boolean bookHasPublisher(Book book) {
-    	return book.getPublisher() != null;
+    	return isValidPublisher(book.getPublisher());
     }
 
     private void addBookToAuthor(Book book) {
@@ -80,9 +81,21 @@ public class BookService {
     
     private void addBookToPublisher(Book book) {
         Publisher publisher = book.getPublisher();
-        Set<Book> publisherBooks = publisher.getBooks();
-        publisherBooks.add(book);
-        publisher.setBooks(publisherBooks);
+        if(isValidPublisher(publisher)) {
+        	Set<Book> publisherBooks = publisher.getBooks();
+            publisherBooks.add(book);
+            publisher.setBooks(publisherBooks);
+        }
+    }
+    
+    private void savePublisher(Publisher publisher) {
+    	if(isValidPublisher(publisher)) {
+    		publisherService.save(publisher);
+    	}
+    }
+    
+    private boolean isValidPublisher(Publisher publisher) {
+    	return publisher != null && !StringUtils.isEmpty(publisher.getName());
     }
 
     public Long count() {

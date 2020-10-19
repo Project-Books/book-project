@@ -23,7 +23,8 @@ import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;	
 import com.karankumar.bookproject.backend.entity.CustomShelf;	
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Publisher;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import org.apache.commons.io.FileUtils;
 
@@ -51,7 +52,9 @@ import java.util.Set;
 @IntegrationTest
 @DisplayName("BookService should")
 class BookServiceTest {
+
     private final AuthorService authorService;
+    private final PublisherService publisherService;
     private final BookService bookService;
     private final CustomShelfService customShelfService;
     private final TagService tagService;
@@ -60,12 +63,14 @@ class BookServiceTest {
     private Book validBook;
     private PredefinedShelf toRead;
     private Author author;
+    private Publisher publisher;
 
     @Autowired
-    BookServiceTest(AuthorService authorService, BookService bookService,
+    BookServiceTest(AuthorService authorService, PublisherService publisherService, BookService bookService,
                     CustomShelfService customShelfService, TagService tagService,
                     PredefinedShelfService predefinedShelfService) {
         this.authorService = authorService;
+        this.publisherService = publisherService;
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.tagService = tagService;
@@ -75,18 +80,20 @@ class BookServiceTest {
     @BeforeEach
     public void setup() {
         resetServices();
-        resetAuthorAndBook();
+        resetAuthorPublisherAndBook();
     }
 
-    private void resetAuthorAndBook() {
+    private void resetAuthorPublisherAndBook() {
         toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
         author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author, toRead);
+        publisher = new Publisher("Test Publisher");
     }
 
     private void resetServices() {
         bookService.deleteAll();
         authorService.deleteAll();
+        publisherService.deleteAll();
         customShelfService.deleteAll();
         tagService.deleteAll();
     }
@@ -215,6 +222,8 @@ class BookServiceTest {
         // then
         JSONAssert.assertEquals(expectedJsonString, actualJsonString, JSONCompareMode.NON_EXTENSIBLE);
     }
+   
+
 
     @Test
     @Transactional
@@ -234,6 +243,7 @@ class BookServiceTest {
         tagService.save(tag2);
 
         Book book = new Book("Another Book Name", author, toRead);
+        book.setPublisher(publisher);
         book.setNumberOfPages(420);
         book.setPagesRead(42);
         book.setBookGenre(BookGenre.ADVENTURE);
