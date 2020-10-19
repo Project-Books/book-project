@@ -4,8 +4,10 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.entity.book.BookProgress;
+import com.karankumar.bookproject.backend.entity.book.BookProgressBuilder;
 import com.karankumar.bookproject.backend.entity.book.BookProgressId;
 import com.karankumar.bookproject.backend.entity.enums.State;
+import com.karankumar.bookproject.backend.repository.ProgressRepository;
 import com.karankumar.bookproject.backend.service.BookProgressService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -23,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 class ProgressTest {
@@ -34,6 +35,8 @@ class ProgressTest {
 
     private final BookProgressService bookProgressService;
 
+    private final ProgressRepository progressRepository;
+
     private static Book testBook1;
     private static PredefinedShelf toRead;
     private static User user;
@@ -41,10 +44,11 @@ class ProgressTest {
 
     @Autowired
     ProgressTest(BookService bookService, PredefinedShelfService predefinedShelfService,
-                 BookProgressService bookProgressService) {
+                 BookProgressService bookProgressService, ProgressRepository progressRepository) {
         this.bookService = bookService;
         this.predefinedShelfService = predefinedShelfService;
         this.bookProgressService = bookProgressService;
+        this.progressRepository = progressRepository;
     }
 
     @BeforeEach
@@ -56,9 +60,9 @@ class ProgressTest {
                 "sj%kfn%ui%4#3#78t43uw3n@%",
                 true,
                 Collections.singleton(new Role("role")));
-        id = new BookProgressId(testBook1.getId(), user.getId());
         resetBookService();
         saveBooks();
+        id = new BookProgressId(testBook1.getId(), user.getId());
     }
 
     private void saveBooks() {
@@ -77,7 +81,6 @@ class ProgressTest {
     @Test
     @DisplayName("[Valid] Progress Service should addToMyToBeReadState()")
     void addToMyToBeReadList() {
-        System.out.println(id.getBookId());
         bookProgressService.addToMyToBeReadState(id);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
         Assertions.assertAll("Assert valid insertion in my to be read",
@@ -110,20 +113,6 @@ class ProgressTest {
                 () -> assertNull(myProgress.get(0).getDateFinishedReading()),
                 () -> assertNull(myProgress.get(0).getRating())
         );
-    }
-
-    @Test
-    @DisplayName("[Wrong Id] Progress Service shouldn't startReading()")
-    void shouldntStartReadingTestWithExceptionThrown() {
-        bookProgressService.addToMyToBeReadState(id);
-        Exception exception =
-                assertThrows(Exception.class, () -> bookProgressService.startReading(id));
-
-        String expectedMessage = "You don't have any progress on this book";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-
     }
 
     @Test
@@ -187,6 +176,81 @@ class ProgressTest {
                 () -> assertNotNull(myProgress.get(0).getDateStartedReading()),
                 () -> assertNotNull(myProgress.get(0).getDateFinishedReading())
         );
+    }
+
+    @Test
+    @DisplayName("[Wrong Id] Progress Service shouldn't getMyBookProgressById()")
+    void shouldntGetNonExistedIdTestWithExceptionThrown() {
+        Exception exception =
+                assertThrows(Exception.class, () -> bookProgressService.getMyBookProgressById(id));
+        assertEquals("You don't have any progress on this book", exception.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("[Wrong State] Progress Service shouldn't startReading()")
+    void shouldntStartReadingUnlessInToBeReadTestWithExceptionThrown() {
+        progressRepository.save(new BookProgressBuilder()
+                .withId(id)
+                .build());
+        Exception exception =
+                assertThrows(Exception.class,
+                        () -> bookProgressService.startReading(id));
+        assertEquals("You can't start reading a book with your current state",
+                exception.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("[Wrong State] Progress Service shouldn't updateMyBookProgress()")
+    void shouldntUpdateUnlessStartedTestWithExceptionThrown() {
+        bookProgressService.addToMyToBeReadState(id);
+        Exception exception =
+                assertThrows(Exception.class,
+                        () -> bookProgressService.updateMyBookProgress(id, 50));
+        assertEquals("You can't update unless you're reading the book",
+                exception.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("[Wrong State] Progress Service shouldn't updateMyBookProgress()")
+    void shouldntUpdateWithGreaterThanBookPagesTestWithExceptionThrown() throws Exception {
+        bookProgressService.addToMyToBeReadState(id);
+        bookProgressService.startReading(id);
+        Exception exception =
+                assertThrows(Exception.class,
+                        () -> bookProgressService.updateMyBookProgress(id, 101));
+        assertEquals("Updated pages is more than book's pages",
+                exception.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("[Wrong State] Progress Service shouldn't updateMyBookProgress()")
+    void shouldntRateUnlessFinishTestWithExceptionThrown() throws Exception {
+        bookProgressService.addToMyToBeReadState(id);
+        bookProgressService.startReading(id);
+        bookProgressService.updateMyBookProgress(id, 10);
+        Exception exception =
+                assertThrows(Exception.class,
+                        () -> bookProgressService
+                                .doOnAfterfinishReading(id, RatingScale.EIGHT_POINT_FIVE,
+                                        "nt bad"));
+        assertEquals("You can't rate or review unless you finish the book!",
+                exception.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("[Not Valid] Progress Service shouldn't getBook()")
+    void shouldntGetNonExistedBookTestWithExceptionThrown() {
+        Exception exception =
+                assertThrows(Exception.class,
+                        () -> bookProgressService.getBook(new Random().nextLong()));
+        assertEquals("Book Not found In the database",
+                exception.getMessage());
+
     }
 
 }

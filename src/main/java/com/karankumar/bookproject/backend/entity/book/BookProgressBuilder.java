@@ -40,10 +40,6 @@ public class BookProgressBuilder {
     }
 
     public BookProgressBuilder withPagesRead(Integer pagesRead, Book book) throws Exception {
-        if (book == null){ // We can't read a book that's not there in database!
-            throw new Exception("Updated pages is more than book's pages");
-        }
-
         if (pagesRead > book.getNumberOfPages()){ // Updated request is more than book's pages.
             throw new Exception("Updated pages is more than book's pages");
         } else if (pagesRead.equals(book.getNumberOfPages())) { // I finished the book

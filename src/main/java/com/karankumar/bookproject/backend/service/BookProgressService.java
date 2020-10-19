@@ -56,7 +56,7 @@ public class BookProgressService {
      * @throws Exception exception
      */
     public BookProgress startReading(BookProgressId id) throws Exception {
-        BookProgress bookProgress = getMyBookProgress(id);
+        BookProgress bookProgress = getMyBookProgressById(id);
         if (bookProgress.getState() == State.TO_BE_READ) {
             return progressRepository.save(new BookProgressBuilder()
                     .withId(id)
@@ -65,7 +65,7 @@ public class BookProgressService {
                     .withStartDate(LocalDate.now())
                     .build());
         } else {
-            throw new Exception("You can't start reading a book that isn't in to be read");
+            throw new Exception("You can't start reading a book with your current state");
         }
     }
 
@@ -79,7 +79,7 @@ public class BookProgressService {
      */
     public BookProgress updateMyBookProgress(BookProgressId id,
                                              Integer pagesRead) throws Exception {
-        BookProgress bookProgress = getMyBookProgress(id);
+        BookProgress bookProgress = getMyBookProgressById(id);
         if (bookProgress.getState() == State.IN_PROGRESS) {
             return progressRepository.save(new BookProgressBuilder()
                     .withId(id)
@@ -103,7 +103,7 @@ public class BookProgressService {
      */
     public BookProgress doOnAfterfinishReading(BookProgressId id, RatingScale rating,
                                                String bookReview) throws Exception {
-        BookProgress bookProgress = getMyBookProgress(id);
+        BookProgress bookProgress = getMyBookProgressById(id);
         if (bookProgress.getState() == State.FINISHED) {
             return progressRepository.save(new BookProgressBuilder()
                     .withId(id)
@@ -125,8 +125,10 @@ public class BookProgressService {
      * @param bookId book id
      * @return book if there or null
      */
-    public Book getBook(Long bookId) {
-        return bookRepository.findById(bookId).orElse(null);
+    public Book getBook(Long bookId) throws Exception {
+        return bookRepository.findById(bookId).orElseThrow(()
+                ->
+                new Exception("Book Not found In the database"));
     }
 
     /**
@@ -151,7 +153,7 @@ public class BookProgressService {
      * @return Book progress
      * @throws Exception exception
      */
-    public BookProgress getMyBookProgress(BookProgressId id) throws Exception {
+    public BookProgress getMyBookProgressById(BookProgressId id) throws Exception {
         return progressRepository.findById(id)
                                  .orElseThrow(() ->
                                          new Exception("You don't have any progress on this book"));
