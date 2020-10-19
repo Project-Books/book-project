@@ -30,21 +30,21 @@ class BookProgressIdTest {
     void compareBySameBookAndUserId() {
         BookProgressId id1 = new BookProgressId(10L, 5L);
         BookProgressId id2 = new BookProgressId(10L, 5L);
-        assertThat(id1).isEqualTo(id2);
+        assertThat(id1.equals(id2)).isTrue();
     }
 
     @Test
     @DisplayName("BookProgressId Class should return true")
     void compareBySameObject() {
         BookProgressId id = new BookProgressId(10L, 5L);
-        assertThat(id).isEqualTo(id);
+        assertThat(id.equals(id)).isTrue();
     }
 
     @Test
     @DisplayName("BookProgressId Class should return false")
     void compareByNull() {
         BookProgressId id = new BookProgressId(10L, 5L);
-        assertThat(id).isNotEqualTo(null);
+        assertThat(id.equals(null)).isFalse();
     }
 
     @Test
@@ -52,7 +52,7 @@ class BookProgressIdTest {
     void compareByAnotherObject() {
         BookProgressId id = new BookProgressId(10L, 5L);
         Integer x = 10;
-        assertThat(x).isNotEqualTo(id);
+        assertThat(x.equals(id)).isFalse();
     }
 
     @Test
