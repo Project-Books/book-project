@@ -32,6 +32,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.spring.SpringServlet;
 
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType.PAGES;
+import static com.karankumar.bookproject.util.ReadingGoalTestUtils.resetGoalService;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,15 +44,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Random;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType.BOOKS;
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howManyReadThisYear;
-import static com.karankumar.bookproject.util.ReadingGoalTestUtils.resetGoalService;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
