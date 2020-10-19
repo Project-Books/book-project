@@ -83,7 +83,7 @@ class ReadingGoalViewTest {
     }
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
