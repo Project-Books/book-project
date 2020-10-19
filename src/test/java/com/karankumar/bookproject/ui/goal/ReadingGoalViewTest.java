@@ -52,7 +52,6 @@ import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howMa
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-
 @IntegrationTest
 @WebAppConfiguration
 @DisplayName("ReadingGoalView should")
@@ -60,15 +59,25 @@ class ReadingGoalViewTest {
     private static Routes routes;
     private final int PAGES_PER_BOOK = 300;
 
-    @Autowired private ApplicationContext ctx;
-    @Autowired private BookService bookService;
+    private final ApplicationContext ctx;
+    private final BookService bookService;
 
-    private ReadingGoalService goalService;
-    private PredefinedShelfService predefinedShelfService;
+    private final ReadingGoalService goalService;
+    private final PredefinedShelfService predefinedShelfService;
     private ReadingGoalView goalView;
 
     private final int GOAL_TARGET = 52;
     private final int READ_BOOKS_TO_ADD = 5;
+
+    @Autowired
+    ReadingGoalViewTest(ApplicationContext ctx, ReadingGoalService readingGoalService,
+                        PredefinedShelfService predefinedShelfService,
+                        BookService bookService) {
+        this.ctx = ctx;
+        this.goalService = readingGoalService;
+        this.predefinedShelfService = predefinedShelfService;
+        this.bookService = bookService;
+    }
 
     @BeforeAll
     public static void discoverRoutes() {
@@ -76,15 +85,12 @@ class ReadingGoalViewTest {
     }
 
     @BeforeEach
-    public void setup(@Autowired ReadingGoalService goalService,
-                      @Autowired PredefinedShelfService predefinedShelfService) {
+    public void setup() {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
         resetGoalService(goalService);
 
-        this.goalService = goalService;
-        this.predefinedShelfService = predefinedShelfService;
         goalView = new ReadingGoalView(goalService, predefinedShelfService);
     }
 
