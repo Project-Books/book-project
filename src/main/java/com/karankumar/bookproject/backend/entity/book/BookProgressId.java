@@ -3,7 +3,6 @@ package com.karankumar.bookproject.backend.entity.book;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,7 +12,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 @Embeddable
 public class BookProgressId implements Serializable {
 

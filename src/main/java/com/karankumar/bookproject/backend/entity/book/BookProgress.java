@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.entity.enums.State;
 import com.karankumar.bookproject.backend.json.LocalDateSerializer;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.EmbeddedId;
@@ -13,7 +15,9 @@ import javax.persistence.Entity;
 import java.time.LocalDate;
 
 @Entity
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 public class BookProgress {
 
