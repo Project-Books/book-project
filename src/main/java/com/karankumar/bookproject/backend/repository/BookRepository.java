@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.book.Book;
+import com.karankumar.bookproject.backend.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

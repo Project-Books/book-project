@@ -1,5 +1,6 @@
 package com.karankumar.bookproject.backend.entity.book;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.entity.enums.State;
 

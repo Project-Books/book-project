@@ -12,11 +12,10 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity.book;
+package com.karankumar.bookproject.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.karankumar.bookproject.backend.entity.*;
 import com.karankumar.bookproject.backend.json.LocalDateSerializer;
 import lombok.AccessLevel;
 import lombok.Data;

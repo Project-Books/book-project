@@ -19,7 +19,7 @@ package com.karankumar.bookproject.ui.shelf;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
-import com.karankumar.bookproject.backend.entity.book.Book;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;

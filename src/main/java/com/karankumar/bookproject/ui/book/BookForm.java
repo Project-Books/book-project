@@ -19,9 +19,9 @@ package com.karankumar.bookproject.ui.book;
 
 import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.book.Book;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.book.BookGenre;
+import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;

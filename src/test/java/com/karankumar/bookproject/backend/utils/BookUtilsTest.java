@@ -1,6 +1,6 @@
 package com.karankumar.bookproject.backend.utils;
 
-import com.karankumar.bookproject.backend.entity.book.Book;
+import com.karankumar.bookproject.backend.entity.Book;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 

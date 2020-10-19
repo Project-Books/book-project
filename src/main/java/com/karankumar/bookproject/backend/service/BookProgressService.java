@@ -1,7 +1,7 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.karankumar.bookproject.backend.entity.book.Book;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.book.BookProgress;
 import com.karankumar.bookproject.backend.entity.book.BookProgressBuilder;
 import com.karankumar.bookproject.backend.entity.book.BookProgressId;

@@ -18,7 +18,7 @@
 
 package com.karankumar.bookproject.ui.shelf;
 
-import com.karankumar.bookproject.backend.entity.book.Book;
+import com.karankumar.bookproject.backend.entity.Book;
 
 class BookFilters {
     private String bookTitle;

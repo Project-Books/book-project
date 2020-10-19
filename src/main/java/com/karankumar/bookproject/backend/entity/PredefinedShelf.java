@@ -19,7 +19,6 @@ package com.karankumar.bookproject.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.karankumar.bookproject.backend.entity.account.User;
-import com.karankumar.bookproject.backend.entity.book.Book;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

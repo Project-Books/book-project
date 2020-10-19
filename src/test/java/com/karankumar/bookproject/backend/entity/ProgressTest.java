@@ -3,7 +3,6 @@ package com.karankumar.bookproject.backend.entity;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
-import com.karankumar.bookproject.backend.entity.book.Book;
 import com.karankumar.bookproject.backend.entity.book.BookProgress;
 import com.karankumar.bookproject.backend.entity.enums.State;
 import com.karankumar.bookproject.backend.service.BookProgressService;

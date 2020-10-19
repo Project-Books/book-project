@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.utils;
 
-import com.karankumar.bookproject.backend.entity.book.Book;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 
