@@ -8,6 +8,7 @@
       "seriesPosition": null,
       "edition": null,
       "bookRecommendedBy": null,
+      "isbn": null,
       "author": {
         "firstName": "Test First Name",
         "lastName": "Test Last Name"
@@ -31,6 +32,7 @@
       "seriesPosition": 3,
       "edition": "2nd edition",
       "bookRecommendedBy": "Peter Parker",
+      "isbn": "9780151010264",
       "author": {
         "firstName": "Test First Name",
         "lastName": "Test Last Name"

@@ -29,6 +29,7 @@ import com.vaadin.flow.spring.SpringServlet;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -38,6 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("CustomShelfForm should")
 class CustomShelfFormTest {
 
     private static Routes routes;
@@ -61,7 +63,7 @@ class CustomShelfFormTest {
     }
 
     @Test
-    void saveButtonShouldBeInitiallyGreyedOut () {
+    void disableSaveButtonInitially() {
         // given
         // customShelfForm
 
@@ -83,7 +85,7 @@ class CustomShelfFormTest {
     }
 
     @Test
-    void saveButtonShouldBeGreyedOutWithExistingShelfName () {
+    void disableSaveButtonInitiallyWithExistingShelfName () {
         // given
         // customShelfForm
 
@@ -104,7 +106,7 @@ class CustomShelfFormTest {
     }
 
     @Test
-    void saveButtonShouldBeEnabledWithNonExistingShelfName () {
+    void enableSaveButtonWithNonExistingShelfName () {
         // given
         // customShelfForm
 
@@ -126,7 +128,7 @@ class CustomShelfFormTest {
     }
 
     @Test
-    void savingAndReopeningFormShouldClearTextfield () {
+    void clearTextfieldOnSavingAndReopening() {
         // given
         // customShelfForm
 
@@ -145,7 +147,7 @@ class CustomShelfFormTest {
     }
 
     @Test
-    void closingWithoutSavingAndReopeningFormShouldClearTextField () {
+    void clearTextFieldOnClosingWithoutSavingAndReopening() {
         // given
         // customShelfForm
 

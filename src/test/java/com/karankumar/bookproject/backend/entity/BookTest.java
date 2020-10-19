@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.TagService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,24 +33,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
+@Transactional
+@DisplayName("Book should")
 class BookTest {
-    private static BookService bookService;
-    private static TagService tagService;
+    private final BookService bookService;
+    private final TagService tagService;
+    private final PredefinedShelfService predefinedShelfService;
 
-    private static Book testBook;
-    private static Tag testTag;
+    private Book testBook;
+    private Tag testTag;
 
     @Autowired
-    public BookTest(PredefinedShelfService predefinedShelfService,
-                    BookService bookService,
-                    TagService tagService) {
-
-        PredefinedShelf toRead = predefinedShelfService.findToReadShelf();
-        BookTest.bookService = bookService;
-        BookTest.tagService = tagService;
-
-        testTag = new Tag("Test Tag");
-        testBook = createBook(toRead);
+    BookTest(BookService bookService, TagService tagService,
+             PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.tagService = tagService;
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     private Book createBook(PredefinedShelf shelf) {
@@ -63,23 +62,18 @@ class BookTest {
 
     @BeforeEach
     void setUp() {
-        resetBookService();
-        resetTagService();
-    }
-
-    private static void resetTagService() {
+        testTag = new Tag("Test Tag");
         tagService.deleteAll();
         tagService.save(testTag);
-    }
 
-    private static void resetBookService() {
+        testBook = createBook(predefinedShelfService.findToReadShelf());
         bookService.deleteAll();
         bookService.save(testBook);
     }
 
     @Test
     @Transactional
-    void testOrphanedTagsNotRemoved() {
+    void notRemoveOrphanTags() {
         // given
         assumeThat(tagService.findAll().size()).isOne();
 

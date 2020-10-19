@@ -19,7 +19,8 @@ import java.util.List;
 class TagServiceTest {
     private final TagService tagService;
 
-    TagServiceTest(@Autowired BookService bookService, @Autowired TagService tagService) {
+    @Autowired
+    TagServiceTest(BookService bookService, TagService tagService) {
         // Tags can only be deleted if it does not belong to a book, hence why the bookService needs
         // to be reset
         bookService.deleteAll();

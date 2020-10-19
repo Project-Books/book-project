@@ -24,6 +24,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -57,6 +58,8 @@ public class Book extends BaseEntity {
     private Integer seriesPosition;
     private String edition;
     private String bookRecommendedBy;
+    @ISBN
+    private String isbn;
 
     @ManyToOne(cascade =
             {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
