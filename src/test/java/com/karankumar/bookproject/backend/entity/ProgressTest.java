@@ -11,7 +11,6 @@ import com.karankumar.bookproject.backend.repository.ProgressRepository;
 import com.karankumar.bookproject.backend.service.BookProgressService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,10 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
 class ProgressTest {
@@ -83,16 +80,20 @@ class ProgressTest {
     void addToMyToBeReadList() {
         bookProgressService.addToMyToBeReadState(id);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
-        Assertions.assertAll("Assert valid insertion in my to be read",
-                () -> assertEquals(1, myProgress.size()),
-                () -> assertEquals(testBook1.getId(), myProgress.get(0).getId().getBookId()),
-                () -> assertEquals(user.getId(), myProgress.get(0).getId().getUserId()),
-                () -> assertEquals(State.TO_BE_READ, myProgress.get(0).getState()),
-                () -> assertNull(myProgress.get(0).getBookReview()),
-                () -> assertNull(myProgress.get(0).getDateFinishedReading()),
-                () -> assertNull(myProgress.get(0).getDateStartedReading()),
-                () -> assertNull(myProgress.get(0).getPagesRead()),
-                () -> assertNull(myProgress.get(0).getRating())
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(myProgress.size()).isEqualTo(1);
+                    softly.assertThat(myProgress.get(0).getId().getBookId())
+                          .isEqualTo(testBook1.getId());
+                    softly.assertThat(myProgress.get(0).getId().getUserId())
+                          .isEqualTo(user.getId());
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.TO_BE_READ);
+                    softly.assertThat(myProgress.get(0).getBookReview()).isNull();
+                    softly.assertThat(myProgress.get(0).getDateStartedReading()).isNull();
+                    softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNull();
+                    softly.assertThat(myProgress.get(0).getPagesRead()).isNull();
+                    softly.assertThat(myProgress.get(0).getRating()).isNull();
+                }
         );
     }
 
@@ -102,17 +103,23 @@ class ProgressTest {
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
-        Assertions.assertAll("Assert valid insertion in IN_PROGRESS list",
-                () -> assertEquals(1, myProgress.size()),
-                () -> assertEquals(testBook1.getId(), myProgress.get(0).getId().getBookId()),
-                () -> assertEquals(user.getId(), myProgress.get(0).getId().getUserId()),
-                () -> assertEquals(State.IN_PROGRESS, myProgress.get(0).getState()),
-                () -> assertEquals(0, myProgress.get(0).getPagesRead()),
-                () -> assertNotNull(myProgress.get(0).getDateStartedReading()),
-                () -> assertNull(myProgress.get(0).getBookReview()),
-                () -> assertNull(myProgress.get(0).getDateFinishedReading()),
-                () -> assertNull(myProgress.get(0).getRating())
+
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(myProgress.size()).isEqualTo(1);
+                    softly.assertThat(myProgress.get(0).getId().getBookId())
+                          .isEqualTo(testBook1.getId());
+                    softly.assertThat(myProgress.get(0).getId().getUserId())
+                          .isEqualTo(user.getId());
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.IN_PROGRESS);
+                    softly.assertThat(myProgress.get(0).getPagesRead()).isEqualTo(0);
+                    softly.assertThat(myProgress.get(0).getDateStartedReading()).isNotNull();
+                    softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNull();
+                    softly.assertThat(myProgress.get(0).getBookReview()).isNull();
+                    softly.assertThat(myProgress.get(0).getRating()).isNull();
+                }
         );
+
     }
 
     @Test
@@ -122,17 +129,23 @@ class ProgressTest {
         bookProgressService.startReading(id);
         bookProgressService.updateMyBookProgress(id, 10);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
-        Assertions.assertAll("Assert valid update in IN_PROGRESS state",
-                () -> assertEquals(1, myProgress.size()),
-                () -> assertEquals(testBook1.getId(), myProgress.get(0).getId().getBookId()),
-                () -> assertEquals(user.getId(), myProgress.get(0).getId().getUserId()),
-                () -> assertEquals(State.IN_PROGRESS, myProgress.get(0).getState()),
-                () -> assertEquals(10, myProgress.get(0).getPagesRead()),
-                () -> assertNotNull(myProgress.get(0).getDateStartedReading()),
-                () -> assertNull(myProgress.get(0).getBookReview()),
-                () -> assertNull(myProgress.get(0).getDateFinishedReading()),
-                () -> assertNull(myProgress.get(0).getRating())
+
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(myProgress.size()).isEqualTo(1);
+                    softly.assertThat(myProgress.get(0).getId().getBookId())
+                          .isEqualTo(testBook1.getId());
+                    softly.assertThat(myProgress.get(0).getId().getUserId())
+                          .isEqualTo(user.getId());
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.IN_PROGRESS);
+                    softly.assertThat(myProgress.get(0).getPagesRead()).isEqualTo(10);
+                    softly.assertThat(myProgress.get(0).getDateStartedReading()).isNotNull();
+                    softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNull();
+                    softly.assertThat(myProgress.get(0).getBookReview()).isNull();
+                    softly.assertThat(myProgress.get(0).getRating()).isNull();
+                }
         );
+
     }
 
     @Test
@@ -143,17 +156,23 @@ class ProgressTest {
         bookProgressService.updateMyBookProgress(id, 10);
         bookProgressService.updateMyBookProgress(id, 100);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
-        Assertions.assertAll("Assert valid insertion in FINISHED state",
-                () -> assertEquals(1, myProgress.size()),
-                () -> assertEquals(testBook1.getId(), myProgress.get(0).getId().getBookId()),
-                () -> assertEquals(user.getId(), myProgress.get(0).getId().getUserId()),
-                () -> assertEquals(State.FINISHED, myProgress.get(0).getState()),
-                () -> assertEquals(100, myProgress.get(0).getPagesRead()),
-                () -> assertNotNull(myProgress.get(0).getDateStartedReading()),
-                () -> assertNotNull(myProgress.get(0).getDateFinishedReading()),
-                () -> assertNull(myProgress.get(0).getBookReview()),
-                () -> assertNull(myProgress.get(0).getRating())
+
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(myProgress.size()).isEqualTo(1);
+                    softly.assertThat(myProgress.get(0).getId().getBookId())
+                          .isEqualTo(testBook1.getId());
+                    softly.assertThat(myProgress.get(0).getId().getUserId())
+                          .isEqualTo(user.getId());
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.FINISHED);
+                    softly.assertThat(myProgress.get(0).getPagesRead()).isEqualTo(100);
+                    softly.assertThat(myProgress.get(0).getDateStartedReading()).isNotNull();
+                    softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNotNull();
+                    softly.assertThat(myProgress.get(0).getBookReview()).isNull();
+                    softly.assertThat(myProgress.get(0).getRating()).isNull();
+                }
         );
+
     }
 
     @Test
@@ -165,26 +184,29 @@ class ProgressTest {
         bookProgressService.updateMyBookProgress(id, 100);
         bookProgressService.doOnAfterfinishReading(id, RatingScale.EIGHT_POINT_FIVE, "v good");
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
-        Assertions.assertAll("Assert valid insertion in start reading list",
-                () -> assertEquals(1, myProgress.size()),
-                () -> assertEquals(testBook1.getId(), myProgress.get(0).getId().getBookId()),
-                () -> assertEquals(user.getId(), myProgress.get(0).getId().getUserId()),
-                () -> assertEquals(State.FINISHED, myProgress.get(0).getState()),
-                () -> assertEquals(100, myProgress.get(0).getPagesRead()),
-                () -> assertEquals("v good", myProgress.get(0).getBookReview()),
-                () -> assertEquals(RatingScale.EIGHT_POINT_FIVE, myProgress.get(0).getRating()),
-                () -> assertNotNull(myProgress.get(0).getDateStartedReading()),
-                () -> assertNotNull(myProgress.get(0).getDateFinishedReading())
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(myProgress.size()).isEqualTo(1);
+                    softly.assertThat(myProgress.get(0).getId().getBookId())
+                          .isEqualTo(testBook1.getId());
+                    softly.assertThat(myProgress.get(0).getId().getUserId())
+                          .isEqualTo(user.getId());
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.FINISHED);
+                    softly.assertThat(myProgress.get(0).getPagesRead()).isEqualTo(100);
+                    softly.assertThat(myProgress.get(0).getDateStartedReading()).isNotNull();
+                    softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNotNull();
+                    softly.assertThat(myProgress.get(0).getBookReview()).isEqualTo("v good");
+                    softly.assertThat(myProgress.get(0).getRating())
+                          .isEqualTo(RatingScale.EIGHT_POINT_FIVE);
+                }
         );
     }
 
     @Test
     @DisplayName("[Wrong Id] Progress Service shouldn't getMyBookProgressById()")
     void shouldntGetNonExistedIdTestWithExceptionThrown() {
-        Exception exception =
-                assertThrows(Exception.class, () -> bookProgressService.getMyBookProgressById(id));
-        assertEquals("You don't have any progress on this book", exception.getMessage());
-
+        assertThatThrownBy(() -> bookProgressService.getMyBookProgressById(id))
+                .hasMessage("You don't have any progress on this book");
     }
 
     @Test
@@ -193,24 +215,16 @@ class ProgressTest {
         progressRepository.save(new BookProgressBuilder()
                 .withId(id)
                 .build());
-        Exception exception =
-                assertThrows(Exception.class,
-                        () -> bookProgressService.startReading(id));
-        assertEquals("You can't start reading a book with your current state",
-                exception.getMessage());
-
+        assertThatThrownBy(() -> bookProgressService.startReading(id))
+                .hasMessage("You can't start reading a book with your current state");
     }
 
     @Test
     @DisplayName("[Wrong State] Progress Service shouldn't updateMyBookProgress()")
     void shouldntUpdateUnlessStartedTestWithExceptionThrown() {
         bookProgressService.addToMyToBeReadState(id);
-        Exception exception =
-                assertThrows(Exception.class,
-                        () -> bookProgressService.updateMyBookProgress(id, 50));
-        assertEquals("You can't update unless you're reading the book",
-                exception.getMessage());
-
+        assertThatThrownBy(() -> bookProgressService.updateMyBookProgress(id, 50))
+                .hasMessage("You can't update unless you're reading the book");
     }
 
     @Test
@@ -218,12 +232,8 @@ class ProgressTest {
     void shouldntUpdateWithGreaterThanBookPagesTestWithExceptionThrown() throws Exception {
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
-        Exception exception =
-                assertThrows(Exception.class,
-                        () -> bookProgressService.updateMyBookProgress(id, 101));
-        assertEquals("Updated pages is more than book's pages",
-                exception.getMessage());
-
+        assertThatThrownBy(() -> bookProgressService.updateMyBookProgress(id, 101))
+                .hasMessage("Updated pages is more than book's pages");
     }
 
     @Test
@@ -232,25 +242,18 @@ class ProgressTest {
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
         bookProgressService.updateMyBookProgress(id, 10);
-        Exception exception =
-                assertThrows(Exception.class,
-                        () -> bookProgressService
-                                .doOnAfterfinishReading(id, RatingScale.EIGHT_POINT_FIVE,
-                                        "nt bad"));
-        assertEquals("You can't rate or review unless you finish the book!",
-                exception.getMessage());
+        assertThatThrownBy(() -> bookProgressService
+                .doOnAfterfinishReading(id, RatingScale.EIGHT_POINT_FIVE,
+                        "nt bad"))
+                .hasMessage("You can't rate or review unless you finish the book!");
 
     }
 
     @Test
     @DisplayName("[Not Valid] Progress Service shouldn't getBook()")
     void shouldntGetNonExistedBookTestWithExceptionThrown() {
-        Exception exception =
-                assertThrows(Exception.class,
-                        () -> bookProgressService.getBook(new Random().nextLong()));
-        assertEquals("Book Not found In the database",
-                exception.getMessage());
-
+        assertThatThrownBy(() -> bookProgressService.getBook(new Random().nextLong()))
+                .hasMessage("Book Not found In the database");
     }
 
 }
