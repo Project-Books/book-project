@@ -42,7 +42,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.time.LocalDate;
 import java.util.Random;
@@ -53,7 +52,6 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
-@WebAppConfiguration
 @DisplayName("ReadingGoalView should")
 class ReadingGoalViewTest {
     private static Routes routes;
@@ -61,9 +59,9 @@ class ReadingGoalViewTest {
 
     private final ApplicationContext ctx;
     private final BookService bookService;
-
     private final ReadingGoalService goalService;
     private final PredefinedShelfService predefinedShelfService;
+
     private ReadingGoalView goalView;
 
     private final int GOAL_TARGET = 52;
