@@ -65,9 +65,10 @@ public final class CalculateReadingGoal {
             // only books that have been given a finish date can count towards the reading goal
             if (bookHasFinishDateInThisYear(book)) {
                 int pages = (book.getNumberOfPages() == null) ? 0 : book.getNumberOfPages();
-                readThisYear += (lookingForBooks ? (1) : pages);
+                readThisYear += (lookingForBooks ? 1 : pages);
             }
         }
+
         return readThisYear;
     }
 

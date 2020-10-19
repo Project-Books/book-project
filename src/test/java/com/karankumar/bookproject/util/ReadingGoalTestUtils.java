@@ -1,47 +1,27 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2020  Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+
+*/
+
 package com.karankumar.bookproject.util;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
-
-import java.util.List;
-
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.util.DateUtils.dateIsInCurrentYear;
 
 public class ReadingGoalTestUtils {
     private ReadingGoalTestUtils() {}
-
-    static boolean wasBookReadThisYearAndHasPageCount(Book book) {
-        return hasBookBeenRead(book) && book.getNumberOfPages() != null &&
-                dateIsInCurrentYear(book.getDateFinishedReading());
-    }
-
-    static boolean hasBookBeenRead(Book book) {
-        PredefinedShelf.ShelfName predefinedShelfName =
-                book.getPredefinedShelf().getPredefinedShelfName();
-        return predefinedShelfName.equals(READ) && book.getDateFinishedReading() != null;
-    }
-
-    public static int findHowManyBooksInReadShelfWithFinishDate(List<Book> books) {
-        int count = 0;
-        for (Book book : books) {
-            if (hasBookBeenRead(book)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public static int findHowManyPagesInReadShelfWithFinishDate(List<Book> books) {
-        int count = 0;
-        for (Book book : books) {
-            if (wasBookReadThisYearAndHasPageCount(book)) {
-                count += book.getNumberOfPages();
-            }
-        }
-        return count;
-    }
 
     public static void resetGoalService(ReadingGoalService goalService) {
         goalService.deleteAll();
