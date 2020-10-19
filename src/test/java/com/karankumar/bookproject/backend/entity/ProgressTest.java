@@ -1,3 +1,20 @@
+/**
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
@@ -50,6 +67,7 @@ class ProgressTest {
 
     @BeforeEach
     public void setUp() {
+        // given
         toRead = predefinedShelfService.findToReadShelf();
         testBook1 = createBook("How the mind works", toRead);
         user = new User(new Random().nextLong(), "hassan",
@@ -78,8 +96,13 @@ class ProgressTest {
     @Test
     @DisplayName("[Valid] Progress Service should addToMyToBeReadState()")
     void addToMyToBeReadList() {
+        // given
         bookProgressService.addToMyToBeReadState(id);
+
+        // when
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
+
+        //then
         assertSoftly(
                 softly -> {
                     softly.assertThat(myProgress.size()).isEqualTo(1);
@@ -100,10 +123,14 @@ class ProgressTest {
     @Test
     @DisplayName("[Valid] Progress Service should startReading()")
     void startReadingTest() throws Exception {
+        // given
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
+
+        // when
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
 
+        // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(myProgress.size()).isEqualTo(1);
@@ -125,11 +152,15 @@ class ProgressTest {
     @Test
     @DisplayName("[Valid] Progress Service should updateMyBookProgress()")
     void updateMyBookProgress() throws Exception {
+        // given
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
         bookProgressService.updateMyBookProgress(id, 10);
+
+        // when
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
 
+        // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(myProgress.size()).isEqualTo(1);
@@ -151,12 +182,16 @@ class ProgressTest {
     @Test
     @DisplayName("[Valid] Progress Service should updateMyBookProgress() with FINISHED")
     void completingMyBook() throws Exception {
+        // given
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
         bookProgressService.updateMyBookProgress(id, 10);
         bookProgressService.updateMyBookProgress(id, 100);
+
+        // when
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
 
+        // then
         assertSoftly(
                 softly -> {
                     softly.assertThat(myProgress.size()).isEqualTo(1);
@@ -178,12 +213,17 @@ class ProgressTest {
     @Test
     @DisplayName("[Valid] Progress Service should doOnAfterfinishReading()")
     void doAfterFinishingBook() throws Exception {
+        // given
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
         bookProgressService.updateMyBookProgress(id, 10);
         bookProgressService.updateMyBookProgress(id, 100);
         bookProgressService.doOnAfterfinishReading(id, RatingScale.EIGHT_POINT_FIVE, "v good");
+
+        // when
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
+
+        //then
         assertSoftly(
                 softly -> {
                     softly.assertThat(myProgress.size()).isEqualTo(1);
@@ -205,6 +245,7 @@ class ProgressTest {
     @Test
     @DisplayName("[Wrong Id] Progress Service shouldn't getMyBookProgressById()")
     void shouldntGetNonExistedIdTestWithExceptionThrown() {
+        // when, then
         assertThatThrownBy(() -> bookProgressService.getMyBookProgressById(id))
                 .hasMessage("You don't have any progress on this book");
     }
@@ -212,9 +253,12 @@ class ProgressTest {
     @Test
     @DisplayName("[Wrong State] Progress Service shouldn't startReading()")
     void shouldntStartReadingUnlessInToBeReadTestWithExceptionThrown() {
+        // given
         progressRepository.save(new BookProgressBuilder()
                 .withId(id)
                 .build());
+
+        // when, then
         assertThatThrownBy(() -> bookProgressService.startReading(id))
                 .hasMessage("You can't start reading a book with your current state");
     }
@@ -222,7 +266,10 @@ class ProgressTest {
     @Test
     @DisplayName("[Wrong State] Progress Service shouldn't updateMyBookProgress()")
     void shouldntUpdateUnlessStartedTestWithExceptionThrown() {
+        // given
         bookProgressService.addToMyToBeReadState(id);
+
+        // when, then
         assertThatThrownBy(() -> bookProgressService.updateMyBookProgress(id, 50))
                 .hasMessage("You can't update unless you're reading the book");
     }
@@ -230,8 +277,11 @@ class ProgressTest {
     @Test
     @DisplayName("[Wrong State] Progress Service shouldn't updateMyBookProgress()")
     void shouldntUpdateWithGreaterThanBookPagesTestWithExceptionThrown() throws Exception {
+        // given
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
+
+        // when, then
         assertThatThrownBy(() -> bookProgressService.updateMyBookProgress(id, 101))
                 .hasMessage("Updated pages is more than book's pages");
     }
@@ -239,9 +289,12 @@ class ProgressTest {
     @Test
     @DisplayName("[Wrong State] Progress Service shouldn't updateMyBookProgress()")
     void shouldntRateUnlessFinishTestWithExceptionThrown() throws Exception {
+        // given
         bookProgressService.addToMyToBeReadState(id);
         bookProgressService.startReading(id);
         bookProgressService.updateMyBookProgress(id, 10);
+
+        // when, then
         assertThatThrownBy(() -> bookProgressService
                 .doOnAfterfinishReading(id, RatingScale.EIGHT_POINT_FIVE,
                         "nt bad"))
@@ -252,6 +305,8 @@ class ProgressTest {
     @Test
     @DisplayName("[Not Valid] Progress Service shouldn't getBook()")
     void shouldntGetNonExistedBookTestWithExceptionThrown() {
+
+        // given, when, then
         assertThatThrownBy(() -> bookProgressService.getBook(new Random().nextLong()))
                 .hasMessage("Book Not found In the database");
     }
