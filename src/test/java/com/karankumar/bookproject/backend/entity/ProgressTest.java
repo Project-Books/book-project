@@ -4,18 +4,26 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.entity.book.BookProgress;
+import com.karankumar.bookproject.backend.entity.book.BookProgressId;
 import com.karankumar.bookproject.backend.entity.enums.State;
 import com.karankumar.bookproject.backend.service.BookProgressService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IntegrationTest
 class ProgressTest {
@@ -29,20 +37,26 @@ class ProgressTest {
     private static Book testBook1;
     private static PredefinedShelf toRead;
     private static User user;
+    private static BookProgressId id;
 
     @Autowired
-    ProgressTest(BookService bookService, PredefinedShelfService predefinedShelfService, BookProgressService bookProgressService) {
+    ProgressTest(BookService bookService, PredefinedShelfService predefinedShelfService,
+                 BookProgressService bookProgressService) {
         this.bookService = bookService;
         this.predefinedShelfService = predefinedShelfService;
         this.bookProgressService = bookProgressService;
     }
 
-
     @BeforeEach
     public void setUp() {
         toRead = predefinedShelfService.findToReadShelf();
         testBook1 = createBook("How the mind works", toRead);
-        user = new User(new Random().nextLong(), "hassan", "hassan.elseoudy@gmail.com", "sj%kfn%ui%4#3#78t43uw3n@%", true, Collections.singleton(new Role("role")));
+        user = new User(new Random().nextLong(), "hassan",
+                "hassan.elseoudy@gmail.com",
+                "sj%kfn%ui%4#3#78t43uw3n@%",
+                true,
+                Collections.singleton(new Role("role")));
+        id = new BookProgressId(testBook1.getId(), user.getId());
         resetBookService();
         saveBooks();
     }
@@ -61,10 +75,10 @@ class ProgressTest {
     }
 
     @Test
-    @DisplayName("Checking Adding to My List")
-    @Order(1)
+    @DisplayName("[Valid] Progress Service should addToMyToBeReadState()")
     void addToMyToBeReadList() {
-        bookProgressService.addToMyToBeReadState(testBook1.getId(), user.getId());
+        System.out.println(id.getBookId());
+        bookProgressService.addToMyToBeReadState(id);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
         Assertions.assertAll("Assert valid insertion in my to be read",
                 () -> assertEquals(1, myProgress.size()),
@@ -80,13 +94,12 @@ class ProgressTest {
     }
 
     @Test
-    @DisplayName("Checking Start Reading")
-    @Order(2)
+    @DisplayName("[Valid] Progress Service should startReading()")
     void startReadingTest() throws Exception {
-        bookProgressService.addToMyToBeReadState(testBook1.getId(), user.getId());
-        bookProgressService.startReading(testBook1.getId(), user.getId());
+        bookProgressService.addToMyToBeReadState(id);
+        bookProgressService.startReading(id);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
-        Assertions.assertAll("Assert valid insertion in start reading list",
+        Assertions.assertAll("Assert valid insertion in IN_PROGRESS list",
                 () -> assertEquals(1, myProgress.size()),
                 () -> assertEquals(testBook1.getId(), myProgress.get(0).getId().getBookId()),
                 () -> assertEquals(user.getId(), myProgress.get(0).getId().getUserId()),
@@ -100,14 +113,27 @@ class ProgressTest {
     }
 
     @Test
-    @DisplayName("update my progress")
-    @Order(3)
+    @DisplayName("[Wrong Id] Progress Service shouldn't startReading()")
+    void shouldntStartReadingTestWithExceptionThrown() {
+        bookProgressService.addToMyToBeReadState(id);
+        Exception exception =
+                assertThrows(Exception.class, () -> bookProgressService.startReading(id));
+
+        String expectedMessage = "You don't have any progress on this book";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+    @Test
+    @DisplayName("[Valid] Progress Service should updateMyBookProgress()")
     void updateMyBookProgress() throws Exception {
-        bookProgressService.addToMyToBeReadState(testBook1.getId(), user.getId());
-        bookProgressService.startReading(testBook1.getId(), user.getId());
-        bookProgressService.updateMyBookProgress(testBook1.getId(), user.getId(), 10);
+        bookProgressService.addToMyToBeReadState(id);
+        bookProgressService.startReading(id);
+        bookProgressService.updateMyBookProgress(id, 10);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
-        Assertions.assertAll("Assert valid insertion in start reading list",
+        Assertions.assertAll("Assert valid update in IN_PROGRESS state",
                 () -> assertEquals(1, myProgress.size()),
                 () -> assertEquals(testBook1.getId(), myProgress.get(0).getId().getBookId()),
                 () -> assertEquals(user.getId(), myProgress.get(0).getId().getUserId()),
@@ -121,15 +147,14 @@ class ProgressTest {
     }
 
     @Test
-    @DisplayName("completing my book")
-    @Order(4)
+    @DisplayName("[Valid] Progress Service should updateMyBookProgress() with FINISHED")
     void completingMyBook() throws Exception {
-        bookProgressService.addToMyToBeReadState(testBook1.getId(), user.getId());
-        bookProgressService.startReading(testBook1.getId(), user.getId());
-        bookProgressService.updateMyBookProgress(testBook1.getId(), user.getId(), 10);
-        bookProgressService.updateMyBookProgress(testBook1.getId(), user.getId(), 100);
+        bookProgressService.addToMyToBeReadState(id);
+        bookProgressService.startReading(id);
+        bookProgressService.updateMyBookProgress(id, 10);
+        bookProgressService.updateMyBookProgress(id, 100);
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
-        Assertions.assertAll("Assert valid insertion in start reading list",
+        Assertions.assertAll("Assert valid insertion in FINISHED state",
                 () -> assertEquals(1, myProgress.size()),
                 () -> assertEquals(testBook1.getId(), myProgress.get(0).getId().getBookId()),
                 () -> assertEquals(user.getId(), myProgress.get(0).getId().getUserId()),
@@ -143,14 +168,13 @@ class ProgressTest {
     }
 
     @Test
-    @DisplayName("completing my book")
-    @Order(5)
+    @DisplayName("[Valid] Progress Service should doOnAfterfinishReading()")
     void doAfterFinishingBook() throws Exception {
-        bookProgressService.addToMyToBeReadState(testBook1.getId(), user.getId());
-        bookProgressService.startReading(testBook1.getId(), user.getId());
-        bookProgressService.updateMyBookProgress(testBook1.getId(), user.getId(), 10);
-        bookProgressService.updateMyBookProgress(testBook1.getId(), user.getId(), 100);
-        bookProgressService.doOnAfterfinishReading(testBook1.getId(), user.getId(), RatingScale.EIGHT_POINT_FIVE, "v good");
+        bookProgressService.addToMyToBeReadState(id);
+        bookProgressService.startReading(id);
+        bookProgressService.updateMyBookProgress(id, 10);
+        bookProgressService.updateMyBookProgress(id, 100);
+        bookProgressService.doOnAfterfinishReading(id, RatingScale.EIGHT_POINT_FIVE, "v good");
         List<BookProgress> myProgress = bookProgressService.getMyBooksProgress(user.getId());
         Assertions.assertAll("Assert valid insertion in start reading list",
                 () -> assertEquals(1, myProgress.size()),

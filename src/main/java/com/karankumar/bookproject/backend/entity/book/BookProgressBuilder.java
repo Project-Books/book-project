@@ -8,15 +8,16 @@ import java.time.LocalDate;
 
 public class BookProgressBuilder {
 
-    private BookProgress bookProgress;
+    private final BookProgress bookProgress;
 
     public BookProgressBuilder() {
         this.bookProgress = new BookProgress();
     }
 
     public BookProgressBuilder withRating(RatingScale rating) {
-        if (bookProgress.getState() == State.FINISHED)
+        if (bookProgress.getState() == State.FINISHED) {
             bookProgress.setRating(rating);
+        }
 
         return this;
     }
@@ -32,25 +33,24 @@ public class BookProgressBuilder {
     }
 
     public BookProgressBuilder withBookReview(String bookReview) {
-        if (bookProgress.getState() == State.FINISHED)
+        if (bookProgress.getState() == State.FINISHED) {
             bookProgress.setBookReview(bookReview);
+        }
         return this;
     }
 
     public BookProgressBuilder withPagesRead(Integer pagesRead, Book book) throws Exception {
-        if(book == null) // We can't read a book that's not there in database!
+        if (book == null){ // We can't read a book that's not there in database!
             throw new Exception("Updated pages is more than book's pages");
+        }
 
-        if (pagesRead > book.getNumberOfPages()) // Updated request is more than book's pages.
+        if (pagesRead > book.getNumberOfPages()){ // Updated request is more than book's pages.
             throw new Exception("Updated pages is more than book's pages");
-
-        else if (pagesRead.equals(book.getNumberOfPages())) { // I finished the book
+        } else if (pagesRead.equals(book.getNumberOfPages())) { // I finished the book
             bookProgress.setState(State.FINISHED);
             bookProgress.setPagesRead(pagesRead);
             bookProgress.setDateFinishedReading(LocalDate.now());
-        }
-
-        else { // I'm still reading the book
+        } else { // I'm still reading the book
             bookProgress.setPagesRead(pagesRead);
         }
         return this;
@@ -69,6 +69,5 @@ public class BookProgressBuilder {
     public BookProgress build() {
         return this.bookProgress;
     }
-
 
 }
