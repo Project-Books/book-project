@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.security;
 
-import com.vaadin.flow.server.ServletHelper;
+import com.vaadin.flow.server.HandlerHelper;
 import com.vaadin.flow.shared.ApplicationConstants;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,7 +35,7 @@ public final class SecurityUtils {
         final String parameterValue =
             request.getParameter(ApplicationConstants.REQUEST_TYPE_PARAMETER);
         return parameterValue != null
-            && Stream.of(ServletHelper.RequestType.values())
+            && Stream.of(HandlerHelper.RequestType.values())
             .anyMatch(r -> r.getIdentifier().equals(parameterValue));
     }
 
