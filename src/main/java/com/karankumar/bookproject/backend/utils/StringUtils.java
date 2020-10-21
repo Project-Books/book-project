@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.utils;
 
-public class StringUtils {
+public final class StringUtils {
     private StringUtils() {}
 
     /**

@@ -23,8 +23,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 class UserTest {
@@ -51,7 +51,7 @@ class UserTest {
         userRepository.save(user);
 
         // then
-        assertEquals(initialNumberOfUsers + 1, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers + 1);
     }
 
     private User.UserBuilder userWithoutPassword() {
@@ -70,7 +70,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
     
     @Test
@@ -83,7 +83,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
     
     @Test
@@ -96,7 +96,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
     
     void tryToSaveInvalidUser(User user) {
@@ -114,7 +114,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithoutDomain() {
@@ -137,7 +137,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithoutAt() {
@@ -154,7 +154,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithoutTopLevelDomain() {
@@ -171,7 +171,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithoutLocalPart() {
@@ -188,7 +188,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithSpace() {
@@ -205,7 +205,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithQuotes() {

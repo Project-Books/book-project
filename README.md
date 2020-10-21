@@ -9,7 +9,7 @@
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw">
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-i7lept44-rgJ9yB0A2vedJTLyyfkjKQ">
     <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
   </a>
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
@@ -59,6 +59,8 @@ Prerequisites:
 - If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
   - If you do have Node.js installed, please ensure it is at least version 10.0
 - MySQL 8.0.* or (better) Docker
+  - Windows or macOS: install Docker Desktop
+  - Linux: install Docker Engine and Docker Compose
  
 ### Running the app
   
@@ -120,7 +122,7 @@ If you need help with anything, we'll be happy to help you in our [Slack workspa
 
 [Mockito](https://github.com/mockito/mockito) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
 
-[Java Hamcrest](https://github.com/hamcrest/JavaHamcrest) - [BSD-3 clause](http://opensource.org/licenses/BSD-3-Clause)
+[AssertJ](https://github.com/assertj/assertj-core) - [Apache 2.0 License](https://github.com/assertj/assertj-core/blob/main/LICENSE.txt)
 
 [zxcvbn4j](https://github.com/nulab/zxcvbn4j) - [MIT License](https://opensource.org/licenses/mit-license.php)
 

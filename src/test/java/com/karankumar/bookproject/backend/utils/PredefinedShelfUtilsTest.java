@@ -17,28 +17,6 @@
 
 package com.karankumar.bookproject.backend.utils;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPredefinedShelf;
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
@@ -47,6 +25,27 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.utils.PredefinedShelfUtils.isPredefinedShelf;
+import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.assertj.core.api.SoftAssertions;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @IntegrationTest
 class PredefinedShelfUtilsTest {
@@ -76,7 +75,7 @@ class PredefinedShelfUtilsTest {
                                       @Autowired BookRepository bookRepository,
                                       @Autowired BookService bookService) {
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
-        findPredefinedShelves();
+        findPredefinedShelves(predefinedShelfService);
 
         PredefinedShelfUtilsTest.bookRepository = bookRepository;
         resetBookRepository();
@@ -87,10 +86,10 @@ class PredefinedShelfUtilsTest {
         setBooksInPredefinedShelves();
     }
 
-    private static void findPredefinedShelves() {
-        toReadShelf = predefinedShelfUtils.findToReadShelf();
-        readShelf = predefinedShelfUtils.findReadShelf();
-        didNotFinishShelf = predefinedShelfUtils.findPredefinedShelf(DID_NOT_FINISH);
+    private static void findPredefinedShelves(PredefinedShelfService predefinedShelfService) {
+        toReadShelf = predefinedShelfService.findToReadShelf();
+        readShelf =  predefinedShelfService.findReadShelf();
+        didNotFinishShelf = predefinedShelfService.findDidNotFinishShelf();
     }
 
     private static void resetBookRepository() {
@@ -124,7 +123,7 @@ class PredefinedShelfUtilsTest {
         List<String> shelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
 
         // then
-        assertEquals(expectedShelfNames, shelfNames);
+        assertThat(shelfNames).isEqualTo(expectedShelfNames);
     }
 
     @Test
@@ -136,7 +135,7 @@ class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf("To read");
 
         // then
-        assertEquals(expectedBooks, actualBooks);
+        assertThat(actualBooks).isEqualTo(expectedBooks);
     }
 
     @Test
@@ -149,7 +148,7 @@ class PredefinedShelfUtilsTest {
                 predefinedShelfUtils.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
 
         // then
-        assertEquals(expectedBooks, actualBooks);
+        assertThat(actualBooks).isEqualTo(expectedBooks);
     }
 
     @Test
@@ -162,8 +161,12 @@ class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfUtils.getBooksInPredefinedShelves(predefinedShelves);
 
         // then
-        assertEquals(expectedBooks.size(), actualBooks.size());
-        assertTrue(actualBooks.containsAll(expectedBooks));
+        assertSoftly(
+                softly -> {
+                    softly.assertThat(actualBooks).hasSize(expectedBooks.size());
+                    softly.assertThat(actualBooks).containsAll(expectedBooks);
+                }
+        );
     }
 
     @Test
@@ -238,7 +241,7 @@ class PredefinedShelfUtilsTest {
         }
         PredefinedShelf.ShelfName actualShelf =
                 predefinedShelfUtils.getPredefinedShelfName(shelfName);
-        assertEquals(expectedShelf, actualShelf);
+        assertThat(actualShelf).isEqualTo(expectedShelf);
     }
     
     @Test
@@ -246,7 +249,13 @@ class PredefinedShelfUtilsTest {
     	List<String> actualShelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
     	List<String> expectedShelfNames =
                 Stream.of(ShelfName.values()).map(Enum::toString).collect(Collectors.toList());
-    	assertEquals(expectedShelfNames.size(), actualShelfNames.size());
-    	assertTrue(expectedShelfNames.containsAll(actualShelfNames));
+
+        assertSoftly(
+            softly -> {
+                softly.assertThat(actualShelfNames).hasSize(expectedShelfNames.size());
+    	        softly.assertThat(expectedShelfNames).containsAll(actualShelfNames);
+            }
+        );
+    	
     }
 }

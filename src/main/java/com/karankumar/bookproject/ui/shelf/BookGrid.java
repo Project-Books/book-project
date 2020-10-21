@@ -48,6 +48,7 @@ public class BookGrid {
     }
 
     public void configure() {
+        bookGrid.setHeightByRows(true);
         new BookGridColumn(bookGrid).addColumns();
     }
 

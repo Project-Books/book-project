@@ -17,19 +17,28 @@
 
 package com.karankumar.bookproject.backend.goal;
 
+import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.calculateProgressTowardsReadingGoal;
+import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFarAheadOrBehindSchedule;
+import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.booksToReadFromStartOfYear;
 import com.karankumar.bookproject.backend.utils.DateUtils;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.calculateProgressTowardsReadingGoal;
-import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFarAheadOrBehindSchedule;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+@DisplayName("CalculateReadingGoal should")
 class CalculateReadingGoalTest {
     private final int BOOKS_TO_READ = 52;
+
+    @BeforeAll
+    static void setUp() {
+        Mockito.mockStatic(DateUtils.class);
+    }
 
     @Test
     void testProgressValueIsCorrect() {
@@ -37,21 +46,21 @@ class CalculateReadingGoalTest {
         int read = 5;
         double expected = 0.2;
         double actual = calculateProgressTowardsReadingGoal(toRead, read);
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     void testProgressValueIsCorrectWhenGoalMet() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, BOOKS_TO_READ);
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     void testProgressIsCorrectWhenGoalExceeded() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, (BOOKS_TO_READ + 1));
-        assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -73,31 +82,87 @@ class CalculateReadingGoalTest {
         softly.assertAll();
     }
 
-    // TODO: refactor this method to test for two boundary cases and one normal case
+    @Nested
+    @DisplayName("show correct progress value for lower bound (1st week of the year) when")
+    class LowerBoundProgressTests {
+        @BeforeEach
+        void setFirstWeek() {
+            Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
+        }
+
+        @Test
+        void behindSchedule() {
+            // one book behind schedule
+            assertThat(howFarAheadOrBehindSchedule(52,0)).isOne();
+        }
+
+        @Test
+        void onSchedule() {
+            assertThat(howFarAheadOrBehindSchedule(52, 1)).isZero();
+        }
+
+        @Test
+        void aheadOfSchedule() {
+            // 9 books ahead of schedule
+            assertEquals(9, howFarAheadOrBehindSchedule(52,10));
+        }
+    }
+
+    @Nested
+    @DisplayName("show correct progress value for normal case (half way into the year) when")
+    class NormalCaseProgressTests {
+        @BeforeEach
+        void setWeekToMiddleOfYear() {
+            Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(26);
+        }
+
+        @Test
+        void behindSchedule() {
+            // 10 books behind schedule
+            assertEquals(10, howFarAheadOrBehindSchedule(40,10));
+        }
+
+        @Test
+        void onSchedule() {
+            assertEquals(20, howFarAheadOrBehindSchedule(40,20));
+        }
+
+        @Test
+        void aheadOfSchedule() {
+            // 30 books ahead of schedule
+            assertEquals(30, howFarAheadOrBehindSchedule(40,30));
+        }
+    }
+
+    @Nested
+    @DisplayName("show correct progress value for upper bound (last week of the year) when")
+    class UpperBoundProgressTests {
+        @BeforeEach
+        void setLastWeekOfYear() {
+            Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(52);
+        }
+
+        @Test
+        void behindSchedule() {
+            // 25 books behind schedule
+            assertEquals(25, howFarAheadOrBehindSchedule(113,79));
+        }
+
+        @Test
+        void onSchedule() {
+            assertThat(howFarAheadOrBehindSchedule(113,104)).isZero();
+        }
+
+        @Test
+        void aheadOfSchedule() {
+            // 46 books ahead of schedule
+            assertEquals(46, howFarAheadOrBehindSchedule(113,150));
+        }
+    }
+
     @Test
-    void testHowFarAheadOrBehindSchedule(){
-        Mockito.mockStatic(DateUtils.class);
-
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(1);
-        assertThat(howFarAheadOrBehindSchedule(52, 1)).isZero();
-        assertThat(howFarAheadOrBehindSchedule(52,0)).isOne();
-        assertEquals(9, howFarAheadOrBehindSchedule(52,10));
-        assertEquals(9, howFarAheadOrBehindSchedule(199,12));
-        assertEquals(2, howFarAheadOrBehindSchedule(199,5));
-
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(15);
-        assertEquals(12, howFarAheadOrBehindSchedule(52,3));
-        assertEquals(9, howFarAheadOrBehindSchedule(52,24));
-        assertEquals(5, howFarAheadOrBehindSchedule(52,20));
-
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(10);
-        assertEquals(20, howFarAheadOrBehindSchedule(199,50));
-        assertEquals(22, howFarAheadOrBehindSchedule(199,8));
-        assertEquals(70, howFarAheadOrBehindSchedule(199,100));
-
-        Mockito.when(DateUtils.getCurrentWeekNumberOfYear()).thenReturn(43);
-        assertEquals(7, howFarAheadOrBehindSchedule(113,79));
-        assertEquals(45, howFarAheadOrBehindSchedule(113,41));
-        assertThat(howFarAheadOrBehindSchedule(113,86)).isZero();
+    void testBooksToReadFromStartOfYear(){
+        double booksToReadFromStartOfYear = booksToReadFromStartOfYear(26);
+        assertThat(booksToReadFromStartOfYear).isEqualTo(0.5);
     }
 }
