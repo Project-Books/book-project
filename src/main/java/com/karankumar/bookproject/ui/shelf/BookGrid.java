@@ -94,7 +94,7 @@ public class BookGrid {
         if (isAllBooksShelf(chosenShelf)) { return null; }
 
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
-            return predefinedShelfUtils.findPredefinedShelf(predefinedShelfUtils.getPredefinedShelfName(chosenShelf));
+            return predefinedShelfUtils.findPredefinedShelf(chosenShelf);
         }
 
         return customShelfUtils.findShelfByName(chosenShelf);

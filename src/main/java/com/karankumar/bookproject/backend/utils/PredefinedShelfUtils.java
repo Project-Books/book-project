@@ -57,6 +57,15 @@ public class PredefinedShelfUtils {
         }
     }
 
+    public PredefinedShelf findPredefinedShelf(String shelfName) {
+        return predefinedShelfService.findAll()
+                .stream()
+                .filter(shelf ->
+                        shelf.getPredefinedShelfName().equals(shelfName))
+                .collect(Collectors.toList())
+                .get(0); // there should only be one
+    }
+
     public List<String> getPredefinedShelfNamesAsStrings() {
        return predefinedShelfService.findAll().stream()
                .map(Shelf::getShelfName)
