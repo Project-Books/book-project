@@ -26,7 +26,6 @@ import com.karankumar.bookproject.ui.book.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 import com.vaadin.flow.component.grid.Grid;
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.logging.Level;
