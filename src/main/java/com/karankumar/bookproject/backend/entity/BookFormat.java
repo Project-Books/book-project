@@ -20,9 +20,9 @@ package com.karankumar.bookproject.backend.entity;
 
 public enum BookFormat {
     // This should be kept in alphabetical order
+    EBOOK("eBook");
     HARDBACK("Hardback"),
     PAPERBACK("Paperback"),
-    EBOOK("eBook");
 
     private final String format;
 
