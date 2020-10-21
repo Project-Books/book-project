@@ -20,8 +20,8 @@ package com.karankumar.bookproject.ui.shelf;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.backend.util.CustomShelfUtils;
+import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 import com.vaadin.flow.component.grid.Grid;
@@ -30,7 +30,7 @@ import lombok.extern.java.Log;
 import java.util.List;
 import java.util.logging.Level;
 
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
+import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
 
 @Log
 public class BookGrid {

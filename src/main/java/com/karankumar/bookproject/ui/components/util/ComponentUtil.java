@@ -15,22 +15,25 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.ui.components.util;
 
-import com.karankumar.bookproject.backend.entity.Book;
+import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.HasValue;
 
-public final class BookUtils {
-    private BookUtils() {}
+public final class ComponentUtil {
+    private ComponentUtil() {}
 
-    public static String combineTitleAndSeries(Book book) {
-        return (bookHasSeriesPosition(book)) ? addSeriesToTitle(book) : book.getTitle();
+    public static void setComponentClassName(HasSize[] components, String className) {
+        for (HasSize h : components) {
+            h.getElement().getClassList().add(className);
+        }
     }
 
-    private static boolean bookHasSeriesPosition(Book book) {
-        return book.getSeriesPosition() != null && book.getSeriesPosition() > 0;
-    }
-
-    private static String addSeriesToTitle(Book book) {
-        return String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
+    public static void clearComponentFields(HasValue... components) {
+        for (HasValue component : components) {
+            if (component != null && !component.isEmpty()) {
+                component.clear();
+            }
+        }
     }
 }

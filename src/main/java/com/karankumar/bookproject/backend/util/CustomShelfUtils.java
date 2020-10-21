@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
@@ -36,7 +36,7 @@ public class CustomShelfUtils {
     }
 
     public List<@NotNull String> getCustomShelfNames() {
-        return customShelfService.findAll()
+        return customShelfService.findAllForLoggedInUser()
                                  .stream()
                                  .map(CustomShelf::getShelfName)
                                  .collect(Collectors.toList());
@@ -46,18 +46,14 @@ public class CustomShelfUtils {
      * Gets all of the books in the specified custom shelf
      */
     public Set<Book> getBooksInCustomShelf(String shelfName) {
-        Set<Book> books;
-        List<CustomShelf> customShelves = customShelfService.findAll(shelfName);
-        if (customShelves.isEmpty()) {
-            books = new HashSet<>();
-        } else {
-            CustomShelf customShelf = customShelves.get(0);
-            books = customShelf.getBooks();
+        CustomShelf customShelf = customShelfService.findByShelfNameAndLoggedInUser(shelfName);
+        if (customShelf == null) {
+            return new HashSet<>();
         }
-        return books;
+        return customShelf.getBooks();
     }
 
     public Shelf findShelfByName(String chosenShelf){
-        return customShelfService.findAll(chosenShelf).get(0);
+        return customShelfService.findByShelfNameAndLoggedInUser(chosenShelf);
     }
 }
