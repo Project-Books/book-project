@@ -60,6 +60,7 @@ public class Book extends BaseEntity {
     private String bookRecommendedBy;
     @ISBN
     private String isbn;
+    private int yearofPublication;
 
     @ManyToOne(cascade =
             {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
