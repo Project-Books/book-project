@@ -161,7 +161,8 @@ public class SettingsView extends HorizontalLayout {
         importGoodreadsUpload.addSucceededListener(succeededEvent -> {
             LOGGER.info("Import success: " + succeededEvent.toString());
             try {
-                List<Object> imports = CsvUtils.read(importGoodreadsMemoryBuffer.getInputStream(), Object.class);
+                List<Object> imports =
+                        CsvUtils.read(importGoodreadsMemoryBuffer.getInputStream(), Object.class);
                 imports.forEach(i -> LOGGER.info(i.toString()));
             } catch (IOException e) {
                 LOGGER.severe("Error in reading input file, error: + " + e);
