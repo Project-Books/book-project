@@ -19,6 +19,7 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.karankumar.bookproject.backend.entity.account.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,8 +39,8 @@ public class CustomShelf extends Shelf {
     @Setter
     protected Set<Book> books;
 
-    public CustomShelf(String shelfName) {
-        super(shelfName);
+    public CustomShelf(String shelfName, User user) {
+        super(shelfName, user);
     }
 
     public void setShelfName(String shelfName) {

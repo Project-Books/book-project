@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Log
 @IntegrationTest
+@DisplayName("AuthorService should")
 class AuthorServiceTest {
     private final AuthorService authorService;
     private final BookService bookService;
@@ -55,7 +56,7 @@ class AuthorServiceTest {
     }
 
     @Test
-    void testSaveAndConfirmDuplicateNameWithDifferentId() {
+    void saveAndConfirmDuplicateNameWithDifferentId() {
         // given
         Author author = new Author("Nyor", "Ja");
         authorService.save(author);
@@ -72,7 +73,7 @@ class AuthorServiceTest {
 
     @Transactional
     @Test
-    void testSaveIntegrity() {
+    void saveCorrectly() {
         // given
         Author author = new Author("daks", "oten");
         authorService.save(author);
