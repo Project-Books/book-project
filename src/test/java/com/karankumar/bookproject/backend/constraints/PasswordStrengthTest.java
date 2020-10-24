@@ -12,7 +12,7 @@ class PasswordStrengthTest {
     void notAllowOutOfBoundValues() {
         // given
         int belowArrayLowerBound = -1;
-        int aboveArrayUpperBound = PasswordStrength.values().length + 1;
+        int aboveArrayUpperBound = PasswordStrength.values().length;
 
         // when
         Throwable thrown1 = catchThrowable(() -> PasswordStrength.byNum(belowArrayLowerBound));
