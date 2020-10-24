@@ -15,23 +15,25 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
-
+@DisplayName("DateUtils should")
 class DateUtilsTest {
     @BeforeAll
     static void setup() {
         Mockito.mockStatic(DateUtils.TimeUtils.class);
-        Mockito.when(DateUtils.TimeUtils.getWeekFields()).thenReturn(WeekFields.of(Locale.getDefault()));
+        Mockito.when(DateUtils.TimeUtils.getWeekFields())
+               .thenReturn(WeekFields.of(Locale.getDefault()));
     }
 
     private int mockFirstWeekOfYear() {
@@ -56,7 +58,7 @@ class DateUtilsTest {
     @Test
     @Disabled
     // TODO: fix failing test
-    void testCurrentWeekNumberOfYearAndWeeksLeftInYear() {
+    void correctlyGetWeekNumberOfYear() {
         assertThat(mockFirstWeekOfYear()).isOne();
         assertThat(mockFortiethWeekOfYear()).isEqualTo(40);
         assertThat(mockLastWeekOfYear()).isEqualTo(52);
@@ -65,7 +67,7 @@ class DateUtilsTest {
     @Test
     @Disabled
     // TODO: fix failing test
-    void testWeeksLeftInYearFromCurrentWeek() {
+    void correctlyGetWeeksLeftInYearFromCurrentWeek() {
         assertThat(DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFirstWeekOfYear()))
                 .isEqualTo(calculateWeeksLeftInYear(1));
 

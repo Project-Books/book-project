@@ -19,7 +19,7 @@ package com.karankumar.bookproject.ui.shelf.component;
 
 import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
-import com.karankumar.bookproject.backend.utils.ShelfUtils;
+import com.karankumar.bookproject.backend.util.ShelfUtils;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -29,7 +29,7 @@ import javax.transaction.NotSupportedException;
 import java.util.List;
 import java.util.logging.Level;
 
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
+import static com.karankumar.bookproject.backend.util.ShelfUtils.ALL_BOOKS_SHELF;
 
 @Log
 public class BookShelfComboBox {
@@ -46,7 +46,7 @@ public class BookShelfComboBox {
     }
 
     public void updateShelfList() {
-        List<String> shelves = ShelfUtils.findAllShelfNames(customShelfService.findAll());
+        List<String> shelves = ShelfUtils.findAllShelfNames(customShelfService.findAllForLoggedInUser());
         shelves.add(0, ALL_BOOKS_SHELF);
         allShelvesList.setItems(shelves);
     }

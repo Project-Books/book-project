@@ -43,15 +43,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("BookShelfComboBox should")
 class BookShelfComboBoxTest {
     private static Routes routes;
-    private final CustomShelfService customShelfService;
 
-    @Autowired private ApplicationContext ctx;
-    private final BookShelfComboBox comboBox;
+    private final CustomShelfService customShelfService;
+    private final ApplicationContext ctx;
+
+    private BookShelfComboBox comboBox;
 
     @Autowired
-    BookShelfComboBoxTest(CustomShelfService customShelfService) {
+    BookShelfComboBoxTest(CustomShelfService customShelfService, ApplicationContext ctx) {
         this.customShelfService = customShelfService;
-        comboBox = new BookShelfComboBox(customShelfService);
+        this.ctx = ctx;
     }
 
     @BeforeAll
@@ -63,13 +64,14 @@ class BookShelfComboBoxTest {
     public void setUp() {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
+        comboBox = new BookShelfComboBox(customShelfService);
     }
 
     @Test
     void displayNewShelfInList() {
         // given
         String name = "UnitTest";
-        CustomShelf test = new CustomShelf(name);
+        CustomShelf test = customShelfService.createCustomShelf(name);
         customShelfService.save(test);
 
         // when

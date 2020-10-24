@@ -15,25 +15,27 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.components.utils;
+package com.karankumar.bookproject.util;
 
-import com.vaadin.flow.component.HasSize;
-import com.vaadin.flow.component.HasValue;
+import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.repository.UserRepository;
 
-public final class ComponentUtil {
-    private ComponentUtil() {}
+public class SecurityTestUtils {
+    private SecurityTestUtils() {}
 
-    public static void setComponentClassName(HasSize[] components, String className) {
-        for (HasSize h : components) {
-            h.getElement().getClassList().add(className);
-        }
+    // this has to be the same value as in data.sql
+    public static final String TEST_USER_NAME = "testUser";
+
+    public static User getTestUser(UserRepository repository) {
+        return repository.findByUsername(TEST_USER_NAME).orElseThrow();
     }
 
-    public static void clearComponentFields(HasValue... components) {
-        for (HasValue component : components) {
-            if (component != null && !component.isEmpty()) {
-                component.clear();
-            }
-        }
+    public static User insertTestUser(UserRepository repository, String username) {
+        User user = User.builder()
+                .username(username)
+                .email(username + "@user.user")
+                .password("testPa$$123_Paf1")
+                .build();
+        return repository.save(user);
     }
 }
