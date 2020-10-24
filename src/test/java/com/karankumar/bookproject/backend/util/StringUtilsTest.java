@@ -15,20 +15,22 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+@DisplayName("StringUtils should")
 class StringUtilsTest {
     @Test
-    void pluralizeReturnsSingularString() {
+    void returnSingularStringOnPluralize() {
         assertThat(StringUtils.pluralize("book", 1))
                 .isEqualTo("book");
     }
 
     @Test
-    void pluralizeReturnsPluralString() {
+    void returnPluralStringOnPluralize() {
         assertThat(StringUtils.pluralize("book", 2))
                 .isEqualTo("books");
     }

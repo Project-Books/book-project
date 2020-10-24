@@ -15,7 +15,6 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.Author;
@@ -29,15 +28,13 @@ import java.util.logging.Level;
 
 @Service
 @Log
-public class AuthorService extends BaseService<Author, Long> {
-
-    private AuthorRepository authorRepository;
+public class AuthorService {
+    private final AuthorRepository authorRepository;
 
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
 
-    @Override
     public Author findById(Long id) {
         return authorRepository.getOne(id);
     }
@@ -46,7 +43,6 @@ public class AuthorService extends BaseService<Author, Long> {
         return authorRepository.findAll();
     }
 
-    @Override
     public void save(@NonNull Author author) {
         if (author.getId() != null) {
             Author existingAuthor = findById(author.getId());
@@ -59,17 +55,15 @@ public class AuthorService extends BaseService<Author, Long> {
         authorRepository.save(author);
     }
 
-    @Override
     public void delete(Author author) {
         authorRepository.delete(author);
     }
 
-    public Long count() {
-        return authorRepository.count();
-    }
-
-    @Override
     public void deleteAll() {
         authorRepository.deleteAll();
+    }
+
+    public Long count() {
+        return authorRepository.count();
     }
 }

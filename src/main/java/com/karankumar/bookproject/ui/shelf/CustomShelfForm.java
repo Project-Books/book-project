@@ -21,8 +21,8 @@ import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.backend.util.CustomShelfUtils;
+import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
@@ -50,7 +50,7 @@ public class CustomShelfForm extends VerticalLayout {
     private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
 
-    private Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
+    private final Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
 
     @VisibleForTesting
     final TextField shelfNameField = new TextField();
@@ -135,7 +135,7 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     private void setCustomShelfBean() {
-        binder.setBean(new CustomShelf(shelfNameField.getValue()));
+        binder.setBean(customShelfService.createCustomShelf(shelfNameField.getValue()));
     }
 
     @VisibleForTesting
@@ -172,7 +172,7 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     public static abstract class CustomShelfFormEvent extends ComponentEvent<CustomShelfForm> {
-        private CustomShelf customShelf;
+        private final CustomShelf customShelf;
 
         protected CustomShelfFormEvent(CustomShelfForm source, CustomShelf customShelf) {
             super(source, false);
