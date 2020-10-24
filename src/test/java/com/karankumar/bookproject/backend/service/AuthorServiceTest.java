@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -76,7 +77,7 @@ class AuthorServiceTest {
         authorService.save(existingAuthor);
 
         // then
-        assertEquals(1, authorService.count());
+        assertThat(authorService.count()).isOne();
     }
 
     @Test
