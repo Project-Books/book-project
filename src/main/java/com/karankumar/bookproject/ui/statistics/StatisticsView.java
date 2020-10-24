@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.statistics;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -61,7 +62,8 @@ public class StatisticsView extends VerticalLayout {
         return div;
     }
 
-    private static String formatStatistic(String bookTitle, String statistic, String unit) {
+    @VisibleForTesting
+    static String formatStatistic(String bookTitle, String statistic, String unit) {
         if (statistic.endsWith(unit)) {
             return String.format("%s (%s)", bookTitle, statistic);
         } else {

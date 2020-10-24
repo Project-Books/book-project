@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.ui.statistics;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
@@ -206,5 +207,34 @@ class StatisticsViewTest {
 
     private StatisticsViewTestUtils.Statistic getStatistic(StatisticType statisticType) {
         return StatisticsViewTestUtils.getStatistic(statisticType, statisticsView);
+    }
+
+    @Test
+    void onlyDisplayRatingUnitOnce() {
+        // given
+        String title = "Harry Potter and the Chamber of Secrets";
+        RatingScale rating = RatingScale.NO_RATING;
+
+        // when
+        String actual = StatisticsView.formatStatistic(title, rating.toString(), "rating");
+
+        // then
+        String expected = String.format("%s (%s)", title, rating.toString());
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void includePagesUnitWhenFormatted() {
+        // given
+        String title = "Harry Potter and the Chamber of Secrets";
+        int pages = 500;
+        String unit = "pages";
+
+        // when
+        String actual = StatisticsView.formatStatistic(title, String.valueOf(pages), unit);
+
+        // then
+        String expected = String.format("%s (%s %s)", title, pages, unit);
+        assertThat(actual).isEqualTo(expected);
     }
 }
