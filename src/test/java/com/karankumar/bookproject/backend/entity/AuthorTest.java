@@ -85,27 +85,29 @@ class AuthorTest {
     }
 
     @Test
-    @DisplayName("Orphan authors should be removed when deleting last book")
-    void orphanAuthorsRemoved() {
-        // Given
+    void removeOrphanAuthors() {
+        assumeThat(authorService.findAll()).isEmpty();
+
+        // given
         Author orphan = new Author("Jostein", "Gaarder");
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.save(book);
-        // When
+
+        // when
         bookService.delete(book);
-        // Then
-        assertAll(
-                () -> assertTrue(authorService.findAll().isEmpty())
-        );
+
+        // then
+        assertThat(authorService.findAll()).isEmpty();
     }
     @Test
     @DisplayName("Non-orphan authors shouldn't be removed when one of their books is deleted")
     void notRemoveNonOrphans() {
         // given
         Author nonOrphan = new Author("Jostein", "Gaarder");
-        Book book = new Book("Sophie's World", nonOrphan, toRead);
 
+        Book book = new Book("Sophie's World", nonOrphan, toRead);
         bookService.save(book);
+
         Book book2 = new Book("The Other World", nonOrphan, toRead);
         bookService.save(book2);
 
