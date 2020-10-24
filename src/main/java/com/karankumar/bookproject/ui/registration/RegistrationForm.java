@@ -122,7 +122,7 @@ public class RegistrationForm extends FormLayout {
                 passwordStrengthDescriptor.setText(BLANK_PASSWORD_MESSAGE);
                 passwordStrengthMeter.setValue(0);
             } else {
-                PasswordStrength strength = PasswordStrength.byNum(passwordScore);
+                PasswordStrength strength = PasswordStrength.fromValue(passwordScore);
                 setPasswordStrengthMeterColor(strength);
                 passwordStrengthDescriptor.setText("Password Strength: " + strength);
             }

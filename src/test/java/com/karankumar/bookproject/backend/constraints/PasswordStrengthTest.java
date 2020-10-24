@@ -15,7 +15,7 @@ class PasswordStrengthTest {
         int validIndex = 3;
 
         // when
-        PasswordStrength actual = PasswordStrength.byNum(validIndex);
+        PasswordStrength actual = PasswordStrength.fromValue(validIndex);
 
         // then
         assertThat(actual).isEqualTo(PasswordStrength.STRONG);
@@ -28,8 +28,8 @@ class PasswordStrengthTest {
         int aboveArrayUpperBound = PasswordStrength.values().length;
 
         // when
-        Throwable thrown1 = catchThrowable(() -> PasswordStrength.byNum(belowArrayLowerBound));
-        Throwable thrown2 = catchThrowable(() -> PasswordStrength.byNum(aboveArrayUpperBound));
+        Throwable thrown1 = catchThrowable(() -> PasswordStrength.fromValue(belowArrayLowerBound));
+        Throwable thrown2 = catchThrowable(() -> PasswordStrength.fromValue(aboveArrayUpperBound));
 
         // then
         assertSoftly(softly -> {

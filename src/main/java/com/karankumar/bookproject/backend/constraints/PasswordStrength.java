@@ -41,7 +41,7 @@ public enum PasswordStrength {
         return strengthNum;
     }
 
-    public static PasswordStrength byNum(int strengthNum) {
+    public static PasswordStrength fromValue(int strengthNum) {
         int length = PasswordStrength.values().length - 1;
         if (strengthNum >= 0 && strengthNum <= length) {
             return PasswordStrength.values()[strengthNum];
