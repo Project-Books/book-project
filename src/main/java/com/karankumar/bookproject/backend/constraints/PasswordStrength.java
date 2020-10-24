@@ -41,11 +41,13 @@ public enum PasswordStrength {
         return strengthNum;
     }
 
-    public static PasswordStrength byNum(int strengthNum) throws IllegalArgumentException {
+    public static PasswordStrength byNum(int strengthNum) {
         int length = PasswordStrength.values().length - 1;
         if (strengthNum >= 0 && strengthNum <= length) {
             return PasswordStrength.values()[strengthNum];
         }
-        throw new IllegalArgumentException("The password score has to lie between 0 and " + length);
+        String message = String.format("The password score has to lie between 0 and %d " +
+                "(inclusive). You entered in %d", length, strengthNum);
+        throw new IllegalArgumentException(message);
     }
 }
