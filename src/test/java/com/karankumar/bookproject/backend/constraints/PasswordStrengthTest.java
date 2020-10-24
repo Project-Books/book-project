@@ -3,11 +3,24 @@ package com.karankumar.bookproject.backend.constraints;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DisplayName("PasswordStrength should")
 class PasswordStrengthTest {
+    @Test
+    void getCorrectPasswordStrength() {
+        // given
+        int validIndex = 3;
+
+        // when
+        PasswordStrength actual = PasswordStrength.byNum(validIndex);
+
+        // then
+        assertThat(actual).isEqualTo(PasswordStrength.STRONG);
+    }
+
     @Test
     void notAllowOutOfBoundValues() {
         // given
