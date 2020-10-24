@@ -224,7 +224,9 @@ public class RegistrationForm extends FormLayout {
                 passwordStrengthMeter.setClassName("very-strong-indicator");
                 break;
             default:
-                throw new IllegalArgumentException("The password score has to lie between 0 and 5 (exclusive)");
+                String message = "The password score " + passwordScore + " is not covered in the " +
+                        "switch statement";
+                throw new IllegalArgumentException(message);
             }
     }
 }
