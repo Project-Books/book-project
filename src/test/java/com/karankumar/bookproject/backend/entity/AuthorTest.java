@@ -32,31 +32,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationTest
 class AuthorTest {
-    private static BookService bookService;
+    private BookService bookService;
+    private AuthorService authorService;
 
-    private static AuthorService authorService;
-    private static PredefinedShelf toRead;
+    private PredefinedShelf toRead;
     private Book testBook1;
     private Book testBook2;
-    @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService predefinedShelfService,
-                             @Autowired BookService bookService,
-                             @Autowired AuthorService authorService) {
-        AuthorTest.bookService = bookService;
-        AuthorTest.authorService = authorService;
 
+    @Autowired
+    void AuthorServiceTest(BookService bookService, AuthorService authorService) {
+        this.bookService = bookService;
+        this.authorService = authorService;
         resetBookService();
     }
 
     @BeforeEach
     public void reset(@Autowired PredefinedShelfService predefinedShelfService) {
         resetBookService();
-
-
         toRead = predefinedShelfService.findToReadShelf();
     }
 
-    private static void resetBookService() {
+    private void resetBookService() {
         bookService.deleteAll();
     }
 
