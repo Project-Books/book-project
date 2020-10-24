@@ -26,46 +26,44 @@ import java.util.List;
 
 @Service
 @Log
-public class CustomShelfService extends BaseService<CustomShelf, Long> {
+public class CustomShelfService {
     private final CustomShelfRepository customShelfRepository;
+    private final UserService userService;
 
-    public CustomShelfService(CustomShelfRepository customShelfRepository) {
+    public CustomShelfService(CustomShelfRepository customShelfRepository, UserService userService) {
         this.customShelfRepository = customShelfRepository;
+        this.userService = userService;
     }
 
-    @Override
+    public CustomShelf createCustomShelf(String shelfName) {
+        return new CustomShelf(shelfName, userService.getCurrentUser());
+    }
+
     public CustomShelf findById(Long id) {
         return customShelfRepository.getOne(id);
     }
 
-    public List<CustomShelf> findAll() {
-        return customShelfRepository.findAll();
+    public List<CustomShelf> findAllForLoggedInUser() {
+        return customShelfRepository.findAllByUser(userService.getCurrentUser());
     }
 
-    public List<CustomShelf> findAll(String shelfName) {
-        if (shelfName == null) {
-            return customShelfRepository.findAll();
-        } else {
-            return customShelfRepository.findByShelfName(shelfName);
-        }
+    public CustomShelf findByShelfNameAndLoggedInUser(String shelfName) {
+        return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
-    @Override
     public void save(CustomShelf customShelf) {
         customShelfRepository.save(customShelf);
     }
 
-    @Override
     public void delete(CustomShelf customShelf) {
         customShelfRepository.delete(customShelf);
     }
 
-    public Long count() {
-        return customShelfRepository.count();
-    }
-
-    @Override
     public void deleteAll() {
         customShelfRepository.deleteAll();
+    }
+
+    public Long count() {
+        return customShelfRepository.count();
     }
 }

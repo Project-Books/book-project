@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.karankumar.bookproject.backend.entity.account.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,6 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id", "books", "predefinedShelfName"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PredefinedShelf extends Shelf {
-    // This field must not have a setter as it should not be possible to rename a PredefinedShelf
     @Getter
     private ShelfName predefinedShelfName;
 
@@ -45,8 +45,8 @@ public class PredefinedShelf extends Shelf {
     @Setter
     protected Set<Book> books;
 
-    public PredefinedShelf(ShelfName predefinedShelfName) {
-        super(predefinedShelfName.toString());
+    public PredefinedShelf(ShelfName predefinedShelfName, User user) {
+        super(predefinedShelfName.toString(), user);
         this.predefinedShelfName = predefinedShelfName;
     }
 

@@ -15,16 +15,18 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
+package com.karankumar.bookproject.backend.util;
 
-package com.karankumar.bookproject.backend.service;
+public final class StringUtils {
+    private StringUtils() {}
 
-public abstract class BaseService<T, Id> {
-
-    public abstract T findById(Id id);
-
-    public abstract void save(T obj);
-
-    public abstract void delete(T obj);
-
-    public abstract void deleteAll();
+    /**
+     * Determine if a String should be singular or plural
+     * @param num the number of book or pages
+     * @param itemStr the String that will be pluralized
+     * @return either the original String or the original string with an "s" concatenated to it
+     */
+    public static String pluralize(String itemStr, int num) {
+        return (num > 1) ? (itemStr + "s") : (itemStr);
+    }
 }

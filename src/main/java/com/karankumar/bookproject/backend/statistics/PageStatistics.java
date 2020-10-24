@@ -45,13 +45,13 @@ public class PageStatistics extends Statistics {
     }
 
     private List<Book> findBooksWithPageCountSpecified() {
-        List<Book> booksWithPageCount = new ArrayList<>();
+        List<Book> booksWithNonEmptyPageCount = new ArrayList<>();
         for (Book book : readShelfBooks) {
             if (book.getNumberOfPages() != null) {
-                booksWithPageCount.add(book);
+                booksWithNonEmptyPageCount.add(book);
             }
         }
-        return booksWithPageCount;
+        return booksWithNonEmptyPageCount;
     }
 
     /**

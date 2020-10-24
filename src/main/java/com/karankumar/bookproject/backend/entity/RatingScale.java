@@ -49,8 +49,8 @@ public enum RatingScale {
     NINE_POINT_FIVE("9.5/10", 9.5),
     TEN("10/10", 10.0);
 
-    private String rating;
-    private Double value;
+    private final String rating;
+    private final Double value;
 
     RatingScale(String rating, Double value) {
         this.rating = rating;
