@@ -36,8 +36,6 @@ class AuthorTest {
     private AuthorService authorService;
 
     private PredefinedShelf toRead;
-    private Book testBook1;
-    private Book testBook2;
 
     @Autowired
     void AuthorServiceTest(BookService bookService, AuthorService authorService) {
@@ -67,16 +65,18 @@ class AuthorTest {
      */
     @Test
     void updateAuthorAffectsOneRow() {
-        // Given
-        testBook1 = createBook("How the mind works", toRead);
-        testBook2 = createBook("The better angels of our nature", toRead);
+        // given
+        Book testBook1 = createBook("How the mind works", toRead);
+        Book testBook2 = createBook("The better angels of our nature", toRead);
         bookService.save(testBook1);
         bookService.save(testBook2);
-        // When
+
+        // when
         Author newAuthor = new Author("Matthew", "Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
-        // Then
+
+        // then
         Assertions.assertNotEquals(testBook1.getAuthor(), testBook2.getAuthor());
     }
 
