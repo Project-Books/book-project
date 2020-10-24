@@ -42,9 +42,10 @@ public enum PasswordStrength {
     }
 
     public static PasswordStrength byNum(int strengthNum) throws IllegalArgumentException {
-        int length = PasswordStrength.values().length-1;
-        if (strengthNum >= 0 && strengthNum <= length)
+        int length = PasswordStrength.values().length - 1;
+        if (strengthNum >= 0 && strengthNum <= length) {
             return PasswordStrength.values()[strengthNum];
-        throw new IllegalArgumentException("The password score has to lie between 0 and "+length);
+        }
+        throw new IllegalArgumentException("The password score has to lie between 0 and " + length);
     }
 }
