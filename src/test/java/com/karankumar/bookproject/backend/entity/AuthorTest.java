@@ -25,6 +25,9 @@ import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationTest
@@ -85,7 +88,7 @@ class AuthorTest {
     @DisplayName("Orphan authors should be removed when deleting last book")
     void orphanAuthorsRemoved() {
         // Given
-        Author orphan = new Author("Jostein", "Gardner");
+        Author orphan = new Author("Jostein", "Gaarder");
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.save(book);
         // When
@@ -96,20 +99,21 @@ class AuthorTest {
         );
     }
     @Test
-    @DisplayName("Non orphan authors shouldn't be removed when deleting one of their books")
-    void nonOrphansNotRemoved() {
-        // Given
-        Author nonOrphan = new Author("Jostein", "Gardner");
+    @DisplayName("Non-orphan authors shouldn't be removed when one of their books is deleted")
+    void notRemoveNonOrphans() {
+        // given
+        Author nonOrphan = new Author("Jostein", "Gaarder");
         Book book = new Book("Sophie's World", nonOrphan, toRead);
+
         bookService.save(book);
         Book book2 = new Book("The Other World", nonOrphan, toRead);
         bookService.save(book2);
-        // When
+
+        // when
         bookService.delete(book);
-        // Then
-        assertAll(
-                () -> assertEquals(1, authorService.count()),
-                () -> assertEquals(1, bookService.count())
-        );
+        assumeThat(bookService.count()).isOne();
+
+        // then
+        assertThat(authorService.count()).isOne();
     }
 }
