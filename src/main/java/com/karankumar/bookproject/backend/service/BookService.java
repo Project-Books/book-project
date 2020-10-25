@@ -98,13 +98,18 @@ public class BookService {
         } else {
             LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
                     bookRepository.count());
+
             // Book deleted, remove it from author
             Author author = book.getAuthor();
             author.removeBook(book);
-            // Author has no books, remove author
-            if (author.getBooks().isEmpty()) {
-                authorService.delete(author);
-            }
+
+            removeAuthorWithoutBooks(author);
+        }
+    }
+
+    private void removeAuthorWithoutBooks(Author author) {
+        if (author.getBooks().isEmpty()) {
+            authorService.delete(author);
         }
     }
 
