@@ -22,6 +22,9 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
+
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksInDifferentGenres;
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksDifferentGenresWithoutPageCount;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,12 +44,10 @@ import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticT
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_LIKED_GENRE;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_READ_GENRE;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.StatisticNotFound;
-import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooks;
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBook;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutGenre;
-import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutPageCount;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutRatings;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithOnlyOneBook;
-
 
 @IntegrationTest
 @WebAppConfiguration
@@ -66,7 +67,7 @@ class StatisticsViewTest {
     @Test
     void createCompleteStatisticsView() {
         // given
-        populateDataWithBooks(bookService, predefinedShelfService);
+        populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
@@ -74,6 +75,30 @@ class StatisticsViewTest {
         // then
         allStatisticsAreShown();
         thereAreNotOtherStatistics();
+    }
+
+    @Test
+    void shouldShowGenreAndRatingStatisticsWhenMoreThanOneGenre() {
+        // given
+        populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
+
+        // when
+        statisticsView = new StatisticsView(predefinedShelfService);
+
+        // then
+        ratingStatisticsArePresent();
+    }
+
+    @Test
+    void shouldNotShowGenreAndRatingStatisticsWhenLessThanOneGenre() {
+        // given
+        populateDataWithBook(bookService, predefinedShelfService);
+
+        // when
+        statisticsView = new StatisticsView(predefinedShelfService);
+
+        // then
+        genreAndRatingStatisticsAreAbsent();
     }
 
     private void allStatisticsAreShown() {
@@ -92,7 +117,7 @@ class StatisticsViewTest {
     @Test
     void haveAValueForEachStatistic() {
         // given
-        populateDataWithBooks(bookService, predefinedShelfService);
+        populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
@@ -109,7 +134,7 @@ class StatisticsViewTest {
     @Test
     void showStillOtherStatisticsWithoutPageCount() {
         // given
-        populateDataWithBooksWithoutPageCount(bookService, predefinedShelfService);
+        populateDataWithBooksDifferentGenresWithoutPageCount(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
