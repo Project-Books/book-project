@@ -29,7 +29,6 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -67,9 +66,8 @@ public class BookProgressService {
      *
      * @param id id
      * @return book progress
-     * @throws Exception exception
      */
-    public BookProgress startReading(BookProgressId id) throws Exception {
+    public BookProgress startReading(BookProgressId id) {
         BookProgress bookProgress = getMyBookProgressById(id);
         if (bookProgress.getState() == State.TO_BE_READ) {
             return progressRepository.save(new BookProgressBuilder()
@@ -79,7 +77,7 @@ public class BookProgressService {
                     .withStartDate(LocalDate.now())
                     .build());
         } else {
-            throw new NotSupportedException("You can't start reading a book with your current state");
+            throw new IllegalStateException("You can't start reading a book with your current state");
         }
     }
 
@@ -89,10 +87,9 @@ public class BookProgressService {
      * @param id        id
      * @param pagesRead number of pages read
      * @return book progress
-     * @throws Exception exception
      */
     public BookProgress updateMyBookProgress(BookProgressId id,
-                                             Integer pagesRead) throws Exception {
+                                             Integer pagesRead) {
         BookProgress bookProgress = getMyBookProgressById(id);
         if (bookProgress.getState() == State.IN_PROGRESS) {
             return progressRepository.save(new BookProgressBuilder()
@@ -102,7 +99,7 @@ public class BookProgressService {
                     .withStartDate(bookProgress.getDateStartedReading())
                     .build());
         } else {
-            throw new NotSupportedException("You can't update unless you're reading the book");
+            throw new IllegalStateException("You can't update unless you're reading the book");
         }
     }
 
@@ -113,10 +110,9 @@ public class BookProgressService {
      * @param rating     rating
      * @param bookReview review
      * @return book progress itself
-     * @throws Exception If book isn't there i n DB.
      */
     public BookProgress doOnAfterfinishReading(BookProgressId id, RatingScale rating,
-                                               String bookReview) throws Exception {
+                                               String bookReview) {
         BookProgress bookProgress = getMyBookProgressById(id);
         if (bookProgress.getState() == State.FINISHED) {
             return progressRepository.save(new BookProgressBuilder()
@@ -129,7 +125,7 @@ public class BookProgressService {
                     .withBookReview(bookReview)
                     .build());
         } else {
-            throw new NotSupportedException("You can't rate or review unless you finish the book!");
+            throw new IllegalStateException("You can't rate or review unless you finish the book!");
         }
     }
 

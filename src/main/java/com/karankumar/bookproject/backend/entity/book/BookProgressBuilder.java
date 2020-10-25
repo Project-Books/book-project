@@ -56,9 +56,9 @@ public class BookProgressBuilder {
         return this;
     }
 
-    public BookProgressBuilder withPagesRead(Integer pagesRead, Book book) throws Exception {
+    public BookProgressBuilder withPagesRead(Integer pagesRead, Book book)  {
         if (pagesRead > book.getNumberOfPages()) { // Updated request is more than book's pages.
-            throw new Exception("Updated pages is more than book's pages");
+            throw new IndexOutOfBoundsException("Updated pages is more than book's pages");
         } else if (pagesRead.equals(book.getNumberOfPages())) { // I finished the book
             bookProgress.setState(State.FINISHED);
             bookProgress.setPagesRead(pagesRead);
