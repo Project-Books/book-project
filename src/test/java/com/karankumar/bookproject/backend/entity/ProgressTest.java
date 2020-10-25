@@ -41,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
+@DisplayName("Progress should be updated by user actions")
 class ProgressTest {
 
     private final BookService bookService;

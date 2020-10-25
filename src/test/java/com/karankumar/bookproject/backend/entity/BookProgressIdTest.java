@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("BookProgressId should return true if equal, else false")
 class BookProgressIdTest {
 
     @Test
