@@ -29,8 +29,10 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,7 +79,7 @@ public class BookProgressService {
                     .withStartDate(LocalDate.now())
                     .build());
         } else {
-            throw new Exception("You can't start reading a book with your current state");
+            throw new NotSupportedException("You can't start reading a book with your current state");
         }
     }
 
@@ -100,7 +102,7 @@ public class BookProgressService {
                     .withStartDate(bookProgress.getDateStartedReading())
                     .build());
         } else {
-            throw new Exception("You can't update unless you're reading the book");
+            throw new NotSupportedException("You can't update unless you're reading the book");
         }
     }
 
@@ -127,7 +129,7 @@ public class BookProgressService {
                     .withBookReview(bookReview)
                     .build());
         } else {
-            throw new Exception("You can't rate or review unless you finish the book!");
+            throw new NotSupportedException("You can't rate or review unless you finish the book!");
         }
     }
 
@@ -137,10 +139,10 @@ public class BookProgressService {
      * @param bookId book id
      * @return book if there or null
      */
-    public Book getBook(Long bookId) throws Exception {
+    public Book getBook(Long bookId) {
         return bookRepository.findById(bookId).orElseThrow(()
                 ->
-                new Exception("Book Not found In the database"));
+                new NoSuchElementException("Book Not found In the database"));
     }
 
     /**
@@ -163,12 +165,11 @@ public class BookProgressService {
      *
      * @param id book progress id
      * @return Book progress
-     * @throws Exception exception
      */
-    public BookProgress getMyBookProgressById(BookProgressId id) throws Exception {
+    public BookProgress getMyBookProgressById(BookProgressId id) {
         return progressRepository.findById(id)
                                  .orElseThrow(() ->
-                                         new Exception("You don't have any progress on this book"));
+                                         new NoSuchElementException("You don't have any progress on this book"));
     }
 
 }
