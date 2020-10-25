@@ -103,9 +103,7 @@ class AuthorTest {
 
         Book book = new Book("Sophie's World", nonOrphan, toRead);
         bookService.save(book);
-
-        Book book2 = new Book("The Other World", nonOrphan, toRead);
-        bookService.save(book2);
+        bookService.save(new Book("The Other World", nonOrphan, toRead));
 
         // when
         bookService.delete(book);
