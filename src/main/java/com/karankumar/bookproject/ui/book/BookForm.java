@@ -357,6 +357,7 @@ public class BookForm extends VerticalLayout {
         repopulateIfCreatingANewBook();
 
         if (binder.getBean() != null) {
+            populateBookShelf();
             LOGGER.log(Level.INFO, "Written bean. Not Null.");
             ComponentUtil.clearComponentFields(fieldsToReset);
             fireEvent(new SaveEvent(this, binder.getBean()));
@@ -366,6 +367,21 @@ public class BookForm extends VerticalLayout {
             showErrorMessage();
         }
         closeForm();
+    }
+
+    /**
+     * We need to fetch the complete {@link CustomShelf} entity as we store (and therefor submit) only the custom shelf name. See {@see BookForm#configureCustomShelfField}
+     */
+    private void populateBookShelf() {
+        Book book = binder.getBean();
+        CustomShelf selectedCustomShelf = book.getCustomShelf();
+        if (selectedCustomShelf != null) {
+            String shelfName = selectedCustomShelf.getShelfName();
+            CustomShelf completeCustomShelf = customShelfService.findByShelfNameAndLoggedInUser(shelfName);
+            if (completeCustomShelf != null) {
+                book.setCustomShelf(completeCustomShelf);
+            }
+        }
     }
 
     private void repopulateIfCreatingANewBook() {
