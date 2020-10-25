@@ -30,10 +30,13 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - Statistics about your reading habits
 - Add your own shelves
 - Export your saved data to JSON
+- User registration and accounts
 - And much more!
 
 *Coming soon:*
-- User registration and accounts
+- Search from a catalogue of books
+- 2-factor authentication
+- Magic links
 - And much more!
 
 <p align="center">
@@ -66,26 +69,27 @@ Prerequisites:
 
 1. Clone the repository
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
+3. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
   
 Then, if you want to use Docker, follow one of the approaches below:
 
 #### 1. Start locally with only MySQL running in docker
 
-3. Build the project at the root using `./mvn clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
-6. Log in with the details below:
+4. Build the project at the root using `./mvn clean install` (Unix) or `mvnw.cmd clean install` (Windows)
+5. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+6. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
+7. Log in with the details below:
    - Username: `user`
    - Password: `password`
 
 #### 2. Start using docker-compose in production mode
 
-3. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
+4. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
     - `./mvnw clean package -Pproduction` (Unix), or 
     - `mvnw.cmd clean package -Pproduction` (Windows)
-4. Start the MySQL Database and book project app using docker compose `docker-compose up --build`
-5. Go to `localhost:8080`
-6. Log in with the details below:
+5. Start the MySQL Database and book project app using docker compose `docker-compose up --build`
+6. Go to `localhost:8080`
+7. Log in with the details below:
    - Username: `user`
    - Password: `password`
     
@@ -95,11 +99,11 @@ We recommended this approach if you need to work on the frontend with Vaadin. Th
 Vaadin Live reload which prevents you from needing to re-run the server every time or manually refresh your browser 
 (i.e. it's a lot quicker). 
 
-3. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-4. Run the project from your IDE or with Maven:
+4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+5. Run the project from your IDE or with Maven:
    - `./mvnw spring-boot:run` on Unix
    - `mvnw.cmd spring-boot:run` on Windows
-5. Log in with the details below:
+6. Log in with the details below:
    - Username: `user`
    - Password: `password`
    
@@ -149,3 +153,5 @@ If you need help with anything, we'll be happy to help you in our [Slack workspa
 [paper-toggle-button](https://www.webcomponents.org/element/@polymer/paper-toggle-button) - [BSD-3 clause](https://spdx.org/licenses/BSD-3-Clause)
 
 [jackson](https://github.com/FasterXML/jackson) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
+
+[Flyway](https://github.com/flyway/flyway) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)

@@ -122,9 +122,9 @@ public class RegistrationForm extends FormLayout {
                 passwordStrengthDescriptor.setText(BLANK_PASSWORD_MESSAGE);
                 passwordStrengthMeter.setValue(0);
             } else {
-                setPasswordStrengthMeterColor(passwordScore);
-                passwordStrengthDescriptor.setText("Password Strength: " +
-                        PasswordStrength.values()[passwordScore]);
+                PasswordStrength strength = PasswordStrength.fromValue(passwordScore);
+                setPasswordStrengthMeterColor(strength);
+                passwordStrengthDescriptor.setText("Password Strength: " + strength);
             }
         });
     }
@@ -181,7 +181,7 @@ public class RegistrationForm extends FormLayout {
             enablePasswordValidation = true;
             binder.validate();
         });
-        
+
         binder.setStatusLabel(errorMessage);
         errorMessage.getStyle()
                     .set("color", "var(--lumo-error-text-color)");
@@ -205,26 +205,28 @@ public class RegistrationForm extends FormLayout {
 
         return ValidationResult.error("Passwords do not match");
     }
-    
-    private void setPasswordStrengthMeterColor(int passwordScore) {
-	switch (passwordScore) {
-        case 0:
-            passwordStrengthMeter.setClassName("weak-indicator");
-            break;
-        case 1:
-            passwordStrengthMeter.setClassName("fair-indicator");
-            break;
-        case 2:
-            passwordStrengthMeter.setClassName("good-indicator");
-            break;
-        case 3:
-            passwordStrengthMeter.setClassName("strong-indicator");
-            break;
-        case 4:
-            passwordStrengthMeter.setClassName("very-strong-indicator");
-            break;
-        default:
-            throw new IllegalArgumentException("The password score has to lie between 0 and 5 (exclusive)");
-        }
+
+    private void setPasswordStrengthMeterColor(PasswordStrength passwordScore) {
+        switch (passwordScore) {
+            case WEAK:
+                passwordStrengthMeter.setClassName("weak-indicator");
+                break;
+            case FAIR:
+                passwordStrengthMeter.setClassName("fair-indicator");
+                break;
+            case GOOD:
+                passwordStrengthMeter.setClassName("good-indicator");
+                break;
+            case STRONG:
+                passwordStrengthMeter.setClassName("strong-indicator");
+                break;
+            case VERY_STRONG:
+                passwordStrengthMeter.setClassName("very-strong-indicator");
+                break;
+            default:
+                String message = "The password score " + passwordScore + " is not covered in the " +
+                        "switch statement";
+                throw new IllegalArgumentException(message);
+            }
     }
 }

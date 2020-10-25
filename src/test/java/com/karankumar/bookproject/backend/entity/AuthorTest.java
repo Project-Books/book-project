@@ -21,16 +21,17 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
+@DisplayName("Author should")
 class AuthorTest {
     private BookService bookService;
     private AuthorService authorService;
@@ -64,7 +65,7 @@ class AuthorTest {
      * originally had the same author name
      */
     @Test
-    void updateAuthorAffectsOneRow() {
+    void affectOnlyOneBookWhenUpdated() {
         // given
         Book testBook1 = createBook("How the mind works", toRead);
         Book testBook2 = createBook("The better angels of our nature", toRead);
@@ -81,7 +82,7 @@ class AuthorTest {
     }
 
     @Test
-    void removeOrphanAuthors() {
+    void beRemovedWhenOrphan() {
         assumeThat(authorService.findAll()).isEmpty();
 
         // given
@@ -95,6 +96,7 @@ class AuthorTest {
         // then
         assertThat(authorService.findAll()).isEmpty();
     }
+
     @Test
     @DisplayName("Non-orphan authors shouldn't be removed when one of their books is deleted")
     void notRemoveNonOrphans() {

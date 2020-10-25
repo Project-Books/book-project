@@ -20,7 +20,7 @@ package com.karankumar.bookproject.backend.goal;
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.calculateProgressTowardsReadingGoal;
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFarAheadOrBehindSchedule;
 import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.booksToReadFromStartOfYear;
-import com.karankumar.bookproject.backend.utils.DateUtils;
+import com.karankumar.bookproject.backend.util.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.assertj.core.api.SoftAssertions;
@@ -41,7 +41,7 @@ class CalculateReadingGoalTest {
     }
 
     @Test
-    void testProgressValueIsCorrect() {
+    void calculateCorrectProgressValue() {
         int toRead = 25;
         int read = 5;
         double expected = 0.2;
@@ -50,14 +50,14 @@ class CalculateReadingGoalTest {
     }
 
     @Test
-    void testProgressValueIsCorrectWhenGoalMet() {
+    void calculateCorrectProgressValueWhenGoalMet() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, BOOKS_TO_READ);
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void testProgressIsCorrectWhenGoalExceeded() {
+    void calculateCorrectProgressValueWhenGoalExceeded() {
         double expected = 1.0;
         double actual = calculateProgressTowardsReadingGoal(BOOKS_TO_READ, (BOOKS_TO_READ + 1));
         assertThat(actual).isEqualTo(expected);
@@ -70,7 +70,7 @@ class CalculateReadingGoalTest {
 
     @Test
     @DisplayName("Ensure 0, and not an arithmetic exception, is returned")
-    void testCalculateProgressTowardsReadingGoalDivideByZero() {
+    void shouldNotThrowExceptionOnZeroDivision() {
         int toRead = 5;
         int read = 0;
 

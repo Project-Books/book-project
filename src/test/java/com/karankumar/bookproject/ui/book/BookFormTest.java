@@ -23,10 +23,10 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;	
-import com.karankumar.bookproject.backend.entity.CustomShelf;	
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.*;
+
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
@@ -62,6 +62,7 @@ import java.util.stream.Stream;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("BookForm should")
 class BookFormTest {
 
     private static final String firstName = "Nick";
@@ -76,7 +77,6 @@ class BookFormTest {
     private static final int pagesRead = 450;
     private static final int numberOfPages = 1000;
     private static int seriesPosition;
-    private static final CustomShelf customShelf = new CustomShelf("BookFormTestShelf");
 
     private static final LocalDate NULL_STARED_DATE = null;
     private static final LocalDate NULL_FINISHED_DATE = null;
@@ -105,7 +105,7 @@ class BookFormTest {
 
         bookService.deleteAll();
         customShelfService.deleteAll();
-        customShelfService.save(customShelf);
+        customShelfService.save(customShelfService.createCustomShelf("BookFormTestShelf"));
 
         bookForm = createBookForm(READ, true);
     }
@@ -120,14 +120,14 @@ class BookFormTest {
     private Book createBook(PredefinedShelf.ShelfName shelfName, boolean isInSeries,
                             String bookTitle) {
         Author author = new Author(firstName, lastName);
-        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfName(shelfName);
+        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(shelfName);
         Book book = new Book(bookTitle, author, shelf);
 
         seriesPosition = SERIES_POSITION;
 
         book.setBookGenre(BOOK_GENRE);
         book.setNumberOfPages(numberOfPages);
-        book.setCustomShelf(customShelfService.findAll().get(0));
+        book.setCustomShelf(customShelfService.findAllForLoggedInUser().get(0));
         if (isInSeries) {
             book.setSeriesPosition(SERIES_POSITION);
         }
@@ -159,7 +159,7 @@ class BookFormTest {
      * Tests whether the form fields are correctly populated
      */
     @Test
-    void formFieldsPopulated() {
+    void populateFormFields() {
         double rating = RatingScale.toDouble(ratingVal);
 
         assertSoftly(softly -> {
@@ -188,7 +188,7 @@ class BookFormTest {
      */
     @ParameterizedTest
     @EnumSource(EventType.class)
-    void saveEventPopulated(EventType eventType) {
+    void populateSaveEvent(EventType eventType) {
         // given
         populateBookForm();
 
@@ -251,8 +251,7 @@ class BookFormTest {
     }
 
     @Test
-    @DisplayName("When the reset button is clicked, all fields are cleared")
-    void formCanBeCleared() {
+    void clearFormOnResetButton() {
         // given
         populateBookForm();
         assumeAllFormFieldsArePopulated();
@@ -285,7 +284,7 @@ class BookFormTest {
     }
 
     @Test
-    void correctFormFieldsShowForToReadShelf() {
+    void showCorrectFormFieldsForToReadShelf() {
         bookForm.predefinedShelfField.setValue(TO_READ);
         assertNonToReadFieldsAreHidden();
     }
@@ -301,7 +300,7 @@ class BookFormTest {
     }
 
     @Test
-    void correctFormFieldsShowForReadingShelf() {
+    void showCorrectFormFieldsForReadingShelf() {
         bookForm.predefinedShelfField.setValue(READING);
         assertSoftly(softly -> {
             softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
@@ -313,7 +312,7 @@ class BookFormTest {
     }
 
     @Test
-    void correctFormFieldsShowForReadShelf() {
+    void showCorrectFormFieldsForReadShelf() {
         bookForm.predefinedShelfField.setValue(READ);
         assertSoftly(softly -> {
             softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
@@ -325,7 +324,7 @@ class BookFormTest {
     }
 
     @Test
-    void correctFormFieldsShowForDidNotFinishShelf() {
+    void showCorrectFormFieldsForDidNotFinishShelf() {
         bookForm.predefinedShelfField.setValue(DID_NOT_FINISH);
         assertSoftly(softly -> {
             softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
@@ -347,7 +346,7 @@ class BookFormTest {
 
     @ParameterizedTest
     @MethodSource("shelfNames")
-    void fieldsToResetAreCorrectlyPopulated(
+    void populateFieldsToResetCorrectly(
             PredefinedShelf.ShelfName newShelf) throws NotSupportedException {
         // given
         HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
@@ -365,7 +364,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowNegativeSeriesPosition() {
+    void notAllowNegativeSeriesPosition() {
         // given
         bookForm.seriesPosition.setValue(-1);
 
@@ -392,7 +391,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowNegativePageNumbers() {
+    void notAllowNegativePageNumbers() {
         // given
         bookForm.numberOfPages.setValue(-1);
 
@@ -404,7 +403,7 @@ class BookFormTest {
     }
 
     @Test
-    void testNumberOfPagesFieldShouldNotExceedMaxValue() {
+    void notAllowPagesFieldToExceedMax() {
         // given
         bookForm.numberOfPages.setValue(Book.MAX_PAGES + 1);
 
@@ -416,7 +415,7 @@ class BookFormTest {
     }
 
     @Test
-    void testPagesReadShouldNotExceedMaxValue() {
+    void notAllowPagesReadToExceedMaxValue() {
         // given
         bookForm.pagesRead.setValue(Book.MAX_PAGES + 1);
 
@@ -428,7 +427,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowEmptyBookTitle() {
+    void notAllowEmptyBookTitle() {
         // given
         bookForm.bookTitle.setValue("");
 
@@ -440,7 +439,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowEmptyAuthorFirstName() {
+    void notAllowEmptyAuthorFirstName() {
         // given
         bookForm.authorFirstName.setValue("");
 
@@ -452,7 +451,7 @@ class BookFormTest {
     }
 
     @Test
-    void changeAuthorNameShouldBeSaved() {
+    void saveChangedAuthorName() {
         // given
         Book book = createBook(READ, false, "Title");
         bookService.save(book);
@@ -475,7 +474,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowEmptyAuthorLastName() {
+    void notAllowEmptyAuthorLastName() {
         // given
         bookForm.authorLastName.setValue("");
 
@@ -487,7 +486,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowEmptyShelf() {
+    void notAllowEmptyShelf() {
         // given
         bookForm.predefinedShelfField.setValue(null);
 
@@ -499,7 +498,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotAllowFutureStartDate() {
+    void notAllowFutureStartDate() {
         // given
         bookForm.dateStartedReading.setValue(LocalDate.now().plusDays(5));
 
@@ -521,7 +520,7 @@ class BookFormTest {
     }
 
     @Test
-    void whenIsInSeriesCheckedDisplaySeriesPosition() {
+    void displaySeriesPositionWhenIsInSeriesChecked() {
         // given
         bookForm.inSeriesCheckbox.setValue(true);
 
@@ -535,7 +534,7 @@ class BookFormTest {
     }
 
     @Test
-    void whenIsInSeriesUnchecked_SeriesPositionShouldNotShow() {
+    void notShowSeriesPositionWhenIsInSeriesUnchecked() {
         // given
         bookForm.inSeriesCheckbox.setValue(false);
 
@@ -544,7 +543,7 @@ class BookFormTest {
     }
 
     @Test
-    void whenSeriesPositionIsSwitchedOnAndThenOff_seriesPositionHides() {
+    void hideSeriesPositionWhenSeriesPositionIsSwitchedOnAndThenOff() {
         // given
         bookForm.inSeriesCheckbox.setValue(true);
 
@@ -556,7 +555,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldDisplaySeriesPosition_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
+    void displaySeriesPosition_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
         // given
         populateBookForm();
 
@@ -572,7 +571,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldNotDisplaySeriesPosition_whenBookDoesNotHaveSeriesPosition() {
+    void notDisplaySeriesPosition_whenBookDoesNotHaveSeriesPosition() {
         // given
         bookForm = createBookForm(READ, false);
 
@@ -583,7 +582,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldAddBookToDatabaseWhenSaveEventIsCalled() {
+    void addBookToDatabaseWhenSaveEventIsCalled() {
         // given
         bookForm = createBookForm(TO_READ, false);
 
@@ -598,7 +597,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldAddBooksToDatabaseWhenSaveEventIsCalled_withoutReplacingExistingBook() {
+    void addBooksToDatabaseWhenSaveEventIsCalled_withoutReplacingExistingBook() {
         // given
         bookForm = createBookForm(TO_READ, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
@@ -619,7 +618,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldUpdateValuesInDatabaseForExistingBookWhenSaveEventIsCalled() {
+    void updateValuesInDatabaseForExistingBookWhenSaveEventIsCalled() {
         // given
         String newTitle = "IT";
         Author newAuthor = new Author("Stephen", "King");
@@ -676,7 +675,7 @@ class BookFormTest {
      */
     @ParameterizedTest
     @MethodSource("shelfCombinations")
-    void shouldUpdateValuesWhenBookIsMovedBetweenShelves(PredefinedShelf.ShelfName initialShelf,
+    void updateValuesWhenBookIsMovedBetweenShelves(PredefinedShelf.ShelfName initialShelf,
                                                          PredefinedShelf.ShelfName newShelf) {
         // given
         bookForm = createBookForm(initialShelf, false);
@@ -749,7 +748,7 @@ class BookFormTest {
      * Tests whether a book is removed from the database when the delete-event is called
      */
     @Test
-    void shouldDeleteBookFromDatabase() {
+    void deleteBookFromDatabase() {
         // given
         bookForm = createBookForm(TO_READ, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
@@ -766,7 +765,7 @@ class BookFormTest {
     }
 
     @Test
-    void shouldOnlyEnableSaveWhenValid() {
+    void onlyEnableSaveWhenValid() {
         // given
         bookForm = new BookForm(predefinedShelfService,customShelfService);
         assertThat(bookForm.saveButton.isEnabled()).isFalse();

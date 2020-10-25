@@ -19,20 +19,25 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
+
 import lombok.extern.java.Log;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Log
 @IntegrationTest
+@DisplayName("AuthorService should")
 class AuthorServiceTest {
     private final AuthorService authorService;
     private final BookService bookService;
@@ -50,7 +55,7 @@ class AuthorServiceTest {
     }
 
     @Test
-    void testSaveAndConfirmDuplicateNameWithDifferentId() {
+    void saveAndConfirmDuplicateNameWithDifferentId() {
         // given
         Author author = new Author("Nyor", "Ja");
         authorService.save(author);
@@ -67,7 +72,7 @@ class AuthorServiceTest {
 
     @Transactional
     @Test
-    void testSaveIntegrity() {
+    void saveCorrectly() {
         // given
         Author author = new Author("daks", "oten");
         authorService.save(author);
@@ -90,5 +95,21 @@ class AuthorServiceTest {
 
         // then
         assertNotNull(authorService.findById(author.getId()));
+    }
+
+    @Test
+    @DisplayName("be able to delete an author without any books")
+    void deleteAuthorWithoutBooks() {
+        assumeThat(authorService.count()).isZero();
+
+        // given
+        Author authorWithoutBooks = new Author("First", "Last");
+        authorService.save(authorWithoutBooks);
+
+        // when
+        authorService.delete(authorWithoutBooks);
+
+        // then
+        assertThat(authorService.count()).isZero();
     }
 }
