@@ -44,10 +44,8 @@ import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticT
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.StatisticNotFound;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooks;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutGenre;
-import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutPageCount;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutRatings;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithOnlyOneBook;
-
 
 @IntegrationTest
 @WebAppConfiguration
@@ -81,10 +79,10 @@ class StatisticsViewTest {
         // given
         populateDataWithBooksDifferentGenres(bookService, predefinedShelfService);
 
-        //when
+        // when
         statisticsView = new StatisticsView(predefinedShelfService);
 
-        //then
+        // then
         ratingStatisticsArePresent();
     }
 
@@ -93,10 +91,10 @@ class StatisticsViewTest {
         // given
         populateDataWithBooks(bookService, predefinedShelfService);
 
-        //when
+        // when
         statisticsView = new StatisticsView(predefinedShelfService);
 
-        //then
+        // then
         genreAndRatingStatisticsAreAbsent();
     }
 
