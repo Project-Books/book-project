@@ -69,11 +69,10 @@ public class StatisticTestUtils {
         StatisticTestUtils.predefinedShelfService = predefinedShelfService;
     }
 
-    public static void addReadBook(BookService bookService, PredefinedShelfService
-        predefinedShelfService, String bookTitle, RatingScale rating, BookGenre bookGenre,
-        int pages) {
+    public static void addReadBook(BookService bookService,
+                                   PredefinedShelfService predefinedShelfService) {
         init(bookService, predefinedShelfService);
-        createReadBook(bookTitle, rating, bookGenre, pages);
+        createReadBook("Book", RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200);
     }
 
     private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages) {

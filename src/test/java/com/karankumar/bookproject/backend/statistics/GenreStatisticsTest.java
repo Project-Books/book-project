@@ -18,7 +18,6 @@
 package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.BookGenre;
-import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
@@ -92,8 +91,7 @@ class GenreStatisticsTest {
     }
 
     private void saveBook() {
-        StatisticTestUtils.addReadBook(bookService, predefinedShelfService,
-                "Book" , RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200);
+        StatisticTestUtils.addReadBook(bookService, predefinedShelfService);
     }
 
     @Test
