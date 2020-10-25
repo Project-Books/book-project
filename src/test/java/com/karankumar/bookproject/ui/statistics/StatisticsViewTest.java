@@ -44,7 +44,7 @@ import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticT
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_LIKED_GENRE;
 import static com.karankumar.bookproject.ui.statistics.StatisticsView.StatisticType.MOST_READ_GENRE;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.StatisticNotFound;
-import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooks;
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBook;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutGenre;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksWithoutRatings;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithOnlyOneBook;
@@ -92,7 +92,7 @@ class StatisticsViewTest {
     @Test
     void shouldNotShowGenreAndRatingStatisticsWhenLessThanOneGenre() {
         // given
-        populateDataWithBooks(bookService, predefinedShelfService);
+        populateDataWithBook(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);

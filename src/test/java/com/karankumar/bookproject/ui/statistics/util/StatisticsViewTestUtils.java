@@ -68,12 +68,10 @@ public class StatisticsViewTestUtils {
                      .equals(text);
     }
 
-    public static void populateDataWithBooks(
-            BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public static void populateDataWithBook(BookService bookService,
+                                            PredefinedShelfService predefinedShelfService) {
         Book mobyDickBook = createMobyDickBook(predefinedShelfService);
-        Book hobbitBook = createHobbitBook(predefinedShelfService);
         bookService.save(mobyDickBook);
-        bookService.save(hobbitBook);
     }
 
     public static void populateDataWithBooksInDifferentGenres(
