@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;

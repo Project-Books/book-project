@@ -23,15 +23,17 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
+import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
+@DisplayName("PageStatistics should")
 class PageStatisticsTest {
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
@@ -52,13 +54,13 @@ class PageStatisticsTest {
     }
 
     @Test
-    void bookWithMostPagesExistsAndIsFound() {
+    void findBookWithMostPages() {
         assertThat(pageStatistics.findBookWithMostPages().getTitle())
                 .isEqualTo(StatisticTestUtils.getBookWithMostPages().getTitle());
     }
 
     @Test
-    void onlyReadBooksCountTowardsMostPagesStatistics() {
+    void coundOnlyReadBooksTowardsMostPagesStatistics() {
         PredefinedShelf readingShelf = predefinedShelfService.findReadingShelf();
 
         Book readingBook = new Book("More pages than any read book",
@@ -72,20 +74,20 @@ class PageStatisticsTest {
     }
 
     @Test
-    void testAveragePageLengthDivideByZero() {
+    void notDivideAveragePageLengthByZero() {
         resetPageStatistics();
         assertThat(pageStatistics.calculateAveragePageLength()).isNull();
     }
 
     @Test
-    void averagePageLengthExistsAndIsCorrect() {
+    void calculateAveragePageLengthCorrectly() {
         int averagePageLength =
                 StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
         assertThat(pageStatistics.calculateAveragePageLength()).isEqualTo(averagePageLength);
     }
 
     @Test
-    void testAveragePageLengthWithFloatPointCalculation() {
+    void calculateAveragePageLengthWithFloatPointCalculationCorrectly() {
         StatisticTestUtils.deleteBook(StatisticTestUtils.getBookWithHighestRating());
         pageStatistics = new PageStatistics(predefinedShelfService);
         Double averagePageLength = 267.0;

@@ -15,18 +15,22 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
-public final class StringUtils {
-    private StringUtils() {}
+import com.karankumar.bookproject.backend.entity.Book;
 
-    /**
-     * Determine if a String should be singular or plural
-     * @param num the number of book or pages
-     * @param itemStr the String that will be pluralized
-     * @return either the original String or the original string with an "s" concatenated to it
-     */
-    public static String pluralize(String itemStr, int num) {
-        return (num > 1) ? (itemStr + "s") : (itemStr);
+public final class BookUtils {
+    private BookUtils() {}
+
+    public static String combineTitleAndSeries(Book book) {
+        return (bookHasSeriesPosition(book)) ? addSeriesToTitle(book) : book.getTitle();
+    }
+
+    private static boolean bookHasSeriesPosition(Book book) {
+        return book.getSeriesPosition() != null && book.getSeriesPosition() > 0;
+    }
+
+    private static String addSeriesToTitle(Book book) {
+        return String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
     }
 }

@@ -26,6 +26,8 @@ import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import org.apache.commons.io.FileUtils;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
@@ -47,6 +49,7 @@ import java.util.List;
 import java.util.Set;
 
 @IntegrationTest
+@DisplayName("BookService should")
 class BookServiceTest {
     private final AuthorService authorService;
     private final BookService bookService;
@@ -59,7 +62,9 @@ class BookServiceTest {
     private Author author;
 
     @Autowired
-    BookServiceTest(AuthorService authorService, BookService bookService, CustomShelfService customShelfService, TagService tagService, PredefinedShelfService predefinedShelfService) {
+    BookServiceTest(AuthorService authorService, BookService bookService,
+                    CustomShelfService customShelfService, TagService tagService,
+                    PredefinedShelfService predefinedShelfService) {
         this.authorService = authorService;
         this.bookService = bookService;
         this.customShelfService = customShelfService;
@@ -74,7 +79,7 @@ class BookServiceTest {
     }
 
     private void resetAuthorAndBook() {
-        toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
+        toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
         author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author, toRead);
     }
@@ -87,13 +92,13 @@ class BookServiceTest {
     }
 
     @Test
-    void nullBookNotSaved() {
+    void notSaveNullBook() {
         bookService.save(null);
         assertThat(bookService.count()).isZero();
     }
 
     @Test
-    void bookWithoutAuthorNotSaved() {
+    void notSaveBookWithout() {
         SoftAssertions softly = new SoftAssertions();
 
         // when
@@ -106,8 +111,7 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Tests book with numberOfPages > max_pages is not saved")
-    void bookWithMaxNumberOfPagesExceededNotSaved() {
+    void notSaveBookWithMaxNumberOfPagesExceeded() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -122,7 +126,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookOutsidePageLimitNotSaved() {
+    void notSaveBookOutsidePageLimit() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -137,7 +141,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookWithinPageLimitIsSaved() {
+    void saveBookWithinPageLimit() {
         // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES);
@@ -151,7 +155,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookWithoutPredefinedShelfNotSaved() {
+    void notSaveBookWithoutPredefinedShelf() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -167,8 +171,7 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Book with author and predefined shelf can be saved")
-    void validBookSaved() {
+    void saveValidBook() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -187,12 +190,12 @@ class BookServiceTest {
     }
 
     @Test
-    void allBooksReturnedWhenFilterIsEmpty() {
+    void returnAllBooksWhenFilterIsEmpty() {
         assertEquals(bookService.findAll(), bookService.findAll(""));
     }
 
     @Test
-    void allBooksReturnedWhenFilterIsNull() {
+    void returnAllBooksWhenFilterIsNull() {
         assertEquals(bookService.findAll(), bookService.findAll(null));
     }
 
@@ -237,6 +240,7 @@ class BookServiceTest {
         book.setSeriesPosition(3);
         book.setEdition(2);
         book.setBookRecommendedBy("Peter Parker");
+        book.setIsbn("9780151010264");
         book.setCustomShelf(customShelf);
         book.setTags(Set.of(tag1, tag2));
         book.setRating(RatingScale.EIGHT);

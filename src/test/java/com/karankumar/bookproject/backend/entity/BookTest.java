@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.TagService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
 @Transactional
+@DisplayName("Book should")
 class BookTest {
     private final BookService bookService;
     private final TagService tagService;
@@ -42,7 +44,8 @@ class BookTest {
     private Tag testTag;
 
     @Autowired
-    BookTest(BookService bookService, TagService tagService, PredefinedShelfService predefinedShelfService) {
+    BookTest(BookService bookService, TagService tagService,
+             PredefinedShelfService predefinedShelfService) {
         this.bookService = bookService;
         this.tagService = tagService;
         this.predefinedShelfService = predefinedShelfService;
@@ -69,7 +72,8 @@ class BookTest {
     }
 
     @Test
-    void testOrphanedTagsNotRemoved() {
+    @Transactional
+    void notRemoveOrphanTags() {
         // given
         assumeThat(tagService.findAll().size()).isOne();
 

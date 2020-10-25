@@ -29,12 +29,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.utils.SecurityTestUtils.getTestUser;
-import static com.karankumar.bookproject.utils.SecurityTestUtils.insertTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
+@DisplayName("CustomShelfRepository should")
 class CustomShelfRepositoryTest {
     private static final String CUSTOM_SHELF_NAME = "Test1";
 
@@ -57,8 +58,7 @@ class CustomShelfRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByShelfNameAndUser correctly returns the shelf if exists")
-    void findByShelfNameAndUser() {
+    void findCorrectShelf() {
         CustomShelf shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
         assertThat(shelf).isNotNull();
 

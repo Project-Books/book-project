@@ -20,17 +20,17 @@ package com.karankumar.bookproject.backend.statistics;
 import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
+import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
+@DisplayName("GenreStatistics should")
 class GenreStatisticsTest {
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
@@ -55,21 +55,21 @@ class GenreStatisticsTest {
     }
 
     @Test
-    void mostReadGenreExistsAndIsFound() {
+    void findMostReadGenre() {
         BookGenre expected = StatisticTestUtils.MOST_READ_BOOK_GENRE;
         BookGenre actual = genreStatistics.findMostReadGenre();
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void mostLikedGenreExistsAndIsFound() {
+    void findMostLikedGenre() {
         BookGenre expected = StatisticTestUtils.MOST_LIKED_BOOK_GENRE;
         BookGenre actual = genreStatistics.findMostLikedGenre();
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void leastLikedGenreExistsAndIsFound() {
+    void findLeastLikedGenre() {
         BookGenre expected = StatisticTestUtils.LEAST_LIKED_BOOK_GENRE;
         BookGenre actual = genreStatistics.findLeastLikedGenre();
         assertThat(actual).isEqualTo(expected);

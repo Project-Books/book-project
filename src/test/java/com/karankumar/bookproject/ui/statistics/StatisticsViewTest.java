@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.ui.statistics;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
@@ -26,6 +27,7 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksDifferentGenresWithoutPageCount;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -49,6 +51,7 @@ import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUt
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("StatisticsView should")
 class StatisticsViewTest {
 
     @Autowired private PredefinedShelfService predefinedShelfService;
@@ -62,7 +65,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void shouldCreateCompleteStatisticsView() {
+    void createCompleteStatisticsView() {
         // given
         populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
@@ -112,7 +115,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void eachStatisticShouldHaveAValue() {
+    void haveAValueForEachStatistic() {
         // given
         populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
@@ -129,7 +132,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutPageCountOtherStatisticsStillShown() {
+    void showStillOtherStatisticsWithoutPageCount() {
         // given
         populateDataWithBooksDifferentGenresWithoutPageCount(bookService, predefinedShelfService);
 
@@ -144,7 +147,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutGenreInformationOtherStatisticsStillShown() {
+    void showStillOtherStatisticsWithoutGenreInformation() {
         // given
         populateDataWithBooksWithoutGenre(bookService, predefinedShelfService);
 
@@ -159,7 +162,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withOnlyOneBookTheMostLikedAndLeastLikedBookShouldBeAbsent() {
+    void notShowTheMostLikedAndLeastLikedBookWithOnlyOneBook() {
         // given
         populateDataWithOnlyOneBook(bookService, predefinedShelfService);
 
@@ -171,7 +174,7 @@ class StatisticsViewTest {
     }
 
     @Test
-    void withoutRatingInformationTheViewShouldShowOtherStatistics() {
+    void showOtherStatisticsWithoutRatingInformation() {
         // given
         populateDataWithBooksWithoutRatings(bookService, predefinedShelfService);
 
@@ -231,5 +234,34 @@ class StatisticsViewTest {
 
     private StatisticsViewTestUtils.Statistic getStatistic(StatisticType statisticType) {
         return StatisticsViewTestUtils.getStatistic(statisticType, statisticsView);
+    }
+
+    @Test
+    void onlyDisplayRatingUnitOnce() {
+        // given
+        String title = "Harry Potter and the Chamber of Secrets";
+        RatingScale rating = RatingScale.NO_RATING;
+
+        // when
+        String actual = StatisticsView.formatStatistic(title, rating.toString(), "rating");
+
+        // then
+        String expected = String.format("%s (%s)", title, rating.toString());
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void includePagesUnitWhenFormatted() {
+        // given
+        String title = "Harry Potter and the Chamber of Secrets";
+        int pages = 500;
+        String unit = "pages";
+
+        // when
+        String actual = StatisticsView.formatStatistic(title, String.valueOf(pages), unit);
+
+        // then
+        String expected = String.format("%s (%s %s)", title, pages, unit);
+        assertThat(actual).isEqualTo(expected);
     }
 }

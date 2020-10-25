@@ -29,12 +29,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.karankumar.bookproject.utils.SecurityTestUtils.getTestUser;
-import static com.karankumar.bookproject.utils.SecurityTestUtils.insertTestUser;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
+@DisplayName("PredefinedShelfRepository should")
 class PredefinedShelfRepositoryTest {
     private final UserRepository userRepository;
     private final PredefinedShelfRepository repository;
@@ -42,7 +44,8 @@ class PredefinedShelfRepositoryTest {
     private User user;
 
     @Autowired
-    PredefinedShelfRepositoryTest(UserRepository userRepository, PredefinedShelfRepository repository) {
+    PredefinedShelfRepositoryTest(UserRepository userRepository,
+                                  PredefinedShelfRepository repository) {
         this.userRepository = userRepository;
         this.repository = repository;
     }
@@ -55,13 +58,13 @@ class PredefinedShelfRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByPredefinedShelfName correctly returns the shelf if exists")
-    void findByPredefinedShelfNameAndUser() {
-        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.TO_READ, user);
+    void findCorrectShelf() {
+        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
+
         assertThat(shelf).isNotNull();
 
         assertSoftly(softly -> {
-            softly.assertThat(shelf.getPredefinedShelfName()).isEqualTo(PredefinedShelf.ShelfName.TO_READ);
+            softly.assertThat(shelf.getPredefinedShelfName()).isEqualTo(TO_READ);
             softly.assertThat(shelf.getUser().getId()).isEqualTo(user.getId());
         });
     }
@@ -70,7 +73,7 @@ class PredefinedShelfRepositoryTest {
     @DisplayName("findByPredefinedShelfName correctly returns null if shelf doesn't exist")
     void findByPredefinedShelfNameAndUserReturnsNull() {
         repository.deleteAll();
-        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.TO_READ, user);
+        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
         assertThat(shelf).isNull();
     }
 

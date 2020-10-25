@@ -20,14 +20,16 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.karankumar.bookproject.utils.ReadingGoalTestUtils.resetGoalService;
+import static com.karankumar.bookproject.util.ReadingGoalTestUtils.resetGoalService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
+@DisplayName("ReadingGoalService should")
 class ReadingGoalServiceTest {
     private final ReadingGoalService goalService;
     private ReadingGoal existingReadingGoal;
@@ -49,7 +51,7 @@ class ReadingGoalServiceTest {
     }
 
     @Test
-    void expectSavingGoalToOverwriteExistingGoal() {
+    void overwriteExistingGoalOnSave() {
         // given we have a reading goal
         assumeThat(goalService.count()).isOne();
 
@@ -64,7 +66,7 @@ class ReadingGoalServiceTest {
     }
 
     @Test
-    void expectDeleteExistingGoal() {
+    void deleteExistingGoal() {
         // given we have a reading goal
         assumeThat(goalService.count()).isOne();
 
@@ -76,7 +78,7 @@ class ReadingGoalServiceTest {
     }
 
     @Test
-    void shouldNotSaveANullGoal() {
+    void notSaveANullGoal() {
         // given we have a reading goal
         assumeThat(goalService.count()).isOne();
 

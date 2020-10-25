@@ -20,12 +20,12 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 
-import static com.karankumar.bookproject.utils.SecurityTestUtils.TEST_USER_NAME;
+import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import com.karankumar.bookproject.utils.SecurityTestUtils;
+import com.karankumar.bookproject.util.SecurityTestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -15,27 +15,18 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.utils;
+package com.karankumar.bookproject.backend.util;
 
-import com.karankumar.bookproject.backend.entity.account.User;
-import com.karankumar.bookproject.backend.repository.UserRepository;
+public final class StringUtils {
+    private StringUtils() {}
 
-public class SecurityTestUtils {
-    private SecurityTestUtils() {}
-
-    // this has to be the same value as in data.sql
-    public static final String TEST_USER_NAME = "testUser";
-
-    public static User getTestUser(UserRepository repository) {
-        return repository.findByUsername(TEST_USER_NAME).orElseThrow();
-    }
-
-    public static User insertTestUser(UserRepository repository, String username) {
-        User user = User.builder()
-                .username(username)
-                .email(username + "@user.user")
-                .password("testPa$$123_Paf1")
-                .build();
-        return repository.save(user);
+    /**
+     * Determine if a String should be singular or plural
+     * @param num the number of book or pages
+     * @param itemStr the String that will be pluralized
+     * @return either the original String or the original string with an "s" concatenated to it
+     */
+    public static String pluralize(String itemStr, int num) {
+        return (num > 1) ? (itemStr + "s") : (itemStr);
     }
 }

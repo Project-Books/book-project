@@ -15,9 +15,9 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
+import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
 
 import java.util.Arrays;
 import java.util.HashSet;
