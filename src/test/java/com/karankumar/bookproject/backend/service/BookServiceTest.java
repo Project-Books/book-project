@@ -18,23 +18,16 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Tag;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;
-import com.karankumar.bookproject.backend.entity.BookFormat;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.entity.Tag;
 import org.apache.commons.io.FileUtils;
-
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -51,6 +44,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 class BookServiceTest {
