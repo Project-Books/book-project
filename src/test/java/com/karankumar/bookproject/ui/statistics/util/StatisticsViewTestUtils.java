@@ -79,7 +79,7 @@ public class StatisticsViewTestUtils {
     public static void populateDataWithBooksInDifferentGenres(
             BookService bookService, PredefinedShelfService predefinedShelfService) {
         bookService.save(createMobyDickBook(predefinedShelfService));
-        bookService.save(createMobyDickBook(predefinedShelfService));
+        bookService.save(createHobbitBook(predefinedShelfService));
     }
 
     public static void populateDataWithBooksDifferentGenresWithoutPageCount(
