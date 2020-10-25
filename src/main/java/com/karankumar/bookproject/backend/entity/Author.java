@@ -17,7 +17,6 @@
 
 package com.karankumar.bookproject.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -63,6 +62,8 @@ public class Author extends BaseEntity {
     }
 
     public void removeBook(Book book) {
-        books = books.stream().filter(it -> !it.equals(book)).collect(Collectors.toSet());
+        books = books.stream()
+                     .filter(it -> !it.equals(book))
+                     .collect(Collectors.toSet());
     }
 }

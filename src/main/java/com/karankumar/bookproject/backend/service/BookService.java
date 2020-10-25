@@ -99,12 +99,14 @@ public class BookService {
             LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
                     bookRepository.count());
 
-            // Book deleted, remove it from author
             Author author = book.getAuthor();
-            author.removeBook(book);
-
+            removeBookFromAuthor(book, author);
             removeAuthorWithoutBooks(author);
         }
+    }
+
+    private void removeBookFromAuthor(Book book, Author author) {
+        author.removeBook(book);
     }
 
     private void removeAuthorWithoutBooks(Author author) {
