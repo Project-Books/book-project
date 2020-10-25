@@ -45,7 +45,7 @@ class BookProgressIdTest {
     @DisplayName("BookProgressId Class should return false")
     void compareByNull() {
         BookProgressId id = new BookProgressId(10L, 5L);
-        assertThat(id.equals(null)).isFalse();
+        assertThat(id == (null)).isFalse();
     }
 
     @Test
