@@ -27,7 +27,7 @@ import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +109,7 @@ class PageStatisticsTest {
         pageStatistics = new PageStatistics(predefinedShelfService);
         
         // then
-        assertThat(pageStatistics.findBookWithMostPagesThisYear()).isEqualTo(null);
+        assertThat(pageStatistics.findBookReadThisYearWithTheMostPages()).isEmpty();
     }
     
     @Test
@@ -135,7 +135,8 @@ class PageStatisticsTest {
         pageStatistics = new PageStatistics(predefinedShelfService);
         
         // then
-        assertThat(pageStatistics.findBookWithMostPagesThisYear().getTitle())
+        assertThat(pageStatistics.findBookReadThisYearWithTheMostPages()
+                                 .get().getTitle())
                                  .isEqualTo(longBook.getTitle());
     }
     

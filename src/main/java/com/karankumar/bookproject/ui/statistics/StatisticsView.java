@@ -157,7 +157,7 @@ public class StatisticsView extends VerticalLayout {
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
                 PageStatistics pageStatistics = new PageStatistics(predefinedShelfService);
                 Optional<Book> longestBookThisYear =
-                        Optional.ofNullable(pageStatistics.findBookWithMostPagesThisYear());
+                        pageStatistics.findBookReadThisYearWithTheMostPages();
                 return longestBookThisYear.map(book ->
                         formatStatistic(book.getTitle(), String.valueOf(book.getNumberOfPages()),
                         "pages")

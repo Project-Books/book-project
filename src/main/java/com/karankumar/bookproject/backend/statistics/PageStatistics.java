@@ -19,12 +19,17 @@ package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.DateUtils;
 
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.karankumar.bookproject.backend.utils.DateUtils.dateIsInCurrentYear;
 
 public class PageStatistics extends Statistics {
     private final List<Book> booksWithPageCount;
@@ -45,23 +50,27 @@ public class PageStatistics extends Statistics {
         }
         return bookWithMostPages;
     }
-    
+
     /**
      * @return the Book in the 'read' shelf with the highest number of pages this year
      */
-    public Book findBookWithMostPagesThisYear() {
-        Book bookWithMostPages = null;
-        booksWithPageCount.removeIf(book -> (book.getDateStartedReading() == null ||
-                DateUtils.dateIsInCurrentYear(book.getDateStartedReading()))
-        );
-//         book.getDateStartedReading().getYear() != Year.now().getValue()));
-        if (!booksWithPageCount.isEmpty()) {
-            booksWithPageCount.sort(Comparator.comparing(Book::getNumberOfPages));
-            bookWithMostPages = booksWithPageCount.get(booksWithPageCount.size() - 1);
-        }
-        return bookWithMostPages;
+    public Optional<Book> findBookReadThisYearWithTheMostPages() {
+        List<Book> booksReadThisYear = booksWithPageCount.stream()
+                                         .filter(PageStatistics::readThisYear)
+                                         .sorted(Comparator.comparing(Book::getNumberOfPages))
+                                         .collect(Collectors.toList());
+
+        return (booksReadThisYear.isEmpty()) ? Optional.empty() :
+                Optional.of(booksReadThisYear.get(booksReadThisYear.size() - 1));
     }
-    
+
+    private static boolean readThisYear(Book book) {
+        LocalDate dateStarted = book.getDateStartedReading();
+        LocalDate dateFinished = book.getDateFinishedReading();
+        return dateStarted != null && dateIsInCurrentYear(dateStarted) &&
+                dateFinished != null && dateIsInCurrentYear(dateFinished);
+    }
+
     /**
      * @return the Book in the 'read' shelf with the lowest number of pages
      */
@@ -73,22 +82,22 @@ public class PageStatistics extends Statistics {
         }
         return bookWithMostPages;
     }
-    
+
     /**
      * @return the Book in the 'read' shelf with the lowest number of pages this year
      */
     public Book findBookWithLeastPagesThisYear() {
         Book bookWithMostPages = null;
-        booksWithPageCount.removeIf(book -> 
-        (book.getDateStartedReading() == null || 
-         book.getDateStartedReading().getYear() != Year.now().getValue()));
+        booksWithPageCount.removeIf(book -> (book.getDateStartedReading() == null ||
+                !dateIsInCurrentYear(book.getDateStartedReading()))
+        );
         if (!booksWithPageCount.isEmpty()) {
             booksWithPageCount.sort(Comparator.comparing(Book::getNumberOfPages));
             bookWithMostPages = booksWithPageCount.get(0);
         }
         return bookWithMostPages;
     }
-    
+
     private List<Book> findBooksWithPageCountSpecified() {
         List<Book> booksWithNonEmptyPageCount = new ArrayList<>();
         for (Book book : readShelfBooks) {
@@ -114,15 +123,15 @@ public class PageStatistics extends Statistics {
         return (booksWithPagesSpecified == 0) ? 0 :
                 Math.ceil(totalNumberOfPages / (float) booksWithPagesSpecified);
     }
-    
+
     /**
      * @return the average page length for all books in the 'read' shelf in this year
      * This average only includes books that have a page length specified
      */
     public Double calculateAveragePageLengthThisYear() {
-    	booksWithPageCount.removeIf(book -> 
-    	(book.getDateStartedReading() == null || 
-    	 book.getDateStartedReading().getYear() != Year.now().getValue()));
+        booksWithPageCount.removeIf(book ->
+                (book.getDateStartedReading() == null ||
+                        book.getDateStartedReading().getYear() != Year.now().getValue()));
         int totalNumberOfPages = booksWithPageCount.stream()
                                                    .mapToInt(Book::getNumberOfPages)
                                                    .sum();
