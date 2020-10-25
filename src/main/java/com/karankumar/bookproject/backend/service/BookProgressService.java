@@ -57,7 +57,7 @@ public class BookProgressService {
     public BookProgress addToMyToBeReadState(BookProgressId id) {
         return progressRepository.save(new BookProgressBuilder()
                 .withId(id)
-                .withState(State.TO_BE_READ)
+                .withState(State.TO_READ)
                 .build());
     }
 
@@ -69,10 +69,10 @@ public class BookProgressService {
      */
     public BookProgress startReading(BookProgressId id) {
         BookProgress bookProgress = getMyBookProgressById(id);
-        if (bookProgress.getState() == State.TO_BE_READ) {
+        if (bookProgress.getState() == State.TO_READ) {
             return progressRepository.save(new BookProgressBuilder()
                     .withId(id)
-                    .withState(State.IN_PROGRESS)
+                    .withState(State.READING)
                     .withPagesRead(0, getBook(id.getBookId()))
                     .withStartDate(LocalDate.now())
                     .build());
@@ -91,10 +91,10 @@ public class BookProgressService {
     public BookProgress updateMyBookProgress(BookProgressId id,
                                              Integer pagesRead) {
         BookProgress bookProgress = getMyBookProgressById(id);
-        if (bookProgress.getState() == State.IN_PROGRESS) {
+        if (bookProgress.getState() == State.READING) {
             return progressRepository.save(new BookProgressBuilder()
                     .withId(id)
-                    .withState(State.IN_PROGRESS)
+                    .withState(State.READING)
                     .withPagesRead(pagesRead, getBook(id.getBookId()))
                     .withStartDate(bookProgress.getDateStartedReading())
                     .build());
@@ -114,10 +114,10 @@ public class BookProgressService {
     public BookProgress doOnAfterfinishReading(BookProgressId id, RatingScale rating,
                                                String bookReview) {
         BookProgress bookProgress = getMyBookProgressById(id);
-        if (bookProgress.getState() == State.FINISHED) {
+        if (bookProgress.getState() == State.READ) {
             return progressRepository.save(new BookProgressBuilder()
                     .withId(id)
-                    .withState(State.FINISHED)
+                    .withState(State.READ)
                     .withPagesRead(bookProgress.getPagesRead(), getBook(id.getBookId()))
                     .withStartDate(bookProgress.getDateStartedReading())
                     .withEndDate(bookProgress.getDateFinishedReading())

@@ -111,7 +111,7 @@ class ProgressTest {
                           .isEqualTo(testBook1.getId());
                     softly.assertThat(myProgress.get(0).getId().getUserId())
                           .isEqualTo(user.getId());
-                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.TO_BE_READ);
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.TO_READ);
                     softly.assertThat(myProgress.get(0).getBookReview()).isNull();
                     softly.assertThat(myProgress.get(0).getDateStartedReading()).isNull();
                     softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNull();
@@ -139,7 +139,7 @@ class ProgressTest {
                           .isEqualTo(testBook1.getId());
                     softly.assertThat(myProgress.get(0).getId().getUserId())
                           .isEqualTo(user.getId());
-                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.IN_PROGRESS);
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.READING);
                     softly.assertThat(myProgress.get(0).getPagesRead()).isEqualTo(0);
                     softly.assertThat(myProgress.get(0).getDateStartedReading()).isNotNull();
                     softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNull();
@@ -169,7 +169,7 @@ class ProgressTest {
                           .isEqualTo(testBook1.getId());
                     softly.assertThat(myProgress.get(0).getId().getUserId())
                           .isEqualTo(user.getId());
-                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.IN_PROGRESS);
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.READING);
                     softly.assertThat(myProgress.get(0).getPagesRead()).isEqualTo(10);
                     softly.assertThat(myProgress.get(0).getDateStartedReading()).isNotNull();
                     softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNull();
@@ -200,7 +200,7 @@ class ProgressTest {
                           .isEqualTo(testBook1.getId());
                     softly.assertThat(myProgress.get(0).getId().getUserId())
                           .isEqualTo(user.getId());
-                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.FINISHED);
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.READ);
                     softly.assertThat(myProgress.get(0).getPagesRead()).isEqualTo(100);
                     softly.assertThat(myProgress.get(0).getDateStartedReading()).isNotNull();
                     softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNotNull();
@@ -232,7 +232,7 @@ class ProgressTest {
                           .isEqualTo(testBook1.getId());
                     softly.assertThat(myProgress.get(0).getId().getUserId())
                           .isEqualTo(user.getId());
-                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.FINISHED);
+                    softly.assertThat(myProgress.get(0).getState()).isEqualTo(State.READ);
                     softly.assertThat(myProgress.get(0).getPagesRead()).isEqualTo(100);
                     softly.assertThat(myProgress.get(0).getDateStartedReading()).isNotNull();
                     softly.assertThat(myProgress.get(0).getDateFinishedReading()).isNotNull();

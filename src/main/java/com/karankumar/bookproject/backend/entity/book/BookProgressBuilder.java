@@ -32,7 +32,7 @@ public class BookProgressBuilder {
     }
 
     public BookProgressBuilder withRating(RatingScale rating) {
-        if (bookProgress.getState() == State.FINISHED) {
+        if (bookProgress.getState() == State.READ) {
             bookProgress.setRating(rating);
         }
 
@@ -50,7 +50,7 @@ public class BookProgressBuilder {
     }
 
     public BookProgressBuilder withBookReview(String bookReview) {
-        if (bookProgress.getState() == State.FINISHED) {
+        if (bookProgress.getState() == State.READ) {
             bookProgress.setBookReview(bookReview);
         }
         return this;
@@ -60,7 +60,7 @@ public class BookProgressBuilder {
         if (pagesRead > book.getNumberOfPages()) { // Updated request is more than book's pages.
             throw new IndexOutOfBoundsException("Updated pages is more than book's pages");
         } else if (pagesRead.equals(book.getNumberOfPages())) { // I finished the book
-            bookProgress.setState(State.FINISHED);
+            bookProgress.setState(State.READ);
             bookProgress.setPagesRead(pagesRead);
             bookProgress.setDateFinishedReading(LocalDate.now());
         } else { // I'm still reading the book
