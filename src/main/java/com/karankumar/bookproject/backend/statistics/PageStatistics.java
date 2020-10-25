@@ -52,7 +52,7 @@ public class PageStatistics extends Statistics {
     }
 
     /**
-     * @return the Book in the 'read' shelf with the highest number of pages this year
+     * @return the Book with the highest number of pages that was read this year
      */
     public Optional<Book> findBookReadThisYearWithTheMostPages() {
         List<Book> booksReadThisYear = booksWithPageCount.stream()
@@ -72,7 +72,7 @@ public class PageStatistics extends Statistics {
     }
 
     /**
-     * @return the Book in the 'read' shelf with the lowest number of pages
+     * @return the Book with the lowest number of pages that was read this year
      */
     public Book findBookWithLeastPages() {
         Book bookWithMostPages = null;
