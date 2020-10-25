@@ -77,7 +77,7 @@ class AuthorTest {
         bookService.save(testBook1);
 
         // then
-        Assertions.assertNotEquals(testBook1.getAuthor(), testBook2.getAuthor());
+        assertThat(testBook1.getAuthor()).isNotEqualTo(testBook2.getAuthor());
     }
 
     @Test
