@@ -47,7 +47,6 @@ public class BookProgress {
     private LocalDate dateStartedReading;
 
     @JsonSerialize(using = LocalDateSerializer.class)
-
     private LocalDate dateFinishedReading;
 
     private String bookReview;
