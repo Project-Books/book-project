@@ -22,7 +22,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
 
-import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksDifferentGenres;
+import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksInDifferentGenres;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksDifferentGenresWithoutPageCount;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,7 +64,7 @@ class StatisticsViewTest {
     @Test
     void shouldCreateCompleteStatisticsView() {
         // given
-        populateDataWithBooksDifferentGenres(bookService, predefinedShelfService);
+        populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
@@ -77,7 +77,7 @@ class StatisticsViewTest {
     @Test
     void shouldShowGenreAndRatingStatisticsWhenMoreThanOneGenre() {
         // given
-        populateDataWithBooksDifferentGenres(bookService, predefinedShelfService);
+        populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
@@ -114,7 +114,7 @@ class StatisticsViewTest {
     @Test
     void eachStatisticShouldHaveAValue() {
         // given
-        populateDataWithBooksDifferentGenres(bookService, predefinedShelfService);
+        populateDataWithBooksInDifferentGenres(bookService, predefinedShelfService);
 
         // when
         statisticsView = new StatisticsView(predefinedShelfService);
