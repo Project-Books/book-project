@@ -73,7 +73,7 @@ class GenreStatisticsTest {
     @Test
     void genreStatisticsShouldNotShowWhenBookCountIsLessThanTwo() {
         bookService.deleteAll();
-        for (int i = 0; i < GenreStatistics.DEFAULT_MINIMUM_CALCULATE_GENRE_STATISTICS; i++) {
+        for (int i = 0; i < GenreStatistics.MINIMUM_NUMBER_OF_GENRES; i++) {
             StatisticTestUtils.addReadBook(bookService, predefinedShelfService,
                 "Book #"+i, RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200);
         }
