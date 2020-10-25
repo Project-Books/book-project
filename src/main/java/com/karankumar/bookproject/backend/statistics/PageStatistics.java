@@ -19,10 +19,10 @@ package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.utils.DateUtils;
 
 import java.time.Year;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 
@@ -51,9 +51,10 @@ public class PageStatistics extends Statistics {
      */
     public Book findBookWithMostPagesThisYear() {
         Book bookWithMostPages = null;
-        booksWithPageCount.removeIf(book -> 
-        (book.getDateStartedReading() == null || 
-         book.getDateStartedReading().getYear() != Year.now().getValue()));
+        booksWithPageCount.removeIf(book -> (book.getDateStartedReading() == null ||
+                DateUtils.dateIsInCurrentYear(book.getDateStartedReading()))
+        );
+//         book.getDateStartedReading().getYear() != Year.now().getValue()));
         if (!booksWithPageCount.isEmpty()) {
             booksWithPageCount.sort(Comparator.comparing(Book::getNumberOfPages));
             bookWithMostPages = booksWithPageCount.get(booksWithPageCount.size() - 1);
