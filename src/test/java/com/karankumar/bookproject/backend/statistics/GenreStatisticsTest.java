@@ -23,9 +23,11 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,9 +46,13 @@ class GenreStatisticsTest {
 
     @BeforeEach
     public void setUp() {
-        bookService.deleteAll();
+        resetBookService();
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         genreStatistics = new GenreStatistics(predefinedShelfService);
+    }
+
+    private void resetBookService() {
+        bookService.deleteAll();
     }
 
     @Test
@@ -71,18 +77,37 @@ class GenreStatisticsTest {
     }
 
     @Test
-    void genreStatisticsShouldNotShowWhenBookCountIsLessThanTwo() {
-        bookService.deleteAll();
-        for (int i = 0; i < GenreStatistics.MINIMUM_NUMBER_OF_GENRES; i++) {
-            StatisticTestUtils.addReadBook(bookService, predefinedShelfService,
-                "Book #"+i, RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200);
-        }
+    @DisplayName("not show the most liked genre statistic if there is only one read genre")
+    void notShowMostLikedGenreWhenOnlyOneReadGenreExists() {
+        // given
+        resetBookService();
+        saveBook();
         genreStatistics = new GenreStatistics(predefinedShelfService);
+
+        // when
         BookGenre mostLiked = genreStatistics.findMostLikedGenre();
+
+        // then
+        assertThat(mostLiked).isNull();
+    }
+
+    private void saveBook() {
+        StatisticTestUtils.addReadBook(bookService, predefinedShelfService,
+                "Book" , RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200);
+    }
+
+    @Test
+    @DisplayName("not show the least liked genre statistic if there is only one read genre")
+    void notShowLeastLikedGenreWhenOnlyOneReadGenreExists() {
+        // given
+        resetBookService();
+        saveBook();
+        genreStatistics = new GenreStatistics(predefinedShelfService);
+
+        // when
         BookGenre leastLiked = genreStatistics.findLeastLikedGenre();
-        BookGenre mostRead = genreStatistics.findMostReadGenre();
-        assertThat(mostLiked).isEqualTo(null);
-        assertThat(leastLiked).isEqualTo(null);
-        assertThat(mostRead).isEqualTo(BookGenre.ANTHOLOGY);
+
+        // then
+        assertThat(leastLiked).isNull();
     }
 }
