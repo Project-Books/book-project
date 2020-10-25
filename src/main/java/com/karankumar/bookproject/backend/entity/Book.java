@@ -60,7 +60,7 @@ public class Book extends BaseEntity {
     private String bookRecommendedBy;
     @ISBN
     private String isbn;
-    private Integer yearof_publication;
+    private Integer yearOfPublication;
 
     @ManyToOne(cascade =
             {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
@@ -125,6 +125,10 @@ public class Book extends BaseEntity {
                 break;
         }
         this.edition = bookEdition;
+    }
+
+    public void setPublicationYear(Integer yearOfPublication){
+        this.yearOfPublication = yearOfPublication;
     }
 
     @Override
