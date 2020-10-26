@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
@@ -86,5 +87,19 @@ class CustomShelfServiceTest {
             softly.assertThat(shelf.getShelfName()).isEqualTo(name);
             softly.assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME);
         });
+    }
+
+    @Test
+    @DisplayName("throw an error on an attempt to save a null custom shelf")
+    void throwErrorWhenSavingANullCustomShelf() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> customShelfService.save(null));
+    }
+
+    @Test
+    @DisplayName("throw an error on an attempt to delete a null custom shelf")
+    void throwErrorWhenDeletingANullCustomShelf() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> customShelfService.delete(null));
     }
 }
