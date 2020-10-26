@@ -46,7 +46,7 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    public void delete(Author author) {
+    public void delete(@NonNull Author author) {
         authorRepository.delete(author);
     }
 

@@ -31,6 +31,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -111,5 +112,19 @@ class AuthorServiceTest {
 
         // then
         assertThat(authorService.count()).isZero();
+    }
+
+    @Test
+    @DisplayName("throw error on attempt to save a null author")
+    void throwErrorOnSavingNullAuthor() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> authorService.save(null));
+    }
+
+    @Test
+    @DisplayName("throw error on attempt to delete a null author")
+    void throwErrorOnDeletingNullAuthor() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> authorService.save(null));
     }
 }
