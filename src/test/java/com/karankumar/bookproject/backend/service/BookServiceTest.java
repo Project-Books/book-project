@@ -29,13 +29,15 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import org.apache.commons.io.FileUtils;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-import static org.assertj.core.api.Assertions.assertThat;
+
 import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -139,6 +141,13 @@ class BookServiceTest {
               .isInstanceOf(TransactionSystemException.class);
         softly.assertThat(bookService.count()).isZero();
         softly.assertAll();
+    }
+
+    @Test
+    @DisplayName("throw an exception when there is an attempt to delete a null book")
+    void throwExceptionWhenDeletingANullBook() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> bookService.delete(null));
     }
 
     @Test

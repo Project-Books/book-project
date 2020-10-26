@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
@@ -80,16 +81,9 @@ public class BookService {
         return bookRepository.findByTitleContainingIgnoreCase(filterText);
     }
 
-    public void delete(Book book) {
-        if (book == null) {
-            LOGGER.log(Level.SEVERE, "Cannot delete an null book.");
-            return;
-        }
-
-
+    public void delete(@NonNull Book book) {
         LOGGER.log(Level.INFO, "Deleting book. Book repository size = " + bookRepository.count());
         bookRepository.delete(book);
-
 
         List<Book> books = bookRepository.findAll();
         if (books.contains(book)) {
