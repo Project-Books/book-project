@@ -82,7 +82,7 @@ class BookRepositoryTest {
 
     @Test
     @DisplayName("should successfully find list of books by predefined shelf, title or author")
-    void findBookByPredefinedShelfAndTitleOrAuthor(){
+    void findBookByPredefinedShelfAndTitleOrAuthor() {
         PredefinedShelf readShelf = predefinedShelfRepository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.READ, user);
         PredefinedShelf toReadShelf = predefinedShelfRepository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.TO_READ, user);
 
@@ -95,7 +95,7 @@ class BookRepositoryTest {
 
     @Test
     @DisplayName("should successfully find list of books by title or author")
-    void findBookByTitleOrAuthor(){
+    void findBookByTitleOrAuthor() {
 
         assertThat(bookRepository.findByTitleOrAuthor("%", "%").size()).isEqualTo(3);
         assertThat(bookRepository.findByTitleOrAuthor("title", "%").size()).isEqualTo(2);

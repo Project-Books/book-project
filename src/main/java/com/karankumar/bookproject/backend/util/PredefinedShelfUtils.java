@@ -60,7 +60,7 @@ public class PredefinedShelfUtils {
         return predefinedShelfService.findAllForLoggedInUser()
                 .stream()
                 .filter(shelf ->
-                        shelf.getPredefinedShelfName().equals(shelfName))
+                        shelf.getPredefinedShelfName().toString().equals(shelfName))
                 .collect(Collectors.toList())
                 .get(0); // there should only be one
     }
