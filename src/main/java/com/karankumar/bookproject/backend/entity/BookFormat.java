@@ -15,17 +15,23 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+package com.karankumar.bookproject.backend.entity;
 
-import java.util.List;
+public enum BookFormat {
+    // This should be kept in alphabetical order
+    EBOOK("eBook"),
+    HARDBACK("Hardback"),
+    PAPERBACK("Paperback");
 
-public interface BookRepository extends JpaRepository<Book, Long> {
-    List<Book> findByTitleContainingIgnoreCase(String title);
+    private final String format;
 
-    @Query("SELECT b FROM Book b LEFT JOIN FETCH b.author LEFT JOIN FETCH  b.predefinedShelf")
-    List<Book> findAllBooksFetchEagerly();
+    BookFormat(String format) {
+        this.format = format;
+    }
+
+    @Override
+    public String toString() {
+        return format;
+    }
 }

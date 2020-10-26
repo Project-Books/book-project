@@ -21,7 +21,8 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Tag;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.BookGenre;	
+import com.karankumar.bookproject.backend.entity.BookGenre;
+import com.karankumar.bookproject.backend.entity.BookFormat;
 import com.karankumar.bookproject.backend.entity.CustomShelf;	
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
 import com.karankumar.bookproject.backend.entity.RatingScale;
@@ -237,6 +238,7 @@ class BookServiceTest {
         book.setNumberOfPages(420);
         book.setPagesRead(42);
         book.setBookGenre(BookGenre.ADVENTURE);
+        book.setBookFormat(BookFormat.PAPERBACK);
         book.setSeriesPosition(3);
         book.setEdition(2);
         book.setBookRecommendedBy("Peter Parker");
