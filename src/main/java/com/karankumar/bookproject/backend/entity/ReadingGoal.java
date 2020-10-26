@@ -36,7 +36,7 @@ public class ReadingGoal extends BaseEntity {
         PAGES("Pages"),
         BOOKS("Books");
 
-        private String goalType;
+        private final String goalType;
 
         GoalType(String goalType) {
             this.goalType = goalType;
