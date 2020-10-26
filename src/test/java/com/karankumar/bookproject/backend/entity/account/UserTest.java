@@ -22,6 +22,8 @@ import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
 
@@ -61,7 +63,21 @@ public class UserTest {
                    .username("username")
                    .email("email");
     }
+    
+    @ParameterizedTest
+    @ValueSource(strings = {"123456789", "aPassWorD", "testPa$$123"})
+    void testPasswordIsInvalid(String input) {
+            // given
+            User user = userWithoutPassword().password(input)
+                                             .build();
 
+            // when
+            tryToSaveInvalidUser(user);
+
+            // then
+            assertEquals(initialNumberOfUsers, userRepository.count());
+    }
+    
     @Test
     void testWeakPasswordIsInvalid() {
         // given
