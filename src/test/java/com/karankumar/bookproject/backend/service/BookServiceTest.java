@@ -185,7 +185,7 @@ class BookServiceTest {
 
         softly.assertThat(bookService.count()).isOne();
         softly.assertThat(bookService.findAll(validBook.getTitle()).size()).isOne();
-        softly.assertThat(filteredByTitle).first().isEqualTo(validBook);
+        softly.assertThat(filteredByTitle.get(0).getTitle()).isEqualTo(validBook.getTitle());
         softly.assertAll();
     }
 

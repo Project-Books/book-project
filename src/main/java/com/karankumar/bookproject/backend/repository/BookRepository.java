@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.repository;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Set;
@@ -29,4 +30,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     // TODO: implement
     Set<Book> findByAuthor(Author author);
+
+    @Query("SELECT b FROM Book b LEFT JOIN FETCH b.author LEFT JOIN FETCH  b.predefinedShelf")
+    List<Book> findAllBooksFetchEagerly();
 }

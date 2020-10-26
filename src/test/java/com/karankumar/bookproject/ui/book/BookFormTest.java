@@ -592,7 +592,7 @@ class BookFormTest {
 
         // then
         assertThat(bookService.count()).isOne();
-        Book bookInDatabase = bookService.findAll().get(0);
+        Book bookInDatabase = bookService.findAllFetchEagerly().get(0);
         correctBookAttributesPresent(TO_READ, bookInDatabase);
     }
 
@@ -628,7 +628,7 @@ class BookFormTest {
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
         bookForm.saveButton.click();
 
-        Book savedBook = bookService.findAll().get(0);
+        Book savedBook = bookService.findAllFetchEagerly().get(0);
         populateBookFormWithExistingBook(READ, savedBook);
 
         // when
@@ -639,7 +639,7 @@ class BookFormTest {
         bookForm.saveButton.click();
 
         // then
-        Book updatedBook = bookService.findAll().get(0);
+        Book updatedBook = bookService.findAllFetchEagerly().get(0);
 
         assertSoftly(softly -> {
             softly.assertThat(bookService.count()).isOne();
@@ -681,14 +681,14 @@ class BookFormTest {
         bookForm = createBookForm(initialShelf, false);
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookService.save(event.getBook()));
         bookForm.saveButton.click();
-        populateBookFormWithExistingBook(newShelf, bookService.findAll().get(0));
+        populateBookFormWithExistingBook(newShelf, bookService.findAllFetchEagerly().get(0));
 
         // when
         bookForm.saveButton.click();
 
         // then
         assertThat(bookService.count()).isOne();
-        Book bookInDatabase = bookService.findAll().get(0);
+        Book bookInDatabase = bookService.findAllFetchEagerly().get(0);
         correctBookAttributesPresent(newShelf, bookInDatabase);
     }
 

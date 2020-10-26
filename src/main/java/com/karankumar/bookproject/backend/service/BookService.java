@@ -73,6 +73,10 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public List<Book> findAllFetchEagerly(){
+        return bookRepository.findAllBooksFetchEagerly();
+    }
+
     public List<Book> findAll(String filterText) {
         if (filterText == null || filterText.isEmpty()) {
             return bookRepository.findAll();
@@ -129,7 +133,7 @@ public class BookService {
     }
 
     public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
-        List<Book> books = bookRepository.findAll();
+        List<Book> books = bookRepository.findAllBooksFetchEagerly();
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
