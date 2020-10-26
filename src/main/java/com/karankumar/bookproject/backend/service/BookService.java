@@ -55,8 +55,8 @@ public class BookService {
         }
     }
 
-    private boolean bookHasAuthorAndPredefinedShelf(Book book) {
-        return book != null && book.getAuthor() != null && book.getPredefinedShelf() != null;
+    private boolean bookHasAuthorAndPredefinedShelf(@NonNull Book book) {
+        return book.getAuthor() != null && book.getPredefinedShelf() != null;
     }
 
     private void addBookToAuthor(Book book) {

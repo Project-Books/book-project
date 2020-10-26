@@ -95,13 +95,14 @@ class BookServiceTest {
     }
 
     @Test
-    void notSaveNullBook() {
-        bookService.save(null);
-        assertThat(bookService.count()).isZero();
+    @DisplayName("throw an exception when there is an attempt to save a null book")
+    void throwExceptionWhenSavingANullBook() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> bookService.save(null));
     }
 
     @Test
-    void notSaveBookWithout() {
+    void notSaveBookWithoutAuthor() {
         SoftAssertions softly = new SoftAssertions();
 
         // when
