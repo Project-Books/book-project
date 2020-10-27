@@ -39,6 +39,7 @@ import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
@@ -97,6 +98,13 @@ class UserServiceTest {
     void throwExceptionOnRegisterWithoutUserRole() {
         assertThatThrownBy(() -> userService.register(validUser))
                 .isInstanceOf(AuthenticationServiceException.class);
+    }
+
+    @Test
+    @DisplayName("throw an exception on an attempt to register a null user")
+    void throwExceptionWhenRegisteringNullUser() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> userService.register(null));
     }
 
     @Test

@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
+import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
@@ -51,11 +52,11 @@ public class CustomShelfService {
         return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
-    public void save(CustomShelf customShelf) {
+    public void save(@NonNull CustomShelf customShelf) {
         customShelfRepository.save(customShelf);
     }
 
-    public void delete(CustomShelf customShelf) {
+    public void delete(@NonNull CustomShelf customShelf) {
         customShelfRepository.delete(customShelf);
     }
 
