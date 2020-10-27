@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.Tag;
 import com.karankumar.bookproject.backend.repository.TagRepository;
+import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
@@ -39,12 +40,8 @@ public class TagService {
         return tagRepository.getOne(id);
     }
 
-    public void save(Tag tag) {
-        if (tag != null) {
-            tagRepository.save(tag);
-        } else {
-            LOGGER.log(Level.SEVERE, "Null tag");
-        }
+    public void save(@NonNull Tag tag) {
+        tagRepository.save(tag);
     }
 
     public Long count() {
@@ -55,7 +52,7 @@ public class TagService {
         return tagRepository.findAll();
     }
 
-    public void delete(Tag tag) {
+    public void delete(@NonNull Tag tag) {
         tagRepository.delete(tag);
     }
 
