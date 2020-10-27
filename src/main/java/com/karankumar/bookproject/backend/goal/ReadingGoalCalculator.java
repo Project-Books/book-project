@@ -26,12 +26,12 @@ import javax.validation.constraints.NotNull;
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType;
 import static com.karankumar.bookproject.backend.util.DateUtils.WEEKS_IN_YEAR;
 
-public final class CalculateReadingGoal {
+public final class ReadingGoalCalculator {
 
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
 
-    private CalculateReadingGoal() {}
+    private ReadingGoalCalculator() {}
 
     /**
      * Calculates the number of books that should have been read by this point in the year in order

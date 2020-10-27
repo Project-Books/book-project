@@ -47,7 +47,7 @@ import java.time.LocalDate;
 import java.util.Random;
 
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType.BOOKS;
-import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howManyReadThisYear;
+import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.howManyReadThisYear;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 

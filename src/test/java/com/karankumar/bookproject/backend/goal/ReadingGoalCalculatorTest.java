@@ -17,9 +17,9 @@
 
 package com.karankumar.bookproject.backend.goal;
 
-import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.calculateProgressTowardsReadingGoal;
-import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.howFarAheadOrBehindSchedule;
-import static com.karankumar.bookproject.backend.goal.CalculateReadingGoal.booksToReadFromStartOfYear;
+import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.calculateProgressTowardsReadingGoal;
+import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.howFarAheadOrBehindSchedule;
+import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.booksToReadFromStartOfYear;
 import com.karankumar.bookproject.backend.util.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,8 +31,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-@DisplayName("CalculateReadingGoal should")
-class CalculateReadingGoalTest {
+@DisplayName("ReadingGoalCalculator should")
+class ReadingGoalCalculatorTest {
     private final int BOOKS_TO_READ = 52;
 
     @BeforeAll
