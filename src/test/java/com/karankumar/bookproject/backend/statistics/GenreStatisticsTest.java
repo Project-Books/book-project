@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,9 +45,13 @@ class GenreStatisticsTest {
 
     @BeforeEach
     public void setUp() {
-        bookService.deleteAll();
+        resetBookService();
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         genreStatistics = new GenreStatistics(predefinedShelfService);
+    }
+
+    private void resetBookService() {
+        bookService.deleteAll();
     }
 
     @Test
@@ -68,5 +73,39 @@ class GenreStatisticsTest {
         BookGenre expected = StatisticTestUtils.LEAST_LIKED_BOOK_GENRE;
         BookGenre actual = genreStatistics.findLeastLikedGenre();
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("not show the most liked genre statistic if there is only one read genre")
+    void notShowMostLikedGenreWhenOnlyOneReadGenreExists() {
+        // given
+        resetBookService();
+        saveBook();
+        genreStatistics = new GenreStatistics(predefinedShelfService);
+
+        // when
+        BookGenre mostLiked = genreStatistics.findMostLikedGenre();
+
+        // then
+        assertThat(mostLiked).isNull();
+    }
+
+    private void saveBook() {
+        StatisticTestUtils.addReadBook(bookService, predefinedShelfService);
+    }
+
+    @Test
+    @DisplayName("not show the least liked genre statistic if there is only one read genre")
+    void notShowLeastLikedGenreWhenOnlyOneReadGenreExists() {
+        // given
+        resetBookService();
+        saveBook();
+        genreStatistics = new GenreStatistics(predefinedShelfService);
+
+        // when
+        BookGenre leastLiked = genreStatistics.findLeastLikedGenre();
+
+        // then
+        assertThat(leastLiked).isNull();
     }
 }

@@ -55,6 +55,7 @@ public class Book extends BaseEntity {
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
     private BookGenre bookGenre;
+    private BookFormat bookFormat;
     private Integer seriesPosition;
     private String edition;
     private String bookRecommendedBy;

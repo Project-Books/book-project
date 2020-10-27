@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GenreStatistics extends Statistics {
+    protected static final int MINIMUM_NUMBER_OF_GENRES = 1;
     private final List<Book> readBooksWithGenresAndRatings;
 
     public GenreStatistics(PredefinedShelfService predefinedShelfService) {
@@ -89,11 +90,15 @@ public class GenreStatistics extends Statistics {
     public BookGenre findMostLikedGenre() {
         BookGenre mostLikedBookGenre = null;
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
-        if (!genreRatings.isEmpty()) {
+        if (atLeastTwoGenresExist(genreRatings.size())) {
             mostLikedBookGenre = genreRatings.get(genreRatings.size() - 1)
                                              .getKey();
         }
         return mostLikedBookGenre;
+    }
+
+    private boolean atLeastTwoGenresExist(int numberOfGenres) {
+        return numberOfGenres > MINIMUM_NUMBER_OF_GENRES;
     }
 
     private List<Map.Entry<BookGenre, Double>> sortGenresByRatings() {
@@ -132,7 +137,7 @@ public class GenreStatistics extends Statistics {
     public BookGenre findLeastLikedGenre() {
         BookGenre leastLikedBookGenre = null;
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
-        if (!genreRatings.isEmpty()) {
+        if (atLeastTwoGenresExist(genreRatings.size())) {
             leastLikedBookGenre = genreRatings.get(0)
                                               .getKey();
         }

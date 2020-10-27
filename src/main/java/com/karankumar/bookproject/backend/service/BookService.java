@@ -88,15 +88,32 @@ public class BookService {
             return;
         }
 
+
         LOGGER.log(Level.INFO, "Deleting book. Book repository size = " + bookRepository.count());
         bookRepository.delete(book);
 
+
         List<Book> books = bookRepository.findAll();
         if (books.contains(book)) {
+
             LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
         } else {
             LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
                     bookRepository.count());
+
+            Author author = book.getAuthor();
+            removeBookFromAuthor(book, author);
+            removeAuthorWithoutBooks(author);
+        }
+    }
+
+    private void removeBookFromAuthor(Book book, Author author) {
+        author.removeBook(book);
+    }
+
+    private void removeAuthorWithoutBooks(Author author) {
+        if (author.getBooks().isEmpty()) {
+            authorService.delete(author);
         }
     }
 
