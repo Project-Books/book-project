@@ -254,6 +254,7 @@ class BookServiceTest {
         book.setEdition(2);
         book.setBookRecommendedBy("Peter Parker");
         book.setIsbn("9780151010264");
+        book.setPublicationYear(2014);
         book.setCustomShelf(customShelf);
         book.setTags(Set.of(tag1, tag2));
         book.setRating(RatingScale.EIGHT);

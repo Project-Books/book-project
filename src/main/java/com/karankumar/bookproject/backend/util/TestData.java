@@ -100,6 +100,7 @@ public final class TestData {
         book.setBookReview("Must Read Book. Really Enjoyed it");
         book.setNumberOfPages(generateRandomNumberInRange());
         book.setPagesRead(generateRandomNumberInRange());
+        book.setPublicationYear(generateRandomPublicationYear());
 
         return book;
     }
@@ -127,6 +128,10 @@ public final class TestData {
     public static PredefinedShelf generateRandomPredefinedShelf(
             List<PredefinedShelf> predefinedShelves) {
         return predefinedShelves.get(threadLocalRandom.nextInt(predefinedShelves.size()));
+    }
+
+    public static int generateRandomPublicationYear() {
+        return threadLocalRandom.nextInt(1920, 2020 + 1);
     }
 
     public static List<Book> setPredefinedShelfForBooks(List<Book> books,
