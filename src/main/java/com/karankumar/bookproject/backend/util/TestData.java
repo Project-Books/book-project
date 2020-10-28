@@ -130,7 +130,7 @@ public final class TestData {
         return predefinedShelves.get(threadLocalRandom.nextInt(predefinedShelves.size()));
     }
 
-    public static int generateRandomPublicationYear(){
+    public static int generateRandomPublicationYear() {
         return threadLocalRandom.nextInt(1920, 2020 + 1);
     }
 
