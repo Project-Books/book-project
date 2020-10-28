@@ -24,7 +24,6 @@ class CustomShelfUtilsTest {
     private final BookService bookService;
     private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
-    private final CustomShelfUtils customShelfUtils;
 
     private CustomShelf customShelf1;
     private CustomShelf customShelf2;
@@ -38,7 +37,6 @@ class CustomShelfUtilsTest {
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.predefinedShelfService = predefinedShelfService;
-        this.customShelfUtils = new CustomShelfUtils(customShelfService);
     }
 
     @BeforeEach
@@ -92,19 +90,19 @@ class CustomShelfUtilsTest {
 
     @Test
     void returnBooksSuccessfully() {
-        Set<Book> actual = customShelfUtils.getBooksInCustomShelf(customShelf1.getShelfName());
+        Set<Book> actual = customShelfService.getBooksInCustomShelf(customShelf1.getShelfName());
         booksInCustomShelf1.forEach(book -> assertThat(actual).contains(book));
     }
 
     @Test
     void returnNoBooksIfNoBooksInCustomShelf() {
         Set<Book> actual =
-                customShelfUtils.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
+                customShelfService.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
         assertThat(actual).isEmpty();
     }
 
     @Test
     void returnNoBooksForNonExistentCustomShelf() {
-        assertThat(customShelfUtils.getBooksInCustomShelf("InvalidShelf")).isEmpty();
+        assertThat(customShelfService.getBooksInCustomShelf("InvalidShelf")).isEmpty();
     }
 }

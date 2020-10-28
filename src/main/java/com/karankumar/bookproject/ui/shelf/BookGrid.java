@@ -18,7 +18,8 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.util.CustomShelfUtils;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
@@ -37,12 +38,12 @@ public class BookGrid {
     private final Grid<Book> bookGrid;
     
     private final PredefinedShelfUtils predefinedShelfUtils;
-    private final CustomShelfUtils customShelfUtils;
+    private final CustomShelfService customShelfService;
 
-    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfUtils customShelfUtils) {
+    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfService customShelfService) {
         this.bookGrid = new Grid<>(Book.class);
         this.predefinedShelfUtils = predefinedShelfUtils;
-        this.customShelfUtils = customShelfUtils;
+        this.customShelfService = customShelfService;
         configure();
     }
 
@@ -94,7 +95,7 @@ public class BookGrid {
             return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
         }
 
-        return customShelfUtils.getBooksInCustomShelf(chosenShelf);
+        return customShelfService.getBooksInCustomShelf(chosenShelf);
     }
 
     private void populateGridWithBooks(Set<Book> books, BookFilters bookFilters) {

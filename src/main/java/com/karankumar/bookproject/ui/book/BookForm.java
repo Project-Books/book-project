@@ -26,7 +26,6 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.util.CustomShelfUtils;
 import com.karankumar.bookproject.ui.components.util.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -521,8 +520,7 @@ public class BookForm extends VerticalLayout {
         customShelfField.setPlaceholder("Choose a shelf");
         customShelfField.setClearButtonVisible(true);
 
-        CustomShelfUtils customShelfUtils = new CustomShelfUtils(customShelfService);
-        customShelfField.setItems(customShelfUtils.getCustomShelfNames());
+        customShelfField.setItems(customShelfService.getCustomShelfNames());
     }
 
     private void configurePredefinedShelfField() {
