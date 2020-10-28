@@ -54,12 +54,11 @@ class CustomShelfFormTest {
     }
 
     @BeforeEach
-    public void setup(@Autowired PredefinedShelfService predefinedShelfService,
-                      @Autowired CustomShelfService customShelfService) {
+    public void setup(@Autowired PredefinedShelfService predefinedShelfService,@Autowired CustomShelfService customShelfService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
 
-        customShelfForm = new CustomShelfForm(customShelfService, predefinedShelfService);
+        customShelfForm = new CustomShelfForm(predefinedShelfService, customShelfService);
     }
 
     @Test
