@@ -13,6 +13,7 @@ import com.vaadin.flow.dom.Element;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.function.Predicate;
 
 public class StatisticsViewTestUtils {
@@ -121,6 +122,7 @@ public class StatisticsViewTestUtils {
         book.setNumberOfPages(2000);
         book.setPagesRead(1000);
         book.setRating(RatingScale.EIGHT_POINT_FIVE);
+        book.setDateStartedReading(LocalDate.now());
         return book;
     }
 
