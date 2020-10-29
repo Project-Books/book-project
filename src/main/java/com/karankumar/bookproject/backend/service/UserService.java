@@ -33,6 +33,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -84,6 +85,15 @@ public class UserService {
         userRepository.save(userToRegister);
 
         authenticateUser(user);
+    }
+
+    public User getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username).orElseThrow();
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     private void authenticateUser(User user) {

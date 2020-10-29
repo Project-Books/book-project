@@ -26,14 +26,13 @@ import java.util.List;
 
 @Service
 @Log
-public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
+public class ReadingGoalService {
     private final ReadingGoalRepository goalRepository;
 
     public ReadingGoalService(ReadingGoalRepository goalRepository) {
         this.goalRepository = goalRepository;
     }
 
-    @Override
     public ReadingGoal findById(Long id) {
         return goalRepository.getOne(id);
     }
@@ -42,7 +41,6 @@ public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
         return goalRepository.findAll();
     }
 
-    @Override
     public void save(ReadingGoal goal) {
         if (goal != null) {
             overwritePreviouslySetGoals(goal);
@@ -54,17 +52,15 @@ public class ReadingGoalService extends BaseService<ReadingGoal, Long> {
         goalRepository.save(goal);
     }
 
-    @Override
     public void delete(ReadingGoal readingGoal) {
         goalRepository.delete(readingGoal);
     }
 
-    public Long count() {
-        return goalRepository.count();
-    }
-
-    @Override
     public void deleteAll() {
         goalRepository.deleteAll();
+    }
+
+    public Long count() {
+        return goalRepository.count();
     }
 }
