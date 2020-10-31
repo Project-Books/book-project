@@ -26,6 +26,7 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.ui.book.components.BookTitle;
 import com.karankumar.bookproject.ui.components.util.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -75,7 +76,8 @@ public class BookForm extends VerticalLayout {
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
 
-    @VisibleForTesting final TextField bookTitle = new TextField();
+    @VisibleForTesting final BookTitle bookTitle = new BookTitle();
+
     @VisibleForTesting final IntegerField seriesPosition = new IntegerField();
     @VisibleForTesting final TextField authorFirstName = new TextField();
     @VisibleForTesting final TextField authorLastName = new TextField();
@@ -111,7 +113,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
             = new HasValue[]{dateFinishedReading, rating, bookReview};
     @VisibleForTesting final HasValue[] allFields = {
-            bookTitle,
+            bookTitle.getField(),
             authorFirstName,
             authorLastName,
             seriesPosition,
@@ -145,7 +147,6 @@ public class BookForm extends VerticalLayout {
         dialog.add(formLayout);
 
         bindFormFields();
-        configureTitleFormField();
         configureAuthorFormField();
         configurePredefinedShelfField();
         configureCustomShelfField();
@@ -160,7 +161,7 @@ public class BookForm extends VerticalLayout {
         configureInSeriesFormField();
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
-                bookTitle,
+                bookTitle.getField(),
                 authorFirstName,
                 authorLastName,
                 seriesPosition,
@@ -202,7 +203,7 @@ public class BookForm extends VerticalLayout {
                 new FormLayout.ResponsiveStep("62em", 2)
         );
 
-        formLayout.addFormItem(bookTitle, "Book title *");
+        formLayout.addFormItem(bookTitle.getField(), "Book title *");
         formLayout.addFormItem(predefinedShelfField, "Book shelf *");
         formLayout.addFormItem(customShelfField, "Secondary shelf");
         formLayout.addFormItem(authorFirstName, "Author's first name *");
@@ -262,7 +263,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindBookTitleField() {
-        binder.forField(bookTitle)
+        binder.forField(bookTitle.getField())
               .asRequired(BookFormErrors.BOOK_TITLE_ERROR)
               .bind(Book::getTitle, Book::setTitle);
     }
@@ -550,13 +551,6 @@ public class BookForm extends VerticalLayout {
         binder.setBean(book);
     }
 
-    private void configureTitleFormField() {
-        bookTitle.setPlaceholder("Enter a book title");
-        bookTitle.setClearButtonVisible(true);
-        bookTitle.setRequired(true);
-        bookTitle.setRequiredIndicatorVisible(true);
-    }
-
     private void configureAuthorFormField() {
         authorFirstName.setPlaceholder("Enter the author's first name");
         authorFirstName.setClearButtonVisible(true);
@@ -769,7 +763,7 @@ public class BookForm extends VerticalLayout {
 
     private void clearFormFields() {
         HasValue[] components = {
-                bookTitle,
+                bookTitle.getField(),
                 authorFirstName,
                 authorLastName,
                 customShelfField,

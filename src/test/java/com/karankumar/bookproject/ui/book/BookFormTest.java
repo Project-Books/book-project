@@ -212,7 +212,7 @@ class BookFormTest {
     private void populateBookForm() {
         bookForm.authorFirstName.setValue(firstName);
         bookForm.authorLastName.setValue(lastName);
-        bookForm.bookTitle.setValue(bookTitle);
+        bookForm.bookTitle.getField().setValue(bookTitle);
         bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.setValue(BOOK_GENRE);
         bookForm.numberOfPages.setValue(numberOfPages);
@@ -271,7 +271,7 @@ class BookFormTest {
     private void assumeAllFormFieldsArePopulated() {
         assumeThat(bookForm.authorFirstName.isEmpty()).isFalse();
         assumeThat(bookForm.authorLastName.isEmpty()).isFalse();
-        assumeThat(bookForm.bookTitle.isEmpty()).isFalse();
+        assumeThat(bookForm.bookTitle.getField().isEmpty()).isFalse();
         assumeThat(bookForm.predefinedShelfField.isEmpty()).isFalse();
         assumeThat(bookForm.bookGenre.isEmpty()).isFalse();
         assumeThat(bookForm.numberOfPages.isEmpty()).isFalse();
@@ -427,7 +427,7 @@ class BookFormTest {
     @Test
     void notAllowEmptyBookTitle() {
         // given
-        bookForm.bookTitle.setValue("");
+        bookForm.bookTitle.getField().setValue("");
 
         // when
         bookForm.saveButton.click();
@@ -628,7 +628,7 @@ class BookFormTest {
         populateBookFormWithExistingBook(READ, savedBook);
 
         // when
-        bookForm.bookTitle.setValue(newTitle);
+        bookForm.bookTitle.getField().setValue(newTitle);
         bookForm.authorFirstName.setValue(newAuthor.getFirstName());
         bookForm.authorLastName.setValue(newAuthor.getLastName());
         bookForm.bookGenre.setValue(newBookGenre);
