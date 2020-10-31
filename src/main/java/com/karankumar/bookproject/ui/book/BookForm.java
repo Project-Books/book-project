@@ -27,6 +27,7 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.book.components.AuthorFirstName;
+import com.karankumar.bookproject.ui.book.components.AuthorLastName;
 import com.karankumar.bookproject.ui.book.components.BookTitle;
 import com.karankumar.bookproject.ui.components.util.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
@@ -48,7 +49,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
@@ -81,7 +81,7 @@ public class BookForm extends VerticalLayout {
 
     @VisibleForTesting final IntegerField seriesPosition = new IntegerField();
     @VisibleForTesting final AuthorFirstName authorFirstName = new AuthorFirstName();
-    @VisibleForTesting final TextField authorLastName = new TextField();
+    @VisibleForTesting final AuthorLastName authorLastName = new AuthorLastName();
     @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
             new ComboBox<>();
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
@@ -116,7 +116,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final HasValue[] allFields = {
             bookTitle.getField(),
             authorFirstName.getField(),
-            authorLastName,
+            authorLastName.getField(),
             seriesPosition,
             dateStartedReading,
             dateFinishedReading,
@@ -148,7 +148,6 @@ public class BookForm extends VerticalLayout {
         dialog.add(formLayout);
 
         bindFormFields();
-        configureAuthorFormField();
         configurePredefinedShelfField();
         configureCustomShelfField();
         configureGenreFormField();
@@ -164,7 +163,7 @@ public class BookForm extends VerticalLayout {
         HasSize[] components = {
                 bookTitle.getField(),
                 authorFirstName.getField(),
-                authorLastName,
+                authorLastName.getField(),
                 seriesPosition,
                 dateStartedReading,
                 dateFinishedReading,
@@ -208,7 +207,7 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(predefinedShelfField, "Book shelf *");
         formLayout.addFormItem(customShelfField, "Secondary shelf");
         formLayout.addFormItem(authorFirstName.getField(), "Author's first name *");
-        formLayout.addFormItem(authorLastName, "Author's last name *");
+        formLayout.addFormItem(authorLastName.getField(), "Author's last name *");
         dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre, "Book genre");
@@ -276,7 +275,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindAuthorLastNameField() {
-        binder.forField(authorLastName)
+        binder.forField(authorLastName.getField())
               .withValidator(BookFormValidators.isNameNonEmpty(), BookFormErrors.LAST_NAME_ERROR)
               .bind("author.lastName");
     }
@@ -552,13 +551,6 @@ public class BookForm extends VerticalLayout {
         binder.setBean(book);
     }
 
-    private void configureAuthorFormField() {
-        authorLastName.setPlaceholder("Enter the author's last name");
-        authorLastName.setClearButtonVisible(true);
-        authorLastName.setRequired(true);
-        authorLastName.setRequiredIndicatorVisible(true);
-    }
-
     private void configureGenreFormField() {
         bookGenre.setItems(BookGenre.values());
         bookGenre.setPlaceholder("Choose a book genre");
@@ -761,7 +753,7 @@ public class BookForm extends VerticalLayout {
         HasValue[] components = {
                 bookTitle.getField(),
                 authorFirstName.getField(),
-                authorLastName,
+                authorLastName.getField(),
                 customShelfField,
                 predefinedShelfField,
                 inSeriesCheckbox,
