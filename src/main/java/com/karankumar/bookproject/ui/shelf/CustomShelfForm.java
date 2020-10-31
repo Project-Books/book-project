@@ -43,16 +43,20 @@ import java.util.List;
 
 @CssImport(value = "./styles/shelf-form-styles.css")
 public class CustomShelfForm extends VerticalLayout {
-    private final Dialog dialog;
+    protected final Dialog dialog;
 
     private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
+    private final BooksInShelfView owner;
 
-    private Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
-    private final TextField shelfNameField = new TextField();
+    protected Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
+    protected final TextField shelfNameField = new TextField();
+    protected Button delete;
+    protected String deletingShelf = "";
 
     public CustomShelfForm(CustomShelfService customShelfService,
-                           PredefinedShelfService predefinedShelfService) {
+                           PredefinedShelfService predefinedShelfService,
+                           BooksInShelfView owner) {
         FormLayout formLayout = new FormLayout();
         dialog = new Dialog();
         dialog.add(new H3("Add custom shelf"), formLayout);
@@ -61,6 +65,7 @@ public class CustomShelfForm extends VerticalLayout {
 
         this.customShelfService = customShelfService;
         this.predefinedShelfService = predefinedShelfService;
+        this.owner = owner;
 
         bindFormFields();
 
@@ -70,6 +75,7 @@ public class CustomShelfForm extends VerticalLayout {
                 new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP)
         );
         formLayout.add(createSaveButton());
+        formLayout.add(createDeleteButton());
     }
 
     private void bindFormFields() {
@@ -106,10 +112,17 @@ public class CustomShelfForm extends VerticalLayout {
         Button save = new Button();
         save.setText("Save");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        save.setDisableOnClick(true);
         save.addClassName("shelfFormSaveButton");
         save.addClickListener(event -> validateOnSave());
         return save;
+    }
+
+    private Button createDeleteButton() {
+        delete = new Button();
+        delete.setText("Delete shelf");
+        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        delete.addClickListener(event -> validateOnDelete());
+        return delete;
     }
 
     private void validateOnSave() {
@@ -119,14 +132,36 @@ public class CustomShelfForm extends VerticalLayout {
             closeForm();
             if (binder.getBean() != null) {
                 showSaveConfirmation();
+                owner.setEditEnabled(false);
             } else {
                 showSaveError();
             }
         }
     }
 
-    private void setCustomShelfBean() {
-        binder.setBean(new CustomShelf(shelfNameField.getValue()));
+    private void validateOnDelete() {
+        CustomShelf removed = this.getCustomShelf(deletingShelf);
+        fireEvent(new DeleteEvent(this, removed));
+        binder.removeBean();
+        closeForm();
+        if (binder.getBean() == null) {
+            this.showDeleteConfirmation();
+            owner.whichShelf.updateShelfList();
+            owner.setEditEnabled(false);
+        } else {
+            this.showDeleteError();
+        }
+    }
+
+    protected void setCustomShelfBean() {
+        CustomShelf customShelf;
+        if (deletingShelf.equals("")) {
+            customShelf = new CustomShelf(shelfNameField.getValue());
+        } else {
+            customShelf = this.getCustomShelf(deletingShelf);
+            customShelf.setShelfName(shelfNameField.getValue());
+        }
+        binder.setBean(customShelf);
     }
 
     private void closeForm() {
@@ -141,9 +176,28 @@ public class CustomShelfForm extends VerticalLayout {
         Notification.show("Could not save shelf.");
     }
 
+    private void showDeleteConfirmation() {
+        Notification.show("Deleted shelf: " + deletingShelf);
+    }
+
+    private void showDeleteError() {
+        Notification.show("Could not delete shelf.");
+    }
+
     public void addShelf() {
         dialog.open();
         addClassNameToForm();
+    }
+
+    public void editShelf(String chosenShelf) {
+        delete.setVisible(true);
+        deletingShelf = chosenShelf;
+        shelfNameField.setValue(deletingShelf);
+        dialog.open();
+    }
+
+    public CustomShelf getCustomShelf(String shelfToFind) {
+        return customShelfService.findAll(shelfToFind).get(0);
     }
 
     private void addClassNameToForm() {
@@ -178,10 +232,10 @@ public class CustomShelfForm extends VerticalLayout {
         }
     }
 
-    // TODO: implement deleting a custom shelf
     public static class DeleteEvent extends CustomShelfForm.CustomShelfFormEvent {
         DeleteEvent(CustomShelfForm source, CustomShelf customShelf) {
             super(source, customShelf);
+            source.customShelfService.delete(customShelf);
         }
     }
 }

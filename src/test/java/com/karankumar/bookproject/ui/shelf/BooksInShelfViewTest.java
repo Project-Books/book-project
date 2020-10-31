@@ -20,6 +20,7 @@ package com.karankumar.bookproject.ui.shelf;
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
@@ -34,6 +35,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +50,18 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @WebAppConfiguration
+@DisplayName("BooksInShelfView should")
 class BooksInShelfViewTest {
 
     private static Routes routes;
+    private CustomShelfService customShelfService;
+    private BooksInShelfView shelfView;
+
+    private final String shelf = "UnitTest";
 
     @Autowired private ApplicationContext ctx;
 
@@ -89,8 +98,6 @@ class BooksInShelfViewTest {
         BookGridColumn.PAGES_KEY
     ));
 
-    private BooksInShelfView shelfView;
-
     @BeforeAll
     public static void discoverRoutes() {
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
@@ -104,6 +111,7 @@ class BooksInShelfViewTest {
         MockVaadin.setup(UI::new, servlet);
 
         shelfView = new BooksInShelfView(bookService, predefinedShelfService, customShelfService);
+        this.customShelfService = customShelfService;
     }
 
     @ParameterizedTest
@@ -142,6 +150,31 @@ class BooksInShelfViewTest {
                 assertFalse(col.isVisible(), col.getKey() + " column is showing");
             }
         }
+    }
+
+    @Test
+    void editButtonDisabledByDefault() {
+        // given
+
+        // when
+
+        // then
+        assertThat(shelfView.editShelf.isEnabled()).isFalse();
+    }
+
+    @Test
+    void editShelfOnEditButtonClick() {
+        // given
+        CustomShelf test = new CustomShelf(shelf);
+        customShelfService.save(test);
+        shelfView.updateWhichShelfList();
+
+        // when
+        shelfView.setChosenShelf(shelf);
+        shelfView.editShelf.click();
+
+        // then
+        assertThat(shelfView.customShelfForm.dialog.isOpened()).isTrue();
     }
 
     @AfterEach

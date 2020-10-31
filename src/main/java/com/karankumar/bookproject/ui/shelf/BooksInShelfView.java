@@ -69,7 +69,7 @@ public class BooksInShelfView extends VerticalLayout {
     private final HashMap<String, BookVisibilityStrategy> visibilityStrategies;
 
     private final BookForm bookForm;
-    private final CustomShelfForm customShelfForm;
+    @VisibleForTesting protected final CustomShelfForm customShelfForm;
 
     private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
@@ -78,6 +78,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     private String chosenShelf;
     private final BookFilters bookFilters;
+    @VisibleForTesting public Button editShelf;
 
     private final PredefinedShelfUtils predefinedShelfUtils;
 
@@ -131,7 +132,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     private CustomShelfForm createCustomShelfForm() {
         CustomShelfForm customShelfForm =
-                new CustomShelfForm(customShelfService, predefinedShelfService);
+                new CustomShelfForm(customShelfService, predefinedShelfService, this);
         new CustomShelfListener(this, customShelfService).bind(customShelfForm);
         return customShelfForm;
     }
@@ -143,17 +144,27 @@ public class BooksInShelfView extends VerticalLayout {
         Button addShelf = new Button("Add shelf");
         addShelf.addClickListener(e -> customShelfForm.addShelf());
 
+        editShelf = new Button("Edit shelf");
+        editShelf.addClickListener(e -> customShelfForm.editShelf(chosenShelf));
+        // Disable shelf edit by default - should only be enabled when a custom shelf is selected.
+        editShelf.setEnabled(false);
+
         HorizontalLayout layout = new HorizontalLayout(addBook);
 
         whichShelf.addToLayout(layout);
         filterByTitle.addToLayout(layout);
         filterByAuthorName.addToLayout(layout);
         layout.add(addShelf);
+        layout.add(editShelf);
         layout.add(addBook);
 
         layout.setAlignItems(Alignment.END);
 
         return layout;
+    }
+
+    public void setEditEnabled(Boolean isEnabled) {
+        editShelf.setEnabled(isEnabled);
     }
 
     // TODO: 3.08.2020 this should be moved BookShelfListener. But it's also invoked in the test.

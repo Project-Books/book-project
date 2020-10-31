@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.shelf.component;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.utils.ShelfUtils;
 import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
@@ -32,7 +33,7 @@ import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHEL
 
 @Log
 public class BookShelfComboBox {
-    private final ComboBox<String> allShelvesList;
+    @VisibleForTesting protected final ComboBox<String> allShelvesList;
     private final CustomShelfService customShelfService;
 
     public BookShelfComboBox(CustomShelfService customShelfService) {
@@ -56,6 +57,10 @@ public class BookShelfComboBox {
             if (chosenShelf == null) {
                 LOGGER.log(Level.FINE, "No choice selected");
                 return;
+            } else if(customShelfService.findAll(chosenShelf).size() > 0) {
+                view.setEditEnabled(true);
+            } else {
+                view.setEditEnabled(false);
             }
 
             view.setChosenShelf(chosenShelf);
@@ -66,7 +71,8 @@ public class BookShelfComboBox {
             } catch (NotSupportedException e) {
                 e.printStackTrace();
             }
-        });
+        }
+        );
     }
 
     public void addToLayout(HorizontalLayout layout) {
