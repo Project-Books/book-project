@@ -348,7 +348,8 @@ public class BookForm extends VerticalLayout {
 
     private boolean isMovedToDifferentShelf() {
         PredefinedShelf.ShelfName shelfName = predefinedShelfField.getValue();
-        PredefinedShelf.ShelfName bookInShelf = binder.getBean().getPredefinedShelf().getPredefinedShelfName();
+        PredefinedShelf.ShelfName bookInShelf =
+                binder.getBean().getPredefinedShelf().getPredefinedShelfName();
         return !shelfName.equals(bookInShelf);
     }
 
@@ -369,14 +370,16 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * We need to fetch the complete {@link CustomShelf} entity as we store (and therefor submit) only the custom shelf name. See {@see BookForm#configureCustomShelfField}
+     * We need to fetch the complete {@link CustomShelf} entity as we store (and therefore submit)
+     * only the custom shelf name. See {@see BookForm#configureCustomShelfField}
      */
     private void populateBookShelf() {
         Book book = binder.getBean();
         CustomShelf selectedCustomShelf = book.getCustomShelf();
         if (selectedCustomShelf != null) {
             String shelfName = selectedCustomShelf.getShelfName();
-            CustomShelf completeCustomShelf = customShelfService.findByShelfNameAndLoggedInUser(shelfName);
+            CustomShelf completeCustomShelf =
+                    customShelfService.findByShelfNameAndLoggedInUser(shelfName);
             if (completeCustomShelf != null) {
                 book.setCustomShelf(completeCustomShelf);
             }
@@ -393,42 +396,41 @@ public class BookForm extends VerticalLayout {
     }
 
     private Book populateBookBean() {
-        String title;
         if (bookTitle.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
             return null;
-        } else {
-            title = bookTitle.getValue();
         }
 
-        String firstName;
-        String lastName;
-        if (authorFirstName.getValue() != null) {
-            firstName = authorFirstName.getValue();
-        } else {
+        if (authorFirstName.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null first name");
             return null;
         }
-        if (authorLastName.getValue() != null) {
-            lastName = authorLastName.getValue();
-        } else {
+
+        if (authorLastName.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null last name");
             return null;
         }
-        Author author = new Author(firstName, lastName);
 
-        PredefinedShelf predefinedShelf;
-        if (predefinedShelfField.getValue() != null) {
-            predefinedShelf =
-                    predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfField.getValue());
-        } else {
-            LOGGER.log(Level.SEVERE, "Null shelf");
+        if (predefinedShelfField.getValue() == null) {
+            LOGGER.log(Level.SEVERE, "Null predefined shelf");
             return null;
         }
+
+        String title = bookTitle.getValue();
+        String firstName = authorFirstName.getValue();
+        String lastName = authorLastName.getValue();
+        Author author = new Author(firstName, lastName);
+
+        PredefinedShelf predefinedShelf =
+                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
+                        predefinedShelfField.getValue()
+                );
+
         Book book = new Book(title, author, predefinedShelf);
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
-            CustomShelf shelf = customShelfService.findByShelfNameAndLoggedInUser(customShelfField.getValue());
+            CustomShelf shelf =
+                    customShelfService.findByShelfNameAndLoggedInUser(customShelfField.getValue());
             if (shelf != null) {
                 book.setCustomShelf(shelf);
             }
@@ -444,18 +446,10 @@ public class BookForm extends VerticalLayout {
         book.setNumberOfPages(numberOfPages.getValue());
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
-
         Optional<RatingScale> ratingScale = RatingScale.of(rating.getValue());
         ratingScale.ifPresent(book::setRating);
-
         book.setBookReview(bookReview.getValue());
         book.setPagesRead(pagesRead.getValue());
-
-        if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-            book.setSeriesPosition(seriesPosition.getValue());
-        } else if (seriesPosition.getValue() != null) {
-            LOGGER.log(Level.SEVERE, "Negative Series value");
-        }
 
         return book;
     }
@@ -494,7 +488,6 @@ public class BookForm extends VerticalLayout {
 
         // TODO: this should be removed. A custom shelf should not be mandatory, so it should be acceptable to the custom shelf to be null
         if (book.getCustomShelf() == null) {
-//            book.setCustomShelf(new CustomShelf("ShelfName"));
             CustomShelf customShelf = customShelfService.createCustomShelf("ShelfName");
             book.setCustomShelf(customShelf);
         }
@@ -626,13 +619,15 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * Toggles showing the rating and the bookReview depending on which shelf this new book is going into
+     * Toggles showing the rating and the bookReview depending on which shelf this new book is
+     * going into
      *
      * @param name the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of
      *                               a @see PredefinedShelf
      */
-    private void showOrHideRatingAndBookReview(PredefinedShelf.ShelfName name) throws NotSupportedException {
+    private void showOrHideRatingAndBookReview(PredefinedShelf.ShelfName name)
+            throws NotSupportedException {
         switch (name) {
             case TO_READ:
             case READING:
@@ -650,7 +645,8 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * Populates the fieldsToReset array with state-specific fields depending on which shelf the book is going into
+     * Populates the fieldsToReset array with state-specific fields depending on which shelf the
+     * book is going into
      *
      * @param shelfName the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of

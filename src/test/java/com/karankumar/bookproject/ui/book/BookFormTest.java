@@ -264,7 +264,6 @@ class BookFormTest {
     }
 
     private void assertAllFieldsAreEmpty() {
-        System.out.println("hi");
         for (HasValue field : bookForm.allFields) {
             assertThat(field.isEmpty()).isTrue();
         }
