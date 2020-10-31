@@ -210,7 +210,7 @@ class BookFormTest {
     }
 
     private void populateBookForm() {
-        bookForm.authorFirstName.setValue(firstName);
+        bookForm.authorFirstName.getField().setValue(firstName);
         bookForm.authorLastName.setValue(lastName);
         bookForm.bookTitle.getField().setValue(bookTitle);
         bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
@@ -269,7 +269,7 @@ class BookFormTest {
     }
 
     private void assumeAllFormFieldsArePopulated() {
-        assumeThat(bookForm.authorFirstName.isEmpty()).isFalse();
+        assumeThat(bookForm.authorFirstName.getField().isEmpty()).isFalse();
         assumeThat(bookForm.authorLastName.isEmpty()).isFalse();
         assumeThat(bookForm.bookTitle.getField().isEmpty()).isFalse();
         assumeThat(bookForm.predefinedShelfField.isEmpty()).isFalse();
@@ -439,7 +439,7 @@ class BookFormTest {
     @Test
     void notAllowEmptyAuthorFirstName() {
         // given
-        bookForm.authorFirstName.setValue("");
+        bookForm.authorFirstName.getField().setValue("");
 
         // when
         bookForm.saveButton.click();
@@ -459,7 +459,7 @@ class BookFormTest {
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookReference.set(event.getBook()));
 
         // when
-        bookForm.authorFirstName.setValue("James");
+        bookForm.authorFirstName.getField().setValue("James");
         bookForm.authorLastName.setValue("Dean");
         bookForm.saveButton.click();
 
@@ -629,7 +629,7 @@ class BookFormTest {
 
         // when
         bookForm.bookTitle.getField().setValue(newTitle);
-        bookForm.authorFirstName.setValue(newAuthor.getFirstName());
+        bookForm.authorFirstName.getField().setValue(newAuthor.getFirstName());
         bookForm.authorLastName.setValue(newAuthor.getLastName());
         bookForm.bookGenre.setValue(newBookGenre);
         bookForm.saveButton.click();
