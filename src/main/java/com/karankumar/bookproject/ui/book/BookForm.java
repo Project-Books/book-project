@@ -49,15 +49,15 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
+
+import static com.karankumar.bookproject.ui.book.BookFormValidators.isEndDateAfterStartDate;
 
 /**
  * A Vaadin form for adding a new @see Book.
@@ -268,7 +268,8 @@ public class BookForm extends VerticalLayout {
                       String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
         binder.forField(dateFinishedReading)
-              .withValidator(isEndDateAfterStartDate(), BookFormErrors.FINISH_DATE_ERROR)
+              .withValidator(isEndDateAfterStartDate(dateStartedReading.getValue()),
+                      BookFormErrors.FINISH_DATE_ERROR)
               .withValidator(BookFormValidators.datePredicate(),
                       String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
@@ -465,8 +466,9 @@ public class BookForm extends VerticalLayout {
     }
 
     private void moveBookToDifferentShelf() {
-        PredefinedShelf shelf =
-                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfField.getValue());
+        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
+                        predefinedShelfField.getValue()
+        );
         if (shelf != null) {
             Book book = binder.getBean();
             book.setPredefinedShelf(shelf);
@@ -740,17 +742,6 @@ public class BookForm extends VerticalLayout {
     public void addBook() {
         clearFormFields();
         openForm();
-    }
-
-    private SerializablePredicate<LocalDate> isEndDateAfterStartDate() {
-        return endDate -> {
-            LocalDate dateStarted = dateStartedReading.getValue();
-            if (dateStarted == null || endDate == null) {
-                // allowed since these are optional fields
-                return true;
-            }
-            return (endDate.isEqual(dateStarted) || endDate.isAfter(dateStarted));
-        };
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,

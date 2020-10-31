@@ -59,7 +59,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-
 @IntegrationTest
 @WebAppConfiguration
 @DisplayName("BookForm should")
@@ -510,11 +509,9 @@ class BookFormTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(validationStatus.hasErrors()).isTrue();
-            softly.assertThat(validationStatus.getFieldValidationErrors()).hasSize(2);
+            softly.assertThat(fieldValidationErrors).hasSize(1);
             softly.assertThat(fieldValidationErrors.get(0).getMessage().orElseThrow())
                   .isEqualTo(String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"));
-            softly.assertThat(fieldValidationErrors.get(1).getMessage().orElseThrow())
-                  .isEqualTo(BookFormErrors.FINISH_DATE_ERROR);
         });
     }
 

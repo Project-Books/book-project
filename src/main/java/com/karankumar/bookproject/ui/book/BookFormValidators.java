@@ -22,6 +22,8 @@ import com.vaadin.flow.function.SerializablePredicate;
 
 import java.time.LocalDate;
 
+import static com.karankumar.bookproject.backend.util.DateUtils.isDateInFuture;
+
 public final class BookFormValidators {
     private BookFormValidators() {}
 
@@ -34,10 +36,26 @@ public final class BookFormValidators {
     }
 
     static SerializablePredicate<LocalDate> datePredicate() {
-        return date -> !(date != null && date.isAfter(LocalDate.now()));
+        return date -> {
+            // date is optional, so it is allowed to be null
+            if (date != null) {
+                return !isDateInFuture(date);
+            }
+            return true;
+        };
     }
 
     static SerializablePredicate<Integer> maxPagesPredicate() {
         return number -> (number == null || number <= Book.MAX_PAGES);
+    }
+
+    static SerializablePredicate<LocalDate> isEndDateAfterStartDate(LocalDate dateStarted) {
+        return endDate -> {
+            if (dateStarted == null || endDate == null) {
+                // allowed since these are optional fields
+                return true;
+            }
+            return (endDate.isEqual(dateStarted) || endDate.isAfter(dateStarted));
+        };
     }
 }
