@@ -196,7 +196,8 @@ public class BookForm extends VerticalLayout {
      */
     private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
         formLayout.setResponsiveSteps(
-                new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP),
+                new FormLayout.ResponsiveStep("0", 1,
+                        FormLayout.ResponsiveStep.LabelsPosition.TOP),
                 new FormLayout.ResponsiveStep("31em", 1),
                 new FormLayout.ResponsiveStep("62em", 2)
         );
@@ -245,49 +246,101 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindFormFields() {
+        bindBookTitleField();
+        bindAuthorFirstNameField();
+        bindAuthorLastNameField();
+        bindPredefinedShelfField();
+        bindCustomShelfField();
+        bindSeriesPositionField();
+        bindDateStartedField();
+        bindDateFinishedField();
+        bindNumberOfPagesField();
+        bindPagesReadField();
+        bindGenreField();
+        bindRatingField();
+        bindBookReviewField();
+    }
+
+    private void bindBookTitleField() {
         binder.forField(bookTitle)
               .asRequired(BookFormErrors.BOOK_TITLE_ERROR)
               .bind(Book::getTitle, Book::setTitle);
+    }
+
+    private void bindAuthorFirstNameField() {
         binder.forField(authorFirstName)
               .withValidator(BookFormValidators.isNameNonEmpty(), BookFormErrors.FIRST_NAME_ERROR)
               .bind("author.firstName");
+    }
+
+    private void bindAuthorLastNameField() {
         binder.forField(authorLastName)
               .withValidator(BookFormValidators.isNameNonEmpty(), BookFormErrors.LAST_NAME_ERROR)
               .bind("author.lastName");
+    }
+
+    private void bindPredefinedShelfField() {
         binder.forField(predefinedShelfField)
               .withValidator(Objects::nonNull, BookFormErrors.SHELF_ERROR)
               .bind("predefinedShelf.predefinedShelfName");
+    }
+
+    private void bindCustomShelfField() {
         binder.forField(customShelfField)
               .bind("customShelf.shelfName");
+    }
+
+    private void bindSeriesPositionField() {
         binder.forField(seriesPosition)
               .withValidator(BookFormValidators.isNumberPositive(),
                       BookFormErrors.SERIES_POSITION_ERROR)
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
+    }
+
+    private void bindDateStartedField() {
         binder.forField(dateStartedReading)
               .withValidator(BookFormValidators.isNotInFuture(),
                       String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
+    }
+
+    private void bindDateFinishedField() {
         binder.forField(dateFinishedReading)
               .withValidator(isEndDateAfterStartDate(dateStartedReading.getValue()),
                       BookFormErrors.FINISH_DATE_ERROR)
               .withValidator(BookFormValidators.isNotInFuture(),
                       String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
               .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
+    }
+
+    private void bindNumberOfPagesField() {
         binder.forField(numberOfPages)
               .withValidator(BookFormValidators.isNumberPositive(),
                       BookFormErrors.PAGE_NUMBER_ERROR)
               .withValidator(BookFormValidators.isLessThanOrEqualToMaxPages(),
                       BookFormErrors.MAX_PAGES_ERROR)
               .bind(Book::getNumberOfPages, Book::setNumberOfPages);
+    }
+
+    private void bindPagesReadField() {
         binder.forField(pagesRead)
               .withValidator(BookFormValidators.isLessThanOrEqualToMaxPages(),
                       BookFormErrors.MAX_PAGES_ERROR)
               .bind(Book::getPagesRead, Book::setPagesRead);
+    }
+
+    private void bindGenreField() {
         binder.forField(bookGenre)
               .bind(Book::getBookGenre, Book::setBookGenre);
+    }
+
+    private void bindRatingField() {
         binder.forField(rating)
               .withConverter(new DoubleToRatingScaleConverter())
               .bind(Book::getRating, Book::setRating);
+    }
+
+    private void bindBookReviewField() {
         binder.forField(bookReview)
               .bind(Book::getBookReview, Book::setBookReview);
     }
