@@ -27,15 +27,15 @@ import static com.karankumar.bookproject.backend.util.DateUtils.isDateInFuture;
 public final class BookFormValidators {
     private BookFormValidators() {}
 
-    static SerializablePredicate<Integer> positiveNumberPredicate() {
+    static SerializablePredicate<Integer> isNumberPositive() {
         return number -> (number == null || number > 0);
     }
 
-    static SerializablePredicate<String> authorPredicate() {
+    static SerializablePredicate<String> isNameNonEmpty() {
         return name -> (name != null && !name.isEmpty());
     }
 
-    static SerializablePredicate<LocalDate> datePredicate() {
+    static SerializablePredicate<LocalDate> isNotInFuture() {
         return date -> {
             // date is optional, so it is allowed to be null
             if (date != null) {
@@ -45,7 +45,7 @@ public final class BookFormValidators {
         };
     }
 
-    static SerializablePredicate<Integer> maxPagesPredicate() {
+    static SerializablePredicate<Integer> isLessThanOrEqualToMaxPages() {
         return number -> (number == null || number <= Book.MAX_PAGES);
     }
 
