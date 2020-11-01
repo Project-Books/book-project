@@ -17,29 +17,25 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
-import com.karankumar.bookproject.ui.book.form.BookForm;
-import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 
-import java.time.LocalDate;
+public class FormDialog extends Dialog {
+    private final Dialog dialog;
 
-public class DateFinishedReading extends FormItem<DatePicker> {
-    public DateFinishedReading() {
-        super(new DatePicker());
+    public FormDialog(FormLayout formLayout) {
+        dialog = new Dialog();
+        dialog.setCloseOnOutsideClick(true);
+        dialog.add(formLayout);
     }
 
     @Override
-    public void configure() {
-        DatePicker dateStartedReading = super.getField();
-        dateStartedReading.setClearButtonVisible(true);
-        dateStartedReading.setPlaceholder(BookForm.ENTER_DATE);
+    public void open() {
+        dialog.open();
     }
 
     @Override
-    public String getLabel() {
-        return "Date finished reading";
-    }
-
-    public LocalDate getValue() {
-        return super.getField().getValue();
+    public void close() {
+        dialog.close();
     }
 }

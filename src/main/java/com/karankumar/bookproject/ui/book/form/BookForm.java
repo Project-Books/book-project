@@ -32,6 +32,7 @@ import com.karankumar.bookproject.ui.book.components.BookTitle;
 import com.karankumar.bookproject.ui.book.components.CustomShelfComponent;
 import com.karankumar.bookproject.ui.book.components.DateFinishedReading;
 import com.karankumar.bookproject.ui.book.components.DateStartedReading;
+import com.karankumar.bookproject.ui.book.components.FormDialog;
 import com.karankumar.bookproject.ui.book.components.Genre;
 import com.karankumar.bookproject.ui.book.components.InSeries;
 import com.karankumar.bookproject.ui.book.components.NumberOfPages;
@@ -48,7 +49,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -151,17 +151,12 @@ public class BookForm extends VerticalLayout {
     private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
 
-    private final Dialog dialog;
+    private final FormDialog formDialog;
 
     public BookForm(PredefinedShelfService predefinedShelfService,
                     CustomShelfService customShelfService) {
         this.predefinedShelfService = predefinedShelfService;
         this.customShelfService = customShelfService;
-
-        dialog = new Dialog();
-        dialog.setCloseOnOutsideClick(true);
-        FormLayout formLayout = new FormLayout();
-        dialog.add(formLayout);
 
         bindFormFields();
         configurePredefinedShelfField();
@@ -184,9 +179,12 @@ public class BookForm extends VerticalLayout {
                 bookReview.getField()
         };
         ComponentUtil.setComponentClassName(components, "bookFormInputField");
+
+        FormLayout formLayout = new FormLayout();
         configureFormLayout(formLayout, buttons);
 
-        add(dialog);
+        formDialog = new FormDialog(formLayout);
+        add(formDialog);
     }
 
     private void configureInSeriesFormField() {
@@ -238,7 +236,7 @@ public class BookForm extends VerticalLayout {
     }
 
     public void openForm() {
-        dialog.open();
+        formDialog.open();
         showSeriesPositionFormIfSeriesPositionAvailable();
         addClassNameToForm();
     }
@@ -259,7 +257,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void closeForm() {
-        dialog.close();
+        formDialog.close();
     }
 
     private void bindFormFields() {
@@ -606,10 +604,12 @@ public class BookForm extends VerticalLayout {
                 break;
             case READ:
                 showStartDate();
+                dateFinishedReading.getField().setVisible(true);
                 showFinishDate();
                 break;
             default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
+                String message = String.format(BookFormErrors.SHELF_NOT_SUPPORTED, name);
+                throw new NotSupportedException(message);
         }
     }
 
@@ -649,7 +649,8 @@ public class BookForm extends VerticalLayout {
                 pagesReadFormItem.setVisible(true);
                 break;
             default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
+                String message = String.format(BookFormErrors.SHELF_NOT_SUPPORTED, name);
+                throw new NotSupportedException(message);
         }
     }
 
@@ -675,7 +676,8 @@ public class BookForm extends VerticalLayout {
                 bookReviewFormItem.setVisible(true);
                 break;
             default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
+                String message = String.format(BookFormErrors.SHELF_NOT_SUPPORTED, name);
+                throw new NotSupportedException(message);
         }
     }
 
@@ -703,7 +705,8 @@ public class BookForm extends VerticalLayout {
             case DID_NOT_FINISH:
                 return fieldsToResetForDidNotFinish;
             default:
-                throw new NotSupportedException("Shelf " + shelfName + " not yet supported");
+                String message = String.format(BookFormErrors.SHELF_NOT_SUPPORTED, shelfName);
+                throw new NotSupportedException(message);
         }
     }
 
