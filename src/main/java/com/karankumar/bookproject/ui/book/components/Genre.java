@@ -17,8 +17,10 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.data.binder.Binder;
 
 public class Genre extends FormItem<ComboBox<BookGenre>> {
     public Genre() {
@@ -39,6 +41,11 @@ public class Genre extends FormItem<ComboBox<BookGenre>> {
 
     public BookGenre getValue() {
         return super.getField().getValue();
+    }
+
+    public void bind(Binder<Book> binder) {
+        binder.forField(super.getField())
+              .bind(Book::getBookGenre, Book::setBookGenre);
     }
 
 }

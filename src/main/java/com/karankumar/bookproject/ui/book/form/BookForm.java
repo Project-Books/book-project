@@ -268,14 +268,9 @@ public class BookForm extends VerticalLayout {
         dateFinishedReading.bind(binder, dateStartedReading.getValue());
         numberOfPages.bind(binder);
         pagesRead.bind(binder);
-        bindGenreField();
+        bookGenre.bind(binder);
         bindRatingField();
         bindBookReviewField();
-    }
-
-    private void bindGenreField() {
-        binder.forField(bookGenre.getField())
-              .bind(Book::getBookGenre, Book::setBookGenre);
     }
 
     private void bindRatingField() {
