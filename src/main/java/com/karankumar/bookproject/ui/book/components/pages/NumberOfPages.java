@@ -15,38 +15,19 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book.components;
+package com.karankumar.bookproject.ui.book.components.pages;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.karankumar.bookproject.ui.book.form.BookFormValidators;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 
-public class NumberOfPages extends FormItem<IntegerField> {
+public class NumberOfPages extends Pages {
     public NumberOfPages() {
-        super(new IntegerField());
+        super("Number of pages","Enter the number of pages");
     }
 
     @Override
-    public void configure() {
-        IntegerField numberOfPages = super.getField();
-        numberOfPages.setPlaceholder("Enter number of pages");
-        numberOfPages.setMin(1);
-        numberOfPages.setMax(Book.MAX_PAGES);
-        numberOfPages.setHasControls(true);
-        numberOfPages.setClearButtonVisible(true);
-    }
-
-    @Override
-    public String getLabel() {
-        return "Number of pages";
-    }
-
-    public Integer getValue() {
-        return super.getField().getValue();
-    }
-
     public void bind(Binder<Book> binder) {
         binder.forField(super.getField())
               .withValidator(BookFormValidators.isNumberPositive(),

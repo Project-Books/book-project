@@ -15,42 +15,41 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book.components;
+package com.karankumar.bookproject.ui.book.components.pages;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.ui.book.form.BookFormErrors;
-import com.karankumar.bookproject.ui.book.form.BookFormValidators;
+import com.karankumar.bookproject.ui.book.components.FormItem;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 
-public class PagesRead extends FormItem<IntegerField> {
-    public PagesRead() {
+public abstract class Pages extends FormItem<IntegerField> {
+    private final String label;
+    private final String placeholder;
+
+    public Pages(String label, String placeholder) {
         super(new IntegerField());
+        this.label = label;
+        this.placeholder = placeholder;
     }
 
     @Override
     public void configure() {
-        IntegerField pagesRead = super.getField();
-        pagesRead.setPlaceholder("Enter the number of pages read");
-        pagesRead.setMin(1);
-        pagesRead.setMax(Book.MAX_PAGES);
-        pagesRead.setHasControls(true);
-        pagesRead.setClearButtonVisible(true);
+        IntegerField pages = super.getField();
+        pages.setPlaceholder(placeholder);
+        pages.setMin(1);
+        pages.setMax(Book.MAX_PAGES);
+        pages.setHasControls(true);
+        pages.setClearButtonVisible(true);
     }
 
     @Override
     public String getLabel() {
-        return "Pages read";
+        return label;
     }
 
     public Integer getValue() {
         return super.getField().getValue();
     }
 
-    public void bind(Binder<Book> binder) {
-        binder.forField(super.getField())
-              .withValidator(BookFormValidators.isLessThanOrEqualToMaxPages(),
-                      BookFormErrors.MAX_PAGES_ERROR)
-              .bind(Book::getPagesRead, Book::setPagesRead);
-    }
+    public abstract void bind(Binder<Book> binder);
 }
