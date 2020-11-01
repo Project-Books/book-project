@@ -15,41 +15,22 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book.components;
+package com.karankumar.bookproject.ui.book.components.author;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.karankumar.bookproject.ui.book.form.BookFormValidators;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 
-public class AuthorFirstName extends FormItem<TextField> {
-    public AuthorFirstName() {
-        super(new TextField());
-    }
-
-    @Override
-    public void configure() {
-        TextField field = super.getField();
-
-        field.setPlaceholder("Enter the author's first name");
-        field.setClearButtonVisible(true);
-        field.setRequired(true);
-        field.setRequiredIndicatorVisible(true);
-    }
-
-    @Override
-    public String getLabel() {
-        return "Author's first name *";
-    }
-
-    public String getValue() {
-        return super.getField().getValue();
+public class AuthorLastName extends AuthorComponent {
+    public AuthorLastName() {
+        super("Enter the author's last name", "Author's last name *");
     }
 
     public void bind(Binder<Book> binder) {
         binder.forField(super.getField())
-              .withValidator(BookFormValidators.isNameNonEmpty(), BookFormErrors.FIRST_NAME_ERROR)
-              .bind("author.firstName");
+              .withValidator(BookFormValidators.isNameNonEmpty(), BookFormErrors.LAST_NAME_ERROR)
+              .bind("author.lastName");
     }
+
 }
