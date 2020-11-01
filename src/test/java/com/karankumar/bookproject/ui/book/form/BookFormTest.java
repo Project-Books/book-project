@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.book.form;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
@@ -31,7 +31,10 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.MAX_PAGES_ERROR;
+import static com.karankumar.bookproject.ui.book.form.BookFormErrors.MAX_PAGES_ERROR;
+
+import com.karankumar.bookproject.ui.book.form.BookForm;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
@@ -58,7 +61,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
-
 
 @IntegrationTest
 @WebAppConfiguration
@@ -211,12 +213,12 @@ class BookFormTest {
     }
 
     private void populateBookForm() {
-        bookForm.authorFirstName.setValue(firstName);
-        bookForm.authorLastName.setValue(lastName);
-        bookForm.bookTitle.setValue(bookTitle);
-        bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
-        bookForm.bookGenre.setValue(BOOK_GENRE);
-        bookForm.numberOfPages.setValue(numberOfPages);
+        bookForm.authorFirstName.getField().setValue(firstName);
+        bookForm.authorLastName.getField().setValue(lastName);
+        bookForm.bookTitle.getField().setValue(bookTitle);
+        bookForm.predefinedShelfField.getField().setValue(readShelf.getPredefinedShelfName());
+        bookForm.bookGenre.getField().setValue(BOOK_GENRE);
+        bookForm.numberOfPages.getField().setValue(numberOfPages);
         populateBookShelf(PredefinedShelf.ShelfName.READ);
     }
 
@@ -229,23 +231,23 @@ class BookFormTest {
     private void populateBookShelf(PredefinedShelf.ShelfName shelfName) {
         switch (shelfName) {
             case TO_READ:
-                bookForm.predefinedShelfField.setValue(shelfName);
+                bookForm.predefinedShelfField.getField().setValue(shelfName);
                 break;
             case READING:
-                bookForm.predefinedShelfField.setValue(shelfName);
-                bookForm.dateStartedReading.setValue(dateStarted);
+                bookForm.predefinedShelfField.getField().setValue(shelfName);
+                bookForm.dateStartedReading.getField().setValue(dateStarted);
                 break;
             case READ:
-                bookForm.predefinedShelfField.setValue(shelfName);
-                bookForm.dateStartedReading.setValue(dateStarted);
-                bookForm.dateFinishedReading.setValue(dateFinished);
-                bookForm.rating.setValue(RatingScale.toDouble(ratingVal));
-                bookForm.bookReview.setValue(bookReview);
+                bookForm.predefinedShelfField.getField().setValue(shelfName);
+                bookForm.dateStartedReading.getField().setValue(dateStarted);
+                bookForm.dateFinishedReading.getField().setValue(dateFinished);
+                bookForm.rating.getField().setValue(RatingScale.toDouble(ratingVal));
+                bookForm.bookReview.getField().setValue(bookReview);
                 break;
             case DID_NOT_FINISH:
-                bookForm.predefinedShelfField.setValue(shelfName);
-                bookForm.dateStartedReading.setValue(dateStarted);
-                bookForm.pagesRead.setValue(pagesRead);
+                bookForm.predefinedShelfField.getField().setValue(shelfName);
+                bookForm.dateStartedReading.getField().setValue(dateStarted);
+                bookForm.pagesRead.getField().setValue(pagesRead);
                 break;
         }
     }
@@ -264,28 +266,27 @@ class BookFormTest {
     }
 
     private void assertAllFieldsAreEmpty() {
-        System.out.println("hi");
         for (HasValue field : bookForm.allFields) {
             assertThat(field.isEmpty()).isTrue();
         }
     }
 
     private void assumeAllFormFieldsArePopulated() {
-        assumeThat(bookForm.authorFirstName.isEmpty()).isFalse();
-        assumeThat(bookForm.authorLastName.isEmpty()).isFalse();
-        assumeThat(bookForm.bookTitle.isEmpty()).isFalse();
-        assumeThat(bookForm.predefinedShelfField.isEmpty()).isFalse();
-        assumeThat(bookForm.bookGenre.isEmpty()).isFalse();
-        assumeThat(bookForm.numberOfPages.isEmpty()).isFalse();
-        assumeThat(bookForm.dateStartedReading.isEmpty()).isFalse();
-        assumeThat(bookForm.dateFinishedReading.isEmpty()).isFalse();
-        assumeThat(bookForm.rating.isEmpty()).isFalse();
-        assumeThat(bookForm.bookReview.isEmpty()).isFalse();
+        assumeThat(bookForm.authorFirstName.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.authorLastName.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.bookTitle.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.predefinedShelfField.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.bookGenre.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.numberOfPages.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.dateStartedReading.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.dateFinishedReading.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.rating.getField().isEmpty()).isFalse();
+        assumeThat(bookForm.bookReview.getField().isEmpty()).isFalse();
     }
 
     @Test
     void showCorrectFormFieldsForToReadShelf() {
-        bookForm.predefinedShelfField.setValue(TO_READ);
+        bookForm.predefinedShelfField.getField().setValue(TO_READ);
         assertNonToReadFieldsAreHidden();
     }
 
@@ -301,7 +302,7 @@ class BookFormTest {
 
     @Test
     void showCorrectFormFieldsForReadingShelf() {
-        bookForm.predefinedShelfField.setValue(READING);
+        bookForm.predefinedShelfField.getField().setValue(READING);
         assertSoftly(softly -> {
             softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
             softly.assertThat(bookForm.dateFinishedReadingFormItem.isVisible()).isFalse();
@@ -313,7 +314,7 @@ class BookFormTest {
 
     @Test
     void showCorrectFormFieldsForReadShelf() {
-        bookForm.predefinedShelfField.setValue(READ);
+        bookForm.predefinedShelfField.getField().setValue(READ);
         assertSoftly(softly -> {
             softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
             softly.assertThat(bookForm.dateFinishedReadingFormItem.isVisible()).isTrue();
@@ -325,7 +326,7 @@ class BookFormTest {
 
     @Test
     void showCorrectFormFieldsForDidNotFinishShelf() {
-        bookForm.predefinedShelfField.setValue(DID_NOT_FINISH);
+        bookForm.predefinedShelfField.getField().setValue(DID_NOT_FINISH);
         assertSoftly(softly -> {
             softly.assertThat(bookForm.dateStartedReadingFormItem.isVisible()).isTrue();
             softly.assertThat(bookForm.dateFinishedReadingFormItem.isVisible()).isFalse();
@@ -351,10 +352,10 @@ class BookFormTest {
         // given
         HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
         populateBookForm();
-        bookForm.pagesRead.setValue(pagesRead);
+        bookForm.pagesRead.getField().setValue(pagesRead);
 
         // when
-        bookForm.predefinedShelfField.setValue(newShelf);
+        bookForm.predefinedShelfField.getField().setValue(newShelf);
 
         // then
         assertSoftly(softly -> {
@@ -366,7 +367,7 @@ class BookFormTest {
     @Test
     void notAllowNegativeSeriesPosition() {
         // given
-        bookForm.seriesPosition.setValue(-1);
+        bookForm.seriesPosition.getField().setValue(-1);
 
         // when
         bookForm.saveButton.click();
@@ -393,7 +394,7 @@ class BookFormTest {
     @Test
     void notAllowNegativePageNumbers() {
         // given
-        bookForm.numberOfPages.setValue(-1);
+        bookForm.numberOfPages.getField().setValue(-1);
 
         // when
         bookForm.saveButton.click();
@@ -405,7 +406,7 @@ class BookFormTest {
     @Test
     void notAllowPagesFieldToExceedMax() {
         // given
-        bookForm.numberOfPages.setValue(Book.MAX_PAGES + 1);
+        bookForm.numberOfPages.getField().setValue(Book.MAX_PAGES + 1);
 
         // when
         bookForm.saveButton.click();
@@ -417,7 +418,7 @@ class BookFormTest {
     @Test
     void notAllowPagesReadToExceedMaxValue() {
         // given
-        bookForm.pagesRead.setValue(Book.MAX_PAGES + 1);
+        bookForm.pagesRead.getField().setValue(Book.MAX_PAGES + 1);
 
         // when
         bookForm.saveButton.click();
@@ -429,7 +430,7 @@ class BookFormTest {
     @Test
     void notAllowEmptyBookTitle() {
         // given
-        bookForm.bookTitle.setValue("");
+        bookForm.bookTitle.getField().setValue("");
 
         // when
         bookForm.saveButton.click();
@@ -441,7 +442,7 @@ class BookFormTest {
     @Test
     void notAllowEmptyAuthorFirstName() {
         // given
-        bookForm.authorFirstName.setValue("");
+        bookForm.authorFirstName.getField().setValue("");
 
         // when
         bookForm.saveButton.click();
@@ -461,8 +462,8 @@ class BookFormTest {
         bookForm.addListener(BookForm.SaveEvent.class, event -> bookReference.set(event.getBook()));
 
         // when
-        bookForm.authorFirstName.setValue("James");
-        bookForm.authorLastName.setValue("Dean");
+        bookForm.authorFirstName.getField().setValue("James");
+        bookForm.authorLastName.getField().setValue("Dean");
         bookForm.saveButton.click();
 
         // then
@@ -476,7 +477,7 @@ class BookFormTest {
     @Test
     void notAllowEmptyAuthorLastName() {
         // given
-        bookForm.authorLastName.setValue("");
+        bookForm.authorLastName.getField().setValue("");
 
         // when
         bookForm.saveButton.click();
@@ -488,7 +489,7 @@ class BookFormTest {
     @Test
     void notAllowEmptyShelf() {
         // given
-        bookForm.predefinedShelfField.setValue(null);
+        bookForm.predefinedShelfField.getField().setValue(null);
 
         // when
         bookForm.saveButton.click();
@@ -500,7 +501,7 @@ class BookFormTest {
     @Test
     void notAllowFutureStartDate() {
         // given
-        bookForm.dateStartedReading.setValue(LocalDate.now().plusDays(5));
+        bookForm.dateStartedReading.getField().setValue(LocalDate.now().plusDays(5));
 
         // when
         bookForm.saveButton.click();
@@ -511,22 +512,20 @@ class BookFormTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(validationStatus.hasErrors()).isTrue();
-            softly.assertThat(validationStatus.getFieldValidationErrors()).hasSize(2);
+            softly.assertThat(fieldValidationErrors).hasSize(1);
             softly.assertThat(fieldValidationErrors.get(0).getMessage().orElseThrow())
                   .isEqualTo(String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"));
-            softly.assertThat(fieldValidationErrors.get(1).getMessage().orElseThrow())
-                  .isEqualTo(BookFormErrors.FINISH_DATE_ERROR);
         });
     }
 
     @Test
     void displaySeriesPositionWhenIsInSeriesChecked() {
         // given
-        bookForm.inSeriesCheckbox.setValue(true);
+        bookForm.inSeriesCheckbox.getField().setValue(true);
 
         assertSoftly(softly -> {
             softly.assertThat(bookForm.seriesPositionFormItem.isVisible()).isTrue();
-            softly.assertThat(bookForm.seriesPosition.isVisible()).isTrue();
+            softly.assertThat(bookForm.seriesPosition.getField().isVisible()).isTrue();
             softly.assertThat(SERIES_POSITION).isEqualTo(bookForm.seriesPosition.getValue());
             softly.assertAll();
         });
@@ -536,7 +535,7 @@ class BookFormTest {
     @Test
     void notShowSeriesPositionWhenIsInSeriesUnchecked() {
         // given
-        bookForm.inSeriesCheckbox.setValue(false);
+        bookForm.inSeriesCheckbox.getField().setValue(false);
 
         // then
         assertThat(bookForm.seriesPositionFormItem.isVisible()).isFalse();
@@ -545,10 +544,10 @@ class BookFormTest {
     @Test
     void hideSeriesPositionWhenSeriesPositionIsSwitchedOnAndThenOff() {
         // given
-        bookForm.inSeriesCheckbox.setValue(true);
+        bookForm.inSeriesCheckbox.getField().setValue(true);
 
         // when
-        bookForm.inSeriesCheckbox.setValue(false);
+        bookForm.inSeriesCheckbox.getField().setValue(false);
 
         // then
         assertThat(bookForm.seriesPositionFormItem.isVisible()).isFalse();
@@ -565,7 +564,7 @@ class BookFormTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(bookForm.seriesPositionFormItem.isVisible()).isTrue();
-            softly.assertThat(bookForm.seriesPosition.isVisible()).isTrue();
+            softly.assertThat(bookForm.seriesPosition.getField().isVisible()).isTrue();
             softly.assertThat(SERIES_POSITION).isEqualTo(bookForm.seriesPosition.getValue());
         });
     }
@@ -632,10 +631,10 @@ class BookFormTest {
         populateBookFormWithExistingBook(READ, savedBook);
 
         // when
-        bookForm.bookTitle.setValue(newTitle);
-        bookForm.authorFirstName.setValue(newAuthor.getFirstName());
-        bookForm.authorLastName.setValue(newAuthor.getLastName());
-        bookForm.bookGenre.setValue(newBookGenre);
+        bookForm.bookTitle.getField().setValue(newTitle);
+        bookForm.authorFirstName.getField().setValue(newAuthor.getFirstName());
+        bookForm.authorLastName.getField().setValue(newAuthor.getLastName());
+        bookForm.bookGenre.getField().setValue(newBookGenre);
         bookForm.saveButton.click();
 
         // then

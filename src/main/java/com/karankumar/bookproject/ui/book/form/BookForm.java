@@ -15,17 +15,31 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.book.form;
 
 import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.ui.book.components.author.AuthorFirstName;
+import com.karankumar.bookproject.ui.book.components.author.AuthorLastName;
+import com.karankumar.bookproject.ui.book.components.BookReview;
+import com.karankumar.bookproject.ui.book.components.BookTitle;
+import com.karankumar.bookproject.ui.book.components.CustomShelfComponent;
+import com.karankumar.bookproject.ui.book.components.date.DateFinishedReading;
+import com.karankumar.bookproject.ui.book.components.date.DateStartedReading;
+import com.karankumar.bookproject.ui.book.components.FormDialog;
+import com.karankumar.bookproject.ui.book.components.Genre;
+import com.karankumar.bookproject.ui.book.components.InSeries;
+import com.karankumar.bookproject.ui.book.components.pages.NumberOfPages;
+import com.karankumar.bookproject.ui.book.components.pages.PagesRead;
+import com.karankumar.bookproject.ui.book.components.PredefinedShelfComponent;
+import com.karankumar.bookproject.ui.book.components.Rating;
+import com.karankumar.bookproject.ui.book.components.SeriesPosition;
 import com.karankumar.bookproject.ui.components.util.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -34,28 +48,17 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
-import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 
@@ -71,26 +74,27 @@ import java.util.logging.Level;
 )
 @Log
 public class BookForm extends VerticalLayout {
-    private static final String ENTER_DATE = "Enter a date";
+    public static final String ENTER_DATE = "Enter a date";
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
 
-    @VisibleForTesting final TextField bookTitle = new TextField();
-    @VisibleForTesting final IntegerField seriesPosition = new IntegerField();
-    @VisibleForTesting final TextField authorFirstName = new TextField();
-    @VisibleForTesting final TextField authorLastName = new TextField();
-    @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
-            new ComboBox<>();
-    @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
-    @VisibleForTesting final ComboBox<BookGenre> bookGenre = new ComboBox<>();
-    @VisibleForTesting final IntegerField pagesRead = new IntegerField();
-    @VisibleForTesting final IntegerField numberOfPages = new IntegerField();
-    @VisibleForTesting final DatePicker dateStartedReading = new DatePicker();
-    @VisibleForTesting final DatePicker dateFinishedReading = new DatePicker();
-    @VisibleForTesting final NumberField rating = new NumberField();
-    @VisibleForTesting final TextArea bookReview = new TextArea();
+    @VisibleForTesting final BookTitle bookTitle = new BookTitle();
+
+    @VisibleForTesting final SeriesPosition seriesPosition = new SeriesPosition();
+    @VisibleForTesting final AuthorFirstName authorFirstName = new AuthorFirstName();
+    @VisibleForTesting final AuthorLastName authorLastName = new AuthorLastName();
+    @VisibleForTesting final PredefinedShelfComponent predefinedShelfField =
+            new PredefinedShelfComponent();
+    @VisibleForTesting final CustomShelfComponent customShelfField = new CustomShelfComponent();
+    @VisibleForTesting final Genre bookGenre = new Genre();
+    @VisibleForTesting final PagesRead pagesRead = new PagesRead();
+    @VisibleForTesting final NumberOfPages numberOfPages = new NumberOfPages();
+    @VisibleForTesting final DateStartedReading dateStartedReading = new DateStartedReading();
+    @VisibleForTesting final DateFinishedReading dateFinishedReading = new DateFinishedReading();
+    @VisibleForTesting final Rating rating = new Rating();
+    @VisibleForTesting final BookReview bookReview = new BookReview();
     @VisibleForTesting final Button saveButton = new Button();
-    @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
+    @VisibleForTesting final InSeries inSeriesCheckbox = new InSeries();
     @VisibleForTesting final Button reset = new Button();
 
     @VisibleForTesting FormLayout.FormItem dateStartedReadingFormItem;
@@ -102,28 +106,40 @@ public class BookForm extends VerticalLayout {
 
     @VisibleForTesting HasValue[] fieldsToReset;
 
-    @VisibleForTesting final HasValue[] fieldsToResetForToRead
-            = new HasValue[]{pagesRead, dateStartedReading, dateFinishedReading, rating, bookReview};
-    @VisibleForTesting final HasValue[] fieldsToResetForReading
-            = new HasValue[]{pagesRead, dateFinishedReading, rating, bookReview};
+    @VisibleForTesting final HasValue[] fieldsToResetForToRead = new HasValue[] {
+            pagesRead.getField(),
+            dateStartedReading.getField(),
+            dateFinishedReading.getField(),
+            rating.getField(),
+            bookReview.getField()
+    };
+    @VisibleForTesting final HasValue[] fieldsToResetForReading = new HasValue[] {
+            pagesRead.getField(),
+            dateFinishedReading.getField(),
+            rating.getField(),
+            bookReview.getField()
+    };
     @VisibleForTesting final HasValue[] fieldsToResetForRead
-            = new HasValue[]{pagesRead};
-    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish
-            = new HasValue[]{dateFinishedReading, rating, bookReview};
+            = new HasValue[]{pagesRead.getField()};
+    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish = new HasValue[] {
+            dateFinishedReading.getField(),
+            rating.getField(),
+            bookReview.getField()
+    };
     @VisibleForTesting final HasValue[] allFields = {
-            bookTitle,
-            authorFirstName,
-            authorLastName,
-            seriesPosition,
-            dateStartedReading,
-            dateFinishedReading,
-            bookGenre,
-            customShelfField,
-            predefinedShelfField,
-            pagesRead,
-            numberOfPages,
-            rating,
-            bookReview
+            bookTitle.getField(),
+            authorFirstName.getField(),
+            authorLastName.getField(),
+            seriesPosition.getField(),
+            dateStartedReading.getField(),
+            dateFinishedReading.getField(),
+            bookGenre.getField(),
+            customShelfField.getField(),
+            predefinedShelfField.getField(),
+            pagesRead.getField(),
+            numberOfPages.getField(),
+            rating.getField(),
+            bookReview.getField()
     };
 
     @VisibleForTesting Button delete = new Button();
@@ -132,60 +148,47 @@ public class BookForm extends VerticalLayout {
     private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
 
-    private final Dialog dialog;
+    private final FormDialog formDialog;
 
     public BookForm(PredefinedShelfService predefinedShelfService,
                     CustomShelfService customShelfService) {
         this.predefinedShelfService = predefinedShelfService;
         this.customShelfService = customShelfService;
 
-        dialog = new Dialog();
-        dialog.setCloseOnOutsideClick(true);
-        FormLayout formLayout = new FormLayout();
-        dialog.add(formLayout);
-
         bindFormFields();
-        configureTitleFormField();
-        configureAuthorFormField();
         configurePredefinedShelfField();
         configureCustomShelfField();
-        configureGenreFormField();
-        configureSeriesPositionFormField();
-        configurePagesReadFormField();
-        configureNumberOfPagesFormField();
-        configureDateStartedFormField();
-        configureDateFinishedFormField();
-        configureRatingFormField();
-        configureBookReviewFormField();
         configureInSeriesFormField();
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
-                bookTitle,
-                authorFirstName,
-                authorLastName,
-                seriesPosition,
-                dateStartedReading,
-                dateFinishedReading,
-                bookGenre,
-                customShelfField,
-                predefinedShelfField,
-                pagesRead,
-                numberOfPages,
-                rating,
-                bookReview
+                bookTitle.getField(),
+                authorFirstName.getField(),
+                authorLastName.getField(),
+                seriesPosition.getField(),
+                dateStartedReading.getField(),
+                dateFinishedReading.getField(),
+                bookGenre.getField(),
+                customShelfField.getField(),
+                predefinedShelfField.getField(),
+                pagesRead.getField(),
+                numberOfPages.getField(),
+                rating.getField(),
+                bookReview.getField()
         };
         ComponentUtil.setComponentClassName(components, "bookFormInputField");
+
+        FormLayout formLayout = new FormLayout();
         configureFormLayout(formLayout, buttons);
 
-        add(dialog);
+        formDialog = new FormDialog(formLayout);
+        add(formDialog);
     }
 
     private void configureInSeriesFormField() {
-        inSeriesCheckbox.setValue(false);
-        inSeriesCheckbox.addValueChangeListener(event -> {
+        inSeriesCheckbox.getField().addValueChangeListener(event -> {
             seriesPositionFormItem.setVisible(event.getValue());
             if (Boolean.FALSE.equals(event.getValue())) {
-                seriesPosition.clear();
+                seriesPosition.getField().clear();
             }
         });
     }
@@ -196,31 +199,42 @@ public class BookForm extends VerticalLayout {
      */
     private void configureFormLayout(FormLayout formLayout, HorizontalLayout buttonLayout) {
         formLayout.setResponsiveSteps(
-                new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP),
+                new FormLayout.ResponsiveStep("0", 1,
+                        FormLayout.ResponsiveStep.LabelsPosition.TOP),
                 new FormLayout.ResponsiveStep("31em", 1),
                 new FormLayout.ResponsiveStep("62em", 2)
         );
 
-        formLayout.addFormItem(bookTitle, "Book title *");
-        formLayout.addFormItem(predefinedShelfField, "Book shelf *");
-        formLayout.addFormItem(customShelfField, "Secondary shelf");
-        formLayout.addFormItem(authorFirstName, "Author's first name *");
-        formLayout.addFormItem(authorLastName, "Author's last name *");
-        dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
-        dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
-        formLayout.addFormItem(bookGenre, "Book genre");
-        pagesReadFormItem = formLayout.addFormItem(pagesRead, "Pages read");
-        formLayout.addFormItem(numberOfPages, "Number of pages");
-        ratingFormItem = formLayout.addFormItem(rating, "Book rating");
-        formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
-        seriesPositionFormItem = formLayout.addFormItem(seriesPosition, "Series number");
-        bookReviewFormItem = formLayout.addFormItem(bookReview, "Book review");
+        bookTitle.add(formLayout);
+        predefinedShelfField.add(formLayout);
+        customShelfField.add(formLayout);
+        authorFirstName.add(formLayout);
+        authorLastName.add(formLayout);
+        bookGenre.add(formLayout);
+
+        dateStartedReadingFormItem = formLayout.addFormItem(
+                dateStartedReading.getField(),
+                dateStartedReading.getLabel()
+        );
+        dateFinishedReadingFormItem = formLayout.addFormItem(
+                dateFinishedReading.getField(),
+                dateFinishedReading.getLabel()
+        );
+        pagesReadFormItem = formLayout.addFormItem(pagesRead.getField(), pagesRead.getLabel());
+        numberOfPages.add(formLayout);
+        ratingFormItem = formLayout.addFormItem(rating.getField(), rating.getLabel());
+        inSeriesCheckbox.add(formLayout);
+        seriesPositionFormItem = formLayout.addFormItem(
+                seriesPosition.getField(),
+                seriesPosition.getLabel()
+        );
+        bookReviewFormItem = formLayout.addFormItem(bookReview.getField(), bookReview.getLabel());
         formLayout.add(buttonLayout, 3);
         seriesPositionFormItem.setVisible(false);
     }
 
     public void openForm() {
-        dialog.open();
+        formDialog.open();
         showSeriesPositionFormIfSeriesPositionAvailable();
         addClassNameToForm();
     }
@@ -236,59 +250,28 @@ public class BookForm extends VerticalLayout {
     private void showSeriesPositionFormIfSeriesPositionAvailable() {
         boolean isInSeries =
                 binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
-        inSeriesCheckbox.setValue(isInSeries);
+        inSeriesCheckbox.getField().setValue(isInSeries);
         seriesPositionFormItem.setVisible(isInSeries);
     }
 
     private void closeForm() {
-        dialog.close();
+        formDialog.close();
     }
 
     private void bindFormFields() {
-        binder.forField(bookTitle)
-              .asRequired(BookFormErrors.BOOK_TITLE_ERROR)
-              .bind(Book::getTitle, Book::setTitle);
-        binder.forField(authorFirstName)
-              .withValidator(BookFormValidators.authorPredicate(), BookFormErrors.FIRST_NAME_ERROR)
-              .bind("author.firstName");
-        binder.forField(authorLastName)
-              .withValidator(BookFormValidators.authorPredicate(), BookFormErrors.LAST_NAME_ERROR)
-              .bind("author.lastName");
-        binder.forField(predefinedShelfField)
-              .withValidator(Objects::nonNull, BookFormErrors.SHELF_ERROR)
-              .bind("predefinedShelf.predefinedShelfName");
-        binder.forField(customShelfField)
-              .bind("customShelf.shelfName");
-        binder.forField(seriesPosition)
-              .withValidator(BookFormValidators.positiveNumberPredicate(),
-                      BookFormErrors.SERIES_POSITION_ERROR)
-              .bind(Book::getSeriesPosition, Book::setSeriesPosition);
-        binder.forField(dateStartedReading)
-              .withValidator(BookFormValidators.datePredicate(),
-                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
-              .bind(Book::getDateStartedReading, Book::setDateStartedReading);
-        binder.forField(dateFinishedReading)
-              .withValidator(isEndDateAfterStartDate(), BookFormErrors.FINISH_DATE_ERROR)
-              .withValidator(BookFormValidators.datePredicate(),
-                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
-              .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
-        binder.forField(numberOfPages)
-              .withValidator(BookFormValidators.positiveNumberPredicate(),
-                      BookFormErrors.PAGE_NUMBER_ERROR)
-              .withValidator(BookFormValidators.maxPagesPredicate(),
-                      BookFormErrors.MAX_PAGES_ERROR)
-              .bind(Book::getNumberOfPages, Book::setNumberOfPages);
-        binder.forField(pagesRead)
-              .withValidator(BookFormValidators.maxPagesPredicate(),
-                      BookFormErrors.MAX_PAGES_ERROR)
-              .bind(Book::getPagesRead, Book::setPagesRead);
-        binder.forField(bookGenre)
-              .bind(Book::getBookGenre, Book::setBookGenre);
-        binder.forField(rating)
-              .withConverter(new DoubleToRatingScaleConverter())
-              .bind(Book::getRating, Book::setRating);
-        binder.forField(bookReview)
-              .bind(Book::getBookReview, Book::setBookReview);
+        bookTitle.bind(binder);
+        authorFirstName.bind(binder);
+        authorLastName.bind(binder);
+        predefinedShelfField.bind(binder);
+        customShelfField.bind(binder);
+        seriesPosition.bind(binder);
+        dateStartedReading.bind(binder);
+        dateFinishedReading.bind(binder, dateStartedReading.getValue());
+        numberOfPages.bind(binder);
+        pagesRead.bind(binder);
+        bookGenre.bind(binder);
+        rating.bind(binder);
+        bookReview.bind(binder);
     }
 
     /**
@@ -348,7 +331,8 @@ public class BookForm extends VerticalLayout {
 
     private boolean isMovedToDifferentShelf() {
         PredefinedShelf.ShelfName shelfName = predefinedShelfField.getValue();
-        PredefinedShelf.ShelfName bookInShelf = binder.getBean().getPredefinedShelf().getPredefinedShelfName();
+        PredefinedShelf.ShelfName bookInShelf =
+                binder.getBean().getPredefinedShelf().getPredefinedShelfName();
         return !shelfName.equals(bookInShelf);
     }
 
@@ -369,14 +353,16 @@ public class BookForm extends VerticalLayout {
     }
 
     /**
-     * We need to fetch the complete {@link CustomShelf} entity as we store (and therefor submit) only the custom shelf name. See {@see BookForm#configureCustomShelfField}
+     * We need to fetch the complete {@link CustomShelf} entity as we store (and therefore submit)
+     * only the custom shelf name. See {@see BookForm#configureCustomShelfField}
      */
     private void populateBookShelf() {
         Book book = binder.getBean();
         CustomShelf selectedCustomShelf = book.getCustomShelf();
         if (selectedCustomShelf != null) {
             String shelfName = selectedCustomShelf.getShelfName();
-            CustomShelf completeCustomShelf = customShelfService.findByShelfNameAndLoggedInUser(shelfName);
+            CustomShelf completeCustomShelf =
+                    customShelfService.findByShelfNameAndLoggedInUser(shelfName);
             if (completeCustomShelf != null) {
                 book.setCustomShelf(completeCustomShelf);
             }
@@ -393,49 +379,48 @@ public class BookForm extends VerticalLayout {
     }
 
     private Book populateBookBean() {
-        String title;
         if (bookTitle.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
             return null;
-        } else {
-            title = bookTitle.getValue();
         }
 
-        String firstName;
-        String lastName;
-        if (authorFirstName.getValue() != null) {
-            firstName = authorFirstName.getValue();
-        } else {
+        if (authorFirstName.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null first name");
             return null;
         }
-        if (authorLastName.getValue() != null) {
-            lastName = authorLastName.getValue();
-        } else {
+
+        if (authorLastName.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null last name");
             return null;
         }
-        Author author = new Author(firstName, lastName);
 
-        PredefinedShelf predefinedShelf;
-        if (predefinedShelfField.getValue() != null) {
-            predefinedShelf =
-                    predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfField.getValue());
-        } else {
-            LOGGER.log(Level.SEVERE, "Null shelf");
+        if (predefinedShelfField.getValue() == null) {
+            LOGGER.log(Level.SEVERE, "Null predefined shelf");
             return null;
         }
+
+        String title = bookTitle.getValue();
+        String firstName = authorFirstName.getValue();
+        String lastName = authorLastName.getValue();
+        Author author = new Author(firstName, lastName);
+
+        PredefinedShelf predefinedShelf =
+                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
+                        predefinedShelfField.getValue()
+                );
+
         Book book = new Book(title, author, predefinedShelf);
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
-            CustomShelf shelf = customShelfService.findByShelfNameAndLoggedInUser(customShelfField.getValue());
+            CustomShelf shelf =
+                    customShelfService.findByShelfNameAndLoggedInUser(customShelfField.getValue());
             if (shelf != null) {
                 book.setCustomShelf(shelf);
             }
         }
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-            book.setSeriesPosition(seriesPosition.getValue());
+            book.setSeriesPosition(seriesPosition.getField().getValue());
         } else if (seriesPosition.getValue() != null) {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
@@ -444,18 +429,10 @@ public class BookForm extends VerticalLayout {
         book.setNumberOfPages(numberOfPages.getValue());
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());
-
         Optional<RatingScale> ratingScale = RatingScale.of(rating.getValue());
         ratingScale.ifPresent(book::setRating);
-
         book.setBookReview(bookReview.getValue());
         book.setPagesRead(pagesRead.getValue());
-
-        if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-            book.setSeriesPosition(seriesPosition.getValue());
-        } else if (seriesPosition.getValue() != null) {
-            LOGGER.log(Level.SEVERE, "Negative Series value");
-        }
 
         return book;
     }
@@ -471,8 +448,9 @@ public class BookForm extends VerticalLayout {
     }
 
     private void moveBookToDifferentShelf() {
-        PredefinedShelf shelf =
-                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfField.getValue());
+        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
+                        predefinedShelfField.getValue()
+        );
         if (shelf != null) {
             Book book = binder.getBean();
             book.setPredefinedShelf(shelf);
@@ -494,7 +472,6 @@ public class BookForm extends VerticalLayout {
 
         // TODO: this should be removed. A custom shelf should not be mandatory, so it should be acceptable to the custom shelf to be null
         if (book.getCustomShelf() == null) {
-//            book.setCustomShelf(new CustomShelf("ShelfName"));
             CustomShelf customShelf = customShelfService.createCustomShelf("ShelfName");
             book.setCustomShelf(customShelf);
         }
@@ -502,49 +479,12 @@ public class BookForm extends VerticalLayout {
         binder.setBean(book);
     }
 
-    private void configureTitleFormField() {
-        bookTitle.setPlaceholder("Enter a book title");
-        bookTitle.setClearButtonVisible(true);
-        bookTitle.setRequired(true);
-        bookTitle.setRequiredIndicatorVisible(true);
-    }
-
-    private void configureAuthorFormField() {
-        authorFirstName.setPlaceholder("Enter the author's first name");
-        authorFirstName.setClearButtonVisible(true);
-        authorFirstName.setRequired(true);
-        authorFirstName.setRequiredIndicatorVisible(true);
-
-        authorLastName.setPlaceholder("Enter the author's last name");
-        authorLastName.setClearButtonVisible(true);
-        authorLastName.setRequired(true);
-        authorLastName.setRequiredIndicatorVisible(true);
-    }
-
-    private void configureGenreFormField() {
-        bookGenre.setItems(BookGenre.values());
-        bookGenre.setPlaceholder("Choose a book genre");
-    }
-
-    private void configureSeriesPositionFormField() {
-        seriesPosition.setPlaceholder("Enter series position");
-        seriesPosition.setMin(1);
-        seriesPosition.setHasControls(true);
-    }
-
     private void configureCustomShelfField() {
-        customShelfField.setPlaceholder("Choose a shelf");
-        customShelfField.setClearButtonVisible(true);
-
-        customShelfField.setItems(customShelfService.getCustomShelfNames());
+        customShelfField.getField().setItems(customShelfService.getCustomShelfNames());
     }
 
     private void configurePredefinedShelfField() {
-        predefinedShelfField.setRequired(true);
-        predefinedShelfField.setPlaceholder("Choose a shelf");
-        predefinedShelfField.setClearButtonVisible(true);
-        predefinedShelfField.setItems(PredefinedShelf.ShelfName.values());
-        predefinedShelfField.addValueChangeListener(event -> {
+        predefinedShelfField.getField().addValueChangeListener(event -> {
             if (event.getValue() != null) {
                 try {
                     hideDates(predefinedShelfField.getValue());
@@ -578,10 +518,12 @@ public class BookForm extends VerticalLayout {
                 break;
             case READ:
                 showStartDate();
+                dateFinishedReading.getField().setVisible(true);
                 showFinishDate();
                 break;
             default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
+                String message = String.format(BookFormErrors.SHELF_NOT_SUPPORTED, name);
+                throw new NotSupportedException(message);
         }
     }
 
@@ -621,18 +563,21 @@ public class BookForm extends VerticalLayout {
                 pagesReadFormItem.setVisible(true);
                 break;
             default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
+                String message = String.format(BookFormErrors.SHELF_NOT_SUPPORTED, name);
+                throw new NotSupportedException(message);
         }
     }
 
     /**
-     * Toggles showing the rating and the bookReview depending on which shelf this new book is going into
+     * Toggles showing the rating and the bookReview depending on which shelf this new book is
+     * going into
      *
      * @param name the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of
      *                               a @see PredefinedShelf
      */
-    private void showOrHideRatingAndBookReview(PredefinedShelf.ShelfName name) throws NotSupportedException {
+    private void showOrHideRatingAndBookReview(PredefinedShelf.ShelfName name)
+            throws NotSupportedException {
         switch (name) {
             case TO_READ:
             case READING:
@@ -645,12 +590,14 @@ public class BookForm extends VerticalLayout {
                 bookReviewFormItem.setVisible(true);
                 break;
             default:
-                throw new NotSupportedException("Shelf " + name + " not yet supported");
+                String message = String.format(BookFormErrors.SHELF_NOT_SUPPORTED, name);
+                throw new NotSupportedException(message);
         }
     }
 
     /**
-     * Populates the fieldsToReset array with state-specific fields depending on which shelf the book is going into
+     * Populates the fieldsToReset array with state-specific fields depending on which shelf the
+     * book is going into
      *
      * @param shelfName the name of the shelf that was selected in this book form
      * @throws NotSupportedException if the shelf name parameter does not match the name of
@@ -672,66 +619,27 @@ public class BookForm extends VerticalLayout {
             case DID_NOT_FINISH:
                 return fieldsToResetForDidNotFinish;
             default:
-                throw new NotSupportedException("Shelf " + shelfName + " not yet supported");
+                String message = String.format(BookFormErrors.SHELF_NOT_SUPPORTED, shelfName);
+                throw new NotSupportedException(message);
         }
-    }
-
-    private void configureRatingFormField() {
-        rating.setHasControls(true);
-        rating.setPlaceholder("Enter a rating");
-        rating.setMin(0);
-        rating.setMax(10);
-        rating.setStep(0.5f);
-        rating.setClearButtonVisible(true);
-    }
-
-    private void configureBookReviewFormField() {
-        bookReview.setPlaceholder("Enter your review for the book");
-        bookReview.setClearButtonVisible(true);
-    }
-
-    private void configureDateStartedFormField() {
-        dateStartedReading.setClearButtonVisible(true);
-        dateStartedReading.setPlaceholder(ENTER_DATE);
-    }
-
-    private void configureDateFinishedFormField() {
-        dateFinishedReading.setClearButtonVisible(true);
-        dateFinishedReading.setPlaceholder(ENTER_DATE);
-    }
-
-    private void configureNumberOfPagesFormField() {
-        numberOfPages.setPlaceholder("Enter number of pages");
-        numberOfPages.setMin(1);
-        numberOfPages.setMax(Book.MAX_PAGES);
-        numberOfPages.setHasControls(true);
-        numberOfPages.setClearButtonVisible(true);
-    }
-
-    private void configurePagesReadFormField() {
-        pagesRead.setPlaceholder("Enter number of pages read");
-        pagesRead.setMin(1);
-        pagesRead.setMax(Book.MAX_PAGES);
-        pagesRead.setHasControls(true);
-        pagesRead.setClearButtonVisible(true);
     }
 
     private void clearFormFields() {
         HasValue[] components = {
-                bookTitle,
-                authorFirstName,
-                authorLastName,
-                customShelfField,
-                predefinedShelfField,
-                inSeriesCheckbox,
-                seriesPosition,
-                bookGenre,
-                pagesRead,
-                numberOfPages,
-                dateStartedReading,
-                dateFinishedReading,
-                rating,
-                bookReview
+                bookTitle.getField(),
+                authorFirstName.getField(),
+                authorLastName.getField(),
+                customShelfField.getField(),
+                predefinedShelfField.getField(),
+                inSeriesCheckbox.getField(),
+                seriesPosition.getField(),
+                bookGenre.getField(),
+                pagesRead.getField(),
+                numberOfPages.getField(),
+                dateStartedReading.getField(),
+                dateFinishedReading.getField(),
+                rating.getField(),
+                bookReview.getField()
         };
         resetSaveButtonText();
         ComponentUtil.clearComponentFields(components);
@@ -744,17 +652,6 @@ public class BookForm extends VerticalLayout {
     public void addBook() {
         clearFormFields();
         openForm();
-    }
-
-    private SerializablePredicate<LocalDate> isEndDateAfterStartDate() {
-        return endDate -> {
-            LocalDate dateStarted = dateStartedReading.getValue();
-            if (dateStarted == null || endDate == null) {
-                // allowed since these are optional fields
-                return true;
-            }
-            return (endDate.isEqual(dateStarted) || endDate.isAfter(dateStarted));
-        };
     }
 
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,

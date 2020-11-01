@@ -15,32 +15,26 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.shelf.listener;
+package com.karankumar.bookproject.ui.book.form;
 
-import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.ui.book.form.BookForm;
-import com.karankumar.bookproject.ui.shelf.BooksInShelfView;
+import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.vaadin.flow.data.binder.Result;
+import com.vaadin.flow.data.binder.ValueContext;
+import com.vaadin.flow.data.converter.Converter;
 import lombok.extern.java.Log;
 
-import java.util.logging.Level;
-
 @Log
-public class BookDeleteListener {
-    private final BookService bookService;
-    private final BooksInShelfView view;
+public class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
 
-    public BookDeleteListener(BookService bookService, BooksInShelfView view) {
-        this.bookService = bookService;
-        this.view = view;
+    @Override
+    public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
+        return RatingScale.of(ratingVal)
+                          .map(Result::ok)
+                          .orElseGet(() -> Result.error("Invalid rating"));
     }
 
-    public void bind(BookForm bookForm) {
-        bookForm.addListener(BookForm.DeleteEvent.class, this::deleteBook);
-    }
-
-    private void deleteBook(BookForm.DeleteEvent event) {
-        LOGGER.log(Level.INFO, "Deleting book...");
-        bookService.delete(event.getBook());
-        view.updateGrid();
+    @Override
+    public Double convertToPresentation(RatingScale rating, ValueContext valueContext) {
+        return RatingScale.toDouble(rating);
     }
 }
