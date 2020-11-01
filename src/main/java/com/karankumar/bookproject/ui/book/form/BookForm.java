@@ -268,21 +268,12 @@ public class BookForm extends VerticalLayout {
         customShelfField.bind(binder);
         seriesPosition.bind(binder);
         dateStartedReading.bind(binder);
-        bindDateFinishedField();
+        dateFinishedReading.bind(binder, dateStartedReading.getValue());
         bindNumberOfPagesField();
         bindPagesReadField();
         bindGenreField();
         bindRatingField();
         bindBookReviewField();
-    }
-
-    private void bindDateFinishedField() {
-        binder.forField(dateFinishedReading.getField())
-              .withValidator(isEndDateAfterStartDate(dateStartedReading.getValue()),
-                      BookFormErrors.FINISH_DATE_ERROR)
-              .withValidator(BookFormValidators.isNotInFuture(),
-                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
-              .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
     }
 
     private void bindNumberOfPagesField() {

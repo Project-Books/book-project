@@ -17,10 +17,16 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.form.BookForm;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
+import com.karankumar.bookproject.ui.book.form.BookFormValidators;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.data.binder.Binder;
 
 import java.time.LocalDate;
+
+import static com.karankumar.bookproject.ui.book.form.BookFormValidators.isEndDateAfterStartDate;
 
 public class DateFinishedReading extends FormItem<DatePicker> {
     public DateFinishedReading() {
@@ -41,5 +47,13 @@ public class DateFinishedReading extends FormItem<DatePicker> {
 
     public LocalDate getValue() {
         return super.getField().getValue();
+    }
+
+    public void bind(Binder<Book> binder, LocalDate dateStarted) {
+        binder.forField(super.getField())
+              .withValidator(isEndDateAfterStartDate(dateStarted), BookFormErrors.FINISH_DATE_ERROR)
+              .withValidator(BookFormValidators.isNotInFuture(),
+                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
+              .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
     }
 }

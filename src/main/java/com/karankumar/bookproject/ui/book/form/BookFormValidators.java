@@ -49,7 +49,7 @@ public final class BookFormValidators {
         return number -> (number == null || number <= Book.MAX_PAGES);
     }
 
-    static SerializablePredicate<LocalDate> isEndDateAfterStartDate(LocalDate dateStarted) {
+    public static SerializablePredicate<LocalDate> isEndDateAfterStartDate(LocalDate dateStarted) {
         return endDate -> {
             if (dateStarted == null || endDate == null) {
                 // allowed since these are optional fields
