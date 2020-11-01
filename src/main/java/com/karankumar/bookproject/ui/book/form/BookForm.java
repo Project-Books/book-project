@@ -264,7 +264,7 @@ public class BookForm extends VerticalLayout {
         bookTitle.bind(binder);
         authorFirstName.bind(binder);
         authorLastName.bind(binder);
-        bindPredefinedShelfField();
+        predefinedShelfField.bind(binder);
         bindCustomShelfField();
         bindSeriesPositionField();
         bindDateStartedField();
@@ -274,12 +274,6 @@ public class BookForm extends VerticalLayout {
         bindGenreField();
         bindRatingField();
         bindBookReviewField();
-    }
-
-    private void bindPredefinedShelfField() {
-        binder.forField(predefinedShelfField.getField())
-              .withValidator(Objects::nonNull, BookFormErrors.SHELF_ERROR)
-              .bind("predefinedShelf.predefinedShelfName");
     }
 
     private void bindCustomShelfField() {

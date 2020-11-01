@@ -17,8 +17,14 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.data.binder.Binder;
+
+import java.util.Objects;
+
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
 
 public class PredefinedShelfComponent extends FormItem<ComboBox<ShelfName>> {
@@ -44,4 +50,9 @@ public class PredefinedShelfComponent extends FormItem<ComboBox<ShelfName>> {
         return super.getField().getValue();
     }
 
+    public void bind(Binder<Book> binder) {
+        binder.forField(super.getField())
+              .withValidator(Objects::nonNull, BookFormErrors.SHELF_ERROR)
+              .bind("predefinedShelf.predefinedShelfName");
+    }
 }
