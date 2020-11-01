@@ -27,6 +27,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.book.components.AuthorFirstName;
 import com.karankumar.bookproject.ui.book.components.AuthorLastName;
+import com.karankumar.bookproject.ui.book.components.BookReview;
 import com.karankumar.bookproject.ui.book.components.BookTitle;
 import com.karankumar.bookproject.ui.book.components.DateFinishedReading;
 import com.karankumar.bookproject.ui.book.components.DateStartedReading;
@@ -51,7 +52,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
@@ -94,7 +94,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final DateStartedReading dateStartedReading = new DateStartedReading();
     @VisibleForTesting final DateFinishedReading dateFinishedReading = new DateFinishedReading();
     @VisibleForTesting final Rating rating = new Rating();
-    @VisibleForTesting final TextArea bookReview = new TextArea();
+    @VisibleForTesting final BookReview bookReview = new BookReview();
     @VisibleForTesting final Button saveButton = new Button();
     @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
     @VisibleForTesting final Button reset = new Button();
@@ -113,20 +113,20 @@ public class BookForm extends VerticalLayout {
             dateStartedReading.getField(),
             dateFinishedReading.getField(),
             rating.getField(),
-            bookReview
+            bookReview.getField()
     };
     @VisibleForTesting final HasValue[] fieldsToResetForReading = new HasValue[]{
             pagesRead.getField(),
             dateFinishedReading.getField(),
             rating.getField(),
-            bookReview
+            bookReview.getField()
     };
     @VisibleForTesting final HasValue[] fieldsToResetForRead
             = new HasValue[]{pagesRead.getField()};
     @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish = new HasValue[]{
             dateFinishedReading.getField(),
             rating.getField(),
-            bookReview
+            bookReview.getField()
     };
     @VisibleForTesting final HasValue[] allFields = {
             bookTitle.getField(),
@@ -141,7 +141,7 @@ public class BookForm extends VerticalLayout {
             pagesRead.getField(),
             numberOfPages.getField(),
             rating.getField(),
-            bookReview
+            bookReview.getField()
     };
 
     @VisibleForTesting Button delete = new Button();
@@ -165,7 +165,6 @@ public class BookForm extends VerticalLayout {
         bindFormFields();
         configurePredefinedShelfField();
         configureCustomShelfField();
-        configureBookReviewFormField();
         configureInSeriesFormField();
         HorizontalLayout buttons = configureFormButtons();
         HasSize[] components = {
@@ -181,7 +180,7 @@ public class BookForm extends VerticalLayout {
                 pagesRead.getField(),
                 numberOfPages.getField(),
                 rating.getField(),
-                bookReview
+                bookReview.getField()
         };
         ComponentUtil.setComponentClassName(components, "bookFormInputField");
         configureFormLayout(formLayout, buttons);
@@ -226,7 +225,7 @@ public class BookForm extends VerticalLayout {
         ratingFormItem = formLayout.addFormItem(rating.getField(), "Book rating");
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
         seriesPositionFormItem = formLayout.addFormItem(seriesPosition.getField(), "Series number");
-        bookReviewFormItem = formLayout.addFormItem(bookReview, "Book review");
+        bookReviewFormItem = formLayout.addFormItem(bookReview.getField(), "Book review");
         formLayout.add(buttonLayout, 3);
         seriesPositionFormItem.setVisible(false);
     }
@@ -352,7 +351,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindBookReviewField() {
-        binder.forField(bookReview)
+        binder.forField(bookReview.getField())
               .bind(Book::getBookReview, Book::setBookReview);
     }
 
@@ -708,11 +707,6 @@ public class BookForm extends VerticalLayout {
         }
     }
 
-    private void configureBookReviewFormField() {
-        bookReview.setPlaceholder("Enter your review for the book");
-        bookReview.setClearButtonVisible(true);
-    }
-
     private void clearFormFields() {
         HasValue[] components = {
                 bookTitle.getField(),
@@ -728,7 +722,7 @@ public class BookForm extends VerticalLayout {
                 dateStartedReading.getField(),
                 dateFinishedReading.getField(),
                 rating.getField(),
-                bookReview
+                bookReview.getField()
         };
         resetSaveButtonText();
         ComponentUtil.clearComponentFields(components);
