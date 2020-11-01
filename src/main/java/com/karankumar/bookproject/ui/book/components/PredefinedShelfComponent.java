@@ -24,7 +24,6 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 public class PredefinedShelfComponent extends FormItem<ComboBox<ShelfName>> {
     public PredefinedShelfComponent() {
         super(new ComboBox<>());
-        configure();
     }
 
     @Override

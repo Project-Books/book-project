@@ -23,7 +23,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 public class Genre extends FormItem<ComboBox<BookGenre>> {
     public Genre() {
         super(new ComboBox<>());
-        configure();
     }
 
     @Override

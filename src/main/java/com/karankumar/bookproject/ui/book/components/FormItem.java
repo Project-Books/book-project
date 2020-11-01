@@ -24,6 +24,7 @@ public abstract class FormItem<T extends Component> {
 
     protected FormItem(T field) {
         this.field = field;
+        configure();
     }
 
     public abstract void configure();
