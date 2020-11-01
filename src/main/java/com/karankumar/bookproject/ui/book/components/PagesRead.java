@@ -36,8 +36,8 @@ public class PagesRead extends FormItem<IntegerField> {
     }
 
     @Override
-    protected String getLabel() {
-        return "Series position";
+    public String getLabel() {
+        return "Pages read";
     }
 
     public Integer getValue() {

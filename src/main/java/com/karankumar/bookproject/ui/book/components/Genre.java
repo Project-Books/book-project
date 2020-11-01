@@ -33,7 +33,7 @@ public class Genre extends FormItem<ComboBox<BookGenre>> {
     }
 
     @Override
-    protected String getLabel() {
+    public String getLabel() {
         return "Book genre";
     }
 

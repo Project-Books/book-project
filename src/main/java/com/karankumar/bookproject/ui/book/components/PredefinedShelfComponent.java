@@ -36,7 +36,7 @@ public class PredefinedShelfComponent extends FormItem<ComboBox<ShelfName>> {
     }
 
     @Override
-    protected String getLabel() {
+    public String getLabel() {
         return "Primary shelf";
     }
 

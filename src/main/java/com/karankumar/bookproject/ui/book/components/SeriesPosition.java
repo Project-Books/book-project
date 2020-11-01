@@ -34,7 +34,7 @@ public class SeriesPosition extends FormItem<IntegerField> {
     }
 
     @Override
-    protected String getLabel() {
+    public String getLabel() {
         return "Series position";
     }
 

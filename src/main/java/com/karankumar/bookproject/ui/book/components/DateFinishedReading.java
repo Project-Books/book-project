@@ -35,7 +35,7 @@ public class DateFinishedReading extends FormItem<DatePicker> {
     }
 
     @Override
-    protected String getLabel() {
+    public String getLabel() {
         return "Date finished reading";
     }
 

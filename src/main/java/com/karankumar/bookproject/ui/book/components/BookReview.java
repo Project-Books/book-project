@@ -32,8 +32,8 @@ public class BookReview extends FormItem<TextArea> {
     }
 
     @Override
-    protected String getLabel() {
-        return "Book title *";
+    public String getLabel() {
+        return "Book review";
     }
 
     public String getValue() {

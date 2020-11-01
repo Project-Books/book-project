@@ -32,8 +32,8 @@ public class CustomShelfComponent extends FormItem<ComboBox<String>> {
     }
 
     @Override
-    protected String getLabel() {
-        return "Secondary shelf";
+    public String getLabel() {
+        return "Secondary shelf *";
     }
 
     public String getValue() {

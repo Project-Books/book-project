@@ -36,7 +36,7 @@ public class NumberOfPages extends FormItem<IntegerField> {
     }
 
     @Override
-    protected String getLabel() {
+    public String getLabel() {
         return "Number of pages";
     }
 

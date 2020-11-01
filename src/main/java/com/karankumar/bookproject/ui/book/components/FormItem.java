@@ -29,7 +29,7 @@ public abstract class FormItem<T extends Component> {
 
     public abstract void configure();
 
-    protected abstract String getLabel();
+    public abstract String getLabel();
 
     public T getField() {
         return field;

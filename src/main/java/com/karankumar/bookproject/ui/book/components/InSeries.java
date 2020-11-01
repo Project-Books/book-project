@@ -30,7 +30,7 @@ public class InSeries extends FormItem<Checkbox> {
     }
 
     @Override
-    protected String getLabel() {
+    public String getLabel() {
         return "Is the book in a series?";
     }
 

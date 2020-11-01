@@ -210,22 +210,29 @@ public class BookForm extends VerticalLayout {
                 new FormLayout.ResponsiveStep("62em", 2)
         );
 
-        formLayout.addFormItem(bookTitle.getField(), "Book title *");
-        formLayout.addFormItem(predefinedShelfField.getField(), "Book shelf *");
-        formLayout.addFormItem(customShelfField.getField(), "Secondary shelf");
-        formLayout.addFormItem(authorFirstName.getField(), "Author's first name *");
-        formLayout.addFormItem(authorLastName.getField(), "Author's last name *");
-        dateStartedReadingFormItem =
-                formLayout.addFormItem(dateStartedReading.getField(), "Date started");
-        dateFinishedReadingFormItem =
-                formLayout.addFormItem(dateFinishedReading.getField(), "Date finished");
-        formLayout.addFormItem(bookGenre.getField(), "Book genre");
-        pagesReadFormItem = formLayout.addFormItem(pagesRead.getField(), "Pages read");
-        formLayout.addFormItem(numberOfPages.getField(), "Number of pages");
-        ratingFormItem = formLayout.addFormItem(rating.getField(), "Book rating");
-        formLayout.addFormItem(inSeriesCheckbox.getField(), "Is in series?");
-        seriesPositionFormItem = formLayout.addFormItem(seriesPosition.getField(), "Series number");
-        bookReviewFormItem = formLayout.addFormItem(bookReview.getField(), "Book review");
+        formLayout.addFormItem(bookTitle.getField(), bookTitle.getLabel());
+        formLayout.addFormItem(predefinedShelfField.getField(), predefinedShelfField.getLabel());
+        formLayout.addFormItem(customShelfField.getField(), customShelfField.getLabel());
+        formLayout.addFormItem(authorFirstName.getField(), authorFirstName.getLabel());
+        formLayout.addFormItem(authorLastName.getField(), authorLastName.getLabel());
+        dateStartedReadingFormItem = formLayout.addFormItem(
+                dateStartedReading.getField(),
+                dateStartedReading.getLabel()
+        );
+        dateFinishedReadingFormItem = formLayout.addFormItem(
+                dateFinishedReading.getField(),
+                dateFinishedReading.getLabel()
+        );
+        formLayout.addFormItem(bookGenre.getField(), bookGenre.getLabel());
+        pagesReadFormItem = formLayout.addFormItem(pagesRead.getField(), pagesRead.getLabel());
+        formLayout.addFormItem(numberOfPages.getField(), numberOfPages.getLabel());
+        ratingFormItem = formLayout.addFormItem(rating.getField(), rating.getLabel());
+        formLayout.addFormItem(inSeriesCheckbox.getField(), inSeriesCheckbox.getLabel());
+        seriesPositionFormItem = formLayout.addFormItem(
+                seriesPosition.getField(),
+                seriesPosition.getLabel()
+        );
+        bookReviewFormItem = formLayout.addFormItem(bookReview.getField(), bookReview.getLabel());
         formLayout.add(buttonLayout, 3);
         seriesPositionFormItem.setVisible(false);
     }

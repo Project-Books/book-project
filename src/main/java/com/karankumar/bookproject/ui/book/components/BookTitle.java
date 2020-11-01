@@ -34,7 +34,7 @@ public class BookTitle extends FormItem<TextField> {
     }
 
     @Override
-    protected String getLabel() {
+    public String getLabel() {
         return "Book title *";
     }
 
