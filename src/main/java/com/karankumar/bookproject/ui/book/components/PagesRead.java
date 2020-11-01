@@ -18,7 +18,10 @@
 package com.karankumar.bookproject.ui.book.components;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
+import com.karankumar.bookproject.ui.book.form.BookFormValidators;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.data.binder.Binder;
 
 public class PagesRead extends FormItem<IntegerField> {
     public PagesRead() {
@@ -44,4 +47,10 @@ public class PagesRead extends FormItem<IntegerField> {
         return super.getField().getValue();
     }
 
+    public void bind(Binder<Book> binder) {
+        binder.forField(super.getField())
+              .withValidator(BookFormValidators.isLessThanOrEqualToMaxPages(),
+                      BookFormErrors.MAX_PAGES_ERROR)
+              .bind(Book::getPagesRead, Book::setPagesRead);
+    }
 }
