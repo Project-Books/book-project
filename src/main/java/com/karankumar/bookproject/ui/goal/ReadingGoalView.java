@@ -107,7 +107,7 @@ public class ReadingGoalView extends VerticalLayout {
         setGoalButton.setText(UPDATE_GOAL);
     }
 
-    private void saveGoal(ReadingGoalForm.SaveEvent event) {
+    private void saveGoal(ReadingGoalForm.SaveGoalEvent event) {
         if (event.getReadingGoal() != null) {
             LOGGER.log(Level.INFO, "Retrieved goal from form is not null");
             goalService.save(event.getReadingGoal());

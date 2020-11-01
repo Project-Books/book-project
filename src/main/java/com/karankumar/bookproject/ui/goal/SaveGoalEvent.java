@@ -8,6 +8,4 @@ public class SaveGoalEvent {
             super(source, readingGoal);
         }
     }
-
-
 }
