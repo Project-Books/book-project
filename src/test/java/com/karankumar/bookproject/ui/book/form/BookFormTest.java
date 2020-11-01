@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.book.form;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
@@ -31,7 +31,10 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
-import static com.karankumar.bookproject.ui.book.BookFormErrors.MAX_PAGES_ERROR;
+import static com.karankumar.bookproject.ui.book.form.BookFormErrors.MAX_PAGES_ERROR;
+
+import com.karankumar.bookproject.ui.book.form.BookForm;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;

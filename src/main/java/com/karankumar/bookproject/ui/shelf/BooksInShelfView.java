@@ -25,7 +25,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
-import com.karankumar.bookproject.ui.book.BookForm;
+import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.filter.AuthorFilterText;
 import com.karankumar.bookproject.ui.shelf.component.BookShelfComboBox;
 import com.karankumar.bookproject.ui.shelf.component.filter.TitleFilterText;

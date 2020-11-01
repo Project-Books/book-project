@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
-import com.karankumar.bookproject.ui.book.BookForm;
+import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.vaadin.flow.component.datepicker.DatePicker;
 
 import java.time.LocalDate;

@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.book.form;
 
 import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Author;
@@ -63,7 +63,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import static com.karankumar.bookproject.ui.book.BookFormValidators.isEndDateAfterStartDate;
+import static com.karankumar.bookproject.ui.book.form.BookFormValidators.isEndDateAfterStartDate;
 
 /**
  * A Vaadin form for adding a new @see Book.

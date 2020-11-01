@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.book.form;
 
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.vaadin.flow.data.binder.Result;
