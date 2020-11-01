@@ -34,5 +34,5 @@ public final class BookFormErrors {
             "after today's date.";
     public static final String MAX_PAGES_ERROR = "Please enter valid pages (max allowed " +
             Book.MAX_PAGES + ")";
-    public static final String SHELF_NOT_SUPPORTED = "Shelf %s is not yet supported";
+    public static final String SHELF_NOT_SUPPORTED = "The shelf '%s' is not yet supported";
 }

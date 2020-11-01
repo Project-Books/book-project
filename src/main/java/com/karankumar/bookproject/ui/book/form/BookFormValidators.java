@@ -35,7 +35,7 @@ public final class BookFormValidators {
         return name -> (name != null && !name.isEmpty());
     }
 
-    static SerializablePredicate<LocalDate> isNotInFuture() {
+    public static SerializablePredicate<LocalDate> isNotInFuture() {
         return date -> {
             // date is optional, so it is allowed to be null
             if (date != null) {

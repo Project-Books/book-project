@@ -17,8 +17,12 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.ui.book.form.BookForm;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
+import com.karankumar.bookproject.ui.book.form.BookFormValidators;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.data.binder.Binder;
 
 import java.time.LocalDate;
 
@@ -41,6 +45,13 @@ public class DateStartedReading extends FormItem<DatePicker> {
 
     public LocalDate getValue() {
         return super.getField().getValue();
+    }
+
+    public void bind(Binder<Book> binder) {
+        binder.forField(super.getField())
+              .withValidator(BookFormValidators.isNotInFuture(),
+                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
+              .bind(Book::getDateStartedReading, Book::setDateStartedReading);
     }
 
 }
