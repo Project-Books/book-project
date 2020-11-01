@@ -17,7 +17,9 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.data.binder.Binder;
 
 public class CustomShelfComponent extends FormItem<ComboBox<String>> {
     public CustomShelfComponent() {
@@ -38,6 +40,11 @@ public class CustomShelfComponent extends FormItem<ComboBox<String>> {
 
     public String getValue() {
         return super.getField().getValue();
+    }
+
+    public void bind(Binder<Book> binder) {
+        binder.forField(super.getField())
+              .bind("customShelf.shelfName");
     }
 
 }
