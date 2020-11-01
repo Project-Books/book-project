@@ -244,7 +244,7 @@ class BookFormTest {
             case DID_NOT_FINISH:
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.dateStartedReading.setValue(dateStarted);
-                bookForm.pagesRead.setValue(pagesRead);
+                bookForm.pagesRead.getField().setValue(pagesRead);
                 break;
         }
     }
@@ -349,7 +349,7 @@ class BookFormTest {
         // given
         HasValue[] fieldsThatShouldBeReset = bookForm.getFieldsToReset(newShelf);
         populateBookForm();
-        bookForm.pagesRead.setValue(pagesRead);
+        bookForm.pagesRead.getField().setValue(pagesRead);
 
         // when
         bookForm.predefinedShelfField.setValue(newShelf);
@@ -415,7 +415,7 @@ class BookFormTest {
     @Test
     void notAllowPagesReadToExceedMaxValue() {
         // given
-        bookForm.pagesRead.setValue(Book.MAX_PAGES + 1);
+        bookForm.pagesRead.getField().setValue(Book.MAX_PAGES + 1);
 
         // when
         bookForm.saveButton.click();
