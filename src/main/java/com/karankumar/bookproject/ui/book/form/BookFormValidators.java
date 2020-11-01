@@ -45,7 +45,7 @@ public final class BookFormValidators {
         };
     }
 
-    static SerializablePredicate<Integer> isLessThanOrEqualToMaxPages() {
+    public static SerializablePredicate<Integer> isLessThanOrEqualToMaxPages() {
         return number -> (number == null || number <= Book.MAX_PAGES);
     }
 

@@ -266,20 +266,11 @@ public class BookForm extends VerticalLayout {
         seriesPosition.bind(binder);
         dateStartedReading.bind(binder);
         dateFinishedReading.bind(binder, dateStartedReading.getValue());
-        bindNumberOfPagesField();
+        numberOfPages.bind(binder);
         bindPagesReadField();
         bindGenreField();
         bindRatingField();
         bindBookReviewField();
-    }
-
-    private void bindNumberOfPagesField() {
-        binder.forField(numberOfPages.getField())
-              .withValidator(BookFormValidators.isNumberPositive(),
-                      BookFormErrors.PAGE_NUMBER_ERROR)
-              .withValidator(BookFormValidators.isLessThanOrEqualToMaxPages(),
-                      BookFormErrors.MAX_PAGES_ERROR)
-              .bind(Book::getNumberOfPages, Book::setNumberOfPages);
     }
 
     private void bindPagesReadField() {
