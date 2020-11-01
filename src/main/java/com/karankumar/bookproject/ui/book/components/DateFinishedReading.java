@@ -22,8 +22,8 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 
 import java.time.LocalDate;
 
-public class DateStartedReading extends FormItem<DatePicker> {
-    public DateStartedReading() {
+public class DateFinishedReading extends FormItem<DatePicker> {
+    public DateFinishedReading() {
         super(new DatePicker());
     }
 
@@ -36,7 +36,7 @@ public class DateStartedReading extends FormItem<DatePicker> {
 
     @Override
     protected String getLabel() {
-        return "Date started reading";
+        return "Date finished reading";
     }
 
     public LocalDate getValue() {

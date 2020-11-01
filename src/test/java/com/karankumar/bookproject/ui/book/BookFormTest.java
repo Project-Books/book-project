@@ -237,7 +237,7 @@ class BookFormTest {
             case READ:
                 bookForm.predefinedShelfField.setValue(shelfName);
                 bookForm.dateStartedReading.getField().setValue(dateStarted);
-                bookForm.dateFinishedReading.setValue(dateFinished);
+                bookForm.dateFinishedReading.getField().setValue(dateFinished);
                 bookForm.rating.getField().setValue(RatingScale.toDouble(ratingVal));
                 bookForm.bookReview.setValue(bookReview);
                 break;
@@ -276,7 +276,7 @@ class BookFormTest {
         assumeThat(bookForm.bookGenre.getField().isEmpty()).isFalse();
         assumeThat(bookForm.numberOfPages.getField().isEmpty()).isFalse();
         assumeThat(bookForm.dateStartedReading.getField().isEmpty()).isFalse();
-        assumeThat(bookForm.dateFinishedReading.isEmpty()).isFalse();
+        assumeThat(bookForm.dateFinishedReading.getField().isEmpty()).isFalse();
         assumeThat(bookForm.rating.getField().isEmpty()).isFalse();
         assumeThat(bookForm.bookReview.isEmpty()).isFalse();
     }
