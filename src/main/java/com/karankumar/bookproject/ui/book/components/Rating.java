@@ -24,7 +24,7 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class Rating extends FormItem<NumberField> {
     public Rating() {
-        super(new NumberField());
+        super(new NumberField(), "Book rating");
     }
 
     @Override
@@ -37,11 +37,6 @@ public class Rating extends FormItem<NumberField> {
         rating.setHasControls(true);
         rating.setClearButtonVisible(true);
 
-    }
-
-    @Override
-    public String getLabel() {
-        return "Author's first name *";
     }
 
     public Double getValue() {

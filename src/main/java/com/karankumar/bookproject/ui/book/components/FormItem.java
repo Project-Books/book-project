@@ -18,20 +18,29 @@
 package com.karankumar.bookproject.ui.book.components;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.formlayout.FormLayout;
 
 public abstract class FormItem<T extends Component> {
     private final T field;
+    private final String label;
 
-    protected FormItem(T field) {
+    protected FormItem(T field, String label) {
         this.field = field;
+        this.label = label;
         configure();
     }
 
     public abstract void configure();
 
-    public abstract String getLabel();
+    public String getLabel() {
+        return label;
+    }
 
     public T getField() {
         return field;
+    }
+
+    public void add(FormLayout formLayout) {
+        formLayout.addFormItem(field, label);
     }
 }

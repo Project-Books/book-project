@@ -205,11 +205,13 @@ public class BookForm extends VerticalLayout {
                 new FormLayout.ResponsiveStep("62em", 2)
         );
 
-        formLayout.addFormItem(bookTitle.getField(), bookTitle.getLabel());
-        formLayout.addFormItem(predefinedShelfField.getField(), predefinedShelfField.getLabel());
-        formLayout.addFormItem(customShelfField.getField(), customShelfField.getLabel());
-        formLayout.addFormItem(authorFirstName.getField(), authorFirstName.getLabel());
-        formLayout.addFormItem(authorLastName.getField(), authorLastName.getLabel());
+        bookTitle.add(formLayout);
+        predefinedShelfField.add(formLayout);
+        customShelfField.add(formLayout);
+        authorFirstName.add(formLayout);
+        authorLastName.add(formLayout);
+        bookGenre.add(formLayout);
+
         dateStartedReadingFormItem = formLayout.addFormItem(
                 dateStartedReading.getField(),
                 dateStartedReading.getLabel()
@@ -218,11 +220,10 @@ public class BookForm extends VerticalLayout {
                 dateFinishedReading.getField(),
                 dateFinishedReading.getLabel()
         );
-        formLayout.addFormItem(bookGenre.getField(), bookGenre.getLabel());
         pagesReadFormItem = formLayout.addFormItem(pagesRead.getField(), pagesRead.getLabel());
-        formLayout.addFormItem(numberOfPages.getField(), numberOfPages.getLabel());
+        numberOfPages.add(formLayout);
         ratingFormItem = formLayout.addFormItem(rating.getField(), rating.getLabel());
-        formLayout.addFormItem(inSeriesCheckbox.getField(), inSeriesCheckbox.getLabel());
+        inSeriesCheckbox.add(formLayout);
         seriesPositionFormItem = formLayout.addFormItem(
                 seriesPosition.getField(),
                 seriesPosition.getLabel()

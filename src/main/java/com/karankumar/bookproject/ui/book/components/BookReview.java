@@ -23,7 +23,7 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class BookReview extends FormItem<TextArea> {
     public BookReview() {
-        super(new TextArea());
+        super(new TextArea(), "Book review");
     }
 
     @Override
@@ -31,11 +31,6 @@ public class BookReview extends FormItem<TextArea> {
         TextArea bookReview = super.getField();
         bookReview.setPlaceholder("Enter your review for the book");
         bookReview.setClearButtonVisible(true);
-    }
-
-    @Override
-    public String getLabel() {
-        return "Book review";
     }
 
     public String getValue() {

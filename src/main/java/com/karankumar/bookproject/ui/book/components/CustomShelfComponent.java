@@ -23,7 +23,7 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class CustomShelfComponent extends FormItem<ComboBox<String>> {
     public CustomShelfComponent() {
-        super(new ComboBox<>());
+        super(new ComboBox<>(), "Secondary shelf *");
     }
 
     @Override
@@ -31,11 +31,6 @@ public class CustomShelfComponent extends FormItem<ComboBox<String>> {
         ComboBox<String> customShelfField = getField();
         customShelfField.setPlaceholder("Choose a shelf");
         customShelfField.setClearButtonVisible(true);
-    }
-
-    @Override
-    public String getLabel() {
-        return "Secondary shelf *";
     }
 
     public String getValue() {

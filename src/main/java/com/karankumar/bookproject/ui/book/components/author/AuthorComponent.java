@@ -24,12 +24,10 @@ import com.vaadin.flow.data.binder.Binder;
 
 public abstract class AuthorComponent extends FormItem<TextField> {
     private final String placeholder;
-    private final String label;
 
     public AuthorComponent(String placeholder, String label) {
-        super(new TextField());
+        super(new TextField(), label);
         this.placeholder = placeholder;
-        this.label = label;
         configure();
     }
 
@@ -41,11 +39,6 @@ public abstract class AuthorComponent extends FormItem<TextField> {
         field.setClearButtonVisible(true);
         field.setRequired(true);
         field.setRequiredIndicatorVisible(true);
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
     }
 
     public String getValue() {

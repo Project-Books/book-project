@@ -21,17 +21,12 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 
 public class InSeries extends FormItem<Checkbox> {
     public InSeries() {
-        super(new Checkbox());
+        super(new Checkbox(), "Is the book in a series?");
     }
 
     @Override
     public void configure() {
         super.getField().setValue(false);
-    }
-
-    @Override
-    public String getLabel() {
-        return "Is the book in a series?";
     }
 
     public Boolean getValue() {

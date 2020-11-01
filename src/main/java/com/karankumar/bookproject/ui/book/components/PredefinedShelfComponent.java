@@ -29,7 +29,7 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 
 public class PredefinedShelfComponent extends FormItem<ComboBox<ShelfName>> {
     public PredefinedShelfComponent() {
-        super(new ComboBox<>());
+        super(new ComboBox<>(), "Primary shelf");
     }
 
     @Override
@@ -39,11 +39,6 @@ public class PredefinedShelfComponent extends FormItem<ComboBox<ShelfName>> {
         predefinedShelfField.setPlaceholder("Choose a shelf");
         predefinedShelfField.setClearButtonVisible(true);
         predefinedShelfField.setItems(PredefinedShelf.ShelfName.values());
-    }
-
-    @Override
-    public String getLabel() {
-        return "Primary shelf";
     }
 
     public ShelfName getValue() {

@@ -24,11 +24,8 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import java.time.LocalDate;
 
 public abstract class Date extends FormItem<DatePicker> {
-    private final String label;
-
     public Date(String label) {
-        super(new DatePicker());
-        this.label = label;
+        super(new DatePicker(), label);
     }
 
     @Override
@@ -36,11 +33,6 @@ public abstract class Date extends FormItem<DatePicker> {
         DatePicker date = super.getField();
         date.setClearButtonVisible(true);
         date.setPlaceholder(BookForm.ENTER_DATE);
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
     }
 
     public LocalDate getValue() {

@@ -25,7 +25,7 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class SeriesPosition extends FormItem<IntegerField> {
     public SeriesPosition() {
-        super(new IntegerField());
+        super(new IntegerField(), "Series position");
     }
 
     @Override
@@ -34,11 +34,6 @@ public class SeriesPosition extends FormItem<IntegerField> {
         seriesPosition.setPlaceholder("Enter series position");
         seriesPosition.setMin(1);
         seriesPosition.setHasControls(true);
-    }
-
-    @Override
-    public String getLabel() {
-        return "Series position";
     }
 
     public Integer getValue() {

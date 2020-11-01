@@ -23,12 +23,10 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
 
 public abstract class Pages extends FormItem<IntegerField> {
-    private final String label;
     private final String placeholder;
 
     public Pages(String label, String placeholder) {
-        super(new IntegerField());
-        this.label = label;
+        super(new IntegerField(), label);
         this.placeholder = placeholder;
     }
 
@@ -40,11 +38,6 @@ public abstract class Pages extends FormItem<IntegerField> {
         pages.setMax(Book.MAX_PAGES);
         pages.setHasControls(true);
         pages.setClearButtonVisible(true);
-    }
-
-    @Override
-    public String getLabel() {
-        return label;
     }
 
     public Integer getValue() {

@@ -24,7 +24,7 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class Genre extends FormItem<ComboBox<BookGenre>> {
     public Genre() {
-        super(new ComboBox<>());
+        super(new ComboBox<>(), "Book genre");
     }
 
     @Override
@@ -32,11 +32,6 @@ public class Genre extends FormItem<ComboBox<BookGenre>> {
         ComboBox<BookGenre> component = getField();
         component.setItems(BookGenre.values());
         component.setPlaceholder("Choose a book genre");
-    }
-
-    @Override
-    public String getLabel() {
-        return "Book genre";
     }
 
     public BookGenre getValue() {

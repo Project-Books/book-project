@@ -24,7 +24,7 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class BookTitle extends FormItem<TextField> {
     public BookTitle() {
-        super(new TextField());
+        super(new TextField(), "Book title *");
     }
 
     @Override
@@ -36,11 +36,6 @@ public class BookTitle extends FormItem<TextField> {
         field.setRequiredIndicatorVisible(true);
     }
 
-    @Override
-    public String getLabel() {
-        return "Book title *";
-    }
-
     public String getValue() {
         return super.getField().getValue();
     }
@@ -50,5 +45,4 @@ public class BookTitle extends FormItem<TextField> {
               .asRequired(BookFormErrors.BOOK_TITLE_ERROR)
               .bind(Book::getTitle, Book::setTitle);
     }
-
 }
