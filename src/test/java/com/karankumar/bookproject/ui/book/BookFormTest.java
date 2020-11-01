@@ -232,18 +232,18 @@ class BookFormTest {
                 break;
             case READING:
                 bookForm.predefinedShelfField.setValue(shelfName);
-                bookForm.dateStartedReading.setValue(dateStarted);
+                bookForm.dateStartedReading.getField().setValue(dateStarted);
                 break;
             case READ:
                 bookForm.predefinedShelfField.setValue(shelfName);
-                bookForm.dateStartedReading.setValue(dateStarted);
+                bookForm.dateStartedReading.getField().setValue(dateStarted);
                 bookForm.dateFinishedReading.setValue(dateFinished);
                 bookForm.rating.getField().setValue(RatingScale.toDouble(ratingVal));
                 bookForm.bookReview.setValue(bookReview);
                 break;
             case DID_NOT_FINISH:
                 bookForm.predefinedShelfField.setValue(shelfName);
-                bookForm.dateStartedReading.setValue(dateStarted);
+                bookForm.dateStartedReading.getField().setValue(dateStarted);
                 bookForm.pagesRead.getField().setValue(pagesRead);
                 break;
         }
@@ -275,7 +275,7 @@ class BookFormTest {
         assumeThat(bookForm.predefinedShelfField.isEmpty()).isFalse();
         assumeThat(bookForm.bookGenre.getField().isEmpty()).isFalse();
         assumeThat(bookForm.numberOfPages.getField().isEmpty()).isFalse();
-        assumeThat(bookForm.dateStartedReading.isEmpty()).isFalse();
+        assumeThat(bookForm.dateStartedReading.getField().isEmpty()).isFalse();
         assumeThat(bookForm.dateFinishedReading.isEmpty()).isFalse();
         assumeThat(bookForm.rating.getField().isEmpty()).isFalse();
         assumeThat(bookForm.bookReview.isEmpty()).isFalse();
@@ -498,7 +498,7 @@ class BookFormTest {
     @Test
     void notAllowFutureStartDate() {
         // given
-        bookForm.dateStartedReading.setValue(LocalDate.now().plusDays(5));
+        bookForm.dateStartedReading.getField().setValue(LocalDate.now().plusDays(5));
 
         // when
         bookForm.saveButton.click();

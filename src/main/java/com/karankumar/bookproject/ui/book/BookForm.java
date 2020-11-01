@@ -28,6 +28,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.book.components.AuthorFirstName;
 import com.karankumar.bookproject.ui.book.components.AuthorLastName;
 import com.karankumar.bookproject.ui.book.components.BookTitle;
+import com.karankumar.bookproject.ui.book.components.DateStartedReading;
 import com.karankumar.bookproject.ui.book.components.Genre;
 import com.karankumar.bookproject.ui.book.components.NumberOfPages;
 import com.karankumar.bookproject.ui.book.components.PagesRead;
@@ -75,7 +76,7 @@ import static com.karankumar.bookproject.ui.book.BookFormValidators.isEndDateAft
 )
 @Log
 public class BookForm extends VerticalLayout {
-    private static final String ENTER_DATE = "Enter a date";
+    public static final String ENTER_DATE = "Enter a date";
     private static final String LABEL_ADD_BOOK = "Add book";
     private static final String LABEL_UPDATE_BOOK = "Update book";
 
@@ -90,7 +91,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final Genre bookGenre = new Genre();
     @VisibleForTesting final PagesRead pagesRead = new PagesRead();
     @VisibleForTesting final NumberOfPages numberOfPages = new NumberOfPages();
-    @VisibleForTesting final DatePicker dateStartedReading = new DatePicker();
+    @VisibleForTesting final DateStartedReading dateStartedReading = new DateStartedReading();
     @VisibleForTesting final DatePicker dateFinishedReading = new DatePicker();
     @VisibleForTesting final Rating rating = new Rating();
     @VisibleForTesting final TextArea bookReview = new TextArea();
@@ -109,7 +110,7 @@ public class BookForm extends VerticalLayout {
 
     @VisibleForTesting final HasValue[] fieldsToResetForToRead = new HasValue[]{
             pagesRead.getField(),
-            dateStartedReading,
+            dateStartedReading.getField(),
             dateFinishedReading,
             rating.getField(),
             bookReview
@@ -132,7 +133,7 @@ public class BookForm extends VerticalLayout {
             authorFirstName.getField(),
             authorLastName.getField(),
             seriesPosition.getField(),
-            dateStartedReading,
+            dateStartedReading.getField(),
             dateFinishedReading,
             bookGenre.getField(),
             customShelfField,
@@ -164,7 +165,6 @@ public class BookForm extends VerticalLayout {
         bindFormFields();
         configurePredefinedShelfField();
         configureCustomShelfField();
-        configureDateStartedFormField();
         configureDateFinishedFormField();
         configureBookReviewFormField();
         configureInSeriesFormField();
@@ -174,7 +174,7 @@ public class BookForm extends VerticalLayout {
                 authorFirstName.getField(),
                 authorLastName.getField(),
                 seriesPosition.getField(),
-                dateStartedReading,
+                dateStartedReading.getField(),
                 dateFinishedReading,
                 bookGenre.getField(),
                 customShelfField,
@@ -217,7 +217,8 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(customShelfField, "Secondary shelf");
         formLayout.addFormItem(authorFirstName.getField(), "Author's first name *");
         formLayout.addFormItem(authorLastName.getField(), "Author's last name *");
-        dateStartedReadingFormItem = formLayout.addFormItem(dateStartedReading, "Date started");
+        dateStartedReadingFormItem =
+                formLayout.addFormItem(dateStartedReading.getField(), "Date started");
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre.getField(), "Book genre");
         pagesReadFormItem = formLayout.addFormItem(pagesRead.getField(), "Pages read");
@@ -308,7 +309,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindDateStartedField() {
-        binder.forField(dateStartedReading)
+        binder.forField(dateStartedReading.getField())
               .withValidator(BookFormValidators.isNotInFuture(),
                       String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
               .bind(Book::getDateStartedReading, Book::setDateStartedReading);
@@ -712,11 +713,6 @@ public class BookForm extends VerticalLayout {
         bookReview.setClearButtonVisible(true);
     }
 
-    private void configureDateStartedFormField() {
-        dateStartedReading.setClearButtonVisible(true);
-        dateStartedReading.setPlaceholder(ENTER_DATE);
-    }
-
     private void configureDateFinishedFormField() {
         dateFinishedReading.setClearButtonVisible(true);
         dateFinishedReading.setPlaceholder(ENTER_DATE);
@@ -734,7 +730,7 @@ public class BookForm extends VerticalLayout {
                 bookGenre.getField(),
                 pagesRead.getField(),
                 numberOfPages.getField(),
-                dateStartedReading,
+                dateStartedReading.getField(),
                 dateFinishedReading,
                 rating.getField(),
                 bookReview
