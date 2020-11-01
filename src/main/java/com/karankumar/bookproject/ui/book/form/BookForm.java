@@ -266,7 +266,7 @@ public class BookForm extends VerticalLayout {
         authorLastName.bind(binder);
         predefinedShelfField.bind(binder);
         customShelfField.bind(binder);
-        bindSeriesPositionField();
+        seriesPosition.bind(binder);
         bindDateStartedField();
         bindDateFinishedField();
         bindNumberOfPagesField();
@@ -274,13 +274,6 @@ public class BookForm extends VerticalLayout {
         bindGenreField();
         bindRatingField();
         bindBookReviewField();
-    }
-
-    private void bindSeriesPositionField() {
-        binder.forField(seriesPosition.getField())
-              .withValidator(BookFormValidators.isNumberPositive(),
-                      BookFormErrors.SERIES_POSITION_ERROR)
-              .bind(Book::getSeriesPosition, Book::setSeriesPosition);
     }
 
     private void bindDateStartedField() {

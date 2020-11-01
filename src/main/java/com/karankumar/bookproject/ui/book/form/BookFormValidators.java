@@ -27,7 +27,7 @@ import static com.karankumar.bookproject.backend.util.DateUtils.isDateInFuture;
 public final class BookFormValidators {
     private BookFormValidators() {}
 
-    static SerializablePredicate<Integer> isNumberPositive() {
+    public static SerializablePredicate<Integer> isNumberPositive() {
         return number -> (number == null || number > 0);
     }
 

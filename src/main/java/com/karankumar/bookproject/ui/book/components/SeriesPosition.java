@@ -17,7 +17,11 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
+import com.karankumar.bookproject.ui.book.form.BookFormValidators;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.data.binder.Binder;
 
 public class SeriesPosition extends FormItem<IntegerField> {
     public SeriesPosition() {
@@ -30,7 +34,6 @@ public class SeriesPosition extends FormItem<IntegerField> {
         seriesPosition.setPlaceholder("Enter series position");
         seriesPosition.setMin(1);
         seriesPosition.setHasControls(true);
-
     }
 
     @Override
@@ -42,4 +45,10 @@ public class SeriesPosition extends FormItem<IntegerField> {
         return super.getField().getValue();
     }
 
+    public void bind(Binder<Book> binder) {
+        binder.forField(super.getField())
+              .withValidator(BookFormValidators.isNumberPositive(),
+                      BookFormErrors.SERIES_POSITION_ERROR)
+              .bind(Book::getSeriesPosition, Book::setSeriesPosition);
+    }
 }
