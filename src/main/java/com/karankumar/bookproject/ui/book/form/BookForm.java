@@ -30,8 +30,8 @@ import com.karankumar.bookproject.ui.book.components.author.AuthorLastName;
 import com.karankumar.bookproject.ui.book.components.BookReview;
 import com.karankumar.bookproject.ui.book.components.BookTitle;
 import com.karankumar.bookproject.ui.book.components.CustomShelfComponent;
-import com.karankumar.bookproject.ui.book.components.DateFinishedReading;
-import com.karankumar.bookproject.ui.book.components.DateStartedReading;
+import com.karankumar.bookproject.ui.book.components.date.DateFinishedReading;
+import com.karankumar.bookproject.ui.book.components.date.DateStartedReading;
 import com.karankumar.bookproject.ui.book.components.FormDialog;
 import com.karankumar.bookproject.ui.book.components.Genre;
 import com.karankumar.bookproject.ui.book.components.InSeries;
@@ -59,11 +59,8 @@ import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
-
-import static com.karankumar.bookproject.ui.book.form.BookFormValidators.isEndDateAfterStartDate;
 
 /**
  * A Vaadin form for adding a new @see Book.

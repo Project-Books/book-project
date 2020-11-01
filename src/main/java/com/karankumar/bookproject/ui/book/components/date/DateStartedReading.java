@@ -15,45 +15,22 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book.components;
+package com.karankumar.bookproject.ui.book.components.date;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.karankumar.bookproject.ui.book.form.BookFormValidators;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.data.binder.Binder;
 
-import java.time.LocalDate;
-
-import static com.karankumar.bookproject.ui.book.form.BookFormValidators.isEndDateAfterStartDate;
-
-public class DateFinishedReading extends FormItem<DatePicker> {
-    public DateFinishedReading() {
-        super(new DatePicker());
+public class DateStartedReading extends Date {
+    public DateStartedReading() {
+        super("Date started reading");
     }
 
-    @Override
-    public void configure() {
-        DatePicker dateStartedReading = super.getField();
-        dateStartedReading.setClearButtonVisible(true);
-        dateStartedReading.setPlaceholder(BookForm.ENTER_DATE);
-    }
-
-    @Override
-    public String getLabel() {
-        return "Date finished reading";
-    }
-
-    public LocalDate getValue() {
-        return super.getField().getValue();
-    }
-
-    public void bind(Binder<Book> binder, LocalDate dateStarted) {
+    public void bind(Binder<Book> binder) {
         binder.forField(super.getField())
-              .withValidator(isEndDateAfterStartDate(dateStarted), BookFormErrors.FINISH_DATE_ERROR)
               .withValidator(BookFormValidators.isNotInFuture(),
-                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "finished"))
-              .bind(Book::getDateFinishedReading, Book::setDateFinishedReading);
+                      String.format(BookFormErrors.AFTER_TODAY_ERROR, "started"))
+              .bind(Book::getDateStartedReading, Book::setDateStartedReading);
     }
 }
