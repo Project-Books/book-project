@@ -29,6 +29,7 @@ import com.karankumar.bookproject.ui.book.components.AuthorFirstName;
 import com.karankumar.bookproject.ui.book.components.AuthorLastName;
 import com.karankumar.bookproject.ui.book.components.BookReview;
 import com.karankumar.bookproject.ui.book.components.BookTitle;
+import com.karankumar.bookproject.ui.book.components.CustomShelfComponent;
 import com.karankumar.bookproject.ui.book.components.DateFinishedReading;
 import com.karankumar.bookproject.ui.book.components.DateStartedReading;
 import com.karankumar.bookproject.ui.book.components.Genre;
@@ -46,7 +47,6 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -88,7 +88,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final AuthorLastName authorLastName = new AuthorLastName();
     @VisibleForTesting final PredefinedShelfComponent predefinedShelfField =
             new PredefinedShelfComponent();
-    @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
+    @VisibleForTesting final CustomShelfComponent customShelfField = new CustomShelfComponent();
     @VisibleForTesting final Genre bookGenre = new Genre();
     @VisibleForTesting final PagesRead pagesRead = new PagesRead();
     @VisibleForTesting final NumberOfPages numberOfPages = new NumberOfPages();
@@ -109,14 +109,14 @@ public class BookForm extends VerticalLayout {
 
     @VisibleForTesting HasValue[] fieldsToReset;
 
-    @VisibleForTesting final HasValue[] fieldsToResetForToRead = new HasValue[]{
+    @VisibleForTesting final HasValue[] fieldsToResetForToRead = new HasValue[] {
             pagesRead.getField(),
             dateStartedReading.getField(),
             dateFinishedReading.getField(),
             rating.getField(),
             bookReview.getField()
     };
-    @VisibleForTesting final HasValue[] fieldsToResetForReading = new HasValue[]{
+    @VisibleForTesting final HasValue[] fieldsToResetForReading = new HasValue[] {
             pagesRead.getField(),
             dateFinishedReading.getField(),
             rating.getField(),
@@ -124,7 +124,7 @@ public class BookForm extends VerticalLayout {
     };
     @VisibleForTesting final HasValue[] fieldsToResetForRead
             = new HasValue[]{pagesRead.getField()};
-    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish = new HasValue[]{
+    @VisibleForTesting final HasValue[] fieldsToResetForDidNotFinish = new HasValue[] {
             dateFinishedReading.getField(),
             rating.getField(),
             bookReview.getField()
@@ -137,7 +137,7 @@ public class BookForm extends VerticalLayout {
             dateStartedReading.getField(),
             dateFinishedReading.getField(),
             bookGenre.getField(),
-            customShelfField,
+            customShelfField.getField(),
             predefinedShelfField.getField(),
             pagesRead.getField(),
             numberOfPages.getField(),
@@ -176,7 +176,7 @@ public class BookForm extends VerticalLayout {
                 dateStartedReading.getField(),
                 dateFinishedReading.getField(),
                 bookGenre.getField(),
-                customShelfField,
+                customShelfField.getField(),
                 predefinedShelfField.getField(),
                 pagesRead.getField(),
                 numberOfPages.getField(),
@@ -212,7 +212,7 @@ public class BookForm extends VerticalLayout {
 
         formLayout.addFormItem(bookTitle.getField(), "Book title *");
         formLayout.addFormItem(predefinedShelfField.getField(), "Book shelf *");
-        formLayout.addFormItem(customShelfField, "Secondary shelf");
+        formLayout.addFormItem(customShelfField.getField(), "Secondary shelf");
         formLayout.addFormItem(authorFirstName.getField(), "Author's first name *");
         formLayout.addFormItem(authorLastName.getField(), "Author's last name *");
         dateStartedReadingFormItem =
@@ -296,7 +296,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindCustomShelfField() {
-        binder.forField(customShelfField)
+        binder.forField(customShelfField.getField())
               .bind("customShelf.shelfName");
     }
 
@@ -561,10 +561,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureCustomShelfField() {
-        customShelfField.setPlaceholder("Choose a shelf");
-        customShelfField.setClearButtonVisible(true);
-
-        customShelfField.setItems(customShelfService.getCustomShelfNames());
+        customShelfField.getField().setItems(customShelfService.getCustomShelfNames());
     }
 
     private void configurePredefinedShelfField() {
@@ -708,7 +705,7 @@ public class BookForm extends VerticalLayout {
                 bookTitle.getField(),
                 authorFirstName.getField(),
                 authorLastName.getField(),
-                customShelfField,
+                customShelfField.getField(),
                 predefinedShelfField.getField(),
                 inSeriesCheckbox.getField(),
                 seriesPosition.getField(),
