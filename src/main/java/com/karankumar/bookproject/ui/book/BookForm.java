@@ -32,6 +32,7 @@ import com.karankumar.bookproject.ui.book.components.BookTitle;
 import com.karankumar.bookproject.ui.book.components.DateFinishedReading;
 import com.karankumar.bookproject.ui.book.components.DateStartedReading;
 import com.karankumar.bookproject.ui.book.components.Genre;
+import com.karankumar.bookproject.ui.book.components.InSeries;
 import com.karankumar.bookproject.ui.book.components.NumberOfPages;
 import com.karankumar.bookproject.ui.book.components.PagesRead;
 import com.karankumar.bookproject.ui.book.components.Rating;
@@ -44,7 +45,6 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -96,7 +96,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final Rating rating = new Rating();
     @VisibleForTesting final BookReview bookReview = new BookReview();
     @VisibleForTesting final Button saveButton = new Button();
-    @VisibleForTesting final Checkbox inSeriesCheckbox = new Checkbox();
+    @VisibleForTesting final InSeries inSeriesCheckbox = new InSeries();
     @VisibleForTesting final Button reset = new Button();
 
     @VisibleForTesting FormLayout.FormItem dateStartedReadingFormItem;
@@ -189,8 +189,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void configureInSeriesFormField() {
-        inSeriesCheckbox.setValue(false);
-        inSeriesCheckbox.addValueChangeListener(event -> {
+        inSeriesCheckbox.getField().addValueChangeListener(event -> {
             seriesPositionFormItem.setVisible(event.getValue());
             if (Boolean.FALSE.equals(event.getValue())) {
                 seriesPosition.getField().clear();
@@ -223,7 +222,7 @@ public class BookForm extends VerticalLayout {
         pagesReadFormItem = formLayout.addFormItem(pagesRead.getField(), "Pages read");
         formLayout.addFormItem(numberOfPages.getField(), "Number of pages");
         ratingFormItem = formLayout.addFormItem(rating.getField(), "Book rating");
-        formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
+        formLayout.addFormItem(inSeriesCheckbox.getField(), "Is in series?");
         seriesPositionFormItem = formLayout.addFormItem(seriesPosition.getField(), "Series number");
         bookReviewFormItem = formLayout.addFormItem(bookReview.getField(), "Book review");
         formLayout.add(buttonLayout, 3);
@@ -247,7 +246,7 @@ public class BookForm extends VerticalLayout {
     private void showSeriesPositionFormIfSeriesPositionAvailable() {
         boolean isInSeries =
                 binder.getBean() != null && binder.getBean().getSeriesPosition() != null;
-        inSeriesCheckbox.setValue(isInSeries);
+        inSeriesCheckbox.getField().setValue(isInSeries);
         seriesPositionFormItem.setVisible(isInSeries);
     }
 
@@ -714,7 +713,7 @@ public class BookForm extends VerticalLayout {
                 authorLastName.getField(),
                 customShelfField,
                 predefinedShelfField,
-                inSeriesCheckbox,
+                inSeriesCheckbox.getField(),
                 seriesPosition.getField(),
                 bookGenre.getField(),
                 pagesRead.getField(),
