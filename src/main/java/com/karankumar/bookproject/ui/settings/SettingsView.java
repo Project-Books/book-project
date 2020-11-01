@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.ui.settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.utils.CsvUtils;
 import com.karankumar.bookproject.ui.MainView;
@@ -161,8 +162,9 @@ public class SettingsView extends HorizontalLayout {
         importGoodreadsUpload.addSucceededListener(succeededEvent -> {
             LOGGER.info("Import success: " + succeededEvent.toString());
             try {
-                List<Object> imports =
-                        CsvUtils.read(importGoodreadsMemoryBuffer.getInputStream(), Object.class);
+                List<GoodreadsBookImport> imports =
+                        CsvUtils.read(importGoodreadsMemoryBuffer.getInputStream(),
+                                GoodreadsBookImport.class);
                 imports.forEach(i -> LOGGER.info(i.toString()));
             } catch (IOException e) {
                 LOGGER.severe("Error in reading input file, error: + " + e);
