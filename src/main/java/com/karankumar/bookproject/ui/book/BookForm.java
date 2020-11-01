@@ -30,6 +30,7 @@ import com.karankumar.bookproject.ui.book.components.AuthorLastName;
 import com.karankumar.bookproject.ui.book.components.BookTitle;
 import com.karankumar.bookproject.ui.book.components.Genre;
 import com.karankumar.bookproject.ui.book.components.Rating;
+import com.karankumar.bookproject.ui.book.components.SeriesPosition;
 import com.karankumar.bookproject.ui.components.util.ComponentUtil;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -80,7 +81,7 @@ public class BookForm extends VerticalLayout {
 
     @VisibleForTesting final BookTitle bookTitle = new BookTitle();
 
-    @VisibleForTesting final IntegerField seriesPosition = new IntegerField();
+    @VisibleForTesting final SeriesPosition seriesPosition = new SeriesPosition();
     @VisibleForTesting final AuthorFirstName authorFirstName = new AuthorFirstName();
     @VisibleForTesting final AuthorLastName authorLastName = new AuthorLastName();
     @VisibleForTesting final ComboBox<PredefinedShelf.ShelfName> predefinedShelfField =
@@ -130,7 +131,7 @@ public class BookForm extends VerticalLayout {
             bookTitle.getField(),
             authorFirstName.getField(),
             authorLastName.getField(),
-            seriesPosition,
+            seriesPosition.getField(),
             dateStartedReading,
             dateFinishedReading,
             bookGenre.getField(),
@@ -163,7 +164,6 @@ public class BookForm extends VerticalLayout {
         bindFormFields();
         configurePredefinedShelfField();
         configureCustomShelfField();
-        configureSeriesPositionFormField();
         configurePagesReadFormField();
         configureNumberOfPagesFormField();
         configureDateStartedFormField();
@@ -175,7 +175,7 @@ public class BookForm extends VerticalLayout {
                 bookTitle.getField(),
                 authorFirstName.getField(),
                 authorLastName.getField(),
-                seriesPosition,
+                seriesPosition.getField(),
                 dateStartedReading,
                 dateFinishedReading,
                 bookGenre.getField(),
@@ -197,7 +197,7 @@ public class BookForm extends VerticalLayout {
         inSeriesCheckbox.addValueChangeListener(event -> {
             seriesPositionFormItem.setVisible(event.getValue());
             if (Boolean.FALSE.equals(event.getValue())) {
-                seriesPosition.clear();
+                seriesPosition.getField().clear();
             }
         });
     }
@@ -226,7 +226,7 @@ public class BookForm extends VerticalLayout {
         formLayout.addFormItem(numberOfPages, "Number of pages");
         ratingFormItem = formLayout.addFormItem(rating.getField(), "Book rating");
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
-        seriesPositionFormItem = formLayout.addFormItem(seriesPosition, "Series number");
+        seriesPositionFormItem = formLayout.addFormItem(seriesPosition.getField(), "Series number");
         bookReviewFormItem = formLayout.addFormItem(bookReview, "Book review");
         formLayout.add(buttonLayout, 3);
         seriesPositionFormItem.setVisible(false);
@@ -303,7 +303,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindSeriesPositionField() {
-        binder.forField(seriesPosition)
+        binder.forField(seriesPosition.getField())
               .withValidator(BookFormValidators.isNumberPositive(),
                       BookFormErrors.SERIES_POSITION_ERROR)
               .bind(Book::getSeriesPosition, Book::setSeriesPosition);
@@ -503,7 +503,7 @@ public class BookForm extends VerticalLayout {
         }
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {
-            book.setSeriesPosition(seriesPosition.getValue());
+            book.setSeriesPosition(seriesPosition.getField().getValue());
         } else if (seriesPosition.getValue() != null) {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
@@ -560,12 +560,6 @@ public class BookForm extends VerticalLayout {
         }
 
         binder.setBean(book);
-    }
-
-    private void configureSeriesPositionFormField() {
-        seriesPosition.setPlaceholder("Enter series position");
-        seriesPosition.setMin(1);
-        seriesPosition.setHasControls(true);
     }
 
     private void configureCustomShelfField() {
@@ -754,7 +748,7 @@ public class BookForm extends VerticalLayout {
                 customShelfField,
                 predefinedShelfField,
                 inSeriesCheckbox,
-                seriesPosition,
+                seriesPosition.getField(),
                 bookGenre.getField(),
                 pagesRead,
                 numberOfPages,

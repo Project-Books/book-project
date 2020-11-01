@@ -364,7 +364,7 @@ class BookFormTest {
     @Test
     void notAllowNegativeSeriesPosition() {
         // given
-        bookForm.seriesPosition.setValue(-1);
+        bookForm.seriesPosition.getField().setValue(-1);
 
         // when
         bookForm.saveButton.click();
@@ -522,7 +522,7 @@ class BookFormTest {
 
         assertSoftly(softly -> {
             softly.assertThat(bookForm.seriesPositionFormItem.isVisible()).isTrue();
-            softly.assertThat(bookForm.seriesPosition.isVisible()).isTrue();
+            softly.assertThat(bookForm.seriesPosition.getField().isVisible()).isTrue();
             softly.assertThat(SERIES_POSITION).isEqualTo(bookForm.seriesPosition.getValue());
             softly.assertAll();
         });
@@ -561,7 +561,7 @@ class BookFormTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(bookForm.seriesPositionFormItem.isVisible()).isTrue();
-            softly.assertThat(bookForm.seriesPosition.isVisible()).isTrue();
+            softly.assertThat(bookForm.seriesPosition.getField().isVisible()).isTrue();
             softly.assertThat(SERIES_POSITION).isEqualTo(bookForm.seriesPosition.getValue());
         });
     }
