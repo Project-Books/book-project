@@ -29,6 +29,7 @@ import com.karankumar.bookproject.ui.book.components.AuthorFirstName;
 import com.karankumar.bookproject.ui.book.components.AuthorLastName;
 import com.karankumar.bookproject.ui.book.components.BookTitle;
 import com.karankumar.bookproject.ui.book.components.Genre;
+import com.karankumar.bookproject.ui.book.components.NumberOfPages;
 import com.karankumar.bookproject.ui.book.components.PagesRead;
 import com.karankumar.bookproject.ui.book.components.Rating;
 import com.karankumar.bookproject.ui.book.components.SeriesPosition;
@@ -49,7 +50,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -89,7 +89,7 @@ public class BookForm extends VerticalLayout {
     @VisibleForTesting final ComboBox<String> customShelfField = new ComboBox<>();
     @VisibleForTesting final Genre bookGenre = new Genre();
     @VisibleForTesting final PagesRead pagesRead = new PagesRead();
-    @VisibleForTesting final IntegerField numberOfPages = new IntegerField();
+    @VisibleForTesting final NumberOfPages numberOfPages = new NumberOfPages();
     @VisibleForTesting final DatePicker dateStartedReading = new DatePicker();
     @VisibleForTesting final DatePicker dateFinishedReading = new DatePicker();
     @VisibleForTesting final Rating rating = new Rating();
@@ -138,7 +138,7 @@ public class BookForm extends VerticalLayout {
             customShelfField,
             predefinedShelfField,
             pagesRead.getField(),
-            numberOfPages,
+            numberOfPages.getField(),
             rating.getField(),
             bookReview
     };
@@ -164,7 +164,6 @@ public class BookForm extends VerticalLayout {
         bindFormFields();
         configurePredefinedShelfField();
         configureCustomShelfField();
-        configureNumberOfPagesFormField();
         configureDateStartedFormField();
         configureDateFinishedFormField();
         configureBookReviewFormField();
@@ -181,7 +180,7 @@ public class BookForm extends VerticalLayout {
                 customShelfField,
                 predefinedShelfField,
                 pagesRead.getField(),
-                numberOfPages,
+                numberOfPages.getField(),
                 rating.getField(),
                 bookReview
         };
@@ -222,7 +221,7 @@ public class BookForm extends VerticalLayout {
         dateFinishedReadingFormItem = formLayout.addFormItem(dateFinishedReading, "Date finished");
         formLayout.addFormItem(bookGenre.getField(), "Book genre");
         pagesReadFormItem = formLayout.addFormItem(pagesRead.getField(), "Pages read");
-        formLayout.addFormItem(numberOfPages, "Number of pages");
+        formLayout.addFormItem(numberOfPages.getField(), "Number of pages");
         ratingFormItem = formLayout.addFormItem(rating.getField(), "Book rating");
         formLayout.addFormItem(inSeriesCheckbox, "Is in series?");
         seriesPositionFormItem = formLayout.addFormItem(seriesPosition.getField(), "Series number");
@@ -325,7 +324,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindNumberOfPagesField() {
-        binder.forField(numberOfPages)
+        binder.forField(numberOfPages.getField())
               .withValidator(BookFormValidators.isNumberPositive(),
                       BookFormErrors.PAGE_NUMBER_ERROR)
               .withValidator(BookFormValidators.isLessThanOrEqualToMaxPages(),
@@ -723,14 +722,6 @@ public class BookForm extends VerticalLayout {
         dateFinishedReading.setPlaceholder(ENTER_DATE);
     }
 
-    private void configureNumberOfPagesFormField() {
-        numberOfPages.setPlaceholder("Enter number of pages");
-        numberOfPages.setMin(1);
-        numberOfPages.setMax(Book.MAX_PAGES);
-        numberOfPages.setHasControls(true);
-        numberOfPages.setClearButtonVisible(true);
-    }
-
     private void clearFormFields() {
         HasValue[] components = {
                 bookTitle.getField(),
@@ -742,7 +733,7 @@ public class BookForm extends VerticalLayout {
                 seriesPosition.getField(),
                 bookGenre.getField(),
                 pagesRead.getField(),
-                numberOfPages,
+                numberOfPages.getField(),
                 dateStartedReading,
                 dateFinishedReading,
                 rating.getField(),

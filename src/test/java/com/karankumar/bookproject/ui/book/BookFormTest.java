@@ -215,7 +215,7 @@ class BookFormTest {
         bookForm.bookTitle.getField().setValue(bookTitle);
         bookForm.predefinedShelfField.setValue(readShelf.getPredefinedShelfName());
         bookForm.bookGenre.getField().setValue(BOOK_GENRE);
-        bookForm.numberOfPages.setValue(numberOfPages);
+        bookForm.numberOfPages.getField().setValue(numberOfPages);
         populateBookShelf(PredefinedShelf.ShelfName.READ);
     }
 
@@ -274,7 +274,7 @@ class BookFormTest {
         assumeThat(bookForm.bookTitle.getField().isEmpty()).isFalse();
         assumeThat(bookForm.predefinedShelfField.isEmpty()).isFalse();
         assumeThat(bookForm.bookGenre.getField().isEmpty()).isFalse();
-        assumeThat(bookForm.numberOfPages.isEmpty()).isFalse();
+        assumeThat(bookForm.numberOfPages.getField().isEmpty()).isFalse();
         assumeThat(bookForm.dateStartedReading.isEmpty()).isFalse();
         assumeThat(bookForm.dateFinishedReading.isEmpty()).isFalse();
         assumeThat(bookForm.rating.getField().isEmpty()).isFalse();
@@ -391,7 +391,7 @@ class BookFormTest {
     @Test
     void notAllowNegativePageNumbers() {
         // given
-        bookForm.numberOfPages.setValue(-1);
+        bookForm.numberOfPages.getField().setValue(-1);
 
         // when
         bookForm.saveButton.click();
@@ -403,7 +403,7 @@ class BookFormTest {
     @Test
     void notAllowPagesFieldToExceedMax() {
         // given
-        bookForm.numberOfPages.setValue(Book.MAX_PAGES + 1);
+        bookForm.numberOfPages.getField().setValue(Book.MAX_PAGES + 1);
 
         // when
         bookForm.saveButton.click();
