@@ -17,7 +17,11 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
+import com.karankumar.bookproject.ui.book.form.BookFormValidators;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 
 public class AuthorLastName extends FormItem<TextField> {
     public AuthorLastName() {
@@ -41,6 +45,12 @@ public class AuthorLastName extends FormItem<TextField> {
 
     public String getValue() {
         return super.getField().getValue();
+    }
+
+    public void bind(Binder<Book> binder) {
+        binder.forField(super.getField())
+              .withValidator(BookFormValidators.isNameNonEmpty(), BookFormErrors.LAST_NAME_ERROR)
+              .bind("author.lastName");
     }
 
 }

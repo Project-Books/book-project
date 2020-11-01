@@ -31,7 +31,7 @@ public final class BookFormValidators {
         return number -> (number == null || number > 0);
     }
 
-    static SerializablePredicate<String> isNameNonEmpty() {
+    public static SerializablePredicate<String> isNameNonEmpty() {
         return name -> (name != null && !name.isEmpty());
     }
 
