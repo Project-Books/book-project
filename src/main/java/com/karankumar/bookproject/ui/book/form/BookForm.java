@@ -261,7 +261,7 @@ public class BookForm extends VerticalLayout {
     }
 
     private void bindFormFields() {
-        bindBookTitleField();
+        bookTitle.bind(binder);
         bindAuthorFirstNameField();
         bindAuthorLastNameField();
         bindPredefinedShelfField();
@@ -274,12 +274,6 @@ public class BookForm extends VerticalLayout {
         bindGenreField();
         bindRatingField();
         bindBookReviewField();
-    }
-
-    private void bindBookTitleField() {
-        binder.forField(bookTitle.getField())
-              .asRequired(BookFormErrors.BOOK_TITLE_ERROR)
-              .bind(Book::getTitle, Book::setTitle);
     }
 
     private void bindAuthorFirstNameField() {

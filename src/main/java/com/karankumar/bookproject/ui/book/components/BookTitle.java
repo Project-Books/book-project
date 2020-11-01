@@ -17,7 +17,10 @@
 
 package com.karankumar.bookproject.ui.book.components;
 
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 
 public class BookTitle extends FormItem<TextField> {
     public BookTitle() {
@@ -40,6 +43,12 @@ public class BookTitle extends FormItem<TextField> {
 
     public String getValue() {
         return super.getField().getValue();
+    }
+
+    public void bind(Binder<Book> binder) {
+        binder.forField(super.getField())
+              .asRequired(BookFormErrors.BOOK_TITLE_ERROR)
+              .bind(Book::getTitle, Book::setTitle);
     }
 
 }
