@@ -155,9 +155,9 @@ class BookServiceTest {
     @Test
     void saveBookWithinPageLimit() {
         // given
-        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
-        book.setPagesRead(Book.MAX_PAGES);
-        book.setNumberOfPages(Book.MAX_PAGES);
+        Book book = validBook().pagesRead(Book.MAX_PAGES)
+                               .numberOfPages(Book.MAX_PAGES)
+                               .build();
 
         // when
         bookService.save(book);
