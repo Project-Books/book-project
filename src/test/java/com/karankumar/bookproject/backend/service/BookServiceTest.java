@@ -31,7 +31,6 @@ import org.apache.commons.io.FileUtils;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
 
 import org.json.JSONException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -215,8 +214,8 @@ class BookServiceTest {
     @Test
     void shouldCreateJsonRepresentationForBooks() throws IOException, JSONException {
         // given
-        Book anotherValidBook = createBookAndSetAllAttributes().build();
         bookService.save(validBook().build());
+        Book anotherValidBook = createBookWithAllAttributes().build();
         bookService.save(anotherValidBook);
 
         String expectedJsonString = FileUtils.readFileToString(
@@ -233,12 +232,17 @@ class BookServiceTest {
     @Test
     @Transactional
     void findSavedBook() {
-        Book bookToSave = new Book("Book Name To Save", author, toRead);
+        // given
+        Book bookToSave = validBook().build();
+
+        // when
         bookService.save(bookToSave);
-        assertEquals(bookService.findById(bookToSave.getId()), bookToSave);
+
+        // then
+        assertThat(bookService.findById(bookToSave.getId())).isEqualTo(bookToSave);
     }
 
-    private Book.BookBuilder createBookAndSetAllAttributes() {
+    private Book.BookBuilder createBookWithAllAttributes() {
         return validBook()
                 .title("Another Book Name")
                 .numberOfPages(420)
