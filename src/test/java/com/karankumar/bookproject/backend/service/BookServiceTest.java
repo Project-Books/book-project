@@ -271,9 +271,4 @@ class BookServiceTest {
         tagService.save(tag2);
         return new HashSet<>(Arrays.asList(tag1, tag2));
     }
-
-    @AfterEach
-    void deleteBooks() {
-        bookService.deleteAll();
-    }
 }
