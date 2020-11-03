@@ -107,8 +107,12 @@ class BookServiceTest {
 
     @Test
     void notSaveBookWithoutAuthor() {
+        // given
+        Book bookWithoutAuthor = validBook().author(null)
+                                            .build();
+
         // when
-        bookService.save(new Book("Book without author", null, toRead));
+        bookService.save(bookWithoutAuthor);
 
         // then
         assertSoftly(softly -> {
