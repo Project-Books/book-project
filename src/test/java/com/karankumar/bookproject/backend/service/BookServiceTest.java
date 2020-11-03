@@ -120,20 +120,6 @@ class BookServiceTest {
     @Test
     void notSaveBookWithMaxNumberOfPagesExceeded() {
         // given
-        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
-        book.setNumberOfPages(Book.MAX_PAGES + 1);
-
-        // when and then
-        assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> bookService.save(book))
-                  .isInstanceOf(TransactionSystemException.class);
-            softly.assertThat(bookService.count()).isZero();
-        });
-    }
-
-    @Test
-    void notSaveBookOutsidePageLimit() {
-        // given
         Book book = validBook().pagesRead(Book.MAX_PAGES + 1)
                                .build();
 
