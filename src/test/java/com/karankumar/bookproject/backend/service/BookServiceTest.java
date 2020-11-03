@@ -23,8 +23,8 @@ import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.BookFormat;
-import com.karankumar.bookproject.backend.entity.CustomShelf;	
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
+import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import org.apache.commons.io.FileUtils;
 
@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -61,7 +64,6 @@ class BookServiceTest {
     private final TagService tagService;
     private final PredefinedShelfService predefinedShelfService;
 
-    private Book validBook;
     private PredefinedShelf toRead;
     private Author author;
 
@@ -79,13 +81,15 @@ class BookServiceTest {
     @BeforeEach
     public void setup() {
         resetServices();
-        resetAuthorAndBook();
-    }
-
-    private void resetAuthorAndBook() {
         toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
         author = new Author("Test First Name", "Test Last Name");
-        validBook = new Book("Book Name", author, toRead);
+    }
+
+    private Book.BookBuilder validBook() {
+        return Book.builder()
+                   .title("Book Name")
+                   .author(author)
+                   .predefinedShelf(toRead);
     }
 
     private void resetServices() {
@@ -184,10 +188,10 @@ class BookServiceTest {
 
     @Test
     void saveValidBook() {
-        SoftAssertions softly = new SoftAssertions();
-
         // given
+        SoftAssertions softly = new SoftAssertions();
         assertThat(bookService.count()).isZero();
+        Book validBook = validBook().build();
 
         // when
         bookService.save(validBook);
@@ -214,8 +218,8 @@ class BookServiceTest {
     @Test
     void shouldCreateJsonRepresentationForBooks() throws IOException, JSONException {
         // given
-        Book anotherValidBook = createBookAndSetAllAttributes();
-        bookService.save(validBook);
+        Book anotherValidBook = createBookAndSetAllAttributes().build();
+        bookService.save(validBook().build());
         bookService.save(anotherValidBook);
 
         String expectedJsonString = FileUtils.readFileToString(
@@ -225,7 +229,8 @@ class BookServiceTest {
         String actualJsonString = bookService.getJsonRepresentationForBooksAsString();
 
         // then
-        JSONAssert.assertEquals(expectedJsonString, actualJsonString, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert
+                .assertEquals(expectedJsonString, actualJsonString, JSONCompareMode.NON_EXTENSIBLE);
     }
 
     @Test
@@ -233,35 +238,41 @@ class BookServiceTest {
     void findSavedBook() {
         Book bookToSave = new Book("Book Name To Save", author, toRead);
         bookService.save(bookToSave);
-        assertEquals(bookService.findById(bookToSave.getId()),bookToSave);
+        assertEquals(bookService.findById(bookToSave.getId()), bookToSave);
     }
 
-    private Book createBookAndSetAllAttributes() {
+    private Book.BookBuilder createBookAndSetAllAttributes() {
+        return validBook()
+                .title("Another Book Name")
+                .numberOfPages(420)
+                .pagesRead(42)
+                .bookGenre(BookGenre.ADVENTURE)
+                .bookFormat(BookFormat.PAPERBACK)
+                .seriesPosition(3)
+                .edition("2nd edition")
+                .bookRecommendedBy("Peter Parker")
+                .isbn("9780151010264")
+                .yearOfPublication(2014)
+                .customShelf(createAndSaveCustomShelf())
+                .tags(createAndSaveTags())
+                .rating(RatingScale.EIGHT)
+                .dateStartedReading(LocalDate.of(2020, 7, 5))
+                .dateFinishedReading(LocalDate.of(2020, 9, 5))
+                .bookReview("Very good.");
+    }
+
+    private CustomShelf createAndSaveCustomShelf() {
         CustomShelf customShelf = customShelfService.createCustomShelf("My Shelf");
         customShelfService.save(customShelf);
+        return customShelf;
+    }
 
+    private Set<Tag> createAndSaveTags() {
         Tag tag1 = new Tag("book");
         Tag tag2 = new Tag("adventure");
         tagService.save(tag1);
         tagService.save(tag2);
-
-        Book book = new Book("Another Book Name", author, toRead);
-        book.setNumberOfPages(420);
-        book.setPagesRead(42);
-        book.setBookGenre(BookGenre.ADVENTURE);
-        book.setBookFormat(BookFormat.PAPERBACK);
-        book.setSeriesPosition(3);
-        book.setEdition(2);
-        book.setBookRecommendedBy("Peter Parker");
-        book.setIsbn("9780151010264");
-        book.setPublicationYear(2014);
-        book.setCustomShelf(customShelf);
-        book.setTags(Set.of(tag1, tag2));
-        book.setRating(RatingScale.EIGHT);
-        book.setDateStartedReading(LocalDate.of(2020, 7, 5));
-        book.setDateFinishedReading(LocalDate.of(2020, 9, 5));
-        book.setBookReview("Very good.");
-        return book;
+        return new HashSet<>(Arrays.asList(tag1, tag2));
     }
 
     @AfterEach

@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.karankumar.bookproject.backend.json.LocalDateSerializer;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -40,9 +42,11 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
+@Builder
 @Data
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
     public static final int MAX_PAGES = 23_000;
