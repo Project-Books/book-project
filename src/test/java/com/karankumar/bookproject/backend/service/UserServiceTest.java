@@ -22,7 +22,7 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -31,10 +31,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
+import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
+@Transactional
+@DisplayName("UserService should")
 class UserServiceTest {
     private final UserService userService;
     private final UserRepository userRepository;
@@ -47,22 +57,15 @@ class UserServiceTest {
                                        .build();
 
     @Autowired
-    UserServiceTest(UserService userService,
-                    UserRepository userRepository,
+    UserServiceTest(UserService userService, UserRepository userRepository,
                     RoleRepository roleRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-    }
-
     @Test
-    void register_withBeanViolations_throwsException() {
+    void throwExceptionOnRegisterWithBeanViolations() {
         final User invalidUser = User.builder()
                                      .username("testuser")
                                      .email("testmail")
@@ -74,7 +77,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withUsernameTaken_throwsException() {
+    void throwExceptionOnRegisterWithUsernameTaken() {
         userRepository.save(validUser);
         validUser.setEmail("anotherEmail@testmail.com");
 
@@ -83,7 +86,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withEmailTaken_throwsException() {
+    void throwExceptionOnRegisterWithEmailTaken() {
         userRepository.save(validUser);
         validUser.setUsername("anotherUsername");
 
@@ -92,13 +95,20 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withoutUserRole_throwsError() {
+    void throwExceptionOnRegisterWithoutUserRole() {
         assertThatThrownBy(() -> userService.register(validUser))
                 .isInstanceOf(AuthenticationServiceException.class);
     }
 
     @Test
-    void register_registersUser() {
+    @DisplayName("throw an exception on an attempt to register a null user")
+    void throwExceptionWhenRegisteringNullUser() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> userService.register(null));
+    }
+
+    @Test
+    void registerValidUser() {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
@@ -106,7 +116,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_logsUserIn() {
+    void logUserInAfterRegister() {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
@@ -114,50 +124,71 @@ class UserServiceTest {
     }
 
     @Test
-    void usernameIsInUse_UsernameNotInUse_returnsFalse() {
+    void correctlyReportUsernameIsNotInUse() {
         assertThat(userService.usernameIsInUse("notAtestuser")).isFalse();
     }
 
     @Test
-    void usernameIsInUse_UsernameInUse_returnsTrue() {
+    void correctlyReportUsernameIsInUse() {
         userRepository.save(validUser);
         assertThat(userService.usernameIsInUse(validUser.getUsername())).isTrue();
     }
 
     @Test
-    void usernameIsNotInUse_UsernameNotInUse_returnsTrue() {
+    void correctlyReportIfUserNameIsNotInUseWithUsernameNotInUse() {
         assertThat(userService.usernameIsNotInUse("testuser")).isTrue();
     }
 
     @Test
     @Transactional
-    void usernameIsNotInUse_UsernameInUse_returnsFalse() {
+    void correctlyReportIfUsernameIsNotInUseWithUsernameInUse() {
         userRepository.save(validUser);
 
         assertThat(userService.usernameIsNotInUse(validUser.getUsername())).isFalse();
     }
 
     @Test
-    void emailIsInUse_EmailNotInUse_returnsFalse() {
+    void correctlyReportEmailIsNotInUse() {
         assertThat(userService.emailIsInUse("testmail")).isFalse();
     }
 
     @Test
-    void emailIsInUse_EmailInUse_returnsTrue() {
+    void correctlyReportEmailIsInUse() {
         userRepository.save(validUser);
 
         assertThat(userService.emailIsInUse(validUser.getEmail())).isTrue();
     }
 
     @Test
-    void emailIsNotInUse_EmailNotInUse_returnsTrue() {
+    void checkIfEmailIsNotInUseWithEmailNotInUse() {
         assertThat(userService.emailIsNotInUse("testmail")).isTrue();
     }
 
     @Test
-    void emailIsNotInUse_EmailInUse_returnsFalse() {
+    void checkIfEmailIsNotInUseWithEmailInUse() {
         userRepository.save(validUser);
 
         assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
+    }
+
+    @Test
+    void getLoggedUser() {
+        Optional<User> dbUser = userRepository.findByUsername(TEST_USER_NAME);
+        User currentUser = userService.getCurrentUser();
+
+        assertThat(currentUser.getUsername()).isEqualTo(TEST_USER_NAME);
+        assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
+    }
+
+    @Test
+    void findAll() {
+        List<User> users = Arrays.asList(
+                getTestUser(userRepository),
+                insertTestUser(userRepository, "test1"),
+                insertTestUser(userRepository, "test2"),
+                insertTestUser(userRepository, "test3")
+        );
+
+        assertThat(userService.findAll()).containsAll(users);
     }
 }

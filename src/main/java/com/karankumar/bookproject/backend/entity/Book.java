@@ -24,6 +24,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -54,9 +55,13 @@ public class Book extends BaseEntity {
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
     private BookGenre bookGenre;
+    private BookFormat bookFormat;
     private Integer seriesPosition;
     private String edition;
     private String bookRecommendedBy;
+    @ISBN
+    private String isbn;
+    private Integer yearOfPublication;
 
     @ManyToOne(cascade =
             {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
@@ -121,6 +126,10 @@ public class Book extends BaseEntity {
                 break;
         }
         this.edition = bookEdition;
+    }
+
+    public void setPublicationYear(Integer yearOfPublication){
+        this.yearOfPublication = yearOfPublication;
     }
 
     @Override

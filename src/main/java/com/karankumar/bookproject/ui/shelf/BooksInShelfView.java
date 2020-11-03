@@ -23,10 +23,9 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
-import com.karankumar.bookproject.ui.book.BookForm;
+import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.filter.AuthorFilterText;
 import com.karankumar.bookproject.ui.shelf.component.BookShelfComboBox;
 import com.karankumar.bookproject.ui.shelf.component.filter.TitleFilterText;
@@ -52,8 +51,8 @@ import javax.transaction.NotSupportedException;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.ALL_BOOKS_SHELF;
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
+import static com.karankumar.bookproject.backend.util.ShelfUtils.ALL_BOOKS_SHELF;
+import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
 
 /**
  * Contains a @see BookForm and a grid containing a list of books in a given shelf.
@@ -87,8 +86,7 @@ public class BooksInShelfView extends VerticalLayout {
         predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
         this.customShelfService = customShelfService;
         this.visibilityStrategies = initVisibilityStrategies();
-        CustomShelfUtils customShelfUtils = new CustomShelfUtils(customShelfService);
-        this.bookGrid = new BookGrid(predefinedShelfUtils, customShelfUtils);
+        this.bookGrid = new BookGrid(predefinedShelfUtils, customShelfService);
         this.bookFilters = new BookFilters();
 
         this.whichShelf = new BookShelfComboBox(customShelfService);
@@ -131,7 +129,7 @@ public class BooksInShelfView extends VerticalLayout {
 
     private CustomShelfForm createCustomShelfForm() {
         CustomShelfForm customShelfForm =
-                new CustomShelfForm(customShelfService, predefinedShelfService);
+                new CustomShelfForm(predefinedShelfService, customShelfService);
         new CustomShelfListener(this, customShelfService).bind(customShelfForm);
         return customShelfForm;
     }

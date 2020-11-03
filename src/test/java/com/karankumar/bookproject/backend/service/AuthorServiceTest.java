@@ -19,19 +19,26 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
+
 import lombok.extern.java.Log;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Log
 @IntegrationTest
+@DisplayName("AuthorService should")
 class AuthorServiceTest {
     private final AuthorService authorService;
     private final BookService bookService;
@@ -49,12 +56,12 @@ class AuthorServiceTest {
     }
 
     @Test
-    void testSaveAndConfirmDuplicateNameWithDifferentId() {
+    void saveAndConfirmDuplicateNameWithDifferentId() {
         // given
         Author author = new Author("Nyor", "Ja");
         authorService.save(author);
 
-        Author authorCopy = author;
+        Author authorCopy = new Author(author.getFirstName(), author.getLastName());
         authorService.save(authorCopy);
 
         // when
@@ -66,7 +73,7 @@ class AuthorServiceTest {
 
     @Transactional
     @Test
-    void testSaveIntegrity() {
+    void saveCorrectly() {
         // given
         Author author = new Author("daks", "oten");
         authorService.save(author);
@@ -76,7 +83,7 @@ class AuthorServiceTest {
         authorService.save(existingAuthor);
 
         // then
-        assertEquals(2, authorService.count());
+        assertThat(authorService.count()).isOne();
     }
 
     @Test
@@ -89,5 +96,35 @@ class AuthorServiceTest {
 
         // then
         assertNotNull(authorService.findById(author.getId()));
+    }
+
+    @Test
+    @DisplayName("be able to delete an author without any books")
+    void deleteAuthorWithoutBooks() {
+        assumeThat(authorService.count()).isZero();
+
+        // given
+        Author authorWithoutBooks = new Author("First", "Last");
+        authorService.save(authorWithoutBooks);
+
+        // when
+        authorService.delete(authorWithoutBooks);
+
+        // then
+        assertThat(authorService.count()).isZero();
+    }
+
+    @Test
+    @DisplayName("throw error on attempt to save a null author")
+    void throwErrorOnSavingNullAuthor() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> authorService.save(null));
+    }
+
+    @Test
+    @DisplayName("throw error on attempt to delete a null author")
+    void throwErrorOnDeletingNullAuthor() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> authorService.save(null));
     }
 }
