@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -184,7 +185,7 @@ class BookServiceTest {
     @Test
     void saveValidBook() {
         // given
-        assertThat(bookService.count()).isZero();
+        assumeThat(bookService.count()).isZero();
         Book validBook = validBook().build();
 
         // when
