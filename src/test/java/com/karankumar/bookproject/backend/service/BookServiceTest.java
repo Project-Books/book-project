@@ -134,8 +134,8 @@ class BookServiceTest {
     @Test
     void notSaveBookOutsidePageLimit() {
         // given
-        Book book = new Book("Book without author", new Author("First", "Last"), toRead);
-        book.setPagesRead(Book.MAX_PAGES + 1);
+        Book book = validBook().pagesRead(Book.MAX_PAGES + 1)
+                               .build();
 
         // when and then
         assertSoftly(softly -> {
