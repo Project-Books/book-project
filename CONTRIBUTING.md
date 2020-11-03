@@ -13,6 +13,7 @@ By contributing to this project, you are expected to adhere to the [Book Project
 ## Contents
 
 1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
+1. Receiving a response
 1. [Open-ended discussions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#open-ended-discussions) 
 1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
    1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
@@ -43,6 +44,12 @@ Questions and feedback should be discussed over [Slack](https://join.slack.com/t
 For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
 
 If in doubt, talk to us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)!
+
+## Receiving a response
+
+We aim to respond to all messages (on Slack and on GitHub) within seven days. Similarly, we aim to review all pull requests within seven days of receiving it in a review state.
+
+If you haven't received a response, feel free to mention @knjk04 or get in touch on Slack.
 
 ## Open-ended discussions
 
