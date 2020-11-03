@@ -18,9 +18,9 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import com.karankumar.bookproject.ui.book.BookForm;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
+import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 import com.vaadin.flow.component.grid.Grid;
 import lombok.extern.java.Log;
@@ -30,19 +30,19 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShelf;
+import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
 
 @Log
 public class BookGrid {
     private final Grid<Book> bookGrid;
     
     private final PredefinedShelfUtils predefinedShelfUtils;
-    private final CustomShelfUtils customShelfUtils;
+    private final CustomShelfService customShelfService;
 
-    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfUtils customShelfUtils) {
+    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfService customShelfService) {
         this.bookGrid = new Grid<>(Book.class);
         this.predefinedShelfUtils = predefinedShelfUtils;
-        this.customShelfUtils = customShelfUtils;
+        this.customShelfService = customShelfService;
         configure();
     }
 
@@ -94,7 +94,7 @@ public class BookGrid {
             return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
         }
 
-        return customShelfUtils.getBooksInCustomShelf(chosenShelf);
+        return customShelfService.getBooksInCustomShelf(chosenShelf);
     }
 
     private void populateGridWithBooks(Set<Book> books, BookFilters bookFilters) {
@@ -104,7 +104,7 @@ public class BookGrid {
 
     private List<Book> filterShelf(Set<Book> books, BookFilters bookFilters) {
         return books.stream()
-                    .filter(bookFilters::apply)
+                    .filter(bookFilters::applyFilter)
                     .collect(Collectors.toList());
     }
 }

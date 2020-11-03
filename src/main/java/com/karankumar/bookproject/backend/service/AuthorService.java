@@ -24,7 +24,6 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Level;
 
 @Service
 @Log
@@ -44,18 +43,10 @@ public class AuthorService {
     }
 
     public void save(@NonNull Author author) {
-        if (author.getId() != null) {
-            Author existingAuthor = findById(author.getId());
-            if (existingAuthor != null) {
-                LOGGER.log(Level.INFO, "Matching authorIds: " + existingAuthor.getId());
-                author = new Author(author.getFirstName(), author.getLastName());
-            }
-        }
-
         authorRepository.save(author);
     }
 
-    public void delete(Author author) {
+    public void delete(@NonNull Author author) {
         authorRepository.delete(author);
     }
 

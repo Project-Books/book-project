@@ -224,4 +224,6 @@ Please also consider that you're finding something difficult on the issue you're
 
 - Feedback: we're eager to find new ways to improve, so please do let us know!
 
+- Triage: help us to [triage issues and pull requests](https://github.com/Project-Books/book-project/wiki/Becoming-a-Triager)
+
 In addition to the above, you can get involved in shaping the future of the project over on [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).

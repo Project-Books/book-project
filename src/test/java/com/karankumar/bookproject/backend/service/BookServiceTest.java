@@ -19,22 +19,26 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Tag;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import com.karankumar.bookproject.backend.entity.Author;	
-import com.karankumar.bookproject.backend.entity.Book;	
-import com.karankumar.bookproject.backend.entity.BookGenre;	
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.BookGenre;
+import com.karankumar.bookproject.backend.entity.BookFormat;
 import com.karankumar.bookproject.backend.entity.CustomShelf;	
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;	
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import org.apache.commons.io.FileUtils;
-import static org.assertj.core.api.Assertions.assertThat;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+
 import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -49,19 +53,27 @@ import java.util.List;
 import java.util.Set;
 
 @IntegrationTest
+@DisplayName("BookService should")
 class BookServiceTest {
-    @Autowired private AuthorService authorService;
-    @Autowired private BookService bookService;
-    @Autowired private CustomShelfService customShelfService;
-    @Autowired private TagService tagService;
+    private final AuthorService authorService;
+    private final BookService bookService;
+    private final CustomShelfService customShelfService;
+    private final TagService tagService;
+    private final PredefinedShelfService predefinedShelfService;
 
     private Book validBook;
-    private static PredefinedShelf toRead;
+    private PredefinedShelf toRead;
     private Author author;
 
-    @BeforeAll
-    public static void beforeAllSetup(@Autowired PredefinedShelfService predefinedShelfService) {
-        toRead = predefinedShelfService.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
+    @Autowired
+    BookServiceTest(AuthorService authorService, BookService bookService,
+                    CustomShelfService customShelfService, TagService tagService,
+                    PredefinedShelfService predefinedShelfService) {
+        this.authorService = authorService;
+        this.bookService = bookService;
+        this.customShelfService = customShelfService;
+        this.tagService = tagService;
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     @BeforeEach
@@ -71,6 +83,7 @@ class BookServiceTest {
     }
 
     private void resetAuthorAndBook() {
+        toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
         author = new Author("Test First Name", "Test Last Name");
         validBook = new Book("Book Name", author, toRead);
     }
@@ -83,13 +96,14 @@ class BookServiceTest {
     }
 
     @Test
-    void nullBookNotSaved() {
-        bookService.save(null);
-        assertThat(bookService.count()).isZero();
+    @DisplayName("throw an exception when there is an attempt to save a null book")
+    void throwExceptionWhenSavingANullBook() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> bookService.save(null));
     }
 
     @Test
-    void bookWithoutAuthorNotSaved() {
+    void notSaveBookWithoutAuthor() {
         SoftAssertions softly = new SoftAssertions();
 
         // when
@@ -102,8 +116,7 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Tests book with numberOfPages > max_pages is not saved")
-    void bookWithMaxNumberOfPagesExceededNotSaved() {
+    void notSaveBookWithMaxNumberOfPagesExceeded() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -118,7 +131,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookOutsidePageLimitNotSaved() {
+    void notSaveBookOutsidePageLimit() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -133,7 +146,14 @@ class BookServiceTest {
     }
 
     @Test
-    void bookWithinPageLimitIsSaved() {
+    @DisplayName("throw an exception when there is an attempt to delete a null book")
+    void throwExceptionWhenDeletingANullBook() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> bookService.delete(null));
+    }
+
+    @Test
+    void saveBookWithinPageLimit() {
         // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES);
@@ -147,7 +167,7 @@ class BookServiceTest {
     }
 
     @Test
-    void bookWithoutPredefinedShelfNotSaved() {
+    void notSaveBookWithoutPredefinedShelf() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -163,8 +183,7 @@ class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Book with author and predefined shelf can be saved")
-    void validBookSaved() {
+    void saveValidBook() {
         SoftAssertions softly = new SoftAssertions();
 
         // given
@@ -183,12 +202,12 @@ class BookServiceTest {
     }
 
     @Test
-    void allBooksReturnedWhenFilterIsEmpty() {
+    void returnAllBooksWhenFilterIsEmpty() {
         assertEquals(bookService.findAll(), bookService.findAll(""));
     }
 
     @Test
-    void allBooksReturnedWhenFilterIsNull() {
+    void returnAllBooksWhenFilterIsNull() {
         assertEquals(bookService.findAll(), bookService.findAll(null));
     }
 
@@ -218,7 +237,7 @@ class BookServiceTest {
     }
 
     private Book createBookAndSetAllAttributes() {
-        CustomShelf customShelf = new CustomShelf("My Shelf");
+        CustomShelf customShelf = customShelfService.createCustomShelf("My Shelf");
         customShelfService.save(customShelf);
 
         Tag tag1 = new Tag("book");
@@ -230,9 +249,12 @@ class BookServiceTest {
         book.setNumberOfPages(420);
         book.setPagesRead(42);
         book.setBookGenre(BookGenre.ADVENTURE);
+        book.setBookFormat(BookFormat.PAPERBACK);
         book.setSeriesPosition(3);
         book.setEdition(2);
         book.setBookRecommendedBy("Peter Parker");
+        book.setIsbn("9780151010264");
+        book.setPublicationYear(2014);
         book.setCustomShelf(customShelf);
         book.setTags(Set.of(tag1, tag2));
         book.setRating(RatingScale.EIGHT);

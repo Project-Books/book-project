@@ -21,8 +21,7 @@ import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.CustomShelfUtils;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
@@ -47,8 +46,8 @@ import java.util.List;
 public class CustomShelfForm extends VerticalLayout {
     private final Dialog dialog;
 
-    private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
+    private final CustomShelfService customShelfService;
 
     private final Binder<CustomShelf> binder = new BeanValidationBinder<>(CustomShelf.class);
 
@@ -57,8 +56,7 @@ public class CustomShelfForm extends VerticalLayout {
     @VisibleForTesting
     final Button saveButton = new Button();
 
-    public CustomShelfForm(CustomShelfService customShelfService,
-                           PredefinedShelfService predefinedShelfService) {
+    public CustomShelfForm(PredefinedShelfService predefinedShelfService, CustomShelfService customShelfService) {
         FormLayout formLayout = new FormLayout();
         dialog = new Dialog();
         dialog.add(new H3("Add custom shelf"), formLayout);
@@ -66,8 +64,8 @@ public class CustomShelfForm extends VerticalLayout {
         dialog.addDialogCloseActionListener(dialogCloseActionEvent -> closeForm());
         add(dialog);
 
-        this.customShelfService = customShelfService;
         this.predefinedShelfService = predefinedShelfService;
+        this.customShelfService = customShelfService;
 
         bindFormFields();
 
@@ -93,8 +91,7 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     private boolean customShelfNameAlreadyUsed(String customShelfName) {
-        List<String> customShelfNames = new CustomShelfUtils(customShelfService).getCustomShelfNames();
-        return customShelfNames.contains(customShelfName);
+        return customShelfService.getCustomShelfNames().contains(customShelfName);
     }
 
     private boolean customShelfNameMatchesPredefinedShelfName(String shelfName) {
@@ -135,7 +132,7 @@ public class CustomShelfForm extends VerticalLayout {
     }
 
     private void setCustomShelfBean() {
-        binder.setBean(new CustomShelf(shelfNameField.getValue()));
+        binder.setBean(customShelfService.createCustomShelf(shelfNameField.getValue()));
     }
 
     @VisibleForTesting

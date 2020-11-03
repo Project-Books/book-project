@@ -40,7 +40,7 @@ class BookFilters {
         return bookAuthor == null;
     }
 
-    boolean apply(Book book) {
+    boolean applyFilter(Book book) {
         return containsBookTitle(book) && containsBookAuthor(book);
     }
 

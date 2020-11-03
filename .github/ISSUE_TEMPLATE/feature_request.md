@@ -15,7 +15,3 @@ A clear and concise description of what you want to happen.
 
 **Additional context**
 Add any other context or screenshots about the feature request here.
-
----
-
-If you need anything, feel free to get in touch with us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)

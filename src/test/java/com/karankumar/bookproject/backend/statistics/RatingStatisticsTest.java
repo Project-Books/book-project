@@ -21,31 +21,33 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.statistics.utils.StatisticTestUtils;
+import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
+@DisplayName("RatingStatistics should")
 class RatingStatisticsTest {
-    private static BookService bookService;
-    private static PredefinedShelfService predefinedShelfService;
+    private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
 
     private static RatingStatistics ratingStatistics;
-    private static Book bookWithNoRating;
-    private static Book bookWithHighestRating;
 
-    @BeforeAll
-    public static void setup(@Autowired BookService bookService,
-                             @Autowired PredefinedShelfService predefinedShelfService) {
-        RatingStatisticsTest.bookService = bookService;
-        RatingStatisticsTest.predefinedShelfService = predefinedShelfService;
+    private Book bookWithNoRating;
+    private Book bookWithHighestRating;
+
+    @Autowired
+    RatingStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     @BeforeEach
-    public void beforeEachSetup() {
+    public void setUp() {
         bookService.deleteAll(); // reset
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         bookWithNoRating = StatisticTestUtils.getBookWithLowestRating();
@@ -55,33 +57,33 @@ class RatingStatisticsTest {
     }
 
     @Test
-    void lowestRatedBookExistsAndIsFound() {
+    void findLowestRatedBookExists() {
         String actualTitle = ratingStatistics.findLeastLikedBook().getTitle();
         String expectedTitle = bookWithNoRating.getTitle();
         assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
-    void testNonExistentLowestRatedBook() {
+    void notFindNonExistentLowestRatedBook() {
         resetRatingStatistics();
         assertThat(ratingStatistics.findLeastLikedBook()).isNull();
     }
 
     @Test
-    void highestRatedBookExistsAndIsFound() {
+    void findHighestRatedBook() {
         String actualTitle = ratingStatistics.findMostLikedBook().getTitle();
         String expectedTitle = bookWithHighestRating.getTitle();
         assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
-    void testNonExistentHighestRatedBook() {
+    void notFindNonExistentHighestRatedBook() {
         resetRatingStatistics();
         assertThat(ratingStatistics.findMostLikedBook()).isNull();
     }
 
     @Test
-    void averageRatingExistsAndIsCorrect() {
+    void findAverageRating() {
         int numberOfBooks = StatisticTestUtils.getNumberOfBooks();
         double totalRating = StatisticTestUtils.totalRating;
         double average = totalRating / numberOfBooks;
@@ -89,7 +91,7 @@ class RatingStatisticsTest {
     }
 
     @Test
-    void testAverageRatingDivideByZero() {
+    void notDivideAverageRatingByZero() {
         resetRatingStatistics();
         assertThat(ratingStatistics.calculateAverageRatingGiven()).isNull();
     }

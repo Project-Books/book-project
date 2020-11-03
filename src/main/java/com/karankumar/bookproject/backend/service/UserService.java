@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
+import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +34,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -52,7 +54,7 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
-    public void register(User user) throws UserAlreadyRegisteredException {
+    public void register(@NonNull User user) throws UserAlreadyRegisteredException {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
 
@@ -84,6 +86,15 @@ public class UserService {
         userRepository.save(userToRegister);
 
         authenticateUser(user);
+    }
+
+    public User getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username).orElseThrow();
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     private void authenticateUser(User user) {
