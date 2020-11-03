@@ -88,7 +88,7 @@ public class ReadingGoalView extends VerticalLayout {
             add(goalForm);
             goalForm.openForm();
 
-            goalForm.addListener(ReadingGoalForm.SaveEvent.class, this::saveGoal);
+            goalForm.addListener(SaveGoalEvent.class, this::saveGoal);
         });
     }
 

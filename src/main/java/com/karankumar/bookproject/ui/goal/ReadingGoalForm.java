@@ -129,7 +129,7 @@ public class ReadingGoalForm extends VerticalLayout {
     private void saveReadingGoal(ReadingGoal.GoalType goalType) {
         binder.setBean(new ReadingGoal(targetToRead.getValue(), goalType));
         LOGGER.log(Level.INFO, "Setting the bean");
-        fireEvent(new SaveEvent(this, binder.getBean()));
+        fireEvent(new SaveGoalEvent(this, binder.getBean()));
         confirmSavedGoal(binder.getBean().getTarget(), binder.getBean().getGoalType());
     }
 
