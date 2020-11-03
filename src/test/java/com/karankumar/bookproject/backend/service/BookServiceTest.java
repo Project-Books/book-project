@@ -78,7 +78,7 @@ class BookServiceTest {
     }
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         resetServices();
         toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
         author = new Author("Test First Name", "Test Last Name");
