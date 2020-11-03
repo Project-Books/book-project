@@ -38,7 +38,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -203,12 +202,12 @@ class BookServiceTest {
 
     @Test
     void returnAllBooksWhenFilterIsEmpty() {
-        assertEquals(bookService.findAll(), bookService.findAll(""));
+        assertThat(bookService.findAll("")).isEqualTo(bookService.findAll());
     }
 
     @Test
     void returnAllBooksWhenFilterIsNull() {
-        assertEquals(bookService.findAll(), bookService.findAll(null));
+        assertThat(bookService.findAll(null)).isEqualTo(bookService.findAll());
     }
 
     @Test
