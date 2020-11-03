@@ -30,7 +30,6 @@ import org.apache.commons.io.FileUtils;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
 
-import org.assertj.core.api.SoftAssertions;
 import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +38,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -108,45 +108,42 @@ class BookServiceTest {
 
     @Test
     void notSaveBookWithoutAuthor() {
-        SoftAssertions softly = new SoftAssertions();
-
         // when
         bookService.save(new Book("Book without author", null, toRead));
 
         // then
-        softly.assertThat(authorService.count()).isZero();
-        softly.assertThat(bookService.count()).isZero();
-        softly.assertAll();
+        assertSoftly(softly -> {
+            softly.assertThat(authorService.count()).isZero();
+            softly.assertThat(bookService.count()).isZero();
+        });
     }
 
     @Test
     void notSaveBookWithMaxNumberOfPagesExceeded() {
-        SoftAssertions softly = new SoftAssertions();
-
         // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setNumberOfPages(Book.MAX_PAGES + 1);
 
         // when and then
-        softly.assertThatThrownBy(() -> bookService.save(book))
-              .isInstanceOf(TransactionSystemException.class);
-        softly.assertThat(bookService.count()).isZero();
-        softly.assertAll();
+        assertSoftly(softly -> {
+            softly.assertThatThrownBy(() -> bookService.save(book))
+                  .isInstanceOf(TransactionSystemException.class);
+            softly.assertThat(bookService.count()).isZero();
+        });
     }
 
     @Test
     void notSaveBookOutsidePageLimit() {
-        SoftAssertions softly = new SoftAssertions();
-
         // given
         Book book = new Book("Book without author", new Author("First", "Last"), toRead);
         book.setPagesRead(Book.MAX_PAGES + 1);
 
         // when and then
-        softly.assertThatThrownBy(() -> bookService.save(book))
-              .isInstanceOf(TransactionSystemException.class);
-        softly.assertThat(bookService.count()).isZero();
-        softly.assertAll();
+        assertSoftly(softly -> {
+            softly.assertThatThrownBy(() -> bookService.save(book))
+                  .isInstanceOf(TransactionSystemException.class);
+            softly.assertThat(bookService.count()).isZero();
+        });
     }
 
     @Test
@@ -180,7 +177,7 @@ class BookServiceTest {
         bookService.save(bookWithoutShelf);
 
         // then
-        SoftAssertions.assertSoftly(softly -> {
+        assertSoftly(softly -> {
             softly.assertThat(authorService.count()).isZero();
             softly.assertThat(bookService.count()).isZero();
         });
@@ -189,7 +186,6 @@ class BookServiceTest {
     @Test
     void saveValidBook() {
         // given
-        SoftAssertions softly = new SoftAssertions();
         assertThat(bookService.count()).isZero();
         Book validBook = validBook().build();
 
@@ -199,10 +195,11 @@ class BookServiceTest {
         // then
         List<Book> filteredByTitle = bookService.findAll(validBook.getTitle());
 
-        softly.assertThat(bookService.count()).isOne();
-        softly.assertThat(bookService.findAll(validBook.getTitle()).size()).isOne();
-        softly.assertThat(filteredByTitle).first().isEqualTo(validBook);
-        softly.assertAll();
+        assertSoftly(softly -> {
+            softly.assertThat(bookService.count()).isOne();
+            softly.assertThat(bookService.findAll(validBook.getTitle()).size()).isOne();
+            softly.assertThat(filteredByTitle).first().isEqualTo(validBook);
+        });
     }
 
     @Test
