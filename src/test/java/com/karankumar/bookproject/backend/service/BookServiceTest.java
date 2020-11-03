@@ -172,18 +172,18 @@ class BookServiceTest {
 
     @Test
     void notSaveBookWithoutPredefinedShelf() {
-        SoftAssertions softly = new SoftAssertions();
-
         // given
-        Book bookWithoutShelf = new Book("Title", new Author("First", "Last"), null);
+        Book bookWithoutShelf = validBook().predefinedShelf(null)
+                                           .build();
 
         // when
         bookService.save(bookWithoutShelf);
 
         // then
-        softly.assertThat(authorService.count()).isZero();
-        softly.assertThat(bookService.count()).isZero();
-        softly.assertAll();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(authorService.count()).isZero();
+            softly.assertThat(bookService.count()).isZero();
+        });
     }
 
     @Test
