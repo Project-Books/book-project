@@ -64,7 +64,7 @@ class BookServiceTest {
     private final PredefinedShelfService predefinedShelfService;
 
     private PredefinedShelf toRead;
-    private Author author;
+    private final Author author = new Author("Test First Name", "Test Last Name");
 
     @Autowired
     BookServiceTest(AuthorService authorService, BookService bookService,
@@ -81,7 +81,6 @@ class BookServiceTest {
     public void setUp() {
         resetServices();
         toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
-        author = new Author("Test First Name", "Test Last Name");
     }
 
     private Book.BookBuilder validBook() {
@@ -202,7 +201,7 @@ class BookServiceTest {
     }
 
     @Test
-    void shouldCreateJsonRepresentationForBooks() throws IOException, JSONException {
+    void createJsonRepresentationForBooks() throws IOException, JSONException {
         // given
         bookService.save(validBook().build());
         Book anotherValidBook = createBookWithAllAttributes().build();
