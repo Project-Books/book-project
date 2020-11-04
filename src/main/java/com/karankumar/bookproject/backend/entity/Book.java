@@ -36,7 +36,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
@@ -52,7 +52,7 @@ public class Book extends BaseEntity {
     public static final int MAX_PAGES = 23_000;
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String title;
     @Max(value = MAX_PAGES)
     private Integer numberOfPages;

@@ -21,6 +21,8 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+
+//import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +32,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assumptions.assumeThat;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 @IntegrationTest
 @DisplayName("Author should")
 class AuthorTest {
@@ -37,6 +46,8 @@ class AuthorTest {
     private AuthorService authorService;
 
     private PredefinedShelf toRead;
+    
+    private Validator validator;
 
     @Autowired
     void AuthorServiceTest(BookService bookService, AuthorService authorService) {
@@ -50,6 +61,12 @@ class AuthorTest {
         resetBookService();
         toRead = predefinedShelfService.findToReadShelf();
     }
+    
+  //  @Before
+  //  public void setUp() {
+    //    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+      //  validator = factory.getValidator();
+   // }
 
     private void resetBookService() {
         bookService.deleteAll();
@@ -114,4 +131,30 @@ class AuthorTest {
         // then
         assertThat(authorService.count()).isOne();
     }
+    
+    @Test
+    void notEmptyFirstName() {
+    	// given
+    	Author noFirst = new Author(" ", "Gaarder");
+    	
+    	validator = Validation.buildDefaultValidatorFactory().getValidator();
+    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(noFirst, "firstName");
+    	
+    	//  then
+    	assertThat(violations.size()).isEqualTo(1);
+    }
+    
+    @Test
+    void notEmptyLastName() {
+    	// given
+    	Author noLast = new Author("Jostein", " ");
+    	
+    	validator = Validation.buildDefaultValidatorFactory().getValidator();
+    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(noLast, "lastName");
+    	
+    	//  then
+    	assertThat(violations.size()).isEqualTo(1);
+    }
 }
+
+
