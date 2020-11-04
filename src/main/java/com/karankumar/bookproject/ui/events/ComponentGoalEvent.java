@@ -15,9 +15,10 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.goal;
+package com.karankumar.bookproject.ui.events;
 
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
+import com.karankumar.bookproject.ui.goal.ReadingGoalForm;
 import com.vaadin.flow.component.ComponentEvent;
 
 public class ComponentGoalEvent {
