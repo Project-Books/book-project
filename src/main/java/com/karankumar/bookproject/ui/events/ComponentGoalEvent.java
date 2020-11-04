@@ -22,6 +22,8 @@ import com.karankumar.bookproject.ui.goal.ReadingGoalForm;
 import com.vaadin.flow.component.ComponentEvent;
 
 public class ComponentGoalEvent {
+    private ComponentGoalEvent() {}
+
     public abstract static class GoalFormEvent extends ComponentEvent<ReadingGoalForm> {
         private final ReadingGoal readingGoal;
 
