@@ -113,6 +113,10 @@ public class Book extends BaseEntity {
         if (edition == null) {
             return;
         }
+        this.edition = convertToBookEdition(edition);
+    }
+
+    public static String convertToBookEdition(int edition) {
         String bookEdition = "";
         int lastDigit = edition % 10;
         switch (lastDigit) {
@@ -129,11 +133,20 @@ public class Book extends BaseEntity {
                 bookEdition = edition + "th edition";
                 break;
         }
-        this.edition = bookEdition;
+        return bookEdition;
     }
 
     public void setPublicationYear(Integer yearOfPublication){
         this.yearOfPublication = yearOfPublication;
+    }
+
+    public static class BookBuilder {
+        private String edition;
+
+        public BookBuilder edition(Integer edition) {
+            this.edition = convertToBookEdition(edition);
+            return this;
+        }
     }
 
     @Override

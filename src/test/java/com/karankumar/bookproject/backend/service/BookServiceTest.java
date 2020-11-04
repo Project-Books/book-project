@@ -94,7 +94,6 @@ class BookServiceTest {
         bookService.deleteAll();
         authorService.deleteAll();
         customShelfService.deleteAll();
-        tagService.deleteAll();
     }
 
     @Test
@@ -239,7 +238,7 @@ class BookServiceTest {
                 .bookGenre(BookGenre.ADVENTURE)
                 .bookFormat(BookFormat.PAPERBACK)
                 .seriesPosition(3)
-                .edition("2nd edition")
+                .edition(2)
                 .bookRecommendedBy("Peter Parker")
                 .isbn("9780151010264")
                 .yearOfPublication(2014)
