@@ -138,8 +138,6 @@ public class Book extends BaseEntity {
     }
 
     public static class BookBuilder {
-        private String edition;
-
         public BookBuilder edition(Integer edition) {
             this.edition = convertToBookEdition(edition);
             return this;
