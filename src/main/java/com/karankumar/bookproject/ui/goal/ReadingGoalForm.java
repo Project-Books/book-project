@@ -19,7 +19,7 @@ package com.karankumar.bookproject.ui.goal;
 
 import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
-import com.karankumar.bookproject.ui.events.SaveGoalEvent;
+import com.karankumar.bookproject.ui.goal.events.SaveGoalEvent;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;

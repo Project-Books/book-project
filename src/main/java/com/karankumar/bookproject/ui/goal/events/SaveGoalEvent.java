@@ -15,10 +15,11 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.events;
+package com.karankumar.bookproject.ui.goal.events;
 
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.ui.goal.ReadingGoalForm;
+import com.karankumar.bookproject.ui.goal.events.ComponentGoalEvent;
 
 public class SaveGoalEvent extends ComponentGoalEvent.GoalFormEvent {
 
