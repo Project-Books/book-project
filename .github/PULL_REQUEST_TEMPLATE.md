@@ -2,12 +2,9 @@
 
 [Please briefly describe what you have changed.]
 
-
-
 ## Additional context
 
-
-
+[If a screenshot would be useful (e.g. for UI changes), please provide one. If not, please remove this section]
 
 ## Related issue
 
