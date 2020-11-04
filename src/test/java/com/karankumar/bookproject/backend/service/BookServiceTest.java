@@ -120,6 +120,7 @@ class BookServiceTest {
     }
 
     @Test
+    @DisplayName("not save a book that exceeds the max number of pages allowed")
     void notSaveBookWithMaxNumberOfPagesExceeded() {
         // given
         Book book = validBook().pagesRead(Book.MAX_PAGES + 1)
@@ -191,12 +192,34 @@ class BookServiceTest {
 
     @Test
     void returnAllBooksWhenFilterIsEmpty() {
-        assertThat(bookService.findAll("")).isEqualTo(bookService.findAll());
+        // given
+        assumeThat(bookService.count()).isZero();
+        Book book1 = validBook().build();
+        bookService.save(book1);
+        Book book2 = validBook().build();
+        bookService.save(book2);
+
+        // when
+        List<Book> actual = bookService.findAll("");
+
+        // then
+        assertThat(actual).hasSize(2);
     }
 
     @Test
     void returnAllBooksWhenFilterIsNull() {
-        assertThat(bookService.findAll(null)).isEqualTo(bookService.findAll());
+        // given
+        assumeThat(bookService.count()).isZero();
+        Book book1 = validBook().build();
+        bookService.save(book1);
+        Book book2 = validBook().build();
+        bookService.save(book2);
+
+        // when
+        List<Book> actual = bookService.findAll(null);
+
+        // then
+        assertThat(actual).hasSize(2);
     }
 
     @Test
@@ -213,8 +236,9 @@ class BookServiceTest {
         String actualJsonString = bookService.getJsonRepresentationForBooksAsString();
 
         // then
-        JSONAssert
-                .assertEquals(expectedJsonString, actualJsonString, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals(
+                expectedJsonString, actualJsonString, JSONCompareMode.NON_EXTENSIBLE
+        );
     }
 
     @Test
