@@ -31,6 +31,7 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
 @Transactional
@@ -82,5 +83,78 @@ class BookTest {
 
         // then
         assertThat(tagService.findAll().size()).isOne();
+    }
+
+    @Test
+    @DisplayName("correctly convert into an edition with the 'st' suffix")
+    @Transactional
+    void correctlyConvertEditionEndingIn1() {
+        // given
+        int firstEdition = 1;
+        int twentyFirstEdition = 21;
+
+        // when
+        String actualFirst = Book.convertToBookEdition(firstEdition);
+        String actualTwentyFirst = Book.convertToBookEdition(twentyFirstEdition);
+
+        // then
+        assertSoftly(softly -> {
+            assertThat(actualFirst).isEqualTo("1st edition");
+            assertThat(actualTwentyFirst).isEqualTo("21st edition");
+        });
+    }
+
+    @Test
+    @DisplayName("correctly convert into an edition with the 'nd' suffix")
+    void correctlyConvertEditionEndingIn2() {
+        // given
+        int secondEdition = 2;
+        int twentySecondEdition = 22;
+
+        // when
+        String actualSecondEdition = Book.convertToBookEdition(secondEdition);
+        String actualTwentySecondEdition = Book.convertToBookEdition(twentySecondEdition);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actualSecondEdition).isEqualTo("2nd edition");
+            softly.assertThat(actualTwentySecondEdition).isEqualTo("22nd edition");
+        });
+    }
+
+    @Test
+    @DisplayName("correctly convert into an edition wth the 'rd' suffix")
+    void correctlyConvertEditionEndingIn3() {
+        // given
+        int thirdEdition = 3;
+        int twentyThirdEdition = 23;
+
+        // when
+        String actualThirdEdition = Book.convertToBookEdition(thirdEdition);
+        String actualTwentyThirdEdition = Book.convertToBookEdition(twentyThirdEdition);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actualThirdEdition).isEqualTo("3rd edition");
+            softly.assertThat(actualTwentyThirdEdition).isEqualTo("23rd edition");
+        });
+    }
+
+    @Test
+    @DisplayName("correctly convert into an edition with the 'th' suffix")
+    void correctlyConvertNthEdition() {
+        // given
+        int fourthEdition = 4;
+        int eleventhEdition = 11;
+
+        // when
+        String actualFourthEdition = Book.convertToBookEdition(fourthEdition);
+        String actualEleventhEdition = Book.convertToBookEdition(eleventhEdition);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actualFourthEdition).isEqualTo("4th edition");
+            softly.assertThat(actualEleventhEdition).isEqualTo("11th edition");
+        });
     }
 }

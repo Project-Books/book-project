@@ -89,9 +89,9 @@ public class Book extends BaseEntity {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
-        name = "book_tag",
-        joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+            name = "book_tag",
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
     private Set<Tag> tags;
 
@@ -108,7 +108,7 @@ public class Book extends BaseEntity {
         this.author = author;
         this.predefinedShelf = predefinedShelf;
     }
-    
+
     public void setEdition(Integer edition) {
         if (edition == null) {
             return;
@@ -117,26 +117,23 @@ public class Book extends BaseEntity {
     }
 
     public static String convertToBookEdition(int edition) {
-        String bookEdition = "";
+        String bookEdition;
         int lastDigit = edition % 10;
-        switch (lastDigit) {
-            case 1:
-                bookEdition = edition + "st edition";
-                break;
-            case 2:
-                bookEdition = edition + "nd edition";
-                break;
-            case 3:
-                bookEdition = edition + "rd edition";
-                break;
-            default:
-                bookEdition = edition + "th edition";
-                break;
+        int lastTwoDigits = edition % 100;
+
+        if (lastDigit == 1 && lastTwoDigits != 11) {
+            bookEdition = edition + "st edition";
+        } else if (lastDigit == 2 && lastTwoDigits != 12) {
+            bookEdition = edition + "nd edition";
+        } else if (lastDigit == 3 && lastTwoDigits != 13) {
+            bookEdition = edition + "rd edition";
+        } else {
+            bookEdition = edition + "th edition";
         }
         return bookEdition;
     }
 
-    public void setPublicationYear(Integer yearOfPublication){
+    public void setPublicationYear(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
     }
 
@@ -152,7 +149,7 @@ public class Book extends BaseEntity {
     @Override
     public String toString() {
         return Book.class.getSimpleName() + "{"
-            + "title='" + title + '\''
-            + '}';
+                + "title='" + title + '\''
+                + '}';
     }
 }
