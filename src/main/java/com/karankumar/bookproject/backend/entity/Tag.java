@@ -41,6 +41,11 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true, exclude = "books")
 public class Tag extends BaseEntity {
 
+<<<<<<< HEAD
+=======
+    @NotNull
+    @NotBlank
+>>>>>>> replace NotEmpty annotations with NotBlank
     @Column(unique = true)
     private String name;
 

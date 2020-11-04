@@ -22,6 +22,10 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
+<<<<<<< HEAD
+=======
+//import org.junit.Before;
+>>>>>>> replace NotEmpty annotations with NotBlank
 import org.junit.jupiter.api.BeforeEach;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,6 +66,15 @@ class AuthorTest {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
     
+<<<<<<< HEAD
+=======
+  //  @Before
+  //  public void setUp() {
+    //    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+      //  validator = factory.getValidator();
+   // }
+
+>>>>>>> replace NotEmpty annotations with NotBlank
     private void resetBookService() {
         bookService.deleteAll();
     }
@@ -127,6 +140,7 @@ class AuthorTest {
     }
     
     @Test
+<<<<<<< HEAD
     void notAcceptNullFirstName() {
     	// given
     	Author authorWithNullFirstName = new Author(null, "Gaarder");
@@ -154,17 +168,34 @@ class AuthorTest {
     	Author authorWithBlankFirstName = new Author(" ", "Gaarder");
     	
     	Set<ConstraintViolation<Author>> violations = validator.validateProperty(authorWithBlankFirstName, "firstName");
+=======
+    void notEmptyFirstName() {
+    	// given
+    	Author noFirst = new Author(" ", "Gaarder");
+    	
+    	validator = Validation.buildDefaultValidatorFactory().getValidator();
+    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(noFirst, "firstName");
+>>>>>>> replace NotEmpty annotations with NotBlank
     	
     	//  then
     	assertThat(violations.size()).isEqualTo(1);
     }
     
     @Test
+<<<<<<< HEAD
     void notAcceptBlankLastName() {
     	// given
     	Author authorWithBlankLastName = new Author("Jostein", " ");
     	
     	Set<ConstraintViolation<Author>> violations = validator.validateProperty(authorWithBlankLastName, "lastName");
+=======
+    void notEmptyLastName() {
+    	// given
+    	Author noLast = new Author("Jostein", " ");
+    	
+    	validator = Validation.buildDefaultValidatorFactory().getValidator();
+    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(noLast, "lastName");
+>>>>>>> replace NotEmpty annotations with NotBlank
     	
     	//  then
     	assertThat(violations.size()).isEqualTo(1);
