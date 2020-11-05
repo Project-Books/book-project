@@ -19,10 +19,8 @@ package com.karankumar.bookproject.ui.goal.events;
 
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.ui.goal.ReadingGoalForm;
-import com.karankumar.bookproject.ui.goal.events.ComponentGoalEvent;
 
 public class SaveGoalEvent extends ComponentGoalEvent.GoalFormEvent {
-
     public SaveGoalEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
         super(source, readingGoal);
     }
