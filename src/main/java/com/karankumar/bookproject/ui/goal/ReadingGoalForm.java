@@ -162,9 +162,4 @@ public class ReadingGoalForm extends VerticalLayout {
                                                                   ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
     }
-
-    /**
-     * Vaadin's event bus system. A registered listener can be notified when a save or delete event
-     * is fired
-     */
 }

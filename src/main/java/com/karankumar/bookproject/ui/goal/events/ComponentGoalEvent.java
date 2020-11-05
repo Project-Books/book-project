@@ -21,6 +21,10 @@ import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.ui.goal.ReadingGoalForm;
 import com.vaadin.flow.component.ComponentEvent;
 
+/**
+ * Vaadin's event bus system. A registered listener can be notified when a save or delete event
+ * is fired
+ */
 public class ComponentGoalEvent {
     private ComponentGoalEvent() {}
 
