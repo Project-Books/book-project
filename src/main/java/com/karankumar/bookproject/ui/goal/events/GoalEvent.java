@@ -25,19 +25,15 @@ import com.vaadin.flow.component.ComponentEvent;
  * Vaadin's event bus system. A registered listener can be notified when a save or delete event
  * is fired
  */
-public class ComponentGoalEvent {
-    private ComponentGoalEvent() {}
+public abstract class GoalEvent extends ComponentEvent<ReadingGoalForm> {
+    private final ReadingGoal readingGoal;
 
-    public abstract static class GoalFormEvent extends ComponentEvent<ReadingGoalForm> {
-        private final ReadingGoal readingGoal;
+    protected GoalEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
+        super(source, false);
+        this.readingGoal = readingGoal;
+    }
 
-        protected GoalFormEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
-            super(source, false);
-            this.readingGoal = readingGoal;
-        }
-
-        public ReadingGoal getReadingGoal() {
-            return readingGoal;
-        }
+    public ReadingGoal getReadingGoal() {
+        return readingGoal;
     }
 }

@@ -158,8 +158,8 @@ public class ReadingGoalForm extends VerticalLayout {
               .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
     }
 
-    public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
-                                                                  ComponentEventListener<T> listener) {
+    public <T extends ComponentEvent<?>> Registration addListener(
+            Class<T> eventType, ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
     }
 }
