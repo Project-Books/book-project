@@ -180,6 +180,8 @@ Before submitting a pull request, run the unit tests and ensure they pass.
 
 Generally speaking, if you're working on a new feature (any issue with the [enhancement label](https://github.com/knjk04/book-project/labels/enhancement)) or fixing a [bug](https://github.com/knjk04/book-project/labels/bug), please also write tests. If you need a hand with this, we can help.
 
+We highly recommend following a test-driven development approach.
+
 ### New files
 
 If you're adding a new file, please ensure to copy the contents of our [copyright file](https://github.com/knjk04/book-project/blob/master/docs/COPYRIGHT) verbatim (use the latest version on the master branch).
