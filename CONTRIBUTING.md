@@ -13,7 +13,7 @@ By contributing to this project, you are expected to adhere to the [Book Project
 ## Contents
 
 1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
-1. Receiving a response
+1. [Receiving a response](https://github.com/Project-Books/book-project/blob/refactor-book-service-test-523/CONTRIBUTING.md#receiving-a-response)
 1. [Open-ended discussions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#open-ended-discussions) 
 1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
    1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
