@@ -123,4 +123,6 @@ public class UserService {
     public boolean emailIsNotInUse(String email) {
         return !emailIsInUse(email);
     }
+
+    public void deleteUser(User user) { userRepository.delete(user);}
 }

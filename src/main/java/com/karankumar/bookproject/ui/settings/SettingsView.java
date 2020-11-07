@@ -19,9 +19,11 @@ package com.karankumar.bookproject.ui.settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.UserService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
+import com.karankumar.bookproject.ui.components.dialog.DeleteAccountDialog;
 import com.vaadin.flow.component.HtmlComponent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -52,11 +54,13 @@ public class SettingsView extends HorizontalLayout {
     private static final String APPEARANCE = "Appearance:";
     private static final String MY_BOOKS = "My books:";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
+	private static final String ACCOUNT = "Account:";
     private static final SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
     private static final H3 appearanceHeading = new H3(APPEARANCE);
     private static final H3 myBooksHeading = new H3(MY_BOOKS);
+	private static final H3 accountHeading = new H3(ACCOUNT);
     private static final HtmlComponent lineBreak = new HtmlComponent("br");
 
     // Clear Shelves
@@ -66,7 +70,10 @@ public class SettingsView extends HorizontalLayout {
     private static final String EXPORT_BOOKS = "Export";
     private static final Anchor exportBooksAnchor;
     private static BookService bookService;
-
+	private static UserService userService;
+	private static final String DELETE_ACCOUNT = "Delete account";
+	private static DeleteAccountDialog deleteAccountDialog;
+	private static final Button deleteAccountButton;
     static {
         darkModeToggle = new SwitchToggle();
         darkModeToggle.addClickListener(e -> {
@@ -89,6 +96,12 @@ public class SettingsView extends HorizontalLayout {
             resetShelvesDialog.openDialog();
         });
 
+		deleteAccountButton = new Button(DELETE_ACCOUNT, click -> {
+			deleteAccountDialog = new DeleteAccountDialog(userService, userService.getCurrentUser());
+			deleteAccountDialog.openDialog();
+		});
+		
+
         exportBooksAnchor = new Anchor();
         exportBooksAnchor.getElement().setAttribute("download", true);
         exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
@@ -105,12 +118,17 @@ public class SettingsView extends HorizontalLayout {
         configureExportBooksAnchor();
 
         VerticalLayout verticalLayout = new VerticalLayout(
+			
                 appearanceHeading,
                 horizontalLayout,
                 lineBreak,
                 myBooksHeading,
                 clearShelvesButton,
-                exportBooksAnchor
+                exportBooksAnchor,
+				lineBreak,
+				accountHeading,
+				deleteAccountButton
+			
         );
 
         verticalLayout.setAlignItems(Alignment.CENTER);
