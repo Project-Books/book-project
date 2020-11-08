@@ -51,7 +51,7 @@ class CustomShelfRepositoryTest {
     }
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         user = getTestUser(userRepository);
         createShelvesForUser(user);
         createShelvesForUser(insertTestUser(userRepository, "anotherUser"));
@@ -71,8 +71,13 @@ class CustomShelfRepositoryTest {
     @Test
     @DisplayName("findByShelfNameAndUser correctly returns null if shelf doesn't exist")
     void findByShelfNameAndUserReturnsNull() {
+        // given
         repository.deleteAll();
+
+        // when
         CustomShelf shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
+
+        // then
         assertThat(shelf).isNull();
     }
 
@@ -92,8 +97,13 @@ class CustomShelfRepositoryTest {
     @Test
     @DisplayName("findAllByUser correctly returns empty list for a user")
     void findAllByUserIsEmpty() {
+        // given
         repository.deleteAll();
+
+        // when
         List<CustomShelf> shelves = repository.findAllByUser(user);
+
+        // then
         assertThat(shelves).isNotNull().isEmpty();
     }
 

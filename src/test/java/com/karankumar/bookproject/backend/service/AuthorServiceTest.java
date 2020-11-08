@@ -68,7 +68,8 @@ class AuthorServiceTest {
         List<Author> savedAuthors = authorService.findAll();
 
         // then
-        assertEquals(2, savedAuthors.size());
+        int expected = 2;
+        assertThat(savedAuthors.size()).isEqualTo(expected);
     }
 
     @Transactional
