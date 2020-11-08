@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,7 @@ class CustomShelfServiceTest {
     }
 
     @Test
+    @DisplayName("find all custom shelves belonging to the logged in user")
     void findAllCustomShelvesForLoggedInUser() {
         // when
         List<CustomShelf> shelves = customShelfService.findAllForLoggedInUser();
@@ -80,6 +82,8 @@ class CustomShelfServiceTest {
     }
 
     @Test
+    @Disabled
+    // TODO: check if this test is needed
     void findAllPredefinedShelvesForPredefinedShelfNameAndLoggedInUser() {
         String name = SHELF_NAMES.get(0);
         CustomShelf shelf = customShelfService.findByShelfNameAndLoggedInUser(name);
