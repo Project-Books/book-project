@@ -70,7 +70,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
-                "/VAADIN/**",
                 "/favicon.ico",
                 "/robots.txt",
                 "/manifest.webmanifest",
@@ -93,6 +92,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
                 .antMatchers(REGISTRATION_URL).permitAll()
+                .antMatchers("/VAADIN/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -100,6 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl(LOGIN_PROCESSING_URL)
                 .failureUrl(LOGIN_FAILURE_URL)
                 .and()
+
             // send users to the logout URL when they log out
             .logout()
                 .logoutSuccessUrl(LOGOUT_SUCCESS_URL);

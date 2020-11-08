@@ -4,10 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.security.SecurityUtils;
+import com.karankumar.bookproject.ui.settings.SettingsView;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.upload.SucceededEvent;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import lombok.extern.java.Log;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,20 +28,22 @@ public class JsonImportService implements ComponentEventListener<SucceededEvent>
     private final BookService bookService;
     private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
+    private final UserService userService;
 
     public JsonImportService(BookService bookService,
                              CustomShelfService customShelfService,
-                             PredefinedShelfService predefinedShelfService) {
+                             PredefinedShelfService predefinedShelfService,
+                             UserService userService) {
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.predefinedShelfService = predefinedShelfService;
+        this.userService = userService;
     }
 
     @Transactional
     public void importJson(String json) {
         try {
             List<Book> books = bookService.readJsonRepresentationFromString(json);
-
             importCustomShelves(books);
             resetPredefinedShelves(books);
 
@@ -57,14 +64,14 @@ public class JsonImportService implements ComponentEventListener<SucceededEvent>
     private void resetPredefinedShelves(List<Book> books) {
         for (Book book : books) {
             PredefinedShelf.ShelfName predefinedShelfName = book.getPredefinedShelf().getPredefinedShelfName();
-            PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfName(predefinedShelfName);
+            PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfName);
             book.setPredefinedShelf(shelf);
         }
     }
 
     private void importCustomShelf(Book book) {
         CustomShelf customShelf = book.getCustomShelf();
-        List<CustomShelf> dbShelves = customShelfService.findAll(customShelf.getShelfName());
+        List<CustomShelf> dbShelves = customShelfService.findAllForLoggedInUser();
 
         if (dbShelves.isEmpty()) {
             customShelfService.save(customShelf);
@@ -77,6 +84,7 @@ public class JsonImportService implements ComponentEventListener<SucceededEvent>
 
     @Override
     public void onComponentEvent(SucceededEvent succeededEvent) {
+
         try {
             MemoryBuffer memoryBuffer = (MemoryBuffer)succeededEvent.getUpload().getReceiver();
             String content = new String(memoryBuffer.getInputStream().readAllBytes());
