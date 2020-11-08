@@ -20,16 +20,22 @@ package com.karankumar.bookproject.backend.goal;
 import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.calculateProgressTowardsReadingGoal;
 import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.howFarAheadOrBehindSchedule;
 import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.booksToReadFromStartOfYear;
+
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.util.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.time.LocalDate;
 
 @DisplayName("ReadingGoalCalculator should")
 class ReadingGoalCalculatorTest {
@@ -245,5 +251,63 @@ class ReadingGoalCalculatorTest {
         // then
         double expected = 0.5;
         assertThat(booksToReadFromStartOfYear).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("return false if the book in book has finish date this year is null")
+    void returnFalseInBookHasFinishDateThisYearIfBookIsNull() {
+        // when
+        boolean actual = ReadingGoalCalculator.bookHasFinishDateInThisYear(null);
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    @DisplayName("return false if the book does not have a finish date")
+    void returnFalseIfBookDoesNotHaveAFinishDate() {
+        // given
+        Book book = createBook().build();
+
+        // when
+        boolean actual = ReadingGoalCalculator.bookHasFinishDateInThisYear(book);
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    private Book.BookBuilder createBook() {
+        return Book.builder().title("title")
+                   .author(new Author("J.K.", "Rowling"))
+                   .predefinedShelf(null);
+    }
+
+    @Test
+    @DisplayName("return false if book was not read this year")
+    void returnFalseIfBookNotReadThisYear() {
+        // given
+        LocalDate lastYear = LocalDate.ofYearDay(2019, 1);
+        Book book = createBook().dateFinishedReading(lastYear)
+                                .build();
+
+        // when
+        boolean actual = ReadingGoalCalculator.bookHasFinishDateInThisYear(book);
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    @Disabled
+    void returnTrueIfBookReadThisYear() {
+        // given
+        Book book = createBook().dateFinishedReading(LocalDate.now())
+                                .build();
+
+        // when
+        boolean actual = ReadingGoalCalculator.bookHasFinishDateInThisYear(book);
+
+        // then
+        assertThat(actual).isTrue();
     }
 }
