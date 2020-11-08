@@ -29,23 +29,38 @@ class BookUtilsTest {
 
     @Test
     void notShowSeriesPositionIfBookIsNotInSeries() {
+        // given
         book.setSeriesPosition(null);
+
+        // when
         String actual = BookUtils.combineTitleAndSeries(book);
+
+        // then
         assertThat(actual).isEqualTo(bookTitle);
     }
 
     @Test
     void returnTitleWhenSeriesPositionIsZero() {
+        // given
         book.setSeriesPosition(0);
+
+        // when
         String actual = BookUtils.combineTitleAndSeries(book);
+
+        // then
         assertThat(actual).isEqualTo(bookTitle);
     }
 
     @Test
     void showSeriesPositionCorrectly() {
+        // given
         book.setSeriesPosition(1);
-        String expected = bookTitle + " (#1)";
+
+        // when
         String actual = BookUtils.combineTitleAndSeries(book);
+
+        // then
+        String expected = bookTitle + " (#1)";
         assertThat(actual).isEqualTo(expected);
     }
 }
