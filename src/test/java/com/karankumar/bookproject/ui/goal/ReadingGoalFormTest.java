@@ -43,22 +43,22 @@ class ReadingGoalFormTest {
     private static Routes routes;
 
     private final ApplicationContext ctx;
-    private final ReadingGoalService readingGoalService;
+    private ReadingGoalService readingGoalService;
 
     @BeforeAll
     public static void discoverRoutes() {
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
     }
 
-    public ReadingGoalFormTest(ApplicationContext ctx, ReadingGoalService readingGoalService) {
+    public ReadingGoalFormTest(ApplicationContext ctx) {
         this.ctx = ctx;
-        this.readingGoalService = readingGoalService;
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(@Autowired ReadingGoalService readingGoalService) {
         final SpringServlet servlet = new MockSpringServlet(routes, ctx);
         MockVaadin.setup(UI::new, servlet);
+        this.readingGoalService = readingGoalService;
     }
 
     @Test
