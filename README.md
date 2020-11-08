@@ -79,9 +79,6 @@ Then, if you want to use Docker, follow one of the approaches below:
 5. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
     - May need to add `sudo` to this command on Unix
 6. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
-7. Log in with the details below:
-    - Username: `user`
-    - Password: `password`
 
 #### 2. Start using docker-compose in production mode
 
@@ -90,10 +87,6 @@ Then, if you want to use Docker, follow one of the approaches below:
     - `mvnw.cmd clean package -Pproduction` (Windows)
 5. Start the MySQL Database and book project app using `docker-compose up --build`
     - May need to add `sudo` to this command on Unix
-6. Go to `localhost:8080`
-7. Log in with the details below:
-    - Username: `user`
-    - Password: `password`
     
 #### 3. Start locally with Vaadin live reload (the tests do not run)
 
@@ -106,14 +99,17 @@ Vaadin Live reload which prevents you from needing to re-run the server every ti
 5. Run the project from your IDE or with Maven:
     - `./mvnw spring-boot:run` on Unix
     - `mvnw.cmd spring-boot:run` on Windows
-6. Log in with the details below:
-    - Username: `user`
-    - Password: `password`
    
 If you're running the app from your IDE, after making a Vaadin-related change, build the app from your IDE after making
 any changes.
 
-#### Fixing Lombok errors
+### Access site
+
+After following the instructions for running the app above, go to `localhost:8080`. Then, log in with the details below:
+- Username: `user`
+- Password: `password`
+
+### Fixing Lombok errors
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
 You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
