@@ -96,13 +96,25 @@ class CustomShelfUtilsTest {
 
     @Test
     void returnNoBooksIfNoBooksInCustomShelf() {
-        Set<Book> actual =
-                customShelfService.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
+        // given
+        String customShelfWithoutBooks = customShelfWithNoBooks.getShelfName();
+
+        // when
+        Set<Book> actual = customShelfService.getBooksInCustomShelf(customShelfWithoutBooks);
+
+        // then
         assertThat(actual).isEmpty();
     }
 
     @Test
     void returnNoBooksForNonExistentCustomShelf() {
-        assertThat(customShelfService.getBooksInCustomShelf("InvalidShelf")).isEmpty();
+        // given
+        String nonExistentShelf = "InvalidShelf";
+
+        // when
+        Set<Book> actual = customShelfService.getBooksInCustomShelf(nonExistentShelf);
+
+        // then
+        assertThat(actual).isEmpty();
     }
 }
