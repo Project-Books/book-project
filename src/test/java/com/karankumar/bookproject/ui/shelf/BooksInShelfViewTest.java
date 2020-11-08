@@ -93,7 +93,7 @@ class BooksInShelfViewTest {
 
     @BeforeAll
     public static void discoverRoutes() {
-        MockVaadin.setup(); // Need that for the Upload-Field in SettingsUI, NPE otherwise
+        MockVaadin.setup();
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
     }
 

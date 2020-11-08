@@ -51,6 +51,7 @@ class ResetShelvesDialogTest {
 
     @BeforeAll
     public static void discoverRoutes() {
+        MockVaadin.setup();
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
     }
 
