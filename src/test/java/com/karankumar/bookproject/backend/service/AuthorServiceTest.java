@@ -90,12 +90,13 @@ class AuthorServiceTest {
     void savedAuthorCanBeFound() {
         // given
         Author author = new Author("First", "Last");
-
-        // when
         authorService.save(author);
 
+        // when
+        Author actual = authorService.findById(author.getId());
+
         // then
-        assertNotNull(authorService.findById(author.getId()));
+        assertThat(actual).isNotNull();
     }
 
     @Test
