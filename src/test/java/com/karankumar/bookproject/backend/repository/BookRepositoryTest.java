@@ -27,9 +27,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
 @DisplayName("BookRepository should")
@@ -54,7 +57,7 @@ class BookRepositoryTest {
     }
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         User user = getTestUser(userRepository);
         author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
         readShelf = predefinedShelfRepository.save(new PredefinedShelf(READ, user));
@@ -87,8 +90,16 @@ class BookRepositoryTest {
     @Test
     @DisplayName("should successfully find list of books by their title")
     void findBookByTitle() {
-        assertThat(bookRepository.findByTitleContainingIgnoreCase("someTitle").size()).isOne();
-        assertThat(bookRepository.findByTitleContainingIgnoreCase("some").size()).isOne();
-        assertThat(bookRepository.findByTitleContainingIgnoreCase("title").size()).isOne();
+        // when
+        List<Book> actual1 = bookRepository.findByTitleContainingIgnoreCase("someTitle");
+        List<Book> actual2 = bookRepository.findByTitleContainingIgnoreCase("some");
+        List<Book> actual3 = bookRepository.findByTitleContainingIgnoreCase("title");
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actual1.size()).isOne();
+            softly.assertThat(actual2.size()).isOne();
+            softly.assertThat(actual3.size()).isOne();
+        });
     }
 }
