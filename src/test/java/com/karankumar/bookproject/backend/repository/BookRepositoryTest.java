@@ -73,8 +73,11 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findAll().size()).isOne();
-        assertThat(bookRepository.findAll().get(0)).isEqualToComparingFieldByField(book2);
+        assertSoftly(softly -> {
+            softly.assertThat(bookRepository.findAll().size()).isOne();
+            softly.assertThat(bookRepository.findAll().get(0))
+                  .isEqualToComparingFieldByField(book2);
+        });
     }
 
     @Test
