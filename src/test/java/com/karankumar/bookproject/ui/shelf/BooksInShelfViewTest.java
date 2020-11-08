@@ -93,7 +93,7 @@ class BooksInShelfViewTest {
 
     @BeforeAll
     public static void discoverRoutes() {
-        UI.setCurrent(new UI()); // UI.getCurrent can be null and throw NPE in SettingsView
+        MockVaadin.setup(); // Need that for the Upload-Field in SettingsUI, NPE otherwise
         routes = new Routes().autoDiscoverViews("com.karankumar.bookproject.ui");
     }
 

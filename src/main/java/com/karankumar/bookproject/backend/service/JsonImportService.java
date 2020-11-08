@@ -4,15 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.account.User;
-import com.karankumar.bookproject.security.SecurityUtils;
-import com.karankumar.bookproject.ui.settings.SettingsView;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.upload.SucceededEvent;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import lombok.extern.java.Log;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,16 +23,17 @@ public class JsonImportService implements ComponentEventListener<SucceededEvent>
     private final BookService bookService;
     private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
-    private final UserService userService;
+    private final TagService tagService;
 
     public JsonImportService(BookService bookService,
                              CustomShelfService customShelfService,
                              PredefinedShelfService predefinedShelfService,
-                             UserService userService) {
+                             UserService userService,
+                             TagService tagService) {
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.predefinedShelfService = predefinedShelfService;
-        this.userService = userService;
+        this.tagService = tagService;
     }
 
     @Transactional
@@ -45,11 +41,18 @@ public class JsonImportService implements ComponentEventListener<SucceededEvent>
         try {
             List<Book> books = bookService.readJsonRepresentationFromString(json);
             importCustomShelves(books);
+            importTags(books);
             resetPredefinedShelves(books);
 
             books.forEach(bookService::save);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.SEVERE, "Couldn't parse JSON for import", e);
+        }
+    }
+
+    private void importTags(List<Book> books) {
+        for (Book book : books) {
+            book.getTags().forEach(tagService::save);
         }
     }
 

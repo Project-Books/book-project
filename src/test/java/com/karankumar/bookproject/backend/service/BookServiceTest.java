@@ -26,6 +26,7 @@ import com.karankumar.bookproject.backend.entity.BookFormat;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.entity.account.User;
 import org.apache.commons.io.FileUtils;
 
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
@@ -234,6 +235,7 @@ class BookServiceTest {
 
         // when
         String actualJsonString = bookService.getJsonRepresentationForBooksAsString();
+        System.out.println(actualJsonString);
 
         // then
         JSONAssert.assertEquals(
@@ -244,7 +246,8 @@ class BookServiceTest {
     @Test
     void readBooksFromJsonRepresentationCorrectly() throws IOException {
         // given
-        Book anotherValidBook = createBookAndSetAllAttributes();
+        Book anotherValidBook = createBookWithAllAttributes().build();
+        anotherValidBook.setCustomShelf(createAndSaveCustomShelf());
         bookService.save(anotherValidBook);
         String validJsonString = bookService.getJsonRepresentationForBooksAsString();
         // when
