@@ -22,6 +22,7 @@ import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.howF
 import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.booksToReadFromStartOfYear;
 import com.karankumar.bookproject.backend.util.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -71,15 +72,16 @@ class ReadingGoalCalculatorTest {
     @Test
     @DisplayName("Ensure 0, and not an arithmetic exception, is returned")
     void shouldNotThrowExceptionOnZeroDivision() {
+        // given
         int toRead = 5;
         int read = 0;
 
-        SoftAssertions softly = new SoftAssertions();
-        softly.assertThatCode(() ->
-                calculateProgressTowardsReadingGoal(toRead, read)
-        ).doesNotThrowAnyException();
-        softly.assertThat(calculateProgressTowardsReadingGoal(toRead, read)).isZero();
-        softly.assertAll();
+        // then
+        assertSoftly(softly -> {
+            softly.assertThatCode(() -> calculateProgressTowardsReadingGoal(toRead, read))
+                  .doesNotThrowAnyException();
+            softly.assertThat(calculateProgressTowardsReadingGoal(toRead, read)).isZero();
+        });
     }
 
     @Nested
@@ -162,7 +164,10 @@ class ReadingGoalCalculatorTest {
 
     @Test
     void testBooksToReadFromStartOfYear(){
+        // when
         double booksToReadFromStartOfYear = booksToReadFromStartOfYear(26);
+
+        // then
         assertThat(booksToReadFromStartOfYear).isEqualTo(0.5);
     }
 }

@@ -53,18 +53,16 @@ class PredefinedShelfTest {
         List<PredefinedShelf> shelves = predefinedShelfService.findAllForLoggedInUser();
 
         // then
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(shelves).hasSize(4);
-                    softly.assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
-                          .contains(
-                                  ShelfName.TO_READ,
-                                  ShelfName.READING,
-                                  ShelfName.READ,
-                                  ShelfName.DID_NOT_FINISH
-                          );
-                }
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(shelves).hasSize(4);
+            softly.assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
+                  .contains(
+                          ShelfName.TO_READ,
+                          ShelfName.READING,
+                          ShelfName.READ,
+                          ShelfName.DID_NOT_FINISH
+                  );
+        });
 
     }
 
