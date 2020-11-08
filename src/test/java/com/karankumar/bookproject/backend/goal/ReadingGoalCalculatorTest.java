@@ -24,7 +24,6 @@ import com.karankumar.bookproject.backend.util.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -94,19 +93,43 @@ class ReadingGoalCalculatorTest {
 
         @Test
         void behindSchedule() {
-            // one book behind schedule
-            assertThat(howFarAheadOrBehindSchedule(52,0)).isOne();
+            // given
+            int booksToReadThisYear = 52;
+            int booksReadThisYear = 0;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear,booksReadThisYear);
+
+            // then
+            int booksBehindSchedule = 1;
+            assertThat(actual).isEqualTo(booksBehindSchedule);
         }
 
         @Test
         void onSchedule() {
-            assertThat(howFarAheadOrBehindSchedule(52, 1)).isZero();
+            // given
+            int booksToReadThisYear = 52;
+            int booksReadThisYear = 1;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
+
+            // then
+            assertThat(actual).isZero();
         }
 
         @Test
         void aheadOfSchedule() {
-            // 9 books ahead of schedule
-            assertEquals(9, howFarAheadOrBehindSchedule(52,10));
+            // given
+            int booksToReadThisYear = 52;
+            int booksReadThisYear = 10;
+            int booksAheadOfSchedule = 9;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
+
+            // then
+            assertThat(actual).isEqualTo(booksAheadOfSchedule);
         }
     }
 
@@ -120,19 +143,44 @@ class ReadingGoalCalculatorTest {
 
         @Test
         void behindSchedule() {
-            // 10 books behind schedule
-            assertEquals(10, howFarAheadOrBehindSchedule(40,10));
+            // given
+            int booksToReadThisYear = 40;
+            int booksReadThisYear = 10;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
+
+            // then
+            int booksBehindSchedule = 10;
+            assertThat(actual).isEqualTo(booksBehindSchedule);
         }
 
         @Test
         void onSchedule() {
-            assertEquals(20, howFarAheadOrBehindSchedule(40,20));
+            // given
+            int booksToReadThisYear = 40;
+            int booksReadThisYear = 20;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
+
+            // then
+            int expected = 20;
+            assertThat(actual).isEqualTo(expected);
         }
 
         @Test
         void aheadOfSchedule() {
-            // 30 books ahead of schedule
-            assertEquals(30, howFarAheadOrBehindSchedule(40,30));
+            // given
+            int booksToReadThisYear = 40;
+            int booksReadThisYear = 30;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
+
+            // then
+            int booksAheadOfSchedule = 30;
+            assertThat(actual).isEqualTo(booksAheadOfSchedule);
         }
     }
 
@@ -146,28 +194,56 @@ class ReadingGoalCalculatorTest {
 
         @Test
         void behindSchedule() {
-            // 25 books behind schedule
-            assertEquals(25, howFarAheadOrBehindSchedule(113,79));
+            // given
+            int booksToReadThisYear = 113;
+            int booksReadThisYear = 79;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
+
+            // then
+            int booksBehindSchedule = 25;
+            assertEquals(booksBehindSchedule, actual);
         }
 
         @Test
         void onSchedule() {
-            assertThat(howFarAheadOrBehindSchedule(113,104)).isZero();
+            // given
+            int booksToReadThisYear = 113;
+            int booksReadThisYear = 104;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
+
+            // then
+            assertThat(actual).isZero();
         }
 
         @Test
         void aheadOfSchedule() {
-            // 46 books ahead of schedule
-            assertEquals(46, howFarAheadOrBehindSchedule(113,150));
+            // given
+            int booksToReadThisYear = 113;
+            int booksReadThisYear = 150;
+
+            // when
+            int actual = howFarAheadOrBehindSchedule(booksToReadThisYear, booksReadThisYear);
+
+            // then
+            int booksAheadOfSchedule = 46;
+            assertThat(actual).isEqualTo(booksAheadOfSchedule);
         }
     }
 
     @Test
     void testBooksToReadFromStartOfYear(){
+        // given
+        int booksToReadThisYear = 26;
+
         // when
-        double booksToReadFromStartOfYear = booksToReadFromStartOfYear(26);
+        double booksToReadFromStartOfYear = booksToReadFromStartOfYear(booksToReadThisYear);
 
         // then
-        assertThat(booksToReadFromStartOfYear).isEqualTo(0.5);
+        double expected = 0.5;
+        assertThat(booksToReadFromStartOfYear).isEqualTo(expected);
     }
 }
