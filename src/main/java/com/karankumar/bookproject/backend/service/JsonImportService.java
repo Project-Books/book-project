@@ -24,16 +24,18 @@ public class JsonImportService implements ComponentEventListener<SucceededEvent>
     private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
     private final TagService tagService;
+    private final UserService userService;
 
     public JsonImportService(BookService bookService,
                              CustomShelfService customShelfService,
                              PredefinedShelfService predefinedShelfService,
-                             UserService userService,
-                             TagService tagService) {
+                             TagService tagService,
+                             UserService userService) {
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.predefinedShelfService = predefinedShelfService;
         this.tagService = tagService;
+        this.userService = userService;
     }
 
     @Transactional
@@ -52,7 +54,9 @@ public class JsonImportService implements ComponentEventListener<SucceededEvent>
 
     private void importTags(List<Book> books) {
         for (Book book : books) {
-            book.getTags().forEach(tagService::save);
+            if (book.getTags() != null) {
+                book.getTags().forEach(tagService::save);
+            }
         }
     }
 
@@ -77,6 +81,7 @@ public class JsonImportService implements ComponentEventListener<SucceededEvent>
         List<CustomShelf> dbShelves = customShelfService.findAllForLoggedInUser();
 
         if (dbShelves.isEmpty()) {
+            customShelf = new CustomShelf(customShelf.getShelfName(), userService.getCurrentUser());
             customShelfService.save(customShelf);
         } else {
             customShelf = dbShelves.get(0);

@@ -226,6 +226,8 @@ class BookServiceTest {
     @Test
     void createJsonRepresentationForBooks() throws IOException, JSONException {
         // given
+        bookService.deleteAll();
+        tagService.deleteAll();
         bookService.save(validBook().build());
         Book anotherValidBook = createBookWithAllAttributes().build();
         bookService.save(anotherValidBook);
