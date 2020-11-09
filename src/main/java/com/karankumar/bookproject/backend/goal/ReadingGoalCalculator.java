@@ -17,21 +17,24 @@
 
 package com.karankumar.bookproject.backend.goal;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.util.DateUtils;
 
 import javax.validation.constraints.NotNull;
 
+import java.time.LocalDate;
+
 import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType;
 import static com.karankumar.bookproject.backend.util.DateUtils.WEEKS_IN_YEAR;
 
-public final class CalculateReadingGoal {
+public final class ReadingGoalCalculator {
 
     private static final String BEHIND = "behind";
     private static final String AHEAD_OF = "ahead of";
 
-    private CalculateReadingGoal() {}
+    private ReadingGoalCalculator() {}
 
     /**
      * Calculates the number of books that should have been read by this point in the year in order
@@ -40,7 +43,8 @@ public final class CalculateReadingGoal {
      * @return the number of books that the user should have read by this point in the year
      */
     public static double shouldHaveRead(int booksToReadThisYear) {
-        return booksToReadFromStartOfYear(booksToReadThisYear) * DateUtils.getCurrentWeekNumberOfYear();
+        return booksToReadFromStartOfYear(booksToReadThisYear) *
+                DateUtils.getCurrentWeekNumberOfYear();
     }
 
     /**
@@ -72,7 +76,8 @@ public final class CalculateReadingGoal {
         return readThisYear;
     }
 
-    private static boolean bookHasFinishDateInThisYear(Book book) {
+    @VisibleForTesting
+    static boolean bookHasFinishDateInThisYear(Book book) {
         return book != null && book.getDateFinishedReading() != null &&
                 DateUtils.dateIsInCurrentYear(book.getDateFinishedReading());
     }

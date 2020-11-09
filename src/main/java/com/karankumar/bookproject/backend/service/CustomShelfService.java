@@ -17,12 +17,21 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
+import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Log
@@ -51,11 +60,11 @@ public class CustomShelfService {
         return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
-    public void save(CustomShelf customShelf) {
+    public void save(@NonNull CustomShelf customShelf) {
         customShelfRepository.save(customShelf);
     }
 
-    public void delete(CustomShelf customShelf) {
+    public void delete(@NonNull CustomShelf customShelf) {
         customShelfRepository.delete(customShelf);
     }
 
@@ -65,5 +74,43 @@ public class CustomShelfService {
 
     public Long count() {
         return customShelfRepository.count();
+    }
+
+    public Collection<CustomShelf> findAll() {
+        return customShelfRepository.findAll();
+    }
+
+    public List<CustomShelf> findAll(String shelfName) {
+        if (shelfName == null) {
+            return customShelfRepository.findAll();
+        } else {
+            return customShelfRepository.findByShelfName(shelfName);
+        }
+    }
+
+    public List<@NotNull String> getCustomShelfNames() {
+        return customShelfRepository.findAll()
+                .stream()
+                .map(CustomShelf::getShelfName)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all of the books in the specified custom shelf
+     */
+    public Set<Book> getBooksInCustomShelf(String shelfName) {
+        Set<Book> books;
+        List<CustomShelf> customShelves = this.findAll(shelfName);
+        if (customShelves.isEmpty()) {
+            books = new HashSet<>();
+        } else {
+            CustomShelf customShelf = customShelves.get(0);
+            books = customShelf.getBooks();
+        }
+        return books;
+    }
+
+    public Shelf getCustomShelfByName(String shelfName) {
+        return customShelfRepository.findByShelfName(shelfName).get(0);
     }
 }

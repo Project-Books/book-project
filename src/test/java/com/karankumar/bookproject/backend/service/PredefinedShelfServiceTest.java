@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.karankumar.bookproject.backend.repository.UserRepository;
@@ -50,15 +51,10 @@ class PredefinedShelfServiceTest {
     }
 
     @Test
+    @DisplayName("throw an exception on an attempt to save a null predefined shelf")
     void notSaveNullPredefinedShelf() {
-        // given
-        long initialCount = predefinedShelfService.count();
-
-        // when
-        predefinedShelfService.save(null);
-
-        // then
-        assertThat(predefinedShelfService.count()).isEqualTo(initialCount);
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> predefinedShelfService.save(null));
     }
 
     @Test

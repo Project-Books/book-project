@@ -19,6 +19,7 @@ package com.karankumar.bookproject.ui.goal;
 
 import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
+import com.karankumar.bookproject.ui.goal.events.SaveGoalEvent;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
@@ -129,7 +130,7 @@ public class ReadingGoalForm extends VerticalLayout {
     private void saveReadingGoal(ReadingGoal.GoalType goalType) {
         binder.setBean(new ReadingGoal(targetToRead.getValue(), goalType));
         LOGGER.log(Level.INFO, "Setting the bean");
-        fireEvent(new SaveEvent(this, binder.getBean()));
+        fireEvent(new SaveGoalEvent(this, binder.getBean()));
         confirmSavedGoal(binder.getBean().getTarget(), binder.getBean().getGoalType());
     }
 
@@ -157,38 +158,8 @@ public class ReadingGoalForm extends VerticalLayout {
               .bind(ReadingGoal::getTarget, ReadingGoal::setTarget);
     }
 
-    public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType,
-                                                                  ComponentEventListener<T> listener) {
+    public <T extends ComponentEvent<?>> Registration addListener(
+            Class<T> eventType, ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
-    }
-
-    /**
-     * Vaadin's event bus system. A registered listener can be notified when a save or delete event
-     * is fired
-     */
-    public abstract static class GoalFormEvent extends ComponentEvent<ReadingGoalForm> {
-        private final ReadingGoal readingGoal;
-
-        protected GoalFormEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
-            super(source, false);
-            this.readingGoal = readingGoal;
-        }
-
-        public ReadingGoal getReadingGoal() {
-            return readingGoal;
-        }
-    }
-
-    public static class SaveEvent extends GoalFormEvent {
-        SaveEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
-            super(source, readingGoal);
-        }
-    }
-
-    // TODO: implement deleting reading goal
-    public static class DeleteEvent extends GoalFormEvent {
-        DeleteEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
-            super(source, readingGoal);
-        }
     }
 }

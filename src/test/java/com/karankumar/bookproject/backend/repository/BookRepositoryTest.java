@@ -1,3 +1,20 @@
+/*
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
+
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
@@ -10,8 +27,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
 @DisplayName("BookRepository should")
@@ -75,9 +96,17 @@ class BookRepositoryTest {
     @Test
     @DisplayName("should successfully find list of books by their title")
     void findBookByTitle() {
-        assertThat(bookRepository.findByTitleContainingIgnoreCase("someTitle").size()).isOne();
-        assertThat(bookRepository.findByTitleContainingIgnoreCase("some").size()).isOne();
-        assertThat(bookRepository.findByTitleContainingIgnoreCase("title").size()).isEqualTo(2);
+        // when
+        List<Book> actual1 = bookRepository.findByTitleContainingIgnoreCase("someTitle");
+        List<Book> actual2 = bookRepository.findByTitleContainingIgnoreCase("some");
+        List<Book> actual3 = bookRepository.findByTitleContainingIgnoreCase("title");
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actual1.size()).isOne();
+            softly.assertThat(actual2.size()).isOne();
+            softly.assertThat(actual3.size()).isEqualTo(2);
+        });
     }
 
     @Test
@@ -86,24 +115,28 @@ class BookRepositoryTest {
         PredefinedShelf readShelf = predefinedShelfRepository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.READ, user);
         PredefinedShelf toReadShelf = predefinedShelfRepository.findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName.TO_READ, user);
 
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf,"%", "%").size()).isEqualTo(2);
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toReadShelf, "%", "%").size()).isOne();
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf, "some", "%").size()).isOne();
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf, "title", "%").size()).isEqualTo(2);
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toReadShelf, "title", "%").size()).isZero();
+        assertSoftly(softly -> {
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf,"%", "%").size()).isEqualTo(2);
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(toReadShelf, "%", "%").size()).isOne();
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf, "some", "%").size()).isOne();
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(readShelf, "title", "%").size()).isEqualTo(2);
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(toReadShelf, "title", "%").size()).isZero();
+        });
     }
 
     @Test
     @DisplayName("should successfully find list of books by title or author")
     void findBookByTitleOrAuthor() {
 
-        assertThat(bookRepository.findByTitleOrAuthor("%", "%").size()).isEqualTo(3);
-        assertThat(bookRepository.findByTitleOrAuthor("title", "%").size()).isEqualTo(2);
-        assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size()).isEqualTo(2);
-        assertThat(bookRepository.findByTitleOrAuthor("%", "lastName").size()).isEqualTo(2);
-        assertThat(bookRepository.findByTitleOrAuthor("%", "author").size()).isOne();
-        assertThat(bookRepository.findByTitleOrAuthor("title", "firstName").size()).isEqualTo(2);
-        assertThat(bookRepository.findByTitleOrAuthor("te", "au").size()).isOne();
+        assertSoftly(softly -> {
+            softly.assertThat(bookRepository.findByTitleOrAuthor("%", "%").size()).isEqualTo(3);
+            softly.assertThat(bookRepository.findByTitleOrAuthor("title", "%").size()).isEqualTo(2);
+            softly.assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size()).isEqualTo(2);
+            softly.assertThat(bookRepository.findByTitleOrAuthor("%", "lastName").size()).isEqualTo(2);
+            softly.assertThat(bookRepository.findByTitleOrAuthor("%", "author").size()).isOne();
+            softly.assertThat(bookRepository.findByTitleOrAuthor("title", "firstName").size()).isEqualTo(2);
+            softly.assertThat(bookRepository.findByTitleOrAuthor("te", "au").size()).isOne();
+        });
     }
 
 }

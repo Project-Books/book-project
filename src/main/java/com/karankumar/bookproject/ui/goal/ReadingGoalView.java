@@ -20,12 +20,13 @@ package com.karankumar.bookproject.ui.goal;
 import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
-import com.karankumar.bookproject.backend.goal.CalculateReadingGoal;
+import com.karankumar.bookproject.backend.goal.ReadingGoalCalculator;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.util.StringUtils;
 import com.karankumar.bookproject.backend.util.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.goal.events.SaveGoalEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
@@ -88,7 +89,7 @@ public class ReadingGoalView extends VerticalLayout {
             add(goalForm);
             goalForm.openForm();
 
-            goalForm.addListener(ReadingGoalForm.SaveEvent.class, this::saveGoal);
+            goalForm.addListener(SaveGoalEvent.class, this::saveGoal);
         });
     }
 
@@ -107,7 +108,7 @@ public class ReadingGoalView extends VerticalLayout {
         setGoalButton.setText(UPDATE_GOAL);
     }
 
-    private void saveGoal(ReadingGoalForm.SaveEvent event) {
+    private void saveGoal(SaveGoalEvent event) {
         if (event.getReadingGoal() != null) {
             LOGGER.log(Level.INFO, "Retrieved goal from form is not null");
             goalService.save(event.getReadingGoal());
@@ -124,7 +125,7 @@ public class ReadingGoalView extends VerticalLayout {
             return;
         }
 
-        int howManyReadThisYear = CalculateReadingGoal.howManyReadThisYear(goalType, readShelf);
+        int howManyReadThisYear = ReadingGoalCalculator.howManyReadThisYear(goalType, readShelf);
         boolean hasReachedGoal = (targetToRead <= howManyReadThisYear);
         String haveRead = "You have read ";
         String outOf = " out of ";
@@ -142,7 +143,7 @@ public class ReadingGoalView extends VerticalLayout {
             toggleBooksGoalInfo(false, hasReachedGoal);
         }
 
-        double progress = CalculateReadingGoal.calculateProgressTowardsReadingGoal(targetToRead,
+        double progress = ReadingGoalCalculator.calculateProgressTowardsReadingGoal(targetToRead,
                 howManyReadThisYear);
         progressBar.setValue(progress);
         goalProgressPercentage.setText(String.format("%.2f%% completed", (progress * 100)));
@@ -181,13 +182,13 @@ public class ReadingGoalView extends VerticalLayout {
             schedule = TARGET_MET;
         } else {
             int howManyBehindOrAhead =
-                    CalculateReadingGoal.howFarAheadOrBehindSchedule(booksToReadThisYear,
+                    ReadingGoalCalculator.howFarAheadOrBehindSchedule(booksToReadThisYear,
                             booksReadThisYear);
             schedule = String.format("You are %d %s %s schedule",
                     howManyBehindOrAhead,
                     StringUtils.pluralize("book", howManyBehindOrAhead),
-                    CalculateReadingGoal.behindOrAheadSchedule(booksReadThisYear,
-                            CalculateReadingGoal.shouldHaveRead(booksToReadThisYear)));
+                    ReadingGoalCalculator.behindOrAheadSchedule(booksReadThisYear,
+                            ReadingGoalCalculator.shouldHaveRead(booksToReadThisYear)));
         }
         return schedule;
     }

@@ -15,29 +15,27 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.book.components.date;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.vaadin.flow.function.SerializablePredicate;
+import com.karankumar.bookproject.ui.book.components.FormItem;
+import com.karankumar.bookproject.ui.book.form.BookForm;
+import com.vaadin.flow.component.datepicker.DatePicker;
 
 import java.time.LocalDate;
 
-public final class BookFormValidators {
-    private BookFormValidators() {}
-
-    static SerializablePredicate<Integer> positiveNumberPredicate() {
-        return number -> (number == null || number > 0);
+public abstract class Date extends FormItem<DatePicker> {
+    public Date(String label) {
+        super(new DatePicker(), label);
     }
 
-    static SerializablePredicate<String> authorPredicate() {
-        return name -> (name != null && !name.isEmpty());
+    @Override
+    public void configure() {
+        DatePicker date = super.getField();
+        date.setClearButtonVisible(true);
+        date.setPlaceholder(BookForm.ENTER_DATE);
     }
 
-    static SerializablePredicate<LocalDate> datePredicate() {
-        return date -> !(date != null && date.isAfter(LocalDate.now()));
-    }
-
-    static SerializablePredicate<Integer> maxPagesPredicate() {
-        return number -> (number == null || number <= Book.MAX_PAGES);
+    public LocalDate getValue() {
+        return super.getField().getValue();
     }
 }

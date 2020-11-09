@@ -1,19 +1,19 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
 
 package com.karankumar.bookproject.backend.service;
 
@@ -31,9 +31,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assumptions.assumeThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Log
 @IntegrationTest
@@ -67,7 +66,8 @@ class AuthorServiceTest {
         List<Author> savedAuthors = authorService.findAll();
 
         // then
-        assertEquals(2, savedAuthors.size());
+        int expected = 2;
+        assertThat(savedAuthors.size()).isEqualTo(expected);
     }
 
     @Transactional
@@ -89,12 +89,13 @@ class AuthorServiceTest {
     void savedAuthorCanBeFound() {
         // given
         Author author = new Author("First", "Last");
-
-        // when
         authorService.save(author);
 
+        // when
+        Author actual = authorService.findById(author.getId());
+
         // then
-        assertNotNull(authorService.findById(author.getId()));
+        assertThat(actual).isNotNull();
     }
 
     @Test
@@ -111,5 +112,19 @@ class AuthorServiceTest {
 
         // then
         assertThat(authorService.count()).isZero();
+    }
+
+    @Test
+    @DisplayName("throw error on attempt to save a null author")
+    void throwErrorOnSavingNullAuthor() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> authorService.save(null));
+    }
+
+    @Test
+    @DisplayName("throw error on attempt to delete a null author")
+    void throwErrorOnDeletingNullAuthor() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> authorService.save(null));
     }
 }

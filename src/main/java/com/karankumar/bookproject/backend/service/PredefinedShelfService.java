@@ -24,6 +24,7 @@ import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.repository.TagRepository;
+import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
@@ -62,13 +63,8 @@ public class PredefinedShelfService {
         return predefinedShelfRepository.getOne(id);
     }
 
-    public void save(PredefinedShelf shelf) {
-        if (shelf != null) {
-            LOGGER.log(Level.INFO, "Saving shelf: " + shelf);
-            predefinedShelfRepository.save(shelf);
-        } else {
-            LOGGER.log(Level.SEVERE, "Null Shelf");
-        }
+    public void save(@NonNull PredefinedShelf shelf) {
+        predefinedShelfRepository.save(shelf);
     }
 
     public List<PredefinedShelf> findAllForLoggedInUser() {

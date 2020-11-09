@@ -1,18 +1,18 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.karankumar.bookproject.backend.service;
@@ -39,7 +39,9 @@ import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
 @Transactional
@@ -100,10 +102,21 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("throw an exception on an attempt to register a null user")
+    void throwExceptionWhenRegisteringNullUser() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> userService.register(null));
+    }
+
+    @Test
     void registerValidUser() {
+        // given
         roleRepository.save(Role.builder().role("USER").build());
+
+        // when
         userService.register(validUser);
 
+        // then
         assertThat(userRepository.findByUsername(validUser.getUsername())).isPresent();
     }
 
@@ -112,7 +125,8 @@ class UserServiceTest {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
-        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated()).isTrue();
+        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
+                .isTrue();
     }
 
     @Test
@@ -165,15 +179,22 @@ class UserServiceTest {
 
     @Test
     void getLoggedUser() {
+        // given
         Optional<User> dbUser = userRepository.findByUsername(TEST_USER_NAME);
+
+        // when
         User currentUser = userService.getCurrentUser();
 
-        assertThat(currentUser.getUsername()).isEqualTo(TEST_USER_NAME);
-        assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(currentUser.getUsername()).isEqualTo(TEST_USER_NAME);
+            softly.assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
+        });
     }
 
     @Test
-    void findAll() {
+    void findAllUsers() {
+        // given
         List<User> users = Arrays.asList(
                 getTestUser(userRepository),
                 insertTestUser(userRepository, "test1"),
@@ -181,6 +202,10 @@ class UserServiceTest {
                 insertTestUser(userRepository, "test3")
         );
 
-        assertThat(userService.findAll()).containsAll(users);
+        // when
+        List<User> actual = userService.findAll();
+
+        // then
+        assertThat(actual).containsAll(users);
     }
 }

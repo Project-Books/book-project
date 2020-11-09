@@ -10,6 +10,7 @@
       "edition": null,
       "bookRecommendedBy": null,
       "isbn": null,
+      "yearOfPublication": null,
       "author": {
         "firstName": "Test First Name",
         "lastName": "Test Last Name"
@@ -34,6 +35,7 @@
       "edition": "2nd edition",
       "bookRecommendedBy": "Peter Parker",
       "isbn": "9780151010264",
+      "yearOfPublication": 2014,
       "author": {
         "firstName": "Test First Name",
         "lastName": "Test Last Name"

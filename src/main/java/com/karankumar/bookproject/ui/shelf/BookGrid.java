@@ -20,9 +20,9 @@ package com.karankumar.bookproject.ui.shelf;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.util.CustomShelfUtils;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
-import com.karankumar.bookproject.ui.book.BookForm;
+import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
 import com.vaadin.flow.component.grid.Grid;
 import lombok.extern.java.Log;
@@ -36,13 +36,13 @@ import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf
 public class BookGrid {
     private final Grid<Book> bookGrid;
     private final PredefinedShelfUtils predefinedShelfUtils;
-    private final CustomShelfUtils customShelfUtils;
+    private final CustomShelfService customShelfService;
     private final BookService bookService;
 
-    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfUtils customShelfUtils, BookService bookService) {
+    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfService customShelfService, BookService bookService) {
         this.bookGrid = new Grid<>(Book.class);
         this.predefinedShelfUtils = predefinedShelfUtils;
-        this.customShelfUtils = customShelfUtils;
+        this.customShelfService = customShelfService;
         this.bookService = bookService;
         configure();
     }
@@ -97,7 +97,7 @@ public class BookGrid {
             return predefinedShelfUtils.findPredefinedShelf(chosenShelf);
         }
 
-        return customShelfUtils.findShelfByName(chosenShelf);
+        return customShelfService.getCustomShelfByName(chosenShelf);
     }
 
     private void populateGridWithBooks(Shelf shelf, String title, String author) {

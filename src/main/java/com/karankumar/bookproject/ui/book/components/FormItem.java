@@ -15,26 +15,32 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.book.components;
 
-import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.vaadin.flow.data.binder.Result;
-import com.vaadin.flow.data.binder.ValueContext;
-import com.vaadin.flow.data.converter.Converter;
-import lombok.extern.java.Log;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.formlayout.FormLayout;
 
-@Log
-public class DoubleToRatingScaleConverter implements Converter<Double, RatingScale> {
+public abstract class FormItem<T extends Component> {
+    private final T field;
+    private final String label;
 
-    @Override
-    public Result<RatingScale> convertToModel(Double ratingVal, ValueContext valueContext) {
-        return RatingScale.of(ratingVal)
-                          .map(Result::ok)
-                          .orElseGet(() -> Result.error("Invalid rating"));
+    protected FormItem(T field, String label) {
+        this.field = field;
+        this.label = label;
+        configure();
     }
 
-    @Override
-    public Double convertToPresentation(RatingScale rating, ValueContext valueContext) {
-        return RatingScale.toDouble(rating);
+    public abstract void configure();
+
+    public String getLabel() {
+        return label;
+    }
+
+    public T getField() {
+        return field;
+    }
+
+    public void add(FormLayout formLayout) {
+        formLayout.addFormItem(field, label);
     }
 }
