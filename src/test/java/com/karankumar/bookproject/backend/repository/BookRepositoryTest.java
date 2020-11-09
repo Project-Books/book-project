@@ -127,7 +127,6 @@ class BookRepositoryTest {
     @Test
     @DisplayName("should successfully find list of books by title or author")
     void findBookByTitleOrAuthor() {
-
         assertSoftly(softly -> {
             softly.assertThat(bookRepository.findByTitleOrAuthor("%", "%").size()).isEqualTo(3);
             softly.assertThat(bookRepository.findByTitleOrAuthor("title", "%").size()).isEqualTo(2);
