@@ -52,7 +52,7 @@ public class SettingsView extends HorizontalLayout {
     private static final String APPEARANCE = "Appearance:";
     private static final String MY_BOOKS = "My books:";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
-    private static final SwitchToggle darkModeToggle;
+    private static SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
     private static final H3 appearanceHeading = new H3(APPEARANCE);
@@ -69,6 +69,14 @@ public class SettingsView extends HorizontalLayout {
     private final BookService bookService;
 
     static {
+        configureDarkModeToggle();
+
+        exportBooksAnchor = new Anchor();
+        exportBooksAnchor.getElement().setAttribute("download", true);
+        exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
+    }
+
+    private static void configureDarkModeToggle() {
         darkModeToggle = new SwitchToggle();
         darkModeToggle.addClickListener(e -> {
 
@@ -83,10 +91,6 @@ public class SettingsView extends HorizontalLayout {
             }
             updateDarkModeLabel();
         });
-
-        exportBooksAnchor = new Anchor();
-        exportBooksAnchor.getElement().setAttribute("download", true);
-        exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
     }
 
     SettingsView(BookService bookService) {
