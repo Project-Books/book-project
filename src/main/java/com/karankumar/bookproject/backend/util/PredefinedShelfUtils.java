@@ -17,31 +17,23 @@
 
 package com.karankumar.bookproject.backend.util;
 
-import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
-import com.karankumar.bookproject.backend.entity.Shelf;
-import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 import lombok.extern.java.Log;
 
 @Log
 public class PredefinedShelfUtils {
-    private final PredefinedShelfService predefinedShelfService;
-
-    public PredefinedShelfUtils(PredefinedShelfService predefinedShelfService) {
-        this.predefinedShelfService = predefinedShelfService;
+    private PredefinedShelfUtils() {
     }
 
-    public PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
+    public static PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
             case "To read":
                 return PredefinedShelf.ShelfName.TO_READ;
@@ -56,12 +48,6 @@ public class PredefinedShelfUtils {
         }
     }
 
-    public List<String> getPredefinedShelfNamesAsStrings() {
-       return predefinedShelfService.findAllForLoggedInUser().stream()
-               .map(Shelf::getShelfName)
-               .collect(Collectors.toList());
-    }
-
     public static boolean isPredefinedShelf(String shelfName) {
         return Arrays.stream(ShelfName.values())
                      .map(ShelfName::toString)
@@ -69,35 +55,11 @@ public class PredefinedShelfUtils {
     }
 
     /**
-     * Fetches all of the books in the chosen predefined shelf
-     */
-    public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
-        Set<Book> books;
-        if (isAllBooksShelf(chosenShelf)) {
-            return getBooksInAllPredefinedShelves();
-        }
-
-        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
-        PredefinedShelf predefinedShelf =
-                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfName);
-        if (predefinedShelf == null) {
-            books = new HashSet<>();
-        } else {
-            books = predefinedShelf.getBooks();
-        }
-        return books;
-    }
-
-    public Set<Book> getBooksInAllPredefinedShelves() {
-        return getBooksInPredefinedShelves(predefinedShelfService.findAllForLoggedInUser());
-    }
-
-    /**
      * Fetches all of the books in the chosen predefined shelves
      */
-    public Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
+    public static Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
         return predefinedShelves.stream()
-                .map(PredefinedShelf::getBooks)
-                .collect(HashSet::new, Set::addAll, Set::addAll);
+                                .map(PredefinedShelf::getBooks)
+                                .collect(HashSet::new, Set::addAll, Set::addAll);
     }
 }

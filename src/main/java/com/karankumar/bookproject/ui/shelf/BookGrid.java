@@ -19,6 +19,7 @@ package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
@@ -35,14 +36,15 @@ import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf
 @Log
 public class BookGrid {
     private final Grid<Book> bookGrid;
-    
-    private final PredefinedShelfUtils predefinedShelfUtils;
+
+    private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
 
-    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfService customShelfService) {
+    BookGrid(CustomShelfService customShelfService,
+             PredefinedShelfService predefinedShelfService) {
         this.bookGrid = new Grid<>(Book.class);
-        this.predefinedShelfUtils = predefinedShelfUtils;
         this.customShelfService = customShelfService;
+        this.predefinedShelfService = predefinedShelfService;
         configure();
     }
 
@@ -87,11 +89,11 @@ public class BookGrid {
 
     private Set<Book> getBooks(String chosenShelf) {
         if (isAllBooksShelf(chosenShelf)) {
-            return predefinedShelfUtils.getBooksInAllPredefinedShelves();
+            return predefinedShelfService.getBooksInAllPredefinedShelves();
         }
 
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
-            return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
+            return predefinedShelfService.getBooksInChosenPredefinedShelf(chosenShelf);
         }
 
         return customShelfService.getBooksInCustomShelf(chosenShelf);
