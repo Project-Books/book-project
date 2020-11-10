@@ -1,18 +1,18 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.karankumar.bookproject.ui;
@@ -43,23 +43,14 @@ import java.util.HashMap;
 @CssImport("./styles/shared-styles.css")
 public class MainView extends AppLayout implements RouterLayout, PageConfigurator {
     public MainView() {
-        Tabs tabs = addTabs();
-
         Anchor logout = new Anchor("/logout", "Log out");
         logout.addClassName("logout");
 
-        HorizontalLayout h = new HorizontalLayout();
+        HorizontalLayout logoutLayout = new HorizontalLayout();
+        logoutLayout.add(logout);
+        logoutLayout.expand(logout);
 
-        FlexLayout centreTabs = new FlexLayout();
-        centreTabs.setSizeFull();
-        centreTabs.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-        centreTabs.setAlignItems(FlexComponent.Alignment.CENTER);
-        centreTabs.add(tabs);
-
-        h.add(logout);
-        h.expand(logout);
-
-        addToNavbar(true, centreTabs, h);
+        addToNavbar(true, centerTabs(addTabs()), logoutLayout);
     }
 
     private Tabs addTabs() {
@@ -92,8 +83,13 @@ public class MainView extends AppLayout implements RouterLayout, PageConfigurato
         return a;
     }
 
-    private void centreTabs() {
-
+    private FlexLayout centerTabs(Tabs tabs) {
+        FlexLayout centreTabs = new FlexLayout();
+        centreTabs.setSizeFull();
+        centreTabs.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        centreTabs.setAlignItems(FlexComponent.Alignment.CENTER);
+        centreTabs.add(tabs);
+        return centreTabs;
     }
 
     @Override
