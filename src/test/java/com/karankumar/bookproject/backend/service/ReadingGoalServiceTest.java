@@ -69,6 +69,18 @@ class ReadingGoalServiceTest {
     }
 
     @Test
+    void findExistingGoal() {
+        // given
+        assumeThat(goalService.count()).isOne();
+
+        // when
+        ReadingGoal actual = goalService.findById(existingReadingGoal.getId());
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
     void deleteExistingGoal() {
         // given
         assumeThat(goalService.count()).isOne();
