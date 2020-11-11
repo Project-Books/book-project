@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.karankumar.bookproject.util.ReadingGoalTestUtils.resetGoalService;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -93,14 +94,9 @@ class ReadingGoalServiceTest {
     }
 
     @Test
-    void notSaveANullGoal() {
-        // given we have a reading goal
-        assumeThat(goalService.count()).isOne();
-
-        // when
-        goalService.save(null);
-
-        // then we have same number of records as before
-        assertThat(goalService.count()).isOne();
+    @DisplayName("throw an exception on an attempt to save a null goal")
+    void throwExceptionOnAttemptToSaveANullGoal() {
+        assertThatThrownBy(() -> goalService.save(null))
+                .isInstanceOf(NullPointerException.class);
     }
 }

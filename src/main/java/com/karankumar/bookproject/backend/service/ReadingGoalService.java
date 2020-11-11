@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.ReadingGoal;
 import com.karankumar.bookproject.backend.repository.ReadingGoalRepository;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,13 +40,11 @@ public class ReadingGoalService {
         return goalRepository.findAll();
     }
 
-    public void save(ReadingGoal goal) {
-        if (goal != null) {
-            overwritePreviouslySetGoals(goal);
-        }
+    public void save(@NonNull ReadingGoal goal) {
+        overwritePreviouslySetGoal(goal);
     }
 
-    private void overwritePreviouslySetGoals(ReadingGoal goal) {
+    private void overwritePreviouslySetGoal(@NonNull ReadingGoal goal) {
         goalRepository.deleteAll();
         goalRepository.save(goal);
     }
