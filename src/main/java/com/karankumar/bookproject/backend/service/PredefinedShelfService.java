@@ -161,10 +161,6 @@ public class PredefinedShelfService {
                 .collect(Collectors.toList());
     }
 
-	public Set<Book> getBooksInAllPredefinedShelves() {
-		return getBooksInPredefinedShelves(findAllForLoggedInUser());
-	}
-
 	/**
 	 * Fetches all of the books in the chosen predefined shelf
 	 */
@@ -184,4 +180,8 @@ public class PredefinedShelfService {
 		}
 		return books;
 	}
+
+    public Set<Book> getBooksInAllPredefinedShelves() {
+        return getBooksInPredefinedShelves(findAllForLoggedInUser());
+    }
 }
