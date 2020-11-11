@@ -49,7 +49,7 @@ public class ReadingGoalService {
         goalRepository.save(goal);
     }
 
-    public void delete(ReadingGoal readingGoal) {
+    public void delete(@NonNull ReadingGoal readingGoal) {
         goalRepository.delete(readingGoal);
     }
 

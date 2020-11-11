@@ -94,6 +94,13 @@ class ReadingGoalServiceTest {
     }
 
     @Test
+    @DisplayName("throw an exception on an attempt to delete a null goal")
+    void throwExceptionOnAttemptToDeleteANullGoal() {
+        assertThatThrownBy(() -> goalService.delete(null))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
     @DisplayName("throw an exception on an attempt to save a null goal")
     void throwExceptionOnAttemptToSaveANullGoal() {
         assertThatThrownBy(() -> goalService.save(null))
