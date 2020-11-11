@@ -41,8 +41,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true, exclude = "books")
 public class Tag extends BaseEntity {
 
-    @NotNull
-    @NotBlank
     @Column(unique = true)
     private String name;
 
