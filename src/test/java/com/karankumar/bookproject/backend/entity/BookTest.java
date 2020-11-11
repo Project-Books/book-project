@@ -94,7 +94,6 @@ class BookTest {
         // then
         assertThat(tagService.findAll().size()).isOne();
     }
-<<<<<<< HEAD
 
     @Test
     @DisplayName("correctly convert into an edition with the 'st' suffix")
@@ -167,7 +166,8 @@ class BookTest {
             softly.assertThat(actualFourthEdition).isEqualTo("4th edition");
             softly.assertThat(actualEleventhEdition).isEqualTo("11th edition");
         });
-=======
+    }
+
     
     @Test
     void notAcceptNullTitle() {
@@ -189,6 +189,5 @@ class BookTest {
     	
     	//  then
     	assertThat(violations.size()).isEqualTo(1);
->>>>>>> add tests for null and empty Author name and Book title
     }
 }

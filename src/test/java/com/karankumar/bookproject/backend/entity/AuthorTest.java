@@ -154,7 +154,7 @@ class AuthorTest {
     	Author authorWithBlankFirstName = new Author(" ", "Gaarder");
     	
     	Set<ConstraintViolation<Author>> violations = validator.validateProperty(authorWithBlankFirstName, "firstName");
-    	
+ 
     	//  then
     	assertThat(violations.size()).isEqualTo(1);
     }
@@ -165,7 +165,7 @@ class AuthorTest {
     	Author authorWithBlankLastName = new Author("Jostein", " ");
     	
     	Set<ConstraintViolation<Author>> violations = validator.validateProperty(authorWithBlankLastName, "lastName");
-    	
+   	
     	//  then
     	assertThat(violations.size()).isEqualTo(1);
     }
