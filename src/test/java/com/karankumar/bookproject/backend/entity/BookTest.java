@@ -28,6 +28,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
@@ -43,6 +49,8 @@ class BookTest {
 
     private Book testBook;
     private Tag testTag;
+    
+    private Validator validator;
 
     @Autowired
     BookTest(BookService bookService, TagService tagService,
@@ -52,9 +60,9 @@ class BookTest {
         this.predefinedShelfService = predefinedShelfService;
     }
 
-    private Book createBook(PredefinedShelf shelf) {
+    private Book createBook(String title, PredefinedShelf shelf) {
         Author author = new Author("Firstname", "Lastname");
-        Book book = new Book("Test Title", author, shelf);
+        Book book = new Book(title, author, shelf);
 
         book.setTags(Collections.singleton(testTag));
 
@@ -67,9 +75,11 @@ class BookTest {
         tagService.deleteAll();
         tagService.save(testTag);
 
-        testBook = createBook(predefinedShelfService.findToReadShelf());
+        testBook = createBook("Test Title", predefinedShelfService.findToReadShelf());
         bookService.deleteAll();
         bookService.save(testBook);
+        
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Test
@@ -84,6 +94,7 @@ class BookTest {
         // then
         assertThat(tagService.findAll().size()).isOne();
     }
+<<<<<<< HEAD
 
     @Test
     @DisplayName("correctly convert into an edition with the 'st' suffix")
@@ -156,5 +167,28 @@ class BookTest {
             softly.assertThat(actualFourthEdition).isEqualTo("4th edition");
             softly.assertThat(actualEleventhEdition).isEqualTo("11th edition");
         });
+=======
+    
+    @Test
+    void notAcceptNullTitle() {
+    	// given
+    	Book bookWithNullTitle = createBook(null, predefinedShelfService.findToReadShelf());
+    	
+    	Set<ConstraintViolation<Book>> violations = validator.validateProperty(bookWithNullTitle, "title");
+    	
+    	//  then
+    	assertThat(violations.size()).isEqualTo(2);
+    }
+    
+    @Test
+    void notAcceptBlankTitle() {
+    	// given
+    	Book bookWithBlankTitle = createBook(" ", predefinedShelfService.findToReadShelf());
+    	
+    	Set<ConstraintViolation<Book>> violations = validator.validateProperty(bookWithBlankTitle, "title");
+    	
+    	//  then
+    	assertThat(violations.size()).isEqualTo(1);
+>>>>>>> add tests for null and empty Author name and Book title
     }
 }
