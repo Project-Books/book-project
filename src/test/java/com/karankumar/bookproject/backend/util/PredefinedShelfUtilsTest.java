@@ -29,6 +29,8 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getBooksInPredefinedShelves;
+import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getPredefinedShelfName;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.isPredefinedShelf;
 import static com.karankumar.bookproject.backend.util.ShelfUtils.ALL_BOOKS_SHELF;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +54,6 @@ import java.util.stream.Stream;
 class PredefinedShelfUtilsTest {
     private final BookRepository bookRepository;
     private final PredefinedShelfService predefinedShelfService;
-    private final PredefinedShelfUtils predefinedShelfUtils;
 
     private PredefinedShelf toReadShelf;
     private PredefinedShelf readShelf;
@@ -76,7 +77,6 @@ class PredefinedShelfUtilsTest {
                              PredefinedShelfService predefinedShelfService) {
         this.bookRepository = bookRepository;
         this.predefinedShelfService = predefinedShelfService;
-        this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
     }
 
     @BeforeEach
@@ -86,7 +86,7 @@ class PredefinedShelfUtilsTest {
         resetBookRepository();
         createAndSaveBooks();
 
-        PREDEFINED_SHELVES = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
+        PREDEFINED_SHELVES = predefinedShelfService.getPredefinedShelfNamesAsStrings();
 
         setBooksInPredefinedShelves();
     }
@@ -125,7 +125,7 @@ class PredefinedShelfUtilsTest {
         );
 
         // when
-        List<String> shelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
+        List<String> shelfNames = predefinedShelfService.getPredefinedShelfNamesAsStrings();
 
         // then
         assertThat(shelfNames).isEqualTo(expectedShelfNames);
@@ -138,7 +138,7 @@ class PredefinedShelfUtilsTest {
         String shelf = TO_READ.toString();
 
         // when
-        Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf(shelf);
+        Set<Book> actualBooks = predefinedShelfService.getBooksInChosenPredefinedShelf(shelf);
 
         // then
         assertThat(actualBooks).isEqualTo(expectedBooks);
@@ -151,7 +151,7 @@ class PredefinedShelfUtilsTest {
 
         // when
         Set<Book> actualBooks =
-                predefinedShelfUtils.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
+                predefinedShelfService.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
 
         // then
         assertThat(actualBooks).isEqualTo(expectedBooks);
@@ -164,7 +164,7 @@ class PredefinedShelfUtilsTest {
         Set<Book> expectedBooks = Set.of(book1, book2, book3);
 
         // when
-        Set<Book> actualBooks = predefinedShelfUtils.getBooksInPredefinedShelves(predefinedShelves);
+        Set<Book> actualBooks = getBooksInPredefinedShelves(predefinedShelves);
 
         // then
         assertSoftly(softly -> {
@@ -244,20 +244,7 @@ class PredefinedShelfUtilsTest {
                 expectedShelf = DID_NOT_FINISH;
         }
         PredefinedShelf.ShelfName actualShelf =
-                predefinedShelfUtils.getPredefinedShelfName(shelfName);
+                getPredefinedShelfName(shelfName);
         assertThat(actualShelf).isEqualTo(expectedShelf);
-    }
-    
-    @Test
-    void getPredefinedShelfNamesCorrectlyAsStrings() {
-    	List<String> actualShelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
-    	List<String> expectedShelfNames =
-                Stream.of(ShelfName.values()).map(Enum::toString).collect(Collectors.toList());
-
-        assertSoftly(softly -> {
-            softly.assertThat(actualShelfNames).hasSize(expectedShelfNames.size());
-            softly.assertThat(expectedShelfNames).containsAll(actualShelfNames);
-        });
-    	
     }
 }

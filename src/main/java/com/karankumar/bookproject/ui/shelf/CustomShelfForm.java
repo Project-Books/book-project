@@ -21,7 +21,6 @@ import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
@@ -96,7 +95,7 @@ public class CustomShelfForm extends VerticalLayout {
 
     private boolean customShelfNameMatchesPredefinedShelfName(String shelfName) {
         List<String> predefinedShelfNames =
-                new PredefinedShelfUtils(predefinedShelfService).getPredefinedShelfNamesAsStrings();
+                predefinedShelfService.getPredefinedShelfNamesAsStrings();
         return predefinedShelfNames.contains(shelfName);
     }
 
