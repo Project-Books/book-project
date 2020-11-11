@@ -263,11 +263,11 @@ class PredefinedShelfUtilsTest {
 
     @Test
     void getPredefinedShelfByStringName() {
-
-        assertThat(predefinedShelfUtils.findPredefinedShelf("To read")).isNotNull();
-        assertThat(predefinedShelfUtils.findPredefinedShelf("Reading")).isNotNull();
-        assertThat(predefinedShelfUtils.findPredefinedShelf("Read")).isNotNull();
-        assertThat(predefinedShelfUtils.findPredefinedShelf("Did not finish")).isNotNull();
-
+        assertSoftly(softly -> {
+            softly.assertThat(predefinedShelfUtils.findPredefinedShelf("To read")).isNotNull();
+            softly.assertThat(predefinedShelfUtils.findPredefinedShelf("Reading")).isNotNull();
+            softly.assertThat(predefinedShelfUtils.findPredefinedShelf("Read")).isNotNull();
+            softly.assertThat(predefinedShelfUtils.findPredefinedShelf("Did not finish")).isNotNull();
+        });
     }
 }

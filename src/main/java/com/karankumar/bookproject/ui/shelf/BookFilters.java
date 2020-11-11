@@ -41,7 +41,7 @@ class BookFilters {
 
     public String getBookAuthor(){ return bookAuthor;}
 
-    public boolean isBookTitleNull() {
+    private boolean isBookTitleNull() {
         return bookTitle == null;
     }
 

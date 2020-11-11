@@ -38,7 +38,6 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PredefinedShelf extends Shelf {
     @Getter
-    @Setter
     private ShelfName predefinedShelfName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "predefinedShelf")

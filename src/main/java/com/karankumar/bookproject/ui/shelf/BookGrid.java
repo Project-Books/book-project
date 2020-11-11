@@ -82,7 +82,7 @@ public class BookGrid {
             return;
         }
 
-        if(bookFilters.getBookAuthor() == null || bookFilters.getBookTitle() == null || bookFilters.getBookAuthor().isEmpty() || bookFilters.getBookTitle().isEmpty()){
+        if(!isBookFiltersValid(bookFilters)) {
             bookFilters.init();
         }
 
@@ -102,12 +102,20 @@ public class BookGrid {
 
     private void populateGridWithBooks(Shelf shelf, String title, String author) {
         List<Book> items;
-        if(shelf == null){
+        if(shelf == null) {
             items = bookService.findByTitleOrAuthor(title, author);
-        }
-        else {
+        } else {
             items = bookService.findByShelfAndTitleOrAuthor(shelf, title, author);
         }
         bookGrid.setItems(items);
+    }
+
+    private boolean isBookFiltersValid(BookFilters bookFilters) {
+        if(bookFilters.getBookAuthor() == null || bookFilters.getBookTitle() == null
+                || bookFilters.getBookAuthor().isEmpty() || bookFilters.getBookTitle().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
