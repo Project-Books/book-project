@@ -155,17 +155,21 @@ class BookRepositoryTest {
 
     @Test
     @DisplayName("should successfully find all books by not passing any filter")
-    void successfullyFindBook_withoutParameters() {
-
+    void successfullyFindAllBooksWithoutFilter() {
+        // given
         int allBooks = bookRepository.findAll().size();
 
-        assertThat(allBooks).isEqualTo(bookRepository.findByTitleOrAuthor(WILDCARD, WILDCARD)
-                                                     .size());
+        // when
+        int actual = bookRepository.findByTitleOrAuthor(WILDCARD, WILDCARD)
+                                 .size();
+
+        // then
+        assertThat(actual).isEqualTo(allBooks);
     }
 
     @Test
     @DisplayName("should successfully find book by title without author name")
-    void successfullyFindBook_withOnlyTitle() {
+    void successfullyFindBookWithOnlyTitle() {
         String title = "title";
         bookRepository.saveAndFlush(new Book("anotherBook", author, read));
 
