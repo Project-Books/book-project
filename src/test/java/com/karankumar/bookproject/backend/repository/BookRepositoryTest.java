@@ -170,15 +170,19 @@ class BookRepositoryTest {
     @Test
     @DisplayName("should successfully find book by title without author name")
     void successfullyFindBookWithOnlyTitle() {
+        // given
         String title = "title";
+
+        // when
         bookRepository.saveAndFlush(new Book("anotherBook", author, read));
 
+        // then
         assertThat(bookRepository.findByTitleOrAuthor(title, WILDCARD).size()).isOne();
     }
 
     @Test
     @DisplayName("should successfully find book by author without title")
-    void successfullyFindBook_withOnlyAuthor() {
+    void successfullyFindBookWithOnlyAuthor() {
         String firstName = "firstName";
         String lastName = "lastName";
 
