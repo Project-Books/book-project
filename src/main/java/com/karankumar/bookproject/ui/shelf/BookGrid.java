@@ -106,7 +106,7 @@ public class BookGrid {
 
     private void populateGridWithBooks(Shelf shelf, String title, String author) {
         List<Book> items;
-        if(shelf == null) {
+        if (shelf == null) {
             items = bookService.findByTitleOrAuthor(title, author);
         } else {
             items = bookService.findByShelfAndTitleOrAuthor(shelf, title, author);
@@ -115,11 +115,7 @@ public class BookGrid {
     }
 
     private boolean isBookFiltersValid(BookFilters bookFilters) {
-        if(bookFilters.getBookAuthor() == null || bookFilters.getBookTitle() == null
-                || bookFilters.getBookAuthor().isEmpty() || bookFilters.getBookTitle().isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
+        return bookFilters.getBookAuthor() != null && bookFilters.getBookTitle() != null
+                && !bookFilters.getBookAuthor().isEmpty() && !bookFilters.getBookTitle().isEmpty();
     }
 }
