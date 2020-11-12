@@ -161,6 +161,15 @@ public class PredefinedShelfService {
                 .collect(Collectors.toList());
     }
 
+    public PredefinedShelf getPredefinedShelfByNameAsString(String shelfName) {
+        return findAllForLoggedInUser()
+                .stream()
+                .filter(shelf ->
+                        shelf.getShelfName().toString().equals(shelfName))
+                .collect(Collectors.toList())
+                .get(0); // there should only be one
+    }
+
 	/**
 	 * Fetches all of the books in the chosen predefined shelf
 	 */

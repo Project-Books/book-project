@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -37,14 +36,15 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @DataJpaIntegrationTest
 @DisplayName("BookRepository should")
 class BookRepositoryTest {
+
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final UserRepository userRepository;
     private final PredefinedShelfRepository predefinedShelfRepository;
-
-    private PredefinedShelf readShelf;
+    private User user;
     private Author author;
-    private Book book;
+    private PredefinedShelf read;
+    private final String WILDCARD = "%";
 
     @Autowired
     BookRepositoryTest(BookRepository bookRepository, AuthorRepository authorRepository,
@@ -57,42 +57,51 @@ class BookRepositoryTest {
     }
 
     @BeforeEach
-    void setUp() {
-        User user = getTestUser(userRepository);
-        author = authorRepository.saveAndFlush(new Author("firstName", "lastName"));
-        readShelf = predefinedShelfRepository.save(new PredefinedShelf(READ, user));
-        book = bookRepository.save(new Book("someTitle", author, readShelf));
+    void init() {
+        bookRepository.deleteAll();
+        user = getTestUser(userRepository);
+        author = authorRepository.save(new Author("firstName", "lastName"));
+        read = predefinedShelfRepository.save(
+                new PredefinedShelf(PredefinedShelf.ShelfName.READ, user)
+        );
+        bookRepository.save(new Book("title", author, read));
     }
 
     @Test
+    @DisplayName("should successfully delete a book when the author has more than one book")
     void successfullyDeleteABook_whenAuthorHasOtherBooks() {
         // given
-        Book book2 = bookRepository.save(new Book("someOtherTitle", author, readShelf));
+        bookRepository.saveAndFlush(new Book("Book2", author, read));
+        Book book = bookRepository.findByTitleOrAuthor("title", WILDCARD).get(0);
 
         // when
         bookRepository.delete(book);
 
         // then
-        assertSoftly(softly -> {
-            softly.assertThat(bookRepository.findAll().size()).isOne();
-            softly.assertThat(bookRepository.findAll().get(0))
-                  .isEqualToComparingFieldByField(book2);
-        });
+        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").size())
+                .isOne();
     }
 
     @Test
     @DisplayName("should successfully delete a book when the author has no other books")
     void successfullyDeleteSingleAuthoredBook() {
+        //given
+        Book book = bookRepository.findByTitleContainingIgnoreCase("title").get(0);
+
         // when
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findAll()).isEmpty();
+        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").size())
+                .isZero();
     }
 
     @Test
     @DisplayName("should successfully find list of books by their title")
     void findBookByTitle() {
+        //given
+        bookRepository.saveAndFlush(new Book("someTitle", author, read));
+
         // when
         List<Book> actual1 = bookRepository.findByTitleContainingIgnoreCase("someTitle");
         List<Book> actual2 = bookRepository.findByTitleContainingIgnoreCase("some");
@@ -102,7 +111,85 @@ class BookRepositoryTest {
         assertSoftly(softly -> {
             softly.assertThat(actual1.size()).isOne();
             softly.assertThat(actual2.size()).isOne();
-            softly.assertThat(actual3.size()).isOne();
+            softly.assertThat(actual3.size()).isEqualTo(2);
+        });
+    }
+
+    @Test
+    @DisplayName("should successfully find list of books for any shelf no other filter")
+    void findBookByShelf_withoutParameters() {
+        int allBooks = bookRepository.findAll().size();
+        int radBooks = bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, WILDCARD).size();
+
+        assertThat(allBooks).isEqualTo(radBooks);
+    }
+
+    @Test
+    @DisplayName("should successfully find list of books for any shelf and title")
+    void findBookByShelf_onlyTitle() {
+        String title = "anotherBook";
+        PredefinedShelf toRead = predefinedShelfRepository.saveAndFlush(
+                new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, user)
+        );
+
+        bookRepository.saveAndFlush(new Book(title, author, toRead));
+
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toRead, title, WILDCARD).size())
+                .isOne();
+
+    }
+
+    @Test
+    @DisplayName("should successfully find books for any shelf and author")
+    void findBookByShelf_onyAuthor() {
+        String firstName = "firstName";
+        String lastName = "lastName";
+
+        assertSoftly(softly -> {
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, firstName)
+                                            .size()).isOne();
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, lastName)
+                                            .size()).isOne();
+        });
+    }
+
+    @Test
+    @DisplayName("should successfully find all books by not passing any filter")
+    void successfullyFindAllBooksWithoutFilter() {
+        // given
+        int allBooks = bookRepository.findAll().size();
+
+        // when
+        int actual = bookRepository.findByTitleOrAuthor(WILDCARD, WILDCARD)
+                                 .size();
+
+        // then
+        assertThat(actual).isEqualTo(allBooks);
+    }
+
+    @Test
+    @DisplayName("should successfully find book by title without author name")
+    void successfullyFindBookWithOnlyTitle() {
+        // given
+        String title = "title";
+
+        // when
+        bookRepository.saveAndFlush(new Book("anotherBook", author, read));
+
+        // then
+        assertThat(bookRepository.findByTitleOrAuthor(title, WILDCARD).size()).isOne();
+    }
+
+    @Test
+    @DisplayName("should successfully find book by author without title")
+    void successfullyFindBookWithOnlyAuthor() {
+        String firstName = "firstName";
+        String lastName = "lastName";
+
+        assertSoftly(softly -> {
+            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, firstName).size())
+                  .isOne();
+            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, lastName).size()).isOne();
         });
     }
 }

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
@@ -131,5 +132,13 @@ public class BookService {
         ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
 
         return jsonWriter.writeValueAsString(books);
+    }
+
+    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
+        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
+    }
+
+    public List<Book> findByTitleOrAuthor(String title, String authorsName){
+        return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
 }
