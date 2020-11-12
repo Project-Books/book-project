@@ -44,7 +44,7 @@ class BookRepositoryTest {
     private User user;
     private Author author;
     private PredefinedShelf read;
-    private String WILDCARD = "%";
+    private final String WILDCARD = "%";
 
     @Autowired
     BookRepositoryTest(BookRepository bookRepository, AuthorRepository authorRepository,
@@ -61,7 +61,9 @@ class BookRepositoryTest {
         bookRepository.deleteAll();
         user = getTestUser(userRepository);
         author = authorRepository.save(new Author("firstName", "lastName"));
-        read = predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ, user));
+        read = predefinedShelfRepository.save(
+                new PredefinedShelf(PredefinedShelf.ShelfName.READ, user)
+        );
         bookRepository.save(new Book("title", author, read));
     }
 
@@ -76,7 +78,8 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size()).isOne();
+        assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size())
+                .isOne();
     }
 
     @Test
@@ -89,7 +92,8 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size()).isZero();
+        assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size())
+                .isZero();
     }
 
     @Test
@@ -124,12 +128,14 @@ class BookRepositoryTest {
     @DisplayName("should successfully find list of books for any shelf and title")
     void findBookByShelf_onlyTitle() {
         String title = "anotherBook";
-        PredefinedShelf toRead =
-                predefinedShelfRepository.saveAndFlush(new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, user));
+        PredefinedShelf toRead = predefinedShelfRepository.saveAndFlush(
+                new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, user)
+        );
 
         bookRepository.saveAndFlush(new Book(title, author, toRead));
 
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toRead, title, WILDCARD).size()).isOne();
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toRead, title, WILDCARD).size())
+                .isOne();
 
     }
 
@@ -140,8 +146,10 @@ class BookRepositoryTest {
         String lastName = "lastName";
 
         assertSoftly(softly -> {
-            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, firstName).size()).isOne();
-            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, lastName).size()).isOne();
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, firstName)
+                                            .size()).isOne();
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, lastName)
+                                            .size()).isOne();
         });
     }
 
@@ -151,7 +159,8 @@ class BookRepositoryTest {
 
         int allBooks = bookRepository.findAll().size();
 
-        assertThat(allBooks).isEqualTo(bookRepository.findByTitleOrAuthor(WILDCARD, WILDCARD).size());
+        assertThat(allBooks).isEqualTo(bookRepository.findByTitleOrAuthor(WILDCARD, WILDCARD)
+                                                     .size());
     }
 
     @Test
@@ -161,7 +170,6 @@ class BookRepositoryTest {
         bookRepository.saveAndFlush(new Book("anotherBook", author, read));
 
         assertThat(bookRepository.findByTitleOrAuthor(title, WILDCARD).size()).isOne();
-
     }
 
     @Test
@@ -171,11 +179,9 @@ class BookRepositoryTest {
         String lastName = "lastName";
 
         assertSoftly(softly -> {
-            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, firstName).size()).isOne();
+            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, firstName).size())
+                  .isOne();
             softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, lastName).size()).isOne();
         });
-
     }
-
 }
-
