@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
@@ -35,15 +36,16 @@ import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf
 @Log
 public class BookGrid {
     private final Grid<Book> bookGrid;
-    private final PredefinedShelfUtils predefinedShelfUtils;
+    private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
     private final BookService bookService;
 
-    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfService customShelfService, BookService bookService) {
+    BookGrid(CustomShelfService customShelfService,
+             PredefinedShelfService predefinedShelfService, BookService bookService) {
         this.bookGrid = new Grid<>(Book.class);
-        this.predefinedShelfUtils = predefinedShelfUtils;
         this.customShelfService = customShelfService;
         this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
         configure();
     }
 
@@ -91,13 +93,15 @@ public class BookGrid {
     }
 
     private Shelf findShelf(String chosenShelf) {
-        if (isAllBooksShelf(chosenShelf)) { return null; }
-
-        if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
-            return predefinedShelfUtils.findPredefinedShelf(chosenShelf);
+        if (isAllBooksShelf(chosenShelf)) {
+            return null;
         }
 
-        return customShelfService.getCustomShelfByName(chosenShelf);
+        if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
+            return predefinedShelfService.getPredefinedShelfByNameAsString(chosenShelf);
+        } else {
+            return customShelfService.getCustomShelfByName(chosenShelf);
+        }
     }
 
     private void populateGridWithBooks(Shelf shelf, String title, String author) {

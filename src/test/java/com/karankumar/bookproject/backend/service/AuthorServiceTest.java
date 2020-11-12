@@ -125,6 +125,6 @@ class AuthorServiceTest {
     @DisplayName("throw error on attempt to delete a null author")
     void throwErrorOnDeletingNullAuthor() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> authorService.save(null));
+                .isThrownBy(() -> authorService.delete(null));
     }
 }

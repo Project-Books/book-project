@@ -15,8 +15,6 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-
 package com.karankumar.bookproject.ui.statistics;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
