@@ -24,6 +24,11 @@ class BookFilters {
     private String bookTitle;
     private String bookAuthor;
 
+    public void init() {
+        bookTitle = "%";
+        bookAuthor = "%";
+    }
+
     void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
     }
@@ -32,15 +37,19 @@ class BookFilters {
         this.bookAuthor = bookAuthor;
     }
 
+    public String getBookTitle() { return bookTitle; }
+
+    public String getBookAuthor(){ return bookAuthor;}
+
     private boolean isBookTitleNull() {
         return bookTitle == null;
     }
 
-    private boolean isBookAuthorNull() {
+    public boolean isBookAuthorNull() {
         return bookAuthor == null;
     }
 
-    boolean apply(Book book) {
+    boolean applyFilter(Book book) {
         return containsBookTitle(book) && containsBookAuthor(book);
     }
 

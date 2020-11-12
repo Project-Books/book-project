@@ -20,18 +20,21 @@ package com.karankumar.bookproject.backend.entity.account;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
+@DisplayName("User should")
 class UserTest {
     private final UserRepository userRepository;
     private long initialNumberOfUsers;
 
-    UserTest(@Autowired UserRepository userRepository) {
+    @Autowired
+    UserTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -41,7 +44,7 @@ class UserTest {
     }
 
     @Test
-    void testValidUserSaved() {
+    void beSavedIfValid() {
         // given
         User user = userWithoutPassword().password("passwordP1&132")
                                          .email("abc@def.com")
@@ -51,7 +54,7 @@ class UserTest {
         userRepository.save(user);
 
         // then
-        assertEquals(initialNumberOfUsers + 1, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers + 1);
     }
 
     private User.UserBuilder userWithoutPassword() {
@@ -61,7 +64,7 @@ class UserTest {
     }
 
     @Test
-    void testWeakPasswordIsInvalid() {
+    void notHaveWeakPassword() {
         // given
         User user = userWithoutPassword().password("123456789")
                                          .build();
@@ -70,11 +73,11 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
     
     @Test
-    void testFairPasswordIsInvalid() {
+    void notHaveFairPassword() {
         // given
         User user = userWithoutPassword().password("aPassWorD")
                                          .build();
@@ -83,11 +86,11 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
     
     @Test
-    void testGoodPasswordIsInvalid() {
+    void notHaveGoodPassword() {
         // given
         User user = userWithoutPassword().password("testPa$$123")
                                          .build();
@@ -96,7 +99,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
     
     void tryToSaveInvalidUser(User user) {
@@ -106,7 +109,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithMailWithoutDomain() {
+    void notHaveMailWithoutDomain() {
         // given
         User user = userWithEmailWithoutDomain().build();
 
@@ -114,7 +117,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithoutDomain() {
@@ -129,7 +132,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithoutAt() {
+    void notHaveEmailWithoutAt() {
         // given
         User user = userWithEmailWithoutAt().build();
 
@@ -137,7 +140,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithoutAt() {
@@ -146,7 +149,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithoutTopLevelDomain() {
+    void notHaveEmailWithoutToplevelDomain() {
         // given
         User user = userWithEmailWithoutTopLevelDomain().build();
 
@@ -154,7 +157,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithoutTopLevelDomain() {
@@ -163,7 +166,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithoutLocalPart() {
+    void notHaveEmailWithoutLocalPart() {
         // given
         User user = userWithEmailWithoutLocalPart().build();
 
@@ -171,7 +174,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithoutLocalPart() {
@@ -180,7 +183,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithSpace() {
+    void notHaveEmailWithSpaces() {
         // given
         User user = userWithEmailWithSpace().build();
 
@@ -188,7 +191,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithSpace() {
@@ -197,7 +200,7 @@ class UserTest {
     }
 
     @Test
-    void testUserWithEmailWithQuotes() {
+    void notHaveEmailWithQuotes() {
         // given
         User user = userWithEmailWithQuotes().build();
 
@@ -205,7 +208,7 @@ class UserTest {
         tryToSaveInvalidUser(user);
 
         // then
-        assertEquals(initialNumberOfUsers, userRepository.count());
+        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
 
     private User.UserBuilder userWithEmailWithQuotes() {

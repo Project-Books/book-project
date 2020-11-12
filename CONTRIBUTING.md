@@ -13,15 +13,24 @@ By contributing to this project, you are expected to adhere to the [Book Project
 ## Contents
 
 1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
+1. [Receiving a response](https://github.com/Project-Books/book-project/blob/refactor-book-service-test-523/CONTRIBUTING.md#receiving-a-response)
+1. [Open-ended discussions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#open-ended-discussions) 
 1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
    1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
+   1. [New contributors assigned to at most one issue at a time](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#new-contributors-assigned-to-at-most-one-issue-at-a-time)
    1. [Discuss your implementation approach](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#discuss-your-implementation-approach)
+   1. [Ensure your email address on your commits are correct](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#ensure-your-email-address-on-your-commits-are-correct)
+      1. [Rewriting pushed commits with a different email address](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#rewriting-pushed-commits-with-a-different-email-address)
 1. [Workflow](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#workflow)
    1. [Commit messages](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#commit-messages)
    1. [One problem per patch](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#one-problem-per-patch)
+   1. [Squashing Commits](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#squashing-commits)
 1. [Code contributions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#code-contributions)
    1. [Writing tests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#writing-tests)
+   1. [New files](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#new-files)
 1. [Pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#pull-requests)
+   1. [Merge conflicts](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#merge-conflicts)
+   1. [Resolving conversations](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#resolving-conversations)
 1. [Stale issues & pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#stale-issues--pull-requests)
 1. [Unassigning yourself](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#unassigning-yourself)
 1. [Ways to contribute](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#ways-to-contribute)
@@ -35,6 +44,12 @@ Questions and feedback should be discussed over [Slack](https://join.slack.com/t
 For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
 
 If in doubt, talk to us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)!
+
+## Receiving a response
+
+We aim to respond to all messages (on Slack and on GitHub) within seven days. Similarly, we aim to review all pull requests within seven days of receiving it in a review state.
+
+If you haven't received a response, feel free to mention @knjk04 or get in touch on Slack.
 
 ## Open-ended discussions
 
@@ -95,7 +110,7 @@ For more information, see GitHub's documentation page on
 _Step 1:_
 
 While on your feature branch, run 
-`$ git rebase -i -HEAD~n` where _n_ are the number of commits you would like to change
+`$ git rebase -i HEAD~n` where _n_ are the number of commits you would like to change
 
 This will then open your commits in the default text editor for Git (which may be Vim or Vi, so you may wish to change this if you prefer a different editor).
 
@@ -165,6 +180,8 @@ Before submitting a pull request, run the unit tests and ensure they pass.
 
 Generally speaking, if you're working on a new feature (any issue with the [enhancement label](https://github.com/knjk04/book-project/labels/enhancement)) or fixing a [bug](https://github.com/knjk04/book-project/labels/bug), please also write tests. If you need a hand with this, we can help.
 
+We highly recommend following a test-driven development approach.
+
 ### New files
 
 If you're adding a new file, please ensure to copy the contents of our [copyright file](https://github.com/knjk04/book-project/blob/master/docs/COPYRIGHT) verbatim (use the latest version on the master branch).
@@ -215,5 +232,7 @@ Please also consider that you're finding something difficult on the issue you're
 - Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings)
 
 - Feedback: we're eager to find new ways to improve, so please do let us know!
+
+- Triage: help us to [triage issues and pull requests](https://github.com/Project-Books/book-project/wiki/Becoming-a-Triager)
 
 In addition to the above, you can get involved in shaping the future of the project over on [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).

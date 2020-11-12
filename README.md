@@ -9,7 +9,7 @@
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw">
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-i7lept44-rgJ9yB0A2vedJTLyyfkjKQ">
     <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
   </a>
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
@@ -30,10 +30,13 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - Statistics about your reading habits
 - Add your own shelves
 - Export your saved data to JSON
+- User registration and accounts
 - And much more!
 
 *Coming soon:*
-- User registration and accounts
+- Search from a catalogue of books
+- 2-factor authentication
+- Magic links
 - And much more!
 
 <p align="center">
@@ -59,36 +62,58 @@ Prerequisites:
 - If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
   - If you do have Node.js installed, please ensure it is at least version 10.0
 - MySQL 8.0.* or (better) Docker
+  - Windows or macOS: install Docker Desktop
+  - Linux: install Docker Engine and Docker Compose
  
 ### Running the app
+
+1. Clone the repository
+2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
+3. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
   
-If you want to use Docker, follow one of the two appoaches (if you use Windows, follow the first approach):
+Then, if you want to use Docker, follow one of the approaches below:
 
 #### 1. Start locally with only MySQL running in docker
 
-1. Clone the repository
-2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Build the project at the root using `./mvn clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-4. Start MySQL database using `docker-compose up -d mysql phpmyadmin`
-5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
-6. Log in with the details below:
-    - Username: `user`
-    - Password: `password`
+4. Build the project at the root using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
+5. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+    - May need to add `sudo` to this command on Unix
+6. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
 
 #### 2. Start using docker-compose in production mode
-1. Clone the repository
-2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
-     - `./mvnw clean package -Pproduction` (Unix), or 
-     - `mvnw.cmd clean package -Pproduction` (Windows)
-4. Start the MySQL Database and book project app using docker compose `docker-compose up --build`
-5. Go to `localhost:8080`
-6. Log in with the details below:
-    - Username: `user`
-    - Password: `password`
 
+4. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
+    - `./mvnw clean package -Pproduction` (Unix), or 
+    - `mvnw.cmd clean package -Pproduction` (Windows)
+5. Start the MySQL Database and book project app using `docker-compose up --build`
+    - May need to add `sudo` to this command on Unix
     
-You may find lots of errors for things like the log statements, or the entities not having constructors. You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). Other common errors and solutions are also detailed in the troubleshooting page.
+#### 3. Start locally with Vaadin live reload (the tests do not run)
+
+We recommended this approach if you need to work on the frontend with Vaadin. This approach allows you to use 
+Vaadin Live reload which prevents you from needing to re-run the server every time or manually refresh your browser 
+(i.e. it's a lot quicker). 
+
+4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+    - May need to add `sudo` to this command on Unix
+5. Run the project from your IDE or with Maven:
+    - `./mvnw spring-boot:run` on Unix
+    - `mvnw.cmd spring-boot:run` on Windows
+   
+If you're running the app from your IDE, after making a Vaadin-related change, build the app from your IDE after making
+any changes.
+
+### Access site
+
+After following the instructions for running the app above, go to `localhost:8080`. Then, log in with the details below:
+- Username: `user`
+- Password: `password`
+
+### Fixing Lombok errors
+
+You may find lots of errors for things like the log statements, or the entities not having constructors. 
+You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+Other common errors and solutions are also in the troubleshooting page.
 
 ### Access database
 
@@ -120,10 +145,12 @@ If you need help with anything, we'll be happy to help you in our [Slack workspa
 
 [Mockito](https://github.com/mockito/mockito) - [MIT License](http://www.opensource.org/licenses/mit-license.php)
 
-[Java Hamcrest](https://github.com/hamcrest/JavaHamcrest) - [BSD-3 clause](http://opensource.org/licenses/BSD-3-Clause)
+[AssertJ](https://github.com/assertj/assertj-core) - [Apache 2.0 License](https://github.com/assertj/assertj-core/blob/main/LICENSE.txt)
 
 [zxcvbn4j](https://github.com/nulab/zxcvbn4j) - [MIT License](https://opensource.org/licenses/mit-license.php)
 
 [paper-toggle-button](https://www.webcomponents.org/element/@polymer/paper-toggle-button) - [BSD-3 clause](https://spdx.org/licenses/BSD-3-Clause)
 
 [jackson](https://github.com/FasterXML/jackson) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)
+
+[Flyway](https://github.com/flyway/flyway) - [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0)

@@ -19,16 +19,17 @@ package com.karankumar.bookproject.backend.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+@DisplayName("LocalDateSerializer should")
 class LocalDateSerializerTest {
     @Test
-    void shouldSerializeLocalDate() throws IOException {
+    void serializeLocalDateCorrectly() throws IOException {
         // given
         LocalDateSerializer serializer = new LocalDateSerializer();
         LocalDate date = LocalDate.of(2020, 9, 5);
@@ -41,6 +42,6 @@ class LocalDateSerializerTest {
         String actualJsonString = mapper.writeValueAsString(date);
 
         // then
-        assertEquals(expectedJsonString, actualJsonString);
+        assertThat(actualJsonString).isEqualTo(expectedJsonString);
     }
 }

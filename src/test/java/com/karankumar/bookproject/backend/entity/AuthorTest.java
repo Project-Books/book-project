@@ -21,50 +21,37 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @IntegrationTest
+@DisplayName("Author should")
 class AuthorTest {
-    private static BookService bookService;
+    private BookService bookService;
+    private AuthorService authorService;
 
-    private static Book testBook1;
-    private static Book testBook2;
-    private static AuthorService authorService;
-    private static PredefinedShelf toRead;
+    private PredefinedShelf toRead;
 
-    @BeforeAll
-    public static void setup(@Autowired PredefinedShelfService predefinedShelfService,
-                             @Autowired BookService bookService,
-                             @Autowired AuthorService authorService) {
-        toRead = new PredefinedShelfUtils(predefinedShelfService).findToReadShelf();
-        testBook1 = createBook("How the mind works", toRead);
-        testBook2 = createBook("The better angels of our nature", toRead);
-
-        AuthorTest.bookService = bookService;
-        AuthorTest.authorService = authorService;
-
+    @Autowired
+    void AuthorServiceTest(BookService bookService, AuthorService authorService) {
+        this.bookService = bookService;
+        this.authorService = authorService;
         resetBookService();
-
-        AuthorTest.bookService.save(testBook1);
-        AuthorTest.bookService.save(testBook2);
     }
 
     @BeforeEach
-    public void reset() {
+    public void reset(@Autowired PredefinedShelfService predefinedShelfService) {
         resetBookService();
+        toRead = predefinedShelfService.findToReadShelf();
     }
 
-    private static void resetBookService() {
+    private void resetBookService() {
         bookService.deleteAll();
     }
 
@@ -78,25 +65,53 @@ class AuthorTest {
      * originally had the same author name
      */
     @Test
-    @Disabled
-    // TODO: fix failing test
-    void updateAuthorAffectsOneRow() {
+    void affectOnlyOneBookWhenUpdated() {
+        // given
+        Book testBook1 = createBook("How the mind works", toRead);
+        Book testBook2 = createBook("The better angels of our nature", toRead);
+        bookService.save(testBook1);
+        bookService.save(testBook2);
+
+        // when
         Author newAuthor = new Author("Matthew", "Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
 
-        Assertions.assertNotEquals(testBook1.getAuthor(), testBook2.getAuthor());
+        // then
+        assertThat(testBook1.getAuthor()).isNotEqualTo(testBook2.getAuthor());
     }
 
     @Test
-    void orphanAuthorsRemoved() {
-        Author orphan = new Author("Jostein", "Gardner");
+    void beRemovedWhenOrphan() {
+        assumeThat(authorService.findAll()).isEmpty();
+
+        // given
+        Author orphan = new Author("Jostein", "Gaarder");
         Book book = new Book("Sophie's World", orphan, toRead);
+        bookService.save(book);
+
+        // when
         bookService.delete(book);
 
-        assertAll(
-                () -> assertThrows(RuntimeException.class, () -> authorService.findById(orphan.getId())),
-                () -> assertTrue(authorService.findAll().isEmpty())
-        );
+        // then
+        assertThat(authorService.findAll()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Non-orphan authors shouldn't be removed when one of their books is deleted")
+    void notRemoveNonOrphans() {
+        // given
+        Author nonOrphan = new Author("Jostein", "Gaarder");
+
+        Book book = new Book("Sophie's World", nonOrphan, toRead);
+        bookService.save(book);
+        bookService.save(new Book("The Other World", nonOrphan, toRead));
+
+        // when
+        bookService.delete(book);
+        assumeThat(bookService.count()).isOne();
+
+        // then
+        assertThat(authorService.count()).isOne();
     }
 }

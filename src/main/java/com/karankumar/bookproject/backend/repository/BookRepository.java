@@ -15,11 +15,11 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -28,6 +28,21 @@ import java.util.Set;
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByTitleContainingIgnoreCase(String title);
 
-    // TODO: implement
-    Set<Book> findByAuthor(Author author);
+    @Query("SELECT b " +
+            "FROM Book b " +
+            "LEFT JOIN b.author a " +
+            "WHERE (b.predefinedShelf = :shelf OR b.customShelf = :shelf) AND " +
+            "LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
+            "(LOWER(a.firstName) LIKE LOWER(CONCAT('%', :authorsName, '%')) OR " +
+            "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :authorsName, '%')))")
+    List<Book> findByShelfAndTitleOrAuthor(@Param("shelf") Shelf shelf,@Param("title") String title,@Param("authorsName") String authorsName);
+
+    @Query("SELECT b " +
+            "FROM Book b " +
+            "LEFT JOIN b.author AS a " +
+            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
+            "(LOWER(a.firstName) LIKE LOWER(CONCAT('%', :authorsName, '%')) OR " +
+            "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :authorsName, '%')))")
+    List<Book> findByTitleOrAuthor(@Param("title") String title, @Param("authorsName") String authorsName);
+
 }

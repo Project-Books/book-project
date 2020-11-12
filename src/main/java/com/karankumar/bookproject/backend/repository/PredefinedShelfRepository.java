@@ -19,10 +19,13 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.account.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf, Long> {
-    List<PredefinedShelf> findByPredefinedShelfName(PredefinedShelf.ShelfName shelfName);
+    List<PredefinedShelf> findAllByUser(User user);
+    PredefinedShelf findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName shelfName, User user);
+    int countAllByUser(User user);
 }

@@ -18,39 +18,52 @@
 package com.karankumar.bookproject.backend.entity;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @IntegrationTest
+@DisplayName("PredefinedShelf should")
 class PredefinedShelfTest {
-    @Autowired BookService bookService;
+    private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
+
+    @Autowired
+    PredefinedShelfTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
+    }
 
     @Test
-    void testPredefinedShelvesWithoutBooksShouldStillExist(
-            @Autowired PredefinedShelfService predefinedShelfService) {
+    void stillExistWithoutBooks() {
         // given
         resetBookService();
 
         // when
-        List<PredefinedShelf> shelves = predefinedShelfService.findAll();
+        List<PredefinedShelf> shelves = predefinedShelfService.findAllForLoggedInUser();
 
         // then
-        assertEquals(4, shelves.size());
-        assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
-                .contains(
-                        ShelfName.TO_READ,
-                        ShelfName.READING,
-                        ShelfName.READ,
-                        ShelfName.DID_NOT_FINISH
-                );
+        assertSoftly(softly -> {
+            softly.assertThat(shelves).hasSize(4);
+            softly.assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
+                  .contains(
+                          ShelfName.TO_READ,
+                          ShelfName.READING,
+                          ShelfName.READ,
+                          ShelfName.DID_NOT_FINISH
+                  );
+        });
+
     }
 
     private void resetBookService() {

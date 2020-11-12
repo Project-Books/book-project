@@ -1,18 +1,18 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.karankumar.bookproject.ui.registration;
@@ -32,13 +32,14 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.spring.SpringServlet;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ._click;
 import static com.github.mvysny.kaributesting.v10.LocatorJ._get;
@@ -47,6 +48,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @WebAppConfiguration
+@Transactional
+@DisplayName("RegistrationForm should")
 class RegistrationFormTest {
     private final static User VALID_TEST_USER = User.builder()
                                                     .username("validTestUser")
@@ -83,7 +86,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void passwordFieldNotMatchingTheRulesHasError() {
+    void showErrorOnPasswordFieldNotMatchingTheRules() {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
 
         _setValue(passwordField, "asdf");
@@ -92,7 +95,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void passwordConfirmationWrongHasError() {
+    void showErrorOnWrongPasswordConfirmation() {
         // given
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
         PasswordField passwordConfirmationField =
@@ -107,7 +110,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void passwordFieldMatchingTheRulesIsAccepted() {
+    void acceptPasswordFieldMatchingTheRules() {
         PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
 
         _setValue(passwordField, "asdfASDF1234=");
@@ -116,7 +119,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void errorShownWhenUsernameFieldLessThanFiveChars() {
+    void showErrorWhenUsernameFieldLessThanFiveChars() {
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
         _setValue(usernameField, "asdf");
@@ -125,7 +128,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void errorShownWhenUsernameInUse() {
+    void showErrorWhenUsernameInUse() {
         userRepository.save(VALID_TEST_USER);
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
@@ -135,7 +138,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void validUsernameIsAccepted() {
+    void acceptValidUsername() {
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
 
         _setValue(usernameField, "asdfgh");
@@ -144,7 +147,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void errorShownWhenEmailIsInvalid() {
+    void showErrorWhenEmailIsInvalid() {
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
         _setValue(emailField, "thisisnotanemail");
@@ -153,7 +156,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void errorShownWhenEmailInUse() {
+    void showErrorWhenEmailInUse() {
         // given
         userRepository.save(VALID_TEST_USER);
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
@@ -166,7 +169,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void validEmailIsAccepted() {
+    void acceptValidEmail() {
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
 
         _setValue(emailField, "asdf@asdf.de");
@@ -175,7 +178,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_withError_cannotBeSent() {
+    void notSendWithError() {
         // given
         Span errorMessage = _get(Span.class, spec -> spec.withId("error-message"));
         Button registerButton = _get(Button.class, spec -> spec.withId("register"));
@@ -188,7 +191,7 @@ class RegistrationFormTest {
     }
 
     @Test
-    void registrationForm_withoutError_getsSent() {
+    void sendWithoutError() {
         // given
         TextField usernameField = _get(TextField.class, spec -> spec.withId("username"));
         EmailField emailField = _get(EmailField.class, spec -> spec.withId("email"));
@@ -208,9 +211,19 @@ class RegistrationFormTest {
         assertThat(userRepository.findByUsername("testusername")).isPresent();
     }
 
-    @AfterEach
-    public void tearDown() {
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
+    @Test
+    void showErrorWhenPasswordIsTooLong() {
+        // given
+        PasswordField passwordField = _get(PasswordField.class, spec -> spec.withId("password"));
+
+        // when
+        _setValue(passwordField, generateInvalidPassword());
+
+        // then
+        assertThat(passwordField.getErrorMessage()).isNotBlank();
+    }
+
+    private String generateInvalidPassword() {
+        return ".".repeat(RegistrationForm.MAX_PASSWORD_LENGTH);
     }
 }

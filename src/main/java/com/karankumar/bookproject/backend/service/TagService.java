@@ -19,15 +19,13 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.Tag;
 import com.karankumar.bookproject.backend.repository.TagRepository;
-import lombok.extern.java.Log;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Level;
 
 @Service
-@Log
-public class TagService extends BaseService<Tag, Long> {
+public class TagService {
 
     private final TagRepository tagRepository;
     
@@ -35,18 +33,12 @@ public class TagService extends BaseService<Tag, Long> {
         this.tagRepository = tagRepository;
     }
 
-    @Override
     public Tag findById(Long id) {
         return tagRepository.getOne(id);
     }
 
-    @Override
-    public void save(Tag tag) {
-        if (tag != null) {
-            tagRepository.save(tag);
-        } else {
-            LOGGER.log(Level.SEVERE, "Null tag");
-        }
+    public void save(@NonNull Tag tag) {
+        tagRepository.save(tag);
     }
 
     public Long count() {
@@ -57,12 +49,10 @@ public class TagService extends BaseService<Tag, Long> {
         return tagRepository.findAll();
     }
 
-    @Override
-    public void delete(Tag tag) {
+    public void delete(@NonNull Tag tag) {
         tagRepository.delete(tag);
     }
 
-    @Override
     public void deleteAll() {
         tagRepository.deleteAll();
     }

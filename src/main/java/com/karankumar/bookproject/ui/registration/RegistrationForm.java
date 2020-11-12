@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.ui.registration;
 
+import com.helger.commons.annotation.VisibleForTesting;
 import com.karankumar.bookproject.backend.constraints.PasswordStrength;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
@@ -58,6 +59,7 @@ public class RegistrationForm extends FormLayout {
 
     private static final int NUMBER_OF_PASSWORD_STRENGTH_INDICATORS = PasswordStrength.values().length;
     private static final String BLANK_PASSWORD_MESSAGE = "Password is blank";
+    @VisibleForTesting static final int MAX_PASSWORD_LENGTH = 128;
     private final Span errorMessage = new Span();
 
     // Flag for disabling first run for password validation
@@ -110,6 +112,7 @@ public class RegistrationForm extends FormLayout {
     private void configurePasswordField() {
         passwordField.setRequired(true);
         passwordField.setId("password");
+        passwordField.setMaxLength(MAX_PASSWORD_LENGTH + 1);
         passwordField.addValueChangeListener(e -> {
             int passwordScore = new Zxcvbn().measure(passwordField.getValue()).getScore();
             passwordStrengthMeter.setValue(
@@ -119,9 +122,9 @@ public class RegistrationForm extends FormLayout {
                 passwordStrengthDescriptor.setText(BLANK_PASSWORD_MESSAGE);
                 passwordStrengthMeter.setValue(0);
             } else {
-                setPasswordStrengthMeterColor(passwordScore);
-                passwordStrengthDescriptor.setText("Password Strength: " +
-                        PasswordStrength.values()[passwordScore]);
+                PasswordStrength strength = PasswordStrength.fromValue(passwordScore);
+                setPasswordStrengthMeterColor(strength);
+                passwordStrengthDescriptor.setText("Password Strength: " + strength);
             }
         });
     }
@@ -129,6 +132,7 @@ public class RegistrationForm extends FormLayout {
     private void configurePasswordConfirmationField() {
         passwordConfirmationField.setRequired(true);
         passwordConfirmationField.setId("password-confirmation");
+        passwordConfirmationField.setMaxLength(MAX_PASSWORD_LENGTH + 1);
     }
 
     private void configureRegisterButton() {
@@ -177,7 +181,7 @@ public class RegistrationForm extends FormLayout {
             enablePasswordValidation = true;
             binder.validate();
         });
-        
+
         binder.setStatusLabel(errorMessage);
         errorMessage.getStyle()
                     .set("color", "var(--lumo-error-text-color)");
@@ -189,6 +193,10 @@ public class RegistrationForm extends FormLayout {
             return ValidationResult.ok();
         }
 
+        if (password.length() > MAX_PASSWORD_LENGTH) {
+            return ValidationResult.error("Password is too long");
+        }
+
         String passwordConfirmation = passwordConfirmationField.getValue();
 
         if (StringUtils.equals(password, passwordConfirmation)) {
@@ -197,26 +205,28 @@ public class RegistrationForm extends FormLayout {
 
         return ValidationResult.error("Passwords do not match");
     }
-    
-    private void setPasswordStrengthMeterColor(int passwordScore) {
-	switch (passwordScore) {
-        case 0:
-            passwordStrengthMeter.setClassName("weak-indicator");
-            break;
-        case 1:
-            passwordStrengthMeter.setClassName("fair-indicator");
-            break;
-        case 2:
-            passwordStrengthMeter.setClassName("good-indicator");
-            break;
-        case 3:
-            passwordStrengthMeter.setClassName("strong-indicator");
-            break;
-        case 4:
-            passwordStrengthMeter.setClassName("very-strong-indicator");
-            break;
-        default:
-            throw new IllegalArgumentException("The password score has to lie between 0 and 5 (exclusive)");
-        }
+
+    private void setPasswordStrengthMeterColor(PasswordStrength passwordScore) {
+        switch (passwordScore) {
+            case WEAK:
+                passwordStrengthMeter.setClassName("weak-indicator");
+                break;
+            case FAIR:
+                passwordStrengthMeter.setClassName("fair-indicator");
+                break;
+            case GOOD:
+                passwordStrengthMeter.setClassName("good-indicator");
+                break;
+            case STRONG:
+                passwordStrengthMeter.setClassName("strong-indicator");
+                break;
+            case VERY_STRONG:
+                passwordStrengthMeter.setClassName("very-strong-indicator");
+                break;
+            default:
+                String message = "The password score " + passwordScore + " is not covered in the " +
+                        "switch statement";
+                throw new IllegalArgumentException(message);
+            }
     }
 }

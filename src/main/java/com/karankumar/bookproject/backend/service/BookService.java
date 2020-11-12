@@ -23,7 +23,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +35,7 @@ import java.util.logging.Level;
 
 @Service
 @Log
-public class BookService extends BaseService<Book, Long> {
+public class BookService {
     private final AuthorService authorService;
     private final BookRepository bookRepository;
 
@@ -42,12 +44,10 @@ public class BookService extends BaseService<Book, Long> {
         this.authorService = authorService;
     }
 
-    @Override
     public Book findById(Long id) {
         return bookRepository.getOne(id);
     }
 
-    @Override
     public void save(Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
             addBookToAuthor(book);
@@ -56,8 +56,8 @@ public class BookService extends BaseService<Book, Long> {
         }
     }
 
-    private boolean bookHasAuthorAndPredefinedShelf(Book book) {
-        return book != null && book.getAuthor() != null && book.getPredefinedShelf() != null;
+    private boolean bookHasAuthorAndPredefinedShelf(@NonNull Book book) {
+        return book.getAuthor() != null && book.getPredefinedShelf() != null;
     }
 
     private void addBookToAuthor(Book book) {
@@ -82,26 +82,34 @@ public class BookService extends BaseService<Book, Long> {
         return bookRepository.findByTitleContainingIgnoreCase(filterText);
     }
 
-    @Override
-    public void delete(Book book) {
-        if (book == null) {
-            LOGGER.log(Level.SEVERE, "Cannot delete an null book.");
-            return;
-        }
-
+    public void delete(@NonNull Book book) {
         LOGGER.log(Level.INFO, "Deleting book. Book repository size = " + bookRepository.count());
         bookRepository.delete(book);
 
         List<Book> books = bookRepository.findAll();
         if (books.contains(book)) {
+
             LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
         } else {
             LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
                     bookRepository.count());
+
+            Author author = book.getAuthor();
+            removeBookFromAuthor(book, author);
+            removeAuthorWithoutBooks(author);
         }
     }
 
-    @Override
+    private void removeBookFromAuthor(Book book, Author author) {
+        author.removeBook(book);
+    }
+
+    private void removeAuthorWithoutBooks(Author author) {
+        if (author.getBooks().isEmpty()) {
+            authorService.delete(author);
+        }
+    }
+
     public void deleteAll() {
         if (bookRepository.count() == 0) {
             LOGGER.log(Level.INFO, "All books already deleted");
@@ -124,5 +132,13 @@ public class BookService extends BaseService<Book, Long> {
         ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
 
         return jsonWriter.writeValueAsString(books);
+    }
+
+    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
+        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
+    }
+
+    public List<Book> findByTitleOrAuthor(String title, String authorsName){
+        return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
 }
