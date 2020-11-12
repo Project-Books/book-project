@@ -33,8 +33,6 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import static com.karankumar.bookproject.ui.book.form.BookFormErrors.MAX_PAGES_ERROR;
 
-import com.karankumar.bookproject.ui.book.form.BookForm;
-import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
