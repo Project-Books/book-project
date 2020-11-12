@@ -22,10 +22,6 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
-<<<<<<< HEAD
-=======
-//import org.junit.Before;
->>>>>>> replace NotEmpty annotations with NotBlank
 import org.junit.jupiter.api.BeforeEach;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,7 +36,6 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 @IntegrationTest
 @DisplayName("Author should")
@@ -51,6 +46,7 @@ class AuthorTest {
     private PredefinedShelf toRead;
     
     private Validator validator;
+    private Set<ConstraintViolation<Author>> violations;
 
     @Autowired
     void AuthorServiceTest(BookService bookService, AuthorService authorService) {
@@ -65,16 +61,7 @@ class AuthorTest {
         toRead = predefinedShelfService.findToReadShelf();
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
-    
-<<<<<<< HEAD
-=======
-  //  @Before
-  //  public void setUp() {
-    //    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-      //  validator = factory.getValidator();
-   // }
 
->>>>>>> replace NotEmpty annotations with NotBlank
     private void resetBookService() {
         bookService.deleteAll();
     }
@@ -140,65 +127,47 @@ class AuthorTest {
     }
     
     @Test
-<<<<<<< HEAD
     void notAcceptNullFirstName() {
-    	// given
+    	// when
     	Author authorWithNullFirstName = new Author(null, "Gaarder");
     	
-    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(authorWithNullFirstName, "firstName");
+    	violations = validator.validateProperty(authorWithNullFirstName, "firstName");
     	
-    	//  then
+    	// then
     	assertThat(violations.size()).isEqualTo(2);
     }
     
     @Test
     void notAcceptNullLastName() {
-    	// given
+    	// when
     	Author authorWithNullLastName = new Author("Jostein", null);
     	
-    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(authorWithNullLastName, "lastName");
+    	violations = validator.validateProperty(authorWithNullLastName, "lastName");
     	
-    	//  then
+    	// then
     	assertThat(violations.size()).isEqualTo(2);
     }
     
     @Test
     void notAcceptBlankFirstName() {
-    	// given
+    	// when
     	Author authorWithBlankFirstName = new Author(" ", "Gaarder");
     	
-    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(authorWithBlankFirstName, "firstName");
-=======
-    void notEmptyFirstName() {
-    	// given
-    	Author noFirst = new Author(" ", "Gaarder");
-    	
-    	validator = Validation.buildDefaultValidatorFactory().getValidator();
-    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(noFirst, "firstName");
->>>>>>> replace NotEmpty annotations with NotBlank
-    	
+    	violations = validator.validateProperty(authorWithBlankFirstName, "firstName");
+ 
     	//  then
-    	assertThat(violations.size()).isEqualTo(1);
+    	assertThat(violations.size()).isOne();
     }
     
     @Test
-<<<<<<< HEAD
     void notAcceptBlankLastName() {
-    	// given
+    	// when
     	Author authorWithBlankLastName = new Author("Jostein", " ");
     	
-    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(authorWithBlankLastName, "lastName");
-=======
-    void notEmptyLastName() {
-    	// given
-    	Author noLast = new Author("Jostein", " ");
-    	
-    	validator = Validation.buildDefaultValidatorFactory().getValidator();
-    	Set<ConstraintViolation<Author>> violations = validator.validateProperty(noLast, "lastName");
->>>>>>> replace NotEmpty annotations with NotBlank
-    	
+    	violations = validator.validateProperty(authorWithBlankLastName, "lastName");
+   	
     	//  then
-    	assertThat(violations.size()).isEqualTo(1);
+    	assertThat(violations.size()).isOne();
     }
 }
 

@@ -33,7 +33,6 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
@@ -51,6 +50,7 @@ class BookTest {
     private Tag testTag;
     
     private Validator validator;
+    private Set<ConstraintViolation<Book>> violations;
 
     @Autowired
     BookTest(BookService bookService, TagService tagService,
@@ -94,7 +94,6 @@ class BookTest {
         // then
         assertThat(tagService.findAll().size()).isOne();
     }
-<<<<<<< HEAD
 
     @Test
     @DisplayName("correctly convert into an edition with the 'st' suffix")
@@ -167,28 +166,27 @@ class BookTest {
             softly.assertThat(actualFourthEdition).isEqualTo("4th edition");
             softly.assertThat(actualEleventhEdition).isEqualTo("11th edition");
         });
-=======
+    }
     
     @Test
     void notAcceptNullTitle() {
-    	// given
+    	// when
     	Book bookWithNullTitle = createBook(null, predefinedShelfService.findToReadShelf());
     	
-    	Set<ConstraintViolation<Book>> violations = validator.validateProperty(bookWithNullTitle, "title");
+    	violations = validator.validateProperty(bookWithNullTitle, "title");
     	
-    	//  then
+    	// then
     	assertThat(violations.size()).isEqualTo(2);
     }
     
     @Test
     void notAcceptBlankTitle() {
-    	// given
+    	// when
     	Book bookWithBlankTitle = createBook(" ", predefinedShelfService.findToReadShelf());
     	
-    	Set<ConstraintViolation<Book>> violations = validator.validateProperty(bookWithBlankTitle, "title");
-    	
-    	//  then
-    	assertThat(violations.size()).isEqualTo(1);
->>>>>>> add tests for null and empty Author name and Book title
+    	violations = validator.validateProperty(bookWithBlankTitle, "title");
+ 
+    	// then
+    	assertThat(violations.size()).isOne();
     }
 }
