@@ -61,7 +61,7 @@ class AuthorTest {
         toRead = predefinedShelfService.findToReadShelf();
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
-
+    
     private void resetBookService() {
         bookService.deleteAll();
     }
@@ -133,7 +133,7 @@ class AuthorTest {
     	
     	violations = validator.validateProperty(authorWithNullFirstName, "firstName");
     	
-    	// then
+    	//  then
     	assertThat(violations.size()).isEqualTo(2);
     }
     
@@ -144,7 +144,7 @@ class AuthorTest {
     	
     	violations = validator.validateProperty(authorWithNullLastName, "lastName");
     	
-    	// then
+    	//  then
     	assertThat(violations.size()).isEqualTo(2);
     }
     
