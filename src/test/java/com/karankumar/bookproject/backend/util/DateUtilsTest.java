@@ -19,45 +19,48 @@ package com.karankumar.bookproject.backend.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 @DisplayName("DateUtils should")
 class DateUtilsTest {
+
+    private static final LocalDate MOCK_CURRENT_DATE = LocalDate.of(2020, 6, 1);
+
     @BeforeAll
     static void setup() {
         Mockito.mockStatic(DateUtils.TimeUtils.class);
         Mockito.when(DateUtils.TimeUtils.getWeekFields())
                .thenReturn(WeekFields.of(Locale.getDefault()));
+        Mockito.when(DateUtils.TimeUtils.currentDate())
+               .thenReturn(MOCK_CURRENT_DATE);
     }
 
     private int mockFirstWeekOfYear() {
-        Mockito.when(DateUtils.TimeUtils.now())
+        Mockito.when(DateUtils.TimeUtils.currentDateTime())
                .thenReturn(LocalDateTime.of(2020, 1, 1, 1, 1)
         );
         return DateUtils.getCurrentWeekNumberOfYear();
     }
 
     private int mockFortiethWeekOfYear() {
-        Mockito.when(DateUtils.TimeUtils.now())
+        Mockito.when(DateUtils.TimeUtils.currentDateTime())
                .thenReturn(LocalDateTime.of(2020, 10, 1, 1, 1));
         return DateUtils.getCurrentWeekNumberOfYear();
     }
 
     private int mockLastWeekOfYear() {
-        Mockito.when(DateUtils.TimeUtils.now())
+        Mockito.when(DateUtils.TimeUtils.currentDateTime())
                .thenReturn(LocalDateTime.of(2020, 12, 25, 1, 1));
         return DateUtils.getCurrentWeekNumberOfYear();
     }
 
     @Test
-    @Disabled
-    // TODO: fix failing test
     void correctlyGetWeekNumberOfYear() {
         assertThat(mockFirstWeekOfYear()).isOne();
         assertThat(mockFortiethWeekOfYear()).isEqualTo(40);
@@ -65,8 +68,6 @@ class DateUtilsTest {
     }
 
     @Test
-    @Disabled
-    // TODO: fix failing test
     void correctlyGetWeeksLeftInYearFromCurrentWeek() {
         assertThat(DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFirstWeekOfYear()))
                 .isEqualTo(calculateWeeksLeftInYear(1));
@@ -76,6 +77,28 @@ class DateUtilsTest {
 
         assertThat(DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockLastWeekOfYear()))
                 .isEqualTo(calculateWeeksLeftInYear(mockLastWeekOfYear()));
+    }
+
+    @Test
+    void correctlyCheckIfDateIsInCurrentYear() {
+        LocalDate lastDayOfYear = LocalDate.of(MOCK_CURRENT_DATE.getYear(), 12, 31);
+
+        assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE)).isTrue();
+        assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusDays(1))).isTrue();
+        assertThat(DateUtils.dateIsInCurrentYear(lastDayOfYear)).isTrue();
+
+        assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusYears(1))).isFalse();
+        assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.plusYears(1))).isFalse();
+    }
+
+    @Test
+    void correctlyCheckIfDateIsInFuture() {
+        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.plusYears(1))).isTrue();
+        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.plusDays(1))).isTrue();
+
+        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE)).isFalse();
+        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.minusDays(1))).isFalse();
+        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.minusMonths(1))).isFalse();
     }
 
     private int calculateWeeksLeftInYear(int currentWeekNumber) {
