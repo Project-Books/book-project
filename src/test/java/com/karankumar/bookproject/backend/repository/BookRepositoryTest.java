@@ -72,13 +72,13 @@ class BookRepositoryTest {
     void successfullyDeleteABook_whenAuthorHasOtherBooks() {
         // given
         bookRepository.saveAndFlush(new Book("Book2", author, read));
-        Book book = bookRepository.findByTitleOrAuthor("title", "%").get(0);
+        Book book = bookRepository.findByTitleOrAuthor("title", WILDCARD).get(0);
 
         // when
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size())
+        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").size())
                 .isOne();
     }
 
@@ -92,7 +92,7 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor("%", "firstName").size())
+        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").size())
                 .isZero();
     }
 
