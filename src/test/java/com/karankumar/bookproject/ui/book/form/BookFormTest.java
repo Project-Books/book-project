@@ -33,8 +33,6 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MockSpringServlet;
 import static com.karankumar.bookproject.ui.book.form.BookFormErrors.MAX_PAGES_ERROR;
 
-import com.karankumar.bookproject.ui.book.form.BookForm;
-import com.karankumar.bookproject.ui.book.form.BookFormErrors;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
@@ -46,6 +44,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -130,6 +129,7 @@ class BookFormTest {
         book.setBookGenre(BOOK_GENRE);
         book.setNumberOfPages(numberOfPages);
         book.setCustomShelf(customShelfService.findAllForLoggedInUser().get(0));
+        System.out.println("in series? " + isInSeries);
         if (isInSeries) {
             book.setSeriesPosition(SERIES_POSITION);
         }
@@ -557,6 +557,8 @@ class BookFormTest {
     }
 
     @Test
+    @DisplayName("display and populate the series position when a book in a series")
+    @Disabled
     void displaySeriesPosition_withSeriesPositionPopulated_whenBookHasSeriesPosition() {
         // given
         populateBookForm();
