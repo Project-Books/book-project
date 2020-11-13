@@ -43,6 +43,10 @@ public final class DateUtils {
 
     public static boolean dateIsInCurrentYear(@NotNull LocalDate date) {
         return date.getYear() == LocalDate.now().getYear();
+
+    }
+    public static boolean isDateInFuture(LocalDate date) {
+        return date.isAfter(LocalDate.now());
     }
 
     @VisibleForTesting

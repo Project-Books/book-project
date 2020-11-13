@@ -27,4 +27,5 @@ import java.util.List;
 public interface CustomShelfRepository extends JpaRepository<CustomShelf, Long> {
     List<CustomShelf> findAllByUser(User user);
     CustomShelf findByShelfNameAndUser(String shelfName, User user);
+    List<CustomShelf> findByShelfName(String shelfName);
 }

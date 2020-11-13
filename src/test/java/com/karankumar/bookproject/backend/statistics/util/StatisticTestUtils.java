@@ -1,18 +1,18 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.karankumar.bookproject.backend.statistics.util;
@@ -47,11 +47,7 @@ public class StatisticTestUtils {
 
     public static void populateReadBooks(BookService bookService,
                                          PredefinedShelfService predefinedShelfService) {
-        StatisticTestUtils.bookService = bookService;
-        bookService.deleteAll();
-        savedBooks.clear();
-        totalRating = 0.0;
-        StatisticTestUtils.predefinedShelfService = predefinedShelfService;
+        init(bookService, predefinedShelfService);
 
         bookWithLowestRating =
                 createReadBook("Book1", RatingScale.NO_RATING, BookGenre.BUSINESS, 100);
@@ -62,6 +58,21 @@ public class StatisticTestUtils {
         createReadBook("Book5", RatingScale.NINE, MOST_LIKED_BOOK_GENRE, 300);
         createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE, 350);
         bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, LEAST_LIKED_BOOK_GENRE, 400);
+    }
+
+    private static void init(BookService bookService,
+        PredefinedShelfService predefinedShelfService) {
+        StatisticTestUtils.bookService = bookService;
+        bookService.deleteAll();
+        savedBooks.clear();
+        totalRating = 0.0;
+        StatisticTestUtils.predefinedShelfService = predefinedShelfService;
+    }
+
+    public static void addReadBook(BookService bookService,
+                                   PredefinedShelfService predefinedShelfService) {
+        init(bookService, predefinedShelfService);
+        createReadBook("Book", RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200);
     }
 
     private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages) {

@@ -22,48 +22,46 @@ import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assumptions.assumeThat;
+
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 @IntegrationTest
 @DisplayName("Author should")
 class AuthorTest {
-    private final BookService bookService;
-    private final AuthorService authorService;
-    private final PredefinedShelfService predefinedShelfService;
+    private BookService bookService;
+    private AuthorService authorService;
 
-    private Book testBook1;
-    private Book testBook2;
     private PredefinedShelf toRead;
+    
+    private Validator validator;
+    private Set<ConstraintViolation<Author>> violations;
 
     @Autowired
-    AuthorTest(BookService bookService, AuthorService authorService,
-               PredefinedShelfService predefinedShelfService) {
+    void AuthorServiceTest(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
         this.authorService = authorService;
-        this.predefinedShelfService = predefinedShelfService;
+        resetBookService();
     }
 
     @BeforeEach
-    public void setUp() {
-        toRead = predefinedShelfService.findToReadShelf();
-        testBook1 = createBook("How the mind works", toRead);
-        testBook2 = createBook("The better angels of our nature", toRead);
+    public void reset(@Autowired PredefinedShelfService predefinedShelfService) {
         resetBookService();
-        saveBooks();
+        toRead = predefinedShelfService.findToReadShelf();
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
-
-    private void saveBooks() {
-        bookService.save(testBook1);
-        bookService.save(testBook2);
-    }
-
+    
     private void resetBookService() {
         bookService.deleteAll();
     }
@@ -78,30 +76,99 @@ class AuthorTest {
      * originally had the same author name
      */
     @Test
-    @Disabled
-    // TODO: fix failing test
     void affectOnlyOneBookWhenUpdated() {
+        // given
+        Book testBook1 = createBook("How the mind works", toRead);
+        Book testBook2 = createBook("The better angels of our nature", toRead);
+        bookService.save(testBook1);
+        bookService.save(testBook2);
+
+        // when
         Author newAuthor = new Author("Matthew", "Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
 
+        // then
         assertThat(testBook1.getAuthor()).isNotEqualTo(testBook2.getAuthor());
     }
 
     @Test
-    @Disabled
-    // TODO: fix failing test
     void beRemovedWhenOrphan() {
-        Author orphan = new Author("Jostein", "Gardner");
+        assumeThat(authorService.findAll()).isEmpty();
+
+        // given
+        Author orphan = new Author("Jostein", "Gaarder");
         Book book = new Book("Sophie's World", orphan, toRead);
+        bookService.save(book);
+
+        // when
         bookService.delete(book);
 
-        assertSoftly(
-                softly -> {
-                    softly.assertThatThrownBy(() -> authorService.findById(orphan.getId()))
-                          .isInstanceOf(RuntimeException.class);
-                    softly.assertThat(authorService.findAll()).isEmpty();
-                }
-        );
+        // then
+        assertThat(authorService.findAll()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Non-orphan authors shouldn't be removed when one of their books is deleted")
+    void notRemoveNonOrphans() {
+        // given
+        Author nonOrphan = new Author("Jostein", "Gaarder");
+
+        Book book = new Book("Sophie's World", nonOrphan, toRead);
+        bookService.save(book);
+        bookService.save(new Book("The Other World", nonOrphan, toRead));
+
+        // when
+        bookService.delete(book);
+        assumeThat(bookService.count()).isOne();
+
+        // then
+        assertThat(authorService.count()).isOne();
+    }
+    
+    @Test
+    void notAcceptNullFirstName() {
+    	// when
+    	Author authorWithNullFirstName = new Author(null, "Gaarder");
+    	
+    	violations = validator.validateProperty(authorWithNullFirstName, "firstName");
+    	
+    	//  then
+    	assertThat(violations.size()).isEqualTo(2);
+    }
+    
+    @Test
+    void notAcceptNullLastName() {
+    	// when
+    	Author authorWithNullLastName = new Author("Jostein", null);
+    	
+    	violations = validator.validateProperty(authorWithNullLastName, "lastName");
+    	
+    	//  then
+    	assertThat(violations.size()).isEqualTo(2);
+    }
+    
+    @Test
+    void notAcceptBlankFirstName() {
+    	// when
+    	Author authorWithBlankFirstName = new Author(" ", "Gaarder");
+    	
+    	violations = validator.validateProperty(authorWithBlankFirstName, "firstName");
+ 
+    	//  then
+    	assertThat(violations.size()).isOne();
+    }
+    
+    @Test
+    void notAcceptBlankLastName() {
+    	// when
+    	Author authorWithBlankLastName = new Author("Jostein", " ");
+    	
+    	violations = validator.validateProperty(authorWithBlankLastName, "lastName");
+   	
+    	//  then
+    	assertThat(violations.size()).isOne();
     }
 }
+
+

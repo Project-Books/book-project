@@ -40,4 +40,14 @@ public enum PasswordStrength {
     public int getStrengthNum() {
         return strengthNum;
     }
+
+    public static PasswordStrength fromValue(int strengthNum) {
+        int length = PasswordStrength.values().length - 1;
+        if (strengthNum >= 0 && strengthNum <= length) {
+            return PasswordStrength.values()[strengthNum];
+        }
+        String message = String.format("The password score has to lie between 0 and %d " +
+                "(inclusive). You entered in %d", length, strengthNum);
+        throw new IllegalArgumentException(message);
+    }
 }

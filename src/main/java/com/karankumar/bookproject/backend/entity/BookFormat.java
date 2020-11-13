@@ -15,29 +15,23 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.vaadin.flow.function.SerializablePredicate;
+package com.karankumar.bookproject.backend.entity;
 
-import java.time.LocalDate;
+public enum BookFormat {
+    // This should be kept in alphabetical order
+    EBOOK("eBook"),
+    HARDBACK("Hardback"),
+    PAPERBACK("Paperback");
 
-public final class BookFormValidators {
-    private BookFormValidators() {}
+    private final String format;
 
-    static SerializablePredicate<Integer> positiveNumberPredicate() {
-        return number -> (number == null || number > 0);
+    BookFormat(String format) {
+        this.format = format;
     }
 
-    static SerializablePredicate<String> authorPredicate() {
-        return name -> (name != null && !name.isEmpty());
-    }
-
-    static SerializablePredicate<LocalDate> datePredicate() {
-        return date -> !(date != null && date.isAfter(LocalDate.now()));
-    }
-
-    static SerializablePredicate<Integer> maxPagesPredicate() {
-        return number -> (number == null || number <= Book.MAX_PAGES);
+    @Override
+    public String toString() {
+        return format;
     }
 }
