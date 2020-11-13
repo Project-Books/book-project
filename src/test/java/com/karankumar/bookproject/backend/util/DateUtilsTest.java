@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -61,6 +62,8 @@ class DateUtilsTest {
     }
 
     @Test
+    @Disabled
+    // TODO: fix static mocking (issue 311)
     void correctlyGetWeekNumberOfYear() {
         assertThat(mockFirstWeekOfYear()).isOne();
         assertThat(mockFortiethWeekOfYear()).isEqualTo(40);
@@ -68,6 +71,8 @@ class DateUtilsTest {
     }
 
     @Test
+    @Disabled
+    // TODO: fix static mocking (issue 311)
     void correctlyGetWeeksLeftInYearFromCurrentWeek() {
         assertThat(DateUtils.calculateWeeksLeftInYearFromCurrentWeek(mockFirstWeekOfYear()))
                 .isEqualTo(calculateWeeksLeftInYear(1));
@@ -80,6 +85,8 @@ class DateUtilsTest {
     }
 
     @Test
+    @Disabled
+    // TODO: fix static mocking (issue 311)
     void correctlyCheckIfDateIsInCurrentYear() {
         LocalDate lastDayOfYear = LocalDate.of(MOCK_CURRENT_DATE.getYear(), 12, 31);
 
@@ -92,6 +99,8 @@ class DateUtilsTest {
     }
 
     @Test
+    @Disabled
+    // TODO: fix static mocking (issue 311)
     void correctlyCheckIfDateIsInFuture() {
         assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.plusYears(1))).isTrue();
         assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.plusDays(1))).isTrue();
