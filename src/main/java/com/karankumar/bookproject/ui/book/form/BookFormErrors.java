@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.book;
+package com.karankumar.bookproject.ui.book.form;
 
 import com.karankumar.bookproject.backend.entity.Book;
 
@@ -34,4 +34,5 @@ public final class BookFormErrors {
             "after today's date.";
     public static final String MAX_PAGES_ERROR = "Please enter valid pages (max allowed " +
             Book.MAX_PAGES + ")";
+    public static final String SHELF_NOT_SUPPORTED = "The shelf '%s' is not yet supported";
 }

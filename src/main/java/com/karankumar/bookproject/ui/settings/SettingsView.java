@@ -52,22 +52,30 @@ public class SettingsView extends HorizontalLayout {
     private static final String APPEARANCE = "Appearance:";
     private static final String MY_BOOKS = "My books:";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
-    private static final SwitchToggle darkModeToggle;
+
+    private static SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
+
     private static final H3 appearanceHeading = new H3(APPEARANCE);
     private static final H3 myBooksHeading = new H3(MY_BOOKS);
     private static final HtmlComponent lineBreak = new HtmlComponent("br");
 
     // Clear Shelves
-    private static ResetShelvesDialog resetShelvesDialog;
+    private ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Reset shelves";
-    private static final Button clearShelvesButton;
+
     private static final String EXPORT_BOOKS = "Export";
-    private static final Anchor exportBooksAnchor;
-    private static BookService bookService;
+    private static final Anchor exportBooksAnchor = new Anchor();
+
+    private final BookService bookService;
 
     static {
+        configureDarkModeToggle();
+        createExportBooksAnchor();
+    }
+
+    private static void configureDarkModeToggle() {
         darkModeToggle = new SwitchToggle();
         darkModeToggle.addClickListener(e -> {
 
@@ -82,20 +90,15 @@ public class SettingsView extends HorizontalLayout {
             }
             updateDarkModeLabel();
         });
+    }
 
-
-        clearShelvesButton = new Button(CLEAR_SHELVES, click -> {
-            resetShelvesDialog = new ResetShelvesDialog(bookService);
-            resetShelvesDialog.openDialog();
-        });
-
-        exportBooksAnchor = new Anchor();
+    private static void createExportBooksAnchor() {
         exportBooksAnchor.getElement().setAttribute("download", true);
         exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
     }
 
     SettingsView(BookService bookService) {
-        SettingsView.bookService = bookService;
+        this.bookService = bookService;
 
         setDarkModeState();
 
@@ -109,7 +112,7 @@ public class SettingsView extends HorizontalLayout {
                 horizontalLayout,
                 lineBreak,
                 myBooksHeading,
-                clearShelvesButton,
+                createClearShelvesButton(),
                 exportBooksAnchor
         );
 
@@ -118,6 +121,13 @@ public class SettingsView extends HorizontalLayout {
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+    }
+
+    private Button createClearShelvesButton() {
+        return new Button(CLEAR_SHELVES, click -> {
+            resetShelvesDialog = new ResetShelvesDialog(bookService);
+            resetShelvesDialog.openDialog();
+        });
     }
 
     private void setDarkModeState() {
@@ -140,7 +150,8 @@ public class SettingsView extends HorizontalLayout {
 
     private String generateJsonResource() {
         try {
-            byte[] jsonRepresentationForBooks = bookService.getJsonRepresentationForBooksAsString().getBytes();
+            byte[] jsonRepresentationForBooks = bookService.getJsonRepresentationForBooksAsString()
+                                                           .getBytes();
 
             final StreamResource resource = new StreamResource("bookExport.json",
                     () -> new ByteArrayInputStream(jsonRepresentationForBooks));

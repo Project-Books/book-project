@@ -1,3 +1,20 @@
+/*
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
+
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
@@ -24,7 +41,6 @@ class CustomShelfUtilsTest {
     private final BookService bookService;
     private final CustomShelfService customShelfService;
     private final PredefinedShelfService predefinedShelfService;
-    private final CustomShelfUtils customShelfUtils;
 
     private CustomShelf customShelf1;
     private CustomShelf customShelf2;
@@ -38,7 +54,6 @@ class CustomShelfUtilsTest {
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.predefinedShelfService = predefinedShelfService;
-        this.customShelfUtils = new CustomShelfUtils(customShelfService);
     }
 
     @BeforeEach
@@ -92,19 +107,31 @@ class CustomShelfUtilsTest {
 
     @Test
     void returnBooksSuccessfully() {
-        Set<Book> actual = customShelfUtils.getBooksInCustomShelf(customShelf1.getShelfName());
+        Set<Book> actual = customShelfService.getBooksInCustomShelf(customShelf1.getShelfName());
         booksInCustomShelf1.forEach(book -> assertThat(actual).contains(book));
     }
 
     @Test
     void returnNoBooksIfNoBooksInCustomShelf() {
-        Set<Book> actual =
-                customShelfUtils.getBooksInCustomShelf(customShelfWithNoBooks.getShelfName());
+        // given
+        String customShelfWithoutBooks = customShelfWithNoBooks.getShelfName();
+
+        // when
+        Set<Book> actual = customShelfService.getBooksInCustomShelf(customShelfWithoutBooks);
+
+        // then
         assertThat(actual).isEmpty();
     }
 
     @Test
     void returnNoBooksForNonExistentCustomShelf() {
-        assertThat(customShelfUtils.getBooksInCustomShelf("InvalidShelf")).isEmpty();
+        // given
+        String nonExistentShelf = "InvalidShelf";
+
+        // when
+        Set<Book> actual = customShelfService.getBooksInCustomShelf(nonExistentShelf);
+
+        // then
+        assertThat(actual).isEmpty();
     }
 }

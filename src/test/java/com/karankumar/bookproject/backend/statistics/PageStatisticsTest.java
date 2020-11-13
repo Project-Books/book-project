@@ -1,18 +1,18 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.karankumar.bookproject.backend.statistics;
@@ -55,12 +55,17 @@ class PageStatisticsTest {
 
     @Test
     void findBookWithMostPages() {
-        assertThat(pageStatistics.findBookWithMostPages().getTitle())
-                .isEqualTo(StatisticTestUtils.getBookWithMostPages().getTitle());
+        // when
+        String actual = pageStatistics.findBookWithMostPages().getTitle();
+
+        // then
+        String expected = StatisticTestUtils.getBookWithMostPages().getTitle();
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void coundOnlyReadBooksTowardsMostPagesStatistics() {
+    void countOnlyReadBooksTowardsMostPagesStatistics() {
+        // given
         PredefinedShelf readingShelf = predefinedShelfService.findReadingShelf();
 
         Book readingBook = new Book("More pages than any read book",
@@ -69,7 +74,11 @@ class PageStatisticsTest {
                                                        .getNumberOfPages() + 50);
         bookService.save(readingBook);
 
-        assertThat(pageStatistics.findBookWithMostPages().getTitle())
+        // when
+        String actual = pageStatistics.findBookWithMostPages().getTitle();
+
+        // then
+        assertThat(actual)
                 .isEqualTo(StatisticTestUtils.getBookWithMostPages().getTitle());
     }
 
@@ -88,10 +97,16 @@ class PageStatisticsTest {
 
     @Test
     void calculateAveragePageLengthWithFloatPointCalculationCorrectly() {
+        // given
         StatisticTestUtils.deleteBook(StatisticTestUtils.getBookWithHighestRating());
         pageStatistics = new PageStatistics(predefinedShelfService);
+
+        // when
+        Double actual = pageStatistics.calculateAveragePageLength();
+
+        // then
         Double averagePageLength = 267.0;
-        assertThat(pageStatistics.calculateAveragePageLength()).isEqualTo(averagePageLength);
+        assertThat(actual).isEqualTo(averagePageLength);
     }
 
     private void resetPageStatistics() {
