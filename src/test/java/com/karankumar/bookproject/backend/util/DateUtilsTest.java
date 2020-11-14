@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -91,22 +92,24 @@ class DateUtilsTest {
     void correctlyCheckIfDateIsInCurrentYear() {
         LocalDate lastDayOfYear = LocalDate.of(MOCK_CURRENT_DATE.getYear(), 12, 31);
 
-        assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE)).isTrue();
-        assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusDays(1))).isTrue();
-        assertThat(DateUtils.dateIsInCurrentYear(lastDayOfYear)).isTrue();
-
-        assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusYears(1))).isFalse();
-        assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.plusYears(1))).isFalse();
+        assertSoftly(softly -> {
+            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE)).isTrue();
+            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusDays(1))).isTrue();
+            softly.assertThat(DateUtils.dateIsInCurrentYear(lastDayOfYear)).isTrue();
+            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusYears(1))).isFalse();
+            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.plusYears(1))).isFalse();
+        });
     }
 
     @Test
     void correctlyCheckIfDateIsInFuture() {
-        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.plusYears(1))).isTrue();
-        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.plusDays(1))).isTrue();
-
-        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE)).isFalse();
-        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.minusDays(1))).isFalse();
-        assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.minusMonths(1))).isFalse();
+        assertSoftly(softly -> {
+            softly.assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.plusYears(1))).isTrue();
+            softly.assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.plusDays(1))).isTrue();
+            softly.assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE)).isFalse();
+            softly.assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.minusDays(1))).isFalse();
+            softly.assertThat(DateUtils.isDateInFuture(MOCK_CURRENT_DATE.minusMonths(1))).isFalse();
+        });
     }
 
     private int calculateWeeksLeftInYear(int currentWeekNumber) {
