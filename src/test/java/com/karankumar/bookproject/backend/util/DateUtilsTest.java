@@ -94,10 +94,13 @@ class DateUtilsTest {
 
         assertSoftly(softly -> {
             softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE)).isTrue();
-            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusDays(1))).isTrue();
+            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusDays(1)))
+                  .isTrue();
             softly.assertThat(DateUtils.dateIsInCurrentYear(lastDayOfYear)).isTrue();
-            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusYears(1))).isFalse();
-            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.plusYears(1))).isFalse();
+            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.minusYears(1)))
+                  .isFalse();
+            softly.assertThat(DateUtils.dateIsInCurrentYear(MOCK_CURRENT_DATE.plusYears(1)))
+                  .isFalse();
         });
     }
 
