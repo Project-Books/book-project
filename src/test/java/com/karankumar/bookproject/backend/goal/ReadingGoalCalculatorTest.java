@@ -27,12 +27,14 @@ import com.karankumar.bookproject.backend.util.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
@@ -40,10 +42,16 @@ import java.time.LocalDate;
 @DisplayName("ReadingGoalCalculator should")
 class ReadingGoalCalculatorTest {
     private final int BOOKS_TO_READ = 52;
+    private static MockedStatic<DateUtils> mockDateUtils;
 
     @BeforeAll
     static void setUp() {
-        Mockito.mockStatic(DateUtils.class);
+        mockDateUtils = Mockito.mockStatic(DateUtils.class);
+    }
+
+    @AfterAll
+    static void tearDown() {
+        mockDateUtils.close();
     }
 
     @Test
