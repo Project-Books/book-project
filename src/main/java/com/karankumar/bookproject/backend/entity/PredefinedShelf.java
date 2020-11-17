@@ -75,15 +75,8 @@ public class PredefinedShelf extends Shelf {
             this.name = name;
         }
 
-        @Override
         public String toString() {
             return name;
-        }
-
-        public static Optional<ShelfName> of(final String name) {
-            return Arrays.stream(ShelfName.values())
-                         .filter(v -> v.toString().equalsIgnoreCase(name))
-                         .findFirst();
         }
     }
 }

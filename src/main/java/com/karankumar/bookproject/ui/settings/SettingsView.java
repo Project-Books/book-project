@@ -95,14 +95,14 @@ public class SettingsView extends HorizontalLayout {
     private static final MemoryBuffer importGoodreadsMemoryBuffer = new MemoryBuffer();
     private static final Upload importGoodreadsUpload = new Upload(importGoodreadsMemoryBuffer);
 
-    private static BookService bookService;
+    private final BookService bookService;
     private final transient PredefinedShelfService predefinedShelfService;
     private final transient CustomShelfService customShelfService;
 
     static {
         configureDarkModeToggle();
         createExportBooksAnchor();
-        createImportGoodreadsAnchor();
+        createImportGoodreadsUpload();
     }
 
     private static void configureDarkModeToggle() {
@@ -127,7 +127,7 @@ public class SettingsView extends HorizontalLayout {
         exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
     }
 
-    private static void createImportGoodreadsAnchor() {
+    private static void createImportGoodreadsUpload() {
         importGoodreadsUpload.setMaxFiles(1);
         importGoodreadsUpload.setAcceptedFileTypes(CsvUtils.TEXT_CSV);
         importGoodreadsUpload.getElement().setAttribute("import-goodreads", true);
