@@ -19,7 +19,7 @@ package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import org.assertj.core.api.SoftAssertions;
+import com.karankumar.bookproject.backend.entity.account.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,38 +29,102 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaIntegrationTest
+@DisplayName("PredefinedShelfRepository should")
 class PredefinedShelfRepositoryTest {
-    @Autowired private PredefinedShelfRepository repository;
+    private final UserRepository userRepository;
+    private final PredefinedShelfRepository repository;
+
+    private User user;
+
+    @Autowired
+    PredefinedShelfRepositoryTest(UserRepository userRepository,
+                                  PredefinedShelfRepository repository) {
+        this.userRepository = userRepository;
+        this.repository = repository;
+    }
 
     @BeforeEach
     void setup() {
-        repository.saveAll(
-            Arrays.stream(PredefinedShelf.ShelfName.values())
-                  .map(PredefinedShelf::new)
-                  .collect(Collectors.toList())
+        user = getTestUser(userRepository);
+        createShelvesForUser(user);
+        createShelvesForUser(insertTestUser(userRepository, "anotherUser"));
+    }
+
+    @Test
+    void findCorrectShelf() {
+        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
+
+        assertThat(shelf).isNotNull();
+
+        assertSoftly(softly -> {
+            softly.assertThat(shelf.getPredefinedShelfName()).isEqualTo(TO_READ);
+            softly.assertThat(shelf.getUser().getId()).isEqualTo(user.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("findByPredefinedShelfName correctly returns null if shelf doesn't exist")
+    void findByPredefinedShelfNameAndUserReturnsNull() {
+        // given
+        repository.deleteAll();
+
+        // when
+        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
+
+        // then
+        assertThat(shelf).isNull();
+    }
+
+    @Test
+    @DisplayName("findAllByUser correctly returns shelves for a user")
+    void findAllByUser() {
+        // when
+        List<PredefinedShelf> shelves = repository.findAllByUser(user);
+        assertThat(shelves).isNotNull().isNotEmpty();
+
+        // then
+        assertSoftly(softly ->
+                softly.assertThat(shelves).allSatisfy(shelf ->
+                        assertThat(shelf.getUser().getId()).isEqualTo(user.getId())
+                )
         );
     }
 
     @Test
-    @DisplayName("When a shelf exists, findByPredefinedShelfName correctly returns the shelf")
-    void findByShelfNameReturnsOneShelf() {
-        PredefinedShelf shelf = repository.findByPredefinedShelfName(PredefinedShelf.ShelfName.TO_READ);
-        assertThat(shelf).isNotNull();
+    @DisplayName("findAllByUser correctly returns empty list for a user")
+    void findAllByUserIsEmpty() {
+        // given
+        repository.deleteAll();
 
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(shelf.getPredefinedShelfName())
-                          .isEqualTo(PredefinedShelf.ShelfName.TO_READ);
-                    softly.assertThat(shelf.getBooks()).isNull();
-                }
+        // when
+        List<PredefinedShelf> shelves = repository.findAllByUser(user);
+
+        // then
+        assertThat(shelves).isNotNull().isEmpty();
+    }
+
+    @Test
+    @DisplayName("countAllByUser correctly counts shelves for a user")
+    void countAllByUser() {
+        // when
+        int count = repository.countAllByUser(user);
+
+        // then
+        assertThat(count).isEqualTo(PredefinedShelf.ShelfName.values().length);
+    }
+
+    private void createShelvesForUser(User user) {
+        repository.saveAll(
+                Arrays.stream(PredefinedShelf.ShelfName.values())
+                        .map(shelfName -> new PredefinedShelf(shelfName, user))
+                        .collect(Collectors.toList())
         );
     }
 }
-

@@ -21,9 +21,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.karankumar.bookproject.backend.json.LocalDateSerializer;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -33,30 +36,36 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
+@Builder
 @Data
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "tags")
 public class Book extends BaseEntity {
     public static final int MAX_PAGES = 23_000;
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String title;
     @Max(value = MAX_PAGES)
     private Integer numberOfPages;
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
     private BookGenre bookGenre;
+    private BookFormat bookFormat;
     private Integer seriesPosition;
     private String edition;
     private String bookRecommendedBy;
+    @ISBN
+    private String isbn;
+    private Integer yearOfPublication;
 
     @ManyToOne(cascade =
             {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
@@ -80,9 +89,9 @@ public class Book extends BaseEntity {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
-        name = "book_tag",
-        joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+            name = "book_tag",
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
     private Set<Tag> tags;
 
@@ -99,34 +108,46 @@ public class Book extends BaseEntity {
         this.author = author;
         this.predefinedShelf = predefinedShelf;
     }
-    
+
     public void setEdition(Integer edition) {
         if (edition == null) {
             return;
         }
-        String bookEdition = "";
+        this.edition = convertToBookEdition(edition);
+    }
+
+    public static String convertToBookEdition(int edition) {
+        String bookEdition;
         int lastDigit = edition % 10;
-        switch (lastDigit) {
-            case 1:
-                bookEdition = edition + "st edition";
-                break;
-            case 2:
-                bookEdition = edition + "nd edition";
-                break;
-            case 3:
-                bookEdition = edition + "rd edition";
-                break;
-            default:
-                bookEdition = edition + "th edition";
-                break;
+        int lastTwoDigits = edition % 100;
+
+        if (lastDigit == 1 && lastTwoDigits != 11) {
+            bookEdition = edition + "st edition";
+        } else if (lastDigit == 2 && lastTwoDigits != 12) {
+            bookEdition = edition + "nd edition";
+        } else if (lastDigit == 3 && lastTwoDigits != 13) {
+            bookEdition = edition + "rd edition";
+        } else {
+            bookEdition = edition + "th edition";
         }
-        this.edition = bookEdition;
+        return bookEdition;
+    }
+
+    public void setPublicationYear(Integer yearOfPublication) {
+        this.yearOfPublication = yearOfPublication;
+    }
+
+    public static class BookBuilder {
+        public BookBuilder edition(Integer edition) {
+            this.edition = convertToBookEdition(edition);
+            return this;
+        }
     }
 
     @Override
     public String toString() {
         return Book.class.getSimpleName() + "{"
-            + "title='" + title + '\''
-            + '}';
+                + "title='" + title + '\''
+                + '}';
     }
 }

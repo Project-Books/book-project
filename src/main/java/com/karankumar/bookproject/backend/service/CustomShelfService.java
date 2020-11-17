@@ -17,44 +17,56 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
+import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Log
 public class CustomShelfService {
     private final CustomShelfRepository customShelfRepository;
+    private final UserService userService;
 
-    public CustomShelfService(CustomShelfRepository customShelfRepository) {
+    public CustomShelfService(CustomShelfRepository customShelfRepository, UserService userService) {
         this.customShelfRepository = customShelfRepository;
+        this.userService = userService;
+    }
+
+    public CustomShelf createCustomShelf(String shelfName) {
+        return new CustomShelf(shelfName, userService.getCurrentUser());
     }
 
     public CustomShelf findById(Long id) {
         return customShelfRepository.getOne(id);
     }
 
-    public List<CustomShelf> findAll() {
-        return customShelfRepository.findAll();
+    public List<CustomShelf> findAllForLoggedInUser() {
+        return customShelfRepository.findAllByUser(userService.getCurrentUser());
     }
 
-    public List<CustomShelf> findAll(String shelfName) {
-        if (shelfName == null) {
-            return customShelfRepository.findAll();
-        } else {
-            return customShelfRepository.findByShelfName(shelfName);
-        }
+    public CustomShelf findByShelfNameAndLoggedInUser(String shelfName) {
+        return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
-    public CustomShelf save(CustomShelf customShelf) {
-        return customShelfRepository.save(customShelf);
+    public void save(@NonNull CustomShelf customShelf) {
+        customShelfRepository.save(customShelf);
     }
 
-    public void delete(CustomShelf customShelf) {
+    public void delete(@NonNull CustomShelf customShelf) {
         customShelfRepository.delete(customShelf);
     }
 
@@ -66,8 +78,46 @@ public class CustomShelfService {
         return customShelfRepository.count();
     }
 
+    public Collection<CustomShelf> findAll() {
+        return customShelfRepository.findAll();
+    }
+
+    public List<CustomShelf> findAll(String shelfName) {
+        if (shelfName == null) {
+            return customShelfRepository.findAll();
+        } else {
+            return customShelfRepository.findByShelfName(shelfName);
+        }
+    }
+
+    public List<@NotNull String> getCustomShelfNames() {
+        return customShelfRepository.findAll()
+                .stream()
+                .map(CustomShelf::getShelfName)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all of the books in the specified custom shelf
+     */
+    public Set<Book> getBooksInCustomShelf(String shelfName) {
+        Set<Book> books;
+        List<CustomShelf> customShelves = this.findAll(shelfName);
+        if (customShelves.isEmpty()) {
+            books = new HashSet<>();
+        } else {
+            CustomShelf customShelf = customShelves.get(0);
+            books = customShelf.getBooks();
+        }
+        return books;
+    }
+
+    public Shelf getCustomShelfByName(String shelfName) {
+        return customShelfRepository.findByShelfName(shelfName).get(0);
+    }
+
     public CustomShelf findOrCreate(String shelfName) {
-        return customShelfRepository.findTopByShelfName(shelfName)
-                                    .orElseGet(() -> save(new CustomShelf(shelfName)));
+        return Optional.ofNullable(findByShelfNameAndLoggedInUser(shelfName))
+                       .orElseGet(() -> createCustomShelf(shelfName));
     }
 }

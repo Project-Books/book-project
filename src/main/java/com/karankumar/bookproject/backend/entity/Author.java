@@ -17,7 +17,6 @@
 
 package com.karankumar.bookproject.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -28,10 +27,11 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -40,11 +40,11 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true, exclude= "books")
 public class Author extends BaseEntity {
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String firstName;
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String lastName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
@@ -59,5 +59,11 @@ public class Author extends BaseEntity {
     @Override
     public String toString() {
         return firstName + " " + lastName;
+    }
+
+    public void removeBook(Book book) {
+        books = books.stream()
+                     .filter(it -> !it.equals(book))
+                     .collect(Collectors.toSet());
     }
 }

@@ -29,7 +29,3 @@ If applicable, add screenshots to help explain your problem.
 **Additional context**
 
 Add any other context about the problem here (e.g. stack trace, branch name, commit hash, etc.).
-
----
-
-If you need anything, feel free to get in touch with us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)

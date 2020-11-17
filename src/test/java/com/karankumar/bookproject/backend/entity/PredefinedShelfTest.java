@@ -26,37 +26,43 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @IntegrationTest
+@DisplayName("PredefinedShelf should")
 class PredefinedShelfTest {
-    @Autowired BookService bookService;
+    private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
+
+    @Autowired
+    PredefinedShelfTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
+    }
 
     @Test
-    void testPredefinedShelvesWithoutBooksShouldStillExist(
-            @Autowired PredefinedShelfService predefinedShelfService) {
+    void stillExistWithoutBooks() {
         // given
         resetBookService();
 
         // when
-        List<PredefinedShelf> shelves = predefinedShelfService.findAll();
+        List<PredefinedShelf> shelves = predefinedShelfService.findAllForLoggedInUser();
 
         // then
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(shelves).hasSize(4);
-                    softly.assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
-                          .contains(
-                                  ShelfName.TO_READ,
-                                  ShelfName.READING,
-                                  ShelfName.READ,
-                                  ShelfName.DID_NOT_FINISH
-                          );
-                }
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(shelves).hasSize(4);
+            softly.assertThat(shelves.stream().map(PredefinedShelf::getPredefinedShelfName))
+                  .contains(
+                          ShelfName.TO_READ,
+                          ShelfName.READING,
+                          ShelfName.READ,
+                          ShelfName.DID_NOT_FINISH
+                  );
+        });
 
     }
 

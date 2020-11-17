@@ -1,18 +1,18 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.karankumar.bookproject.backend.service;
@@ -22,7 +22,7 @@ import com.karankumar.bookproject.backend.entity.account.Role;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -31,10 +31,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
+import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
+import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
+@Transactional
+@DisplayName("UserService should")
 class UserServiceTest {
     private final UserService userService;
     private final UserRepository userRepository;
@@ -47,22 +58,15 @@ class UserServiceTest {
                                        .build();
 
     @Autowired
-    UserServiceTest(UserService userService,
-                    UserRepository userRepository,
+    UserServiceTest(UserService userService, UserRepository userRepository,
                     RoleRepository roleRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
-    }
-
     @Test
-    void register_withBeanViolations_throwsException() {
+    void throwExceptionOnRegisterWithBeanViolations() {
         final User invalidUser = User.builder()
                                      .username("testuser")
                                      .email("testmail")
@@ -74,7 +78,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withUsernameTaken_throwsException() {
+    void throwExceptionOnRegisterWithUsernameTaken() {
         userRepository.save(validUser);
         validUser.setEmail("anotherEmail@testmail.com");
 
@@ -83,7 +87,7 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withEmailTaken_throwsException() {
+    void throwExceptionOnRegisterWithEmailTaken() {
         userRepository.save(validUser);
         validUser.setUsername("anotherUsername");
 
@@ -92,72 +96,116 @@ class UserServiceTest {
     }
 
     @Test
-    void register_withoutUserRole_throwsError() {
+    void throwExceptionOnRegisterWithoutUserRole() {
         assertThatThrownBy(() -> userService.register(validUser))
                 .isInstanceOf(AuthenticationServiceException.class);
     }
 
     @Test
-    void register_registersUser() {
+    @DisplayName("throw an exception on an attempt to register a null user")
+    void throwExceptionWhenRegisteringNullUser() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> userService.register(null));
+    }
+
+    @Test
+    void registerValidUser() {
+        // given
         roleRepository.save(Role.builder().role("USER").build());
+
+        // when
         userService.register(validUser);
 
+        // then
         assertThat(userRepository.findByUsername(validUser.getUsername())).isPresent();
     }
 
     @Test
-    void register_logsUserIn() {
+    void logUserInAfterRegister() {
         roleRepository.save(Role.builder().role("USER").build());
         userService.register(validUser);
 
-        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated()).isTrue();
+        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
+                .isTrue();
     }
 
     @Test
-    void usernameIsInUse_UsernameNotInUse_returnsFalse() {
+    void correctlyReportUsernameIsNotInUse() {
         assertThat(userService.usernameIsInUse("notAtestuser")).isFalse();
     }
 
     @Test
-    void usernameIsInUse_UsernameInUse_returnsTrue() {
+    void correctlyReportUsernameIsInUse() {
         userRepository.save(validUser);
         assertThat(userService.usernameIsInUse(validUser.getUsername())).isTrue();
     }
 
     @Test
-    void usernameIsNotInUse_UsernameNotInUse_returnsTrue() {
+    void correctlyReportIfUserNameIsNotInUseWithUsernameNotInUse() {
         assertThat(userService.usernameIsNotInUse("testuser")).isTrue();
     }
 
     @Test
     @Transactional
-    void usernameIsNotInUse_UsernameInUse_returnsFalse() {
+    void correctlyReportIfUsernameIsNotInUseWithUsernameInUse() {
         userRepository.save(validUser);
 
         assertThat(userService.usernameIsNotInUse(validUser.getUsername())).isFalse();
     }
 
     @Test
-    void emailIsInUse_EmailNotInUse_returnsFalse() {
+    void correctlyReportEmailIsNotInUse() {
         assertThat(userService.emailIsInUse("testmail")).isFalse();
     }
 
     @Test
-    void emailIsInUse_EmailInUse_returnsTrue() {
+    void correctlyReportEmailIsInUse() {
         userRepository.save(validUser);
 
         assertThat(userService.emailIsInUse(validUser.getEmail())).isTrue();
     }
 
     @Test
-    void emailIsNotInUse_EmailNotInUse_returnsTrue() {
+    void checkIfEmailIsNotInUseWithEmailNotInUse() {
         assertThat(userService.emailIsNotInUse("testmail")).isTrue();
     }
 
     @Test
-    void emailIsNotInUse_EmailInUse_returnsFalse() {
+    void checkIfEmailIsNotInUseWithEmailInUse() {
         userRepository.save(validUser);
 
         assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
+    }
+
+    @Test
+    void getLoggedUser() {
+        // given
+        Optional<User> dbUser = userRepository.findByUsername(TEST_USER_NAME);
+
+        // when
+        User currentUser = userService.getCurrentUser();
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(currentUser.getUsername()).isEqualTo(TEST_USER_NAME);
+            softly.assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
+        });
+    }
+
+    @Test
+    void findAllUsers() {
+        // given
+        List<User> users = Arrays.asList(
+                getTestUser(userRepository),
+                insertTestUser(userRepository, "test1"),
+                insertTestUser(userRepository, "test2"),
+                insertTestUser(userRepository, "test3")
+        );
+
+        // when
+        List<User> actual = userService.findAll();
+
+        // then
+        assertThat(actual).containsAll(users);
     }
 }

@@ -28,7 +28,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CsvUtils;
-import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
+import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
@@ -74,30 +74,38 @@ public class SettingsView extends HorizontalLayout {
     private static final String APPEARANCE = "Appearance:";
     private static final String MY_BOOKS = "My books:";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
-    private static final SwitchToggle darkModeToggle;
+
+    private static SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
+
     private static final H3 appearanceHeading = new H3(APPEARANCE);
     private static final H3 myBooksHeading = new H3(MY_BOOKS);
     private static final HtmlComponent lineBreak = new HtmlComponent("br");
 
     // Clear Shelves
-    private static ResetShelvesDialog resetShelvesDialog;
+    private ResetShelvesDialog resetShelvesDialog;
     private static final String CLEAR_SHELVES = "Reset shelves";
-    private static final Button clearShelvesButton;
+
     private static final String EXPORT_BOOKS = "Export";
-    private static final Anchor exportBooksAnchor;
-    private static final MemoryBuffer importGoodreadsMemoryBuffer;
+    private static final Anchor exportBooksAnchor = new Anchor();
+
     private static final String IMPORT_FROM_GOODREADS = "Import from Goodreads";
     private static final String UPLOAD_DROP_LABEL = "Upload a file in .csv format";
-    private static final Upload importGoodreadsUpload;
-    private static BookService bookService;
-    private final PredefinedShelfService predefinedShelfService;
-    private final CustomShelfService customShelfService;
+    private static final MemoryBuffer importGoodreadsMemoryBuffer = new MemoryBuffer();
+    private static final Upload importGoodreadsUpload = new Upload(importGoodreadsMemoryBuffer);
 
-    private final PredefinedShelfUtils predefinedShelfUtils;
+    private static BookService bookService;
+    private final transient PredefinedShelfService predefinedShelfService;
+    private final transient CustomShelfService customShelfService;
 
     static {
+        configureDarkModeToggle();
+        createExportBooksAnchor();
+        createImportGoodreadsAnchor();
+    }
+
+    private static void configureDarkModeToggle() {
         darkModeToggle = new SwitchToggle();
         darkModeToggle.addClickListener(e -> {
 
@@ -112,19 +120,14 @@ public class SettingsView extends HorizontalLayout {
             }
             updateDarkModeLabel();
         });
+    }
 
-
-        clearShelvesButton = new Button(CLEAR_SHELVES, click -> {
-            resetShelvesDialog = new ResetShelvesDialog(bookService);
-            resetShelvesDialog.openDialog();
-        });
-
-        exportBooksAnchor = new Anchor();
+    private static void createExportBooksAnchor() {
         exportBooksAnchor.getElement().setAttribute("download", true);
         exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
+    }
 
-        importGoodreadsMemoryBuffer = new MemoryBuffer();
-        importGoodreadsUpload = new Upload(importGoodreadsMemoryBuffer);
+    private static void createImportGoodreadsAnchor() {
         importGoodreadsUpload.setMaxFiles(1);
         importGoodreadsUpload.setAcceptedFileTypes(CsvUtils.TEXT_CSV);
         importGoodreadsUpload.getElement().setAttribute("import-goodreads", true);
@@ -133,12 +136,10 @@ public class SettingsView extends HorizontalLayout {
     }
 
     SettingsView(BookService bookService, PredefinedShelfService predefinedShelfService,
-                 CustomShelfService customShelfService,
-                 PredefinedShelfUtils predefinedShelfUtils) {
-        SettingsView.bookService = bookService;
+                 CustomShelfService customShelfService) {
+        this.bookService = bookService;
         this.predefinedShelfService = predefinedShelfService;
         this.customShelfService = customShelfService;
-        this.predefinedShelfUtils = predefinedShelfUtils;
 
         setDarkModeState();
 
@@ -153,7 +154,7 @@ public class SettingsView extends HorizontalLayout {
                 horizontalLayout,
                 lineBreak,
                 myBooksHeading,
-                clearShelvesButton,
+                createClearShelvesButton(),
                 exportBooksAnchor,
                 importGoodreadsUpload
         );
@@ -163,6 +164,13 @@ public class SettingsView extends HorizontalLayout {
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+    }
+
+    private Button createClearShelvesButton() {
+        return new Button(CLEAR_SHELVES, click -> {
+            resetShelvesDialog = new ResetShelvesDialog(bookService);
+            resetShelvesDialog.openDialog();
+        });
     }
 
     private void setDarkModeState() {
@@ -266,7 +274,7 @@ public class SettingsView extends HorizontalLayout {
         return Arrays.stream(shelvesArray)
                      .filter(PredefinedShelfUtils::isPredefinedShelf)
                      .findFirst()
-                     .flatMap(predefinedShelfUtils::getPredefinedShelf);
+                     .map(predefinedShelfService::getPredefinedShelfByNameAsString);
     }
 
     private Optional<CustomShelf> toCustomShelf(String shelves) {
@@ -282,7 +290,8 @@ public class SettingsView extends HorizontalLayout {
 
     private String generateJsonResource() {
         try {
-            byte[] jsonRepresentationForBooks = bookService.getJsonRepresentationForBooksAsString().getBytes();
+            byte[] jsonRepresentationForBooks = bookService.getJsonRepresentationForBooksAsString()
+                                                           .getBytes();
 
             final StreamResource resource = new StreamResource("bookExport.json",
                     () -> new ByteArrayInputStream(jsonRepresentationForBooks));
