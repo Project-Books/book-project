@@ -25,8 +25,10 @@ import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
@@ -117,6 +119,7 @@ public class CustomShelfService {
     }
 
     public CustomShelf findOrCreate(String shelfName) {
+        Assert.hasText(shelfName, "Shelf Name cannot be empty");
         return Optional.ofNullable(findByShelfNameAndLoggedInUser(shelfName))
                        .orElseGet(() -> createCustomShelf(shelfName));
     }
