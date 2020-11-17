@@ -28,6 +28,7 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -46,12 +47,13 @@ public class BookService {
         return bookRepository.getOne(id);
     }
 
-    public void save(Book book) {
+    public Optional<Book> save(Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
             addBookToAuthor(book);
             authorService.save(book.getAuthor());
-            bookRepository.save(book);
+            return Optional.of(bookRepository.save(book));
         }
+        return Optional.empty();
     }
 
     private boolean bookHasAuthorAndPredefinedShelf(Book book) {

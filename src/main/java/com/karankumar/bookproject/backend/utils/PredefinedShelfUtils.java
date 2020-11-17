@@ -22,8 +22,8 @@ import static com.karankumar.bookproject.backend.utils.ShelfUtils.isAllBooksShel
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import com.karankumar.bookproject.backend.entity.Book;
@@ -100,5 +100,11 @@ public class PredefinedShelfUtils {
         return predefinedShelves.stream()
                 .map(PredefinedShelf::getBooks)
                 .collect(HashSet::new, Set::addAll, Set::addAll);
+    }
+
+    public Optional<PredefinedShelf> getPredefinedShelf(String shelfName) {
+        Optional<PredefinedShelf.ShelfName> shelfNameOptional =
+                PredefinedShelf.ShelfName.of(shelfName);
+        return shelfNameOptional.map(predefinedShelfService::findByPredefinedShelfName);
     }
 }

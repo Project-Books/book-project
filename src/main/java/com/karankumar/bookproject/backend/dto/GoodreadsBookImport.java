@@ -17,7 +17,7 @@ public class GoodreadsBookImport {
     private String author;
 
     @JsonProperty("My Rating")
-    private String rating;
+    private Double rating;
 
     @JsonProperty("Date Read")
     private LocalDate dateRead;

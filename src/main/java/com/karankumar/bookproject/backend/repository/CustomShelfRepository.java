@@ -22,7 +22,10 @@ import com.karankumar.bookproject.backend.entity.CustomShelf;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomShelfRepository extends JpaRepository<CustomShelf, Long> {
     List<CustomShelf> findByShelfName(String shelfName);
+
+    Optional<CustomShelf> findTopByShelfName(String shelfName);
 }

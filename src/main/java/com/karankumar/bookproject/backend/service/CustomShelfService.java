@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -49,8 +50,8 @@ public class CustomShelfService {
         }
     }
 
-    public void save(CustomShelf customShelf) {
-        customShelfRepository.save(customShelf);
+    public CustomShelf save(CustomShelf customShelf) {
+        return customShelfRepository.save(customShelf);
     }
 
     public void delete(CustomShelf customShelf) {
@@ -63,5 +64,10 @@ public class CustomShelfService {
 
     public Long count() {
         return customShelfRepository.count();
+    }
+
+    public CustomShelf findOrCreate(String shelfName) {
+        return customShelfRepository.findTopByShelfName(shelfName)
+                                    .orElseGet(() -> save(new CustomShelf(shelfName)));
     }
 }

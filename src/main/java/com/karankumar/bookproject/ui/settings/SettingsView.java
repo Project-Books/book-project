@@ -19,8 +19,16 @@ package com.karankumar.bookproject.ui.settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.utils.CsvUtils;
+import com.karankumar.bookproject.backend.utils.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
@@ -43,11 +51,18 @@ import com.vaadin.flow.server.StreamRegistration;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.extern.java.Log;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 @Route(value = "settings", layout = MainView.class)
 @PageTitle("Settings | Book Project")
@@ -76,6 +91,10 @@ public class SettingsView extends HorizontalLayout {
     private static final String UPLOAD_DROP_LABEL = "Upload a file in .csv format";
     private static final Upload importGoodreadsUpload;
     private static BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
+    private final CustomShelfService customShelfService;
+
+    private final PredefinedShelfUtils predefinedShelfUtils;
 
     static {
         darkModeToggle = new SwitchToggle();
@@ -112,8 +131,13 @@ public class SettingsView extends HorizontalLayout {
         importGoodreadsUpload.setUploadButton(new Button(IMPORT_FROM_GOODREADS));
     }
 
-    SettingsView(BookService bookService) {
+    SettingsView(BookService bookService, PredefinedShelfService predefinedShelfService,
+                 CustomShelfService customShelfService,
+                 PredefinedShelfUtils predefinedShelfUtils) {
         SettingsView.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
+        this.customShelfService = customShelfService;
+        this.predefinedShelfUtils = predefinedShelfUtils;
 
         setDarkModeState();
 
@@ -162,14 +186,94 @@ public class SettingsView extends HorizontalLayout {
         importGoodreadsUpload.addSucceededListener(succeededEvent -> {
             LOGGER.info("Import success: " + succeededEvent.toString());
             try {
-                List<GoodreadsBookImport> imports =
+                List<GoodreadsBookImport> goodreadsBookImports =
                         CsvUtils.read(importGoodreadsMemoryBuffer.getInputStream(),
                                 GoodreadsBookImport.class);
-                imports.forEach(i -> LOGGER.info(i.toString()));
+                goodreadsBookImports.forEach(i -> LOGGER.info(i.toString()));
+
+                saveAll(goodreadsBookImports);
             } catch (IOException e) {
                 LOGGER.severe("Error in reading input file, error: + " + e);
             }
         });
+    }
+
+    private void saveAll(List<GoodreadsBookImport> goodreadsBookImports) {
+        List<Book> books = toBooks(goodreadsBookImports);
+        List<Book> savedBooks = books.stream()
+                                     .map(bookService::save)
+                                     .filter(Optional::isPresent)
+                                     .map(Optional::get)
+                                     .collect(Collectors.toList());
+        savedBooks.forEach(b -> LOGGER.info("Book: " + b + " saved successfully"));
+    }
+
+    private List<Book> toBooks(Collection<? extends GoodreadsBookImport> goodreadsBookImports) {
+        return goodreadsBookImports.stream()
+                                   .map(this::toBook)
+                                   .filter(Optional::isPresent)
+                                   .map(Optional::get)
+                                   .collect(Collectors.toList());
+    }
+
+    private Optional<Book> toBook(GoodreadsBookImport goodreadsBookImport) {
+        Optional<Author> author = toAuthor(goodreadsBookImport.getAuthor());
+        if (author.isEmpty()) {
+            LOGGER.severe("Author is null");
+            return Optional.empty();
+        }
+
+        Optional<PredefinedShelf> predefinedShelf =
+                toPredefinedShelf(goodreadsBookImport.getBookshelves(),
+                        goodreadsBookImport.getDateRead());
+        if (predefinedShelf.isEmpty()) {
+            LOGGER.severe("Predefined shelf is null");
+            return Optional.empty();
+        }
+
+        Book book = new Book(goodreadsBookImport.getTitle(), author.get(), predefinedShelf.get());
+
+        Optional<CustomShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves());
+        customShelf.ifPresent(book::setCustomShelf);
+
+        if (Objects.nonNull(goodreadsBookImport.getRating())) {
+            Optional<RatingScale> ratingScale =
+                    RatingScale.of(goodreadsBookImport.getRating() * 2);
+            ratingScale.ifPresent(book::setRating);
+        }
+
+        return Optional.of(book);
+    }
+
+    private Optional<Author> toAuthor(String name) {
+        if (StringUtils.isBlank(name)) {
+            return Optional.empty();
+        }
+        String[] authorNames = name.split(" ");
+        return Optional
+                .of(new Author(authorNames[0], authorNames.length > 1 ? authorNames[1] : null));
+    }
+
+    private Optional<PredefinedShelf> toPredefinedShelf(String shelves, LocalDate dateRead) {
+        if (Objects.nonNull(dateRead)) {
+            return Optional.of(predefinedShelfService.findToReadShelf());
+        }
+        if (StringUtils.isBlank(shelves)) {
+            return Optional.empty();
+        }
+        String[] shelvesArray = shelves.split(",");
+        return Arrays.stream(shelvesArray)
+                     .filter(PredefinedShelfUtils::isPredefinedShelf)
+                     .findFirst()
+                     .flatMap(predefinedShelfUtils::getPredefinedShelf);
+    }
+
+    private Optional<CustomShelf> toCustomShelf(String shelves) {
+        if (StringUtils.isBlank(shelves)) {
+            return Optional.empty();
+        }
+        String[] shelvesArray = shelves.split(",");
+        return Optional.of(customShelfService.findOrCreate(shelvesArray[0]));
     }
 
     private String generateJsonResource() {

@@ -26,6 +26,8 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -72,8 +74,15 @@ public class PredefinedShelf extends Shelf {
             this.name = name;
         }
 
+        @Override
         public String toString() {
             return name;
+        }
+
+        public static Optional<ShelfName> of(final String name) {
+            return Arrays.stream(ShelfName.values())
+                         .filter(v -> v.toString().equalsIgnoreCase(name))
+                         .findFirst();
         }
     }
 }
