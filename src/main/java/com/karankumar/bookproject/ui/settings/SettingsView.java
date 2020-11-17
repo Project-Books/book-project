@@ -61,6 +61,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -273,7 +274,10 @@ public class SettingsView extends HorizontalLayout {
             return Optional.empty();
         }
         String[] shelvesArray = shelves.split(",");
-        return Optional.of(customShelfService.findOrCreate(shelvesArray[0]));
+        return Arrays.stream(shelvesArray)
+                     .filter(Predicate.not(PredefinedShelfUtils::isPredefinedShelf))
+                     .findFirst()
+                     .map(customShelfService::findOrCreate);
     }
 
     private String generateJsonResource() {
