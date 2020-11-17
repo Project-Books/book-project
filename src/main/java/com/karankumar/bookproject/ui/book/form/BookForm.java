@@ -431,6 +431,10 @@ public class BookForm extends VerticalLayout {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
+        if (numberOfPages.getValue() <= pagesRead.getValue()) {
+            LOGGER.log(Level.SEVERE, "Number of pages is less than pages to read");
+            return null;
+        }
         book.setBookGenre(bookGenre.getValue());
         book.setNumberOfPages(numberOfPages.getValue());
         book.setDateStartedReading(dateStartedReading.getValue());
