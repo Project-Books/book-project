@@ -129,7 +129,7 @@ public class SettingsView extends HorizontalLayout {
         horizontalLayout.add(darkModeLabel, darkModeToggle);
 
         configureExportBooksAnchor();
-        configureImportGoodreads();
+        configureImportGoodreadsUpload();
 
         VerticalLayout verticalLayout = new VerticalLayout(
                 appearanceHeading,
@@ -173,7 +173,7 @@ public class SettingsView extends HorizontalLayout {
         exportBooksAnchor.setHref(jsonExportURI);
     }
 
-    private void configureImportGoodreads() {
+    private void configureImportGoodreadsUpload() {
         importGoodreadsUpload.addSucceededListener(succeededEvent -> {
             LOGGER.info("Import success: " + succeededEvent.toString());
             try {
