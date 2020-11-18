@@ -80,11 +80,8 @@ public class ImportService {
         Optional<CustomShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves());
         customShelf.ifPresent(book::setCustomShelf);
 
-        if (Objects.nonNull(goodreadsBookImport.getRating())) {
-            Optional<RatingScale> ratingScale =
-                    RatingScale.of(goodreadsBookImport.getRating() * 2);
-            ratingScale.ifPresent(book::setRating);
-        }
+        Optional<RatingScale> ratingScale = toRatingScale(goodreadsBookImport.getRating(), 2);
+        ratingScale.ifPresent(book::setRating);
 
         return Optional.of(book);
     }
@@ -121,5 +118,12 @@ public class ImportService {
                      .filter(Predicate.not(PredefinedShelfUtils::isPredefinedShelf))
                      .findFirst()
                      .map(customShelfService::findOrCreate);
+    }
+
+    private Optional<RatingScale> toRatingScale(Double ratingValue, double scaleFactor) {
+        if (Objects.isNull(ratingValue)) {
+            return Optional.empty();
+        }
+        return RatingScale.of(ratingValue * scaleFactor);
     }
 }
