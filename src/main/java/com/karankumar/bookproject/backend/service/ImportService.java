@@ -122,7 +122,7 @@ public class ImportService {
 
     private Optional<RatingScale> toRatingScale(Double ratingValue, double scaleFactor) {
         if (Objects.isNull(ratingValue)) {
-            return Optional.empty();
+            return Optional.of(RatingScale.NO_RATING);
         }
         return RatingScale.of(ratingValue * scaleFactor);
     }
