@@ -1,5 +1,5 @@
   <p align="center">
-	<img src="/media/banner/book_project_banner_dark.png" alt="Logo"/>
+	<img src="/media/banner/book_project_newlogo_2x.png" alt="Logo"/>
   </p>
 
 <p align="center">
