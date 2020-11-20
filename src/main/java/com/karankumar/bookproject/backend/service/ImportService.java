@@ -41,7 +41,7 @@ public class ImportService {
      * @return the list of books saved successfully
      */
     public List<Book> importGoodreadsBooks(
-            List<? extends GoodreadsBookImport> goodreadsBookImports) {
+            Collection<? extends GoodreadsBookImport> goodreadsBookImports) {
         List<Book> books = toBooks(goodreadsBookImports);
         List<Book> savedBooks = books.stream()
                                      .map(bookService::save)

@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ImportService;
-import com.karankumar.bookproject.backend.utils.CsvUtils;
+import com.karankumar.bookproject.backend.util.CsvUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
