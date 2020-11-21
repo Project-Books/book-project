@@ -44,7 +44,7 @@ public class ImportService {
     private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
 
-    private static final int GOODREADS_SCALE_FACTOR = 2;
+    private static final double GOODREADS_SCALE_FACTOR = 2;
 
     public ImportService(BookService bookService,
                          PredefinedShelfService predefinedShelfService,
