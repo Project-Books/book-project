@@ -32,10 +32,16 @@ class CsvUtilsTest {
 
     @Test
     void testReadWhenInputStreamIsCsv() throws IOException {
+        // given
         InputStream inputStream = getResourceInputStream("goodreadsImportSample.csv");
+
+        // when
         List<GoodreadsBookImport> goodreadsBookImports =
                 CsvUtils.read(inputStream, GoodreadsBookImport.class);
-        assertThat(goodreadsBookImports.size()).isEqualTo(5);
+
+        // then
+        int expected = 5;
+        assertThat(goodreadsBookImports.size()).isEqualTo(expected);
     }
 
     private InputStream getResourceInputStream(String file) {
