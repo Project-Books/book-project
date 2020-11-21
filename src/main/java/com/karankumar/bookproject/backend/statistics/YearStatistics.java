@@ -20,21 +20,20 @@ package com.karankumar.bookproject.backend.statistics;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import lombok.extern.java.Log;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
-@Log
-public class YearStatistic extends Statistics {
+
+public class YearStatistics extends Statistics {
     private List<Book> readBooksThisYear = new ArrayList<>();
 
-    public YearStatistic(PredefinedShelfService predefinedShelfService) {
+    public YearStatistics(PredefinedShelfService predefinedShelfService) {
         super(predefinedShelfService);
         readBooksThisYear = findReadBooksAddedThisYear();
-
     }
 
     private List<Book> findReadBooksAddedThisYear() {
@@ -42,36 +41,37 @@ public class YearStatistic extends Statistics {
             if (book.getDateStartedReading() != null) {
                 LocalDate dt = book.getDateStartedReading();
                 LocalDate today = LocalDate.now();
-                if ((book.getRating() != null)&& (dt.getYear() == today.getYear()) ) {
+                if ((book.getRating() != null) && (dt.getYear() == today.getYear()) ) {
                     readBooksThisYear.add(book);
                 }
+
             }
         }
         return readBooksThisYear;
     }
 
-    public Book findLeastLikedBookThisYear() {
+    public Optional<Book> findLeastLikedBookThisYear() {
         if (readBooksThisYear.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
         readBooksThisYear.sort(Comparator.comparing(Book::getRating));
-        return readBooksThisYear.get(0);
+        return Optional.of(readBooksThisYear.get(0));
     }
 
-    public Book findMostLikedBookThisYear() {
+    public Optional<Book> findMostLikedBookThisYear() {
         if (readBooksThisYear.isEmpty()) {
-            return null;
+            return  Optional.empty();
         }
         readBooksThisYear.sort(Comparator.comparing(Book::getRating));
-        return readBooksThisYear.get(readBooksThisYear.size() - 1);
+        return Optional.of(readBooksThisYear.get(readBooksThisYear.size() - 1));
     }
 
-    public Double calculateAverageRatingGivenThisYear() {
+    public Optional<Double> calculateAverageRatingGivenThisYear() {
         int numberOfRatings = readBooksThisYear.size();
-        if (numberOfRatings == 0) {
-            return null;
+        if (readBooksThisYear.isEmpty()) {
+            return Optional.empty();
         }
-        return (calculateTotalRating() / numberOfRatings);
+        return Optional.of((calculateTotalRating() / numberOfRatings));
     }
 
     private double calculateTotalRating() {

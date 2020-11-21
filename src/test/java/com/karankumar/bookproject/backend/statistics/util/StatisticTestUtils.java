@@ -29,6 +29,9 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 
+import static com.karankumar.bookproject.backend.util.DateUtils.dateIsInCurrentYear;
+
+
 public class StatisticTestUtils {
 
     public static final BookGenre MOST_READ_BOOK_GENRE = BookGenre.ADVENTURE;
@@ -56,16 +59,16 @@ public class StatisticTestUtils {
         LocalDate currentDate = LocalDate.now();
         LocalDate oldDate  = currentDate.minus(Period.ofDays(366));
         bookWithLowestRating =
-                createReadBook("Book1", RatingScale.NO_RATING, BookGenre.BUSINESS, 100,oldDate);
+                createReadBook("Book1", RatingScale.NO_RATING, BookGenre.BUSINESS, 100, oldDate);
         bookWithHighestRating =
-                createReadBook("Book2", RatingScale.NINE_POINT_FIVE, MOST_READ_BOOK_GENRE, 150,oldDate);
-        createReadBook("Book3", RatingScale.SIX, MOST_READ_BOOK_GENRE, 200,currentDate);
-        createReadBook("Book4", RatingScale.ONE, MOST_READ_BOOK_GENRE, 250,oldDate);
-        createReadBook("Book5", RatingScale.NINE, MOST_LIKED_BOOK_GENRE, 300,oldDate);
-        createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE, 350,oldDate);
-        bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, LEAST_LIKED_BOOK_GENRE, 400,oldDate);
-        bookWithLowestRatingThisYear = createReadBook("Book8", RatingScale.ONE, LEAST_LIKED_BOOK_GENRE, 345,currentDate);
-        BookWithHighestRatingThisYear = createReadBook("Book9", RatingScale.EIGHT_POINT_FIVE, LEAST_LIKED_BOOK_GENRE, 245,currentDate);
+                createReadBook("Book2", RatingScale.NINE_POINT_FIVE, MOST_READ_BOOK_GENRE, 150, oldDate);
+        createReadBook("Book3", RatingScale.SIX, MOST_READ_BOOK_GENRE, 200, currentDate);
+        createReadBook("Book4", RatingScale.ONE, MOST_READ_BOOK_GENRE, 250, oldDate);
+        createReadBook("Book5", RatingScale.NINE, MOST_LIKED_BOOK_GENRE, 300, oldDate);
+        createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE, 350, oldDate);
+        bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, LEAST_LIKED_BOOK_GENRE, 400, oldDate);
+        bookWithLowestRatingThisYear = createReadBook("Book8", RatingScale.ONE, LEAST_LIKED_BOOK_GENRE, 345, currentDate);
+        BookWithHighestRatingThisYear = createReadBook("Book9", RatingScale.EIGHT_POINT_FIVE, LEAST_LIKED_BOOK_GENRE, 245, currentDate);
     }
 
     private static void init(BookService bookService,
@@ -81,17 +84,17 @@ public class StatisticTestUtils {
     public static void addReadBook(BookService bookService,
                                    PredefinedShelfService predefinedShelfService) {
         init(bookService, predefinedShelfService);
-        createReadBook("Book", RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200,LocalDate.now());
+        createReadBook("Book", RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200, LocalDate.now());
     }
 
-    private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages,LocalDate startedReading) {
+    private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages, LocalDate startedReading) {
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
-        Book book = createBook(bookTitle, readShelf, bookGenre, pages,startedReading);
+        Book book = createBook(bookTitle, readShelf, bookGenre, pages, startedReading);
         book.setRating(rating);
 
         saveBook(book); // this should be called here & not in createBook()
         updateTotalRating(rating);
-        if (startedReading.getYear() == LocalDate.now().getYear()){
+        if (startedReading.getYear() == LocalDate.now().getYear()) {
             updateThisYearRating(rating);
         }
 
@@ -154,7 +157,7 @@ public class StatisticTestUtils {
 
     public static int getNumberOfBooksThisYear() {
         LocalDate dt = LocalDate.now();
-        int numberOfBooksThisYear= 0;
+        int numberOfBooksThisYear = 0;
         for(Book book : savedBooks){
             if (book.getDateStartedReading().getYear() == dt.getYear() ){
                 numberOfBooksThisYear++;

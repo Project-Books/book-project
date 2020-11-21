@@ -24,7 +24,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.GenreStatistics;
 import com.karankumar.bookproject.backend.statistics.PageStatistics;
 import com.karankumar.bookproject.backend.statistics.RatingStatistics;
-import com.karankumar.bookproject.backend.statistics.YearStatistic;
+import com.karankumar.bookproject.backend.statistics.YearStatistics;
 import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
@@ -105,9 +105,9 @@ public class StatisticsView extends VerticalLayout {
         LEAST_LIKED_BOOK_THIS_YEAR("Least liked book this year:") {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
-                YearStatistic yearStatistics = new YearStatistic(predefinedShelfService);
+                YearStatistics yearStatistics = new YearStatistics(predefinedShelfService);
                 Optional<Book> leastLikedBook =
-                        Optional.ofNullable(yearStatistics.findLeastLikedBookThisYear());
+                        yearStatistics.findLeastLikedBookThisYear();
                 return leastLikedBook.map(book ->
                         formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
             }
@@ -115,9 +115,9 @@ public class StatisticsView extends VerticalLayout {
         MOST_LIKED_BOOK_THIS_YEAR("Most liked book this year:") {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
-                YearStatistic yearStatistics = new YearStatistic(predefinedShelfService);
+                YearStatistics yearStatistics = new YearStatistics(predefinedShelfService);
                 Optional<Book> mostLikedBook =
-                        Optional.ofNullable(yearStatistics.findMostLikedBookThisYear());
+                        yearStatistics.findMostLikedBookThisYear();
                 return mostLikedBook.map(book ->
                         formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
             }
@@ -125,9 +125,9 @@ public class StatisticsView extends VerticalLayout {
         AVERAGE_RATING_THIS_YEAR("Average rating given this year:") {
             @Override
             public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
-                YearStatistic yearStatistics = new YearStatistic(predefinedShelfService);
+                YearStatistics yearStatistics = new YearStatistics(predefinedShelfService);
                 Optional<Double> averageRatingGivenThisYear =
-                        Optional.ofNullable(yearStatistics.calculateAverageRatingGivenThisYear());
+                        yearStatistics.calculateAverageRatingGivenThisYear();
                 return averageRatingGivenThisYear.map(rating ->
                         String.format("%s/10", new DecimalFormat("#.00").format(rating)));
             }

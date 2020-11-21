@@ -22,28 +22,30 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
+
 
 @IntegrationTest
-public class YearStatisticTest {
+@DisplayName("YearStatistics should")
+public class YearStatisticsTest {
     private static BookService bookService;
     private static PredefinedShelfService predefinedShelfService;
 
-    private static YearStatistic yearStatistic;
+    private static YearStatistics yearStatistic;
     private static Book bookWithLowestRatingThisYear;
     private static Book bookWithHighestRatingThisYear;
 
-    @BeforeAll
-    public static void setup(@Autowired BookService bookService,
-                             @Autowired PredefinedShelfService predefinedShelfService) {
-        YearStatisticTest.bookService = bookService;
-        YearStatisticTest.predefinedShelfService = predefinedShelfService;
+    @Autowired
+    YearStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     @BeforeEach
@@ -53,54 +55,55 @@ public class YearStatisticTest {
         bookWithLowestRatingThisYear = StatisticTestUtils.getBookWithLowestRatingThisYear();
         bookWithHighestRatingThisYear = StatisticTestUtils.getBookWithHighestRatingThisYear();
 
-        yearStatistic = new YearStatistic(predefinedShelfService);
+        yearStatistic = new YearStatistics(predefinedShelfService);
     }
 
     @Test
-    void lowestRatedThisYearBookExistsAndIsFound() {
-        assertEquals(bookWithLowestRatingThisYear.getTitle(), yearStatistic.findLeastLikedBookThisYear().getTitle());
+    void lowestRatedBookThisYearIsFound() {
+        assertThat(yearStatistic.findLeastLikedBookThisYear().get().getTitle())
+                .isEqualTo(bookWithLowestRatingThisYear.getTitle());
     }
 
     @Test
     void testNonExistentLowestRatedBook() {
         resetRatingStatistics();
-        assertNull(yearStatistic.findLeastLikedBookThisYear());
+        assertThat(yearStatistic.findLeastLikedBookThisYear()).isEqualTo(Optional.empty());
     }
 
     @Test
     void highestRatedBookExistsAndIsFound() {
-        assertEquals(bookWithHighestRatingThisYear.getTitle(),
-                yearStatistic.findMostLikedBookThisYear().getTitle());
+        assertThat(yearStatistic.findMostLikedBookThisYear().get().getTitle()).isEqualTo(bookWithHighestRatingThisYear.getTitle());
     }
 
     @Test
     void testNonExistentHighestRatedBook() {
         resetRatingStatistics();
-        assertNull(yearStatistic.findMostLikedBookThisYear());
+        assertThat(yearStatistic.findMostLikedBookThisYear()).isEqualTo(Optional.empty());
     }
 
     @Test
-    void TestnumberOfBooksThisYear() {
+    void TestNumberOfBooksThisYear() {
         int numberOfBooks = StatisticTestUtils.getNumberOfBooksThisYear();
-        assertEquals(3, numberOfBooks);
+        assertThat(numberOfBooks).isEqualTo(3);
     }
 
     @Test
     void averageRatingExistsAndIsCorrect() {
         int numberOfBooks = StatisticTestUtils.getNumberOfBooksThisYear();
+        System.out.print(StatisticTestUtils.getNumberOfBooksThisYear());
         double totalRating = StatisticTestUtils.thisYearRating;
         double average = totalRating / numberOfBooks;
-        assertEquals(average, yearStatistic.calculateAverageRatingGivenThisYear());
+        assertThat(average).isEqualTo( yearStatistic.calculateAverageRatingGivenThisYear().get());
     }
 
     @Test
     void testAverageRatingDivideByZero() {
         resetRatingStatistics();
-        assertNull(yearStatistic.calculateAverageRatingGivenThisYear());
+        assertThat(yearStatistic.calculateAverageRatingGivenThisYear()).isEqualTo(Optional.empty());
     }
 
     private void resetRatingStatistics() {
         bookService.deleteAll();
-        yearStatistic = new YearStatistic(predefinedShelfService);
+        this.yearStatistic = new YearStatistics(predefinedShelfService);
     }
 }
