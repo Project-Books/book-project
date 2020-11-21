@@ -72,17 +72,24 @@ class PredefinedShelfRepositoryTest {
     @Test
     @DisplayName("findByPredefinedShelfName correctly returns null if shelf doesn't exist")
     void findByPredefinedShelfNameAndUserReturnsNull() {
+        // given
         repository.deleteAll();
+
+        // when
         PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
+
+        // then
         assertThat(shelf).isNull();
     }
 
     @Test
     @DisplayName("findAllByUser correctly returns shelves for a user")
     void findAllByUser() {
+        // when
         List<PredefinedShelf> shelves = repository.findAllByUser(user);
         assertThat(shelves).isNotNull().isNotEmpty();
 
+        // then
         assertSoftly(softly ->
                 softly.assertThat(shelves).allSatisfy(shelf ->
                         assertThat(shelf.getUser().getId()).isEqualTo(user.getId())
@@ -93,15 +100,23 @@ class PredefinedShelfRepositoryTest {
     @Test
     @DisplayName("findAllByUser correctly returns empty list for a user")
     void findAllByUserIsEmpty() {
+        // given
         repository.deleteAll();
+
+        // when
         List<PredefinedShelf> shelves = repository.findAllByUser(user);
+
+        // then
         assertThat(shelves).isNotNull().isEmpty();
     }
 
     @Test
     @DisplayName("countAllByUser correctly counts shelves for a user")
     void countAllByUser() {
+        // when
         int count = repository.countAllByUser(user);
+
+        // then
         assertThat(count).isEqualTo(PredefinedShelf.ShelfName.values().length);
     }
 

@@ -15,30 +15,14 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.shelf;
+package com.karankumar.bookproject.ui.goal.events;
 
-class BookFilters {
-    private String bookTitle;
-    private String bookAuthor;
+import com.karankumar.bookproject.backend.entity.ReadingGoal;
+import com.karankumar.bookproject.ui.goal.ReadingGoalForm;
 
-    public void init() {
-        bookTitle = "%";
-        bookAuthor = "%";
-    }
-
-    void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
-    }
-
-    void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
-    }
-
-    public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public String getBookAuthor() {
-        return bookAuthor;
+public class SaveGoalEvent extends GoalEvent {
+    public SaveGoalEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
+        super(source, readingGoal);
     }
 }
+

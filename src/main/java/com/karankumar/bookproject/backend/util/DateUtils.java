@@ -32,7 +32,7 @@ public final class DateUtils {
     private DateUtils() {}
 
     public static int getCurrentWeekNumberOfYear() {
-        LocalDateTime now = TimeUtils.now();
+        LocalDateTime now = TimeUtils.currentDateTime();
         TemporalField week = TimeUtils.getWeekFields().weekOfWeekBasedYear();
         return now.get(week);
     }
@@ -42,19 +42,23 @@ public final class DateUtils {
     }
 
     public static boolean dateIsInCurrentYear(@NotNull LocalDate date) {
-        return date.getYear() == LocalDate.now().getYear();
-
+        return date.getYear() == TimeUtils.currentDate().getYear();
     }
+
     public static boolean isDateInFuture(LocalDate date) {
-        return date.isAfter(LocalDate.now());
+        return date.isAfter(TimeUtils.currentDate());
     }
 
     @VisibleForTesting
     static final class TimeUtils {
         private TimeUtils() {}
 
-        static LocalDateTime now() {
+        static LocalDateTime currentDateTime() {
             return LocalDateTime.now();
+        }
+
+        static LocalDate currentDate() {
+            return LocalDate.now();
         }
 
         static WeekFields getWeekFields() {

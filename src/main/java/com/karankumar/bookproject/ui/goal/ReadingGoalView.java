@@ -26,6 +26,7 @@ import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.util.StringUtils;
 import com.karankumar.bookproject.backend.util.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.goal.events.SaveGoalEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
@@ -88,7 +89,7 @@ public class ReadingGoalView extends VerticalLayout {
             add(goalForm);
             goalForm.openForm();
 
-            goalForm.addListener(ReadingGoalForm.SaveEvent.class, this::saveGoal);
+            goalForm.addListener(SaveGoalEvent.class, this::saveGoal);
         });
     }
 
@@ -107,7 +108,7 @@ public class ReadingGoalView extends VerticalLayout {
         setGoalButton.setText(UPDATE_GOAL);
     }
 
-    private void saveGoal(ReadingGoalForm.SaveEvent event) {
+    private void saveGoal(SaveGoalEvent event) {
         if (event.getReadingGoal() != null) {
             LOGGER.log(Level.INFO, "Retrieved goal from form is not null");
             goalService.save(event.getReadingGoal());

@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
@@ -107,5 +108,9 @@ public class CustomShelfService {
             books = customShelf.getBooks();
         }
         return books;
+    }
+
+    public Shelf getCustomShelfByName(String shelfName) {
+        return customShelfRepository.findByShelfName(shelfName).get(0);
     }
 }

@@ -234,9 +234,15 @@ public class BookForm extends VerticalLayout {
     }
 
     public void openForm() {
+        clearErrors();
         formDialog.open();
         showSeriesPositionFormIfSeriesPositionAvailable();
         addClassNameToForm();
+    }
+
+    private void clearErrors() {
+        binder = new BeanValidationBinder<>(Book.class);
+        bindFormFields();
     }
 
     private void addClassNameToForm() {

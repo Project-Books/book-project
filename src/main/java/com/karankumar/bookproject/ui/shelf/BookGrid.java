@@ -18,7 +18,10 @@
 package com.karankumar.bookproject.ui.shelf;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Shelf;
+import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.shelf.component.BookGridColumn;
@@ -26,23 +29,23 @@ import com.vaadin.flow.component.grid.Grid;
 import lombok.extern.java.Log;
 
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
 
 @Log
 public class BookGrid {
     private final Grid<Book> bookGrid;
-    
-    private final PredefinedShelfUtils predefinedShelfUtils;
+    private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
+    private final BookService bookService;
 
-    BookGrid(PredefinedShelfUtils predefinedShelfUtils, CustomShelfService customShelfService) {
+    BookGrid(CustomShelfService customShelfService,
+             PredefinedShelfService predefinedShelfService, BookService bookService) {
         this.bookGrid = new Grid<>(Book.class);
-        this.predefinedShelfUtils = predefinedShelfUtils;
         this.customShelfService = customShelfService;
+        this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
         configure();
     }
 
@@ -81,30 +84,38 @@ public class BookGrid {
             return;
         }
 
-        Set<Book> books = getBooks(chosenShelf);
-        populateGridWithBooks(books, bookFilters);
+        if(!isBookFiltersValid(bookFilters)) {
+            bookFilters.init();
+        }
+
+        Shelf shelf = findShelf(chosenShelf);
+        populateGridWithBooks(shelf, bookFilters.getBookTitle(), bookFilters.getBookAuthor());
     }
 
-    private Set<Book> getBooks(String chosenShelf) {
+    private Shelf findShelf(String chosenShelf) {
         if (isAllBooksShelf(chosenShelf)) {
-            return predefinedShelfUtils.getBooksInAllPredefinedShelves();
+            return null;
         }
 
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
-            return predefinedShelfUtils.getBooksInChosenPredefinedShelf(chosenShelf);
+            return predefinedShelfService.getPredefinedShelfByNameAsString(chosenShelf);
+        } else {
+            return customShelfService.getCustomShelfByName(chosenShelf);
         }
-
-        return customShelfService.getBooksInCustomShelf(chosenShelf);
     }
 
-    private void populateGridWithBooks(Set<Book> books, BookFilters bookFilters) {
-        List<Book> items = filterShelf(books, bookFilters);
+    private void populateGridWithBooks(Shelf shelf, String title, String author) {
+        List<Book> items;
+        if (shelf == null) {
+            items = bookService.findByTitleOrAuthor(title, author);
+        } else {
+            items = bookService.findByShelfAndTitleOrAuthor(shelf, title, author);
+        }
         bookGrid.setItems(items);
     }
 
-    private List<Book> filterShelf(Set<Book> books, BookFilters bookFilters) {
-        return books.stream()
-                    .filter(bookFilters::applyFilter)
-                    .collect(Collectors.toList());
+    private boolean isBookFiltersValid(BookFilters bookFilters) {
+        return bookFilters.getBookAuthor() != null && bookFilters.getBookTitle() != null
+                && !bookFilters.getBookAuthor().isEmpty() && !bookFilters.getBookTitle().isEmpty();
     }
 }

@@ -15,30 +15,25 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.ui.shelf;
+package com.karankumar.bookproject.ui.goal.events;
 
-class BookFilters {
-    private String bookTitle;
-    private String bookAuthor;
+import com.karankumar.bookproject.backend.entity.ReadingGoal;
+import com.karankumar.bookproject.ui.goal.ReadingGoalForm;
+import com.vaadin.flow.component.ComponentEvent;
 
-    public void init() {
-        bookTitle = "%";
-        bookAuthor = "%";
+/**
+ * Vaadin's event bus system. A registered listener can be notified when a save or delete event
+ * is fired
+ */
+public abstract class GoalEvent extends ComponentEvent<ReadingGoalForm> {
+    private final ReadingGoal readingGoal;
+
+    protected GoalEvent(ReadingGoalForm source, ReadingGoal readingGoal) {
+        super(source, false);
+        this.readingGoal = readingGoal;
     }
 
-    void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
-    }
-
-    void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
-    }
-
-    public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public String getBookAuthor() {
-        return bookAuthor;
+    public ReadingGoal getReadingGoal() {
+        return readingGoal;
     }
 }

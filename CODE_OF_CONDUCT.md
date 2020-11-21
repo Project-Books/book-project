@@ -69,7 +69,7 @@ Project maintainers who do not follow or enforce the Code of Conduct in good
 faith may face temporary or permanent repercussions as determined by other
 members of the project's leadership.
 
-For more information about how violations will be handled, see the [resolutions document](https://github.com/knjk04/book-project/blob/master/.github/conduct/resolutions.md).
+For more information about how violations will be handled, see the [resolutions document](https://github.com/Project-Books/book-project/wiki/Code-of-conduct-resolutions).
 
 ## Attribution
 
