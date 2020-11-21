@@ -29,6 +29,7 @@ import com.vaadin.flow.component.grid.Grid;
 import lombok.extern.java.Log;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 
 import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
@@ -88,28 +89,28 @@ public class BookGrid {
             bookFilters.init();
         }
 
-        Shelf shelf = findShelf(chosenShelf);
+        Optional<Shelf> shelf = findShelf(chosenShelf);
         populateGridWithBooks(shelf, bookFilters.getBookTitle(), bookFilters.getBookAuthor());
     }
 
-    private Shelf findShelf(String chosenShelf) {
+    private Optional<Shelf> findShelf(String chosenShelf) {
         if (isAllBooksShelf(chosenShelf)) {
-            return null;
+            return Optional.empty();
         }
 
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
-            return predefinedShelfService.getPredefinedShelfByNameAsString(chosenShelf);
+            return Optional.of(predefinedShelfService.getPredefinedShelfByNameAsString(chosenShelf));
         } else {
-            return customShelfService.getCustomShelfByName(chosenShelf);
+            return Optional.of(customShelfService.getCustomShelfByName(chosenShelf));
         }
     }
 
-    private void populateGridWithBooks(Shelf shelf, String title, String author) {
+    private void populateGridWithBooks(Optional<Shelf> shelf, String title, String author) {
         List<Book> items;
-        if (shelf == null) {
+        if (shelf.isEmpty()) {
             items = bookService.findByTitleOrAuthor(title, author);
         } else {
-            items = bookService.findByShelfAndTitleOrAuthor(shelf, title, author);
+            items = bookService.findByShelfAndTitleOrAuthor(shelf.get(), title, author);
         }
         bookGrid.setItems(items);
     }
