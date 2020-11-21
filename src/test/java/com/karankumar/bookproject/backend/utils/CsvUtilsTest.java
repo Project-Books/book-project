@@ -19,7 +19,7 @@ package com.karankumar.bookproject.backend.utils;
 
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
 import com.karankumar.bookproject.backend.util.CsvUtils;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -28,6 +28,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("CsvUtils should")
 class CsvUtilsTest {
 
     @Test
