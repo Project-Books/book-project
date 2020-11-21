@@ -23,6 +23,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class PageStatistics extends Statistics {
     private final List<Book> booksWithPageCount;
@@ -58,15 +59,12 @@ public class PageStatistics extends Statistics {
      * @return the average page length for all books in the 'read' shelf
      * This average only includes books that have a page length specified
      */
-    public Double calculateAveragePageLength() {
+    public Optional<Double> calculateAveragePageLength() {
         int totalNumberOfPages = booksWithPageCount.stream()
                                                    .mapToInt(Book::getNumberOfPages)
                                                    .sum();
         int booksWithPagesSpecified = booksWithPageCount.size();
-        if (booksWithPagesSpecified == 0) {
-            return null;
-        }
-        return (booksWithPagesSpecified == 0) ? 0 :
-                Math.ceil(totalNumberOfPages / (float) booksWithPagesSpecified);
+        return (booksWithPagesSpecified == 0) ? Optional.empty() : 
+        		Optional.of(Math.ceil(totalNumberOfPages / (float) booksWithPagesSpecified));
     }
 }

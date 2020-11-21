@@ -371,32 +371,32 @@ public class BookForm extends VerticalLayout {
 
     private void repopulateIfCreatingANewBook() {
         if (binder.getBean() == null) {
-            Book book = populateBookBean();
-            if (book != null) {
-                binder.setBean(book);
+            Optional<Book> book = populateBookBean();
+            if (book.isPresent()) {
+                binder.setBean(book.get());
             }
         }
     }
 
-    private Book populateBookBean() {
+    private Optional<Book> populateBookBean() {
         if (bookTitle.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Book title from form field is null");
-            return null;
+            return Optional.empty();
         }
 
         if (authorFirstName.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null first name");
-            return null;
+            return Optional.empty();
         }
 
         if (authorLastName.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null last name");
-            return null;
+            return Optional.empty();
         }
 
         if (predefinedShelfField.getValue() == null) {
             LOGGER.log(Level.SEVERE, "Null predefined shelf");
-            return null;
+            return Optional.empty();
         }
 
         String title = bookTitle.getValue();
@@ -434,7 +434,7 @@ public class BookForm extends VerticalLayout {
         book.setBookReview(bookReview.getValue());
         book.setPagesRead(pagesRead.getValue());
 
-        return book;
+        return Optional.of(book);
     }
 
     private void showErrorMessage() {

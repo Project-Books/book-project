@@ -245,7 +245,7 @@ class PredefinedShelfUtilsTest {
                 expectedShelf = DID_NOT_FINISH;
         }
         PredefinedShelf.ShelfName actualShelf =
-                predefinedShelfUtils.getPredefinedShelfName(shelfName);
+                predefinedShelfUtils.getPredefinedShelfName(shelfName).get();
         assertThat(actualShelf).isEqualTo(expectedShelf);
     }
     

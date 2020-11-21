@@ -76,14 +76,14 @@ class PageStatisticsTest {
     @Test
     void notDivideAveragePageLengthByZero() {
         resetPageStatistics();
-        assertThat(pageStatistics.calculateAveragePageLength()).isNull();
+        assertThat(pageStatistics.calculateAveragePageLength()).isEmpty();
     }
 
     @Test
     void calculateAveragePageLengthCorrectly() {
         int averagePageLength =
                 StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
-        assertThat(pageStatistics.calculateAveragePageLength()).isEqualTo(averagePageLength);
+        assertThat(pageStatistics.calculateAveragePageLength().get()).isEqualTo(averagePageLength);
     }
 
     @Test
@@ -91,7 +91,7 @@ class PageStatisticsTest {
         StatisticTestUtils.deleteBook(StatisticTestUtils.getBookWithHighestRating());
         pageStatistics = new PageStatistics(predefinedShelfService);
         Double averagePageLength = 267.0;
-        assertThat(pageStatistics.calculateAveragePageLength()).isEqualTo(averagePageLength);
+        assertThat(pageStatistics.calculateAveragePageLength().get()).isEqualTo(averagePageLength);
     }
 
     private void resetPageStatistics() {

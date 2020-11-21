@@ -100,17 +100,11 @@ public class StatisticTestUtils {
     }
 
     private static void updateTotalRating(RatingScale ratingScale) {
-        Double rating = RatingScale.toDouble(ratingScale);
-        if (rating != null) {
-            totalRating += rating;
-        }
+        totalRating += RatingScale.toDouble(ratingScale).orElse(0.0);
     }
 
     private static void reduceTotalRating(RatingScale ratingScale) {
-        Double rating = RatingScale.toDouble(ratingScale);
-        if (rating != null) {
-            totalRating -= rating;
-        }
+        totalRating -= RatingScale.toDouble(ratingScale).orElse(0.0);
     }
 
     public static Book getBookWithLowestRating() {

@@ -22,6 +22,7 @@ import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,18 +42,18 @@ public class PredefinedShelfUtils {
         this.predefinedShelfService = predefinedShelfService;
     }
 
-    public PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
+    public Optional<ShelfName> getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
             case "To read":
-                return PredefinedShelf.ShelfName.TO_READ;
+                return Optional.of(ShelfName.TO_READ);
             case "Reading":
-                return PredefinedShelf.ShelfName.READING;
+                return Optional.of(ShelfName.READING);
             case "Read":
-                return PredefinedShelf.ShelfName.READ;
+                return Optional.of(ShelfName.READ);
             case "Did not finish":
-                return PredefinedShelf.ShelfName.DID_NOT_FINISH;
+                return Optional.of(ShelfName.DID_NOT_FINISH);
             default:
-                return null;
+                return Optional.empty();
         }
     }
 
@@ -72,20 +73,19 @@ public class PredefinedShelfUtils {
      * Fetches all of the books in the chosen predefined shelf
      */
     public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
-        Set<Book> books;
         if (isAllBooksShelf(chosenShelf)) {
             return getBooksInAllPredefinedShelves();
         }
 
-        PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
-        PredefinedShelf predefinedShelf =
-                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfName);
-        if (predefinedShelf == null) {
-            books = new HashSet<>();
+        Optional<ShelfName> predefinedShelfName = getPredefinedShelfName(chosenShelf);
+        
+        if (predefinedShelfName.isEmpty()) {
+        	return new HashSet<>();
         } else {
-            books = predefinedShelf.getBooks();
+        	PredefinedShelf predefinedShelf =
+                    predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(predefinedShelfName.get());
+        	return predefinedShelf.getBooks();
         }
-        return books;
     }
 
     public Set<Book> getBooksInAllPredefinedShelves() {

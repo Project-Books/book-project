@@ -162,7 +162,7 @@ class BookFormTest {
      */
     @Test
     void populateFormFields() {
-        double rating = RatingScale.toDouble(ratingVal);
+        double rating = RatingScale.toDouble(ratingVal).get();
 
         assertSoftly(softly -> {
             softly.assertThat(bookTitle).isEqualTo(bookForm.bookTitle.getValue());
@@ -241,7 +241,7 @@ class BookFormTest {
                 bookForm.predefinedShelfField.getField().setValue(shelfName);
                 bookForm.dateStartedReading.getField().setValue(dateStarted);
                 bookForm.dateFinishedReading.getField().setValue(dateFinished);
-                bookForm.rating.getField().setValue(RatingScale.toDouble(ratingVal));
+                bookForm.rating.getField().setValue(RatingScale.toDouble(ratingVal).get());
                 bookForm.bookReview.getField().setValue(bookReview);
                 break;
             case DID_NOT_FINISH:
