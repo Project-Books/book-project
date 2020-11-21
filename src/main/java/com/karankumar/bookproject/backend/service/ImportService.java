@@ -44,6 +44,8 @@ public class ImportService {
     private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
 
+    private static final int GOODREADS_SCALE_FACTOR = 2;
+
     public ImportService(BookService bookService,
                          PredefinedShelfService predefinedShelfService,
                          CustomShelfService customShelfService) {
@@ -97,7 +99,8 @@ public class ImportService {
         Optional<CustomShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves());
         customShelf.ifPresent(book::setCustomShelf);
 
-        Optional<RatingScale> ratingScale = toRatingScale(goodreadsBookImport.getRating(), 2);
+        Optional<RatingScale> ratingScale =
+                toRatingScale(goodreadsBookImport.getRating(), GOODREADS_SCALE_FACTOR);
         ratingScale.ifPresent(book::setRating);
 
         return Optional.of(book);
