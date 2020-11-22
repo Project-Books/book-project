@@ -135,7 +135,7 @@ For more information, such as a roadmap and the underlying principles of the pro
 
 ### Help
 
-If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).
+If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg).
 
 ## Acknowledgements
 
