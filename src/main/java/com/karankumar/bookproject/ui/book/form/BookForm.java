@@ -378,9 +378,7 @@ public class BookForm extends VerticalLayout {
     private void repopulateIfCreatingANewBook() {
         if (binder.getBean() == null) {
             Optional<Book> book = populateBookBean();
-            if (book.isPresent()) {
-                binder.setBean(book.get());
-            }
+            book.ifPresent(bean -> binder.setBean(bean));
         }
     }
 
