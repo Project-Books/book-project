@@ -77,8 +77,8 @@ public class SettingsView extends HorizontalLayout {
 
     private static final String IMPORT_FROM_GOODREADS = "Import from Goodreads";
     private static final String UPLOAD_DROP_LABEL = "Upload a file in .csv format";
-    private static final MemoryBuffer importGoodreadsMemoryBuffer = new MemoryBuffer();
-    private static final Upload importGoodreadsUpload = new Upload(importGoodreadsMemoryBuffer);
+    private final MemoryBuffer importGoodreadsMemoryBuffer = new MemoryBuffer();
+    private final Upload importGoodreadsUpload = new Upload(importGoodreadsMemoryBuffer);
 
     private final BookService bookService;
     private final transient ImportService importService;
@@ -86,7 +86,6 @@ public class SettingsView extends HorizontalLayout {
     static {
         configureDarkModeToggle();
         createExportBooksAnchor();
-        createImportGoodreadsUpload();
     }
 
     private static void configureDarkModeToggle() {
@@ -111,14 +110,6 @@ public class SettingsView extends HorizontalLayout {
         exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
     }
 
-    private static void createImportGoodreadsUpload() {
-        importGoodreadsUpload.setMaxFiles(1);
-        importGoodreadsUpload.setAcceptedFileTypes(CsvUtils.TEXT_CSV);
-        importGoodreadsUpload.getElement().setAttribute("import-goodreads", true);
-        importGoodreadsUpload.setDropLabel(new Label(UPLOAD_DROP_LABEL));
-        importGoodreadsUpload.setUploadButton(new Button(IMPORT_FROM_GOODREADS));
-    }
-
     SettingsView(BookService bookService, ImportService importService) {
         this.bookService = bookService;
         this.importService = importService;
@@ -131,6 +122,7 @@ public class SettingsView extends HorizontalLayout {
         configureExportBooksAnchor();
         configureImportGoodreadsUpload();
 
+        createImportGoodreadsUpload();
         VerticalLayout verticalLayout = new VerticalLayout(
                 appearanceHeading,
                 horizontalLayout,
@@ -146,6 +138,14 @@ public class SettingsView extends HorizontalLayout {
         add(verticalLayout);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+    }
+
+    private void createImportGoodreadsUpload() {
+        importGoodreadsUpload.setMaxFiles(1);
+        importGoodreadsUpload.setAcceptedFileTypes(CsvUtils.TEXT_CSV);
+        importGoodreadsUpload.getElement().setAttribute("import-goodreads", true);
+        importGoodreadsUpload.setDropLabel(new Label(UPLOAD_DROP_LABEL));
+        importGoodreadsUpload.setUploadButton(new Button(IMPORT_FROM_GOODREADS));
     }
 
     private Button createClearShelvesButton() {
