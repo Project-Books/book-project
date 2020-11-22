@@ -31,4 +31,4 @@ Please keep this checklist in & ensure you have done the following:
 
 For any of the optional checkboxes (e.g. the screenshots one), still check it if it does not apply.
 
-If in doubt, get in touch with us via our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-i7lept44-rgJ9yB0A2vedJTLyyfkjKQ)
+If in doubt, get in touch with us via our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg)
