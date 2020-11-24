@@ -42,7 +42,6 @@ public abstract class Shelf extends BaseEntity {
     @JsonIgnore
     protected User user;
 
-    @NotNull
     protected String shelfName;
 
     protected Shelf(String shelfName, User user) {

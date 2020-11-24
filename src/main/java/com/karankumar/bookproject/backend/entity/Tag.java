@@ -27,8 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+
 import java.util.Set;
 
 /**
@@ -41,8 +40,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true, exclude = "books")
 public class Tag extends BaseEntity {
 
-    @NotNull
-    @NotEmpty
+
     @Column(unique = true)
     private String name;
 

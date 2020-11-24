@@ -1,5 +1,5 @@
   <p align="center">
-	<img src="/media/banner/book_project_banner_dark.png" alt="Logo"/>
+	<img src="/media/banner/book_project_newlogo_2x.png" alt="Logo"/>
   </p>
 
 <p align="center">
@@ -9,14 +9,14 @@
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-i7lept44-rgJ9yB0A2vedJTLyyfkjKQ">
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg">
     <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
   </a>
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
     <img src="https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab" alt="Code quality" />
   </a>
   <a href="https://sonarcloud.io/dashboard?id=com.karankumar%3Abook-project">
-	<img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
+     <img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
   </a>
 </p>
 
@@ -75,23 +75,18 @@ Then, if you want to use Docker, follow one of the approaches below:
 
 #### 1. Start locally with only MySQL running in docker
 
-4. Build the project at the root using `./mvn clean install` (Unix) or `mvnw.cmd clean install` (Windows)
+4. Build the project at the root using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 5. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+    - May need to add `sudo` to this command on Unix
 6. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
-7. Log in with the details below:
-   - Username: `user`
-   - Password: `password`
 
 #### 2. Start using docker-compose in production mode
 
 4. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
     - `./mvnw clean package -Pproduction` (Unix), or 
     - `mvnw.cmd clean package -Pproduction` (Windows)
-5. Start the MySQL Database and book project app using docker compose `docker-compose up --build`
-6. Go to `localhost:8080`
-7. Log in with the details below:
-   - Username: `user`
-   - Password: `password`
+5. Start the MySQL Database and book project app using `docker-compose up --build`
+    - May need to add `sudo` to this command on Unix
     
 #### 3. Start locally with Vaadin live reload (the tests do not run)
 
@@ -100,17 +95,21 @@ Vaadin Live reload which prevents you from needing to re-run the server every ti
 (i.e. it's a lot quicker). 
 
 4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+    - May need to add `sudo` to this command on Unix
 5. Run the project from your IDE or with Maven:
-   - `./mvnw spring-boot:run` on Unix
-   - `mvnw.cmd spring-boot:run` on Windows
-6. Log in with the details below:
-   - Username: `user`
-   - Password: `password`
+    - `./mvnw spring-boot:run` on Unix
+    - `mvnw.cmd spring-boot:run` on Windows
    
 If you're running the app from your IDE, after making a Vaadin-related change, build the app from your IDE after making
 any changes.
 
-#### Fixing Lombok errors
+### Access site
+
+After following the instructions for running the app above, go to `localhost:8080`. Then, log in with the details below:
+- Username: `user`
+- Password: `password`
+
+### Fixing Lombok errors
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
 You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
@@ -130,13 +129,13 @@ To access the MySQL database when docker-compose is running:
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
 
+### Help
+
+If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg).
+
 ## Further information
 
 For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
-
-### Help
-
-If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).
 
 ## Acknowledgements
 

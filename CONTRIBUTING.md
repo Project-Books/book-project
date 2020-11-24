@@ -13,6 +13,7 @@ By contributing to this project, you are expected to adhere to the [Book Project
 ## Contents
 
 1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
+1. [Receiving a response](https://github.com/Project-Books/book-project/blob/refactor-book-service-test-523/CONTRIBUTING.md#receiving-a-response)
 1. [Open-ended discussions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#open-ended-discussions) 
 1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
    1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
@@ -44,9 +45,15 @@ For suggestions, please vote on, or add to, the existing relevant issue. If no s
 
 If in doubt, talk to us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)!
 
+## Receiving a response
+
+We aim to respond to all messages (on Slack and on GitHub) within seven days. Similarly, we aim to review all pull requests within seven days of receiving it in a review state.
+
+If you haven't received a response, feel free to mention @knjk04 or get in touch on Slack.
+
 ## Open-ended discussions
 
-Open-ended discussions are best made over our public #book-project channel on our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). Unless specified otherwise, this applies when you're not assigned to the issue at hand.
+Open-ended discussions are best made over our public #help channel on our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). Unless specified otherwise, this applies when you're not assigned to the issue at hand.
 
 Examples of when to take a discussion over to Slack
 - If you disagree with an issue (e.g. if you don't think it's needed or there is a better way of doing something)
@@ -172,6 +179,8 @@ Before submitting a pull request, run the unit tests and ensure they pass.
 ### Writing tests
 
 Generally speaking, if you're working on a new feature (any issue with the [enhancement label](https://github.com/knjk04/book-project/labels/enhancement)) or fixing a [bug](https://github.com/knjk04/book-project/labels/bug), please also write tests. If you need a hand with this, we can help.
+
+We highly recommend following a test-driven development approach.
 
 ### New files
 

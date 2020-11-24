@@ -15,14 +15,16 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.karankumar.bookproject.ui.shelf;
-
-import com.karankumar.bookproject.backend.entity.Book;
 
 class BookFilters {
     private String bookTitle;
     private String bookAuthor;
+
+    public void init() {
+        bookTitle = "%";
+        bookAuthor = "%";
+    }
 
     void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
@@ -32,28 +34,11 @@ class BookFilters {
         this.bookAuthor = bookAuthor;
     }
 
-    private boolean isBookTitleNull() {
-        return bookTitle == null;
+    public String getBookTitle() {
+        return bookTitle;
     }
 
-    private boolean isBookAuthorNull() {
-        return bookAuthor == null;
-    }
-
-    boolean applyFilter(Book book) {
-        return containsBookTitle(book) && containsBookAuthor(book);
-    }
-
-    private boolean containsBookAuthor(Book book) {
-        return isBookAuthorNull() || book.getAuthor()
-                                         .toString()
-                                         .toLowerCase()
-                                         .contains(bookAuthor.toLowerCase());
-    }
-
-    private boolean containsBookTitle(Book book) {
-        return isBookTitleNull() || book.getTitle()
-                                        .toLowerCase()
-                                        .contains(bookTitle.toLowerCase());
+    public String getBookAuthor() {
+        return bookAuthor;
     }
 }

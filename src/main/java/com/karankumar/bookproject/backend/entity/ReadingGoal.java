@@ -36,26 +36,24 @@ public class ReadingGoal extends BaseEntity {
         PAGES("Pages"),
         BOOKS("Books");
 
-        private final String goalType;
+        private final String type;
 
         GoalType(String goalType) {
-            this.goalType = goalType;
+            this.type = goalType;
         }
 
         @Override
         public String toString() {
-            return goalType;
+            return type;
         }
     }
 
     /**
      * Target represents either the number of pages or books the user wants to read
      */
-    @Min(value = 1)
-    private int target;
+    @Min(value = 1) private int target;
 
-    @NotNull
-    private GoalType goalType;
+    @NotNull private GoalType goalType;
 
     public ReadingGoal(@Min(value = 1) int target, @NotNull GoalType goalType) {
         this.target = target;

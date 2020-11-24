@@ -1,18 +1,18 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+ * The book project lets a user keep track of different books they would like to read, are currently
+ * reading, have read or did not finish.
+ * Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.karankumar.bookproject.backend.util;
@@ -29,6 +29,8 @@ import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfNam
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
 import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getBooksInPredefinedShelves;
+import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getPredefinedShelfName;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.isPredefinedShelf;
 import static com.karankumar.bookproject.backend.util.ShelfUtils.ALL_BOOKS_SHELF;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +54,6 @@ import java.util.stream.Stream;
 class PredefinedShelfUtilsTest {
     private final BookRepository bookRepository;
     private final PredefinedShelfService predefinedShelfService;
-    private final PredefinedShelfUtils predefinedShelfUtils;
 
     private PredefinedShelf toReadShelf;
     private PredefinedShelf readShelf;
@@ -76,7 +77,6 @@ class PredefinedShelfUtilsTest {
                              PredefinedShelfService predefinedShelfService) {
         this.bookRepository = bookRepository;
         this.predefinedShelfService = predefinedShelfService;
-        this.predefinedShelfUtils = new PredefinedShelfUtils(predefinedShelfService);
     }
 
     @BeforeEach
@@ -86,7 +86,7 @@ class PredefinedShelfUtilsTest {
         resetBookRepository();
         createAndSaveBooks();
 
-        PREDEFINED_SHELVES = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
+        PREDEFINED_SHELVES = predefinedShelfService.getPredefinedShelfNamesAsStrings();
 
         setBooksInPredefinedShelves();
     }
@@ -125,7 +125,7 @@ class PredefinedShelfUtilsTest {
         );
 
         // when
-        List<String> shelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
+        List<String> shelfNames = predefinedShelfService.getPredefinedShelfNamesAsStrings();
 
         // then
         assertThat(shelfNames).isEqualTo(expectedShelfNames);
@@ -135,9 +135,10 @@ class PredefinedShelfUtilsTest {
     void getBooksInOneChosenShelf() {
         // given
         Set<Book> expectedBooks = Set.of(book1, book2);
+        String shelf = TO_READ.toString();
 
         // when
-        Set<Book> actualBooks = predefinedShelfUtils.getBooksInChosenPredefinedShelf("To read");
+        Set<Book> actualBooks = predefinedShelfService.getBooksInChosenPredefinedShelf(shelf);
 
         // then
         assertThat(actualBooks).isEqualTo(expectedBooks);
@@ -150,7 +151,7 @@ class PredefinedShelfUtilsTest {
 
         // when
         Set<Book> actualBooks =
-                predefinedShelfUtils.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
+                predefinedShelfService.getBooksInChosenPredefinedShelf(ALL_BOOKS_SHELF);
 
         // then
         assertThat(actualBooks).isEqualTo(expectedBooks);
@@ -163,15 +164,13 @@ class PredefinedShelfUtilsTest {
         Set<Book> expectedBooks = Set.of(book1, book2, book3);
 
         // when
-        Set<Book> actualBooks = predefinedShelfUtils.getBooksInPredefinedShelves(predefinedShelves);
+        Set<Book> actualBooks = getBooksInPredefinedShelves(predefinedShelves);
 
         // then
-        assertSoftly(
-                softly -> {
-                    softly.assertThat(actualBooks).hasSize(expectedBooks.size());
-                    softly.assertThat(actualBooks).containsAll(expectedBooks);
-                }
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(actualBooks).hasSize(expectedBooks.size());
+            softly.assertThat(actualBooks).containsAll(expectedBooks);
+        });
     }
 
     @Test
@@ -245,22 +244,7 @@ class PredefinedShelfUtilsTest {
                 expectedShelf = DID_NOT_FINISH;
         }
         PredefinedShelf.ShelfName actualShelf =
-                predefinedShelfUtils.getPredefinedShelfName(shelfName);
+                getPredefinedShelfName(shelfName);
         assertThat(actualShelf).isEqualTo(expectedShelf);
-    }
-    
-    @Test
-    void getPredefinedShelfNamesCorrectlyAsStrings() {
-    	List<String> actualShelfNames = predefinedShelfUtils.getPredefinedShelfNamesAsStrings();
-    	List<String> expectedShelfNames =
-                Stream.of(ShelfName.values()).map(Enum::toString).collect(Collectors.toList());
-
-        assertSoftly(
-            softly -> {
-                softly.assertThat(actualShelfNames).hasSize(expectedShelfNames.size());
-    	        softly.assertThat(expectedShelfNames).containsAll(actualShelfNames);
-            }
-        );
-    	
     }
 }
