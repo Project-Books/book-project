@@ -40,11 +40,11 @@ import java.util.stream.Collectors;
 @Service
 @Log
 public class ImportService {
+    private static final double GOODREADS_SCALE_FACTOR = 2;
+
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
     private final CustomShelfService customShelfService;
-
-    private static final double GOODREADS_SCALE_FACTOR = 2;
 
     public ImportService(BookService bookService,
                          PredefinedShelfService predefinedShelfService,
@@ -56,6 +56,7 @@ public class ImportService {
 
     /**
      * Imports the books which are in Goodreads format
+     *
      * @param goodreadsBookImports the books to import
      * @return the list of books saved successfully
      */
