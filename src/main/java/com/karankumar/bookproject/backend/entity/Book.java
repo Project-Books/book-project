@@ -103,6 +103,14 @@ public class Book extends BaseEntity {
     private LocalDate dateFinishedReading;
     private String bookReview;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name = "book_publisher",
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "publisher_id", referencedColumnName = "id")
+    )
+    private Set<Publisher> publishers;
+
     public Book(String title, Author author, PredefinedShelf predefinedShelf) {
         this.title = title;
         this.author = author;
