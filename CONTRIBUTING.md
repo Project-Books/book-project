@@ -53,7 +53,7 @@ If you haven't received a response, feel free to mention @knjk04 or get in touch
 
 ## Open-ended discussions
 
-Open-ended discussions are best made over our public #book-project channel on our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). Unless specified otherwise, this applies when you're not assigned to the issue at hand.
+Open-ended discussions are best made over our public #help channel on our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). Unless specified otherwise, this applies when you're not assigned to the issue at hand.
 
 Examples of when to take a discussion over to Slack
 - If you disagree with an issue (e.g. if you don't think it's needed or there is a better way of doing something)
