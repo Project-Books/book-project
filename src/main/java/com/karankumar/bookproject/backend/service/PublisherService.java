@@ -42,17 +42,6 @@ public class PublisherService {
         return publisherRepository.getOne(id);
     }
 
-
-    public Set<Book> findBooksforPublisher(Long id)
-    {
-        return publisherRepository.findBooksforPublisherById(id);
-    }
-
-    public Set<Book> findBooksforPublisher( String name)
-    {
-        return publisherRepository.findBooksforPublisherByName(name);
-    }
-
     public void addBookToPublisher( Book book, Publisher publisher ) {
         Set<Book> publisherBooks = publisher.getBooks();
         publisherBooks.add(book);

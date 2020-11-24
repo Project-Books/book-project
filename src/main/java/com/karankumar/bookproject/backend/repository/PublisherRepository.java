@@ -17,21 +17,9 @@
 
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.Set;
 
 public interface PublisherRepository extends JpaRepository<Publisher, Long> {
-
-    @Query("Select Book from Publisher where id= :id" )
-    public Set<Book> findBooksforPublisherById(@Param("id") Long id);
-
-    @Query("Select Book from Publisher where name= :name" )
-    public Set<Book> findBooksforPublisherByName(@Param("name") String name);
-
-
 }

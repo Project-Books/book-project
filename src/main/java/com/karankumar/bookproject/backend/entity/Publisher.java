@@ -47,8 +47,8 @@ public class Publisher extends BaseEntity {
     private String name;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy ="publisher")
-    private Set<Book> books = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy ="publishers")
+    private Set<Book> books;
 
     public Publisher(
             @NotNull @NotBlank String name) {
