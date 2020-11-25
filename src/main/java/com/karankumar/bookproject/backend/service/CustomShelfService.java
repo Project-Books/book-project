@@ -64,8 +64,8 @@ public class CustomShelfService {
         return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
-    public void save(@NonNull CustomShelf customShelf) {
-        customShelfRepository.save(customShelf);
+    public CustomShelf save(@NonNull CustomShelf customShelf) {
+        return customShelfRepository.save(customShelf);
     }
 
     public void delete(@NonNull CustomShelf customShelf) {
@@ -121,6 +121,6 @@ public class CustomShelfService {
     public CustomShelf findOrCreate(String shelfName) {
         Assert.hasText(shelfName, "Shelf Name cannot be empty");
         return Optional.ofNullable(findByShelfNameAndLoggedInUser(shelfName))
-                       .orElseGet(() -> createCustomShelf(shelfName));
+                       .orElseGet(() -> save(createCustomShelf(shelfName)));
     }
 }

@@ -175,7 +175,6 @@ public class SettingsView extends HorizontalLayout {
 
     private void configureImportGoodreadsUpload() {
         importGoodreadsUpload.addSucceededListener(succeededEvent -> {
-            LOGGER.info("Import success: " + succeededEvent.toString());
             try {
                 List<GoodreadsBookImport> goodreadsBookImports =
                         CsvUtils.read(importGoodreadsMemoryBuffer.getInputStream(),

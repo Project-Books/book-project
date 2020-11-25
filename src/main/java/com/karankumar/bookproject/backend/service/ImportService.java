@@ -81,6 +81,11 @@ public class ImportService {
     }
 
     private Optional<Book> toBook(GoodreadsBookImport goodreadsBookImport) {
+        if (StringUtils.isBlank(goodreadsBookImport.getTitle())) {
+            LOGGER.severe("Title is blank");
+            return Optional.empty();
+        }
+
         Optional<Author> author = toAuthor(goodreadsBookImport.getAuthor());
         if (author.isEmpty()) {
             LOGGER.severe("Author is null");

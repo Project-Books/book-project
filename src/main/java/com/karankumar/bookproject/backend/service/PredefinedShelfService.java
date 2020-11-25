@@ -27,6 +27,7 @@ import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.backend.repository.TagRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -165,7 +166,7 @@ public class PredefinedShelfService {
         return findAllForLoggedInUser()
                 .stream()
                 .filter(shelf ->
-                        shelf.getShelfName().toString().equals(shelfName))
+                        StringUtils.equalsIgnoreCase(shelf.getShelfName(), shelfName))
                 .collect(Collectors.toList())
                 .get(0); // there should only be one
     }

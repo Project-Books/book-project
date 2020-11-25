@@ -70,7 +70,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
-                "/VAADIN/**",
                 "/favicon.ico",
                 "/robots.txt",
                 "/manifest.webmanifest",
@@ -92,7 +91,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .authorizeRequests()
                 .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
-                .antMatchers(REGISTRATION_URL).permitAll()
+                .antMatchers(REGISTRATION_URL, "/VAADIN/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
