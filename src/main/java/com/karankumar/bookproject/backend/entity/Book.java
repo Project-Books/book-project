@@ -47,7 +47,7 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "tags")
+@EqualsAndHashCode(callSuper = true, exclude = {"tags","publishers"})
 public class Book extends BaseEntity {
     public static final int MAX_PAGES = 23_000;
 

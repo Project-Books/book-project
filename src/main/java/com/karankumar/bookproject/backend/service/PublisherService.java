@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Publisher;
 import com.karankumar.bookproject.backend.repository.PublisherRepository;
@@ -25,7 +26,11 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Log
@@ -44,8 +49,13 @@ public class PublisherService {
 
     public void addBookToPublisher( Book book, Publisher publisher ) {
         Set<Book> publisherBooks = publisher.getBooks();
-        publisherBooks.add(book);
-        publisher.setBooks(publisherBooks);
+        if(publisherBooks==null){
+            publisher.setBooks(Stream.of(book).collect(Collectors.toSet()));
+        }
+        else {
+            publisherBooks.add(book);
+            publisher.setBooks(publisherBooks);
+        }
         save(publisher);
     }
 
@@ -53,6 +63,21 @@ public class PublisherService {
         if(!StringUtils.isEmpty(publisher.getName())){
             publisherRepository.save(publisher);
         }
+    }
 
+    public List<Publisher> findAll() {
+        return publisherRepository.findAll();
+    }
+
+    public void delete(@NonNull Publisher publisher) {
+        publisherRepository.delete(publisher);
+    }
+
+    public void deleteAll() {
+        publisherRepository.deleteAll();
+    }
+
+    public Long count() {
+        return publisherRepository.count();
     }
 }

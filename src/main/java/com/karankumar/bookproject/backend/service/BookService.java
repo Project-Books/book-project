@@ -75,7 +75,7 @@ public class BookService {
 
     private void addBookToPublisher (Book book)
     {
-        if(book.getPublishers().size()>0) {
+        if(book.getPublishers()!=null && book.getPublishers().size()>0) {
             Set<Publisher> publishers = book.getPublishers();
             for(Publisher publisher:publishers){
                 publisherService.addBookToPublisher(book,publisher);

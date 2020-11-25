@@ -30,15 +30,14 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
-@JsonIgnoreProperties(value = {"id"})
+@JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "tags")
+@EqualsAndHashCode(callSuper = true, exclude = "books")
 public class Publisher extends BaseEntity {
 
     @NotNull

@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.Publisher;
 import com.karankumar.bookproject.backend.entity.Tag;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
@@ -53,6 +54,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @IntegrationTest
 @DisplayName("BookService should")
@@ -62,19 +65,23 @@ class BookServiceTest {
     private final CustomShelfService customShelfService;
     private final TagService tagService;
     private final PredefinedShelfService predefinedShelfService;
+    private final PublisherService publisherService;
 
     private PredefinedShelf toRead;
     private final Author author = new Author("Test First Name", "Test Last Name");
+    private final Set<Publisher> publishers = Stream.of(new Publisher("Test Publisher")).collect(
+            Collectors.toSet());
 
     @Autowired
     BookServiceTest(AuthorService authorService, BookService bookService,
                     CustomShelfService customShelfService, TagService tagService,
-                    PredefinedShelfService predefinedShelfService) {
+                    PredefinedShelfService predefinedShelfService, PublisherService publisherService) {
         this.authorService = authorService;
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.tagService = tagService;
         this.predefinedShelfService = predefinedShelfService;
+        this.publisherService=publisherService;
     }
 
     @BeforeEach
@@ -94,6 +101,7 @@ class BookServiceTest {
         bookService.deleteAll();
         authorService.deleteAll();
         customShelfService.deleteAll();
+        publisherService.deleteAll();
     }
 
     @Test
@@ -271,6 +279,7 @@ class BookServiceTest {
                 .rating(RatingScale.EIGHT)
                 .dateStartedReading(LocalDate.of(2020, 7, 5))
                 .dateFinishedReading(LocalDate.of(2020, 9, 5))
+                .publishers(publishers)
                 .bookReview("Very good.");
     }
 
