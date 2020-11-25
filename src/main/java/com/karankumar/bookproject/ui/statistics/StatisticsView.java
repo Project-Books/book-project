@@ -44,11 +44,17 @@ import java.util.Optional;
 public class StatisticsView extends VerticalLayout {
 
     public StatisticsView(PredefinedShelfService predefinedShelfService) {
-        for (StatisticType statistic : StatisticType.values()) {
-            String caption = statistic.getCaption();
-            Optional<String> value = statistic.calculateStatistic(predefinedShelfService);
-            value.ifPresent(val -> add(configureStatistic(caption, val)));
+        try{
+            for (StatisticType statistic : StatisticType.values()) {
+                String caption = statistic.getCaption();
+                Optional<String> value = statistic.calculateStatistic(predefinedShelfService);
+                value.ifPresent(val -> add(configureStatistic(caption, val)));
+            }
+        }catch(NullPointerException e){
+            System.out.println("NullPointerException : "+ e);
+            add("No statistics available. Try adding books you've read");
         }
+        
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
