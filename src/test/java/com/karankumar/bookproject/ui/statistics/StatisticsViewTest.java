@@ -22,10 +22,15 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.html.Span;
 
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksInDifferentGenres;
 import static com.karankumar.bookproject.ui.statistics.util.StatisticsViewTestUtils.populateDataWithBooksDifferentGenresWithoutPageCount;
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.mvysny.kaributesting.v10.LocatorJ._get;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,6 +67,7 @@ class StatisticsViewTest {
     @BeforeEach
     public void setUp() {
         bookService.deleteAll();
+        
     }
 
     @Test
@@ -76,6 +82,14 @@ class StatisticsViewTest {
         allStatisticsAreShown();
         thereAreNotOtherStatistics();
     }
+
+    @Test
+    void shouldShowErrorMessageWhenNullpointerException() {
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            UI.getCurrent().navigate(StatisticsView.class);
+          });
+    }
+
 
     @Test
     void shouldShowGenreAndRatingStatisticsWhenMoreThanOneGenre() {

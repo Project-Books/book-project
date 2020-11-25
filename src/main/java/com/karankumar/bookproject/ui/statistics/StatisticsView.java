@@ -28,6 +28,7 @@ import com.karankumar.bookproject.ui.MainView;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -42,6 +43,7 @@ import java.util.Optional;
 @PageTitle("Statistics | Book Project")
 @Log
 public class StatisticsView extends VerticalLayout {
+    private final Span errorMessage = new Span();
 
     public StatisticsView(PredefinedShelfService predefinedShelfService) {
         try{
@@ -52,7 +54,10 @@ public class StatisticsView extends VerticalLayout {
             }
         }catch(NullPointerException e){
             System.out.println("NullPointerException : "+ e);
-            add("No statistics available. Try adding books you've read");
+            errorMessage.setId("error-message");
+            errorMessage.setText(
+                            "No statistics available. Try adding books you've read");
+            add(errorMessage);
         }
         
         setSizeFull();
