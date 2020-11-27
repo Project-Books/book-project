@@ -183,7 +183,7 @@ public class SettingsView extends HorizontalLayout {
 
                 importService.importGoodreadsBooks(goodreadsBookImports);
             } catch (IOException e) {
-                LOGGER.severe("Error in reading input file, error: + " + e);
+                LOGGER.severe("Error in reading input file, error: " + e);
             }
         });
     }

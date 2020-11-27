@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 @Service
 @Log
 public class ImportService {
-    private static final double GOODREADS_SCALE_FACTOR = 2;
+    private static final double GOODREADS_RATING_SCALE_FACTOR = 2;
 
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
@@ -63,12 +63,14 @@ public class ImportService {
     public List<Book> importGoodreadsBooks(
             Collection<? extends GoodreadsBookImport> goodreadsBookImports) {
         List<Book> books = toBooks(goodreadsBookImports);
+
         List<Book> savedBooks = books.stream()
                                      .map(bookService::save)
                                      .filter(Optional::isPresent)
                                      .map(Optional::get)
                                      .collect(Collectors.toList());
         savedBooks.forEach(b -> LOGGER.info("Book: " + b + " saved successfully"));
+
         return savedBooks;
     }
 
@@ -106,7 +108,7 @@ public class ImportService {
         customShelf.ifPresent(book::setCustomShelf);
 
         Optional<RatingScale> ratingScale =
-                toRatingScale(goodreadsBookImport.getRating(), GOODREADS_SCALE_FACTOR);
+                toRatingScale(goodreadsBookImport.getRating(), GOODREADS_RATING_SCALE_FACTOR);
         ratingScale.ifPresent(book::setRating);
 
         return Optional.of(book);
