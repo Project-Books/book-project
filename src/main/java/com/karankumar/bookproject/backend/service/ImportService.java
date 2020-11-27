@@ -76,7 +76,7 @@ public class ImportService {
                                      .filter(Optional::isPresent)
                                      .map(Optional::get)
                                      .collect(Collectors.toList());
-        savedBooks.forEach(b -> LOGGER.info("Book: " + b + " saved successfully"));
+        savedBooks.forEach(b -> LOGGER.info("Book: {} saved successfully", b));
 
         return savedBooks;
     }
