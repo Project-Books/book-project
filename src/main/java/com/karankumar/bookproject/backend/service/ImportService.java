@@ -24,13 +24,15 @@ import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,7 +40,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
-@Log
+@Slf4j
 public class ImportService {
     private static final double GOODREADS_RATING_SCALE_FACTOR = 2;
 
@@ -62,6 +64,11 @@ public class ImportService {
      */
     public List<Book> importGoodreadsBooks(
             Collection<? extends GoodreadsBookImport> goodreadsBookImports) {
+        if (CollectionUtils.isEmpty(goodreadsBookImports)) {
+            LOGGER.info("Goodreads imports is empty");
+            return Collections.emptyList();
+        }
+
         List<Book> books = toBooks(goodreadsBookImports);
 
         List<Book> savedBooks = books.stream()
@@ -84,13 +91,13 @@ public class ImportService {
 
     private Optional<Book> toBook(GoodreadsBookImport goodreadsBookImport) {
         if (StringUtils.isBlank(goodreadsBookImport.getTitle())) {
-            LOGGER.severe("Title is blank");
+            LOGGER.error("Title is blank for import: {}", goodreadsBookImport);
             return Optional.empty();
         }
 
         Optional<Author> author = toAuthor(goodreadsBookImport.getAuthor());
         if (author.isEmpty()) {
-            LOGGER.severe("Author is null");
+            LOGGER.error("Author is null for import: {}", goodreadsBookImport);
             return Optional.empty();
         }
 
@@ -98,7 +105,7 @@ public class ImportService {
                 toPredefinedShelf(goodreadsBookImport.getBookshelves(),
                         goodreadsBookImport.getDateRead());
         if (predefinedShelf.isEmpty()) {
-            LOGGER.severe("Predefined shelf is null");
+            LOGGER.error("Predefined shelf is null for import: {}", goodreadsBookImport);
             return Optional.empty();
         }
 
