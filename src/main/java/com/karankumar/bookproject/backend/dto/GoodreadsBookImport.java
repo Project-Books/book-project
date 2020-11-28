@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class GoodreadsBookImport {
     private Double rating;
 
     @JsonProperty("Date Read")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private LocalDate dateRead;
 
     @JsonProperty("Bookshelves")

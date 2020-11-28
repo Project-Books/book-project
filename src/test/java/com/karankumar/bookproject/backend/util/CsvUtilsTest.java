@@ -41,7 +41,7 @@ class CsvUtilsTest {
                 CsvUtils.read(inputStream, GoodreadsBookImport.class);
 
         // then
-        int expected = 5;
+        int expected = 559;
         assertThat(goodreadsBookImports.size()).isEqualTo(expected);
     }
 
