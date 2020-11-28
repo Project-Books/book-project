@@ -58,7 +58,7 @@ class ImportServiceTest {
         GoodreadsBookImport goodreadsBookImport = new GoodreadsBookImport();
         goodreadsBookImport.setTitle("Blink: The Power of Thinking Without Thinking");
         goodreadsBookImport.setAuthor("Malcolm Gladwell");
-        goodreadsBookImport.setBookshelves("Reading");
+        goodreadsBookImport.setBookshelves("currently-reading");
 
         // when
         List<Book> savedBooks =
