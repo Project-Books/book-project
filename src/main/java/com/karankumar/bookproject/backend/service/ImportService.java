@@ -23,7 +23,6 @@ import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.karankumar.bookproject.backend.util.PredefinedShelfUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -36,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -103,7 +103,8 @@ public class ImportService {
 
         Optional<PredefinedShelf> predefinedShelf =
                 toPredefinedShelf(goodreadsBookImport.getBookshelves(),
-                        goodreadsBookImport.getDateRead());
+                        goodreadsBookImport.getDateRead(),
+                        this::mapGoodreadsPredefinedShelfName);
         if (predefinedShelf.isEmpty()) {
             LOGGER.error("Predefined shelf is null for import: {}", goodreadsBookImport);
             return Optional.empty();
@@ -111,7 +112,8 @@ public class ImportService {
 
         Book book = new Book(goodreadsBookImport.getTitle(), author.get(), predefinedShelf.get());
 
-        Optional<CustomShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves());
+        Optional<CustomShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves(),
+                this::mapGoodreadsPredefinedShelfName);
         customShelf.ifPresent(book::setCustomShelf);
 
         Optional<RatingScale> ratingScale =
@@ -119,6 +121,22 @@ public class ImportService {
         ratingScale.ifPresent(book::setRating);
 
         return Optional.of(book);
+    }
+
+    private Optional<PredefinedShelf.ShelfName> mapGoodreadsPredefinedShelfName(String shelfName) {
+        if (StringUtils.isBlank(shelfName)) {
+            return Optional.empty();
+        }
+        switch (shelfName.toLowerCase().replaceAll("[^a-zA-Z\\-]",  "")) {
+            case "to-read":
+                return Optional.of(PredefinedShelf.ShelfName.TO_READ);
+            case "currently-reading":
+                return Optional.of(PredefinedShelf.ShelfName.READING);
+            case "read":
+                return Optional.of(PredefinedShelf.ShelfName.READ);
+            default:
+                return Optional.empty();
+        }
     }
 
     private Optional<Author> toAuthor(String name) {
@@ -130,27 +148,37 @@ public class ImportService {
                 .of(new Author(authorNames[0], authorNames.length > 1 ? authorNames[1] : null));
     }
 
-    private Optional<PredefinedShelf> toPredefinedShelf(String shelves, LocalDate dateRead) {
+    private Optional<PredefinedShelf> toPredefinedShelf(String shelves, LocalDate dateRead,
+                                                        Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
         if (Objects.nonNull(dateRead)) {
             return Optional.of(predefinedShelfService.findToReadShelf());
         }
         if (StringUtils.isBlank(shelves)) {
             return Optional.empty();
         }
-        String[] shelvesArray = shelves.split(",");
+        String[] shelvesArray = shelves.split(" ");
+
         return Arrays.stream(shelvesArray)
-                     .filter(PredefinedShelfUtils::isPredefinedShelf)
+                     .map(predefinedShelfNameMapper)
+                     .filter(Optional::isPresent)
                      .findFirst()
-                     .map(predefinedShelfService::getPredefinedShelfByNameAsString);
+                     .map(Optional::get)
+                     .map(predefinedShelfService::findByPredefinedShelfNameAndLoggedInUser);
     }
 
-    private Optional<CustomShelf> toCustomShelf(String shelves) {
+    private Optional<CustomShelf> toCustomShelf(String shelves,
+                                                Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
         if (StringUtils.isBlank(shelves)) {
             return Optional.empty();
         }
-        String[] shelvesArray = shelves.split(",");
+        String[] shelvesArray = shelves.split(" ");
+
+        Predicate<String> isNotPredefinedShelf =
+                s -> predefinedShelfNameMapper.andThen(Optional::isEmpty)
+                                              .apply(s);
+
         return Arrays.stream(shelvesArray)
-                     .filter(Predicate.not(PredefinedShelfUtils::isPredefinedShelf))
+                     .filter(isNotPredefinedShelf)
                      .findFirst()
                      .map(customShelfService::findOrCreate);
     }

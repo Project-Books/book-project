@@ -15,7 +15,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.utils;
+package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
 import com.karankumar.bookproject.backend.util.CsvUtils;
@@ -34,7 +34,7 @@ class CsvUtilsTest {
     @Test
     void testReadWhenInputStreamIsCsv() throws IOException {
         // given
-        InputStream inputStream = getResourceInputStream("goodreadsImportSample.csv");
+        InputStream inputStream = getResourceInputStream("goodreadsBooksImportSample.csv");
 
         // when
         List<GoodreadsBookImport> goodreadsBookImports =
