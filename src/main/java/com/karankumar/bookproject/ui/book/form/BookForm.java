@@ -59,6 +59,8 @@ import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
@@ -477,7 +479,9 @@ public class BookForm extends VerticalLayout {
 
         // TODO: this should be removed. A custom shelf should not be mandatory, so it should be acceptable to the custom shelf to be null
         if (book.getCustomShelf() == null) {
-            CustomShelf customShelf = customShelfService.createCustomShelf("ShelfName");
+            List<CustomShelf> usersShelves = customShelfService.findAllForLoggedInUser();
+            CustomShelf customShelf = !usersShelves.isEmpty() ? usersShelves.get(0)
+                    : customShelfService.createCustomShelf("ShelfName");
             book.setCustomShelf(customShelf);
         }
 

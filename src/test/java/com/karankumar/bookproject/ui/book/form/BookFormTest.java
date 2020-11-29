@@ -807,6 +807,37 @@ class BookFormTest {
         // then
         assertThat(bookForm.saveButton.isEnabled()).isTrue();
     }
+    
+    @Test
+    void useUsersCustomShelf_whenCustomShelfIsNull() {
+        // given
+        Book book = createBook(READ, true, "title");
+        book.setCustomShelf(null);
+
+        // when
+        bookForm.setBook(book);
+
+        // then
+        assertThat(customShelfService.findAllForLoggedInUser().get(0))
+                .isEqualTo(book.getCustomShelf());
+    }
+
+    @Test
+    void createNewCustomShelf_whenCustomShelfIsNullAndUserHasNoShelves() {
+        // given
+        Book book = createBook(READ, true, "title");
+        book.setCustomShelf(null);
+        customShelfService.findAllForLoggedInUser()
+                .forEach(shelf -> customShelfService.delete(shelf));
+
+        // when
+        bookForm.setBook(book);
+
+        // then
+        assertThat(book.getCustomShelf()).isNotNull();
+        assertThat("ShelfName")
+                .isEqualTo(book.getCustomShelf().getShelfName());
+    }
 
     @AfterEach
     public void tearDown() {
