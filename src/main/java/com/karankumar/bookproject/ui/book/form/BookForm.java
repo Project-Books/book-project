@@ -234,7 +234,6 @@ public class BookForm extends VerticalLayout {
     }
 
     public void openForm() {
-        clearErrors();
         formDialog.open();
         showSeriesPositionFormIfSeriesPositionAvailable();
         addClassNameToForm();
@@ -657,6 +656,7 @@ public class BookForm extends VerticalLayout {
 
     public void addBook() {
         clearFormFields();
+        clearErrors();
         openForm();
     }
 
