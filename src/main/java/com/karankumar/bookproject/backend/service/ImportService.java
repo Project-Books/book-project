@@ -127,7 +127,7 @@ public class ImportService {
         if (StringUtils.isBlank(shelfName)) {
             return Optional.empty();
         }
-        switch (shelfName.toLowerCase().replaceAll("[^a-zA-Z\\-]",  "")) {
+        switch (shelfName.toLowerCase().replaceAll("[^a-zA-Z\\-]", "")) {
             case "to-read":
                 return Optional.of(PredefinedShelf.ShelfName.TO_READ);
             case "currently-reading":
@@ -151,7 +151,7 @@ public class ImportService {
     private Optional<PredefinedShelf> toPredefinedShelf(String shelves, LocalDate dateRead,
                                                         Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
         if (Objects.nonNull(dateRead)) {
-            return Optional.of(predefinedShelfService.findToReadShelf());
+            return Optional.of(predefinedShelfService.findReadShelf());
         }
         if (StringUtils.isBlank(shelves)) {
             return Optional.empty();

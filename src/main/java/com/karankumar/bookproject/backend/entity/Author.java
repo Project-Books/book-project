@@ -23,6 +23,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,7 +54,7 @@ public class Author extends BaseEntity {
 
     public Author(String firstName, String lastName) {
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.lastName = StringUtils.isNotBlank(lastName) ? lastName : this.firstName;
     }
 
     @Override
