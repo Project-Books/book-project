@@ -129,10 +129,15 @@ public class ImportService {
         }
 
         String[] authorNames = name.trim().split(" ");
-        String firstName = authorNames[0];
-        String lastName = authorNames.length > 1 ? authorNames[1] : firstName;
 
-        return Optional.of(new Author(firstName, lastName));
+        StringBuilder firstNameBuilder = new StringBuilder(authorNames[0]);
+        int length = authorNames.length;
+        for (int index = 1; index < length - 1; ++index) {
+            firstNameBuilder.append(" ").append(authorNames[index]);
+        }
+        String lastName = authorNames[length - 1];
+
+        return Optional.of(new Author(firstNameBuilder.toString(), lastName));
     }
 
     private Optional<PredefinedShelf> toPredefinedShelf(String shelves, LocalDate dateRead,
@@ -143,7 +148,7 @@ public class ImportService {
         if (StringUtils.isBlank(shelves)) {
             return Optional.empty();
         }
-        String[] shelvesArray = shelves.trim().split(" ");
+        String[] shelvesArray = shelves.trim().split(",");
 
         return Arrays.stream(shelvesArray)
                      .map(predefinedShelfNameMapper)
@@ -158,7 +163,7 @@ public class ImportService {
         if (StringUtils.isBlank(shelves)) {
             return Optional.empty();
         }
-        String[] shelvesArray = shelves.trim().split(" ");
+        String[] shelvesArray = shelves.trim().split(",");
 
         Predicate<String> isNotPredefinedShelf =
                 s -> predefinedShelfNameMapper.andThen(Optional::isEmpty).apply(s);
@@ -166,6 +171,7 @@ public class ImportService {
         return Arrays.stream(shelvesArray)
                      .filter(isNotPredefinedShelf)
                      .findFirst()
+                     .map(String::trim)
                      .map(customShelfService::findOrCreate);
     }
 

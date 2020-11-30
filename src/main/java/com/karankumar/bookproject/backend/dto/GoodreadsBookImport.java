@@ -51,7 +51,7 @@ public class GoodreadsBookImport {
         if (StringUtils.isBlank(shelfName)) {
             return Optional.empty();
         }
-        switch (shelfName.toLowerCase().replaceAll("[^a-zA-Z\\-]", "")) {
+        switch (shelfName.trim().toLowerCase().replace(",", "")) {
             case "to-read":
                 return Optional.of(PredefinedShelf.ShelfName.TO_READ);
             case "currently-reading":
