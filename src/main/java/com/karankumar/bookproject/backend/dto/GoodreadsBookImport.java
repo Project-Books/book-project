@@ -20,9 +20,12 @@ package com.karankumar.bookproject.backend.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -43,4 +46,20 @@ public class GoodreadsBookImport {
 
     @JsonProperty("Bookshelves")
     private String bookshelves;
+
+    public static Optional<PredefinedShelf.ShelfName> toPredefinedShelfName(String shelfName) {
+        if (StringUtils.isBlank(shelfName)) {
+            return Optional.empty();
+        }
+        switch (shelfName.toLowerCase().replaceAll("[^a-zA-Z\\-]", "")) {
+            case "to-read":
+                return Optional.of(PredefinedShelf.ShelfName.TO_READ);
+            case "currently-reading":
+                return Optional.of(PredefinedShelf.ShelfName.READING);
+            case "read":
+                return Optional.of(PredefinedShelf.ShelfName.READ);
+            default:
+                return Optional.empty();
+        }
+    }
 }

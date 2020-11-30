@@ -104,7 +104,7 @@ public class ImportService {
         Optional<PredefinedShelf> predefinedShelf =
                 toPredefinedShelf(goodreadsBookImport.getBookshelves(),
                         goodreadsBookImport.getDateRead(),
-                        this::mapGoodreadsPredefinedShelfName);
+                        GoodreadsBookImport::toPredefinedShelfName);
         if (predefinedShelf.isEmpty()) {
             LOGGER.error("Predefined shelf is null for import: {}", goodreadsBookImport);
             return Optional.empty();
@@ -113,7 +113,7 @@ public class ImportService {
         Book book = new Book(goodreadsBookImport.getTitle(), author.get(), predefinedShelf.get());
 
         Optional<CustomShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves(),
-                this::mapGoodreadsPredefinedShelfName);
+                GoodreadsBookImport::toPredefinedShelfName);
         customShelf.ifPresent(book::setCustomShelf);
 
         Optional<RatingScale> ratingScale =
@@ -123,29 +123,16 @@ public class ImportService {
         return Optional.of(book);
     }
 
-    private Optional<PredefinedShelf.ShelfName> mapGoodreadsPredefinedShelfName(String shelfName) {
-        if (StringUtils.isBlank(shelfName)) {
-            return Optional.empty();
-        }
-        switch (shelfName.toLowerCase().replaceAll("[^a-zA-Z\\-]", "")) {
-            case "to-read":
-                return Optional.of(PredefinedShelf.ShelfName.TO_READ);
-            case "currently-reading":
-                return Optional.of(PredefinedShelf.ShelfName.READING);
-            case "read":
-                return Optional.of(PredefinedShelf.ShelfName.READ);
-            default:
-                return Optional.empty();
-        }
-    }
-
     private Optional<Author> toAuthor(String name) {
         if (StringUtils.isBlank(name)) {
             return Optional.empty();
         }
-        String[] authorNames = name.split(" ");
-        return Optional
-                .of(new Author(authorNames[0], authorNames.length > 1 ? authorNames[1] : null));
+
+        String[] authorNames = name.trim().split(" ");
+        String firstName = authorNames[0];
+        String lastName = authorNames.length > 1 ? authorNames[1] : firstName;
+
+        return Optional.of(new Author(firstName, lastName));
     }
 
     private Optional<PredefinedShelf> toPredefinedShelf(String shelves, LocalDate dateRead,
@@ -156,7 +143,7 @@ public class ImportService {
         if (StringUtils.isBlank(shelves)) {
             return Optional.empty();
         }
-        String[] shelvesArray = shelves.split(" ");
+        String[] shelvesArray = shelves.trim().split(" ");
 
         return Arrays.stream(shelvesArray)
                      .map(predefinedShelfNameMapper)
@@ -171,11 +158,10 @@ public class ImportService {
         if (StringUtils.isBlank(shelves)) {
             return Optional.empty();
         }
-        String[] shelvesArray = shelves.split(" ");
+        String[] shelvesArray = shelves.trim().split(" ");
 
         Predicate<String> isNotPredefinedShelf =
-                s -> predefinedShelfNameMapper.andThen(Optional::isEmpty)
-                                              .apply(s);
+                s -> predefinedShelfNameMapper.andThen(Optional::isEmpty).apply(s);
 
         return Arrays.stream(shelvesArray)
                      .filter(isNotPredefinedShelf)

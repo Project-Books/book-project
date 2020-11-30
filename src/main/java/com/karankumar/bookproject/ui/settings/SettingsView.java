@@ -179,7 +179,6 @@ public class SettingsView extends HorizontalLayout {
                 List<GoodreadsBookImport> goodreadsBookImports =
                         CsvUtils.read(importGoodreadsMemoryBuffer.getInputStream(),
                                 GoodreadsBookImport.class);
-                goodreadsBookImports.forEach(i -> LOGGER.info(i.toString()));
 
                 importService.importGoodreadsBooks(goodreadsBookImports);
             } catch (IOException e) {
