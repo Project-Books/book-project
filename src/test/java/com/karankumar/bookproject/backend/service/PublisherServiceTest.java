@@ -36,13 +36,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
 @DisplayName("PublisherService should")
-public class PublisherServiceTest {
+class PublisherServiceTest {
 
     private final PublisherService publisherService;
     private final BookService bookService;
 
     @Autowired
-    PublisherServiceTest(PublisherService publisherService, BookService bookService){
+    PublisherServiceTest(PublisherService publisherService, BookService bookService) {
         this.publisherService = publisherService;
         this.bookService = bookService;
     }
@@ -57,9 +57,7 @@ public class PublisherServiceTest {
         publisherService.deleteAll();
     }
 
-
     @Test
-    @DisplayName("Save a Publisher Properly")
     void saveValidPublisher() {
         // given
         Publisher publisher = new Publisher("Test SavePublisher ");
@@ -103,8 +101,7 @@ public class PublisherServiceTest {
     }
 
     @Test
-    @DisplayName("Find all the Saved Publishers")
-    void findAllSavedPublisher() {
+    void findAllSavedPublishers() {
         // given
         Publisher publisher1 = new Publisher("Test SavePublisher1");
         Publisher publisher2 = new Publisher("Test SavePublisher2");
@@ -120,7 +117,7 @@ public class PublisherServiceTest {
 
     @Test
     @DisplayName("Throw exception when saving a new Publisher with existing name")
-    void throwExceptionWhileSavingDuplicatePublisher (){
+    void throwExceptionWhileSavingDuplicatePublisher() {
         //given
         Publisher publisher1 = new Publisher("Test DuplicatePublisher");
         Publisher publisher2 = new Publisher("Test DuplicatePublisher");

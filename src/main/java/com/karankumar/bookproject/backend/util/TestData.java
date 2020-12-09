@@ -96,7 +96,8 @@ public final class TestData {
     }
 
     public static Book createBook(List<Author> authors, String title, List<Tag> tags,
-                                  List<PredefinedShelf> predefinedShelves, List<Publisher> publishers) {
+                                  List<PredefinedShelf> predefinedShelves,
+                                  List<Publisher> publishers) {
         Book book = new Book(
                 title,
                 generateRandomAuthor(authors),

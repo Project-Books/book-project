@@ -43,7 +43,8 @@ public class BookService {
     private final BookRepository bookRepository;
     private final PublisherService publisherService;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService, PublisherService publisherService) {
+    public BookService(BookRepository bookRepository, AuthorService authorService,
+                       PublisherService publisherService) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.publisherService = publisherService;
@@ -73,14 +74,12 @@ public class BookService {
         author.setBooks(authorBooks);
     }
 
-    private void addBookToPublisher (Book book)
-    {
-        if(book.getPublishers()!=null && book.getPublishers().size()>0) {
-            Set<Publisher> publishers = book.getPublishers();
-            for(Publisher publisher:publishers){
-                publisherService.addBookToPublisher(book,publisher);
+    private void addBookToPublisher(Book book) {
+        Set<Publisher> publishers = book.getPublishers();
+        if (publishers != null && !publishers.isEmpty()) {
+            for (Publisher publisher : publishers) {
+                publisherService.addBookToPublisher(book, publisher);
             }
-
         }
     }
 
@@ -158,6 +157,4 @@ public class BookService {
     public List<Book> findByTitleOrAuthor(String title, String authorsName){
         return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
-
-
 }

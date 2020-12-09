@@ -35,11 +35,9 @@ import java.util.stream.Stream;
 @Service
 @Log
 public class PublisherService {
-
     private final PublisherRepository publisherRepository;
 
-    public PublisherService(
-            PublisherRepository publisherRepository) {
+    public PublisherService(PublisherRepository publisherRepository) {
         this.publisherRepository = publisherRepository;
     }
 
@@ -47,12 +45,11 @@ public class PublisherService {
         return publisherRepository.getOne(id);
     }
 
-    public void addBookToPublisher( Book book, Publisher publisher ) {
+    public void addBookToPublisher(Book book, Publisher publisher) {
         Set<Book> publisherBooks = publisher.getBooks();
-        if(publisherBooks==null){
+        if (publisherBooks == null) {
             publisher.setBooks(Stream.of(book).collect(Collectors.toSet()));
-        }
-        else {
+        } else {
             publisherBooks.add(book);
             publisher.setBooks(publisherBooks);
         }
@@ -60,7 +57,7 @@ public class PublisherService {
     }
 
     public void save(@NonNull Publisher publisher){
-        if(!StringUtils.isEmpty(publisher.getName())){
+        if (StringUtils.isNotEmpty(publisher.getName())) {
             publisherRepository.save(publisher);
         }
     }

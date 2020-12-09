@@ -118,7 +118,8 @@ public class Book extends BaseEntity {
         this.predefinedShelf = predefinedShelf;
     }
 
-    public Book(String title, Author author, PredefinedShelf predefinedShelf,Set<Publisher> publishers) {
+    public Book(String title, Author author, PredefinedShelf predefinedShelf,
+                Set<Publisher> publishers) {
         this.title = title;
         this.author = author;
         this.predefinedShelf = predefinedShelf;

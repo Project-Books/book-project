@@ -69,19 +69,21 @@ class BookServiceTest {
 
     private PredefinedShelf toRead;
     private final Author author = new Author("Test First Name", "Test Last Name");
-    private final Set<Publisher> publishers = Stream.of(new Publisher("Test Publisher")).collect(
-            Collectors.toSet());
+    private final Set<Publisher> publishers = Stream.of(
+            new Publisher("Test Publisher")).collect(Collectors.toSet()
+    );
 
     @Autowired
     BookServiceTest(AuthorService authorService, BookService bookService,
                     CustomShelfService customShelfService, TagService tagService,
-                    PredefinedShelfService predefinedShelfService, PublisherService publisherService) {
+                    PredefinedShelfService predefinedShelfService,
+                    PublisherService publisherService) {
         this.authorService = authorService;
         this.bookService = bookService;
         this.customShelfService = customShelfService;
         this.tagService = tagService;
         this.predefinedShelfService = predefinedShelfService;
-        this.publisherService=publisherService;
+        this.publisherService = publisherService;
     }
 
     @BeforeEach
