@@ -29,10 +29,12 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 
 @IntegrationTest
 @DisplayName("PublisherService should")
@@ -88,7 +90,7 @@ class PublisherServiceTest {
     @DisplayName("Delete a Publisher")
     void deleteExistingPublisher() {
         // given
-        Publisher publisher = new Publisher("Test DeletePublisher ");
+        Publisher publisher = new Publisher("Test DeletePublisher");
         publisherService.save(publisher);
         Long publisherId = publisher.getId();
 
@@ -96,8 +98,8 @@ class PublisherServiceTest {
         publisherService.delete(publisher);
 
         // then
-        assertThatThrownBy(() -> publisherService.findById(publisherId)).isInstanceOf(
-                JpaObjectRetrievalFailureException.class);
+        Optional<Publisher> deletedPublisher = publisherService.findById(publisherId);
+        assertThat(deletedPublisher.isEmpty()==true);
     }
 
     @Test

@@ -17,7 +17,6 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Publisher;
 import com.karankumar.bookproject.backend.repository.PublisherRepository;
@@ -26,8 +25,8 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,8 +40,8 @@ public class PublisherService {
         this.publisherRepository = publisherRepository;
     }
 
-    public Publisher findById(Long id) {
-        return publisherRepository.getOne(id);
+    public Optional<Publisher> findById(Long id) {
+        return publisherRepository.findById(id);
     }
 
     public void addBookToPublisher(Book book, Publisher publisher) {
