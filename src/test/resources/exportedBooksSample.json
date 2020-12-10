@@ -23,7 +23,8 @@
       "rating": null,
       "dateStartedReading": null,
       "dateFinishedReading": null,
-      "bookReview": null
+      "bookReview": null,
+      "publishers": []
     },
     {
       "title": "Another Book Name",
@@ -57,7 +58,8 @@
       "rating": "EIGHT",
       "dateStartedReading": "2020-07-05",
       "dateFinishedReading": "2020-09-05",
-      "bookReview": "Very good."
+      "bookReview": "Very good.",
+      "publishers": [{"name": "Test Publisher"}]
     }
   ]
 }

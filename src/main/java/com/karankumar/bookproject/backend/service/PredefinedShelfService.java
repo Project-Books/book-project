@@ -24,6 +24,7 @@ import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
+import com.karankumar.bookproject.backend.repository.PublisherRepository;
 import com.karankumar.bookproject.backend.repository.TagRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
@@ -43,6 +44,7 @@ import static com.karankumar.bookproject.backend.util.TestData.generateAuthors;
 import static com.karankumar.bookproject.backend.util.TestData.generateBooks;
 import static com.karankumar.bookproject.backend.util.TestData.generateListOfTags;
 import static com.karankumar.bookproject.backend.util.TestData.setPredefinedShelfForBooks;
+import static com.karankumar.bookproject.backend.util.TestData.generatePublishers;
 
 @Service
 @Log
@@ -53,15 +55,17 @@ public class PredefinedShelfService {
     private final AuthorRepository authorRepository;
     private final TagRepository tagRepository;
     private final UserService userService;
+    private final PublisherRepository publisherRepository;
 
     public PredefinedShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
-            PredefinedShelfRepository shelfRepository, TagRepository tagRepository, UserService userService) {
+            PredefinedShelfRepository shelfRepository, TagRepository tagRepository, UserService userService,PublisherRepository publisherRepository) {
         this.bookRepository = bookRepository;
         this.predefinedShelfRepository = shelfRepository;
 
         this.authorRepository = authorRepository;
         this.tagRepository = tagRepository;
         this.userService = userService;
+        this.publisherRepository=publisherRepository;
     }
 
     public PredefinedShelf findById(Long id) {
@@ -110,6 +114,10 @@ public class PredefinedShelfService {
             populateTagRepository();
         }
 
+        if(publisherRepository.count()==0){
+            populatePublisherRepository();
+        }
+
         for (User user : userService.findAll()) {
             if (predefinedShelfRepository.countAllByUser(user) == 0) {
                 List<PredefinedShelf> predefinedShelves = populateShelfRepository(user);
@@ -128,6 +136,9 @@ public class PredefinedShelfService {
         tagRepository.saveAll(generateListOfTags());
     }
 
+    private void populatePublisherRepository () {
+        publisherRepository.saveAll(generatePublishers());}
+
     private List<PredefinedShelf> populateShelfRepository(User user) {
          return predefinedShelfRepository.saveAll(createPredefinedShelves(user));
     }
@@ -137,7 +148,8 @@ public class PredefinedShelfService {
                 generateBooks(
                         authorRepository.findAll(),
                         tagRepository.findAll(),
-                        predefinedShelves
+                        predefinedShelves,
+                        publisherRepository.findAll()
                 )
         );
     }
