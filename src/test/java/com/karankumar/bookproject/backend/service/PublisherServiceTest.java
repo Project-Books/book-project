@@ -99,7 +99,7 @@ class PublisherServiceTest {
 
         // then
         Optional<Publisher> deletedPublisher = publisherService.findById(publisherId);
-        assertThat(deletedPublisher.isEmpty()==true);
+        assertThat(deletedPublisher).isEmpty();
     }
 
     @Test
@@ -120,14 +120,14 @@ class PublisherServiceTest {
     @Test
     @DisplayName("Throw exception when saving a new Publisher with existing name")
     void throwExceptionWhileSavingDuplicatePublisher() {
-        //given
+        // given
         Publisher publisher1 = new Publisher("Test DuplicatePublisher");
         Publisher publisher2 = new Publisher("Test DuplicatePublisher");
 
-        //when
+        // when
         publisherService.save(publisher1);
 
-        //then
+        // then
         assertThatThrownBy(() -> publisherService.save(publisher2)).isInstanceOf(
                 DataIntegrityViolationException.class);
     }
