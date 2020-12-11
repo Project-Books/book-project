@@ -187,8 +187,8 @@ public class StatisticTestUtils {
     public static int getNumberOfBooksThisYear() {
         LocalDate dt = LocalDate.now();
         int numberOfBooksThisYear = 0;
-        for(Book book : savedBooks){
-            if (book.getDateStartedReading().getYear() == dt.getYear() ){
+        for (Book book : savedBooks) {
+            if (book.getDateStartedReading().getYear() == dt.getYear()) {
                 numberOfBooksThisYear++;
             }
         }
