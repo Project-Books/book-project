@@ -27,20 +27,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
-
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @DisplayName("YearStatistics should")
-public class YearStatisticsTest {
-    private static BookService bookService;
-    private static PredefinedShelfService predefinedShelfService;
+class YearStatisticsTest {
+    private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
 
-    private static YearStatistics yearStatistic;
-    private static Book bookWithLowestRatingThisYear;
-    private static Book bookWithHighestRatingThisYear;
+    private YearStatistics yearStatistic;
+    private Book bookWithLowestRatingThisYear;
+    private Book bookWithHighestRatingThisYear;
 
     @Autowired
     YearStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
@@ -49,7 +46,7 @@ public class YearStatisticsTest {
     }
 
     @BeforeEach
-    public void beforeEachSetup() {
+    public void setUp() {
         bookService.deleteAll(); // reset
         StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
         bookWithLowestRatingThisYear = StatisticTestUtils.getBookWithLowestRatingThisYear();
@@ -59,26 +56,29 @@ public class YearStatisticsTest {
     }
 
     @Test
-    void lowestRatedBookThisYearIsFound() {
-        assertThat(yearStatistic.findLeastLikedBookThisYear().get().getTitle())
-                .isEqualTo(bookWithLowestRatingThisYear.getTitle());
+    void findLowestRatedBookThisYear() {
+        String actualTitle = yearStatistic.findLeastLikedBookThisYear().get().getTitle();
+        String expectedTitle = bookWithLowestRatingThisYear.getTitle();
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
-    void testNonExistentLowestRatedBook() {
+    void notFindNonExistentLowestRatedBook() {
         resetRatingStatistics();
-        assertThat(yearStatistic.findLeastLikedBookThisYear()).isEqualTo(Optional.empty());
+        assertThat(yearStatistic.findLeastLikedBookThisYear()).isNotPresent();
     }
 
     @Test
     void highestRatedBookExistsAndIsFound() {
-        assertThat(yearStatistic.findMostLikedBookThisYear().get().getTitle()).isEqualTo(bookWithHighestRatingThisYear.getTitle());
+        String actualTitle = yearStatistic.findMostLikedBookThisYear().get().getTitle();
+        String expectedTitle = bookWithHighestRatingThisYear.getTitle();
+        assertThat(actualTitle).isEqualTo(expectedTitle);
     }
 
     @Test
     void testNonExistentHighestRatedBook() {
         resetRatingStatistics();
-        assertThat(yearStatistic.findMostLikedBookThisYear()).isEqualTo(Optional.empty());
+        assertThat(yearStatistic.findMostLikedBookThisYear()).isEmpty();
     }
 
     @Test
@@ -89,17 +89,22 @@ public class YearStatisticsTest {
 
     @Test
     void averageRatingExistsAndIsCorrect() {
+        // given
         int numberOfBooks = StatisticTestUtils.getNumberOfBooksThisYear();
-        System.out.print(StatisticTestUtils.getNumberOfBooksThisYear());
         double totalRating = StatisticTestUtils.thisYearRating;
         double average = totalRating / numberOfBooks;
-        assertThat(average).isEqualTo( yearStatistic.calculateAverageRatingGivenThisYear().get());
+
+        // when
+        double expected = yearStatistic.calculateAverageRatingGivenThisYear().get();
+
+        // then
+        assertThat(average).isEqualTo(expected);
     }
 
     @Test
-    void testAverageRatingDivideByZero() {
+    void haveNoAverageRatingStatisticsWhenThereAreNoStatistics() {
         resetRatingStatistics();
-        assertThat(yearStatistic.calculateAverageRatingGivenThisYear()).isEqualTo(Optional.empty());
+        assertThat(yearStatistic.calculateAverageRatingGivenThisYear()).isEmpty();
     }
 
     private void resetRatingStatistics() {

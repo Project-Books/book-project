@@ -41,7 +41,7 @@ public class YearStatistics extends Statistics {
             if (book.getDateStartedReading() != null) {
                 LocalDate dt = book.getDateStartedReading();
                 LocalDate today = LocalDate.now();
-                if ((book.getRating() != null) && (dt.getYear() == today.getYear()) ) {
+                if ((book.getRating() != null) && (dt.getYear() == today.getYear())) {
                     readBooksThisYear.add(book);
                 }
 
