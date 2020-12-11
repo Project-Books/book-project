@@ -105,7 +105,7 @@ class PageStatisticsTest {
         Double actual = pageStatistics.calculateAveragePageLength();
 
         // then
-        Double averagePageLength = 267.0;
+        Double averagePageLength = 274.0;
         assertThat(actual).isEqualTo(averagePageLength);
     }
 

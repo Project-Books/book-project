@@ -25,6 +25,8 @@ import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 
 public class StatisticTestUtils {
@@ -36,28 +38,63 @@ public class StatisticTestUtils {
     private static Book bookWithLowestRating;
     private static Book bookWithHighestRating;
     private static Book bookWithMostPages;
+    private static Book bookWithLowestRatingThisYear;
+    private static Book BookWithHighestRatingThisYear;
     private static final ArrayList<Book> savedBooks = new ArrayList<>();
 
     private static BookService bookService;
     private static PredefinedShelfService predefinedShelfService;
 
     public static double totalRating = 0.0;
+    public static double thisYearRating = 0.0;
 
     private StatisticTestUtils() {}
 
     public static void populateReadBooks(BookService bookService,
                                          PredefinedShelfService predefinedShelfService) {
         init(bookService, predefinedShelfService);
-
-        bookWithLowestRating =
-                createReadBook("Book1", RatingScale.NO_RATING, BookGenre.BUSINESS, 100);
-        bookWithHighestRating =
-                createReadBook("Book2", RatingScale.NINE_POINT_FIVE, MOST_READ_BOOK_GENRE, 150);
-        createReadBook("Book3", RatingScale.SIX, MOST_READ_BOOK_GENRE, 200);
-        createReadBook("Book4", RatingScale.ONE, MOST_READ_BOOK_GENRE, 250);
-        createReadBook("Book5", RatingScale.NINE, MOST_LIKED_BOOK_GENRE, 300);
-        createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE, 350);
-        bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, LEAST_LIKED_BOOK_GENRE, 400);
+        LocalDate currentDate = LocalDate.now();
+        LocalDate oldDate  = currentDate.minus(Period.ofDays(366));
+        bookWithLowestRating = createReadBook(
+                "Book1",
+                RatingScale.NO_RATING,
+                BookGenre.BUSINESS,
+                100,
+                oldDate
+        );
+        bookWithHighestRating = createReadBook(
+                "Book2",
+                RatingScale.NINE_POINT_FIVE,
+                MOST_READ_BOOK_GENRE,
+                150,
+                oldDate
+        );
+        createReadBook("Book3", RatingScale.SIX, MOST_READ_BOOK_GENRE, 200, currentDate);
+        createReadBook("Book4", RatingScale.ONE, MOST_READ_BOOK_GENRE, 250, oldDate);
+        createReadBook("Book5", RatingScale.NINE, MOST_LIKED_BOOK_GENRE, 300, oldDate);
+        createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE,
+                350, oldDate);
+        bookWithMostPages = createReadBook(
+                "Book7",
+                RatingScale.ZERO,
+                LEAST_LIKED_BOOK_GENRE,
+                400,
+                oldDate
+        );
+        bookWithLowestRatingThisYear = createReadBook(
+                "Book8",
+                RatingScale.ONE,
+                LEAST_LIKED_BOOK_GENRE,
+                345,
+                currentDate
+        );
+        BookWithHighestRatingThisYear = createReadBook(
+                "Book9",
+                RatingScale.EIGHT_POINT_FIVE,
+                LEAST_LIKED_BOOK_GENRE,
+                245,
+                currentDate
+        );
     }
 
     private static void init(BookService bookService,
@@ -66,31 +103,39 @@ public class StatisticTestUtils {
         bookService.deleteAll();
         savedBooks.clear();
         totalRating = 0.0;
+        thisYearRating = 0.0;
         StatisticTestUtils.predefinedShelfService = predefinedShelfService;
     }
 
     public static void addReadBook(BookService bookService,
                                    PredefinedShelfService predefinedShelfService) {
         init(bookService, predefinedShelfService);
-        createReadBook("Book", RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200);
+        createReadBook("Book", RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200,
+                LocalDate.now());
     }
 
-    private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages) {
+    private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre,
+                                       int pages, LocalDate startedReading) {
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
-        Book book = createBook(bookTitle, readShelf, bookGenre, pages);
+        Book book = createBook(bookTitle, readShelf, bookGenre, pages, startedReading);
         book.setRating(rating);
 
         saveBook(book); // this should be called here & not in createBook()
         updateTotalRating(rating);
+        if (startedReading.getYear() == LocalDate.now().getYear()) {
+            updateThisYearRating(rating);
+        }
 
         return book;
     }
 
-    private static Book createBook(String bookTitle, PredefinedShelf shelf, BookGenre bookGenre, int pages) {
+    private static Book createBook(String bookTitle, PredefinedShelf shelf, BookGenre bookGenre,
+                                   int pages, LocalDate startedReading) {
         Author author = new Author("Joe", "Bloggs");
         Book book = new Book(bookTitle, author, shelf);
         book.setBookGenre(bookGenre);
         book.setNumberOfPages(pages);
+        book.setDateStartedReading(startedReading);
         return book;
     }
 
@@ -112,6 +157,12 @@ public class StatisticTestUtils {
             totalRating -= rating;
         }
     }
+    private static void updateThisYearRating(RatingScale ratingScale) {
+        Double rating = RatingScale.toDouble(ratingScale);
+        if (rating != null) {
+            thisYearRating += rating;
+        }
+    }
 
     public static Book getBookWithLowestRating() {
         return bookWithLowestRating;
@@ -125,8 +176,23 @@ public class StatisticTestUtils {
         return bookWithMostPages;
     }
 
+    public static Book getBookWithLowestRatingThisYear() { return bookWithLowestRatingThisYear; }
+
+    public static Book getBookWithHighestRatingThisYear(){ return  BookWithHighestRatingThisYear; }
+
     public static int getNumberOfBooks() {
         return savedBooks.size();
+    }
+
+    public static int getNumberOfBooksThisYear() {
+        LocalDate dt = LocalDate.now();
+        int numberOfBooksThisYear = 0;
+        for (Book book : savedBooks) {
+            if (book.getDateStartedReading().getYear() == dt.getYear()) {
+                numberOfBooksThisYear++;
+            }
+        }
+        return numberOfBooksThisYear;
     }
 
     public static int getTotalNumberOfPages() {
