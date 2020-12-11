@@ -29,9 +29,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 
-import static com.karankumar.bookproject.backend.util.DateUtils.dateIsInCurrentYear;
-
-
 public class StatisticTestUtils {
 
     public static final BookGenre MOST_READ_BOOK_GENRE = BookGenre.ADVENTURE;
@@ -58,17 +55,46 @@ public class StatisticTestUtils {
         init(bookService, predefinedShelfService);
         LocalDate currentDate = LocalDate.now();
         LocalDate oldDate  = currentDate.minus(Period.ofDays(366));
-        bookWithLowestRating =
-                createReadBook("Book1", RatingScale.NO_RATING, BookGenre.BUSINESS, 100, oldDate);
-        bookWithHighestRating =
-                createReadBook("Book2", RatingScale.NINE_POINT_FIVE, MOST_READ_BOOK_GENRE, 150, oldDate);
+        bookWithLowestRating = createReadBook(
+                "Book1",
+                RatingScale.NO_RATING,
+                BookGenre.BUSINESS,
+                100,
+                oldDate
+        );
+        bookWithHighestRating = createReadBook(
+                "Book2",
+                RatingScale.NINE_POINT_FIVE,
+                MOST_READ_BOOK_GENRE,
+                150,
+                oldDate
+        );
         createReadBook("Book3", RatingScale.SIX, MOST_READ_BOOK_GENRE, 200, currentDate);
         createReadBook("Book4", RatingScale.ONE, MOST_READ_BOOK_GENRE, 250, oldDate);
         createReadBook("Book5", RatingScale.NINE, MOST_LIKED_BOOK_GENRE, 300, oldDate);
-        createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE, 350, oldDate);
-        bookWithMostPages = createReadBook("Book7", RatingScale.ZERO, LEAST_LIKED_BOOK_GENRE, 400, oldDate);
-        bookWithLowestRatingThisYear = createReadBook("Book8", RatingScale.ONE, LEAST_LIKED_BOOK_GENRE, 345, currentDate);
-        BookWithHighestRatingThisYear = createReadBook("Book9", RatingScale.EIGHT_POINT_FIVE, LEAST_LIKED_BOOK_GENRE, 245, currentDate);
+        createReadBook("Book6", RatingScale.EIGHT_POINT_FIVE, MOST_LIKED_BOOK_GENRE,
+                350, oldDate);
+        bookWithMostPages = createReadBook(
+                "Book7",
+                RatingScale.ZERO,
+                LEAST_LIKED_BOOK_GENRE,
+                400,
+                oldDate
+        );
+        bookWithLowestRatingThisYear = createReadBook(
+                "Book8",
+                RatingScale.ONE,
+                LEAST_LIKED_BOOK_GENRE,
+                345,
+                currentDate
+        );
+        BookWithHighestRatingThisYear = createReadBook(
+                "Book9",
+                RatingScale.EIGHT_POINT_FIVE,
+                LEAST_LIKED_BOOK_GENRE,
+                245,
+                currentDate
+        );
     }
 
     private static void init(BookService bookService,
@@ -84,10 +110,12 @@ public class StatisticTestUtils {
     public static void addReadBook(BookService bookService,
                                    PredefinedShelfService predefinedShelfService) {
         init(bookService, predefinedShelfService);
-        createReadBook("Book", RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200, LocalDate.now());
+        createReadBook("Book", RatingScale.EIGHT, BookGenre.ANTHOLOGY, 200,
+                LocalDate.now());
     }
 
-    private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre, int pages, LocalDate startedReading) {
+    private static Book createReadBook(String bookTitle, RatingScale rating, BookGenre bookGenre,
+                                       int pages, LocalDate startedReading) {
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         Book book = createBook(bookTitle, readShelf, bookGenre, pages, startedReading);
         book.setRating(rating);
@@ -101,7 +129,8 @@ public class StatisticTestUtils {
         return book;
     }
 
-    private static Book createBook(String bookTitle, PredefinedShelf shelf, BookGenre bookGenre, int pages,LocalDate startedReading) {
+    private static Book createBook(String bookTitle, PredefinedShelf shelf, BookGenre bookGenre,
+                                   int pages, LocalDate startedReading) {
         Author author = new Author("Joe", "Bloggs");
         Book book = new Book(bookTitle, author, shelf);
         book.setBookGenre(bookGenre);
