@@ -158,8 +158,9 @@ public class ImportService {
                      .map(predefinedShelfService::findByPredefinedShelfNameAndLoggedInUser);
     }
 
-    private Optional<CustomShelf> toCustomShelf(String shelves,
-                                                Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
+    private Optional<CustomShelf> toCustomShelf(
+            String shelves,
+            Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
         if (StringUtils.isBlank(shelves)) {
             return Optional.empty();
         }

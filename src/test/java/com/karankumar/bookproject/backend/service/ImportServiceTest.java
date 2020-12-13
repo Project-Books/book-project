@@ -37,8 +37,7 @@ class ImportServiceTest {
     private final BookService bookService;
 
     @Autowired
-    ImportServiceTest(ImportService importService,
-                      BookService bookService) {
+    ImportServiceTest(ImportService importService, BookService bookService) {
         this.importService = importService;
         this.bookService = bookService;
     }
@@ -53,7 +52,8 @@ class ImportServiceTest {
     }
 
     @Test
-    void goodreadsBookImportIsSavedWhenAuthorAndPredefinedShelfIsNotEmpty() {
+    @DisplayName("save Goodreads book import when author and predefined shelf is not empty")
+    void saveGoodreadsBookImportWhenAuthorAndPredefinedShelfIsNotEmpty() {
         // given
         GoodreadsBookImport goodreadsBookImport = new GoodreadsBookImport();
         goodreadsBookImport.setTitle("Blink: The Power of Thinking Without Thinking");
@@ -65,7 +65,6 @@ class ImportServiceTest {
                 importService.importGoodreadsBooks(Collections.singletonList(goodreadsBookImport));
 
         // then
-        int expected = 1;
-        assertThat(savedBooks.size()).isEqualTo(expected);
+        assertThat(savedBooks.size()).isOne();
     }
 }
