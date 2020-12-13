@@ -18,7 +18,6 @@
 package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
-import com.karankumar.bookproject.backend.util.CsvUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +41,8 @@ class CsvUtilsTest {
                 CsvUtils.read(inputStream, GoodreadsBookImport.class);
 
         // then
-        assertThat(goodreadsBookImports.size()).isOne();
+        int expected = 559;
+        assertThat(goodreadsBookImports.size()).isEqualTo(expected);
     }
 
     private InputStream getResourceInputStream(String file) {
