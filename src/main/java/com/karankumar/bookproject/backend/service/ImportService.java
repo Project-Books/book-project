@@ -127,7 +127,6 @@ public class ImportService {
         if (StringUtils.isBlank(name)) {
             return Optional.empty();
         }
-
         String[] authorNames = name.trim().split(" ");
 
         StringBuilder firstNameBuilder = new StringBuilder(authorNames[0]);
@@ -140,8 +139,9 @@ public class ImportService {
         return Optional.of(new Author(firstNameBuilder.toString(), lastName));
     }
 
-    private Optional<PredefinedShelf> toPredefinedShelf(String shelves, LocalDate dateRead,
-                                                        Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
+    private Optional<PredefinedShelf> toPredefinedShelf(
+            String shelves, LocalDate dateRead,
+            Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
         if (Objects.nonNull(dateRead)) {
             return Optional.of(predefinedShelfService.findReadShelf());
         }

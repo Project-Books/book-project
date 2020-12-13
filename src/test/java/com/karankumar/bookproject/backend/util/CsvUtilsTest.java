@@ -32,7 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CsvUtilsTest {
 
     @Test
-    void testReadWhenInputStreamIsCsv() throws IOException {
+    @DisplayName("read successfully when input stream is CSV")
+    void readSuccessfullyWhenInputStreamIsCsv() throws IOException {
         // given
         InputStream inputStream = getResourceInputStream("goodreadsBooksImportSample.csv");
 
@@ -41,8 +42,7 @@ class CsvUtilsTest {
                 CsvUtils.read(inputStream, GoodreadsBookImport.class);
 
         // then
-        int expected = 559;
-        assertThat(goodreadsBookImports.size()).isEqualTo(expected);
+        assertThat(goodreadsBookImports.size()).isOne();
     }
 
     private InputStream getResourceInputStream(String file) {
