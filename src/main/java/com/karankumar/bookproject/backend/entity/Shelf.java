@@ -24,6 +24,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
@@ -40,6 +42,7 @@ public abstract class Shelf extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @NotNull
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     protected User user;
 
     @NotNull

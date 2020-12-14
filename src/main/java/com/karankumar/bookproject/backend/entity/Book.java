@@ -26,6 +26,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.CascadeType;
@@ -78,6 +80,7 @@ public class Book extends BaseEntity {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "ID")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
@@ -85,6 +88,7 @@ public class Book extends BaseEntity {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "custom_shelf_id", referencedColumnName = "ID")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomShelf customShelf;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})

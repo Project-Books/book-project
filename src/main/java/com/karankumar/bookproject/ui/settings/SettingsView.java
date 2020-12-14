@@ -107,8 +107,9 @@ public class SettingsView extends HorizontalLayout {
         exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
     }
 
-    SettingsView(BookService bookService) {
+    SettingsView(BookService bookService, UserService userService) {
         SettingsView.bookService = bookService;
+        SettingsView.userService = userService;
 
         setDarkModeState();
 

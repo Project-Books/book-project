@@ -19,6 +19,7 @@ package com.karankumar.bookproject.ui.components.dialog;
 
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
+import com.vaadin.flow.server.VaadinSession;
 import lombok.extern.java.Log;
 
 @Log
@@ -34,6 +35,10 @@ public class DeleteAccountDialog extends ConfirmationDialog {
 
     @Override
     void save() {
+        //VaadinSession.getCurrent().getSession().invalidate();
+        //getUI().get().getPage().executeJs("window.location.href='logout.html");
+
+
         userService.deleteUser(user);
     }
 }
