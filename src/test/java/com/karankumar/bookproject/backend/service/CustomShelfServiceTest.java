@@ -21,6 +21,8 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
+import com.karankumar.bookproject.backend.repository.UserRepository;
+import com.karankumar.bookproject.util.SecurityTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -61,6 +63,21 @@ class CustomShelfServiceTest {
                         .map(customShelfService::createCustomShelf)
                         .collect(Collectors.toList())
         );
+    }
+
+    @Test
+    @DisplayName("successfully find an existing custom shelf by ID")
+    void findExistingShelf(@Autowired UserRepository userRepository) {
+        // given
+        User user = SecurityTestUtils.getTestUser(userRepository);
+        CustomShelf newShelf = new CustomShelf("Test shelf", user);
+        customShelfService.save(newShelf);
+
+        // when
+        CustomShelf shelfFound = customShelfService.findById(newShelf.getId());
+
+        // then
+        assertThat(shelfFound).isNotNull();
     }
 
     @Test
