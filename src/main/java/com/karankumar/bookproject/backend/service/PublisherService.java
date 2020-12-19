@@ -44,7 +44,7 @@ public class PublisherService {
         return publisherRepository.findById(id);
     }
 
-    public void addBookToPublisher(Book book, Publisher publisher) {
+    public void addBookToPublisher(@NonNull Book book, @NonNull Publisher publisher) {
         Set<Book> publisherBooks = publisher.getBooks();
         if (publisherBooks == null) {
             publisher.setBooks(Stream.of(book).collect(Collectors.toSet()));

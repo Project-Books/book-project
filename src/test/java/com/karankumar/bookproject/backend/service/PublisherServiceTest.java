@@ -18,6 +18,8 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.Publisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -130,5 +132,27 @@ class PublisherServiceTest {
         // then
         assertThatThrownBy(() -> publisherService.save(publisher2)).isInstanceOf(
                 DataIntegrityViolationException.class);
+    }
+
+    @Test
+    @DisplayName("throw exception on attempt to add a null book to a publisher")
+    void throwExceptionForNullBookInAddBookToPublisher() {
+        // given
+        Publisher publisher = new Publisher("Test");
+
+        // when and then
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> publisherService.addBookToPublisher(null, publisher));
+    }
+
+    @Test
+    @DisplayName("throw exception on attempt to add a book to a null publisher")
+    void throwExceptionForNullPublisherInAddBookToPublisher() {
+        // given
+        Book book = new Book("Title", new Author("a", "b"), null);
+
+        // when and then
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> publisherService.addBookToPublisher(book, null));
     }
 }
