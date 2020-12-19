@@ -20,8 +20,10 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 import com.karankumar.bookproject.backend.entity.Publisher;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
 @DisplayName("PublisherService should")
@@ -44,11 +47,14 @@ class PublisherServiceTest {
 
     private final PublisherService publisherService;
     private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
 
     @Autowired
-    PublisherServiceTest(PublisherService publisherService, BookService bookService) {
+    PublisherServiceTest(PublisherService publisherService, BookService bookService,
+                         PredefinedShelfService predefinedShelfService) {
         this.publisherService = publisherService;
         this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
     }
 
     @BeforeEach
@@ -155,6 +161,30 @@ class PublisherServiceTest {
         // when and then
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> publisherService.addBookToPublisher(null, publisher));
+    }
+
+    @Test
+    @Disabled
+    // TODO: fix failing test. This does not retrieve the correct books
+    void addBookToPublisher() {
+        // given
+        PredefinedShelf shelf = predefinedShelfService.findToReadShelf();
+        Book book = new Book("Title", new Author("First", "Last"), shelf);
+        bookService.save(book);
+
+        Publisher publisher = new Publisher("Publisher");
+        Long initialCount = publisherService.count();
+
+        // when
+        publisherService.addBookToPublisher(book, publisher);
+        Optional<Publisher> foundPublisher = publisherService.findById(publisher.getId());
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(publisherService.count()).isEqualTo(initialCount + 1);
+            softly.assertThat(foundPublisher).isPresent();
+            softly.assertThat(foundPublisher.get().getBooks()).contains(book);
+        });
     }
 
     @Test

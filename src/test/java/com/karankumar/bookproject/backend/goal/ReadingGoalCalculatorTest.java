@@ -83,6 +83,20 @@ class ReadingGoalCalculatorTest {
     }
 
     @Test
+    @DisplayName("return 0 instead of dividing by 0 in calculateProgressTowardsReadingGoal()")
+    void notAttemptToDivideByZeroInCalculateProgressTowardsReadingGoal() {
+        // given
+        int toRead = 0;
+        int read = 5;
+
+        // when
+        double actual = calculateProgressTowardsReadingGoal(toRead, read);
+
+        // then
+        assertThat(actual).isZero();
+    }
+
+    @Test
     @DisplayName("Ensure 0, and not an arithmetic exception, is returned")
     void shouldNotThrowExceptionOnZeroDivision() {
         // given
