@@ -19,12 +19,12 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.entity.CustomShelf;
+import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import com.karankumar.bookproject.util.SecurityTestUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,17 +116,23 @@ class CustomShelfServiceTest {
     }
 
     @Test
-    @Disabled
-    // TODO: check if this test is needed
-    void findAllPredefinedShelvesForPredefinedShelfNameAndLoggedInUser() {
-        String name = SHELF_NAMES.get(0);
-        CustomShelf shelf = customShelfService.findByShelfNameAndLoggedInUser(name);
-        assertThat(shelf).isNotNull();
+    void findShelfByName() {
+        // given
+        CustomShelf expected = new CustomShelf("test", user);
+        customShelfService.save(expected);
 
-        assertSoftly(softly -> {
-            softly.assertThat(shelf.getShelfName()).isEqualTo(name);
-            softly.assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME);
-        });
+        // when
+        Shelf actual = customShelfService.getCustomShelfByName(expected.getShelfName());
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("return all custom shelves when the shelf to search by is null")
+    void returnAllShelvesWhenNullParameter() {
+        List<CustomShelf> actual = customShelfService.findAll(null);
+        assertThat(actual.size()).isEqualTo(3);
     }
 
     @Test

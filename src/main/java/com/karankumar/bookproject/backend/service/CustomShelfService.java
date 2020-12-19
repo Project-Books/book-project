@@ -23,7 +23,6 @@ import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
@@ -76,16 +75,15 @@ public class CustomShelfService {
         return customShelfRepository.count();
     }
 
-    public Collection<CustomShelf> findAll() {
+    public List<CustomShelf> findAll() {
         return customShelfRepository.findAll();
     }
 
     public List<CustomShelf> findAll(String shelfName) {
         if (shelfName == null) {
-            return customShelfRepository.findAll();
-        } else {
-            return customShelfRepository.findByShelfName(shelfName);
+            return findAll();
         }
+        return customShelfRepository.findByShelfName(shelfName);
     }
 
     public List<@NotNull String> getCustomShelfNames() {
