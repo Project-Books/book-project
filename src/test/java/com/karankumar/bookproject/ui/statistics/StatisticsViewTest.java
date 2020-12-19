@@ -107,11 +107,13 @@ class StatisticsViewTest {
     }
 
     private void valueIsPresent(StatisticsViewTestUtils.Statistic currentStatistic) {
-        assertThat(currentStatistic instanceof StatisticNotFound).isFalse();
+        assertThat(currentStatistic).isNotInstanceOf(StatisticNotFound.class);
     }
 
     private void thereAreNotOtherStatistics() {
-        assertThat(statisticsView.getComponentCount()).isEqualTo(StatisticType.values().length);
+        int expected = StatisticType.values().length;
+        // - 1 because we want to ignore the app footer
+        assertThat(statisticsView.getComponentCount() - 1).isEqualTo(expected);
     }
 
     @Test
