@@ -23,7 +23,6 @@ import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import com.karankumar.bookproject.util.SecurityTestUtils;
-import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
