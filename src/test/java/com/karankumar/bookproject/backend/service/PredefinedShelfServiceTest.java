@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
@@ -35,6 +36,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,22 +64,22 @@ class PredefinedShelfServiceTest {
     @Test
     void findAllPredefinedShelvesForLoggedInUser() {
         List<PredefinedShelf> shelves = predefinedShelfService.findAllForLoggedInUser();
-        assertThat(shelves).isNotNull().hasSameSizeAs(PredefinedShelf.ShelfName.values());
 
-        assertSoftly(softly ->
-                softly.assertThat(shelves).allSatisfy(shelf ->
-                        assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME)
-                )
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(shelves).isNotNull().hasSameSizeAs(PredefinedShelf.ShelfName.values());
+            softly.assertThat(shelves).allSatisfy(shelf ->
+                            assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME)
+            );
+        });
     }
 
     @Test
     void findAllPredefinedShelvesForPredefinedShelfNameAndLoggedInUser() {
         PredefinedShelf shelf = predefinedShelfService
                 .findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
-        assertThat(shelf).isNotNull();
 
         assertSoftly(softly -> {
+            assertThat(shelf).isNotNull();
             softly.assertThat(shelf.getPredefinedShelfName())
                   .isEqualTo(PredefinedShelf.ShelfName.TO_READ);
             softly.assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME);
@@ -115,6 +117,18 @@ class PredefinedShelfServiceTest {
             softly.assertThat(actualShelfNames).hasSize(expectedShelfNames.size());
             softly.assertThat(expectedShelfNames).containsAll(actualShelfNames);
         });
+    }
 
+    @Test
+    @DisplayName("return an empty set of books for a non-existent predefined shelf")
+    void returnEmptySetForNonExistentShelf() {
+        // given
+        String nonExistentShelf = "not a predefined shelf";
+
+        // when
+        Set<Book> actual = predefinedShelfService.getBooksInChosenPredefinedShelf(nonExistentShelf);
+
+        // then
+        assertThat(actual).isEmpty();
     }
 }

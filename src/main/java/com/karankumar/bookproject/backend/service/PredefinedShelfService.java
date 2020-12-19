@@ -37,6 +37,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getBooksInPredefinedShelves;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getPredefinedShelfName;
 import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
@@ -58,7 +62,10 @@ public class PredefinedShelfService {
     private final PublisherRepository publisherRepository;
 
     public PredefinedShelfService(BookRepository bookRepository, AuthorRepository authorRepository,
-            PredefinedShelfRepository shelfRepository, TagRepository tagRepository, UserService userService,PublisherRepository publisherRepository) {
+                                  PredefinedShelfRepository shelfRepository,
+                                  TagRepository tagRepository,
+                                  UserService userService,
+                                  PublisherRepository publisherRepository) {
         this.bookRepository = bookRepository;
         this.predefinedShelfRepository = shelfRepository;
 
@@ -81,23 +88,26 @@ public class PredefinedShelfService {
     }
 
     public PredefinedShelf findToReadShelf() {
-        return findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
+        return findByPredefinedShelfNameAndLoggedInUser(TO_READ);
     }
 
     public PredefinedShelf findReadingShelf() {
-        return findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.READING);
+        return findByPredefinedShelfNameAndLoggedInUser(READING);
     }
 
     public PredefinedShelf findReadShelf() {
-        return findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.READ);
+        return findByPredefinedShelfNameAndLoggedInUser(READ);
     }
 
     public PredefinedShelf findDidNotFinishShelf() {
-        return findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.DID_NOT_FINISH);
+        return findByPredefinedShelfNameAndLoggedInUser(DID_NOT_FINISH);
     }
 
     public PredefinedShelf findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName shelfName) {
-        return predefinedShelfRepository.findByPredefinedShelfNameAndUser(shelfName, userService.getCurrentUser());
+        return predefinedShelfRepository.findByPredefinedShelfNameAndUser(
+                shelfName,
+                userService.getCurrentUser()
+        );
     }
 
     public Long count() {
@@ -114,7 +124,7 @@ public class PredefinedShelfService {
             populateTagRepository();
         }
 
-        if(publisherRepository.count()==0){
+        if (publisherRepository.count() == 0){
             populatePublisherRepository();
         }
 
@@ -137,7 +147,8 @@ public class PredefinedShelfService {
     }
 
     private void populatePublisherRepository () {
-        publisherRepository.saveAll(generatePublishers());}
+        publisherRepository.saveAll(generatePublishers());
+    }
 
     private List<PredefinedShelf> populateShelfRepository(User user) {
          return predefinedShelfRepository.saveAll(createPredefinedShelves(user));
@@ -176,17 +187,15 @@ public class PredefinedShelfService {
     public PredefinedShelf getPredefinedShelfByNameAsString(String shelfName) {
         return findAllForLoggedInUser()
                 .stream()
-                .filter(shelf ->
-                        shelf.getShelfName().toString().equals(shelfName))
+                .filter(shelf -> shelf.getShelfName().equals(shelfName))
                 .collect(Collectors.toList())
                 .get(0); // there should only be one
     }
 
 	/**
-	 * Fetches all of the books in the chosen predefined shelf
+	 * Fetches all of the books in the chosen predefined shelf or all of the predefined shelves
 	 */
 	public Set<Book> getBooksInChosenPredefinedShelf(String chosenShelf) {
-		Set<Book> books;
 		if (isAllBooksShelf(chosenShelf)) {
 			return getBooksInAllPredefinedShelves();
 		}
@@ -194,6 +203,7 @@ public class PredefinedShelfService {
 		PredefinedShelf.ShelfName predefinedShelfName = getPredefinedShelfName(chosenShelf);
 		PredefinedShelf predefinedShelf =
 				findByPredefinedShelfNameAndLoggedInUser(predefinedShelfName);
+        Set<Book> books;
 		if (predefinedShelf == null) {
 			books = new HashSet<>();
 		} else {
