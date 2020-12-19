@@ -74,6 +74,18 @@ class PublisherServiceTest {
     }
 
     @Test
+    void notSaveAPublisherWithEmptyName() {
+        // given
+        Long initialCount = publisherService.count();
+
+        // when
+        publisherService.save(new Publisher(""));
+
+        // then
+        assertThat(publisherService.count()).isEqualTo(initialCount);
+    }
+
+    @Test
     @DisplayName("throw exception on an attempt to save a null Publisher")
     void throwExceptionWhenSavingANullPublisher() {
         assertThatExceptionOfType(NullPointerException.class)
