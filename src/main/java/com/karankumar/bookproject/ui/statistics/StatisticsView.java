@@ -26,6 +26,7 @@ import com.karankumar.bookproject.backend.statistics.PageStatistics;
 import com.karankumar.bookproject.backend.statistics.RatingStatistics;
 import com.karankumar.bookproject.backend.statistics.YearStatistics;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.AppFooter;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
@@ -50,6 +51,7 @@ public class StatisticsView extends VerticalLayout {
             Optional<String> value = statistic.calculateStatistic(predefinedShelfService);
             value.ifPresent(val -> add(configureStatistic(caption, val)));
         }
+        add(new AppFooter());
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }

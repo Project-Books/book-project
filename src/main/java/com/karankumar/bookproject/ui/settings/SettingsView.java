@@ -20,6 +20,7 @@ package com.karankumar.bookproject.ui.settings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.AppFooter;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.vaadin.flow.component.HtmlComponent;
@@ -113,7 +114,8 @@ public class SettingsView extends HorizontalLayout {
                 lineBreak,
                 myBooksHeading,
                 createClearShelvesButton(),
-                exportBooksAnchor
+                exportBooksAnchor,
+                new AppFooter()
         );
 
         verticalLayout.setAlignItems(Alignment.CENTER);
