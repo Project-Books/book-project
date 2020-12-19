@@ -41,4 +41,3 @@ build/
 .vscode/
 
 pnpm-lock.yaml
-package.json
