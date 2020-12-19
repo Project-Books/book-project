@@ -117,10 +117,9 @@ public class SettingsView extends HorizontalLayout {
                 exportBooksAnchor,
                 new AppFooter()
         );
-
         verticalLayout.setAlignItems(Alignment.CENTER);
-
         add(verticalLayout);
+
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }

@@ -25,6 +25,7 @@ import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.book.form.BookForm;
+import com.karankumar.bookproject.ui.components.AppFooter;
 import com.karankumar.bookproject.ui.shelf.component.filter.AuthorFilterText;
 import com.karankumar.bookproject.ui.shelf.component.BookShelfComboBox;
 import com.karankumar.bookproject.ui.shelf.component.filter.TitleFilterText;
@@ -100,7 +101,14 @@ public class BooksInShelfView extends VerticalLayout {
 
         customShelfForm = createCustomShelfForm();
 
-        add(initializeLayout(), bookGrid.get(), customShelfForm, bookForm);
+        add(
+                initializeLayout(),
+                bookGrid.get(),
+                customShelfForm,
+                bookForm,
+                new AppFooter()
+        );
+        setSizeFull();
     }
 
     public void updateWhichShelfList() {
