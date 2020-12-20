@@ -27,18 +27,17 @@ account, you can use the test credentials shown in the [Access site](https://git
 This is only for demonstration purposes, so please do not rely on any saved data persisting.
 
 *Features:*
-- Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf
-- View books in your different shelves and make changes
+- Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf (or a custom shelf)
 - A rating scale from 0-10 that that goes up in steps of 0.5
 - Track your progress towards a reading goal: the number of books or pages you hope to read by the end of the year
 - Statistics about your reading habits
-- Add your own shelves
 - Export your saved data to JSON
 - User registration and accounts
+- Import books from Goodreads
 - And much more!
 
 *Coming soon:*
-- Import books from Goodreads
+- Import books from LibraryThing
 - Search from a catalogue of books
 - 2-factor authentication
 - Magic links
