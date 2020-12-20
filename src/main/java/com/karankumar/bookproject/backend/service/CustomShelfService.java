@@ -24,10 +24,12 @@ import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,8 +60,8 @@ public class CustomShelfService {
         return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
-    public void save(@NonNull CustomShelf customShelf) {
-        customShelfRepository.save(customShelf);
+    public CustomShelf save(@NonNull CustomShelf customShelf) {
+        return customShelfRepository.save(customShelf);
     }
 
     public void delete(@NonNull CustomShelf customShelf) {
@@ -109,5 +111,11 @@ public class CustomShelfService {
 
     public Shelf getCustomShelfByName(String shelfName) {
         return customShelfRepository.findByShelfName(shelfName).get(0);
+    }
+
+    public CustomShelf findOrCreate(@NonNull String shelfName) {
+        Assert.hasText(shelfName, "Shelf Name cannot be empty");
+        return Optional.ofNullable(findByShelfNameAndLoggedInUser(shelfName))
+                       .orElseGet(() -> save(createCustomShelf(shelfName)));
     }
 }

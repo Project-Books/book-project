@@ -28,6 +28,7 @@ import com.karankumar.bookproject.backend.repository.PublisherRepository;
 import com.karankumar.bookproject.backend.repository.TagRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
