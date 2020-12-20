@@ -23,7 +23,6 @@ import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
