@@ -170,6 +170,10 @@ where _n_ represents the number of last commits.
 
 You can then change the commit that you want to squash with the previous by changing the word 'pick' to 'squash'. When pushing the changes, you'll need to force push (e.g. `git push -f origin add-avatar`).
 
+### Syncing your fork
+
+You can keep your fork up-to-date by first [creating a remote for the upstream](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork) and then [syncing your fork](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/syncing-a-fork).
+
 ## Code contributions
 
 Please adhere to [our code style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).

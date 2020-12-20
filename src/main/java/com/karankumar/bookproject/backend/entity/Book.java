@@ -47,7 +47,7 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "tags")
+@EqualsAndHashCode(callSuper = true, exclude = {"tags","publishers"})
 public class Book extends BaseEntity {
     public static final int MAX_PAGES = 23_000;
 
@@ -95,6 +95,14 @@ public class Book extends BaseEntity {
     )
     private Set<Tag> tags;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name = "book_publisher",
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "publisher_id", referencedColumnName = "id")
+    )
+    private Set<Publisher> publishers;
+
     // For books that have been read
     private RatingScale rating;
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -103,10 +111,19 @@ public class Book extends BaseEntity {
     private LocalDate dateFinishedReading;
     private String bookReview;
 
+
     public Book(String title, Author author, PredefinedShelf predefinedShelf) {
         this.title = title;
         this.author = author;
         this.predefinedShelf = predefinedShelf;
+    }
+
+    public Book(String title, Author author, PredefinedShelf predefinedShelf,
+                Set<Publisher> publishers) {
+        this.title = title;
+        this.author = author;
+        this.predefinedShelf = predefinedShelf;
+        this.publishers = publishers;
     }
 
     public void setEdition(Integer edition) {

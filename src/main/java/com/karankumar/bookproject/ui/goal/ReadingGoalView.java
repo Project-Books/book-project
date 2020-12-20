@@ -26,6 +26,7 @@ import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import com.karankumar.bookproject.backend.util.StringUtils;
 import com.karankumar.bookproject.backend.util.DateUtils;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.AppFooter;
 import com.karankumar.bookproject.ui.goal.events.SaveGoalEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -77,8 +78,15 @@ public class ReadingGoalView extends VerticalLayout {
         configureSetGoal();
         getCurrentGoal();
 
-        add(readingGoalSummary, progressBar, goalProgressPercentage, goalProgress,
-                booksToReadOnAverageToMeetGoal, setGoalButton);
+        add(
+                readingGoalSummary,
+                progressBar,
+                goalProgressPercentage,
+                goalProgress,
+                booksToReadOnAverageToMeetGoal,
+                setGoalButton,
+                new AppFooter()
+        );
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }

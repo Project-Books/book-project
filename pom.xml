@@ -10,14 +10,14 @@
     </parent>
     <groupId>com.karankumar</groupId>
     <artifactId>book-project</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>book-project</name>
     <description>Book tracking system</description>
     <packaging>jar</packaging>
     <properties>
         <start-class>com.karankumar.bookproject.BookProjectApplication</start-class>
         <java.version>11</java.version>
-        <vaadin.version>14.4.1</vaadin.version>
+        <vaadin.version>14.4.4</vaadin.version>
         <lombok.version>1.18.12</lombok.version>
     </properties>
 

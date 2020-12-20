@@ -35,6 +35,7 @@ import static com.karankumar.bookproject.ui.book.form.BookFormErrors.MAX_PAGES_E
 
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.binder.BindingValidationStatus;
 import com.vaadin.flow.spring.SpringServlet;
@@ -588,6 +589,30 @@ class BookFormTest {
     }
 
     @Test
+    void dontResetBinder_whenOpeningFormForExistingBook() {
+        // given
+        Binder<Book> originalBinder = bookForm.binder;
+
+        // when
+        bookForm.openForm();
+
+        // then
+        assertThat(bookForm.binder).isEqualTo(originalBinder);
+    }
+
+    @Test
+    void createNewBinder_whenOpeningFormForNewBook() {
+        // given
+        Binder<Book> originalBinder = bookForm.binder;
+
+        // when
+        bookForm.addBook();
+
+        // then
+        assertThat(bookForm.binder).isNotEqualTo(originalBinder);
+    }
+
+    @Test
     void addBookToDatabaseWhenSaveEventIsCalled() {
         // given
         bookForm = createBookForm(TO_READ, false);
@@ -781,6 +806,37 @@ class BookFormTest {
 
         // then
         assertThat(bookForm.saveButton.isEnabled()).isTrue();
+    }
+    
+    @Test
+    void useUsersCustomShelf_whenCustomShelfIsNull() {
+        // given
+        Book book = createBook(READ, true, "title");
+        book.setCustomShelf(null);
+
+        // when
+        bookForm.setBook(book);
+
+        // then
+        assertThat(customShelfService.findAllForLoggedInUser().get(0))
+                .isEqualTo(book.getCustomShelf());
+    }
+
+    @Test
+    void createNewCustomShelf_whenCustomShelfIsNullAndUserHasNoShelves() {
+        // given
+        Book book = createBook(READ, true, "title");
+        book.setCustomShelf(null);
+        customShelfService.findAllForLoggedInUser()
+                .forEach(shelf -> customShelfService.delete(shelf));
+
+        // when
+        bookForm.setBook(book);
+
+        // then
+        assertThat(book.getCustomShelf()).isNotNull();
+        assertThat("ShelfName")
+                .isEqualTo(book.getCustomShelf().getShelfName());
     }
 
     @AfterEach

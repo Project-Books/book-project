@@ -23,6 +23,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ImportService;
 import com.karankumar.bookproject.backend.util.CsvUtils;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.AppFooter;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.vaadin.flow.component.HtmlComponent;
@@ -130,12 +131,12 @@ public class SettingsView extends HorizontalLayout {
                 myBooksHeading,
                 createClearShelvesButton(),
                 exportBooksAnchor,
-                importGoodreadsUpload
+                importGoodreadsUpload,
+                new AppFooter()
         );
-
         verticalLayout.setAlignItems(Alignment.CENTER);
-
         add(verticalLayout);
+
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }

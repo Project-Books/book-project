@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
 import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.entity.Publisher;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.entity.Tag;
 
@@ -29,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -63,7 +65,8 @@ public final class TestData {
     public static List<Book> generateBooks(
             List<Author> authors,
             List<Tag> tags,
-            List<PredefinedShelf> predefinedShelves) {
+            List<PredefinedShelf> predefinedShelves,
+            List<Publisher> publishers) {
         return Stream.of(
                 "Harry Potter and the Philosopher's stone",
                 "Stardust",
@@ -76,8 +79,15 @@ public final class TestData {
                 "Harry Potter and the Half-Blood Prince",
                 "The Hobbit",
                 "Harry Potter and the Deathly Hallows"
-        ).map(title -> createBook(authors, title, tags, predefinedShelves))
+        ).map(title -> createBook(authors, title, tags, predefinedShelves,publishers))
          .collect(Collectors.toList());
+    }
+
+    public static List<Publisher> generatePublishers() {
+        return Stream.of(
+                "Bloomsbury Publishing",
+                "Scholastic Corporation"
+        ).map(Publisher::new).collect(Collectors.toList());
     }
 
     public static List<Tag> generateListOfTags() {
@@ -86,11 +96,13 @@ public final class TestData {
     }
 
     public static Book createBook(List<Author> authors, String title, List<Tag> tags,
-                                  List<PredefinedShelf> predefinedShelves) {
+                                  List<PredefinedShelf> predefinedShelves,
+                                  List<Publisher> publishers) {
         Book book = new Book(
                 title,
                 generateRandomAuthor(authors),
-                generateRandomPredefinedShelf(predefinedShelves)
+                generateRandomPredefinedShelf(predefinedShelves),
+                generateRandomPublishers(publishers)
         );
 
         book.setBookGenre(generateRandomGenre());
@@ -101,12 +113,19 @@ public final class TestData {
         book.setNumberOfPages(generateRandomNumberInRange());
         book.setPagesRead(generateRandomNumberInRange());
         book.setPublicationYear(generateRandomPublicationYear());
+        book.setPublishers(generateRandomPublishers(publishers));
 
         return book;
     }
 
     private static Author generateRandomAuthor(List<Author> authors) {
         return authors.get(threadLocalRandom.nextInt(authors.size()));
+    }
+
+    private static Set<Publisher> generateRandomPublishers(List<Publisher> publishers) {
+        Set<Publisher> publisherSet = new HashSet<>();
+        publisherSet.add(publishers.get(threadLocalRandom.nextInt(publishers.size())));
+        return publisherSet;
     }
 
     private static BookGenre generateRandomGenre() {

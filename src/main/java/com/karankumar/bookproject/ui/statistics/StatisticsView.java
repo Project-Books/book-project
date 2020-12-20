@@ -24,7 +24,9 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.GenreStatistics;
 import com.karankumar.bookproject.backend.statistics.PageStatistics;
 import com.karankumar.bookproject.backend.statistics.RatingStatistics;
+import com.karankumar.bookproject.backend.statistics.YearStatistics;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.AppFooter;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
@@ -49,6 +51,7 @@ public class StatisticsView extends VerticalLayout {
             Optional<String> value = statistic.calculateStatistic(predefinedShelfService);
             value.ifPresent(val -> add(configureStatistic(caption, val)));
         }
+        add(new AppFooter());
         setSizeFull();
         setAlignItems(Alignment.CENTER);
     }
@@ -99,6 +102,36 @@ public class StatisticsView extends VerticalLayout {
                         Optional.ofNullable(ratingStatistics.findLeastLikedBook());
                 return leastLikedBook.map(book ->
                         formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
+            }
+        },
+        LEAST_LIKED_BOOK_THIS_YEAR("Least liked book this year:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                YearStatistics yearStatistics = new YearStatistics(predefinedShelfService);
+                Optional<Book> leastLikedBook =
+                        yearStatistics.findLeastLikedBookThisYear();
+                return leastLikedBook.map(book ->
+                        formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
+            }
+        },
+        MOST_LIKED_BOOK_THIS_YEAR("Most liked book this year:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                YearStatistics yearStatistics = new YearStatistics(predefinedShelfService);
+                Optional<Book> mostLikedBook =
+                        yearStatistics.findMostLikedBookThisYear();
+                return mostLikedBook.map(book ->
+                        formatStatistic(book.getTitle(), book.getRating().toString(), "rating"));
+            }
+        },
+        AVERAGE_RATING_THIS_YEAR("Average rating given this year:") {
+            @Override
+            public Optional<String> calculateStatistic(PredefinedShelfService predefinedShelfService) {
+                YearStatistics yearStatistics = new YearStatistics(predefinedShelfService);
+                Optional<Double> averageRatingGivenThisYear =
+                        yearStatistics.calculateAverageRatingGivenThisYear();
+                return averageRatingGivenThisYear.map(rating ->
+                        String.format("%s/10", new DecimalFormat("#.00").format(rating)));
             }
         },
         MOST_READ_GENRE("Most read genre:") {

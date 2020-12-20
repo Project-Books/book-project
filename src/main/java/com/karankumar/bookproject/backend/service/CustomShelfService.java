@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -77,16 +76,15 @@ public class CustomShelfService {
         return customShelfRepository.count();
     }
 
-    public Collection<CustomShelf> findAll() {
+    public List<CustomShelf> findAll() {
         return customShelfRepository.findAll();
     }
 
     public List<CustomShelf> findAll(String shelfName) {
         if (shelfName == null) {
-            return customShelfRepository.findAll();
-        } else {
-            return customShelfRepository.findByShelfName(shelfName);
+            return findAll();
         }
+        return customShelfRepository.findByShelfName(shelfName);
     }
 
     public List<@NotNull String> getCustomShelfNames() {

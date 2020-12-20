@@ -22,6 +22,10 @@
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
+See a [live demo](http://bookprojectv010-env.eba-22zuiphf.eu-west-2.elasticbeanstalk.com/login). Instead of creating an
+account, you can use the test credentials shown in the [Access site](https://github.com/Project-Books/book-project#access-site) section.
+This is only for demonstration purposes, so please do not rely on any saved data persisting.
+
 *Features:*
 - Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf
 - View books in your different shelves and make changes
@@ -34,6 +38,7 @@ Book tracker web app made using Spring Boot and Vaadin 14 (only the free compone
 - And much more!
 
 *Coming soon:*
+- Import books from Goodreads
 - Search from a catalogue of books
 - 2-factor authentication
 - Magic links
