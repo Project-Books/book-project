@@ -23,13 +23,17 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.entity.Author;
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.entity.Publisher;
 import com.karankumar.bookproject.backend.entity.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.karankumar.bookproject.backend.repository.PublisherRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -38,22 +42,27 @@ import java.util.logging.Level;
 public class BookService {
     private final AuthorService authorService;
     private final BookRepository bookRepository;
+    private final PublisherService publisherService;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService) {
+    public BookService(BookRepository bookRepository, AuthorService authorService,
+                       PublisherService publisherService) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
+        this.publisherService = publisherService;
     }
 
-    public Book findById(Long id) {
-        return bookRepository.getOne(id);
+    public Optional<Book> findById(Long id) {
+        return Optional.ofNullable(bookRepository.getOne(id));
     }
 
-    public void save(Book book) {
+    public Optional<Book> save(Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
             addBookToAuthor(book);
+            addBookToPublisher(book);
             authorService.save(book.getAuthor());
-            bookRepository.save(book);
+            return Optional.of(bookRepository.save(book));
         }
+        return Optional.empty();
     }
 
     private boolean bookHasAuthorAndPredefinedShelf(@NonNull Book book) {
@@ -65,6 +74,15 @@ public class BookService {
         Set<Book> authorBooks = author.getBooks();
         authorBooks.add(book);
         author.setBooks(authorBooks);
+    }
+
+    private void addBookToPublisher(Book book) {
+        Set<Publisher> publishers = book.getPublishers();
+        if (publishers != null && !publishers.isEmpty()) {
+            for (Publisher publisher : publishers) {
+                publisherService.addBookToPublisher(book, publisher);
+            }
+        }
     }
 
     public Long count() {

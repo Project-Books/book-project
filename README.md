@@ -9,31 +9,35 @@
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-i7lept44-rgJ9yB0A2vedJTLyyfkjKQ">
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg">
     <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
   </a>
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
     <img src="https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab" alt="Code quality" />
   </a>
   <a href="https://sonarcloud.io/dashboard?id=com.karankumar%3Abook-project">
-	<img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
+     <img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
   </a>
 </p>
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
+See a [live demo](http://bookprojectv010-env.eba-22zuiphf.eu-west-2.elasticbeanstalk.com/login). Instead of creating an
+account, you can use the test credentials shown in the [Access site](https://github.com/Project-Books/book-project#access-site) section.
+This is only for demonstration purposes, so please do not rely on any saved data persisting.
+
 *Features:*
-- Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf
-- View books in your different shelves and make changes
+- Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf (or a custom shelf)
 - A rating scale from 0-10 that that goes up in steps of 0.5
 - Track your progress towards a reading goal: the number of books or pages you hope to read by the end of the year
 - Statistics about your reading habits
-- Add your own shelves
 - Export your saved data to JSON
 - User registration and accounts
+- Import books from Goodreads
 - And much more!
 
 *Coming soon:*
+- Import books from LibraryThing
 - Search from a catalogue of books
 - 2-factor authentication
 - Magic links
@@ -129,13 +133,13 @@ To access the MySQL database when docker-compose is running:
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
 
+### Help
+
+If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg).
+
 ## Further information
 
 For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
-
-### Help
-
-If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).
 
 ## Acknowledgements
 

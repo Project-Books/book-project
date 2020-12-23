@@ -59,6 +59,8 @@ import com.vaadin.flow.shared.Registration;
 import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
@@ -234,7 +236,6 @@ public class BookForm extends VerticalLayout {
     }
 
     public void openForm() {
-        clearErrors();
         formDialog.open();
         showSeriesPositionFormIfSeriesPositionAvailable();
         addClassNameToForm();
@@ -367,10 +368,10 @@ public class BookForm extends VerticalLayout {
         CustomShelf selectedCustomShelf = book.getCustomShelf();
         if (selectedCustomShelf != null) {
             String shelfName = selectedCustomShelf.getShelfName();
-            CustomShelf completeCustomShelf =
+            Optional<CustomShelf> completeCustomShelf =
                     customShelfService.findByShelfNameAndLoggedInUser(shelfName);
-            if (completeCustomShelf != null) {
-                book.setCustomShelf(completeCustomShelf);
+            if (completeCustomShelf.isPresent()) {
+                book.setCustomShelf(completeCustomShelf.get());
             }
         }
     }
@@ -411,15 +412,15 @@ public class BookForm extends VerticalLayout {
         PredefinedShelf predefinedShelf =
                 predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
                         predefinedShelfField.getValue()
-                );
+                ).get();
 
         Book book = new Book(title, author, predefinedShelf);
 
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
-            CustomShelf shelf =
+            Optional<CustomShelf> shelf =
                     customShelfService.findByShelfNameAndLoggedInUser(customShelfField.getValue());
-            if (shelf != null) {
-                book.setCustomShelf(shelf);
+            if (shelf.isPresent()) {
+                book.setCustomShelf(shelf.get());
             }
         }
 
@@ -452,12 +453,12 @@ public class BookForm extends VerticalLayout {
     }
 
     private void moveBookToDifferentShelf() {
-        PredefinedShelf shelf = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
+        Optional<PredefinedShelf> shelf = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
                         predefinedShelfField.getValue()
         );
-        if (shelf != null) {
+        if (shelf.isPresent()) {
             Book book = binder.getBean();
-            book.setPredefinedShelf(shelf);
+            book.setPredefinedShelf(shelf.get());
             LOGGER.log(Level.INFO, "2) Shelf: " + shelf);
             binder.setBean(book);
         }
@@ -476,7 +477,9 @@ public class BookForm extends VerticalLayout {
 
         // TODO: this should be removed. A custom shelf should not be mandatory, so it should be acceptable to the custom shelf to be null
         if (book.getCustomShelf() == null) {
-            CustomShelf customShelf = customShelfService.createCustomShelf("ShelfName");
+            List<CustomShelf> usersShelves = customShelfService.findAllForLoggedInUser();
+            CustomShelf customShelf = !usersShelves.isEmpty() ? usersShelves.get(0)
+                    : customShelfService.createCustomShelf("ShelfName");
             book.setCustomShelf(customShelf);
         }
 
@@ -655,6 +658,7 @@ public class BookForm extends VerticalLayout {
 
     public void addBook() {
         clearFormFields();
+        clearErrors();
         openForm();
     }
 

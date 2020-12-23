@@ -53,7 +53,7 @@ If you haven't received a response, feel free to mention @knjk04 or get in touch
 
 ## Open-ended discussions
 
-Open-ended discussions are best made over our public #book-project channel on our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). Unless specified otherwise, this applies when you're not assigned to the issue at hand.
+Open-ended discussions are best made over our public #help channel on our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). Unless specified otherwise, this applies when you're not assigned to the issue at hand.
 
 Examples of when to take a discussion over to Slack
 - If you disagree with an issue (e.g. if you don't think it's needed or there is a better way of doing something)
@@ -169,6 +169,10 @@ $ git rebase -i HEAD~n
 where _n_ represents the number of last commits.
 
 You can then change the commit that you want to squash with the previous by changing the word 'pick' to 'squash'. When pushing the changes, you'll need to force push (e.g. `git push -f origin add-avatar`).
+
+### Syncing your fork
+
+You can keep your fork up-to-date by first [creating a remote for the upstream](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork) and then [syncing your fork](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/syncing-a-fork).
 
 ## Code contributions
 

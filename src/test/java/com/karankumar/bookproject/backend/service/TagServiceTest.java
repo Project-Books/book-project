@@ -56,7 +56,7 @@ class TagServiceTest {
         tagService.save(tag);
 
         // then
-        assertThat(tagService.findById(tag.getId())).isNotNull();
+        assertThat(tagService.findById(tag.getId())).isPresent();
     }
 
     @Test

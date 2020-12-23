@@ -99,9 +99,10 @@ public class BookGrid {
         }
 
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
-            return Optional.of(predefinedShelfService.getPredefinedShelfByNameAsString(chosenShelf));
+            return predefinedShelfService.getPredefinedShelfByNameAsString(chosenShelf)
+					.map(Shelf.class::cast);
         } else {
-            return Optional.of(customShelfService.getCustomShelfByName(chosenShelf));
+            return customShelfService.getCustomShelfByName(chosenShelf);
         }
     }
 

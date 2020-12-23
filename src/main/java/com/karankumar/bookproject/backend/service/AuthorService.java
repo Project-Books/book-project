@@ -24,6 +24,7 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Log
@@ -34,8 +35,8 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public Author findById(Long id) {
-        return authorRepository.getOne(id);
+    public Optional<Author> findById(Long id) {
+        return Optional.ofNullable(authorRepository.getOne(id));
     }
 
     public List<Author> findAll() {

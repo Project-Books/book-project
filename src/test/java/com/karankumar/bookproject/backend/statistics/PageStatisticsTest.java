@@ -56,7 +56,7 @@ class PageStatisticsTest {
     @Test
     void findBookWithMostPages() {
         // when
-        String actual = pageStatistics.findBookWithMostPages().getTitle();
+        String actual = pageStatistics.findBookWithMostPages().get().getTitle();
 
         // then
         String expected = StatisticTestUtils.getBookWithMostPages().getTitle();
@@ -75,7 +75,7 @@ class PageStatisticsTest {
         bookService.save(readingBook);
 
         // when
-        String actual = pageStatistics.findBookWithMostPages().getTitle();
+        String actual = pageStatistics.findBookWithMostPages().get().getTitle();
 
         // then
         assertThat(actual)
@@ -105,7 +105,7 @@ class PageStatisticsTest {
         Double actual = pageStatistics.calculateAveragePageLength().get();
 
         // then
-        Double averagePageLength = 267.0;
+        Double averagePageLength = 274.0;
         assertThat(actual).isEqualTo(averagePageLength);
     }
 

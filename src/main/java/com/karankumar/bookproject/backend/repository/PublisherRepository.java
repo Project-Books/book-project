@@ -15,18 +15,11 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.entity.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
 
-public interface CustomShelfRepository extends JpaRepository<CustomShelf, Long> {
-    List<CustomShelf> findAllByUser(User user);
-    Optional<CustomShelf> findByShelfNameAndUser(String shelfName, User user);
-    List<CustomShelf> findByShelfName(String shelfName);
+public interface PublisherRepository extends JpaRepository<Publisher, Long> {
 }

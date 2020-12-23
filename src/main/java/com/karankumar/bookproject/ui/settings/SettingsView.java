@@ -18,8 +18,12 @@
 package com.karankumar.bookproject.ui.settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.ImportService;
+import com.karankumar.bookproject.backend.util.CsvUtils;
 import com.karankumar.bookproject.ui.MainView;
+import com.karankumar.bookproject.ui.components.AppFooter;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
 import com.vaadin.flow.component.HtmlComponent;
@@ -32,6 +36,8 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -41,6 +47,8 @@ import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.extern.java.Log;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 
 @Route(value = "settings", layout = MainView.class)
@@ -68,7 +76,13 @@ public class SettingsView extends HorizontalLayout {
     private static final String EXPORT_BOOKS = "Export";
     private static final Anchor exportBooksAnchor = new Anchor();
 
+    private static final String IMPORT_FROM_GOODREADS = "Import from Goodreads";
+    private static final String UPLOAD_DROP_LABEL = "Upload a file in .csv format";
+    private final MemoryBuffer importGoodreadsMemoryBuffer = new MemoryBuffer();
+    private final Upload importGoodreadsUpload = new Upload(importGoodreadsMemoryBuffer);
+
     private final BookService bookService;
+    private final transient ImportService importService;
 
     static {
         configureDarkModeToggle();
@@ -97,8 +111,9 @@ public class SettingsView extends HorizontalLayout {
         exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
     }
 
-    SettingsView(BookService bookService) {
+    SettingsView(BookService bookService, ImportService importService) {
         this.bookService = bookService;
+        this.importService = importService;
 
         setDarkModeState();
 
@@ -106,21 +121,32 @@ public class SettingsView extends HorizontalLayout {
         horizontalLayout.add(darkModeLabel, darkModeToggle);
 
         configureExportBooksAnchor();
+        configureImportGoodreadsUpload();
 
+        createImportGoodreadsUpload();
         VerticalLayout verticalLayout = new VerticalLayout(
                 appearanceHeading,
                 horizontalLayout,
                 lineBreak,
                 myBooksHeading,
                 createClearShelvesButton(),
-                exportBooksAnchor
+                exportBooksAnchor,
+                importGoodreadsUpload,
+                new AppFooter()
         );
-
         verticalLayout.setAlignItems(Alignment.CENTER);
-
         add(verticalLayout);
+
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+    }
+
+    private void createImportGoodreadsUpload() {
+        importGoodreadsUpload.setMaxFiles(1);
+        importGoodreadsUpload.setAcceptedFileTypes(CsvUtils.TEXT_CSV);
+        importGoodreadsUpload.getElement().setAttribute("import-goodreads", true);
+        importGoodreadsUpload.setDropLabel(new Label(UPLOAD_DROP_LABEL));
+        importGoodreadsUpload.setUploadButton(new Button(IMPORT_FROM_GOODREADS));
     }
 
     private Button createClearShelvesButton() {
@@ -146,6 +172,21 @@ public class SettingsView extends HorizontalLayout {
     private void configureExportBooksAnchor() {
         String jsonExportURI = generateJsonResource();
         exportBooksAnchor.setHref(jsonExportURI);
+    }
+
+    private void configureImportGoodreadsUpload() {
+        importGoodreadsUpload.addSucceededListener(succeededEvent -> {
+            try {
+                List<GoodreadsBookImport> goodreadsBookImports = CsvUtils.read(
+                        importGoodreadsMemoryBuffer.getInputStream(),
+                        GoodreadsBookImport.class
+                );
+
+                importService.importGoodreadsBooks(goodreadsBookImports);
+            } catch (IOException e) {
+                LOGGER.severe("Error in reading input file, error: " + e);
+            }
+        });
     }
 
     private String generateJsonResource() {

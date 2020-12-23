@@ -23,6 +23,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReadingGoalService {
@@ -32,8 +33,8 @@ public class ReadingGoalService {
         this.goalRepository = goalRepository;
     }
 
-    public ReadingGoal findById(Long id) {
-        return goalRepository.getOne(id);
+    public Optional<ReadingGoal> findById(Long id) {
+        return Optional.ofNullable(goalRepository.getOne(id));
     }
 
     public List<ReadingGoal> findAll() {

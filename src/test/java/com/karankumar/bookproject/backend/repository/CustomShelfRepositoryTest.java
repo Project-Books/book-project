@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,12 +60,12 @@ class CustomShelfRepositoryTest {
 
     @Test
     void findCorrectShelf() {
-        CustomShelf shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
-        assertThat(shelf).isNotNull();
+        Optional<CustomShelf> shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
+        assertThat(shelf).isPresent();
 
         assertSoftly(softly -> {
-            softly.assertThat(shelf.getShelfName()).isEqualTo(CUSTOM_SHELF_NAME);
-            softly.assertThat(shelf.getUser().getId()).isEqualTo(user.getId());
+            softly.assertThat(shelf.get().getShelfName()).isEqualTo(CUSTOM_SHELF_NAME);
+            softly.assertThat(shelf.get().getUser().getId()).isEqualTo(user.getId());
         });
     }
 
@@ -75,10 +76,10 @@ class CustomShelfRepositoryTest {
         repository.deleteAll();
 
         // when
-        CustomShelf shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
+        Optional<CustomShelf> shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
 
         // then
-        assertThat(shelf).isNull();
+        assertThat(shelf).isEmpty();
     }
 
     @Test

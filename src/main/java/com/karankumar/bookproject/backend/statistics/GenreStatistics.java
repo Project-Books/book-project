@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GenreStatistics extends Statistics {
@@ -42,7 +43,7 @@ public class GenreStatistics extends Statistics {
      * @return the Genre that has been read the most (of all time)
      * If no such genre exists, null is returned
      */
-    public BookGenre findMostReadGenre() {
+    public Optional<BookGenre> findMostReadGenre() {
         EnumMap<BookGenre, Integer> genresReadCount = countGenreReadOccurrences();
         BookGenre mostReadBookGenre = null;
         for (BookGenre bookGenre : genresReadCount.keySet()) {
@@ -51,7 +52,7 @@ public class GenreStatistics extends Statistics {
                 mostReadBookGenre = bookGenre;
             }
         }
-        return mostReadBookGenre;
+        return Optional.ofNullable(mostReadBookGenre);
     }
 
     private boolean isGenreTheMostRead(int genreReadCount, BookGenre mostReadGenre,
@@ -87,14 +88,14 @@ public class GenreStatistics extends Statistics {
      * @return the Genre with the highest total rating across all books in the read shelf
      * If no such genre exists, null is returned
      */
-    public BookGenre findMostLikedGenre() {
+    public Optional<BookGenre> findMostLikedGenre() {
         BookGenre mostLikedBookGenre = null;
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
         if (atLeastTwoGenresExist(genreRatings.size())) {
             mostLikedBookGenre = genreRatings.get(genreRatings.size() - 1)
                                              .getKey();
         }
-        return mostLikedBookGenre;
+        return Optional.ofNullable(mostLikedBookGenre);
     }
 
     private boolean atLeastTwoGenresExist(int numberOfGenres) {
@@ -134,14 +135,14 @@ public class GenreStatistics extends Statistics {
      * @return the Genre with the lowest total rating across all books in the read shelf
      * If no such genre exists, null is returned
      */
-    public BookGenre findLeastLikedGenre() {
+    public Optional<BookGenre> findLeastLikedGenre() {
         BookGenre leastLikedBookGenre = null;
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
         if (atLeastTwoGenresExist(genreRatings.size())) {
             leastLikedBookGenre = genreRatings.get(0)
                                               .getKey();
         }
-        return leastLikedBookGenre;
+        return Optional.ofNullable(leastLikedBookGenre);
     }
 
     private List<Book> findReadBooksWithGenresAndRatings() {

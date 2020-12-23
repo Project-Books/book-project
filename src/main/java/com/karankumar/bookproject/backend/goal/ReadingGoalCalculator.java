@@ -64,7 +64,7 @@ public final class ReadingGoalCalculator {
      */
     public static int howManyReadThisYear(GoalType goalType, @NotNull PredefinedShelf readShelf) {
         int readThisYear = 0;
-        boolean lookingForBooks = goalType.equals(GoalType.BOOKS);
+        boolean lookingForBooks = goalType == GoalType.BOOKS;
         for (Book book : readShelf.getBooks()) {
             // only books that have been given a finish date can count towards the reading goal
             if (bookHasFinishDateInThisYear(book)) {

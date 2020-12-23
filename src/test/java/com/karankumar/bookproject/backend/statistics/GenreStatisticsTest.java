@@ -24,6 +24,9 @@ import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -60,7 +63,7 @@ class GenreStatisticsTest {
         BookGenre expected = StatisticTestUtils.MOST_READ_BOOK_GENRE;
 
         // when
-        BookGenre actual = genreStatistics.findMostReadGenre();
+        BookGenre actual = genreStatistics.findMostReadGenre().get();
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -72,7 +75,7 @@ class GenreStatisticsTest {
         BookGenre expected = StatisticTestUtils.MOST_LIKED_BOOK_GENRE;
 
         // when
-        BookGenre actual = genreStatistics.findMostLikedGenre();
+        BookGenre actual = genreStatistics.findMostLikedGenre().get();
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -84,7 +87,7 @@ class GenreStatisticsTest {
         BookGenre expected = StatisticTestUtils.LEAST_LIKED_BOOK_GENRE;
 
         // when
-        BookGenre actual = genreStatistics.findLeastLikedGenre();
+        BookGenre actual = genreStatistics.findLeastLikedGenre().get();
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -99,10 +102,10 @@ class GenreStatisticsTest {
         genreStatistics = new GenreStatistics(predefinedShelfService);
 
         // when
-        BookGenre mostLiked = genreStatistics.findMostLikedGenre();
+        Optional<BookGenre> mostLiked = genreStatistics.findMostLikedGenre();
 
         // then
-        assertThat(mostLiked).isNull();
+        assertThat(mostLiked).isEmpty();
     }
 
     private void saveBook() {
@@ -118,9 +121,9 @@ class GenreStatisticsTest {
         genreStatistics = new GenreStatistics(predefinedShelfService);
 
         // when
-        BookGenre leastLiked = genreStatistics.findLeastLikedGenre();
+        Optional<BookGenre> leastLiked = genreStatistics.findLeastLikedGenre();
 
         // then
-        assertThat(leastLiked).isNull();
+        assertThat(leastLiked).isEmpty();
     }
 }
