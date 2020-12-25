@@ -22,6 +22,8 @@
 
 Book tracker web app made in Spring Boot. We are currently migrating from Vaadin 14 to React (with Typescript).
 
+The images and demo are v0.1.0. v0.2.0 will look different.
+
 See a [live demo](http://bookprojectv010-env.eba-22zuiphf.eu-west-2.elasticbeanstalk.com/login). Instead of creating an
 account, you can use the test credentials shown in the [Access site](https://github.com/Project-Books/book-project#access-site) section.
 This is only for demonstration purposes, so please do not rely on any saved data persisting.
@@ -68,45 +70,43 @@ Prerequisites:
 - MySQL 8.0.* or (better) Docker
   - Windows or macOS: install Docker Desktop
   - Linux: install Docker Engine and Docker Compose
+
+First, clone the repository.
  
+### Running the frontend
+
+1. Navigate to the `frontend/` directory
+2. Run `yarn start`
+3. Open `localhost:3000`
+
 ### Running the app
 
-1. Clone the repository
-2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
-3. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
+1. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
+2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
   
 Then, if you want to use Docker, follow one of the approaches below:
 
 #### 1. Start locally with only MySQL running in docker
 
-4. Build the project at the root using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-5. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+3. Build the project at the root using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
+4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
     - May need to add `sudo` to this command on Unix
-6. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
+5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
 
 #### 2. Start using docker-compose in production mode
 
-4. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
+3. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
     - `./mvnw clean package -Pproduction` (Unix), or 
     - `mvnw.cmd clean package -Pproduction` (Windows)
-5. Start the MySQL Database and book project app using `docker-compose up --build`
+4. Start the MySQL Database and book project app using `docker-compose up --build`
     - May need to add `sudo` to this command on Unix
     
-#### 3. Start locally with Vaadin live reload (the tests do not run)
+#### 3. Start locally in your IDE
 
-We recommended this approach if you need to work on the frontend with Vaadin. This approach allows you to use 
-Vaadin Live reload which prevents you from needing to re-run the server every time or manually refresh your browser 
-(i.e. it's a lot quicker). 
-
-4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+3. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
     - May need to add `sudo` to this command on Unix
-5. Run the project from your IDE or with Maven:
-    - `./mvnw spring-boot:run` on Unix
-    - `mvnw.cmd spring-boot:run` on Windows
+4. Run the project from your IDE
    
-If you're running the app from your IDE, after making a Vaadin-related change, build the app from your IDE after making
-any changes.
-
 ### Access site
 
 After following the instructions for running the app above, go to `localhost:8080`. Then, log in with the details below:
