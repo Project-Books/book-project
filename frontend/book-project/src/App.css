@@ -1,0 +1,13 @@
+.App-header {
+  position: fixed;
+  top: 35%;
+  left: 45%;
+}
+
+#standard-basic {
+  width: 290px;
+}
+
+#login {
+  width: 290px;
+}
