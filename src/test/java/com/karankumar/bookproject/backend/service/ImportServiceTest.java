@@ -23,10 +23,13 @@ import com.karankumar.bookproject.backend.entity.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,12 +56,13 @@ class ImportServiceTest {
 
     @Test
     @DisplayName("save Goodreads book import when author and predefined shelf is not empty")
-    void saveGoodreadsBookImportWhenAuthorAndPredefinedShelfIsNotEmpty() {
+    void saveWhenAuthorAndPredefinedShelfIsNotEmpty() {
         // given
-        GoodreadsBookImport goodreadsBookImport = new GoodreadsBookImport();
-        goodreadsBookImport.setTitle("Blink: The Power of Thinking Without Thinking");
-        goodreadsBookImport.setAuthor("Malcolm Gladwell");
-        goodreadsBookImport.setBookshelves("currently-reading");
+        GoodreadsBookImport goodreadsBookImport = createGoodreadsImport(
+                "Blink: The Power of Thinking Without Thinking",
+                "Malcolm Gladwell",
+                "currently-reading"
+        );
 
         // when
         List<Book> savedBooks =
@@ -66,5 +70,76 @@ class ImportServiceTest {
 
         // then
         assertThat(savedBooks.size()).isOne();
+    }
+
+    private GoodreadsBookImport createGoodreadsImport(String title, String author, String shelf) {
+        GoodreadsBookImport goodreadsBookImport = new GoodreadsBookImport();
+        goodreadsBookImport.setTitle(title);
+        goodreadsBookImport.setAuthor(author);
+        goodreadsBookImport.setBookshelves(shelf);
+        return goodreadsBookImport;
+    }
+
+    @Test
+    void returnEmptyListForEmptyImport() {
+        // given
+        GoodreadsBookImport goodreadsBookImport = new GoodreadsBookImport();
+
+        // when
+        List<Book> savedBooks =
+            importService.importGoodreadsBooks(Collections.singleton(goodreadsBookImport));
+
+        // then
+        assertThat(savedBooks).isEmpty();
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateBlankStrings")
+    void notSaveWhenTitleBlank() {
+        // given
+        GoodreadsBookImport goodreadsBookImport = createGoodreadsImport(
+                "", "Steven Pinker", "read"
+        );
+
+        // when
+        List<Book> savedBooks =
+                importService.importGoodreadsBooks(Collections.singleton(goodreadsBookImport));
+
+        // then
+        assertThat(savedBooks).isEmpty();
+    }
+
+    private static Stream<String> generateBlankStrings() {
+        return Stream.of("", " ", null);
+    }
+
+    @Test
+    void notSaveWhenAuthorIsNull() {
+        // given
+        GoodreadsBookImport goodreadsBookImport = createGoodreadsImport(
+                "Thinking, Fast and Slow", null, "currently-reading"
+        );
+
+        // when
+        List<Book> savedBooks =
+                importService.importGoodreadsBooks(Collections.singleton(goodreadsBookImport));
+
+        // then
+        assertThat(savedBooks).isEmpty();
+    }
+
+    @Test
+    void notSaveWhenPredefinedShelfIsNull() {
+        // given
+        GoodreadsBookImport goodreadsBookImport = createGoodreadsImport(
+                "Thinking, Fast and Slow", "Daniel Kahneman", null
+        );
+
+        // when
+        List<Book> savedBooks =
+                importService.importGoodreadsBooks(Collections.singleton(goodreadsBookImport));
+
+        // then
+        assertThat(savedBooks).isEmpty();
     }
 }
