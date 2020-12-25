@@ -22,24 +22,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-// From https://vaadin.com/learn/tutorials/modern-web-apps-with-spring-boot-and-vaadin/adding-a-login-screen-to-a-vaadin-app-with-spring-security
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    private static final String LOGIN_PROCESSING_URL = "/login";
-    private static final String LOGIN_FAILURE_URL = "/login?error";
-    private static final String LOGIN_URL = "/login";
-    private static final String LOGOUT_SUCCESS_URL = "/login";
-    private static final String REGISTRATION_URL = "/register";
-
     private final DatabaseUserDetailsService databaseUserDetailsService;
     private final DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService;
 
@@ -80,27 +71,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/styles/**",
                 "/frontend/**",
                 "/frontend-es5/**", "/frontend-es6/**");
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // Vaadin has its own cross-site request forgery protection, so disable Spring's
-        http.csrf().disable()
-            .requestCache()
-                .requestCache(new CustomRequestCache())
-                .and()
-            .authorizeRequests()
-                .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
-                .antMatchers(REGISTRATION_URL, "/VAADIN/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .loginPage(LOGIN_URL).permitAll()
-                .loginProcessingUrl(LOGIN_PROCESSING_URL)
-                .failureUrl(LOGIN_FAILURE_URL)
-                .and()
-            // send users to the logout URL when they log out
-            .logout()
-                .logoutSuccessUrl(LOGOUT_SUCCESS_URL);
     }
 }

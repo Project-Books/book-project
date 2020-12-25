@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.util;
 
-import com.helger.commons.annotation.VisibleForTesting;
+import com.google.common.annotations.VisibleForTesting;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
