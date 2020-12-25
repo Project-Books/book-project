@@ -52,12 +52,11 @@
       "webpack-merge": "4.2.2",
       "webpack-dev-server": "3.11.0"
     },
-    "hash": "c21efa752dc5a900bccf15356116d98449b014472f27c201a199e38976132472"
+    "hash": "cd5135d535f130c0c42a209c2a0f4e91f74ff0a5c7a2fd969ca04b7f547f5c99"
   },
   "dependencies": {
     "@polymer/iron-icon": "3.0.1",
     "@polymer/iron-list": "3.1.0",
-    "@polymer/paper-toggle-button": "3.0.1",
     "@polymer/polymer": "3.2.0",
     "@vaadin/vaadin-accordion": "1.2.0",
     "@vaadin/vaadin-app-layout": "2.2.0",

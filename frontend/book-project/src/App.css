@@ -4,6 +4,11 @@
   left: 45%;
 }
 
+#app-name {
+  font-weight: normal;
+  padding-left: 50px;
+}
+
 #standard-basic {
   width: 290px;
 }
