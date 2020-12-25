@@ -22,28 +22,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("GoodreadsBookImport should")
 class GoodreadsBookImportTest {
-    @Test
-    @DisplayName("return Optional.empty for a blank shelf name")
-    void returnEmptyIfBlank() {
-        // given
-        String shelfName = "";
-
-        // when
-        Optional<PredefinedShelf.ShelfName> actual =
-                GoodreadsBookImport.toPredefinedShelfName(shelfName);
-
-        // then
-        assertThat(actual).isEmpty();
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {"to-read", "currently-reading", "read"})
     void returnPredefinedShelfOnMatch(String shelfName) {
@@ -55,7 +43,8 @@ class GoodreadsBookImportTest {
         assertThat(actual).isNotEmpty();
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("generateInvalidShelfNames")
     void returnEmptyForInvalidShelfName() {
         // given
         String invalidShelfName = "shelf";
@@ -66,5 +55,9 @@ class GoodreadsBookImportTest {
 
         // then
         assertThat(actual).isEmpty();
+    }
+
+    private static Stream<String> generateInvalidShelfNames() {
+        return Stream.of("", " ", "shelf", null);
     }
 }
