@@ -79,7 +79,7 @@ First, clone the repository.
 2. Run `yarn start`
 3. Open `localhost:3000`
 
-### Running the app
+### Running the backend
 
 1. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
