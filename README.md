@@ -20,7 +20,7 @@
   </a>
 </p>
 
-Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
+Book tracker web app made in Spring Boot. We are currently migrating from Vaadin 14 to React (with Typescript).
 
 See a [live demo](http://bookprojectv010-env.eba-22zuiphf.eu-west-2.elasticbeanstalk.com/login). Instead of creating an
 account, you can use the test credentials shown in the [Access site](https://github.com/Project-Books/book-project#access-site) section.
