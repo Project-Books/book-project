@@ -19,32 +19,7 @@ import React from 'react';
 import './Register.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-
-function Password(props: AppProps) {
-  return (
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">{props.fieldName}</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            className="login"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                >
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-  )
-}
-
-type AppProps = {
-  fieldName: string
-}
+import Password from '../shared/form/Password';
 
 function Register() {
   return (
@@ -62,10 +37,10 @@ function Register() {
         <br />
         <br />
         
-        <Password fieldName={'Password'}/>
+        <Password fieldName={'Password'} class={'login'}/>
         <br />
         <br />
-        <Password fieldName={'Confirm password'}/>
+        <Password fieldName={'Confirm password'} class={'login'}/>
 
         <br />
         <br />

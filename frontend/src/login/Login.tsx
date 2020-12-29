@@ -19,8 +19,7 @@ import React from 'react';
 import './Login.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Password from '../shared/form/Password';
 
 function Login() {
   return (
@@ -38,21 +37,7 @@ function Login() {
         <br />
         <br />
 
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            className="login"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                >
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </FormControl>
+        <Password fieldName={'Password'} class={'login'}/>
 
         <br />
         <br />
