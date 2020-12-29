@@ -86,4 +86,4 @@ Local variable names should be written in `camelCase` even where they are consta
 
 ## Acknowledgements
 
-Adapted from [Google's JavaScript style guide](https://google.github.io/styleguide/jsguide.html), [Airbnb's JavaScript style guide](https://github.com/airbnb/javascript/blob/master/README.md) and [Airbnb's React/JSX style guide](https://github.com/airbnb/javascript/tree/master/react).
+Adapted from [Google's JavaScript style guide](https://google.github.io/styleguide/jsguide.html) and [Airbnb's JavaScript style guide](https://github.com/airbnb/javascript/blob/master/README.md).
