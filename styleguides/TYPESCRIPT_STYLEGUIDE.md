@@ -34,10 +34,6 @@ Include one space before the self-closing tag:
 
 All source files should start with our [copyright notice](https://github.com/Project-Books/book-project/blob/react-login-558/COPYRIGHT) attached verbatim.
 
-### One React component
-
-There should be only be one React component per file.
-
 ## Formatting
 
 Lines should generally not exceed our 100 characters column limit. This is to be consistent with our Java style guide.

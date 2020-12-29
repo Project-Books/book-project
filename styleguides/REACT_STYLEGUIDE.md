@@ -18,6 +18,10 @@ Where useful, a short summary explaining why the guideline is in place is includ
    - But mutliple stateless components are allowed per file
 - Always use JSX syntax
 
+## Files
+
+- All source files should start with our [copyright notice](https://github.com/Project-Books/book-project/blob/react-login-558/COPYRIGHT) attached verbatim.
+
 ## Class vs. React.createClass
 
 - Use `class extends React.Component` if you have internal state. Otherwise, use regular functions (not arrow functions)
