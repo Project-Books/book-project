@@ -16,11 +16,12 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from 'react';
-import './App.css';
+import './Login.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@material-ui/core';
 
-function App() {
+function Login() {
   return (
     <div className="App">
       <header className="App-header">
@@ -33,11 +34,21 @@ function App() {
         <br />
         <br />
 
-        <TextField 
-          id="standard-basic" 
-          label="Password" 
-          type="password"
-        />
+        <FormControl>
+          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <Input
+            id="standard-adornment-password"
+            className="login"
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                >
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
 
         <br />
         <br />
@@ -60,4 +71,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;
