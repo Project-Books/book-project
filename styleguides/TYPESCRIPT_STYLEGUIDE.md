@@ -14,20 +14,6 @@ Readable code is preferred over code that strictly follows this guide.
 
 Where useful, a short summary explaining why the guideline is in place is included to help explain the rationale behind having it.
 
-## React
-
-- Always use JSX
-
-### Spacing
-
-Include one space before the self-closing tag:
-
-```javascript
-<Component/> // bad
-
-<Component /> // Good
-```
-
 ## Files
 
 ### Include copyright notice
