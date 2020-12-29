@@ -19,7 +19,8 @@ import React from 'react';
 import './Login.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@material-ui/core';
+import { FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 function Login() {
   return (
@@ -29,15 +30,18 @@ function Login() {
           Book Project
         </h1>
 
-        <TextField id="standard-basic" label="Username" />
+        <br />
+        <br />
+
+        <TextField id="standard-basic" className="login" label="Username" variant="outlined" />
 
         <br />
         <br />
 
-        <FormControl>
-          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-          <Input
-            id="standard-adornment-password"
+        <FormControl variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
             className="login"
             endAdornment={
               <InputAdornment position="end">
