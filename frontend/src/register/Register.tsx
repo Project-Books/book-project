@@ -20,6 +20,7 @@ import './Register.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Password from '../shared/form/Password';
+import { Link } from "react-router-dom";
 
 function Register() {
   return (
@@ -51,6 +52,12 @@ function Register() {
 
         <br />
         <br />
+
+
+        <Button className="login" component={Link} to="/sign-in">
+          Sign in instead
+        </Button>
+
         <br />
         <br />
 
