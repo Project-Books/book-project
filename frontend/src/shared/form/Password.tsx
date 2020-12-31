@@ -19,7 +19,7 @@ import React from 'react';
 import { FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 
-function Password(props: AppProps) {
+function Password(props: PasswordProps) {
   return (
         <FormControl variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">{props.fieldName}</InputLabel>
@@ -39,7 +39,7 @@ function Password(props: AppProps) {
   )
 }
 
-type AppProps = {
+type PasswordProps = {
   fieldName: string,
   class?: string
 }
