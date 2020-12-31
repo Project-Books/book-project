@@ -21,42 +21,42 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Password from '../shared/form/Password';
 import { Link } from "react-router-dom";
+import logo from '../shared/logo.png';
 
 function Login() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1 id="app-name">
-          Book Project
-        </h1>
-
-        <br />
-        <br />
-
-        <TextField id="standard-basic" className="login" label="Username" variant="outlined" />
-
-        <br />
-        <br />
-
-        <Password fieldName={'Password'} class={'login'}/>
-
-        <br />
-        <br />
-
-        <Button className="login" variant="contained" color="primary">
-          Log in
-        </Button>
+    <div >
+        <img src={logo} alt="Logo" id="app-name"/>
 
         <br />
         <br />
         <br />
-        <br />
 
-        <Button className="login" id="createAccount" component={Link} to="/sign-up">
-          Create account
-        </Button>
+        <div className="login-form">
+          <TextField id="standard-basic" className="login" label="Username" variant="outlined" />
+
+          <br />
+          <br />
+
+          <Password fieldName={'Password'} class={'login'}/>
+
+          <br />
+          <br />
+
+          <Button className="login" variant="contained" color="primary">
+            Log in
+          </Button>
+
+          <br />
+          <br />
+          <br />
+          <br />
+
+          <Button className="login" id="createAccount" component={Link} to="/sign-up">
+            Create account
+          </Button>
+        </div>
         
-      </header>
     </div>
   );
 }

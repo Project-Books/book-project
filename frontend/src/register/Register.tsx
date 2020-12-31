@@ -21,16 +21,14 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Password from '../shared/form/Password';
 import { Link } from "react-router-dom";
+import logo from '../shared/logo.png';
 
 function Register() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 id="app-name">
-          Book Project
-        </h1>
+        <img src={logo} alt="Logo" id="app-name"/>
 
-        <br />
         <br />
 
         <TextField id="standard-basic" className="login" label="Username" variant="outlined" />

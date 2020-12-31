@@ -17,13 +17,14 @@ If not, see <https://www.gnu.org/licenses/>.
 
 .App-header {
   position: fixed;
-  top: 35%;
+  top: 40%;
   left: 45%;
 }
 
 #app-name {
-  font-weight: normal;
-  padding-left: 50px;
+  position: fixed;
+  top: 30%;
+  left: 42.5%;
 }
 
 #standard-basic {

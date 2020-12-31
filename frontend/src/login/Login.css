@@ -15,14 +15,15 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-.App-header {
+.login-form {
   position: fixed;
-  top: 35%;
+  top: 45%;
   left: 45%;
 }
 
 #app-name {
-  font-weight: normal;
+  position: fixed;
+  top: 5%;
   padding-left: 50px;
 }
 
