@@ -19,8 +19,9 @@ target/
 *.iml
 *.ipr
 
-# Node
+### Frontend ###
 node_modules/
+frontend/.eslintcache
 
 # Browser drivers for local integration tests
 drivers/
