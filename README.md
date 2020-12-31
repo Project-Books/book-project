@@ -65,8 +65,7 @@ reflect this.*
 
 Prerequisites:
 - JDK 11 (the app currently won't work on later versions due to an issue with one of the libraries -- Karibu testing -- not being compatible with later versions) 
-- If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
-  - If you do have Node.js installed, please ensure it is at least version 10.0
+- Node >= 10 for React
 - MySQL 8.0.* or (better) Docker
   - Windows or macOS: install Docker Desktop
   - Linux: install Docker Engine and Docker Compose
