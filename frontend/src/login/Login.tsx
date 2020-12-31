@@ -20,6 +20,7 @@ import './Login.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Password from '../shared/form/Password';
+import { Link } from "react-router-dom";
 
 function Login() {
   return (
@@ -51,7 +52,7 @@ function Login() {
         <br />
         <br />
 
-        <Button className="login" id="createAccount">
+        <Button className="login" id="createAccount" component={Link} to="/sign-up">
           Create account
         </Button>
         
