@@ -19,9 +19,8 @@ target/
 *.iml
 *.ipr
 
-# file generated or updated by the vaadin-maven plugin
+# Node
 node_modules/
-pnpmfile.js
 
 # Browser drivers for local integration tests
 drivers/
@@ -39,5 +38,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-pnpm-lock.yaml
