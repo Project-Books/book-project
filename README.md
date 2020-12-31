@@ -9,7 +9,7 @@
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg">
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw">
     <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
   </a>
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
