@@ -31,7 +31,14 @@ function Register() {
 
         <br />
 
-        <TextField id="standard-basic" className="login" label="Username" variant="outlined" />
+        <TextField 
+          id="standard-basic" 
+          className="login" 
+          label="Username" 
+          variant="outlined" 
+          required 
+          autoFocus
+        />
 
         <br />
         <br />

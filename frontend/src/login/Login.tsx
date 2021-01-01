@@ -27,10 +27,10 @@ class Login extends Component {
   constructor(props: LoginProps) {
     super(props)
 
-    this.state = {
-      username: '',
-      password: ''
-    }
+    // this.state = {
+    //   username: '',
+    //   password: ''
+    // }
   }
 
   render() {
@@ -43,12 +43,19 @@ class Login extends Component {
           <br />
 
           <div className="login-form">
-            <TextField id="standard-basic" className="login" label="Username" variant="outlined" />
+            <TextField 
+              id="standard-basic" 
+              className="login" 
+              label="Username" 
+              variant="outlined" 
+              required 
+              autoFocus 
+            />
 
             <br />
             <br />
 
-            <Password fieldName={'Password'} class={'login'}/>
+            <Password fieldName={'Password'} class={'login'} />
 
             <br />
             <br />
