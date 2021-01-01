@@ -46,6 +46,7 @@ class Register extends Component<{}, IState> {
 
     this.handlePasswordChanged = this.handlePasswordChanged.bind(this)
     this.handleConfirmPasswordChanged = this.handleConfirmPasswordChanged.bind(this)
+    this.onCreateAccountClicked = this.onCreateAccountClicked.bind(this)
   }
 
   handlePasswordChanged(password: string) {
@@ -60,6 +61,10 @@ class Register extends Component<{}, IState> {
     console.log(`register confirm password: ${password}`)
     const passwordsMatch = password === this.state.password
     this.setState({passwordsMatch})
+  }
+
+  onCreateAccountClicked() {
+    console.log('create account clicked')
   }
 
   render() {
@@ -104,7 +109,13 @@ class Register extends Component<{}, IState> {
           <br />
           <br />
 
-          <Button className="login" variant="contained" color="primary">Create account</Button>
+          <Button 
+            className="login" 
+            variant="contained" 
+            color="primary" 
+            onClick={this.onCreateAccountClicked}>
+              Create account
+            </Button>
 
           <br />
           <br />

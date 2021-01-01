@@ -26,7 +26,8 @@ import logo from '../shared/media/logo.png'
 interface IState {
   username: string,
   password: string,
-  isUsernameDirty: boolean
+  isUsernameDirty: boolean,
+  areCredentialsInvalid: boolean
 }
 
 type LoginProps = {
@@ -39,19 +40,29 @@ class Login extends Component<{}, IState> {
     this.state = {
       username: '',
       password: '',
-      isUsernameDirty: false
+      isUsernameDirty: false,
+      areCredentialsInvalid: false
     }
 
     this.onPasswordChanged = this.onPasswordChanged.bind(this)
+    this.onClickLogin = this.onClickLogin.bind(this)
   }
 
   onClickLogin() {
     console.log('hi')
+    this.setState({
+      areCredentialsInvalid: this.state.username === '' && this.state.password === ''
+    })
   }
 
   onPasswordChanged(password: string) {
     console.log(`login password: ${password}`)
     this.setState({password})
+  }
+
+  isUsernameInvalid(): boolean {
+    const isUsernameDirtyAndBlank = this.state.username === '' && this.state.isUsernameDirty
+    return isUsernameDirtyAndBlank || this.state.areCredentialsInvalid
   }
 
   render() {
@@ -71,7 +82,7 @@ class Login extends Component<{}, IState> {
               variant="outlined" 
               required 
               autoFocus 
-              error={this.state.username === '' && this.state.isUsernameDirty}
+              error={this.isUsernameInvalid()}
               onChange={event => {
                 this.setState({
                   username: event.target.value,
@@ -87,8 +98,8 @@ class Login extends Component<{}, IState> {
               fieldName={'Password'} 
               class={'login'} 
               onPasswordChanged={this.onPasswordChanged}
-              isInvalid={false}
-              errorMessage={''}
+              isInvalid={this.state.areCredentialsInvalid}
+              errorMessage={'Please enter a password'}
             />
 
             <br />
