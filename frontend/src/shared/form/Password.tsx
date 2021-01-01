@@ -26,6 +26,7 @@ function Password(props: PasswordProps) {
           <OutlinedInput
             id="outlined-adornment-password"
             className={props.class}
+            label={props.fieldName}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton aria-label="toggle password visibility"></IconButton>
