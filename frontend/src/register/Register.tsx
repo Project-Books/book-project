@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Password from '../shared/form/Password';
 import { Link } from "react-router-dom";
-import logo from '../shared/logo.png';
+import logo from '../shared/media/logo.png';
 
 function Register() {
   return (

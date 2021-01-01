@@ -15,50 +15,64 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react';
+import React, {Component} from 'react';
 import './Login.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Password from '../shared/form/Password';
 import { Link } from "react-router-dom";
-import logo from '../shared/logo.png';
+import logo from '../shared/media/logo.png';
 
-function Login() {
-  return (
-    <div >
-        <img src={logo} alt="Logo" id="app-name"/>
+class Login extends Component {
+  constructor(props: LoginProps) {
+    super(props)
 
-        <br />
-        <br />
-        <br />
+    this.state = {
+      username: '',
+      password: ''
+    }
+  }
 
-        <div className="login-form">
-          <TextField id="standard-basic" className="login" label="Username" variant="outlined" />
-
-          <br />
-          <br />
-
-          <Password fieldName={'Password'} class={'login'}/>
-
-          <br />
-          <br />
-
-          <Button className="login" variant="contained" color="primary">
-            Log in
-          </Button>
+  render() {
+    return (
+      <div >
+          <img src={logo} alt="Logo" id="app-name"/>
 
           <br />
           <br />
           <br />
-          <br />
 
-          <Button className="login" id="createAccount" component={Link} to="/sign-up">
-            Create account
-          </Button>
-        </div>
-        
-    </div>
-  );
+          <div className="login-form">
+            <TextField id="standard-basic" className="login" label="Username" variant="outlined" />
+
+            <br />
+            <br />
+
+            <Password fieldName={'Password'} class={'login'}/>
+
+            <br />
+            <br />
+
+            <Button className="login" variant="contained" color="primary">
+              Log in
+            </Button>
+
+            <br />
+            <br />
+            <br />
+            <br />
+
+            <Button className="login" id="createAccount" component={Link} to="/sign-up">
+              Create account
+            </Button>
+          </div>
+          
+      </div>
+    );
+  }
+}
+
+type LoginProps = {
 }
 
 export default Login;
