@@ -21,10 +21,10 @@ If not, see <https://www.gnu.org/licenses/>.
   left: 45%;
 }
 
-#app-name {
+#app-logo {
   position: fixed;
   top: 30%;
-  left: 42.5%;
+  left: 42%;
 }
 
 #standard-basic {

@@ -15,28 +15,49 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, {Component} from 'react';
-import './Login.css';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Password from '../shared/form/Password';
-import { Link } from "react-router-dom";
-import logo from '../shared/media/logo.png';
+import React, {Component} from 'react'
+import './Login.css'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Password from '../shared/form/Password'
+import { Link } from "react-router-dom"
+import logo from '../shared/media/logo.png'
 
-class Login extends Component {
+interface IState {
+  username: string,
+  password: string,
+  isUsernameDirty: boolean
+}
+
+type LoginProps = {
+}
+
+class Login extends Component<{}, IState> {
   constructor(props: LoginProps) {
     super(props)
 
-    // this.state = {
-    //   username: '',
-    //   password: ''
-    // }
+    this.state = {
+      username: '',
+      password: '',
+      isUsernameDirty: false
+    }
+
+    this.onPasswordChanged = this.onPasswordChanged.bind(this)
+  }
+
+  onClickLogin() {
+    console.log('hi')
+  }
+
+  onPasswordChanged(password: string) {
+    console.log(`login password: ${password}`)
+    this.setState({password})
   }
 
   render() {
     return (
       <div >
-          <img src={logo} alt="Logo" id="app-name"/>
+          <img src={logo} alt="Logo" id="app-logo"/>
 
           <br />
           <br />
@@ -50,17 +71,34 @@ class Login extends Component {
               variant="outlined" 
               required 
               autoFocus 
+              error={this.state.username === '' && this.state.isUsernameDirty}
+              onChange={event => {
+                this.setState({
+                  username: event.target.value,
+                  isUsernameDirty: true
+                })
+              }}
             />
 
             <br />
             <br />
 
-            <Password fieldName={'Password'} class={'login'} />
+            <Password 
+              fieldName={'Password'} 
+              class={'login'} 
+              onPasswordChanged={this.onPasswordChanged}
+              isInvalid={false}
+              errorMessage={''}
+            />
 
             <br />
             <br />
 
-            <Button className="login" variant="contained" color="primary">
+            <Button 
+              className="login" 
+              variant="contained" 
+              color="primary" 
+              onClick={this.onClickLogin}>
               Log in
             </Button>
 
@@ -73,13 +111,9 @@ class Login extends Component {
               Create account
             </Button>
           </div>
-          
       </div>
-    );
+    )
   }
-}
-
-type LoginProps = {
 }
 
 export default Login;

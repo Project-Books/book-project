@@ -15,25 +15,24 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react';
-import { FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import React from 'react'
+import { FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core'
+import OutlinedInput from '@material-ui/core/OutlinedInput'
 
 function Password(props: PasswordProps) {
   return (
-        <FormControl variant="outlined">
+        <FormControl variant="outlined" required>
           <InputLabel htmlFor="outlined-adornment-password">{props.fieldName}</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             className={props.class}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                >
-                </IconButton>
+                <IconButton aria-label="toggle password visibility"></IconButton>
               </InputAdornment>
             }
+            onChange={(event) => props.onPasswordChanged(event.target.value)}
+            error={props.isInvalid}
           />
         </FormControl>
   )
@@ -41,7 +40,10 @@ function Password(props: PasswordProps) {
 
 type PasswordProps = {
   fieldName: string,
-  class?: string
+  class?: string,
+  onPasswordChanged: any,
+  isInvalid: boolean,
+  errorMessage: string
 }
 
-export default Password;
+export default Password
