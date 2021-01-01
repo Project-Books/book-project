@@ -26,6 +26,18 @@ A clear and concise description of what you expected to happen.
 
 If applicable, add screenshots to help explain your problem.
 
+**Your system**
+
+If it's frontend-related, tell us which 
+- Browser and browser version you see the bug on
+- your Node and npm versions
+
+For backend-related bugs, tell us your 
+- operating system
+- which type of JDK you're running (e.g. Oracle JDK or OpenJDK)
+- JDK version number (including the minor and patch version) 
+- which IDE and version you're using (if relevant)
+
 **Additional context**
 
 Add any other context about the problem here (e.g. stack trace, branch name, commit hash, etc.).
