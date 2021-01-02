@@ -22,6 +22,8 @@ import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionSystemException;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,42 +64,17 @@ class UserTest {
                    .username("username")
                    .email("email");
     }
-
-    @Test
-    void notHaveWeakPassword() {
-        // given
-        User user = userWithoutPassword().password("123456789")
-                                         .build();
-
-        // when
-        tryToSaveInvalidUser(user);
-
-        // then
-        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
-    }
     
-    @Test
-    void notHaveFairPassword() {
+    @ParameterizedTest
+    @ValueSource(strings = {"123456789", "aPassWorD", "testPa$$123"})
+    void notHaveInvalidPassword(String input) {
         // given
-        User user = userWithoutPassword().password("aPassWorD")
+        User user = userWithoutPassword().password(input)
                                          .build();
 
         // when
         tryToSaveInvalidUser(user);
-
-        // then
-        assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
-    }
-    
-    @Test
-    void notHaveGoodPassword() {
-        // given
-        User user = userWithoutPassword().password("testPa$$123")
-                                         .build();
-
-        // when
-        tryToSaveInvalidUser(user);
-
+        
         // then
         assertThat(userRepository.count()).isEqualTo(initialNumberOfUsers);
     }
