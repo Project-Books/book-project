@@ -135,7 +135,7 @@ If you wish to contribute (thanks!), please first see the [contributing document
 
 ### Help
 
-If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg).
+If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw).
 
 ## Further information
 
