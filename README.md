@@ -90,7 +90,7 @@ Then, if you want to use Docker, follow one of the approaches below:
 3. Build the project at the root using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
     - May need to add `sudo` to this command on Unix
-5. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
+5. Start the application using `java -jar target/book-project-0.1.0.jar` 
 
 #### 2. Start using docker-compose in production mode
 
@@ -105,12 +105,6 @@ Then, if you want to use Docker, follow one of the approaches below:
 3. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
     - May need to add `sudo` to this command on Unix
 4. Run the project from your IDE
-   
-### Access site
-
-After following the instructions for running the app above, go to `localhost:8080`. Then, log in with the details below:
-- Username: `user`
-- Password: `password`
 
 ### Fixing Lombok errors
 
