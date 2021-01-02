@@ -30,6 +30,7 @@ interface IState {
   username: string,
   password: string,
   passwordsMatch: boolean,
+  isUsernameDirty: boolean,
   isPasswordDirty: boolean,
   areCredentialsInvalid: boolean
 }
@@ -42,6 +43,7 @@ class Register extends Component<{}, IState> {
       username: '',
       password: '',
       passwordsMatch: true,
+      isUsernameDirty: false,
       isPasswordDirty: false,
       areCredentialsInvalid: false
     }
@@ -66,7 +68,6 @@ class Register extends Component<{}, IState> {
   }
 
   onCreateAccountClicked() {
-    console.log('create account clicked')
     const isFieldEmpty = this.state.username === '' || this.state.password === ''
     this.setState({
       areCredentialsInvalid: isFieldEmpty
@@ -94,6 +95,13 @@ class Register extends Component<{}, IState> {
             required 
             autoFocus
             error={this.state.areCredentialsInvalid}
+            helperText={this.state.areCredentialsInvalid ? 'Please enter a username' : null}
+            onChange={event => {
+              this.setState({
+                username: event.target.value,
+                isUsernameDirty: true
+              })
+            }}
           />
 
           <br />

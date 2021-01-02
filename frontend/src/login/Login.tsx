@@ -88,6 +88,7 @@ class Login extends Component<{}, IState> {
                   isUsernameDirty: true
                 })
               }}
+              helperText={this.state.areCredentialsInvalid ? 'Please enter a username' : null}
             />
 
             <br />
