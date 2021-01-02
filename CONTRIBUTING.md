@@ -235,7 +235,7 @@ Please also consider that you're finding something difficult on the issue you're
 
 - Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings)
 
-- Feedback: we're eager to find new ways to improve, so please do let us know!
+- Feedback: we're eager to find new ways to improve, so please do let us know! Start a new [idea discussion on GitHub](https://github.com/Project-Books/book-project/discussions/categories/ideas)
 
 - Triage: help us to [triage issues and pull requests](https://github.com/Project-Books/book-project/wiki/Becoming-a-Triager)
 
