@@ -22,11 +22,11 @@
 
 Book tracker web app made in Spring Boot. We are currently migrating from Vaadin 14 to React (with Typescript).
 
-The images and demo are v0.1.0. v0.2.0 will look different.
-
 See a [live demo](http://bookprojectv010-env.eba-22zuiphf.eu-west-2.elasticbeanstalk.com/login). Instead of creating an
 account, you can use the test credentials shown in the [Access site](https://github.com/Project-Books/book-project#access-site) section.
 This is only for demonstration purposes, so please do not rely on any saved data persisting.
+
+**The images, feature list and demo are v0.1.0. v0.2.0 will look different.**
 
 *Features:*
 - Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf (or a custom shelf)
@@ -64,11 +64,13 @@ reflect this.*
 ## Setup
 
 Prerequisites:
-- JDK 11 (the app currently won't work on later versions due to an issue with one of the libraries -- Karibu testing -- not being compatible with later versions) 
+- JDK 11
 - Node >= 10 for React
 - MySQL 8.0.* or (better) Docker
   - Windows or macOS: install Docker Desktop
   - Linux: install Docker Engine and Docker Compose
+
+As Docker is our recommended approach, our instructions will assume you're following this route.
 
 First, clone the repository.
  
@@ -83,7 +85,7 @@ First, clone the repository.
 1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
 2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
   
-Then, if you want to use Docker, follow one of the approaches below:
+Next, follow one of the approaches below:
 
 #### 1. Start locally with only MySQL running in docker
 
