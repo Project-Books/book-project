@@ -30,7 +30,8 @@ interface IState {
   username: string,
   password: string,
   passwordsMatch: boolean,
-  isPasswordDirty: boolean
+  isPasswordDirty: boolean,
+  areCredentialsInvalid: boolean
 }
 
 class Register extends Component<{}, IState> {
@@ -41,7 +42,8 @@ class Register extends Component<{}, IState> {
       username: '',
       password: '',
       passwordsMatch: true,
-      isPasswordDirty: false
+      isPasswordDirty: false,
+      areCredentialsInvalid: false
     }
 
     this.handlePasswordChanged = this.handlePasswordChanged.bind(this)
@@ -65,6 +67,15 @@ class Register extends Component<{}, IState> {
 
   onCreateAccountClicked() {
     console.log('create account clicked')
+    const isFieldEmpty = this.state.username === '' || this.state.password === ''
+    this.setState({
+      areCredentialsInvalid: isFieldEmpty
+    })
+  }
+
+  isPasswordInvalid(): boolean {
+    const isPasswordDirtyAndBlank = this.state.password === '' && this.state.isPasswordDirty
+    return isPasswordDirtyAndBlank || this.state.areCredentialsInvalid
   }
 
   render() {
@@ -82,6 +93,7 @@ class Register extends Component<{}, IState> {
             variant="outlined" 
             required 
             autoFocus
+            error={this.state.areCredentialsInvalid}
           />
 
           <br />
@@ -91,7 +103,7 @@ class Register extends Component<{}, IState> {
             fieldName={'Password'} 
             class={'login'} 
             onPasswordChanged={this.handlePasswordChanged}
-            isInvalid={this.state.password === '' && this.state.isPasswordDirty}
+            isInvalid={this.isPasswordInvalid()}
             errorMessage={'Please enter a password'}
           />
 
@@ -102,7 +114,7 @@ class Register extends Component<{}, IState> {
             fieldName={'Confirm password'} 
             class={'login'} 
             onPasswordChanged={this.handleConfirmPasswordChanged}
-            isInvalid={!this.state.passwordsMatch}
+            isInvalid={!this.state.passwordsMatch || this.state.areCredentialsInvalid}
             errorMessage={'Passwords do not match. Please try again'}
           />
 

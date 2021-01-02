@@ -49,7 +49,6 @@ class Login extends Component<{}, IState> {
   }
 
   onClickLogin() {
-    console.log('hi')
     this.setState({
       areCredentialsInvalid: this.state.username === '' && this.state.password === ''
     })
