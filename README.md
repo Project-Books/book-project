@@ -80,7 +80,7 @@ First, clone the repository.
 
 ### Running the backend
 
-1. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
+1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
 2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
   
 Then, if you want to use Docker, follow one of the approaches below:
