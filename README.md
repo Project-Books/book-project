@@ -59,9 +59,10 @@ This is only for demonstration purposes, so please do not rely on any saved data
 *The images above may look slightly different to the app. If major changes are made, new images will be uploaded to 
 reflect this.*
 
-## Setup
+## Getting Started
 
-Prerequisites:
+### Prerequisites
+
 - JDK 11 (the app currently won't work on later versions due to an issue with one of the libraries -- Karibu testing -- not being compatible with later versions) 
 - If you don't have Node.js installed globally, it is not needed as Vaadin will install it automatically
   - If you do have Node.js installed, please ensure it is at least version 10.0
@@ -71,11 +72,11 @@ Prerequisites:
  
 ### Running the app
 
-1. Clone the repository
+1. Clone the repository ```git clone https://github.com/Project-Books/book-project ```
 2. Import the project as a maven project into your favourite IDE (or run maven on the terminal)
 3. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
   
-Then, if you want to use Docker, follow one of the approaches below:
+If you want to use Docker, follow one of the approaches below:
 
 #### 1. Start locally with only MySQL running in docker
 
@@ -109,15 +110,15 @@ any changes.
 
 ### Access site
 
-After following the instructions for running the app above, go to `localhost:8080`. Then, log in with the details below:
+After following the instructions for running the app above, go to `localhost:8080`. Log in with the details below:
 - Username: `user`
 - Password: `password`
 
 ### Fixing Lombok errors
 
-You may find lots of errors for things like the log statements, or the entities not having constructors. 
-You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
-Other common errors and solutions are also in the troubleshooting page.
+You may find many errors for things like the log statements, or the entities not having constructors. 
+You can find instructions on how to fix these errors for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+Other common errors and solutions are in the troubleshooting page.
 
 ### Access database
 
