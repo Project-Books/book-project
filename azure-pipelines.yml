@@ -36,7 +36,8 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    goals: 'org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report'
+    sonarQubeRunAnalysis: true
 - task: ReviewApp@0
   inputs:
     resourceName: 'Book Project'
