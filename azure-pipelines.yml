@@ -15,6 +15,18 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'Book Project SonarCloud'
+    organization: 'project-books-1'
+    scannerMode: 'Other'
+    extraProperties: |
+      # Additional properties that will be passed to the scanner, 
+      # Put one key=value per line, example:
+      # sonar.exclusions=**/*.bin
+      
+      sonar.projectKey=project-books_Book-Project
+      sonar.projectName=Book Project
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -25,6 +37,9 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+- task: ReviewApp@0
+  inputs:
+    resourceName: 'Book Project'
 
 - script: |
     bash <(curl -s https://codecov.io/bash)
