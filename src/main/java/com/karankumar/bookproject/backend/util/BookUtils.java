@@ -17,20 +17,27 @@
 
 package com.karankumar.bookproject.backend.util;
 
+import java.util.Optional;
+
 import com.karankumar.bookproject.backend.entity.Book;
 
 public final class BookUtils {
     private BookUtils() {}
 
     public static String combineTitleAndSeries(Book book) {
-        return (bookHasSeriesPosition(book)) ? addSeriesToTitle(book) : book.getTitle();
+        return (bookHasSeriesPosition(book)) ? addSeriesToTitle(book).get() : book.getTitle();
     }
 
     private static boolean bookHasSeriesPosition(Book book) {
         return book.getSeriesPosition() != null && book.getSeriesPosition() > 0;
     }
 
-    private static String addSeriesToTitle(Book book) {
-        return String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
+    private static Optional<String> addSeriesToTitle(Book book) {
+    	String bookTitle = book.getTitle();
+    	Integer bookSeriesPosition = book.getSeriesPosition();
+    	if (bookTitle == null || bookSeriesPosition == null) {
+    		return Optional.empty();
+    	}
+    	return Optional.of(String.format("%s (#%d)", bookTitle, bookSeriesPosition));
     }
 }
