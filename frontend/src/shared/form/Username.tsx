@@ -35,7 +35,7 @@ function Username(props: UsernameProps) {
       required 
       autoFocus 
       error={isInvalid}
-      onChange={(event) => props.onChange(event.target.value)}
+      onChange={(event) => onChange(event.target.value)}
       helperText={areCredentialsInvalid ? 'Please enter a username' : null}
    />
   )
