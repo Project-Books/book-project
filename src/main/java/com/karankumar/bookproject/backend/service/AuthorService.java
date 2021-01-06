@@ -36,7 +36,7 @@ public class AuthorService {
     }
 
     public Optional<Author> findById(Long id) {
-        return Optional.ofNullable(authorRepository.getOne(id));
+        return authorRepository.findById(id);
     }
 
     public List<Author> findAll() {

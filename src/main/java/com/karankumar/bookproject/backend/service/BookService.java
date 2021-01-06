@@ -52,7 +52,7 @@ public class BookService {
     }
 
     public Optional<Book> findById(Long id) {
-        return Optional.ofNullable(bookRepository.getOne(id));
+        return bookRepository.findById(id);
     }
 
     public Optional<Book> save(Book book) {

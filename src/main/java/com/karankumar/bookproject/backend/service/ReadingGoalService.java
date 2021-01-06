@@ -34,7 +34,7 @@ public class ReadingGoalService {
     }
 
     public Optional<ReadingGoal> findById(Long id) {
-        return Optional.ofNullable(goalRepository.getOne(id));
+        return goalRepository.findById(id);
     }
 
     public List<ReadingGoal> findAll() {

@@ -79,7 +79,7 @@ public class PredefinedShelfService {
     }
 
     public Optional<PredefinedShelf> findById(Long id) {
-        return Optional.ofNullable(predefinedShelfRepository.getOne(id));
+        return predefinedShelfRepository.findById(id);
     }
 
     public void save(@NonNull PredefinedShelf shelf) {
