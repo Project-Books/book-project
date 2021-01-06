@@ -36,11 +36,11 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report'
+    goals: 'goal'
     sonarQubeRunAnalysis: true
-- task: ReviewApp@0
+- task: SonarCloudPublish@1
   inputs:
-    resourceName: 'Book Project'
+    pollingTimeoutSec: '300'
 
 - script: |
     bash <(curl -s https://codecov.io/bash)
