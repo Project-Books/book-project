@@ -3,7 +3,7 @@
 ## Reporting a Vulnerability
 
 To report a vulnerability, please email bookproject@madebykarankumar.com. Please do not expose the vulnerability in public, which includes creating a GitHub issue.
-You should expect an acknowledgement within one week. If you do not, please message @knjk04 privately on Gitter.
+You should expect an acknowledgement within one week. If you do not, please message @knjk04 privately on Slack.
 
 When we receive a security vulnerability report, we will prioritise these above all else. If we accept the vulnerability, you should expect to receive weekly reports if you are happy to receive them.
 If we reject the security vulnerability, we will tell you why.
