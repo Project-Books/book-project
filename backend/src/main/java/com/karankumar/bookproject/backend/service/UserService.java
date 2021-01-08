@@ -97,7 +97,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private void authenticateUser(User user) {
+//    private void authenticateUser(User user) {
+    public boolean authenticateUser(User user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         Authentication authResult =
@@ -106,6 +107,8 @@ public class UserService {
         if (authResult.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authResult);
         }
+
+        return authResult.isAuthenticated();
     }
 
     public boolean usernameIsInUse(String username) {

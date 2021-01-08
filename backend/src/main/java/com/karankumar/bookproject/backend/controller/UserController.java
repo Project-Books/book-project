@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -42,4 +43,12 @@ public class UserController {
     public List<User> get() {
         return userService.findAll();
     }
+
+    @GetMapping("/login")
+    public boolean authenticate(@RequestParam(value = "username") String username,
+                                @RequestParam(value = "password") String password) {
+        User user = User.builder().username(username).password(password).build();
+        return userService.authenticateUser(user);
+    }
+
 }
