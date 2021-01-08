@@ -32,6 +32,8 @@ public class PagesRead extends Pages {
         binder.forField(super.getField())
               .withValidator(BookFormValidators.isLessThanOrEqualToMaxPages(),
                       BookFormErrors.MAX_PAGES_ERROR)
+              .withValidator(BookFormValidators.pagesReadIsLessThanOrEqualToPages(getValue()), 
+                      BookFormErrors.READ_GREATER_PAGES_ERROR)
               .bind(Book::getPagesRead, Book::setPagesRead);
     }
 }

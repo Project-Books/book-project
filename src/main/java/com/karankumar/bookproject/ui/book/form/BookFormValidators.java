@@ -49,6 +49,10 @@ public final class BookFormValidators {
         return number -> (number == null || number <= Book.MAX_PAGES);
     }
 
+    public static SerializablePredicate<Integer> pagesReadIsLessThanOrEqualToPages(int numberOfPages){
+        return number -> (number > numberOfPages);
+    }
+
     public static SerializablePredicate<LocalDate> isEndDateAfterStartDate(LocalDate dateStarted) {
         return endDate -> {
             if (dateStarted == null || endDate == null) {
