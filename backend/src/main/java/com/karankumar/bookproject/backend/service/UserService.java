@@ -62,12 +62,12 @@ public class UserService {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        if (usernameIsInUse(user.getUsername())) {
+        if (user.getUsername() != null && usernameIsInUse(user.getUsername())) {
             throw new UserAlreadyRegisteredException(
                     "The username " + user.getUsername() + " is already taken");
         }
 
-        if (emailIsInUse(user.getEmail())) {
+        if (user.getEmail() != null && emailIsInUse(user.getEmail())) {
             throw new UserAlreadyRegisteredException(
                     "A user with the email address " + user.getUsername() + " already exists");
         }
