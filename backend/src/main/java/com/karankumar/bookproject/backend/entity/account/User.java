@@ -66,7 +66,7 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @NotEmpty
+    // Note: this is allowed to be null if a user signs up without a username
     @Length(min = 5, max = 64)
     private String username;
 
@@ -93,11 +93,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-
-    public User(@NonNull String username, @NonNull String password) {
-        this.username = username;
-        this.password = password;
-        roles = new HashSet<>();
-        active = true;
-    }
 }
