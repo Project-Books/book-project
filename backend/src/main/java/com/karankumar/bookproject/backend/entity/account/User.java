@@ -24,6 +24,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
@@ -44,6 +45,7 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -64,13 +66,11 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @NotNull
     @NotEmpty
     @Length(min = 5, max = 64)
     private String username;
 
     // Note: this is allowed to be null if a user signs up without an email
-    @NotEmpty
     // For the RegExp see https://owasp.org/www-community/OWASP_Validation_Regex_Repository
     @Pattern(
             regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$",
@@ -79,7 +79,6 @@ public class User {
     )
     private String email;
 
-    @NotNull
     @NotEmpty
     @PasswordStrengthCheck(PasswordStrength.STRONG)
     private String password;
@@ -94,4 +93,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+
+    public User(@NonNull String username, @NonNull String password) {
+        this.username = username;
+        this.password = password;
+        roles = new HashSet<>();
+        active = true;
+    }
 }
