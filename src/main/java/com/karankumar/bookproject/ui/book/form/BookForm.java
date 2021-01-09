@@ -275,7 +275,7 @@ public class BookForm extends VerticalLayout {
         dateStartedReading.bind(binder);
         dateFinishedReading.bind(binder, dateStartedReading.getValue());
         numberOfPages.bind(binder);
-        pagesRead.bind(binder);
+        pagesRead.bind(binder, numberOfPages.getValue());
         bookGenre.bind(binder);
         rating.bind(binder);
         bookReview.bind(binder);

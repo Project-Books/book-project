@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.ui.book.components.pages;
 
 import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.ui.book.form.BookForm;
 import com.karankumar.bookproject.ui.book.components.FormItem;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
@@ -43,6 +44,4 @@ public abstract class Pages extends FormItem<IntegerField> {
     public Integer getValue() {
         return super.getField().getValue();
     }
-
-    public abstract void bind(Binder<Book> binder);
 }

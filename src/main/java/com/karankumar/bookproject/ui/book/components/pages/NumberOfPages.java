@@ -27,7 +27,6 @@ public class NumberOfPages extends Pages {
         super("Number of pages","Enter the number of pages");
     }
 
-    @Override
     public void bind(Binder<Book> binder) {
         binder.forField(super.getField())
               .withValidator(BookFormValidators.isNumberPositive(),

@@ -50,7 +50,7 @@ public final class BookFormValidators {
     }
 
     public static SerializablePredicate<Integer> pagesReadIsLessThanOrEqualToPages(int numberOfPages){
-        return number -> (number > numberOfPages);
+        return number -> (number == null || number <= numberOfPages);
     }
 
     public static SerializablePredicate<LocalDate> isEndDateAfterStartDate(LocalDate dateStarted) {

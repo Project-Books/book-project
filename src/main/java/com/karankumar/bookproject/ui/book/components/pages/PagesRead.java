@@ -27,12 +27,11 @@ public class PagesRead extends Pages {
         super("Pages read", "Enter the number of pages read");
     }
 
-    @Override
-    public void bind(Binder<Book> binder) {
+    public void bind(Binder<Book> binder, Integer numberOfPages) {
         binder.forField(super.getField())
               .withValidator(BookFormValidators.isLessThanOrEqualToMaxPages(),
                       BookFormErrors.MAX_PAGES_ERROR)
-              .withValidator(BookFormValidators.pagesReadIsLessThanOrEqualToPages(getValue()), 
+              .withValidator(BookFormValidators.pagesReadIsLessThanOrEqualToPages(numberOfPages), 
                       BookFormErrors.READ_GREATER_PAGES_ERROR)
               .bind(Book::getPagesRead, Book::setPagesRead);
     }
