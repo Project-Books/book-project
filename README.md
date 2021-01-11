@@ -135,7 +135,9 @@ If you wish to contribute (thanks!), please first see the [contributing document
 
 ### Help
 
-If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw). Alternatively, you can start a new discussion on our [GitHub Q&A](https://github.com/Project-Books/book-project/discussions/categories/q-a).
+If you need help with anything, feel free to ask in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw) or by starting a new discussion on our [GitHub Q&A](https://github.com/Project-Books/book-project/discussions/categories/q-a).
+
+Both the Slack #help channel and GitHub Q&A discussions are community-driven efforts. While the maintainers try their best to help everyone, it is not always possible. If you're able to help someone else, feel free to do so (much appreciated!).
 
 ## Further information
 
