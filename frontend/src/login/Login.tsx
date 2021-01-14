@@ -18,8 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 import React, {Component} from 'react'
 import './Login.css'
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
 import Password from '../shared/form/Password'
+import Username from '../shared/form/Username';
 import { Link } from "react-router-dom"
 import logo from '../shared/media/logo.png'
 
@@ -45,12 +45,20 @@ class Login extends Component<{}, IState> {
     }
 
     this.onPasswordChanged = this.onPasswordChanged.bind(this)
+    this.onUsernameChanged = this.onUsernameChanged.bind(this);
     this.onClickLogin = this.onClickLogin.bind(this)
   }
 
   onClickLogin() {
     this.setState({
       areCredentialsInvalid: this.state.username === '' && this.state.password === ''
+    })
+  }
+
+  onUsernameChanged(username: string) {
+    this.setState({
+      username,
+      isUsernameDirty: true
     })
   }
 
@@ -63,7 +71,7 @@ class Login extends Component<{}, IState> {
     const isUsernameDirtyAndBlank = this.state.username === '' && this.state.isUsernameDirty
     return isUsernameDirtyAndBlank || this.state.areCredentialsInvalid
   }
-
+  
   render() {
     return (
       <div >
@@ -74,21 +82,12 @@ class Login extends Component<{}, IState> {
           <br />
 
           <div className="login-form">
-            <TextField 
-              id="standard-basic" 
-              className="login" 
-              label="Username" 
-              variant="outlined" 
-              required 
-              autoFocus 
-              error={this.isUsernameInvalid()}
-              onChange={event => {
-                this.setState({
-                  username: event.target.value,
-                  isUsernameDirty: true
-                })
-              }}
-              helperText={this.state.areCredentialsInvalid ? 'Please enter a username' : null}
+            <Username 
+              fieldName="Username"
+              class="login"
+              isInvalid={this.isUsernameInvalid()}
+              onChange={this.onUsernameChanged}
+              areCredentialsInvalid={this.state.areCredentialsInvalid}
             />
 
             <br />
