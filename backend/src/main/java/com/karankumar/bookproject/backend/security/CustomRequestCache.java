@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.security;
+package com.karankumar.bookproject.backend.security;
 
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 

@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity.account;
+package com.karankumar.bookproject.backend.model.account;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
@@ -45,7 +44,6 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.HashSet;
 import java.util.Set;
 
 /**

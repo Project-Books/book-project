@@ -15,48 +15,39 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
+package com.karankumar.bookproject.backend.model;
 
-package com.karankumar.bookproject.backend.entity;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 
+import java.util.Set;
+
+/**
+ * A Tag represents a user-defined identifier for a particular book (e.g. 'all-time-favourites')
+ */
 @Entity
 @Data
+@JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(callSuper = true)
-public class ReadingGoal extends BaseEntity {
-    public enum GoalType {
-        PAGES("Pages"),
-        BOOKS("Books");
+@EqualsAndHashCode(callSuper = true, exclude = "books")
+public class Tag extends BaseEntity {
 
-        private final String type;
 
-        GoalType(String goalType) {
-            this.type = goalType;
-        }
+    @Column(unique = true)
+    private String name;
 
-        @Override
-        public String toString() {
-            return type;
-        }
-    }
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
+    private Set<Book> books;
 
-    /**
-     * Target represents either the number of pages or books the user wants to read
-     */
-    @Min(value = 1) private int target;
-
-    @NotNull private GoalType goalType;
-
-    public ReadingGoal(@Min(value = 1) int target, @NotNull GoalType goalType) {
-        this.target = target;
-        this.goalType = goalType;
+    public Tag(String name) {
+        this.name = name;
     }
 }

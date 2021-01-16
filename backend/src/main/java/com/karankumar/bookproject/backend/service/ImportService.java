@@ -18,11 +18,11 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.RatingScale;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

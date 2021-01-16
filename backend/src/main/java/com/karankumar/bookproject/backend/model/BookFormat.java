@@ -15,28 +15,23 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.security;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
+package com.karankumar.bookproject.backend.model;
 
-import static java.util.stream.Collectors.toUnmodifiableList;
+public enum BookFormat {
+    // This should be kept in alphabetical order
+    EBOOK("eBook"),
+    HARDBACK("Hardback"),
+    PAPERBACK("Paperback");
 
-@Component
-public class UserDetailsMapper {
-    public User toUserDetails(com.karankumar.bookproject.backend.entity.account.User user) {
-        return new User(
-                user.getUsername(),
-                user.getPassword(),
-                user.isActive(),
-                true,
-                true,
-                true,
-                user.getRoles()
-                    .stream()
-                    .map(role -> new SimpleGrantedAuthority(role.getRole()))
-                    .collect(toUnmodifiableList())
-        );
+    private final String format;
+
+    BookFormat(String format) {
+        this.format = format;
+    }
+
+    @Override
+    public String toString() {
+        return format;
     }
 }

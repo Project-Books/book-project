@@ -14,7 +14,7 @@
 
 package com.karankumar.bookproject.backend.controller;
 
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

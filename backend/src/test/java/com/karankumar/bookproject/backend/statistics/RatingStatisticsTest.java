@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.backend.statistics;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;

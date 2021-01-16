@@ -15,22 +15,40 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.util;
+package com.karankumar.bookproject.backend.model;
 
-import com.karankumar.bookproject.backend.model.Book;
+import lombok.Getter;
 
-public final class BookUtils {
-    private BookUtils() {}
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import java.util.Objects;
 
-    public static String combineTitleAndSeries(Book book) {
-        return (bookHasSeriesPosition(book)) ? addSeriesToTitle(book) : book.getTitle();
+@MappedSuperclass
+public abstract class BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Getter
+    private Long id;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BaseEntity that = (BaseEntity) o;
+
+        return Objects.equals(id, that.id);
     }
 
-    private static boolean bookHasSeriesPosition(Book book) {
-        return book.getSeriesPosition() != null && book.getSeriesPosition() > 0;
-    }
-
-    private static String addSeriesToTitle(Book book) {
-        return String.format("%s (#%d)", book.getTitle(), book.getSeriesPosition());
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

@@ -15,40 +15,24 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.security.jwt;
 
+import com.google.common.net.HttpHeaders;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import java.util.Objects;
+@ConfigurationProperties("application.jwt")
+@NoArgsConstructor
+@Getter
+@Setter
+public class JwtConfig {
+    private String secretKey;
+    private String tokenPrefix;
+    private Integer tokenExpirationAfterDays;
 
-@MappedSuperclass
-public abstract class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Getter
-    private Long id;
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        BaseEntity that = (BaseEntity) o;
-
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+    public String getAuthorizationHeader() {
+        return HttpHeaders.AUTHORIZATION;
     }
 }

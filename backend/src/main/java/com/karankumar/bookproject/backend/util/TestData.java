@@ -17,13 +17,13 @@
 
 package com.karankumar.bookproject.backend.util;
 
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.BookGenre;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.Publisher;
-import com.karankumar.bookproject.backend.entity.RatingScale;
-import com.karankumar.bookproject.backend.entity.Tag;
+import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.BookGenre;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.Publisher;
+import com.karankumar.bookproject.backend.model.RatingScale;
+import com.karankumar.bookproject.backend.model.Tag;
 
 import java.time.LocalDate;
 import java.util.Arrays;

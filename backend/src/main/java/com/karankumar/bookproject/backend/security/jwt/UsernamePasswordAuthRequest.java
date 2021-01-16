@@ -15,23 +15,16 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
+package com.karankumar.bookproject.backend.security.jwt;
 
-package com.karankumar.bookproject.backend.entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public enum BookFormat {
-    // This should be kept in alphabetical order
-    EBOOK("eBook"),
-    HARDBACK("Hardback"),
-    PAPERBACK("Paperback");
-
-    private final String format;
-
-    BookFormat(String format) {
-        this.format = format;
-    }
-
-    @Override
-    public String toString() {
-        return format;
-    }
+@NoArgsConstructor
+@Getter
+@Setter
+public class UsernamePasswordAuthRequest {
+    private String username;
+    private String password;
 }

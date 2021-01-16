@@ -16,34 +16,47 @@
  */
 
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.karankumar.bookproject.backend.entity.account.User;
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.util.Set;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@JsonIgnoreProperties(value = {"id", "books"})
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CustomShelf extends Shelf {
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customShelf")
-    @Getter
-    @Setter
-    protected Set<Book> books;
+@EqualsAndHashCode(callSuper = true)
+public class ReadingGoal extends BaseEntity {
+    public enum GoalType {
+        PAGES("Pages"),
+        BOOKS("Books");
 
-    public CustomShelf(String shelfName, User user) {
-        super(shelfName, user);
+        private final String type;
+
+        GoalType(String goalType) {
+            this.type = goalType;
+        }
+
+        @Override
+        public String toString() {
+            return type;
+        }
     }
 
-    public void setShelfName(String shelfName) {
-        super.shelfName = shelfName;
+    /**
+     * Target represents either the number of pages or books the user wants to read
+     */
+    @Min(value = 1) private int target;
+
+    @NotNull private GoalType goalType;
+
+    public ReadingGoal(@Min(value = 1) int target, @NotNull GoalType goalType) {
+        this.target = target;
+        this.goalType = goalType;
     }
 }

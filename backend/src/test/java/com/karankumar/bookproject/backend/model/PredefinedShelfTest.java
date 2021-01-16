@@ -15,11 +15,11 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.model;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
 
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;

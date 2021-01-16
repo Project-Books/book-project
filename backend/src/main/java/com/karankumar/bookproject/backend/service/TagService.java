@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.Tag;
+import com.karankumar.bookproject.backend.model.Tag;
 import com.karankumar.bookproject.backend.repository.TagRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;

@@ -15,46 +15,35 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
+
+package com.karankumar.bookproject.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.karankumar.bookproject.backend.model.account.User;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
-@Data
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "books")
-public class Publisher extends BaseEntity {
+public class CustomShelf extends Shelf {
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customShelf")
+    @Getter
+    @Setter
+    protected Set<Book> books;
 
-    @NotNull
-    @NotBlank
-    @Column(unique = true)
-    private String name;
-
-
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "publishers")
-    private Set<Book> books;
-
-    public Publisher(@NotNull @NotBlank String name) {
-        this.name = name;
+    public CustomShelf(String shelfName, User user) {
+        super(shelfName, user);
     }
 
-    @Override
-    public String toString() {
-        return this.name;
+    public void setShelfName(String shelfName) {
+        super.shelfName = shelfName;
     }
 }

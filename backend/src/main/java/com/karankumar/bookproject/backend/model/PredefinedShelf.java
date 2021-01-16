@@ -15,10 +15,10 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.account.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

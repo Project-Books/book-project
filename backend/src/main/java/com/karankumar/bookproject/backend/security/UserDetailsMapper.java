@@ -15,33 +15,28 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity.account;
+package com.karankumar.bookproject.backend.security;
 
-import com.karankumar.bookproject.backend.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import static java.util.stream.Collectors.toUnmodifiableList;
 
-/**
- * Represents a single Role
- */
-@Entity
-@Builder
-@Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@ToString
-public class Role extends BaseEntity {
-    @NotNull
-    @NotEmpty
-    private String role;
+@Component
+public class UserDetailsMapper {
+    public User toUserDetails(com.karankumar.bookproject.backend.model.account.User user) {
+        return new User(
+                user.getUsername(),
+                user.getPassword(),
+                user.isActive(),
+                true,
+                true,
+                true,
+                user.getRoles()
+                    .stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getRole()))
+                    .collect(toUnmodifiableList())
+        );
+    }
 }

@@ -17,10 +17,10 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.Shelf;
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
@@ -28,7 +28,6 @@ import com.karankumar.bookproject.backend.repository.PublisherRepository;
 import com.karankumar.bookproject.backend.repository.TagRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -38,10 +37,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getBooksInPredefinedShelves;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getPredefinedShelfName;
 import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;

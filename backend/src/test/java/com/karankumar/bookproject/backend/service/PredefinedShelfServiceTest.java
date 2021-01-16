@@ -18,8 +18,8 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
 import static org.assertj.core.api.Assertions.assertThat;

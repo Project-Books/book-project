@@ -15,33 +15,31 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.security;
+package com.karankumar.bookproject.backend.security;
 
-import com.karankumar.bookproject.backend.entity.account.User;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsPasswordService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DatabaseUserDetailsPasswordService implements UserDetailsPasswordService {
+public class DatabaseUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserDetailsMapper userDetailsMapper;
 
-    public DatabaseUserDetailsPasswordService(UserRepository userRepository,
-                                              UserDetailsMapper userDetailsMapper) {
+    public DatabaseUserDetailsService(UserRepository userRepository,
+                                      UserDetailsMapper userDetailsMapper) {
         this.userRepository = userRepository;
         this.userDetailsMapper = userDetailsMapper;
     }
 
     @Override
-    public UserDetails updatePassword(UserDetails userDetails, String newPassword) {
-        User user = userRepository.findByUsername(userDetails.getUsername())
-                                  .orElseThrow(() -> new UsernameNotFoundException(
-                                          "User with the username " + userDetails.getUsername() +
-                                                  " was not found."));
-        user.setPassword(newPassword);
-        return userDetailsMapper.toUserDetails(user);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                             .map(userDetailsMapper::toUserDetails)
+                             .orElseThrow(() -> new UsernameNotFoundException(
+                                     "User with the username " + username + " was not found."));
     }
+
 }

@@ -15,37 +15,33 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
+package com.karankumar.bookproject.backend.model.account;
 
-package com.karankumar.bookproject.backend.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.BaseEntity;
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Entity;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@MappedSuperclass
-@Getter
-@ToString
+/**
+ * Represents a single Role
+ */
+@Entity
+@Builder
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Shelf extends BaseEntity {
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class Role extends BaseEntity {
     @NotNull
-    @JsonIgnore
-    protected User user;
-
-    protected String shelfName;
-
-    protected Shelf(String shelfName, User user) {
-        this.shelfName = shelfName;
-        this.user = user;
-    }
+    @NotEmpty
+    private String role;
 }

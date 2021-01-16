@@ -16,7 +16,7 @@
  */
 
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.model;
 
 public enum BookGenre {
     // This should be kept in alphabetical order

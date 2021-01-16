@@ -15,39 +15,37 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+package com.karankumar.bookproject.backend.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.karankumar.bookproject.backend.model.account.User;
 import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 
-import java.util.Set;
-
-/**
- * A Tag represents a user-defined identifier for a particular book (e.g. 'all-time-favourites')
- */
-@Entity
-@Data
-@JsonIgnoreProperties(value = {"id", "books"})
+@MappedSuperclass
+@Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(callSuper = true, exclude = "books")
-public class Tag extends BaseEntity {
+public abstract class Shelf extends BaseEntity {
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @NotNull
+    @JsonIgnore
+    protected User user;
 
+    protected String shelfName;
 
-    @Column(unique = true)
-    private String name;
-
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
-    private Set<Book> books;
-
-    public Tag(String name) {
-        this.name = name;
+    protected Shelf(String shelfName, User user) {
+        this.shelfName = shelfName;
+        this.user = user;
     }
 }

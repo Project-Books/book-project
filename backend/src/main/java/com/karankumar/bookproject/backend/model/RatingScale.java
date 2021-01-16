@@ -16,7 +16,7 @@
  */
 
 
-package com.karankumar.bookproject.backend.entity;
+package com.karankumar.bookproject.backend.model;
 
 import lombok.extern.java.Log;
 

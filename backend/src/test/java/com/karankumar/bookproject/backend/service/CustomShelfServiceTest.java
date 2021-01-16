@@ -18,9 +18,9 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.Shelf;
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import com.karankumar.bookproject.util.SecurityTestUtils;
