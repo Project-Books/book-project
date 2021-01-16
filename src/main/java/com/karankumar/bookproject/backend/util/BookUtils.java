@@ -21,18 +21,22 @@ import java.util.Optional;
 
 import com.karankumar.bookproject.backend.entity.Book;
 
+import lombok.NonNull;
+
 public final class BookUtils {
     private BookUtils() {}
 
     public static String combineTitleAndSeries(Book book) {
-        return (bookHasSeriesPosition(book)) ? addSeriesToTitle(book).get() : book.getTitle();
+    	Optional<String> titleWithSeries = addSeriesToTitle(book);
+        return (bookHasSeriesPosition(book) && titleWithSeries.isPresent()) ?
+        		titleWithSeries.get() : book.getTitle();
     }
 
     private static boolean bookHasSeriesPosition(Book book) {
         return book.getSeriesPosition() != null && book.getSeriesPosition() > 0;
     }
 
-    private static Optional<String> addSeriesToTitle(Book book) {
+    private static Optional<String> addSeriesToTitle(@NonNull Book book) {
     	String bookTitle = book.getTitle();
     	Integer bookSeriesPosition = book.getSeriesPosition();
     	if (bookTitle == null || bookSeriesPosition == null) {

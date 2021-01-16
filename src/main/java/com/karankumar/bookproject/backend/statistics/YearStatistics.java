@@ -77,8 +77,8 @@ public class YearStatistics extends Statistics {
     private double calculateTotalRating() {
         return readBooksThisYear.stream()
                 .mapToDouble(book -> {
-                    Optional<Double> rating = RatingScale.toDouble(book.getRating());
-                    return (rating.isEmpty()) ? 0.0 : rating.get();
+                    return (RatingScale.toDouble(book.getRating()).isEmpty()) ? 0.0 :
+                    		RatingScale.toDouble(book.getRating()).get();
                 })
                 .sum();
     }

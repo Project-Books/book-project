@@ -370,9 +370,7 @@ public class BookForm extends VerticalLayout {
             String shelfName = selectedCustomShelf.getShelfName();
             Optional<CustomShelf> completeCustomShelf =
                     customShelfService.findByShelfNameAndLoggedInUser(shelfName);
-            if (completeCustomShelf.isPresent()) {
-                book.setCustomShelf(completeCustomShelf.get());
-            }
+            completeCustomShelf.ifPresent(book::setCustomShelf);
         }
     }
 
@@ -419,9 +417,7 @@ public class BookForm extends VerticalLayout {
         if (customShelfField.getValue() != null && !customShelfField.getValue().isEmpty()) {
             Optional<CustomShelf> shelf =
                     customShelfService.findByShelfNameAndLoggedInUser(customShelfField.getValue());
-            if (shelf.isPresent()) {
-                book.setCustomShelf(shelf.get());
-            }
+            shelf.ifPresent(book::setCustomShelf);
         }
 
         if (seriesPosition.getValue() != null && seriesPosition.getValue() > 0) {

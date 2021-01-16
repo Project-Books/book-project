@@ -91,19 +91,19 @@ public class PredefinedShelfService {
     }
 
     public PredefinedShelf findToReadShelf() {
-        return findByPredefinedShelfNameAndLoggedInUser(TO_READ).get();
+        return findByPredefinedShelfNameAndLoggedInUser(TO_READ).orElse(null);
     }
 
     public PredefinedShelf findReadingShelf() {
-        return findByPredefinedShelfNameAndLoggedInUser(READING).get();
+        return findByPredefinedShelfNameAndLoggedInUser(READING).orElse(null);
     }
 
     public PredefinedShelf findReadShelf() {
-        return findByPredefinedShelfNameAndLoggedInUser(READ).get();
+        return findByPredefinedShelfNameAndLoggedInUser(READ).orElse(null);
     }
 
     public PredefinedShelf findDidNotFinishShelf() {
-        return findByPredefinedShelfNameAndLoggedInUser(DID_NOT_FINISH).get();
+        return findByPredefinedShelfNameAndLoggedInUser(DID_NOT_FINISH).orElse(null);
     }
 
     public Optional<PredefinedShelf> findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName shelfName) {
@@ -188,11 +188,16 @@ public class PredefinedShelfService {
     }
 
     public Optional<PredefinedShelf> getPredefinedShelfByNameAsString(String shelfName) {
-        return Optional.ofNullable(findAllForLoggedInUser()
+        List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
                 .stream()
                 .filter(shelf -> shelf.getShelfName().equals(shelfName))
-                .collect(Collectors.toList())
-                .get(0)); // there should only be one
+                .collect(Collectors.toList());
+        
+        if (shelfFound.isEmpty()) {
+        	return Optional.empty();
+        }
+        
+        return Optional.of(shelfFound.get(0)); // there should only be one
     }
 
 	/**
@@ -204,14 +209,17 @@ public class PredefinedShelfService {
 		}
 
         Optional<ShelfName> predefinedShelfName = getPredefinedShelfName(chosenShelf);
-        
         if (predefinedShelfName.isEmpty()) {
         	return new HashSet<>();
-        } else {
-        	PredefinedShelf predefinedShelf =
-                    findByPredefinedShelfNameAndLoggedInUser(predefinedShelfName.get()).get();
-        	return predefinedShelf.getBooks();
         }
+        
+    	Optional<PredefinedShelf> predefinedShelf =
+    			findByPredefinedShelfNameAndLoggedInUser(predefinedShelfName.get());
+    	if (predefinedShelf.isEmpty()) {
+    		return new HashSet<>();
+    	}
+    	
+    	return predefinedShelf.get().getBooks();
     }
 
     public Set<Book> getBooksInAllPredefinedShelves() {

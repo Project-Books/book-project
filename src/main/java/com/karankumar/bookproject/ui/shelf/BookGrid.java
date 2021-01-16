@@ -101,9 +101,9 @@ public class BookGrid {
         if (PredefinedShelfUtils.isPredefinedShelf(chosenShelf)) {
             return predefinedShelfService.getPredefinedShelfByNameAsString(chosenShelf)
 					.map(Shelf.class::cast);
-        } else {
-            return customShelfService.getCustomShelfByName(chosenShelf);
         }
+        
+        return customShelfService.getCustomShelfByName(chosenShelf);
     }
 
     private void populateGridWithBooks(Optional<Shelf> shelf, String title, String author) {

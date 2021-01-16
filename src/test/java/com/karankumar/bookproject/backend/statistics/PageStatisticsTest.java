@@ -92,7 +92,8 @@ class PageStatisticsTest {
     void calculateAveragePageLengthCorrectly() {
         int averagePageLength =
                 StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
-        assertThat(pageStatistics.calculateAveragePageLength().get()).isEqualTo(averagePageLength);
+        assertThat(pageStatistics.calculateAveragePageLength())
+        		.contains(new Double(averagePageLength));
     }
 
     @Test

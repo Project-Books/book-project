@@ -154,9 +154,7 @@ public class StatisticTestUtils {
     }
     private static void updateThisYearRating(RatingScale ratingScale) {
         Optional<Double> rating = RatingScale.toDouble(ratingScale);
-        if (rating.isPresent()) {
-            thisYearRating += rating.get();
-        }
+        rating.ifPresent(x -> thisYearRating += x);
     }
 
     public static Book getBookWithLowestRating() {
