@@ -27,7 +27,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -70,12 +69,13 @@ public class JwtUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
+                                            Authentication authResult) {
         String token = Jwts.builder()
             .setSubject(authResult.getName())
             .claim("authorities", authResult.getAuthorities())
             .setIssuedAt(new Date())
-            .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
+            .setExpiration(java.sql.Date.valueOf(
+                    LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays())))
             .signWith(secretKey)
             .compact();
 
