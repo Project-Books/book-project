@@ -18,8 +18,8 @@
 
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.account.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

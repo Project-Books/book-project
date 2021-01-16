@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.util;
 
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.model.Book;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;

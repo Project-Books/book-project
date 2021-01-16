@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;

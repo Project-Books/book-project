@@ -19,7 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.model.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

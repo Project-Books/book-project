@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.util;
 
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 
 public class SecurityTestUtils {

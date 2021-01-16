@@ -18,18 +18,18 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Publisher;
-import com.karankumar.bookproject.backend.entity.Tag;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.BookGenre;
-import com.karankumar.bookproject.backend.entity.BookFormat;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.model.Publisher;
+import com.karankumar.bookproject.backend.model.Tag;
+import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.BookGenre;
+import com.karankumar.bookproject.backend.model.BookFormat;
+import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.RatingScale;
 import org.apache.commons.io.FileUtils;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;

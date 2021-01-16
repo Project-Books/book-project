@@ -18,10 +18,10 @@
 package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.CustomShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;

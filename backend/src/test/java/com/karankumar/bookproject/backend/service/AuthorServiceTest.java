@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
+import com.karankumar.bookproject.backend.model.Author;
 
 import lombok.extern.java.Log;
 import org.junit.jupiter.api.BeforeEach;

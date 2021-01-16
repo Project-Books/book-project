@@ -17,8 +17,8 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.account.Role;
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.account.Role;
+import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import lombok.NonNull;
