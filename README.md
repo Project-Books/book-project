@@ -3,21 +3,22 @@
   </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/github/Project-Books/book-project">
-    <img src="https://travis-ci.com/Project-Books/book-project.svg?branch=master" alt="Build Status"/>
+  <a href="https://dev.azure.com/project-books/Book%20Project/_build/latest?definitionId=2&branchName=master">
+    <img src="https://dev.azure.com/project-books/Book%20Project/_apis/build/status/Project-Books.book-project?branchName=master" alt="Build Status"/>
   </a>
+
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
+
   <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw">
     <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
   </a>
+
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
     <img src="https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab" alt="Code quality" />
   </a>
-  <a href="https://sonarcloud.io/dashboard?id=com.karankumar%3Abook-project">
-     <img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
-  </a>
+
 </p>
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
@@ -135,7 +136,9 @@ If you wish to contribute (thanks!), please first see the [contributing document
 
 ### Help
 
-If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw). Alternatively, you can start a new discussion on our [GitHub Q&A](https://github.com/Project-Books/book-project/discussions/categories/q-a).
+If you need help with anything, feel free to ask in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw) or by starting a new discussion on our [GitHub Q&A](https://github.com/Project-Books/book-project/discussions/categories/q-a).
+
+Both the Slack #help channel and GitHub Q&A discussions are community-driven efforts. While the maintainers try their best to help everyone, it is not always possible. If you're able to help someone else, feel free to do so (much appreciated!).
 
 ## Further information
 
