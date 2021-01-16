@@ -15,19 +15,24 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject;
+package com.karankumar.bookproject.backend.security.jwt;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import com.google.common.net.HttpHeaders;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@SpringBootApplication
-@ConfigurationPropertiesScan
-public class BookProjectApplication extends SpringBootServletInitializer {
+@ConfigurationProperties("application.jwt")
+@NoArgsConstructor
+@Getter
+@Setter
+public class JwtConfig {
+    private String secretKey;
+    private String tokenPrefix;
+    private Integer tokenExpirationAfterDays;
 
-    public static void main(String[] args) {
-        SpringApplication.run(BookProjectApplication.class, args);
+    public String getAuthorizationHeader() {
+        return HttpHeaders.AUTHORIZATION;
     }
-
 }
