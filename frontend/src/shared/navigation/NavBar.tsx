@@ -44,7 +44,11 @@ type NavItemProps = {
 export function NavBar() {
     return (
         <div className="nav-bar">
-            <img src={logo} alt="Logo" id="nav-bar-logo" />
+            <Link to={routes.HOME}>
+                <img src={logo} alt="Logo" id="nav-bar-logo" />
+            </Link>
+
+            <div id="gap-below-logo"></div>
 
             <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS}/>
             <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL}/>

@@ -30,7 +30,7 @@ import * as routes from "./shared/routes"
 function App() {
     return (
         <BrowserRouter>
-            <Route exact path='/' component={Login} />
+            <Route exact path={routes.HOME} component={Login} />
             <Route path={routes.SIGN_IN} component={Login} />
             <Route path={routes.SIGN_UP} component={Register} />
             <Route path={routes.MY_BOOKS} component={MyBooks} />
