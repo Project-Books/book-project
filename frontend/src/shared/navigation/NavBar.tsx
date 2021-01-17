@@ -19,21 +19,26 @@ import React from 'react'
 import './NavBar.css'
 import { ExitToApp, MenuBook, Settings, TrackChanges, TrendingUp } from '@material-ui/icons'
 import logo from '../media/logo/logo-two-lines-white@1x.png'
+import * as routes from '../routes'
+import { Link } from 'react-router-dom'
 
 function NavItem(props: NavItemProps) {
     return (
-        <button>
-            <div className="nav-item">
-                {props.icon}
-                <span className="nav-item-text">{props.itemText}</span>
-            </div>
-        </button>
+        <Link to={props.goTo}>
+            <button>
+                <div className="nav-item">
+                    {props.icon}
+                    <span className="nav-item-text">{props.itemText}</span>
+                </div>
+            </button>
+        </Link>
     )
 }
 
 type NavItemProps = {
     icon: any;
     itemText: string;
+    goTo: string;
 }
 
 export function NavBar() {
@@ -41,14 +46,14 @@ export function NavBar() {
         <div className="nav-bar">
             <img src={logo} alt="Logo" id="nav-bar-logo" />
 
-            <NavItem icon={<MenuBook />} itemText={"My books"}/>
-            <NavItem icon={<TrackChanges />} itemText={"Goal"}/>
-            <NavItem icon={<TrendingUp />} itemText={"Statistics"}/>
+            <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS}/>
+            <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL}/>
+            <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={routes.STATS}/>
 
             <div id="gap"></div>
 
-            <NavItem icon={<Settings />} itemText={"Settings"}/>
-            <NavItem icon={<ExitToApp />} itemText={"Log out"}/>
+            <NavItem icon={<Settings />} itemText={"Settings"} goTo={routes.SETTINGS}/>
+            <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN}/>
         </div>
     )
 }

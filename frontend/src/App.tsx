@@ -22,6 +22,9 @@ import {
 } from "react-router-dom";
 import Register from "./register/Register";
 import MyBooks from "./my-books/MyBooks";
+import Settings from "./settings/Settings";
+import Goal from "./goal/Goal";
+import Stats from "./statistics/Stats";
 
 function App() {
     return (
@@ -30,6 +33,9 @@ function App() {
             <Route path='/sign-in' component={Login} />
             <Route path='/sign-up' component={Register} />
             <Route path='/my-books' component={MyBooks} />
+            <Route path='/goal' component={Goal} />
+            <Route path='/settings' component={Settings} />
+            <Route path='/stats' component={Stats} />
         </BrowserRouter>
     )
 }

@@ -15,22 +15,16 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, { Component } from 'react'
-import { NavBar } from '../shared/navigation/NavBar';
-import './MyBooks.css'
+import React from 'react'
+import { NavBar } from '../shared/navigation/NavBar'
 
-interface IState {
-}
-
-type MyBooksProps = {
-}
-
-class MyBooks extends Component<{}, IState> {
-    render() {
-        return (
+function Settings() {
+    return (
+        <React.Fragment>
             <NavBar />
-        )
-    }
+            {/* <h1>Settings</h1> */}
+        </React.Fragment>
+    )
 }
 
-export default MyBooks;
+export default Settings;
