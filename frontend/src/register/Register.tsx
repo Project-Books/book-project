@@ -19,9 +19,9 @@ import React, { Component } from 'react'
 import './Register.css'
 import Button from '@material-ui/core/Button'
 import Password from '../shared/form/Password'
-import Username from '../shared/form/Username';
+import Username from '../shared/form/Username'
 import { Link } from "react-router-dom"
-import logo from '../shared/media/logo.png'
+import logo from '../shared/media/logo/logo-black.png'
 
 type RegisterProps = {
 }
@@ -137,8 +137,6 @@ class Register extends Component<{}, IState> {
 
           <br />
           <br />
-
-          <Button className="login" component={Link} to="/sign-in">Sign in instead</Button>
 
           <br />
           <br />
