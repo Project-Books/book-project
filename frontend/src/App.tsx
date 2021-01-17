@@ -25,17 +25,18 @@ import MyBooks from "./my-books/MyBooks";
 import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
+import * as routes from "./shared/routes"
 
 function App() {
     return (
         <BrowserRouter>
             <Route exact path='/' component={Login} />
-            <Route path='/sign-in' component={Login} />
-            <Route path='/sign-up' component={Register} />
-            <Route path='/my-books' component={MyBooks} />
-            <Route path='/goal' component={Goal} />
-            <Route path='/settings' component={Settings} />
-            <Route path='/stats' component={Stats} />
+            <Route path={routes.SIGN_IN} component={Login} />
+            <Route path={routes.SIGN_UP} component={Register} />
+            <Route path={routes.MY_BOOKS} component={MyBooks} />
+            <Route path={routes.GOAL} component={Goal} />
+            <Route path={routes.SETTINGS} component={Settings} />
+            <Route path={routes.STATS} component={Stats} />
         </BrowserRouter>
     )
 }

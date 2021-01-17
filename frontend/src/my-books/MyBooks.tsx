@@ -22,9 +22,6 @@ import './MyBooks.css'
 interface IState {
 }
 
-type MyBooksProps = {
-}
-
 class MyBooks extends Component<{}, IState> {
     render() {
         return (
