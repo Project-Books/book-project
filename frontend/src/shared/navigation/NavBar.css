@@ -15,23 +15,43 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Login from "./login/Login";
-import {
-    BrowserRouter,
-    Route,
-} from "react-router-dom";
-import Register from "./register/Register";
-import MyBooks from "./my-books/MyBooks";
-
-function App() {
-    return (
-        <BrowserRouter>
-            <Route exact path='/' component={Login} />
-            <Route path='/sign-in' component={Login} />
-            <Route path='/sign-up' component={Register} />
-            <Route path='/my-books' component={MyBooks} />
-        </BrowserRouter>
-    )
+#nav-bar-logo {
+    padding-bottom: 100px;
+    margin-left: 25px;
 }
 
-export default App;
+.nav-bar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    background-color: #111;
+    padding-top: 50px;
+}
+
+.nav-item {
+    padding-left: 30px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    display: block;
+}
+
+.nav-bar button {
+    background: none;
+    color: white;
+    border: none;
+}
+
+.nav-item-text {
+    margin-left: 15px;
+    font-size: 16px;
+    position: relative;
+    top: -4px;
+}
+
+button:hover {
+    color: #ccc;
+}
+
+#gap {
+    margin-top: 400%;
+}

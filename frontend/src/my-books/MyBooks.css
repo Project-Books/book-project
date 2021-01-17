@@ -14,24 +14,3 @@ PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program.
 If not, see <https://www.gnu.org/licenses/>.
 */
-
-import Login from "./login/Login";
-import {
-    BrowserRouter,
-    Route,
-} from "react-router-dom";
-import Register from "./register/Register";
-import MyBooks from "./my-books/MyBooks";
-
-function App() {
-    return (
-        <BrowserRouter>
-            <Route exact path='/' component={Login} />
-            <Route path='/sign-in' component={Login} />
-            <Route path='/sign-up' component={Register} />
-            <Route path='/my-books' component={MyBooks} />
-        </BrowserRouter>
-    )
-}
-
-export default App;
