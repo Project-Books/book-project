@@ -17,19 +17,19 @@ If not, see <https://www.gnu.org/licenses/>.
 
 #nav-bar-logo {
     padding-bottom: 100px;
-    margin-left: 25px;
+    margin-left: 30px;
 }
 
 .nav-bar {
     height: 100%;
-    width: 200px;
+    width: 180px;
     position: fixed;
     background-color: #111;
     padding-top: 50px;
 }
 
 .nav-item {
-    padding-left: 30px;
+    padding-left: 10px;
     margin-bottom: 15px;
     cursor: pointer;
     display: block;
@@ -53,5 +53,5 @@ button:hover {
 }
 
 #gap {
-    margin-top: 400%;
+    margin-top: 800px;
 }
