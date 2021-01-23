@@ -21,3 +21,5 @@ Open source software we use:
 [Checkstyle](https://github.com/checkstyle/checkstyle) - [GNU LGPL v2.1](https://github.com/checkstyle/checkstyle/blob/master/LICENSE)
 
 [Apache Commons Lang](https://github.com/apache/commons-lang) - [Apache License v2](https://github.com/apache/commons-lang/blob/master/LICENSE.txt)
+
+Special thanks to [JetBrains](https://www.jetbrains.com/?from=bookproject) for supporting our project by providing access to their suite of tools for free.
