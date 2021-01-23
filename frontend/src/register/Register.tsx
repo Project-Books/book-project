@@ -19,7 +19,7 @@ import React, { Component } from 'react'
 import './Register.css'
 import Button from '@material-ui/core/Button'
 import Password from '../shared/form/Password'
-import Username from '../shared/form/Username'
+import EmailAddress from '../shared/form/EmailAddress'
 import { Link } from "react-router-dom"
 import logo from '../shared/media/logo/logo-black.png'
 
@@ -94,8 +94,7 @@ class Register extends Component<{}, IState> {
           <img src={logo} alt="Logo" id="app-logo"/>
 
           <br />
-          <Username 
-              fieldName="Email address"
+          <EmailAddress
               class="login"
               isInvalid={this.state.areCredentialsInvalid}
               onChange={this.onEmailChanged}

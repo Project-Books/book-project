@@ -23,14 +23,13 @@ function EmailAddress(props: EmailProps) {
     onChange,
     areCredentialsInvalid,
     isInvalid,
-    fieldName
   } = props;
 
   return (
     <TextField
       id="standard-basic"
       className={props.class}
-      label={fieldName}
+      label="Email address"
       variant="outlined"
       required
       autoFocus
@@ -42,7 +41,6 @@ function EmailAddress(props: EmailProps) {
 };
 
 type EmailProps = {
-  fieldName: string,
   class?: string,
   isInvalid: boolean,
   onChange: (event: any) => void,

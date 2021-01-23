@@ -19,7 +19,7 @@ import React, {Component} from 'react'
 import './Login.css'
 import Button from '@material-ui/core/Button'
 import Password from '../shared/form/Password'
-import Username from '../shared/form/Username';
+import EmailAddress from '../shared/form/EmailAddress'
 import { Link } from "react-router-dom"
 import logo from '../shared/media/logo/logo-black.png'
 
@@ -82,8 +82,7 @@ class Login extends Component<{}, IState> {
           <br />
 
           <div className="login-form">
-            <Username 
-              fieldName="Email address"
+            <EmailAddress
               class="login"
               isInvalid={this.isEmailInvalid()}
               onChange={this.onEmailChanged}
