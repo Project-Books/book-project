@@ -24,9 +24,9 @@ import { Link } from "react-router-dom"
 import logo from '../shared/media/logo/logo-black.png'
 
 interface IState {
-  username: string,
+  email: string,
   password: string,
-  isUsernameDirty: boolean,
+  isEmailDirty: boolean,
   areCredentialsInvalid: boolean
 }
 
@@ -38,27 +38,27 @@ class Login extends Component<{}, IState> {
     super(props)
 
     this.state = {
-      username: '',
+      email: '',
       password: '',
-      isUsernameDirty: false,
+      isEmailDirty: false,
       areCredentialsInvalid: false
     }
 
     this.onPasswordChanged = this.onPasswordChanged.bind(this)
-    this.onUsernameChanged = this.onUsernameChanged.bind(this);
+    this.onEmailChanged = this.onEmailChanged.bind(this);
     this.onClickLogin = this.onClickLogin.bind(this)
   }
 
   onClickLogin() {
     this.setState({
-      areCredentialsInvalid: this.state.username === '' && this.state.password === ''
+      areCredentialsInvalid: this.state.email === '' && this.state.password === ''
     })
   }
 
-  onUsernameChanged(username: string) {
+  onEmailChanged(email: string) {
     this.setState({
-      username,
-      isUsernameDirty: true
+      email,
+      isEmailDirty: true
     })
   }
 
@@ -67,9 +67,9 @@ class Login extends Component<{}, IState> {
     this.setState({password})
   }
 
-  isUsernameInvalid(): boolean {
-    const isUsernameDirtyAndBlank = this.state.username === '' && this.state.isUsernameDirty
-    return isUsernameDirtyAndBlank || this.state.areCredentialsInvalid
+  isEmailInvalid(): boolean {
+    const isEmailDirtyAndBlank = this.state.email === '' && this.state.isEmailDirty
+    return isEmailDirtyAndBlank || this.state.areCredentialsInvalid
   }
   
   render() {
@@ -83,10 +83,10 @@ class Login extends Component<{}, IState> {
 
           <div className="login-form">
             <Username 
-              fieldName="Username"
+              fieldName="Email address"
               class="login"
-              isInvalid={this.isUsernameInvalid()}
-              onChange={this.onUsernameChanged}
+              isInvalid={this.isEmailInvalid()}
+              onChange={this.onEmailChanged}
               areCredentialsInvalid={this.state.areCredentialsInvalid}
             />
 

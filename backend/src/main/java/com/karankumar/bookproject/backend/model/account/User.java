@@ -26,7 +26,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
 
 import com.karankumar.bookproject.backend.constraints.PasswordStrength;
 import com.karankumar.bookproject.backend.constraints.PasswordStrengthCheck;
@@ -41,7 +40,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
@@ -64,20 +63,16 @@ public class User {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    // Note: this is allowed to be null if a user signs up without a username
-    @Length(min = 5, max = 64)
-    private String username;
-
-    // Note: this is allowed to be null if a user signs up without an email
     // For the RegExp see https://owasp.org/www-community/OWASP_Validation_Regex_Repository
     @Pattern(
             regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$",
             flags = Pattern.Flag.CASE_INSENSITIVE,
             message = "The email must conform to OWASP Validation Regex for email address"
     )
+    @NotBlank
     private String email;
 
-    @NotEmpty
+    @NotBlank
     @PasswordStrengthCheck(PasswordStrength.STRONG)
     private String password;
 

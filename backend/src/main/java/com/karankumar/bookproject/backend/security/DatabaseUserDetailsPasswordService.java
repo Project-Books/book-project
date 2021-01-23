@@ -37,9 +37,9 @@ public class DatabaseUserDetailsPasswordService implements UserDetailsPasswordSe
 
     @Override
     public UserDetails updatePassword(UserDetails userDetails, String newPassword) {
-        User user = userRepository.findByUsername(userDetails.getUsername())
+        User user = userRepository.findByEmail(userDetails.getUsername())
                                   .orElseThrow(() -> new UsernameNotFoundException(
-                                          "User with the username " + userDetails.getUsername() +
+                                          "User with the email " + userDetails.getUsername() +
                                                   " was not found."));
         user.setPassword(newPassword);
         return userDetailsMapper.toUserDetails(user);

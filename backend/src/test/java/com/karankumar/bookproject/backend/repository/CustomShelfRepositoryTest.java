@@ -54,7 +54,7 @@ class CustomShelfRepositoryTest {
     void setUp() {
         user = getTestUser(userRepository);
         createShelvesForUser(user);
-        createShelvesForUser(insertTestUser(userRepository, "anotherUser"));
+        createShelvesForUser(insertTestUser(userRepository));
     }
 
     @Test

@@ -61,22 +61,16 @@ public class UserService {
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
         }
-
-        if (user.getUsername() != null && usernameIsInUse(user.getUsername())) {
-            throw new UserAlreadyRegisteredException(
-                    "The username " + user.getUsername() + " is already taken");
-        }
-
+        
         if (user.getEmail() != null && emailIsInUse(user.getEmail())) {
             throw new UserAlreadyRegisteredException(
-                    "A user with the email address " + user.getUsername() + " already exists");
+                    "A user with the email address " + user.getEmail() + " already exists");
         }
 
         Role userRole = roleRepository.findByRole("USER")
                                       .orElseThrow(() -> new AuthenticationServiceException(
                                               "The default user role could not be found"));
         User userToRegister = User.builder()
-                                  .username(user.getUsername())
                                   .email(user.getEmail())
                                   .password(passwordEncoder.encode(user.getPassword()))
                                   .active(true)
@@ -89,8 +83,8 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsername(username).orElseThrow();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(email).orElseThrow();
     }
 
     public List<User> findAll() {
@@ -99,21 +93,13 @@ public class UserService {
 
     private void authenticateUser(User user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         Authentication authResult =
                 authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         if (authResult.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authResult);
         }
-    }
-
-    public boolean usernameIsInUse(String username) {
-        return userRepository.findByUsername(username).isPresent();
-    }
-
-    public boolean usernameIsNotInUse(String username) {
-        return !usernameIsInUse(username);
     }
 
     public boolean emailIsInUse(String email) {

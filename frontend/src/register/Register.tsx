@@ -27,10 +27,10 @@ type RegisterProps = {
 }
 
 interface IState {
-  username: string,
+  email: string,
   password: string,
   passwordsMatch: boolean,
-  isUsernameDirty: boolean,
+  isEmailDirty: boolean,
   isPasswordDirty: boolean,
   areCredentialsInvalid: boolean
 }
@@ -40,17 +40,17 @@ class Register extends Component<{}, IState> {
     super(props)
 
     this.state = {
-      username: '',
+      email: '',
       password: '',
       passwordsMatch: true,
-      isUsernameDirty: false,
+      isEmailDirty: false,
       isPasswordDirty: false,
       areCredentialsInvalid: false
     }
 
     this.handlePasswordChanged = this.handlePasswordChanged.bind(this)
     this.handleConfirmPasswordChanged = this.handleConfirmPasswordChanged.bind(this)
-    this.onUsernameChanged = this.onUsernameChanged.bind(this);
+    this.onEmailChanged = this.onEmailChanged.bind(this);
     this.onCreateAccountClicked = this.onCreateAccountClicked.bind(this)
   }
 
@@ -68,15 +68,15 @@ class Register extends Component<{}, IState> {
     this.setState({passwordsMatch})
   }
 
-  onUsernameChanged(username: string) {
+  onEmailChanged(email: string) {
     this.setState({
-      username,
-      isUsernameDirty: true
+      email,
+      isEmailDirty: true
     })
   }
 
   onCreateAccountClicked() {
-    const isFieldEmpty = this.state.username === '' || this.state.password === ''
+    const isFieldEmpty = this.state.email === '' || this.state.password === ''
     this.setState({
       areCredentialsInvalid: isFieldEmpty
     })
@@ -95,10 +95,10 @@ class Register extends Component<{}, IState> {
 
           <br />
           <Username 
-              fieldName="Username"
+              fieldName="Email address"
               class="login"
               isInvalid={this.state.areCredentialsInvalid}
-              onChange={this.onUsernameChanged}
+              onChange={this.onEmailChanged}
               areCredentialsInvalid={this.state.areCredentialsInvalid}
             />
          

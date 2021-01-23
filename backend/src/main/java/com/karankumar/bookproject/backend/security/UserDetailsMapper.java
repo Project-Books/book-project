@@ -27,7 +27,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 public class UserDetailsMapper {
     public User toUserDetails(com.karankumar.bookproject.backend.model.account.User user) {
         return new User(
-                user.getUsername(),
+                user.getEmail(),
                 user.getPassword(),
                 user.isActive(),
                 true,
