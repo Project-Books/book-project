@@ -5,5 +5,12 @@ export const theme  = createMuiTheme({
         primary: {
             main: "#000000",
         }
+    },
+    overrides: {
+        MuiButton: {
+            root: {
+                borderRadius: "100px 100px 100px 100px"
+            }
+        }
     }
 })
