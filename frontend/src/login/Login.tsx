@@ -114,8 +114,6 @@ class Login extends Component<{}, IState> {
 
             <br />
             <br />
-            <br />
-            <br />
 
             <Button className="login" id="createAccount" component={Link} to="/sign-up">
               Create account

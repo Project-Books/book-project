@@ -133,10 +133,14 @@ class Register extends Component<{}, IState> {
             color="primary" 
             onClick={this.onCreateAccountClicked}>
               Create account
-            </Button>
+          </Button>
 
           <br />
           <br />
+
+          <Button className="login" id="createAccount" component={Link} to="/sign-in">
+            Sign in instead
+          </Button>
 
           <br />
           <br />
