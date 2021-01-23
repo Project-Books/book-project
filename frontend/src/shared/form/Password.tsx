@@ -16,10 +16,18 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from 'react'
-import { FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core'
+import { FormControl, IconButton, InputAdornment, InputLabel} from '@material-ui/core'
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import {useState} from 'react';
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 
 function Password(props: PasswordProps) {
+  const [showPassword, setShowPassword] = useState(false);
+  function handlePasswordToggle () {
+    setShowPassword(!showPassword)
+  }
+  
   return (
         <FormControl variant="outlined" required>
           <InputLabel htmlFor="outlined-adornment-password">{props.fieldName}</InputLabel>
@@ -27,10 +35,17 @@ function Password(props: PasswordProps) {
             id="outlined-adornment-password"
             className={props.class}
             label={props.fieldName}
+            type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton aria-label="toggle password visibility"></IconButton>
-              </InputAdornment>
+              <IconButton
+                aria-label="toggle password visibility"
+                size="small"
+                onClick={handlePasswordToggle}
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
             }
             onChange={(event) => props.onPasswordChanged(event.target.value)}
             error={props.isInvalid}
