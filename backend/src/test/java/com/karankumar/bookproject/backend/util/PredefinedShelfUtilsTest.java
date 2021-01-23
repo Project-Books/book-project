@@ -18,17 +18,16 @@
 package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getBooksInPredefinedShelves;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getPredefinedShelfName;
 import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.isPredefinedShelf;
@@ -46,8 +45,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @IntegrationTest
 @DisplayName("PredefinedShelfUtils should")

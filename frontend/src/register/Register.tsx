@@ -18,10 +18,10 @@ If not, see <https://www.gnu.org/licenses/>.
 import React, { Component } from 'react'
 import './Register.css'
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
 import Password from '../shared/form/Password'
+import Username from '../shared/form/Username'
 import { Link } from "react-router-dom"
-import logo from '../shared/media/logo.png'
+import logo from '../shared/media/logo/logo-black.png'
 
 type RegisterProps = {
 }
@@ -50,6 +50,7 @@ class Register extends Component<{}, IState> {
 
     this.handlePasswordChanged = this.handlePasswordChanged.bind(this)
     this.handleConfirmPasswordChanged = this.handleConfirmPasswordChanged.bind(this)
+    this.onUsernameChanged = this.onUsernameChanged.bind(this);
     this.onCreateAccountClicked = this.onCreateAccountClicked.bind(this)
   }
 
@@ -65,6 +66,13 @@ class Register extends Component<{}, IState> {
     console.log(`register confirm password: ${password}`)
     const passwordsMatch = password === this.state.password
     this.setState({passwordsMatch})
+  }
+
+  onUsernameChanged(username: string) {
+    this.setState({
+      username,
+      isUsernameDirty: true
+    })
   }
 
   onCreateAccountClicked() {
@@ -86,24 +94,14 @@ class Register extends Component<{}, IState> {
           <img src={logo} alt="Logo" id="app-logo"/>
 
           <br />
-
-          <TextField 
-            id="standard-basic" 
-            className="login" 
-            label="Username" 
-            variant="outlined" 
-            required 
-            autoFocus
-            error={this.state.areCredentialsInvalid}
-            helperText={this.state.areCredentialsInvalid ? 'Please enter a username' : null}
-            onChange={event => {
-              this.setState({
-                username: event.target.value,
-                isUsernameDirty: true
-              })
-            }}
-          />
-
+          <Username 
+              fieldName="Username"
+              class="login"
+              isInvalid={this.state.areCredentialsInvalid}
+              onChange={this.onUsernameChanged}
+              areCredentialsInvalid={this.state.areCredentialsInvalid}
+            />
+         
           <br />
           <br />
           
@@ -135,12 +133,14 @@ class Register extends Component<{}, IState> {
             color="primary" 
             onClick={this.onCreateAccountClicked}>
               Create account
-            </Button>
+          </Button>
 
           <br />
           <br />
 
-          <Button className="login" component={Link} to="/sign-in">Sign in instead</Button>
+          <Button className="login" id="createAccount" component={Link} to="/sign-in">
+            Sign in instead
+          </Button>
 
           <br />
           <br />

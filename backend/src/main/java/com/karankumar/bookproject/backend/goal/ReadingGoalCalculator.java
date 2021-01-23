@@ -18,13 +18,13 @@
 package com.karankumar.bookproject.backend.goal;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.util.DateUtils;
 
 import javax.validation.constraints.NotNull;
 
-import static com.karankumar.bookproject.backend.entity.ReadingGoal.GoalType;
+import static com.karankumar.bookproject.backend.model.ReadingGoal.GoalType;
 import static com.karankumar.bookproject.backend.util.DateUtils.WEEKS_IN_YEAR;
 
 public final class ReadingGoalCalculator {

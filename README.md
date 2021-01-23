@@ -3,20 +3,22 @@
   </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/github/Project-Books/book-project">
-    <img src="https://travis-ci.com/Project-Books/book-project.svg?branch=master" alt="Build Status"/>
+	
+   <a href="https://dev.azure.com/project-books/Book%20Project/_build/latest?definitionId=2&branchName=0.2.0">
+    <img src="https://dev.azure.com/project-books/Book%20Project/_apis/build/status/Project-Books.book-project?branchName=0.2.0" alt="Build Status"/>
   </a>
+
+	
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
+	
   <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw">
     <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
   </a>
+	
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
     <img src="https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab" alt="Code quality" />
-  </a>
-  <a href="https://sonarcloud.io/dashboard?id=com.karankumar%3Abook-project">
-     <img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
   </a>
 </p>
 
@@ -77,7 +79,8 @@ First, clone the repository.
 ### Running the frontend
 
 1. Navigate to the `frontend/` directory
-2. Run `yarn start`
+2. Run `yarn install` to install the dependencies
+3. Run `yarn start` to start the development server
 3. Open `localhost:3000`
 
 ### Running the backend

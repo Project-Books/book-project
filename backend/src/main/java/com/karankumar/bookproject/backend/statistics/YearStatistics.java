@@ -17,8 +17,8 @@
 
 package com.karankumar.bookproject.backend.statistics;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
 import java.time.LocalDate;

@@ -17,8 +17,8 @@
 
 package com.karankumar.bookproject.backend.util;
 
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -21,8 +21,8 @@ import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.calc
 import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.howFarAheadOrBehindSchedule;
 import static com.karankumar.bookproject.backend.goal.ReadingGoalCalculator.booksToReadFromStartOfYear;
 
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
+import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.util.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
