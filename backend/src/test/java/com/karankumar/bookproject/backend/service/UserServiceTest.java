@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
+import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,7 +52,6 @@ class UserServiceTest {
     private final RoleRepository roleRepository;
 
     private final User validUser = User.builder()
-                                       .username("validUser")
                                        .email("valid@testmail.com")
                                        .password("aaaaAAAA1234@")
                                        .build();
@@ -68,7 +67,6 @@ class UserServiceTest {
     @Test
     void throwExceptionOnRegisterWithBeanViolations() {
         final User invalidUser = User.builder()
-                                     .username("testuser")
                                      .email("testmail")
                                      .password("invalidpassword")
                                      .build();
@@ -78,18 +76,8 @@ class UserServiceTest {
     }
 
     @Test
-    void throwExceptionOnRegisterWithUsernameTaken() {
-        userRepository.save(validUser);
-        validUser.setEmail("anotherEmail@testmail.com");
-
-        assertThatThrownBy(() -> userService.register(validUser))
-                .isInstanceOf(UserAlreadyRegisteredException.class);
-    }
-
-    @Test
     void throwExceptionOnRegisterWithEmailTaken() {
         userRepository.save(validUser);
-        validUser.setUsername("anotherUsername");
 
         assertThatThrownBy(() -> userService.register(validUser))
                 .isInstanceOf(UserAlreadyRegisteredException.class);
@@ -117,7 +105,7 @@ class UserServiceTest {
         userService.register(validUser);
 
         // then
-        assertThat(userRepository.findByUsername(validUser.getUsername())).isPresent();
+        assertThat(userRepository.findByEmail(validUser.getEmail())).isPresent();
     }
 
     @Test
@@ -127,30 +115,6 @@ class UserServiceTest {
 
         assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
                 .isTrue();
-    }
-
-    @Test
-    void correctlyReportUsernameIsNotInUse() {
-        assertThat(userService.usernameIsInUse("notAtestuser")).isFalse();
-    }
-
-    @Test
-    void correctlyReportUsernameIsInUse() {
-        userRepository.save(validUser);
-        assertThat(userService.usernameIsInUse(validUser.getUsername())).isTrue();
-    }
-
-    @Test
-    void correctlyReportIfUserNameIsNotInUseWithUsernameNotInUse() {
-        assertThat(userService.usernameIsNotInUse("testuser")).isTrue();
-    }
-
-    @Test
-    @Transactional
-    void correctlyReportIfUsernameIsNotInUseWithUsernameInUse() {
-        userRepository.save(validUser);
-
-        assertThat(userService.usernameIsNotInUse(validUser.getUsername())).isFalse();
     }
 
     @Test
@@ -180,14 +144,14 @@ class UserServiceTest {
     @Test
     void getLoggedUser() {
         // given
-        Optional<User> dbUser = userRepository.findByUsername(TEST_USER_NAME);
+        Optional<User> dbUser = userRepository.findByEmail(TEST_USER_EMAIL);
 
         // when
         User currentUser = userService.getCurrentUser();
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(currentUser.getUsername()).isEqualTo(TEST_USER_NAME);
+            softly.assertThat(currentUser.getEmail()).isEqualTo(TEST_USER_EMAIL);
             softly.assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
         });
     }
@@ -197,9 +161,9 @@ class UserServiceTest {
         // given
         List<User> users = Arrays.asList(
                 getTestUser(userRepository),
-                insertTestUser(userRepository, "test1"),
-                insertTestUser(userRepository, "test2"),
-                insertTestUser(userRepository, "test3")
+                insertTestUser(userRepository),
+                insertTestUser(userRepository),
+                insertTestUser(userRepository)
         );
 
         // when

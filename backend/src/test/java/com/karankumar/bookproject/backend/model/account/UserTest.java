@@ -59,7 +59,6 @@ class UserTest {
 
     private User.UserBuilder userWithoutPassword() {
         return User.builder()
-                   .username("username")
                    .email("email");
     }
 
@@ -121,14 +120,8 @@ class UserTest {
     }
 
     private User.UserBuilder userWithEmailWithoutDomain() {
-        return userWithoutEmail()
-                .email("email");
-    }
-
-    private User.UserBuilder userWithoutEmail() {
         return User.builder()
-                   .username("username")
-                   .password("passwordP1&");
+                   .email("email");
     }
 
     @Test
@@ -144,8 +137,8 @@ class UserTest {
     }
 
     private User.UserBuilder userWithEmailWithoutAt() {
-        return userWithoutEmail()
-                .email("emailgoogle.com");
+        return User.builder()
+                   .email("emailgoogle.com");
     }
 
     @Test
@@ -161,7 +154,7 @@ class UserTest {
     }
 
     private User.UserBuilder userWithEmailWithoutTopLevelDomain() {
-        return userWithoutEmail()
+        return User.builder()
                 .email("email@def");
     }
 
@@ -178,7 +171,7 @@ class UserTest {
     }
 
     private User.UserBuilder userWithEmailWithoutLocalPart() {
-        return userWithoutEmail()
+        return User.builder()
                 .email("@def.com");
     }
 
@@ -195,7 +188,7 @@ class UserTest {
     }
 
     private User.UserBuilder userWithEmailWithSpace() {
-        return userWithoutEmail()
+        return User.builder()
                 .email(" @def.org");
     }
 
@@ -212,6 +205,7 @@ class UserTest {
     }
 
     private User.UserBuilder userWithEmailWithQuotes() {
-        return userWithoutEmail().email("\"abc@def.org");
+        return User.builder()
+                   .email("\"abc@def.org");
     }
 }

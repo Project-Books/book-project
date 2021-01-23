@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
+import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assumptions.assumeThat;
@@ -110,8 +110,8 @@ class CustomShelfServiceTest {
                     .containsExactlyInAnyOrderElementsOf(SHELF_NAMES);
             softly.assertThat(shelves)
                     .extracting(CustomShelf::getUser)
-                    .extracting(User::getUsername)
-                    .allMatch(username -> username.equals(TEST_USER_NAME));
+                    .extracting(User::getEmail)
+                    .allMatch(email -> email.equals(TEST_USER_EMAIL));
         });
     }
 
