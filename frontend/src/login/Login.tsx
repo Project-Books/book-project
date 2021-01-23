@@ -83,7 +83,7 @@ class Login extends Component<{}, IState> {
 
           <div className="login-form">
             <Username 
-              fieldName="Email addresss"
+              fieldName="Email address"
               class="login"
               isInvalid={this.isEmailInvalid()}
               onChange={this.onEmailChanged}
