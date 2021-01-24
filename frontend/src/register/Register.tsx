@@ -22,6 +22,8 @@ import Password from '../shared/form/Password'
 import EmailAddress from '../shared/form/EmailAddress'
 import { Link } from "react-router-dom"
 import logo from '../shared/media/logo/logo-black.png'
+import Verb from '../shared/http/verb'
+import Endpoints from '../shared/api/endpoints'
 
 type RegisterProps = {
 }
@@ -55,7 +57,6 @@ class Register extends Component<{}, IState> {
   }
 
   handlePasswordChanged(password: string) {
-    console.log(`register password: ${password}`)
     this.setState({
       password,
       isPasswordDirty: true
@@ -63,7 +64,6 @@ class Register extends Component<{}, IState> {
   }
 
   handleConfirmPasswordChanged(password: string) {
-    console.log(`register confirm password: ${password}`)
     const passwordsMatch = password === this.state.password
     this.setState({passwordsMatch})
   }
@@ -80,6 +80,29 @@ class Register extends Component<{}, IState> {
     this.setState({
       areCredentialsInvalid: isFieldEmpty
     })
+
+
+    if (!this.state.areCredentialsInvalid) {
+      this.sendRegisterRequest()
+    }
+  }
+
+  sendRegisterRequest(): void {
+      const requestOptions = {
+        method: Verb.POST,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password
+        })
+      }
+
+      fetch(Endpoints.register, requestOptions)
+        .then(response => response.json())
+        .then(data => console.log('data: ', data))
+        .catch(error => console.log('error: ', error))
   }
 
   isPasswordInvalid(): boolean {
