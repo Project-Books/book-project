@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from 'react'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@material-ui/core/TextField'
 
 function EmailAddress(props: EmailProps) {
   const {
@@ -26,17 +26,19 @@ function EmailAddress(props: EmailProps) {
   } = props;
 
   return (
-    <TextField
-      id="standard-basic"
-      className={props.class}
-      label="Email address"
-      variant="outlined"
-      required
-      autoFocus
-      error={isInvalid}
-      onChange={(event) => onChange(event.target.value)}
-      helperText={areCredentialsInvalid && 'Please enter an email address'}
-   />
+    <div className="rounded">
+      <TextField
+        id="standard-basic"
+        className={props.class}
+        label="Email address"
+        variant="outlined"
+        required
+        autoFocus
+        error={isInvalid}
+        onChange={(event) => onChange(event.target.value)}
+        helperText={areCredentialsInvalid && 'Please enter an email address'}
+    />
+    </div>
   )
 };
 

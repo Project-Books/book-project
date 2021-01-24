@@ -90,7 +90,6 @@ class Login extends Component<{}, IState> {
             />
 
             <br />
-            <br />
 
             <Password 
               fieldName={'Password'} 

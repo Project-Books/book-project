@@ -102,7 +102,6 @@ class Register extends Component<{}, IState> {
             />
          
           <br />
-          <br />
           
           <Password 
             fieldName={'Password'} 

@@ -33,7 +33,7 @@ function Password(props: PasswordProps) {
           <InputLabel htmlFor="outlined-adornment-password">{props.fieldName}</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
-            className={props.class}
+            className={props.class + " rounded"}
             label={props.fieldName}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
