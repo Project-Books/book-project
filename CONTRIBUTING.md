@@ -4,7 +4,7 @@ Thank you for taking an interest in contributing!
 
 Please note that by contributing to this project, you are expected to adhere to this contributing document. Please also ensure that you remain familiar with this contributing document as it may change from time to time. 
 
-Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/README.md). 
+Multiple versions of this document may exist, so please always refer to the [version on the 0.2.0 branch](https://github.com/Project-Books/book-project/blob/0.2.0/CONTRIBUTING.md) if your issue is related to this release. 
 
 ## Code of Conduct
 
