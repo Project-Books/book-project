@@ -14,6 +14,8 @@ Readable code is preferred over code that strictly follows this guide.
 
 Where useful, a short summary explaining why the guideline is in place is included to help explain the rationale behind having it.
 
+Please note that we're using Yarn as our package manager, not npm.
+
 ## Files
 
 ### Include copyright notice
