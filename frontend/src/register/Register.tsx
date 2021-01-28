@@ -15,15 +15,17 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, { Component } from 'react'
-import './Register.css'
-import Button from '@material-ui/core/Button'
-import Password from '../shared/form/Password'
-import EmailAddress from '../shared/form/EmailAddress'
-import { Link } from "react-router-dom"
-import logo from '../shared/media/logo/logo-black.png'
-import Verb from '../shared/http/verb'
-import Endpoints from '../shared/api/endpoints'
+import Button from '@material-ui/core/Button';
+import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+import zxcvbn from 'zxcvbn';
+import Endpoints from '../shared/api/endpoints';
+import EmailAddress from '../shared/form/EmailAddress';
+import Password from '../shared/form/Password';
+import PasswordStrengthMeter from '../shared/form/PasswordStrengthMeter';
+import Verb from '../shared/http/verb';
+import logo from '../shared/media/logo/logo-black.png';
+import './Register.css';
 
 type RegisterProps = {
 }
@@ -32,6 +34,7 @@ interface IState {
   email: string,
   password: string,
   passwordsMatch: boolean,
+  passwordStrengthScore?: number,
   isEmailDirty: boolean,
   isPasswordDirty: boolean,
   areCredentialsInvalid: boolean
@@ -45,6 +48,7 @@ class Register extends Component<{}, IState> {
       email: '',
       password: '',
       passwordsMatch: true,
+      passwordStrengthScore: undefined,
       isEmailDirty: false,
       isPasswordDirty: false,
       areCredentialsInvalid: false
@@ -57,15 +61,20 @@ class Register extends Component<{}, IState> {
   }
 
   handlePasswordChanged(password: string) {
+    const score = password
+      ? zxcvbn(password).score
+      : undefined;
+
     this.setState({
       password,
-      isPasswordDirty: true
+      isPasswordDirty: true,
+      passwordStrengthScore: score
     })
   }
 
   handleConfirmPasswordChanged(password: string) {
     const passwordsMatch = password === this.state.password
-    this.setState({passwordsMatch})
+    this.setState({ passwordsMatch })
   }
 
   onEmailChanged(email: string) {
@@ -88,21 +97,21 @@ class Register extends Component<{}, IState> {
   }
 
   sendRegisterRequest(): void {
-      const requestOptions = {
-        method: Verb.POST,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: this.state.email,
-          password: this.state.password
-        })
-      }
+    const requestOptions = {
+      method: Verb.POST,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: this.state.email,
+        password: this.state.password
+      })
+    }
 
-      fetch(Endpoints.register, requestOptions)
-        .then(response => response.json())
-        .then(data => console.log('data: ', data))
-        .catch(error => console.log('error: ', error))
+    fetch(Endpoints.register, requestOptions)
+      .then(response => response.json())
+      .then(data => console.log('data: ', data))
+      .catch(error => console.log('error: ', error))
   }
 
   isPasswordInvalid(): boolean {
@@ -114,32 +123,35 @@ class Register extends Component<{}, IState> {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} alt="Logo" id="app-logo"/>
+          <img src={logo} alt="Logo" id="app-logo" />
 
           <br />
           <EmailAddress
-              class="login"
-              isInvalid={this.state.areCredentialsInvalid}
-              onChange={this.onEmailChanged}
-              areCredentialsInvalid={this.state.areCredentialsInvalid}
-            />
-         
+            class="login"
+            isInvalid={this.state.areCredentialsInvalid}
+            onChange={this.onEmailChanged}
+            areCredentialsInvalid={this.state.areCredentialsInvalid}
+          />
+
           <br />
-          
-          <Password 
-            fieldName={'Password'} 
-            class={'login'} 
+
+          <Password
+            fieldName={'Password'}
+            class={'login'}
             onPasswordChanged={this.handlePasswordChanged}
             isInvalid={this.isPasswordInvalid()}
             errorMessage={'Please enter a password'}
           />
-
           <br />
           <br />
 
-          <Password 
-            fieldName={'Confirm password'} 
-            class={'login'} 
+          <PasswordStrengthMeter score={this.state.passwordStrengthScore}></PasswordStrengthMeter>
+
+          <br />
+
+          <Password
+            fieldName={'Confirm password'}
+            class={'login'}
             onPasswordChanged={this.handleConfirmPasswordChanged}
             isInvalid={!this.state.passwordsMatch || this.state.areCredentialsInvalid}
             errorMessage={'Passwords do not match. Please try again'}
@@ -148,12 +160,12 @@ class Register extends Component<{}, IState> {
           <br />
           <br />
 
-          <Button 
-            className="login" 
-            variant="contained" 
-            color="primary" 
+          <Button
+            className="login"
+            variant="contained"
+            color="primary"
             onClick={this.onCreateAccountClicked}>
-              Create account
+            Create account
           </Button>
 
           <br />
