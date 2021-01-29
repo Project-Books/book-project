@@ -59,7 +59,7 @@ This is only for demonstration purposes, so please do not rely on any saved data
 *The images above may look slightly different to the app. If major changes are made, new images will be uploaded to 
 reflect this.*
 
-## Getting started
+## Getting Started
 
 Prerequisites:
 - JDK 11 (the app currently won't work on later versions due to an issue with one of the libraries -- Karibu testing -- not being compatible with later versions) 
