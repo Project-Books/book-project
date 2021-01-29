@@ -22,7 +22,7 @@ import './MyBooks.css'
 interface IState {
 }
 
-class MyBooks extends Component<{}, IState> {
+class MyBooks extends Component<Record<string, unknown>, IState> {
     render() {
         return (
             <NavBar />

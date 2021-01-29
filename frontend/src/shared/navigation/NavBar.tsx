@@ -50,14 +50,14 @@ export function NavBar() {
 
             <div id="gap-below-logo"></div>
 
-            <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS}/>
-            <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL}/>
-            <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={routes.STATS}/>
+            <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS} />
+            <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL} />
+            <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={routes.STATS} />
 
             <div id="gap"></div>
 
-            <NavItem icon={<Settings />} itemText={"Settings"} goTo={routes.SETTINGS}/>
-            <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN}/>
+            <NavItem icon={<Settings />} itemText={"Settings"} goTo={routes.SETTINGS} />
+            <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN} />
         </div>
     )
 }

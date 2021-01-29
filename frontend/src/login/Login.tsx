@@ -33,7 +33,7 @@ interface IState {
 type LoginProps = {
 }
 
-class Login extends Component<{}, IState> {
+class Login extends Component<Record<string, unknown>, IState> {
   constructor(props: LoginProps) {
     super(props)
 
@@ -74,8 +74,8 @@ class Login extends Component<{}, IState> {
   
   render() {
     return (
-      <div >
-          <img src={logo} alt="Logo" id="app-logo"/>
+      <div>
+          <img src={logo} alt="Logo" id="app-logo" />
 
           <br />
           <br />

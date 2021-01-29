@@ -51,9 +51,14 @@
       },
       {
         "selector": [
-          "typeLike",
-          "function"
+          "typeLike"
         ], "format": ["PascalCase"]
+      },
+      {
+        // This selector is for functions and components built by functions
+        "selector": [
+          "function"
+        ], "format": ["camelCase", "PascalCase"]
       },
       {
         "selector": [
@@ -66,6 +71,7 @@
         "format": ["UPPER_CASE", "camelCase"]
       }
     ],
+    "@typescript-eslint/no-empty-interface": "warn",
 
     // React specific rules
     "react/no-multi-comp": ["error", { "ignoreStateless": true }],

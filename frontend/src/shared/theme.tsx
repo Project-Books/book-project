@@ -7,6 +7,7 @@ export const theme  = createMuiTheme({
         }
     },
     overrides: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         MuiButton: {
             root: {
                 borderRadius: 100,

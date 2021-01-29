@@ -40,7 +40,7 @@ interface IState {
   areCredentialsInvalid: boolean
 }
 
-class Register extends Component<{}, IState> {
+class Register extends Component<Record<string, unknown>, IState> {
   constructor(props: RegisterProps) {
     super(props)
 
@@ -100,6 +100,7 @@ class Register extends Component<{}, IState> {
     const requestOptions = {
       method: Verb.POST,
       headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
