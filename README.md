@@ -60,8 +60,7 @@ This is only for demonstration purposes, so please do not rely on any saved data
 </p>
 
 
-*The images above may look slightly different to the app. If major changes are made, new images will be uploaded to 
-reflect this.*
+*The images above may look slightly different to the app. If major changes are made, we will upload new images.*
 
 ## Setup
 
@@ -114,8 +113,8 @@ Next, follow one of the approaches below:
 ### Fixing Lombok errors
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
-You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
-Other common errors and solutions are also in the troubleshooting page.
+You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+Other common errors and solutions are also on the troubleshooting page.
 
 ### Access database
 
@@ -127,6 +126,8 @@ To access the MySQL database when docker-compose is running:
     - Password: `rootpassword`
 3. Click on connect
 
+Alternatively, you can access the database inside [IntelliJ Ultimate](https://github.com/Project-Books/book-project/wiki/Connect-to-database-inside-IntelliJ-Ultimate).
+
 ## Contributing
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
@@ -137,6 +138,6 @@ If you need help with anything, we'll be happy to help you in our [Slack workspa
 
 ## Further information
 
-For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
+For more information, such as a roadmap and the project's underlying principles, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
 
-To see the open source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)
+To see a list of the open-source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)
