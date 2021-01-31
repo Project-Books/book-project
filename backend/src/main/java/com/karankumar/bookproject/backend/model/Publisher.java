@@ -28,28 +28,32 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
+@Table(
+        name = "publisher",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "publisher_name_unique", columnNames = "name")
+        }
+)
 @Data
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "books")
 public class Publisher extends BaseEntity {
-
-    @NotNull
     @NotBlank
     @Column(unique = true)
     private String name;
 
-
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "publishers")
     private Set<Book> books;
 
-    public Publisher(@NotNull @NotBlank String name) {
+    public Publisher(@NotBlank String name) {
         this.name = name;
     }
 

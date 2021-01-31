@@ -21,8 +21,8 @@ the version on the master branch should be followed, as this version should be t
    4. [Overloads together](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#overloads-together)
    5. [Newline at end of file](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#newline-at-end-of-file)
 5. [Formatting](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#formatting)
-   1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces) 
-      1. [One true brace style (1TBS)](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-true-brace-style-1TBS) 
+   1. [Braces](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#braces)
+      1. [One true brace style (1TBS)](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-true-brace-style-1TBS)
    2. [100 character column limit ](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#100-character-column-limit)
    3. [One statement per line](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#one-statement-per-line)
    4. [Empty blocks can be concise](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md#empty-blocks-can-be-concise)
@@ -101,8 +101,8 @@ IDE-specific code style files have been exported and can be imported into your I
 </p>
 
 For IntelliJ, you can use import the [code style file](https://github.com/knjk04/book-project/blob/master/ide/intellij/book_project_code_style.xml).
-Go to File > Settings > Editor > Code Style > Java in Linux or Windows. Click on the settings cog and choose 
-Import Scheme > IntelliJ IDEA code style XML. 
+Go to File > Settings > Editor > Code Style > Java in Linux or Windows. Click on the settings cog and choose
+Import Scheme > IntelliJ IDEA code style XML.
 
 ### Eclipse
 
@@ -162,7 +162,7 @@ All fields should appear at the top of the class before any constructors. Fields
 
 ### Overloads together
 
-Overloaded methods, including constructors, should appear together with nothing in between. 
+Overloaded methods, including constructors, should appear together with nothing in between.
 
 ### Newline at end of file
 
@@ -246,7 +246,7 @@ private String authorFirstName;
 
 // unacceptable
 private int     numberOfPages;
-private Strring authorFirstName;
+private String authorFirstName;
 ```
 
 There should be no horizontal alignment. While it looks nice and improves readability, it can be harder to maintain.
@@ -401,7 +401,7 @@ Special prefixes or suffixes, such as to represent member variables, are not use
 
 ### Package names
 
-Package names are written in lowercase. Consecutive words are concatenated together without any underscores. For example, `com.example.readinggoal`, not `com.example.readingGoal` or `com.example.reading_goal`. 
+Package names are written in lowercase. Consecutive words are concatenated together without any underscores. For example, `com.example.readinggoal`, not `com.example.readingGoal` or `com.example.reading_goal`.
 
 To aid readability, try to keep package names short and one-word names wherever possible.
 
@@ -603,5 +603,5 @@ In addition, please update the [table of contents](https://github.com/knjk04/boo
 
 ## Acknowledgements
 
-This style guide has been adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and 
+This style guide has been adapted from [Google's Java style guide](https://google.github.io/styleguide/javaguide.html) and
 [Twitter's common style guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md).
