@@ -62,6 +62,7 @@ public class PredefinedShelf extends Shelf {
             this.name = name;
         }
 
+        @Override
         public String toString() {
             return name;
         }
