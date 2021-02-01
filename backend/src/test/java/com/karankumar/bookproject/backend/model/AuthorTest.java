@@ -134,7 +134,7 @@ class AuthorTest {
     	violations = validator.validateProperty(authorWithNullFirstName, "firstName");
     	
     	//  then
-    	assertThat(violations.size()).isEqualTo(2);
+    	assertThat(violations.size()).isEqualTo(1);
     }
     
     @Test
@@ -145,7 +145,7 @@ class AuthorTest {
     	violations = validator.validateProperty(authorWithNullLastName, "lastName");
     	
     	//  then
-    	assertThat(violations.size()).isEqualTo(2);
+    	assertThat(violations.size()).isEqualTo(1);
     }
     
     @Test
