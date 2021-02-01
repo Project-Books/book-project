@@ -91,7 +91,7 @@ class Register extends Component<Record<string, unknown>, IState> {
     })
 
 
-    if (!this.state.areCredentialsInvalid) {
+    if (!this.state.areCredentialsInvalid && this.state.passwordStrengthScore === 4) {
       this.sendRegisterRequest()
     }
   }
