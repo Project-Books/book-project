@@ -27,6 +27,14 @@ import Verb from '../shared/http/verb';
 import logo from '../shared/media/logo/logo-black.png';
 import './Register.css';
 
+enum PassStrengthEnum {
+  WEAK = 1,
+  FAIR,
+  GOOD,
+  STRONG,
+  VERY_STRONG
+}
+
 type RegisterProps = {
 }
 
@@ -91,7 +99,7 @@ class Register extends Component<Record<string, unknown>, IState> {
     })
 
 
-    if (!this.state.areCredentialsInvalid && this.state.passwordStrengthScore === 4) {
+    if (!this.state.areCredentialsInvalid && this.state.passwordStrengthScore === PassStrengthEnum.VERY_STRONG) {
       this.sendRegisterRequest()
     }
   }
