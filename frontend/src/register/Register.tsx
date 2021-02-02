@@ -1,18 +1,18 @@
 /*
 The book project lets a user keep track of different books they would like to read, are currently
 reading, have read or did not finish.
-Copyright (C) 2020  Karan Kumar
+copyright (c) 2020  karan kumar
 
-This program is free software: you can redistribute it and/or modify it under the terms of the
-GNU General Public License as published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
+this program is free software: you can redistribute it and/or modify it under the terms of the
+gnu general public license as published by the free software foundation, either version 3 of the
+license, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE.  See the GNU General Public License for more details.
+this program is distributed in the hope that it will be useful, but without any
+warranty; without even the implied warranty of merchantability or fitness for a particular
+purpose.  see the gnu general public license for more details.
 
-You should have received a copy of the GNU General Public License along with this program.
-If not, see <https://www.gnu.org/licenses/>.
+you should have received a copy of the gnu general public license along with this program.
+if not, see <https://www.gnu.org/licenses/>.
 */
 
 import Button from '@material-ui/core/Button';
@@ -40,7 +40,7 @@ interface IState {
   areCredentialsInvalid: boolean
 }
 
-class Register extends Component<{}, IState> {
+class Register extends Component<Record<string, unknown>, IState> {
   constructor(props: RegisterProps) {
     super(props)
 
@@ -60,7 +60,7 @@ class Register extends Component<{}, IState> {
     this.onCreateAccountClicked = this.onCreateAccountClicked.bind(this)
   }
 
-  handlePasswordChanged(password: string) {
+  handlePasswordChanged(password: string): void {
     const score = password
       ? zxcvbn(password).score
       : undefined;
@@ -72,19 +72,19 @@ class Register extends Component<{}, IState> {
     })
   }
 
-  handleConfirmPasswordChanged(password: string) {
+  handleConfirmPasswordChanged(password: string): void {
     const passwordsMatch = password === this.state.password
     this.setState({ passwordsMatch })
   }
 
-  onEmailChanged(email: string) {
+  onEmailChanged(email: string): void {
     this.setState({
       email,
       isEmailDirty: true
     })
   }
 
-  onCreateAccountClicked() {
+  onCreateAccountClicked(): void {
     const isFieldEmpty = this.state.email === '' || this.state.password === ''
     this.setState({
       areCredentialsInvalid: isFieldEmpty
@@ -100,6 +100,7 @@ class Register extends Component<{}, IState> {
     const requestOptions = {
       method: Verb.POST,
       headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

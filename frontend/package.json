@@ -26,7 +26,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext=.ts,.tsx"
   },
   "proxy": "http://localhost:8080",
   "eslintConfig": {
@@ -49,6 +50,10 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
-    "@types/zxcvbn": "^4.4.0"
+    "@types/zxcvbn": "^4.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "eslint": "^7.18.0",
+    "eslint-plugin-react": "^7.22.0"
   }
 }

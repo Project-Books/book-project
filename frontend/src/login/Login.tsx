@@ -70,14 +70,14 @@ class Login extends Component<LoginProps, IState> {
 
   onPasswordChanged(password: string) {
     console.log(`login password: ${password}`)
-    this.setState({password})
+    this.setState({ password })
   }
 
   isEmailInvalid(): boolean {
     const isEmailDirtyAndBlank = this.state.email === '' && this.state.isEmailDirty
     return isEmailDirtyAndBlank || this.state.areCredentialsInvalid
   }
-  
+
   sendLoginRequestIfCredentialsAreValid() {
     if (!this.state.areCredentialsInvalid) {
       this.sendLoginRequest()
@@ -101,11 +101,11 @@ class Login extends Component<LoginProps, IState> {
         if (response.ok) {
           this.props.history.push('/my-books')
         } else {
-          this.setState({loginFailed: true});
+          this.setState({ loginFailed: true });
         }
       })
       .catch(error => {
-        this.setState({loginFailed: true})
+        this.setState({ loginFailed: true })
         console.error('error: ', error)
       })
   }
@@ -116,52 +116,52 @@ class Login extends Component<LoginProps, IState> {
 
   render() {
     return (
-      <div >
+      <div>
         <img src={logo} alt="Logo" id="app-logo" />
 
+        <br />
+        <br />
+        <br />
+
+        <div className="login-form">
+          <EmailAddress
+            class="login"
+            isInvalid={this.isEmailInvalid()}
+            onChange={this.onEmailChanged}
+            areCredentialsInvalid={this.state.areCredentialsInvalid}
+          />
+
+          <br />
+
+          <Password
+            fieldName={'Password'}
+            class={'login'}
+            onPasswordChanged={this.onPasswordChanged}
+            isInvalid={this.state.areCredentialsInvalid}
+            errorMessage={'Please enter a password'}
+          />
+
           <br />
           <br />
-          <br />
 
-          <div className="login-form">
-            <EmailAddress
-              class="login"
-              isInvalid={this.isEmailInvalid()}
-              onChange={this.onEmailChanged}
-              areCredentialsInvalid={this.state.areCredentialsInvalid}
-            />
-
-            <br />
-
-            <Password 
-              fieldName={'Password'} 
-              class={'login'} 
-              onPasswordChanged={this.onPasswordChanged}
-              isInvalid={this.state.areCredentialsInvalid}
-              errorMessage={'Please enter a password'}
-            />
-
-            <br />
-            <br />
-
-            <Button 
-              className="login" 
-              variant="contained" 
-              color="primary" 
-              onClick={this.onClickLogin}>
-              Log in
+          <Button
+            className="login"
+            variant="contained"
+            color="primary"
+            onClick={this.onClickLogin}>
+            Log in
             </Button>
 
-            <br />
-            <br />
+          <br />
+          <br />
 
-            <Button className="login" id="createAccount" component={Link} to="/sign-up">
-              Create account
+          <Button className="login" id="createAccount" component={Link} to="/sign-up">
+            Create account
             </Button>
 
           {this.state.loginFailed && this.renderLoginError()}
 
-          </div>
+        </div>
       </div>
     )
   }
