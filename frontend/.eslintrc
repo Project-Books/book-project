@@ -1,0 +1,113 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "max-len": ["warn",
+      {
+        "code": 100
+      }],
+    "brace-style": ["error", "1tbs", {
+      "allowSingleLine": false
+    }],
+    "curly": "error",
+    "no-var": "warn",
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": ":matches(ImportNamespaceSpecifier, ExportAllDeclaration, ExportNamespaceSpecifier)",
+        "message": "Import/Export only modules you need."
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": [
+          "variableLike",
+          "property",
+          "method",
+          "parameterProperty",
+          "accessor"
+        ], "format": ["camelCase"]
+      },
+      {
+        "selector": [
+          "typeLike"
+        ], "format": ["PascalCase"]
+      },
+      {
+        // This selector is for functions and components built by functions
+        "selector": [
+          "function"
+        ], "format": ["camelCase", "PascalCase"]
+      },
+      {
+        "selector": [
+          "enumMember"
+        ], "format": ["UPPER_CASE"]
+      },
+      {
+        "selector": "variable",
+        "modifiers": ["const"],
+        "format": ["UPPER_CASE", "camelCase"]
+      }
+    ],
+    "@typescript-eslint/no-empty-interface": "warn",
+
+    // React specific rules
+    "react/no-multi-comp": ["error", { "ignoreStateless": true }],
+    "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
+    "react/sort-comp": ["error", {
+      "order": [
+        "static-variables",
+        "static-methods",
+        "lifecycle",
+        "everything-else",
+        "render"
+      ],
+      "groups": {
+        "lifecycle": [
+          "constructor",
+          "componentDidMount",
+          "componentWillUpdate",
+          "componentWillUnmount",
+          "render"
+        ]
+      }
+    }],
+    "react/jsx-tag-spacing": ["error", {
+      "closingSlash": "never",
+      "beforeSelfClosing": "always",
+      "afterOpening": "never",
+      "beforeClosing": "never"
+    }],
+    "react/jsx-wrap-multilines": ["error", {
+      "declaration": "parens",
+      "assignment": "parens",
+      "return": "parens-new-line",
+      "arrow": "parens-new-line",
+      "condition": "ignore",
+      "logical": "ignore",
+      "prop": "ignore"
+    }]
+  }
+}
