@@ -28,7 +28,7 @@ import logo from '../shared/media/logo/logo-black.png';
 import './Register.css';
 
 enum PassStrengthEnum {
-  WEAK = 1,
+  WEAK,
   FAIR,
   GOOD,
   STRONG,
