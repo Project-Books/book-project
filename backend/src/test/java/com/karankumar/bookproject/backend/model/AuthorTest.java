@@ -128,45 +128,29 @@ class AuthorTest {
     
     @Test
     void notAcceptNullFirstName() {
-    	// when
     	Author authorWithNullFirstName = new Author(null, "Gaarder");
-    	
-    	violations = validator.validateProperty(authorWithNullFirstName, "firstName");
-    	
-    	//  then
-    	assertThat(violations.size()).isEqualTo(1);
+        violations = validator.validateProperty(authorWithNullFirstName, "firstName");
+    	assertThat(violations.size()).isOne();
     }
     
     @Test
     void notAcceptNullLastName() {
-    	// when
     	Author authorWithNullLastName = new Author("Jostein", null);
-    	
-    	violations = validator.validateProperty(authorWithNullLastName, "lastName");
-    	
-    	//  then
-    	assertThat(violations.size()).isEqualTo(1);
+        violations = validator.validateProperty(authorWithNullLastName, "lastName");
+    	assertThat(violations.size()).isOne();
     }
     
     @Test
     void notAcceptBlankFirstName() {
-    	// when
     	Author authorWithBlankFirstName = new Author(" ", "Gaarder");
-    	
-    	violations = validator.validateProperty(authorWithBlankFirstName, "firstName");
- 
-    	//  then
+        violations = validator.validateProperty(authorWithBlankFirstName, "firstName");
     	assertThat(violations.size()).isOne();
     }
     
     @Test
     void notAcceptBlankLastName() {
-    	// when
     	Author authorWithBlankLastName = new Author("Jostein", " ");
-    	
     	violations = validator.validateProperty(authorWithBlankLastName, "lastName");
-   	
-    	//  then
     	assertThat(violations.size()).isOne();
     }
 }
