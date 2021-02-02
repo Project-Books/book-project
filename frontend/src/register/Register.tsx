@@ -60,7 +60,7 @@ class Register extends Component<Record<string, unknown>, IState> {
     this.onCreateAccountClicked = this.onCreateAccountClicked.bind(this)
   }
 
-  handlePasswordChanged(password: string) {
+  handlePasswordChanged(password: string): void {
     const score = password
       ? zxcvbn(password).score
       : undefined;
@@ -72,19 +72,19 @@ class Register extends Component<Record<string, unknown>, IState> {
     })
   }
 
-  handleConfirmPasswordChanged(password: string) {
+  handleConfirmPasswordChanged(password: string): void {
     const passwordsMatch = password === this.state.password
     this.setState({ passwordsMatch })
   }
 
-  onEmailChanged(email: string) {
+  onEmailChanged(email: string): void {
     this.setState({
       email,
       isEmailDirty: true
     })
   }
 
-  onCreateAccountClicked() {
+  onCreateAccountClicked(): void {
     const isFieldEmpty = this.state.email === '' || this.state.password === ''
     this.setState({
       areCredentialsInvalid: isFieldEmpty
