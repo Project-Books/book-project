@@ -34,8 +34,8 @@ interface IState {
   loginFailed: boolean
 }
 
-type LoginProps = {
-} & RouteComponentProps
+type LoginProps = Record<string, unknown> & RouteComponentProps
+
 class Login extends Component<LoginProps, IState> {
   constructor(props: LoginProps) {
     super(props)
@@ -88,6 +88,7 @@ class Login extends Component<LoginProps, IState> {
     const requestOptions = {
       method: Verb.POST,
       headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
