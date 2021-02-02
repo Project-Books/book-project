@@ -96,7 +96,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     secretKey))
             .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthFilter.class)
             .authorizeRequests()
-            .antMatchers(HttpMethod.PUT, "/register").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/register").permitAll()
             .anyRequest()
             .authenticated();
     }
