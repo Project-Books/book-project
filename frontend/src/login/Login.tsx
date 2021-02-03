@@ -25,6 +25,7 @@ import logo from '../shared/media/logo/logo-black.png'
 import Endpoints from '../shared/api/endpoints'
 import Verb from '../shared/http/verb'
 import { RouteComponentProps } from 'react-router-dom';
+import * as routes from '../shared/routes'
 
 interface IState {
   email: string,
@@ -100,7 +101,7 @@ class Login extends Component<LoginProps, IState> {
     fetch(Endpoints.login, requestOptions)
       .then(response => {
         if (response.ok) {
-          this.props.history.push('/my-books')
+          this.props.history.push(routes.MY_BOOKS)
         } else {
           this.setState({ loginFailed: true });
         }
@@ -156,7 +157,7 @@ class Login extends Component<LoginProps, IState> {
           <br />
           <br />
 
-          <Button className="login" id="createAccount" component={Link} to="/sign-up">
+          <Button className="login" id="createAccount" component={Link} to={routes.SIGN_UP}>
             Create account
             </Button>
 
