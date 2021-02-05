@@ -26,11 +26,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -47,24 +51,34 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = {"tags","publishers"})
-public class Book extends BaseEntity {
+@EqualsAndHashCode(exclude = {"tags","publishers"})
+public class Book {
     public static final int MAX_PAGES = 23_000;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Setter(AccessLevel.NONE)
+    private Long id;
 
     @NotNull
     @NotBlank
     private String title;
+
     @Max(value = MAX_PAGES)
     private Integer numberOfPages;
+
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
+
     private BookGenre bookGenre;
     private BookFormat bookFormat;
     private Integer seriesPosition;
     private String edition;
     private String bookRecommendedBy;
+
     @ISBN
     private String isbn;
+
     private Integer yearOfPublication;
 
     @ManyToOne(cascade =

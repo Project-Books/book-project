@@ -27,16 +27,24 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
 public class CustomShelf extends Shelf {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Setter(AccessLevel.NONE)
+    private Long id;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customShelf")
-    @Getter
-    @Setter
     protected Set<Book> books;
 
     public CustomShelf(String shelfName, User user) {

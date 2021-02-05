@@ -26,6 +26,9 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -36,8 +39,13 @@ import java.util.stream.Collectors;
 @Data
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(callSuper = true, exclude= "books")
-public class Author extends BaseEntity {
+@EqualsAndHashCode(exclude= "books")
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Setter(AccessLevel.NONE)
+    private Long id;
+
     @NotBlank
     private String firstName;
 
