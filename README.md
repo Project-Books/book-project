@@ -77,10 +77,11 @@ First, clone the repository.
  
 ### Running the frontend
 
-1. Navigate to the `frontend/` directory
-2. Run `yarn install` to install the dependencies
-3. Run `yarn start` to start the development server
-3. Open `localhost:3000`
+1. Install yarn: `npm install -g yarn`
+2. Navigate to the `frontend/` directory
+3. Run `yarn install` to install the dependencies
+4. Run `yarn start` to start the development server
+5. Open `localhost:3000`
 
 ### Running the backend
 
