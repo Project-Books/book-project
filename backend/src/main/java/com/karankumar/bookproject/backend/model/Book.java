@@ -32,6 +32,7 @@ import org.hibernate.validator.constraints.ISBN;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -81,24 +82,27 @@ public class Book {
 
     private Integer yearOfPublication;
 
-    @ManyToOne(cascade =
-            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(
+            name = "author_id",
+            nullable = false,
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "book_author_id_fk")
     )
-    @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
     @ManyToOne(
             fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
-    @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "ID")
+    @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
             fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
-    @JoinColumn(name = "custom_shelf_id", referencedColumnName = "ID")
+    @JoinColumn(name = "custom_shelf_id", referencedColumnName = "id")
     private CustomShelf customShelf;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
