@@ -16,6 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import { LinearProgress, makeStyles } from "@material-ui/core"
+import React from 'react'
 
 type StyleProps = {
   color: string

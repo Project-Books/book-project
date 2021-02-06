@@ -40,7 +40,7 @@ function EmailAddress(props: EmailProps) {
     />
     </div>
   )
-};
+}
 
 type EmailProps = {
   class?: string,

@@ -41,7 +41,7 @@ type NavItemProps = {
     goTo: string;
 }
 
-export function NavBar() {
+export function NavBar(): JSX.Element {
     return (
         <div className="nav-bar">
             <div className="nav-top">
@@ -50,13 +50,13 @@ export function NavBar() {
               </Link>
             </div>
             <div className="nav-links" id="nav-links-top">
-              <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS}/>
-              <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL}/>
-              <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={routes.STATS}/>
+              <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS} />
+              <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL} />
+              <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={routes.STATS} />
             </div>
             <div className="nav-links">
-              <NavItem icon={<Settings />} itemText={"Settings"} goTo={routes.SETTINGS}/>
-              <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN}/>
+              <NavItem icon={<Settings />} itemText={"Settings"} goTo={routes.SETTINGS} />
+              <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN} />
             </div>
         </div>
     )

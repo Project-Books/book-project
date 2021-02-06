@@ -15,25 +15,29 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import './Login.css'
 import Button from '@material-ui/core/Button'
 import Password from '../shared/form/Password'
 import EmailAddress from '../shared/form/EmailAddress'
 import { Link } from "react-router-dom"
 import logo from '../shared/media/logo/logo-black.png'
+import Endpoints from '../shared/api/endpoints'
+import Verb from '../shared/http/verb'
+import { RouteComponentProps } from 'react-router-dom';
+import * as routes from '../shared/routes'
 
 interface IState {
   email: string,
   password: string,
   isEmailDirty: boolean,
-  areCredentialsInvalid: boolean
+  areCredentialsInvalid: boolean,
+  loginFailed: boolean
 }
 
-type LoginProps = {
-}
+type LoginProps = Record<string, unknown> & RouteComponentProps
 
-class Login extends Component<{}, IState> {
+class Login extends Component<LoginProps, IState> {
   constructor(props: LoginProps) {
     super(props)
 
@@ -41,18 +45,21 @@ class Login extends Component<{}, IState> {
       email: '',
       password: '',
       isEmailDirty: false,
-      areCredentialsInvalid: false
+      areCredentialsInvalid: false,
+      loginFailed: false
     }
 
     this.onPasswordChanged = this.onPasswordChanged.bind(this)
     this.onEmailChanged = this.onEmailChanged.bind(this);
     this.onClickLogin = this.onClickLogin.bind(this)
+    this.sendLoginRequest = this.sendLoginRequest.bind(this)
+    this.sendLoginRequestIfCredentialsAreValid = this.sendLoginRequestIfCredentialsAreValid.bind(this)
   }
 
   onClickLogin() {
     this.setState({
       areCredentialsInvalid: this.state.email === '' && this.state.password === ''
-    })
+    }, this.sendLoginRequestIfCredentialsAreValid)
   }
 
   onEmailChanged(email: string) {
@@ -64,59 +71,99 @@ class Login extends Component<{}, IState> {
 
   onPasswordChanged(password: string) {
     console.log(`login password: ${password}`)
-    this.setState({password})
+    this.setState({ password })
   }
 
   isEmailInvalid(): boolean {
     const isEmailDirtyAndBlank = this.state.email === '' && this.state.isEmailDirty
     return isEmailDirtyAndBlank || this.state.areCredentialsInvalid
   }
-  
+
+  sendLoginRequestIfCredentialsAreValid() {
+    if (!this.state.areCredentialsInvalid) {
+      this.sendLoginRequest()
+    }
+  }
+
+  sendLoginRequest(): void {
+    const requestOptions = {
+      method: Verb.POST,
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.email,
+        password: this.state.password
+      })
+    }
+
+    fetch(Endpoints.login, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          this.props.history.push(routes.MY_BOOKS)
+        } else {
+          this.setState({ loginFailed: true });
+        }
+      })
+      .catch(error => {
+        this.setState({ loginFailed: true })
+        console.error('error: ', error)
+      })
+  }
+
+  renderLoginError() {
+    return <p style={{ color: 'red' }}>Your email or password is incorrect. Please try again</p>
+  }
+
   render() {
     return (
-      <div >
-          <img src={logo} alt="Logo" id="app-logo"/>
+      <div>
+        <img src={logo} alt="Logo" id="app-logo" />
+
+        <br />
+        <br />
+        <br />
+
+        <div className="login-form">
+          <EmailAddress
+            class="login"
+            isInvalid={this.isEmailInvalid()}
+            onChange={this.onEmailChanged}
+            areCredentialsInvalid={this.state.areCredentialsInvalid}
+          />
+
+          <br />
+
+          <Password
+            fieldName={'Password'}
+            class={'login'}
+            onPasswordChanged={this.onPasswordChanged}
+            isInvalid={this.state.areCredentialsInvalid}
+            errorMessage={'Please enter a password'}
+          />
 
           <br />
           <br />
-          <br />
 
-          <div className="login-form">
-            <EmailAddress
-              class="login"
-              isInvalid={this.isEmailInvalid()}
-              onChange={this.onEmailChanged}
-              areCredentialsInvalid={this.state.areCredentialsInvalid}
-            />
-
-            <br />
-
-            <Password 
-              fieldName={'Password'} 
-              class={'login'} 
-              onPasswordChanged={this.onPasswordChanged}
-              isInvalid={this.state.areCredentialsInvalid}
-              errorMessage={'Please enter a password'}
-            />
-
-            <br />
-            <br />
-
-            <Button 
-              className="login" 
-              variant="contained" 
-              color="primary" 
-              onClick={this.onClickLogin}>
-              Log in
+          <Button
+            className="login"
+            variant="contained"
+            color="primary"
+            onClick={this.onClickLogin}>
+            Log in
             </Button>
 
-            <br />
-            <br />
+          <br />
+          <br />
 
-            <Button className="login" id="createAccount" component={Link} to="/sign-up">
-              Create account
+          <Button className="login" id="createAccount" component={Link} to={routes.SIGN_UP}>
+            Create account
             </Button>
-          </div>
+
+          {this.state.loginFailed && this.renderLoginError()}
+
+        </div>
       </div>
     )
   }
