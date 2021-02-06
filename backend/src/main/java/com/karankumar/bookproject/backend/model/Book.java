@@ -26,11 +26,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -47,44 +52,57 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = {"tags","publishers"})
-public class Book extends BaseEntity {
+@EqualsAndHashCode(exclude = {"id", "tags","publishers", "predefinedShelf", "customShelf"})
+public class Book {
     public static final int MAX_PAGES = 23_000;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    private Long id;
 
     @NotNull
     @NotBlank
     private String title;
+
     @Max(value = MAX_PAGES)
     private Integer numberOfPages;
+
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
+
     private BookGenre bookGenre;
     private BookFormat bookFormat;
     private Integer seriesPosition;
     private String edition;
     private String bookRecommendedBy;
+
     @ISBN
     private String isbn;
+
     private Integer yearOfPublication;
 
-    @ManyToOne(cascade =
-            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(
+            name = "author_id",
+            nullable = false,
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "book_author_id_fk")
     )
-    @JoinColumn(name = "author_id", referencedColumnName = "ID")
     private Author author;
 
     @ManyToOne(
             fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
-    @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "ID")
+    @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
             fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
-    @JoinColumn(name = "custom_shelf_id", referencedColumnName = "ID")
+    @JoinColumn(name = "custom_shelf_id", referencedColumnName = "id")
     private CustomShelf customShelf;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})

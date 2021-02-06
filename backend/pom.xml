@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.karankumar</groupId>
     <artifactId>book-project</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <name>book-project</name>
     <description>Book tracking system</description>
     <packaging>jar</packaging>
