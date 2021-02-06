@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(exclude= "books")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 

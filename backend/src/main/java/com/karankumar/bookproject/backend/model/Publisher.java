@@ -51,7 +51,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = "books")
 public class Publisher {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 

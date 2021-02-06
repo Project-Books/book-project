@@ -57,7 +57,7 @@ public class Book {
     public static final int MAX_PAGES = 23_000;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 

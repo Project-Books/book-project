@@ -43,7 +43,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = "books")
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 

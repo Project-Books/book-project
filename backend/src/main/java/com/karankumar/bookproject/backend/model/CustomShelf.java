@@ -40,7 +40,7 @@ import java.util.Set;
 @Setter
 public class CustomShelf extends Shelf {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
