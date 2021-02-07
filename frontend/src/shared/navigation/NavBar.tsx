@@ -41,23 +41,23 @@ type NavItemProps = {
     goTo: string;
 }
 
-export function NavBar() {
+export function NavBar(): JSX.Element {
     return (
         <div className="nav-bar">
-            <Link to={routes.HOME}>
+            <div className="nav-top">
+              <Link to={routes.HOME}>
                 <img src={logo} alt="Logo" id="nav-bar-logo" />
-            </Link>
-
-            <div id="gap-below-logo"></div>
-
-            <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS} />
-            <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL} />
-            <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={routes.STATS} />
-
-            <div id="gap"></div>
-
-            <NavItem icon={<Settings />} itemText={"Settings"} goTo={routes.SETTINGS} />
-            <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN} />
+              </Link>
+            </div>
+            <div className="nav-links" id="nav-links-top">
+              <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS} />
+              <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL} />
+              <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={routes.STATS} />
+            </div>
+            <div className="nav-links">
+              <NavItem icon={<Settings />} itemText={"Settings"} goTo={routes.SETTINGS} />
+              <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN} />
+            </div>
         </div>
     )
 }
