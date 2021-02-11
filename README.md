@@ -95,7 +95,7 @@ Next, follow one of the approaches below:
 3. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
     - May need to add `sudo` to this command on Unix
-5. Start the application using `java -jar target/book-project-0.1.0.jar` 
+5. Start the application using `java -jar target/book-project-0.2.0.jar` 
 
 #### 2. Start using docker-compose in production mode
 
