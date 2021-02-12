@@ -38,7 +38,19 @@ public class TagService {
     }
 
     public void save(@NonNull Tag tag) {
-        tagRepository.save(tag);
+        boolean hasDuplicate = false;
+
+        List<Tag> allTags = findAll();
+        for(Tag thisTag : allTags) {
+          if(thisTag.getName().trim().toLowerCase().equals(tag.getName().trim().toLowerCase())) {
+            hasDuplicate = true;
+            break;
+          }
+        }
+
+        if(!hasDuplicate) {
+          tagRepository.save(tag);
+        }
     }
 
     public Long count() {

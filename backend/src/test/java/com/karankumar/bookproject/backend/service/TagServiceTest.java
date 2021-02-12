@@ -105,6 +105,17 @@ class TagServiceTest {
         assertThat(allTags).contains(tag1, tag2);
     }
 
+    @Test
+    void doNotSaveDuplicateTag() {
+        //given
+        Tag tag1  = new Tag("dystopian");
+        Tag tag2  = new Tag("Dystopian ");
+        tagService.save(tag1);
+        tagService.save(tag2);
+
+        assertThat(tagService.findAll().size()).isOne();
+    }
+
     @AfterEach
     public void tearDown() {
         resetTagService();

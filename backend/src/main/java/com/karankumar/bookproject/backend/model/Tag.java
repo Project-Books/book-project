@@ -24,6 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,7 +51,7 @@ public class Tag {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, mappedBy = "tags")
     private Set<Book> books;
 
     public Tag(String name) {
