@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 class BookNotFoundAdvice {
 	
-	@ReponseBody
+	@ResponseBody
 	@ExceptionHandler(BookNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	String bookNotFoundHandler(BookNotFoundException exception) {
