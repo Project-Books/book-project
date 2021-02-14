@@ -17,8 +17,6 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import org.springframework.security.core.RuntimeException;
-
 public class BookNotFoundException extends RuntimeException {
     public BookNotFoundException(Long id) {
         super("Could not find employee " + id);

@@ -30,6 +30,6 @@ class BookNotFoundAdvice {
 	@ExceptionHandler(BookNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	String bookNotFoundHandler(BookNotFoundException exception) {
-		return exception.getMessege();
+		return exception;
 	}
 }

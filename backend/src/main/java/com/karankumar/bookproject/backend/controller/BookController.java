@@ -51,13 +51,13 @@ public class BookController {
     }
     
     @GetMapping("/{id}") 	
-    public Book findById(@PathVariable Long id) { 
+    public Optional<Book> findById(@PathVariable Long id) { 
     	return bookService.findById(id)		//get book by id
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     
     @GetMapping("/{id}") 	
-    public Book findByShelf(@PathVariable Long id, 
+    public Optional<Book> findByShelf(@PathVariable Long id, 
     		@RequestParam Shelf shelf, 
     		@RequestParam(required=false) String title, 
     		@RequestParam(required=false) String authorsName) { 
@@ -66,7 +66,7 @@ public class BookController {
     }
     		
     @GetMapping("/{id}") 	
-    public Book findByAuthor(@PathVariable Long id, 
+    public Optional<Book> findByAuthor(@PathVariable Long id, 
     		@RequestParam(required=false) String title, 
     		@RequestParam String authorsName) {   
     	return bookService.findByTitleOrAuthor(title, authorsName)	//get book by title/author
@@ -85,10 +85,11 @@ public class BookController {
     }
     
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public Optional<Book> delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
     		.orElseThrow(() -> new BookNotFoundException(id));
     	bookService.delete(bookToDelete);
+    	return bookToDelete;
     }
 
 }
