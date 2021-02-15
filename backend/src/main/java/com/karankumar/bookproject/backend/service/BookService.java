@@ -150,11 +150,11 @@ public class BookService {
         return jsonWriter.writeValueAsString(books);
     }
 
-    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
+    public Optional<List<Book>> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
         return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
     }
 
-    public List<Book> findByTitleOrAuthor(String title, String authorsName){
+    public Optional<List<Book>> findByTitleOrAuthor(String title, String authorsName){
         return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
 }
