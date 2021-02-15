@@ -28,6 +28,7 @@ import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
 import * as routes from "./shared/routes"
 
+
 function App() {
     return (
         <BrowserRouter>

@@ -15,16 +15,36 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react'
+import React, {Component} from 'react'
 import { NavBar } from '../shared/navigation/NavBar'
+import Switch from '@material-ui/core/Switch';
 
-function Settings() {
+ class Settings extends Component {
+     state = {darkModeEnabled: false}
+
+     toggleTheme():void {
+         this.setState({
+             darkModeEnabled: !this.state.darkModeEnabled
+         })
+     }
+
+   render(): JSX.Element {
     return (
         <React.Fragment>
-            <NavBar />
-            {/* <h1>Settings</h1> */}
+          <NavBar />
+          <h1>Settings</h1>
+          <div className="switch-container">
+              Enable dark mode
+            <Switch
+              checked={this.state.darkModeEnabled}
+              onClick={this.toggleTheme}
+              color="default"
+              inputProps={{ 'aria-label': 'checkbox with default color' }}
+            />
+          </div>
         </React.Fragment>
     )
+   }
 }
 
 export default Settings;
