@@ -52,24 +52,24 @@ public class BookController {
     
     @GetMapping("/{id}") 	
     public Optional<Book> findById(@PathVariable Long id) { 
-    	return bookService.findById(id)		//get book by id
+    	return Optional.ofNullable(bookService.findById(id))	//get book by id
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     
     @GetMapping("/{id}") 	
-    public Optional<Book> findByShelf(@PathVariable Long id, 
+    public Optional<List<Book>> findByShelf(@PathVariable Long id, 
     		@RequestParam Shelf shelf, 
     		@RequestParam(required=false) String title, 
     		@RequestParam(required=false) String authorsName) { 
-    	return bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName)	//get book by shelf and title/author
+    	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))	//get book by shelf and title/author
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     		
     @GetMapping("/{id}") 	
-    public Optional<Book> findByAuthor(@PathVariable Long id, 
+    public Optional<List<Book>> findByAuthor(@PathVariable Long id, 
     		@RequestParam(required=false) String title, 
     		@RequestParam String authorsName) {   
-    	return bookService.findByTitleOrAuthor(title, authorsName)	//get book by title/author
+    	return Optional.ofNullable(bookService.findByTitleOrAuthor(title, authorsName))	//get book by title/author
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
 
@@ -85,11 +85,10 @@ public class BookController {
     }
     
     @DeleteMapping("/{id}")
-    public Optional<Book> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
     		.orElseThrow(() -> new BookNotFoundException(id));
     	bookService.delete(bookToDelete);
-    	return bookToDelete;
     }
 
 }

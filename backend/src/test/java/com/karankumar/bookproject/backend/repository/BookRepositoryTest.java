@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,13 +73,13 @@ class BookRepositoryTest {
     void successfullyDeleteABook_whenAuthorHasOtherBooks() {
         // given
         bookRepository.saveAndFlush(new Book("Book2", author, read));
-        Book book = bookRepository.findByTitleOrAuthor("title", WILDCARD).get(0);
+        Optional<Book> book = bookRepository.findByTitleOrAuthor("title", WILDCARD).get(0);
 
         // when
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").size())
+        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").count())
                 .isOne();
     }
 

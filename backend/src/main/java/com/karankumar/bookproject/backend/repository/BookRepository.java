@@ -24,6 +24,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByTitleContainingIgnoreCase(String title);
@@ -35,7 +36,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
             "(LOWER(a.firstName) LIKE LOWER(CONCAT('%', :authorsName, '%')) OR " +
             "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :authorsName, '%')))")
-    List<Book> findByShelfAndTitleOrAuthor(@Param("shelf") Shelf shelf,
+    Optional<List<Book>> findByShelfAndTitleOrAuthor(@Param("shelf") Shelf shelf,
                                            @Param("title") String title,
                                            @Param("authorsName") String authorsName);
 
@@ -45,7 +46,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
             "(LOWER(a.firstName) LIKE LOWER(CONCAT('%', :authorsName, '%')) OR " +
             "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :authorsName, '%')))")
-    List<Book> findByTitleOrAuthor(@Param("title") String title,
+    Optional<List<Book>> findByTitleOrAuthor(@Param("title") String title,
                                    @Param("authorsName") String authorsName);
 
 }

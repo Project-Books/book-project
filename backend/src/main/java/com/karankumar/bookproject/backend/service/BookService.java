@@ -49,8 +49,8 @@ public class BookService {
         this.publisherService = publisherService;
     }
 
-    public Book findById(Long id) {
-        return bookRepository.getOne(id);
+    public Optional<Book> findById(Long id) {
+        return bookRepository.findById(id);
     }
 
     public Optional<Book> save(Book book) {
@@ -150,11 +150,11 @@ public class BookService {
         return jsonWriter.writeValueAsString(books);
     }
 
-    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
+    public Optional<List<Book>> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
         return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
     }
 
-    public List<Book> findByTitleOrAuthor(String title, String authorsName){
+    public Optional<List<Book>> findByTitleOrAuthor(String title, String authorsName){
         return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
 }

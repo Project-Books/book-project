@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -185,7 +186,7 @@ class BookServiceTest {
         bookService.save(validBook);
 
         // when
-        Book actual = bookService.findById(validBook.getId());
+        Optional<Book> actual = bookService.findById(validBook.getId());
 
         // then
         assertThat(actual).isNotNull();
