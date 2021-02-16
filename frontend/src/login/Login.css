@@ -22,12 +22,11 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 .center.app-logo {
-  padding: 200px 0 50px 0;
+  padding-top: 300px;
 }
 
 .center.login-form {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: -40px;
 }
 
 .center.login {
@@ -45,7 +44,7 @@ If not, see <https://www.gnu.org/licenses/>.
   }
   
   .center.app-logo {
-    padding: 200px 0 0 0;
+    padding-top: 200px;
   }
   
   .center.login {
