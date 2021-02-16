@@ -119,15 +119,15 @@ class Login extends Component<LoginProps, IState> {
   render() {
     return (
       <div>
-        <img src={logo} alt="Logo" id="app-logo" />
+        <img src={logo} alt="Logo" className="center app-logo" />
 
         <br />
         <br />
         <br />
 
-        <div className="login-form">
+        <div className="center login-form">
           <EmailAddress
-            class="login"
+            class="center login"
             isInvalid={this.isEmailInvalid()}
             onChange={this.onEmailChanged}
             areCredentialsInvalid={this.state.areCredentialsInvalid}
@@ -137,7 +137,7 @@ class Login extends Component<LoginProps, IState> {
 
           <Password
             fieldName={'Password'}
-            class={'login'}
+            class={'center login'}
             onPasswordChanged={this.onPasswordChanged}
             isInvalid={this.state.areCredentialsInvalid}
             errorMessage={'Please enter a password'}
@@ -147,7 +147,7 @@ class Login extends Component<LoginProps, IState> {
           <br />
 
           <Button
-            className="login"
+            className="center login"
             variant="contained"
             color="primary"
             onClick={this.onClickLogin}>
@@ -157,7 +157,7 @@ class Login extends Component<LoginProps, IState> {
           <br />
           <br />
 
-          <Button className="login" id="createAccount" component={Link} to={routes.SIGN_UP}>
+          <Button className="center login" id="createAccount" component={Link} to={routes.SIGN_UP}>
             Create account
             </Button>
 

@@ -15,22 +15,25 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-.login-form {
-  position: fixed;
-  top: 45%;
-  left: 45%;
+.center {
+  display: block;
+  margin: 0 auto;
+  width: 500px;
 }
 
-#app-logo {
-  position: fixed;
-  top: 5%;
-  padding-left: 48px;
+.center.app-logo {
+  padding: 200px 0 50px 0;
+}
+
+.center.login-form {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.center.login {
+  width: 500px;
 }
 
 #standard-basic {
-  width: 290px;
-}
-
-.login {
-  width: 290px;
+  width: 500px;
 }
