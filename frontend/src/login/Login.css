@@ -37,3 +37,18 @@ If not, see <https://www.gnu.org/licenses/>.
 #standard-basic {
   width: 500px;
 }
+
+/* mobile screens */
+@media screen and (max-width: 600px) {
+  .center {
+    width: 300px;
+  }
+  
+  .center.app-logo {
+    padding: 200px 0 0 0;
+  }
+  
+  .center.login {
+  	width: 300px;
+  }
+}
