@@ -73,14 +73,14 @@ class BookRepositoryTest {
     void successfullyDeleteABook_whenAuthorHasOtherBooks() {
         // given
         bookRepository.saveAndFlush(new Book("Book2", author, read));
-        Optional<Book> book = bookRepository.findByTitleOrAuthor("title", WILDCARD).get(0);
+        Book book = bookRepository.findByTitleOrAuthor("title", WILDCARD).get().get(0);
 
         // when
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").count())
-                .isOne();
+        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").get())
+                .size().isOne();
     }
 
     @Test
@@ -93,8 +93,8 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").size())
-                .isZero();
+        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").get())
+        		.size().isZero();
     }
 
     @Test
@@ -120,7 +120,8 @@ class BookRepositoryTest {
     @DisplayName("should successfully find list of books for any shelf no other filter")
     void findBookByShelf_withoutParameters() {
         int allBooks = bookRepository.findAll().size();
-        int radBooks = bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, WILDCARD).size();
+        int radBooks = bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, WILDCARD).get()
+        		.size();
 
         assertThat(allBooks).isEqualTo(radBooks);
     }
@@ -135,8 +136,8 @@ class BookRepositoryTest {
 
         bookRepository.saveAndFlush(new Book(title, author, toRead));
 
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toRead, title, WILDCARD).size())
-                .isOne();
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toRead, title, WILDCARD).get())
+        		.size().isOne();
 
     }
 
@@ -148,9 +149,9 @@ class BookRepositoryTest {
 
         assertSoftly(softly -> {
             softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, firstName)
-                                            .size()).isOne();
+                                            .get()).size().isOne();
             softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, lastName)
-                                            .size()).isOne();
+                                            .get()).size().isOne();
         });
     }
 
@@ -162,7 +163,7 @@ class BookRepositoryTest {
 
         // when
         int actual = bookRepository.findByTitleOrAuthor(WILDCARD, WILDCARD)
-                                 .size();
+                                 .get().size();
 
         // then
         assertThat(actual).isEqualTo(allBooks);
@@ -178,7 +179,7 @@ class BookRepositoryTest {
         bookRepository.saveAndFlush(new Book("anotherBook", author, read));
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor(title, WILDCARD).size()).isOne();
+        assertThat(bookRepository.findByTitleOrAuthor(title, WILDCARD).get()).size().isOne();
     }
 
     @Test
@@ -188,9 +189,10 @@ class BookRepositoryTest {
         String lastName = "lastName";
 
         assertSoftly(softly -> {
-            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, firstName).size())
-                  .isOne();
-            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, lastName).size()).isOne();
+            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, firstName).get())
+            	.size().isOne();
+            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, lastName).get())
+            	.size().isOne();
         });
     }
 }
