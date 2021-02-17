@@ -1,6 +1,6 @@
 # Contributor Covenant Code of Conduct
 
-*As multiple versions of this project's code conduct may exist, please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).*
+*As multiple versions of this project's code conduct may exist, please always refer to the [version on the main branch](https://github.com/Project-Books/book-project/blob/main/CODE_OF_CONDUCT.md).*
 
 *Please also ensure that you remain familiar with this document as it may change from time to time.*
 
