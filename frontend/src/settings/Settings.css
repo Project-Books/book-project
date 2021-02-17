@@ -14,3 +14,22 @@ PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program.
 If not, see <https://www.gnu.org/licenses/>.
 */
+
+h1 {
+color: black;
+ padding-left: 200px;
+ padding-top:100px;
+}
+
+.switch-container {
+  display:flex;
+  flex-direction:row;
+  padding-top: 26px;
+  padding-left: 200px;
+}
+
+.settings-text {
+  color:black;
+  padding-right: 60px;
+
+}

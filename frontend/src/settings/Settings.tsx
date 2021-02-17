@@ -16,31 +16,44 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, {Component} from 'react'
-import { NavBar } from '../shared/navigation/NavBar'
+import {createMuiTheme} from '@material-ui/core/styles';
+import { NavBar } from '../shared/navigation/NavBar';
 import Switch from '@material-ui/core/Switch';
+import './Settings.css'
 
- class Settings extends Component {
-     state = {darkModeEnabled: false}
+export const darkTheme = createMuiTheme({
+    palette: {
+      type: 'dark',
+    },
+  });
+  
+export const lightTheme = createMuiTheme ({
+    palette: {
+        type:'light'
+    }
+});
 
-     toggleTheme():void {
-         this.setState({
-             darkModeEnabled: !this.state.darkModeEnabled
-         })
-     }
+interface ISettingsProps{
+    theme: string;
+    toggleTheme: () => void;
+}
 
+ class Settings extends Component<ISettingsProps> {
    render(): JSX.Element {
     return (
         <React.Fragment>
           <NavBar />
           <h1>Settings</h1>
           <div className="switch-container">
+            <div className="settings-text">
               Enable dark mode
-            <Switch
-              checked={this.state.darkModeEnabled}
-              onClick={this.toggleTheme}
+            </div>
+           <Switch
+              checked={this.props.theme === 'dark'}
+              onClick={this.props.toggleTheme}
               color="default"
               inputProps={{ 'aria-label': 'checkbox with default color' }}
-            />
+           />
           </div>
         </React.Fragment>
     )
