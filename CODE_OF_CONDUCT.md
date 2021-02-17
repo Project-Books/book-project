@@ -54,7 +54,7 @@ threatening, offensive, or harmful.
 
 ## Scope
 
-This Code of Conduct applies in project spaces (e.g. the wiki, pull requests, any documentation and code) and in public spaces (such as our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)) when an individual is representing the project or its community. 
+This Code of Conduct applies in project spaces (e.g. the wiki, pull requests, any documentation and code) and in public spaces (such as our Slack workspace) when an individual is representing the project or its community. 
 
 ## Enforcement
 
