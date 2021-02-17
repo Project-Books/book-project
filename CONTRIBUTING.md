@@ -4,36 +4,36 @@ Thank you for taking an interest in contributing!
 
 Please note that by contributing to this project, you are expected to adhere to this contributing document. Please also ensure that you remain familiar with this contributing document as it may change from time to time. 
 
-Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/Project-Books/book-project/blob/master/CONTRIBUTING.md). 
+Multiple versions of this document may exist, so please always refer to the [version on the main branch](https://github.com/Project-Books/book-project/blob/main/CONTRIBUTING.md). 
 
 ## Code of Conduct
 
-By contributing to this project, you are expected to adhere to the [Book Project Code of Conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md). 
+By contributing to this project, you are expected to adhere to the [Book Project Code of Conduct](https://github.com/knjk04/book-project/blob/main/CODE_OF_CONDUCT.md). 
 
 ## Contents
 
-1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#questions-suggestions--feedback)
+1. [Questions, suggestions & feedback](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#questions-suggestions--feedback)
 1. [Receiving a response](https://github.com/Project-Books/book-project/blob/refactor-book-service-test-523/CONTRIBUTING.md#receiving-a-response)
-1. [Open-ended discussions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#open-ended-discussions) 
-1. [Before making changes](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#before-making-changes)
-   1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
-   1. [New contributors assigned to at most one issue at a time](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#new-contributors-assigned-to-at-most-one-issue-at-a-time)
-   1. [Discuss your implementation approach](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#discuss-your-implementation-approach)
-   1. [Ensure your email address on your commits are correct](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#ensure-your-email-address-on-your-commits-are-correct)
-      1. [Rewriting pushed commits with a different email address](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#rewriting-pushed-commits-with-a-different-email-address)
-1. [Workflow](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#workflow)
-   1. [Commit messages](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#commit-messages)
-   1. [One problem per patch](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#one-problem-per-patch)
-   1. [Squashing Commits](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#squashing-commits)
-1. [Code contributions](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#code-contributions)
-   1. [Writing tests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#writing-tests)
-   1. [New files](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#new-files)
-1. [Pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#pull-requests)
-   1. [Merge conflicts](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#merge-conflicts)
-   1. [Resolving conversations](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#resolving-conversations)
-1. [Stale issues & pull requests](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#stale-issues--pull-requests)
-1. [Unassigning yourself](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#unassigning-yourself)
-1. [Ways to contribute](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md#ways-to-contribute)
+1. [Open-ended discussions](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#open-ended-discussions) 
+1. [Before making changes](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#before-making-changes)
+   1. [Tell us which issue you want to work on](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#tell-us-which-issue-you-want-to-work-on)
+   1. [New contributors assigned to at most one issue at a time](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#new-contributors-assigned-to-at-most-one-issue-at-a-time)
+   1. [Discuss your implementation approach](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#discuss-your-implementation-approach)
+   1. [Ensure your email address on your commits are correct](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#ensure-your-email-address-on-your-commits-are-correct)
+      1. [Rewriting pushed commits with a different email address](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#rewriting-pushed-commits-with-a-different-email-address)
+1. [Workflow](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#workflow)
+   1. [Commit messages](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#commit-messages)
+   1. [One problem per patch](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#one-problem-per-patch)
+   1. [Squashing Commits](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#squashing-commits)
+1. [Code contributions](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#code-contributions)
+   1. [Writing tests](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#writing-tests)
+   1. [New files](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#new-files)
+1. [Pull requests](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#pull-requests)
+   1. [Merge conflicts](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#merge-conflicts)
+   1. [Resolving conversations](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#resolving-conversations)
+1. [Stale issues & pull requests](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#stale-issues--pull-requests)
+1. [Unassigning yourself](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#unassigning-yourself)
+1. [Ways to contribute](https://github.com/knjk04/book-project/blob/main/CONTRIBUTING.md#ways-to-contribute)
 
 ## Questions, suggestions & feedback
 
@@ -141,11 +141,11 @@ Please follow the process below:
 1. Tell us which issue you want to work on
 2. Discuss your implementation approach with us
 3. Fork the repository
-4. Create a new branch off master (unless the corresponding issue says otherwise). Your branch should have a descriptive branch name (that corresponds to the relevant issue) and include the issue number (e.g. `add-styleguide-1048`)
+4. Create a new branch off main (unless the corresponding issue says otherwise). Your branch should have a descriptive branch name (that corresponds to the relevant issue) and include the issue number (e.g. `add-styleguide-1048`)
   - Please do not use quotation marks or apostrophes in your branch name
 5. Bring your branch level with the branch you're going to be branching into before submitting a pull request (we recommend rebasing)
-  - i.e. if you're going to be branch off `master`, then rebase new changes from master onto your branch
-6. Submit a pull request to merge into the branch specified on the issue (or master if a branch is not specified)
+  - i.e. if you're going to be branch off `main`, then rebase new changes from main onto your branch
+6. Submit a pull request to merge into the branch specified on the issue (or main if a branch is not specified)
 
 ### Commit messages
 
@@ -177,7 +177,7 @@ You can keep your fork up-to-date by first [creating a remote for the upstream](
 
 ## Code contributions
 
-Please adhere to [our code style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md).
+Please adhere to [our code style guide](https://github.com/knjk04/book-project/blob/main/STYLEGUIDE.md).
 
 Before submitting a pull request, run the unit tests and ensure they pass.
 
@@ -189,7 +189,7 @@ We highly recommend following a test-driven development approach.
 
 ### New files
 
-If you're adding a new file, please ensure to copy the contents of our [copyright file](https://github.com/knjk04/book-project/blob/master/docs/COPYRIGHT) verbatim (use the latest version on the master branch).
+If you're adding a new file, please ensure to copy the contents of our [copyright file](https://github.com/knjk04/book-project/blob/main/docs/COPYRIGHT) verbatim (use the latest version on the main branch).
 
 ## Pull requests
 
@@ -228,11 +228,11 @@ Please also consider that you're finding something difficult on the issue you're
 
 - Code: adding new features, fixing bugs and general refactoring to name a few
   - Code reviews: either offering to review a pull request on Slack or if you see a pull request and think the code could be improved, feel free to offer suggestions on how to do so. This can help improve our code quality and is much appreciated!
-     - Before reviewing code, please ensure you are familiar with and understand our [code reviews document](https://github.com/knjk04/book-project/blob/master/.github/CODE_REVIEWS.md)
+     - Before reviewing code, please ensure you are familiar with and understand our [code reviews document](https://github.com/knjk04/book-project/blob/main/.github/CODE_REVIEWS.md)
   - Issues and pull requests labelled with [needs-repro](https://github.com/knjk04/book-project/labels/needs-repro) have yet to be reproduced. If you're able to reproduce it, letting us know would help a lot
   - Our test coverage is low, so we need a lot more tests, particularly the areas that are undertested or not covered at all
 
-- Documentation: improvements (including fixing typos!) to files such as the [README](https://github.com/knjk04/book-project/blob/master/README.md), any of the [wiki](https://github.com/knjk04/book-project/wiki) pages, the [style guide](https://github.com/knjk04/book-project/blob/master/STYLEGUIDE.md), comments in source files, this contributing document or the [code of conduct](https://github.com/knjk04/book-project/blob/master/CODE_OF_CONDUCT.md).
+- Documentation: improvements (including fixing typos!) to files such as the [README](https://github.com/knjk04/book-project/blob/main/README.md), any of the [wiki](https://github.com/knjk04/book-project/wiki) pages, the [style guide](https://github.com/knjk04/book-project/blob/main/STYLEGUIDE.md), comments in source files, this contributing document or the [code of conduct](https://github.com/knjk04/book-project/blob/main/CODE_OF_CONDUCT.md).
 
 - Design: helping to design the UI and UX of the web app through prototypes (such as wireframes and drawings)
 
