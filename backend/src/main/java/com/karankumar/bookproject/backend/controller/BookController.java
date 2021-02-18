@@ -45,18 +45,18 @@ public class BookController {
         this.bookService = bookService;
     }
     
-    @GetMapping() //get all books
+    @GetMapping("get-all-books") //get all books
     public List<Book> all() {
     	return bookService.findAll();
     }
     
-    @GetMapping("/{id}") 	
+    @GetMapping("get-book-by-id/{id}") 	
     public Optional<Book> findById(@PathVariable Long id) { 
     	return Optional.ofNullable(bookService.findById(id))	//get book by id
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     
-    @GetMapping("/{id}") 	
+    @GetMapping("get-book-by-shelf/{id}") 	
     public Optional<List<Book>> findByShelf(@PathVariable Long id, 
     		@RequestParam Shelf shelf, 
     		@RequestParam(required=false) String title, 
@@ -65,7 +65,7 @@ public class BookController {
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     		
-    @GetMapping("/{id}") 	
+    @GetMapping("get-book-by-author/{id}") 	
     public Optional<List<Book>> findByAuthor(@PathVariable Long id, 
     		@RequestParam(required=false) String title, 
     		@RequestParam String authorsName) {   
@@ -73,18 +73,18 @@ public class BookController {
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    @PostMapping()	//add new book
+    @PostMapping("add-book")	//add new book
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody Book newBook) {
         return bookService.save(newBook);                                   
     }
     
-    @PutMapping("/{id}")	//update an existing book
+    @PutMapping("update-book/{id}")	//update an existing book
     public void update(@PathVariable Long id) {
     	
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete-book/{id}")
     public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
     		.orElseThrow(() -> new BookNotFoundException(id));
