@@ -45,46 +45,48 @@ public class BookController {
         this.bookService = bookService;
     }
     
-    @GetMapping("get-all-books") //get all books
+    @GetMapping() //get all books
     public List<Book> all() {
     	return bookService.findAll();
     }
     
-    @GetMapping("get-book-by-id/{id}") 	
+    @GetMapping("/find-by-id/{id}") 	
     public Optional<Book> findById(@PathVariable Long id) { 
     	return Optional.ofNullable(bookService.findById(id))	//get book by id
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     
-    @GetMapping("get-book-by-shelf/{id}") 	
-    public Optional<List<Book>> findByShelf(@PathVariable Long id, 
-    		@RequestParam Shelf shelf, 
+    @GetMapping("/find-by-shelf/{shelf}") 	
+    public Optional<List<Book>> findByShelf(@PathVariable Shelf shelf, 
+    		//@RequestParam Shelf shelf, 
     		@RequestParam(required=false) String title, 
-    		@RequestParam(required=false) String authorsName) { 
+    		@RequestParam(required=false) String authorsName,
+    		@RequestParam Long id) { 
     	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))	//get book by shelf and title/author
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     		
-    @GetMapping("get-book-by-author/{id}") 	
-    public Optional<List<Book>> findByAuthor(@PathVariable Long id, 
-    		@RequestParam(required=false) String title, 
-    		@RequestParam String authorsName) {   
+    @GetMapping("/find-by-author/{author}") 	
+    public Optional<List<Book>> findByAuthor(@PathVariable String authorsName, 
+    		@RequestParam(required=false) String title,
+    		@RequestParam Long id) {
+    		//@RequestParam String authorsName) {   
     	return Optional.ofNullable(bookService.findByTitleOrAuthor(title, authorsName))	//get book by title/author
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    @PostMapping("add-book")	//add new book
+    @PostMapping("/add-book")	//add new book
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody Book newBook) {
         return bookService.save(newBook);                                   
     }
     
-    @PutMapping("update-book/{id}")	//update an existing book
+    @PutMapping("/update-book/{id}")	//update an existing book
     public void update(@PathVariable Long id) {
     	
     }
     
-    @DeleteMapping("delete-book/{id}")
+    @DeleteMapping("/delete-book/{id}")
     public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
     		.orElseThrow(() -> new BookNotFoundException(id));
