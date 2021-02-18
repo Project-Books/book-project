@@ -253,7 +253,8 @@ class BookServiceTest {
         bookService.save(bookToSave);
 
         // then
-        assertThat(bookService.findById(bookToSave.getId())).isEqualTo(bookToSave);
+        assertThat(bookService.findById(bookToSave.getId())).get()
+        	.isEqualTo(bookToSave);
     }
 
     private Book.BookBuilder createBookWithAllAttributes() {

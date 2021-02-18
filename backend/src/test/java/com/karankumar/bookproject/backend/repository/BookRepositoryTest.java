@@ -93,8 +93,7 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").get())
-        		.size().isZero();
+        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName")).isEmpty();
     }
 
     @Test
