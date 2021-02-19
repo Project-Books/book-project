@@ -74,7 +74,7 @@ class PublisherServiceTest {
         publisherService.save(publisher);
 
         // then
-        assertThat(publisherService.findById(publisher.getId())).isNotNull();
+        assertThat(publisherService.findById(publisher.getId())).isPresent();
     }
 
     @Test

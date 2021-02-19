@@ -155,7 +155,8 @@ public class ImportService {
                      .filter(Optional::isPresent)
                      .findFirst()
                      .map(Optional::get)
-                     .map(predefinedShelfService::findByPredefinedShelfNameAndLoggedInUser);
+                     .map(predefinedShelfService::findByPredefinedShelfNameAndLoggedInUser)
+                     .map(Optional::get);
     }
 
     private Optional<CustomShelf> toCustomShelf(

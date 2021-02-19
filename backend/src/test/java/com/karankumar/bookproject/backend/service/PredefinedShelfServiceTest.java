@@ -73,8 +73,7 @@ class PredefinedShelfServiceTest {
 
     @Test
     void findAllPredefinedShelvesForPredefinedShelfNameAndLoggedInUser() {
-        PredefinedShelf shelf = predefinedShelfService
-                .findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
+        PredefinedShelf shelf = predefinedShelfService.findToReadShelf();
 
         assertSoftly(softly -> {
             assertThat(shelf).isNotNull();

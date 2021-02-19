@@ -23,6 +23,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TagService {
@@ -33,8 +34,8 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-    public Tag findById(Long id) {
-        return tagRepository.getOne(id);
+    public Optional<Tag> findById(Long id) {
+        return Optional.ofNullable(tagRepository.getOne(id));
     }
 
     public void save(@NonNull Tag tag) {

@@ -58,7 +58,8 @@ class RatingStatisticsTest {
 
     @Test
     void findLowestRatedBookExists() {
-        String actualTitle = ratingStatistics.findLeastLikedBook().getTitle();
+    	String actualTitle = ratingStatistics.findLeastLikedBook()
+        		.map(Book::getTitle).orElse("");
         String expectedTitle = bookWithNoRating.getTitle();
         assertThat(actualTitle).isEqualTo(expectedTitle);
     }
@@ -66,12 +67,13 @@ class RatingStatisticsTest {
     @Test
     void notFindNonExistentLowestRatedBook() {
         resetRatingStatistics();
-        assertThat(ratingStatistics.findLeastLikedBook()).isNull();
+        assertThat(ratingStatistics.findLeastLikedBook()).isEmpty();
     }
 
     @Test
     void findHighestRatedBook() {
-        String actualTitle = ratingStatistics.findMostLikedBook().getTitle();
+    	String actualTitle = ratingStatistics.findMostLikedBook()
+        		.map(Book::getTitle).orElse("");
         String expectedTitle = bookWithHighestRating.getTitle();
         assertThat(actualTitle).isEqualTo(expectedTitle);
     }
@@ -79,7 +81,7 @@ class RatingStatisticsTest {
     @Test
     void notFindNonExistentHighestRatedBook() {
         resetRatingStatistics();
-        assertThat(ratingStatistics.findMostLikedBook()).isNull();
+        assertThat(ratingStatistics.findMostLikedBook()).isEmpty();
     }
 
     @Test
@@ -89,7 +91,7 @@ class RatingStatisticsTest {
         double totalRating = StatisticTestUtils.totalRating;
 
         // when
-        Double actual = ratingStatistics.calculateAverageRatingGiven();
+        Double actual = ratingStatistics.calculateAverageRatingGiven().get();
 
         // then
         double average = totalRating / numberOfBooks;
@@ -99,7 +101,7 @@ class RatingStatisticsTest {
     @Test
     void notDivideAverageRatingByZero() {
         resetRatingStatistics();
-        assertThat(ratingStatistics.calculateAverageRatingGiven()).isNull();
+        assertThat(ratingStatistics.calculateAverageRatingGiven()).isEmpty();
     }
 
     private void resetRatingStatistics() {

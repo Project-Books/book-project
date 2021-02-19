@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
@@ -59,13 +60,13 @@ class PredefinedShelfRepositoryTest {
 
     @Test
     void findCorrectShelf() {
-        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
+        Optional<PredefinedShelf> shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
 
-        assertThat(shelf).isNotNull();
+        assertThat(shelf).isPresent();
 
         assertSoftly(softly -> {
-            softly.assertThat(shelf.getPredefinedShelfName()).isEqualTo(TO_READ);
-            softly.assertThat(shelf.getUser().getId()).isEqualTo(user.getId());
+            softly.assertThat(shelf.get().getPredefinedShelfName()).isEqualTo(TO_READ);
+            softly.assertThat(shelf.get().getUser().getId()).isEqualTo(user.getId());
         });
     }
 
@@ -76,10 +77,10 @@ class PredefinedShelfRepositoryTest {
         repository.deleteAll();
 
         // when
-        PredefinedShelf shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
+        Optional<PredefinedShelf> shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
 
         // then
-        assertThat(shelf).isNull();
+        assertThat(shelf).isEmpty();
     }
 
     @Test
