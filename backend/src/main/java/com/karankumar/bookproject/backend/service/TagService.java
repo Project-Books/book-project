@@ -38,17 +38,8 @@ public class TagService {
     }
 
     public void save(@NonNull Tag tag) {
-        boolean hasDuplicate = false;
-
-        List<Tag> allTags = findAll();
-        for(Tag thisTag : allTags) {
-          if(thisTag.getName().trim().toLowerCase().equals(tag.getName().trim().toLowerCase())) {
-            hasDuplicate = true;
-            break;
-          }
-        }
-
-        if(!hasDuplicate) {
+        List<Tag> thisTag = tagRepository.findByName(tag.getName().trim());
+        if(thisTag == null || thisTag.size() == 0) {
           tagRepository.save(tag);
         }
     }
