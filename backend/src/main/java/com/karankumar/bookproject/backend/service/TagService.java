@@ -35,7 +35,7 @@ public class TagService {
     }
 
     public Optional<Tag> findById(Long id) {
-        return Optional.ofNullable(tagRepository.getOne(id));
+        return tagRepository.findById(id);
     }
 
     public void save(@NonNull Tag tag) {

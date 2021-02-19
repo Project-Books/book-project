@@ -86,8 +86,7 @@ class TagServiceTest {
         tagService.delete(tag);
 
         // then
-        assertThatThrownBy(() -> tagService.findById(tagId)).isInstanceOf(
-                JpaObjectRetrievalFailureException.class);
+        assertThat(tagService.findById(tagId)).isEmpty();
     }
 
     @Test

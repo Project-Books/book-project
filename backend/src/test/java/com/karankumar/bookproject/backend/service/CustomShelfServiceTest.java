@@ -149,8 +149,7 @@ class CustomShelfServiceTest {
         customShelfService.delete(customShelf);
 
         // then
-        assertThatExceptionOfType(JpaObjectRetrievalFailureException.class)
-                .isThrownBy(() -> customShelfService.findById(id));
+        assertThat(customShelfService.findById(id)).isEmpty();
     }
 
     @Test

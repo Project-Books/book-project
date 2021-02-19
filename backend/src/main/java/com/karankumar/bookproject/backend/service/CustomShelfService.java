@@ -49,7 +49,7 @@ public class CustomShelfService {
     }
 
     public Optional<CustomShelf> findById(Long id) {
-        return Optional.ofNullable(customShelfRepository.getOne(id));
+        return customShelfRepository.findById(id);
     }
 
     public List<CustomShelf> findAllForLoggedInUser() {
