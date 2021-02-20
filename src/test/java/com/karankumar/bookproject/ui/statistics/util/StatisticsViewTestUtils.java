@@ -31,6 +31,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.function.Predicate;
 
 public class StatisticsViewTestUtils {
@@ -135,7 +136,7 @@ public class StatisticsViewTestUtils {
                                    PredefinedShelfService predefinedShelfService) {
         PredefinedShelf readShelf = predefinedShelfService.findReadShelf();
         final var book = new Book(title, author, readShelf);
-        book.setBookGenre(genre);
+        book.setBookGenre(Collections.singleton(genre));
         book.setNumberOfPages(2000);
         book.setPagesRead(1000);
         book.setRating(RatingScale.EIGHT_POINT_FIVE);

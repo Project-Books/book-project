@@ -60,6 +60,7 @@ import lombok.extern.java.Log;
 
 import javax.transaction.NotSupportedException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -432,7 +433,7 @@ public class BookForm extends VerticalLayout {
             LOGGER.log(Level.SEVERE, "Negative Series value");
         }
 
-        book.setBookGenre(bookGenre.getValue());
+        book.setBookGenre(Collections.singleton(bookGenre.getValue()));
         book.setNumberOfPages(numberOfPages.getValue());
         book.setDateStartedReading(dateStartedReading.getValue());
         book.setDateFinishedReading(dateFinishedReading.getValue());

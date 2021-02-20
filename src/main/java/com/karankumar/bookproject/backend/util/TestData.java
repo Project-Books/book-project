@@ -105,7 +105,7 @@ public final class TestData {
                 generateRandomPublishers(publishers)
         );
 
-        book.setBookGenre(generateRandomGenre());
+        book.setBookGenre(Collections.singleton(generateRandomGenre()));
         book.setBookRecommendedBy(generateRandomRecommender());
         book.setTags(new HashSet<>(Collections.singletonList(generateRandomTag(tags))));
         book.setSeriesPosition(generateRandomSeriesPosition());

@@ -28,13 +28,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.ISBN;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -58,7 +52,13 @@ public class Book extends BaseEntity {
     private Integer numberOfPages;
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
-    private BookGenre bookGenre;
+    @ElementCollection(targetClass = BookGenre.class)
+    @CollectionTable(
+            name = "book_genre",
+            joinColumns = @JoinColumn(name = "book_id")
+    )
+    @Column(name = "genre")
+    private Set<BookGenre> bookGenre;
     private BookFormat bookFormat;
     private Integer seriesPosition;
     private String edition;

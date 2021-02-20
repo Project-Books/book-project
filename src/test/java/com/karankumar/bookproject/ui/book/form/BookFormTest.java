@@ -58,6 +58,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.NotSupportedException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -127,7 +128,7 @@ class BookFormTest {
 
         seriesPosition = SERIES_POSITION;
 
-        book.setBookGenre(BOOK_GENRE);
+        book.setBookGenre(Collections.singleton(BOOK_GENRE));
         book.setNumberOfPages(numberOfPages);
         book.setCustomShelf(customShelfService.findAllForLoggedInUser().get(0));
         System.out.println("in series? " + isInSeries);

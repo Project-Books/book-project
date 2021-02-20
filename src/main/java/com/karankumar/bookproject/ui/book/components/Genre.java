@@ -39,8 +39,8 @@ public class Genre extends FormItem<ComboBox<BookGenre>> {
     }
 
     public void bind(Binder<Book> binder) {
-        binder.forField(super.getField())
-              .bind(Book::getBookGenre, Book::setBookGenre);
+//        binder.forField(super.getField());
+//              .bind(Book::getBookGenre, Book::setBookGenre);
     }
 
 }
