@@ -31,6 +31,14 @@ If not, see <https://www.gnu.org/licenses/>.
     flex-direction:column;
 }
 
+.nav-bar-light {
+   box-shadow:  10px 0 8px -8px gray; 
+}
+
+.nav-bar-dark {
+    background-color: black;
+}
+
 .nav-top {
     padding-top:50px;
     padding-bottom:100px;

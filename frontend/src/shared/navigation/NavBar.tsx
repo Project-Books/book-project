@@ -52,9 +52,11 @@ type NavItemProps = {
 
 export function NavBar(): JSX.Element {
     const theme = useTheme();
+    const navClass = 'nav-bar ' + (theme.palette.type === 'dark' ? 'nav-bar-dark' : 'nav-bar-light')
+
     return (
         <MuiThemeProvider theme={theme}>
-        <div className="nav-bar">
+        <div className={navClass}>
             <div className="nav-top">
               <Link to={routes.HOME}>
                 <img src={logo} alt="Logo" id="nav-bar-logo" />
