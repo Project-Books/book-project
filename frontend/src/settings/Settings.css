@@ -16,7 +16,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 h1 {
-color: black;
  padding-left: 200px;
  padding-top:100px;
 }
@@ -29,7 +28,5 @@ color: black;
 }
 
 .settings-text {
-  color:black;
   padding-right: 60px;
-
 }

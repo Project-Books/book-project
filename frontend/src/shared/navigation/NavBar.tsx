@@ -20,18 +20,28 @@ import './NavBar.css'
 import { ExitToApp, MenuBook, Settings, TrackChanges, TrendingUp } from '@material-ui/icons'
 import logo from '../media/logo/logo-two-lines-white@1x.png'
 import * as routes from '../routes'
+import {useTheme} from '@material-ui/core/styles';
 import { Link } from 'react-router-dom'
-
+import {makeStyles,MuiThemeProvider} from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+  
+  const useStyles = makeStyles({
+    button: {
+      textTransform: "none",
+      textDecoration: "none"
+    }
+  });
+ 
 function NavItem(props: NavItemProps) {
+    const classes = useStyles();
     return (
-        <Link to={props.goTo}>
-            <button>
-                <div className="nav-item">
-                    {props.icon}
-                    <span className="nav-item-text">{props.itemText}</span>
-                </div>
-            </button>
-        </Link>
+          <Link to={props.goTo}>
+            <div className="nav-item">
+                <Button className={classes.button} startIcon={props.icon}>
+                      {props.itemText}
+                </Button>
+            </div>
+         </Link>
     )
 }
 
@@ -42,7 +52,10 @@ type NavItemProps = {
 }
 
 export function NavBar(): JSX.Element {
+    const theme = useTheme();
+    console.log(theme);
     return (
+        <MuiThemeProvider theme={theme}>
         <div className="nav-bar">
             <div className="nav-top">
               <Link to={routes.HOME}>
@@ -59,5 +72,6 @@ export function NavBar(): JSX.Element {
               <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN} />
             </div>
         </div>
+      </MuiThemeProvider>
     )
 }
