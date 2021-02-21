@@ -28,7 +28,6 @@ import MyBooks from "./my-books/MyBooks";
 import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
-import CssBaseline from '@material-ui/core/CssBaseline';
 import * as routes from "./shared/routes"
 
 const darkTheme = createMuiTheme({
@@ -43,18 +42,15 @@ const lightTheme = createMuiTheme ({
   }
 });
 
-
 function App():JSX.Element {
   const [theme, setTheme] = useState(lightTheme);
 
   function toggleTheme():void {
-    console.log('toggling Theme', theme);
     theme === lightTheme ? setTheme(darkTheme) : setTheme(lightTheme)
   } 
    
     return (
         <ThemeProvider theme={theme}>
-          <CssBaseline />
           <BrowserRouter>
               <Route exact path={routes.HOME} component={Login} />
               <Route path={routes.SIGN_IN} component={Login} />

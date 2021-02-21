@@ -28,14 +28,13 @@ import Button from "@material-ui/core/Button";
   const useStyles = makeStyles({
     button: {
       textTransform: "none",
-      textDecoration: "none"
-    }
+    },
   });
- 
+
 function NavItem(props: NavItemProps) {
     const classes = useStyles();
     return (
-          <Link to={props.goTo}>
+          <Link to={props.goTo} style={{ textDecoration: 'none' }}>
             <div className="nav-item">
                 <Button className={classes.button} startIcon={props.icon}>
                       {props.itemText}
@@ -53,7 +52,6 @@ type NavItemProps = {
 
 export function NavBar(): JSX.Element {
     const theme = useTheme();
-    console.log(theme);
     return (
         <MuiThemeProvider theme={theme}>
         <div className="nav-bar">

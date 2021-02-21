@@ -19,6 +19,7 @@ import React, {Component} from 'react'
 import { NavBar } from '../shared/navigation/NavBar';
 import Switch from '@material-ui/core/Switch';
 import { withTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import './Settings.css'
 
 interface ISettingsProps{
@@ -27,30 +28,26 @@ interface ISettingsProps{
 }
 
  class Settings extends Component<ISettingsProps> {
-   componentDidUpdate(prevProps:ISettingsProps) {
-     console.log('component updated', prevProps.theme.palette.type)
-     console.log('new type', this.props.theme.palette.type);
-   }
-
    render(): JSX.Element {
     return (
-        <React.Fragment>
-          <NavBar />
-          <MuiThemeProvider theme={this.props.theme}>
+      <React.Fragment>
+        <NavBar />
+        <MuiThemeProvider theme={this.props.theme}>
+          <CssBaseline />
           <h1>Settings</h1>
           <div className="switch-container">
             <div className="settings-text">
               Enable dark mode
             </div>
-           <Switch
+            <Switch
               checked={this.props.theme.palette.type === 'dark'}
               onClick={this.props.toggleTheme}
               color="default"
               inputProps={{ 'aria-label': 'checkbox with default color' }}
-           />
+            />
           </div>
-          </MuiThemeProvider>
-        </React.Fragment>
+        </MuiThemeProvider>
+      </React.Fragment>
     )
    }
 }
