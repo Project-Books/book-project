@@ -34,7 +34,9 @@ interface ISettingsProps{
         <NavBar />
         <MuiThemeProvider theme={this.props.theme}>
           <CssBaseline />
-          <h1>Settings</h1>
+          <div className="settings-header">
+            Settings
+          </div>
           <div className="switch-container">
             <div className="settings-text">
               Enable dark mode

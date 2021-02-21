@@ -15,9 +15,12 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-h1 {
+.settings-header {
  padding-left: 200px;
  padding-top:100px;
+ padding-bottom:30px;
+ font-size: 22pt;
+ font-weight:bold;
 }
 
 .switch-container {
