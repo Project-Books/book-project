@@ -4,7 +4,7 @@ Thank you for taking an interest in contributing!
 
 Please note that by contributing to this project, you are expected to adhere to this contributing document. Please also ensure that you remain familiar with this contributing document as it may change from time to time. 
 
-Multiple versions of this document may exist, so please always refer to the [version on the master branch](https://github.com/knjk04/book-project/blob/master/README.md). 
+Multiple versions of this document may exist, so please always refer to the [version on the 0.2.0 branch](https://github.com/Project-Books/book-project/blob/0.2.0/CONTRIBUTING.md) if your issue is related to this release. 
 
 ## Code of Conduct
 
@@ -39,11 +39,11 @@ By contributing to this project, you are expected to adhere to the [Book Project
 
 All questions, suggestions and feedback are both welcome and encouraged. 
 
-Questions and feedback should be discussed over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). This allows others to benefit from seeing the answers, too.
+Questions and feedback should be discussed in a GitHub discussion or on Slack. This allows others to benefit from seeing the answers, too.
 
 For suggestions, please vote on, or add to, the existing relevant issue. If no such issue exists, feel free to open a new issue.
 
-If in doubt, talk to us over [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw)!
+If in doubt, talk to us over Slack.
 
 ## Receiving a response
 
@@ -53,7 +53,7 @@ If you haven't received a response, feel free to mention @knjk04 or get in touch
 
 ## Open-ended discussions
 
-Open-ended discussions are best made over our public #help channel on our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw). Unless specified otherwise, this applies when you're not assigned to the issue at hand.
+Open-ended discussions are best made over our public #help channel on our Slack workspace. Unless specified otherwise, this applies when you're not assigned to the issue at hand.
 
 Examples of when to take a discussion over to Slack
 - If you disagree with an issue (e.g. if you don't think it's needed or there is a better way of doing something)
@@ -221,7 +221,7 @@ If you no longer wish to work an issue, that's fine. All we ask is that you let 
 
 Where possible, please let us know as soon as possible if you no longer wish to work on an issue. 
 
-Please also consider that you're finding something difficult on the issue you're assigned to, we're here to help on [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).
+Please also consider that you're finding something difficult on the issue you're assigned to, we're here to help on a GitHub discussion or on Slack.
 
 ## Ways to contribute
 
@@ -239,4 +239,4 @@ Please also consider that you're finding something difficult on the issue you're
 
 - Triage: help us to [triage issues and pull requests](https://github.com/Project-Books/book-project/wiki/Becoming-a-Triager)
 
-In addition to the above, you can get involved in shaping the future of the project over on [Slack](https://join.slack.com/t/teambookproject/shared_invite/zt-h6vx3n8l-KN8QnO50r7QWZHgHFnFdPw).
+In addition to the above, you can get involved in shaping the future of the project over on Slack.

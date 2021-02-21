@@ -17,23 +17,22 @@
 
 package com.karankumar.bookproject.util;
 
-import com.karankumar.bookproject.backend.entity.account.User;
+import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 
 public class SecurityTestUtils {
     private SecurityTestUtils() {}
 
-    // this has to be the same value as in data.sql
-    public static final String TEST_USER_NAME = "testUser";
+    // this must be the same as in resources/data.sql
+    public static final String TEST_USER_EMAIL = "user@user.user";
 
     public static User getTestUser(UserRepository repository) {
-        return repository.findByUsername(TEST_USER_NAME).orElseThrow();
+        return repository.findByEmail(TEST_USER_EMAIL).orElseThrow();
     }
 
-    public static User insertTestUser(UserRepository repository, String username) {
+    public static User insertTestUser(UserRepository repository) {
         User user = User.builder()
-                .username(username)
-                .email(username + "@user.user")
+                .email(TEST_USER_EMAIL)
                 .password("testPa$$123_Paf1")
                 .build();
         return repository.save(user);

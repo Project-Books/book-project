@@ -3,20 +3,22 @@
   </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/github/Project-Books/book-project">
-    <img src="https://travis-ci.com/Project-Books/book-project.svg?branch=master" alt="Build Status"/>
+	
+   <a href="https://dev.azure.com/project-books/Book%20Project/_build/latest?definitionId=2&branchName=0.2.0">
+    <img src="https://dev.azure.com/project-books/Book%20Project/_apis/build/status/Project-Books.book-project?branchName=0.2.0" alt="Build Status"/>
   </a>
+
+	
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw">
+	
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-lvr8oi47-8BjZzov0QDsx4RvjkNjOcA">
     <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
   </a>
+	
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
     <img src="https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab" alt="Code quality" />
-  </a>
-  <a href="https://sonarcloud.io/dashboard?id=com.karankumar%3Abook-project">
-     <img src="https://sonarcloud.io/api/project_badges/measure?project=com.karankumar%3Abook-project&metric=alert_status" alt="SonarCloud quality gate status" />
   </a>
 </p>
 
@@ -58,8 +60,7 @@ This is only for demonstration purposes, so please do not rely on any saved data
 </p>
 
 
-*The images above may look slightly different to the app. If major changes are made, new images will be uploaded to 
-reflect this.*
+*The images above may look slightly different to the app. If major changes are made, we will upload new images.*
 
 ## Setup
 
@@ -76,9 +77,11 @@ First, clone the repository.
  
 ### Running the frontend
 
-1. Navigate to the `frontend/` directory
-2. Run `yarn start`
-3. Open `localhost:3000`
+1. Install yarn: `npm install -g yarn`
+2. Navigate to the `frontend/` directory
+3. Run `yarn install` to install the dependencies
+4. Run `yarn start` to start the development server
+5. Open `localhost:3000`
 
 ### Running the backend
 
@@ -92,7 +95,7 @@ Next, follow one of the approaches below:
 3. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
     - May need to add `sudo` to this command on Unix
-5. Start the application using `java -jar target/book-project-0.1.0.jar` 
+5. Start the application using `java -jar target/book-project-0.2.0.jar` 
 
 #### 2. Start using docker-compose in production mode
 
@@ -111,8 +114,8 @@ Next, follow one of the approaches below:
 ### Fixing Lombok errors
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
-You can find instructions on how to fix this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
-Other common errors and solutions are also in the troubleshooting page.
+You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+Other common errors and solutions are also on the troubleshooting page.
 
 ### Access database
 
@@ -124,16 +127,18 @@ To access the MySQL database when docker-compose is running:
     - Password: `rootpassword`
 3. Click on connect
 
+Alternatively, you can access the database inside [IntelliJ Ultimate](https://github.com/Project-Books/book-project/wiki/Connect-to-database-inside-IntelliJ-Ultimate).
+
 ## Contributing
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
 
 ### Help
 
-If you need help with anything, we'll be happy to help you in our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-kss928q8-zT73FmmlV6HmXE1rhourbw).
+If you need help with anything, we'll be happy to help you on Slack.
 
 ## Further information
 
-For more information, such as a roadmap and the underlying principles of the project, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
+For more information, such as a roadmap and the project's underlying principles, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
 
-To see the open source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)
+To see a list of the open-source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)

@@ -17,9 +17,9 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.Shelf;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;

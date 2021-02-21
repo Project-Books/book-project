@@ -18,24 +18,13 @@
 package com.karankumar.bookproject.backend.util;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName;
+import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.karankumar.bookproject.backend.service.AuthorService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.DID_NOT_FINISH;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.READING;
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getBooksInPredefinedShelves;
-import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getPredefinedShelfName;
-import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.isPredefinedShelf;
-import static com.karankumar.bookproject.backend.util.ShelfUtils.ALL_BOOKS_SHELF;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.SoftAssertions;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,8 +35,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getBooksInPredefinedShelves;
+import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getPredefinedShelfName;
+import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.isPredefinedShelf;
+import static com.karankumar.bookproject.backend.util.ShelfUtils.ALL_BOOKS_SHELF;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
 @DisplayName("PredefinedShelfUtils should")
@@ -64,7 +62,7 @@ class PredefinedShelfUtilsTest {
     private Book book3;
     private Book book4;
 
-    private static final Author NO_AUTHOR = null;
+    private final Author author;
 
     private List<String> PREDEFINED_SHELVES;
     private static final List<String> INVALID_SHELVES =
@@ -74,9 +72,13 @@ class PredefinedShelfUtilsTest {
 
     @Autowired
     PredefinedShelfUtilsTest(BookRepository bookRepository,
-                             PredefinedShelfService predefinedShelfService) {
+                             PredefinedShelfService predefinedShelfService,
+                             AuthorService authorService) {
         this.bookRepository = bookRepository;
         this.predefinedShelfService = predefinedShelfService;
+
+        this.author = new Author("first", "last");
+        authorService.save(author);
     }
 
     @BeforeEach
@@ -108,10 +110,10 @@ class PredefinedShelfUtilsTest {
     }
 
     private void createAndSaveBooks() {
-        book1 = bookRepository.save(new Book("someTitle", NO_AUTHOR, toReadShelf));
-        book2 = bookRepository.save(new Book("someTitle2", NO_AUTHOR, toReadShelf));
-        book3 = bookRepository.save(new Book("someOtherTitle", NO_AUTHOR, readShelf));
-        book4 = bookRepository.save(new Book("yetAnotherTitle", NO_AUTHOR, didNotFinishShelf));
+        book1 = bookRepository.save(new Book("someTitle", author, toReadShelf));
+        book2 = bookRepository.save(new Book("someTitle2", author, toReadShelf));
+        book3 = bookRepository.save(new Book("someOtherTitle", author, readShelf));
+        book4 = bookRepository.save(new Book("yetAnotherTitle", author, didNotFinishShelf));
     }
 
     @Test
@@ -141,7 +143,7 @@ class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfService.getBooksInChosenPredefinedShelf(shelf);
 
         // then
-        assertThat(actualBooks).isEqualTo(expectedBooks);
+        assertThat(actualBooks).containsAll(expectedBooks);
     }
 
     @Test

@@ -18,14 +18,8 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-
-import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_NAME;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import com.karankumar.bookproject.util.SecurityTestUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -33,12 +27,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
-import java.util.List;
-
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
 @DisplayName("PredefinedShelfService should")
@@ -68,7 +66,7 @@ class PredefinedShelfServiceTest {
         assertSoftly(softly -> {
             softly.assertThat(shelves).isNotNull().hasSameSizeAs(PredefinedShelf.ShelfName.values());
             softly.assertThat(shelves).allSatisfy(shelf ->
-                            assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME)
+                            assertThat(shelf.getUser().getEmail()).isEqualTo(TEST_USER_EMAIL)
             );
         });
     }
@@ -82,7 +80,7 @@ class PredefinedShelfServiceTest {
             assertThat(shelf).isNotNull();
             softly.assertThat(shelf.getPredefinedShelfName())
                   .isEqualTo(PredefinedShelf.ShelfName.TO_READ);
-            softly.assertThat(shelf.getUser().getUsername()).isEqualTo(TEST_USER_NAME);
+            softly.assertThat(shelf.getUser().getEmail()).isEqualTo(TEST_USER_EMAIL);
         });
     }
 

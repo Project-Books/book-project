@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.entity.Publisher;
+import com.karankumar.bookproject.backend.model.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

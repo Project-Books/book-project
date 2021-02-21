@@ -18,35 +18,26 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.entity.Publisher;
-import com.karankumar.bookproject.backend.entity.Tag;
-import com.karankumar.bookproject.backend.entity.Author;
-import com.karankumar.bookproject.backend.entity.Book;
-import com.karankumar.bookproject.backend.entity.BookGenre;
-import com.karankumar.bookproject.backend.entity.BookFormat;
-import com.karankumar.bookproject.backend.entity.CustomShelf;
-import com.karankumar.bookproject.backend.entity.PredefinedShelf;
-import com.karankumar.bookproject.backend.entity.RatingScale;
+import com.karankumar.bookproject.backend.model.Author;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.BookFormat;
+import com.karankumar.bookproject.backend.model.BookGenre;
+import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.Publisher;
+import com.karankumar.bookproject.backend.model.RatingScale;
+import com.karankumar.bookproject.backend.model.Tag;
 import org.apache.commons.io.FileUtils;
-
-import static com.karankumar.bookproject.backend.entity.PredefinedShelf.ShelfName.TO_READ;
-
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assumptions.assumeThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -56,6 +47,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assumptions.assumeThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IntegrationTest
 @DisplayName("BookService should")
@@ -139,7 +136,7 @@ class BookServiceTest {
         // when and then
         assertSoftly(softly -> {
             softly.assertThatThrownBy(() -> bookService.save(book))
-                  .isInstanceOf(TransactionSystemException.class);
+                  .isInstanceOf(ConstraintViolationException.class);
             softly.assertThat(bookService.count()).isZero();
         });
     }
@@ -184,20 +181,14 @@ class BookServiceTest {
     @Test
     void saveValidBook() {
         // given
-        assumeThat(bookService.count()).isZero();
         Book validBook = validBook().build();
-
-        // when
         bookService.save(validBook);
 
-        // then
-        List<Book> filteredByTitle = bookService.findAll(validBook.getTitle());
+        // when
+        Book actual = bookService.findById(validBook.getId());
 
-        assertSoftly(softly -> {
-            softly.assertThat(bookService.count()).isOne();
-            softly.assertThat(bookService.findAll(validBook.getTitle()).size()).isOne();
-            softly.assertThat(filteredByTitle).first().isEqualTo(validBook);
-        });
+        // then
+        assertThat(actual).isNotNull();
     }
 
     @Test
