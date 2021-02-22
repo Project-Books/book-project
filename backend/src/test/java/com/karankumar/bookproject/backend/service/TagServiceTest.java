@@ -107,13 +107,16 @@ class TagServiceTest {
 
     @Test
     void doNotSaveDuplicateTag() {
-        //given
+        // given
         Tag tag1  = new Tag("dystopian");
         Tag tag2  = new Tag("Dystopian ");
+
+        // when
         tagService.save(tag1);
         tagService.save(tag2);
 
-        assertThat(tagService.findAll().size()).isOne();
+        // then
+        assertThat(tagService.count()).isOne();
     }
 
     @AfterEach
