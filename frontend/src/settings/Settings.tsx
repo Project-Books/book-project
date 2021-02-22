@@ -38,15 +38,15 @@ interface ISettingsProps{
             Settings
           </div>
           <div className="switch-container">
-            <div className="settings-text">
-              Enable dark mode
+            <div className="settings-toggle">
+                Enable dark mode
+              <Switch
+                checked={this.props.theme.palette.type === 'dark'}
+                onClick={this.props.toggleTheme}
+                color="default"
+                inputProps={{ 'aria-label': 'checkbox with default color' }}
+              />
             </div>
-            <Switch
-              checked={this.props.theme.palette.type === 'dark'}
-              onClick={this.props.toggleTheme}
-              color="default"
-              inputProps={{ 'aria-label': 'checkbox with default color' }}
-            />
           </div>
         </MuiThemeProvider>
       </React.Fragment>

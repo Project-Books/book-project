@@ -32,8 +32,11 @@ import * as routes from "./shared/routes"
 
 const darkTheme = createMuiTheme({
   palette: {
+    background: {
+      default: "#fafafa",
+    },
     type: 'dark',
-  },
+  }
 });
 
 const lightTheme = createMuiTheme ({

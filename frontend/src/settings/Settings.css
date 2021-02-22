@@ -21,6 +21,7 @@ If not, see <https://www.gnu.org/licenses/>.
  padding-bottom:30px;
  font-size: 22pt;
  font-weight:bold;
+ color:black;
 }
 
 .switch-container {
@@ -30,6 +31,8 @@ If not, see <https://www.gnu.org/licenses/>.
   padding-left: 200px;
 }
 
-.settings-text {
+.settings-toggle {
   padding-right: 60px;
+  color:black;
 }
+

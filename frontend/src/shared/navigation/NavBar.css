@@ -32,11 +32,11 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 .nav-bar-light {
-   box-shadow:  10px 0 8px -8px gray; 
+   box-shadow:  13px 0 8px -8px rgb(224, 221, 221); 
 }
 
 .nav-bar-dark {
-    background-color: black;
+    background-color:black;
 }
 
 .nav-top {
@@ -50,7 +50,7 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 #nav-links-top {
- flex-grow:1;
+ flex-grow: 1;
 }
 
 .nav-item {
