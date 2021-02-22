@@ -45,14 +45,14 @@ public class BookController {
         this.bookService = bookService;
     }
     
-    @GetMapping() //get all books
+    @GetMapping()
     public List<Book> all() {
     	return bookService.findAll();
     }
     
     @GetMapping("/find-by-id/{id}") 	
     public Optional<Book> findById(@PathVariable Long id) { 
-    	return Optional.ofNullable(bookService.findById(id))	//get book by id
+    	return Optional.ofNullable(bookService.findById(id))
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     
@@ -62,7 +62,7 @@ public class BookController {
     		@RequestParam(required=false) String title, 
     		@RequestParam(required=false) String authorsName,
     		@RequestParam Long id) { 
-    	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))	//get book by shelf and title/author
+    	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     		
@@ -71,19 +71,26 @@ public class BookController {
     		@RequestParam(required=false) String title,
     		@RequestParam Long id) {
     		//@RequestParam String authorsName) {   
-    	return Optional.ofNullable(bookService.findByTitleOrAuthor(title, authorsName))	//get book by title/author
+    	return Optional.ofNullable(bookService.findByTitleOrAuthor(title, authorsName))
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    @PostMapping("/add-book")	//add new book
+    @PostMapping("/add-book")
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody Book newBook) {
         return bookService.save(newBook);                                   
     }
     
-    @PutMapping("/update-book/{id}")	//update an existing book
-    public void update(@PathVariable Long id) {
+    @PutMapping("/update-book/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<Book> update(@PathVariable Long id, @RequestBody Book updatedBook) {
+    	Optional<Book> bookToUpdate = bookService.findById(id);
     	
+    	if (!bookToUpdate.isPresent()) {
+    		throw new BookNotFoundException(id);
+    	}
+    	
+    	return bookService.save(updatedBook);
     }
     
     @DeleteMapping("/delete-book/{id}")
