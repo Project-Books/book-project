@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 .settings-header {
  padding-left: 260px;
  padding-top:100px;
- padding-bottom:30px;
+ padding-bottom:28px;
  font-size: 22pt;
  font-weight:bold;
  color:black;
@@ -33,7 +33,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 .toggle-text {
   padding-top:9px;
-  color:black;
+  /* color:black; */
   padding-right:52px;
 }
 
