@@ -90,25 +90,17 @@ First, clone the repository.
   
 Next, follow one of the approaches below:
 
-#### 1. Start locally with only MySQL running in docker
+#### 1. Start locally with MySQL and phpMyAdmin running in docker
 
 3. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-    - May need to add `sudo` to this command on Unix
+    - May need to add `sudo` to this command
 5. Start the application using `java -jar target/book-project-0.2.0.jar` 
-
-#### 2. Start using docker-compose in production mode
-
-3. In the `backend/` directory, build the project in production mode using one of the following commands
-    - `./mvnw clean package -Pproduction` (Unix), or 
-    - `mvnw.cmd clean package -Pproduction` (Windows)
-4. Start the MySQL Database and book project app using `docker-compose up --build`
-    - May need to add `sudo` to this command on Unix
     
-#### 3. Start locally in your IDE
+#### 2. Start locally in your IDE
 
 3. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-    - May need to add `sudo` to this command on Unix
+    - May need to add `sudo` to this command
 4. Run the project from your IDE
 
 ### Fixing Lombok errors
