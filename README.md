@@ -78,29 +78,21 @@ Prerequisites:
   
 Then, if you want to use Docker, follow one of the approaches below:
 
-#### 1. Start locally with only MySQL running in docker
+#### 1. Start locally with MySQL and phpMyAdmin running in Docker
 
 4. Build the project at the root using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 5. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-    - May need to add `sudo` to this command on Unix
+    - May need to add `sudo` to this command
 6. Start the application using `java -jar target/book-project-0.0.1-SNAPSHOT.jar` 
-
-#### 2. Start using docker-compose in production mode
-
-4. At the root of the project, build the project in production mode using one of the following commands. In production mode all UI components are packaged in a jar file.
-    - `./mvnw clean package -Pproduction` (Unix), or 
-    - `mvnw.cmd clean package -Pproduction` (Windows)
-5. Start the MySQL Database and book project app using `docker-compose up --build`
-    - May need to add `sudo` to this command on Unix
     
-#### 3. Start locally with Vaadin live reload (the tests do not run)
+#### 2. Start locally with Vaadin live reload (the tests do not run)
 
-We recommended this approach if you need to work on the frontend with Vaadin. This approach allows you to use 
+> We recommended this approach if you need to work on the frontend with Vaadin. This approach allows you to use 
 Vaadin Live reload which prevents you from needing to re-run the server every time or manually refresh your browser 
 (i.e. it's a lot quicker). 
 
 4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-    - May need to add `sudo` to this command on Unix
+    - May need to add `sudo` to this command
 5. Run the project from your IDE or with Maven:
     - `./mvnw spring-boot:run` on Unix
     - `mvnw.cmd spring-boot:run` on Windows
