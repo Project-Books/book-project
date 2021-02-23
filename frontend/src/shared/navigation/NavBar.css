@@ -19,7 +19,15 @@ If not, see <https://www.gnu.org/licenses/>.
     margin-left: 30px;
 }
 
-#nav-bar-logo:hover {
+#nav-bar-logo {
+    margin-left:30px
+}
+
+#nav-bar-logo-dark {
+    margin-left: 30px;
+}
+
+#nav-bar-logo #nav-bar-logo-dark:hover {
     cursor: pointer;
 }
 
@@ -32,7 +40,7 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 .nav-bar-light {
-   box-shadow:  13px 0 8px -8px rgb(224, 221, 221); 
+    box-shadow:  13px 0 8px -8px rgb(224, 221, 221); 
 }
 
 .nav-bar-dark {
@@ -50,11 +58,11 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 #nav-links-top {
- flex-grow: 1;
+    flex-grow: 1;
 }
 
 .nav-item {
-    padding-left: 10px;
+    padding-left: 32px;
     margin-bottom: 15px;
     cursor: pointer;
     display: block;

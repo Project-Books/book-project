@@ -19,7 +19,7 @@ import React from 'react'
 import './NavBar.css'
 import { ExitToApp, MenuBook, Settings, TrackChanges, TrendingUp } from '@material-ui/icons'
 import logo from '../media/logo/logo-two-lines-white@1x.png'
-import logoDark from '../media/logo/logo-black.png';
+import darkLogo from '../media/logo/dark-logo.png';
 import * as routes from '../routes'
 import {useTheme} from '@material-ui/core/styles';
 import { Link } from 'react-router-dom'
@@ -60,9 +60,10 @@ export function NavBar(): JSX.Element {
         <div className={navClass}>
             <div className="nav-top">
               <Link to={routes.HOME}>
-                {theme.palette.type === 'dark' ? 
-                <img src={logo} alt="Logo" id="nav-bar-logo" /> 
-                : <img src={logoDark} alt="logo-dark" id="nav-bar-logo" /> }
+                { theme.palette.type === 'dark' ? 
+                  <img src={logo} alt="Logo" id="nav-bar-logo" /> 
+                 : 
+                 <img src={darkLogo} alt="logo-dark" id="nav-bar-logo-dark" /> }
               </Link>
             </div>
             <div className="nav-links" id="nav-links-top">

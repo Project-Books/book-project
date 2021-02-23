@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 import React, {Component} from 'react'
 import { NavBar } from '../shared/navigation/NavBar';
 import Switch from '@material-ui/core/Switch';
-import { withTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { withTheme,MuiThemeProvider,withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './Settings.css'
 
@@ -38,13 +38,16 @@ interface ISettingsProps{
             Settings
           </div>
           <div className="switch-container">
-            <div className="settings-toggle">
+            <div className="toggle-text">
                 Enable dark mode
+            </div>
+            <div className="settings-toggle">
               <Switch
                 checked={this.props.theme.palette.type === 'dark'}
                 onClick={this.props.toggleTheme}
                 color="default"
                 inputProps={{ 'aria-label': 'checkbox with default color' }}
+                id="switch"
               />
             </div>
           </div>
