@@ -60,8 +60,9 @@ export function NavBar(): JSX.Element {
         <div className={navClass}>
             <div className="nav-top">
               <Link to={routes.HOME}>
-                <img src={logo} alt="Logo" id="nav-bar-logo" />
-                {/* <img src={logoDark} alt="logo-dark" id="nav-bar-logo-dark" /> */}
+                {theme.palette.type === 'dark' ? 
+                <img src={logo} alt="Logo" id="nav-bar-logo" /> 
+                : <img src={logoDark} alt="logo-dark" id="nav-bar-logo" /> }
               </Link>
             </div>
             <div className="nav-links" id="nav-links-top">
