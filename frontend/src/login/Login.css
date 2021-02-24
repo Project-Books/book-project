@@ -40,7 +40,7 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 #standard-basic {
-  width: 500px;
+  width: 500px !important;
 }
 
 /* mobile screens */
