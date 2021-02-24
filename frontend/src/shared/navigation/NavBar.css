@@ -20,14 +20,7 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 #nav-bar-logo {
-    margin-left:30px
-}
-
-#nav-bar-logo-dark {
-    margin-left: 30px;
-}
-
-#nav-bar-logo #nav-bar-logo-dark:hover {
+    margin-left:30px;
     cursor: pointer;
 }
 

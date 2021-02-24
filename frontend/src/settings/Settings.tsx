@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 import React, {Component} from 'react'
 import { NavBar } from '../shared/navigation/NavBar';
 import Switch from '@material-ui/core/Switch';
-import { withTheme,MuiThemeProvider,withStyles } from '@material-ui/core/styles';
+import { withTheme,MuiThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './Settings.css'
 
