@@ -16,27 +16,23 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 .center-table {
-	display: table;
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .center-table-cell {
-	display: table-cell;
-	vertical-align: middle;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .center {
   display: block;
   margin: 0 auto;
   width: 500px;
-}
-
-.center.login-form {
-  margin-top: -50px;
 }
 
 .center.login {

@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button'
 import Password from '../shared/form/Password'
 import EmailAddress from '../shared/form/EmailAddress'
 import { Link } from "react-router-dom"
-import logo from '../shared/media/logo/logo-black.png'
+import logo from '../shared/media/logo/logo_one_line@1x.png'
 import Endpoints from '../shared/api/endpoints'
 import Verb from '../shared/http/verb'
 import { RouteComponentProps } from 'react-router-dom';
