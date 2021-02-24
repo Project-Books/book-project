@@ -45,7 +45,7 @@ interface ISettingsProps{
               <Switch
                 checked={this.props.theme.palette.type === 'dark'}
                 onClick={this.props.toggleTheme}
-                color="default"
+                color="primary"
                 inputProps={{ 'aria-label': 'checkbox with default color' }}
                 id="switch"
               />
