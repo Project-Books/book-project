@@ -27,7 +27,6 @@ import com.karankumar.bookproject.backend.model.Tag;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -107,7 +106,7 @@ public final class TestData {
 
         book.setBookGenre(generateRandomGenre());
         book.setBookRecommendedBy(generateRandomRecommender());
-        book.setTags(new HashSet<>(Collections.singletonList(generateRandomTag(tags))));
+        book.addTag(generateRandomTag(tags));
         book.setSeriesPosition(generateRandomSeriesPosition());
         book.setBookReview("Must Read Book. Really Enjoyed it");
         book.setNumberOfPages(generateRandomNumberInRange());

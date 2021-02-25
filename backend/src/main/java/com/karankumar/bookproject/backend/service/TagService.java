@@ -37,16 +37,23 @@ public class TagService {
         return tagRepository.getOne(id);
     }
 
-    public void save(@NonNull Tag tag) {
-        tagRepository.save(tag);
-    }
-
-    public Long count() {
-        return tagRepository.count();
+    public List<Tag> findByName(@NonNull String name) {
+        return tagRepository.findByName(name.trim());
     }
 
     public List<Tag> findAll() {
         return tagRepository.findAll();
+    }
+
+    public void save(@NonNull Tag tag) {
+        List<Tag> matchingTags = findByName(tag.getName());
+        if (matchingTags == null || matchingTags.isEmpty()) {
+          tagRepository.save(tag);
+        }
+    }
+
+    public Long count() {
+        return tagRepository.count();
     }
 
     public void delete(@NonNull Tag tag) {

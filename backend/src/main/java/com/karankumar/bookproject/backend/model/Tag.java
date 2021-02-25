@@ -31,6 +31,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -51,7 +52,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 
     public Tag(String name) {
         this.name = name;
