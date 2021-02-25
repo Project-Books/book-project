@@ -67,13 +67,21 @@ class BookTest {
 
     @BeforeEach
     void setUp() {
-        tagService.deleteAll();
+//        tagService.deleteAll();
+//        tagService.save(testTag);
+
+        if (testBook != null) {
+            testBook.removeTag(testTag);
+            bookService.delete(testBook);
+            tagService.deleteAll();
+        }
+//        bookService.deleteAll();
+        testBook = createBook("Test Title", predefinedShelfService.findToReadShelf());
+        bookService.save(testBook);
+
+//        tagService.deleteAll();
         tagService.save(testTag);
 
-        testBook = createBook("Test Title", predefinedShelfService.findToReadShelf());
-        bookService.deleteAll();
-        bookService.save(testBook);
-        
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
