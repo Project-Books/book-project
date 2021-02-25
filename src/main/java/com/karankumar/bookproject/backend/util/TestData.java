@@ -128,8 +128,8 @@ public final class TestData {
         return publisherSet;
     }
 
-    private static BookGenre generateRandomGenre() {
-        return BookGenre.values()[threadLocalRandom.nextInt(BookGenre.values().length)];
+    private static Set<BookGenre> generateRandomGenre() {
+        return new HashSet<>(Collections.singletonList(BookGenre.values()[threadLocalRandom.nextInt(BookGenre.values().length)]));
     }
 
     private static String generateRandomRecommender() {
