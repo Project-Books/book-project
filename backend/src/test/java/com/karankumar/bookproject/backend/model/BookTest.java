@@ -27,12 +27,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
@@ -47,7 +45,7 @@ class BookTest {
     private final PredefinedShelfService predefinedShelfService;
 
     private Book testBook;
-    private Tag testTag;
+    private final Tag testTag = new Tag("testTag");
     
     private Validator validator;
     private Set<ConstraintViolation<Book>> violations;
@@ -63,15 +61,12 @@ class BookTest {
     private Book createBook(String title, PredefinedShelf shelf) {
         Author author = new Author("Firstname", "Lastname");
         Book book = new Book(title, author, shelf);
-
-        book.setTags(Collections.singleton(testTag));
-
+        book.addTag(testTag);
         return book;
     }
 
     @BeforeEach
     void setUp() {
-        testTag = new Tag("Test Tag");
         tagService.deleteAll();
         tagService.save(testTag);
 

@@ -26,6 +26,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
 
@@ -44,6 +45,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -108,10 +110,17 @@ public class Book {
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "book_tag",
-            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(
+                    name = "book_id", referencedColumnName = "id",
+                    foreignKey = @ForeignKey(name = "book_tag_book_id_fk")
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "tag_id", referencedColumnName = "id",
+                    foreignKey = @ForeignKey(name = "book_tag_tag_id_fk")
+            )
     )
-    private Set<Tag> tags;
+    @Setter(AccessLevel.NONE)
+    private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
@@ -166,6 +175,16 @@ public class Book {
             bookEdition = edition + "th edition";
         }
         return bookEdition;
+    }
+
+    public void addTag(@NonNull Tag tag) {
+        tags.add(tag);
+        tag.getBooks().add(this);
+    }
+
+    public void removeTag(@NonNull Tag tag) {
+        tags.remove(tag);
+        tag.getBooks().remove(this);
     }
 
     public void setPublicationYear(Integer yearOfPublication) {
