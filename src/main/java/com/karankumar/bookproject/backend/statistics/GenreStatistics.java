@@ -22,11 +22,7 @@ import com.karankumar.bookproject.backend.entity.BookGenre;
 import com.karankumar.bookproject.backend.entity.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GenreStatistics extends Statistics {
@@ -76,11 +72,10 @@ public class GenreStatistics extends Statistics {
         return genresReadCount;
     }
 
-    private List<BookGenre> genresRead() {
+    private Set<BookGenre> genresRead() {
         return readShelfBooks.stream()
-                             .takeWhile(book -> book.getBookGenre() != null)
-                             .map(Book::getBookGenre)
-                             .collect(Collectors.toList());
+                .flatMap(book -> book.getBookGenre().stream())
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -92,7 +87,7 @@ public class GenreStatistics extends Statistics {
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
         if (atLeastTwoGenresExist(genreRatings.size())) {
             mostLikedBookGenre = genreRatings.get(genreRatings.size() - 1)
-                                             .getKey();
+                    .getKey();
         }
         return mostLikedBookGenre;
     }
@@ -103,19 +98,21 @@ public class GenreStatistics extends Statistics {
 
     private List<Map.Entry<BookGenre, Double>> sortGenresByRatings() {
         return totalRatingForReadGenre().entrySet().stream()
-                                        .sorted(Map.Entry.comparingByValue())
-                                        .collect(Collectors.toList());
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toList());
     }
 
     private Map<BookGenre, Double> totalRatingForReadGenre() {
         Map<BookGenre, Double> totalRatingForReadGenre = populateEmptyGenreRatings();
 
         for (Book book : readBooksWithGenresAndRatings) {
-            BookGenre bookGenre = book.getBookGenre();
-            double totalGenreRating = totalRatingForReadGenre.get(bookGenre);
-            double genreRating = RatingScale.toDouble(book.getRating());
-            totalGenreRating += genreRating;
-            totalRatingForReadGenre.replace(bookGenre, totalGenreRating);
+           Set<BookGenre> bookGenreList = book.getBookGenre();
+            for(BookGenre bookGenre : bookGenreList){
+                double totalGenreRating = totalRatingForReadGenre.get(bookGenre);
+                double genreRating = RatingScale.toDouble(book.getRating());
+                totalGenreRating += genreRating;
+                totalRatingForReadGenre.replace(bookGenre, totalGenreRating);
+            }
         }
 
         return totalRatingForReadGenre;
@@ -125,7 +122,10 @@ public class GenreStatistics extends Statistics {
         // we only want genres in this map that exist in the read books shelf
         Map<BookGenre, Double> genreMap = new EnumMap<>(BookGenre.class);
         for (Book book : readBooksWithGenresAndRatings) {
-            genreMap.put(book.getBookGenre(), 0.0);
+            Set<BookGenre> bookGenreList = book.getBookGenre();
+            for (BookGenre bookGenre : bookGenreList){
+                genreMap.putIfAbsent(bookGenre, 0.0);
+            }
         }
         return genreMap;
     }
@@ -139,7 +139,7 @@ public class GenreStatistics extends Statistics {
         List<Map.Entry<BookGenre, Double>> genreRatings = sortGenresByRatings();
         if (atLeastTwoGenresExist(genreRatings.size())) {
             leastLikedBookGenre = genreRatings.get(0)
-                                              .getKey();
+                    .getKey();
         }
         return leastLikedBookGenre;
     }
