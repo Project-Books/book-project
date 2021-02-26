@@ -189,7 +189,7 @@ We highly recommend following a test-driven development approach.
 
 ### New files
 
-If you're adding a new file, please ensure to copy the contents of our [copyright file](https://github.com/knjk04/book-project/blob/main/docs/COPYRIGHT) verbatim (use the latest version on the main branch).
+If you're adding a new file, please ensure to copy the contents of our [copyright file](https://github.com/knjk04/book-project/blob/main/COPYRIGHT) verbatim (use the latest version on the main branch).
 
 ## Pull requests
 
