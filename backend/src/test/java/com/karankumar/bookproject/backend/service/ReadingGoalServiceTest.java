@@ -30,6 +30,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assumptions.assumeThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.Optional;
+
 @IntegrationTest
 @DisplayName("ReadingGoalService should")
 class ReadingGoalServiceTest {
@@ -75,10 +77,10 @@ class ReadingGoalServiceTest {
         assumeThat(goalService.count()).isOne();
 
         // when
-        ReadingGoal actual = goalService.findById(existingReadingGoal.getId());
+        Optional<ReadingGoal> actual = goalService.findById(existingReadingGoal.getId());
 
         // then
-        assertThat(actual).isNotNull();
+        assertThat(actual).isPresent();
     }
 
     @Test

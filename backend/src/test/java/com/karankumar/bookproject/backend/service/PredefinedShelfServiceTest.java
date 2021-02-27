@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,15 +73,16 @@ class PredefinedShelfServiceTest {
     }
 
     @Test
-    void findAllPredefinedShelvesForPredefinedShelfNameAndLoggedInUser() {
-        PredefinedShelf shelf = predefinedShelfService
-                .findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName.TO_READ);
-
+    void findPredefinedShelfForPredefinedShelfNameAndLoggedInUser() {
+        Optional<PredefinedShelf> shelf =
+                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
+                        PredefinedShelf.ShelfName.TO_READ
+                );
         assertSoftly(softly -> {
-            assertThat(shelf).isNotNull();
-            softly.assertThat(shelf.getPredefinedShelfName())
+            assertThat(shelf).isNotEmpty();
+            softly.assertThat(shelf.get().getPredefinedShelfName())
                   .isEqualTo(PredefinedShelf.ShelfName.TO_READ);
-            softly.assertThat(shelf.getUser().getEmail()).isEqualTo(TEST_USER_EMAIL);
+            softly.assertThat(shelf.get().getUser().getEmail()).isEqualTo(TEST_USER_EMAIL);
         });
     }
 
