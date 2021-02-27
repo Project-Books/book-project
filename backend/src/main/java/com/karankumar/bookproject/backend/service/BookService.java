@@ -49,8 +49,8 @@ public class BookService {
         this.publisherService = publisherService;
     }
 
-    public Book findById(Long id) {
-        return bookRepository.getOne(id);
+    public Optional<Book> findById(Long id) {
+        return bookRepository.findById(id);
     }
 
     public Optional<Book> save(Book book) {
