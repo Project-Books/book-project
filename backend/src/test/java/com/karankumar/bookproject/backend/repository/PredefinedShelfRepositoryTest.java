@@ -62,9 +62,9 @@ class PredefinedShelfRepositoryTest {
     void findCorrectShelf() {
         Optional<PredefinedShelf> shelf = repository.findByPredefinedShelfNameAndUser(TO_READ, user);
 
-        assertThat(shelf).isPresent();
 
         assertSoftly(softly -> {
+            softly.assertThat(shelf).isPresent();
             softly.assertThat(shelf.get().getPredefinedShelfName()).isEqualTo(TO_READ);
             softly.assertThat(shelf.get().getUser().getId()).isEqualTo(user.getId());
         });
