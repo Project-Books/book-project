@@ -71,8 +71,8 @@ class PredefinedShelfRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByPredefinedShelfName correctly returns null if shelf doesn't exist")
-    void findByPredefinedShelfNameAndUserReturnsNull() {
+    @DisplayName("findByPredefinedShelfName correctly returns empty if shelf doesn't exist")
+    void findByPredefinedShelfNameAndUserReturnsEmpty() {
         // given
         repository.deleteAll();
 
