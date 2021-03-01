@@ -22,16 +22,13 @@ import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.RatingScale;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 
-<<<<<<< HEAD
-import java.util.*;
-=======
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Optional;
->>>>>>> 0.2.0
 import java.util.stream.Collectors;
 
 public class GenreStatistics extends Statistics {
