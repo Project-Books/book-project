@@ -41,10 +41,7 @@ import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -260,7 +257,7 @@ class BookServiceTest {
                 .title("Another Book Name")
                 .numberOfPages(420)
                 .pagesRead(42)
-                .bookGenre(BookGenre.ADVENTURE)
+                .bookGenre(Collections.singleton(BookGenre.ADVENTURE))
                 .bookFormat(BookFormat.PAPERBACK)
                 .seriesPosition(3)
                 .edition(2)

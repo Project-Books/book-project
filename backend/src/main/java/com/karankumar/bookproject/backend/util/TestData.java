@@ -26,10 +26,7 @@ import com.karankumar.bookproject.backend.model.RatingScale;
 import com.karankumar.bookproject.backend.model.Tag;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -127,8 +124,8 @@ public final class TestData {
         return publisherSet;
     }
 
-    private static BookGenre generateRandomGenre() {
-        return BookGenre.values()[threadLocalRandom.nextInt(BookGenre.values().length)];
+    private static Set<BookGenre> generateRandomGenre() {
+        return Collections.singleton(BookGenre.values()[threadLocalRandom.nextInt(BookGenre.values().length)]);
     }
 
     private static String generateRandomRecommender() {
