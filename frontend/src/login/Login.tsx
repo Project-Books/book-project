@@ -21,7 +21,7 @@ import Button from '@material-ui/core/Button'
 import Password from '../shared/form/Password'
 import EmailAddress from '../shared/form/EmailAddress'
 import { Link } from "react-router-dom"
-import logo from '../shared/media/logo/logo-black.png'
+import logo from '../shared/media/logo/logo_one_line@1x.png'
 import Endpoints from '../shared/api/endpoints'
 import Verb from '../shared/http/verb'
 import { RouteComponentProps } from 'react-router-dom';
@@ -118,51 +118,57 @@ class Login extends Component<LoginProps, IState> {
 
   render() {
     return (
-      <div>
-        <img src={logo} alt="Logo" id="app-logo" />
-
-        <br />
-        <br />
-        <br />
-
-        <div className="login-form">
-          <EmailAddress
-            class="login"
-            isInvalid={this.isEmailInvalid()}
-            onChange={this.onEmailChanged}
-            areCredentialsInvalid={this.state.areCredentialsInvalid}
-          />
-
-          <br />
-
-          <Password
-            fieldName={'Password'}
-            class={'login'}
-            onPasswordChanged={this.onPasswordChanged}
-            isInvalid={this.state.areCredentialsInvalid}
-            errorMessage={'Please enter a password'}
-          />
+      <div className="center-table">
+        <div className="center-table-cell">
+          <img src={logo} alt="Logo" className="center app-logo" />
 
           <br />
           <br />
+          <br />
 
-          <Button
-            className="login"
-            variant="contained"
-            color="primary"
-            onClick={this.onClickLogin}>
-            Log in
+          <div className="center login-form">
+            <EmailAddress
+              class="center login"
+              isInvalid={this.isEmailInvalid()}
+              onChange={this.onEmailChanged}
+              areCredentialsInvalid={this.state.areCredentialsInvalid}
+            />
+
+            <br />
+
+            <Password
+              fieldName={'Password'}
+              class={'center login'}
+              onPasswordChanged={this.onPasswordChanged}
+              isInvalid={this.state.areCredentialsInvalid}
+              errorMessage={'Please enter a password'}
+            />
+
+            <br />
+            <br />
+
+            <Button
+              className="center login"
+              variant="contained"
+              color="primary"
+              onClick={this.onClickLogin}>
+              Log in
             </Button>
 
-          <br />
-          <br />
+            <br />
+            <br />
 
-          <Button className="login" id="createAccount" component={Link} to={routes.SIGN_UP}>
-            Create account
+            <Button 
+              className="center login" 
+              id="createAccount" 
+              component={Link} 
+              to={routes.SIGN_UP}>
+              Create account
             </Button>
-
-          {this.state.loginFailed && this.renderLoginError()}
-
+    
+            {this.state.loginFailed && this.renderLoginError()}
+            
+          </div>
         </div>
       </div>
     )

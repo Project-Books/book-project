@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.util;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import com.karankumar.bookproject.backend.model.Book;
@@ -33,18 +34,18 @@ public class PredefinedShelfUtils {
     private PredefinedShelfUtils() {
     }
 
-    public static PredefinedShelf.ShelfName getPredefinedShelfName(String predefinedShelfName) {
+    public static Optional<ShelfName> getPredefinedShelfName(String predefinedShelfName) {
         switch (predefinedShelfName) {
             case "To read":
-                return PredefinedShelf.ShelfName.TO_READ;
+                return Optional.of(ShelfName.TO_READ);
             case "Reading":
-                return PredefinedShelf.ShelfName.READING;
+                return Optional.of(ShelfName.READING);
             case "Read":
-                return PredefinedShelf.ShelfName.READ;
+                return Optional.of(ShelfName.READ);
             case "Did not finish":
-                return PredefinedShelf.ShelfName.DID_NOT_FINISH;
+                return Optional.of(ShelfName.DID_NOT_FINISH);
             default:
-                return null;
+                return Optional.empty();
         }
     }
 

@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 public class StatisticTestUtils {
 
@@ -146,23 +147,16 @@ public class StatisticTestUtils {
     }
 
     private static void updateTotalRating(RatingScale ratingScale) {
-        Double rating = RatingScale.toDouble(ratingScale);
-        if (rating != null) {
-            totalRating += rating;
-        }
+    	totalRating += RatingScale.toDouble(ratingScale).orElse(0.0);
     }
 
     private static void reduceTotalRating(RatingScale ratingScale) {
-        Double rating = RatingScale.toDouble(ratingScale);
-        if (rating != null) {
-            totalRating -= rating;
-        }
+    	totalRating -= RatingScale.toDouble(ratingScale).orElse(0.0);
     }
+    
     private static void updateThisYearRating(RatingScale ratingScale) {
-        Double rating = RatingScale.toDouble(ratingScale);
-        if (rating != null) {
-            thisYearRating += rating;
-        }
+    	Optional<Double> rating = RatingScale.toDouble(ratingScale);
+        rating.ifPresent(x -> thisYearRating += x);
     }
 
     public static Book getBookWithLowestRating() {

@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -78,7 +79,7 @@ class AuthorServiceTest {
         authorService.save(author);
 
         // when
-        Author existingAuthor = authorService.findById(author.getId());
+        Author existingAuthor = authorService.findById(author.getId()).get();
         authorService.save(existingAuthor);
 
         // then
@@ -92,10 +93,10 @@ class AuthorServiceTest {
         authorService.save(author);
 
         // when
-        Author actual = authorService.findById(author.getId());
+        Optional<Author> actual = authorService.findById(author.getId());
 
         // then
-        assertThat(actual).isNotNull();
+        assertThat(actual).isPresent();
     }
 
     @Test

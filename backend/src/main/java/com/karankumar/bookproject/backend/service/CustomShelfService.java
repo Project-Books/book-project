@@ -48,15 +48,15 @@ public class CustomShelfService {
         return new CustomShelf(shelfName, userService.getCurrentUser());
     }
 
-    public CustomShelf findById(Long id) {
-        return customShelfRepository.getOne(id);
+    public Optional<CustomShelf> findById(Long id) {
+        return customShelfRepository.findById(id);
     }
 
     public List<CustomShelf> findAllForLoggedInUser() {
         return customShelfRepository.findAllByUser(userService.getCurrentUser());
     }
 
-    public CustomShelf findByShelfNameAndLoggedInUser(String shelfName) {
+    public Optional<CustomShelf> findByShelfNameAndLoggedInUser(String shelfName) {
         return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
@@ -109,13 +109,13 @@ public class CustomShelfService {
         return books;
     }
 
-    public Shelf getCustomShelfByName(String shelfName) {
-        return customShelfRepository.findByShelfName(shelfName).get(0);
+    public Optional<Shelf> getCustomShelfByName(String shelfName) {
+        return Optional.ofNullable(customShelfRepository.findByShelfName(shelfName).get(0));
     }
 
     public CustomShelf findOrCreate(@NonNull String shelfName) {
         Assert.hasText(shelfName, "Shelf Name cannot be empty");
-        return Optional.ofNullable(findByShelfNameAndLoggedInUser(shelfName))
-                       .orElseGet(() -> save(createCustomShelf(shelfName)));
+        return findByShelfNameAndLoggedInUser(shelfName)
+        		.orElseGet(() -> save(createCustomShelf(shelfName)));
     }
 }

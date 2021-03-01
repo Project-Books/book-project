@@ -41,7 +41,12 @@ import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,7 +88,7 @@ class BookServiceTest {
     @BeforeEach
     public void setUp() {
         resetServices();
-        toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
+        toRead = predefinedShelfService.findToReadShelf();
     }
 
     private Book.BookBuilder validBook() {
@@ -182,10 +187,10 @@ class BookServiceTest {
         bookService.save(validBook);
 
         // when
-        Book actual = bookService.findById(validBook.getId());
+        Optional<Book> actual = bookService.findById(validBook.getId());
 
         // then
-        assertThat(actual).isNotNull();
+        assertThat(actual).isPresent();
     }
 
     @Test
@@ -249,7 +254,7 @@ class BookServiceTest {
         bookService.save(bookToSave);
 
         // then
-        assertThat(bookService.findById(bookToSave.getId())).isEqualTo(bookToSave);
+        assertThat(bookService.findById(bookToSave.getId())).contains(bookToSave);
     }
 
     private Book.BookBuilder createBookWithAllAttributes() {
