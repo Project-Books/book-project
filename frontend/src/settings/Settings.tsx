@@ -17,22 +17,46 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, {Component} from 'react'
 import { NavBar } from '../shared/navigation/NavBar';
-import Switch from '@material-ui/core/Switch';
-import { withTheme,MuiThemeProvider} from '@material-ui/core/styles';
+import Switch , { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
+import {grey} from '@material-ui/core/colors';
+import { makeStyles, withTheme,MuiThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './Settings.css'
 
-interface ISettingsProps{
+
+interface ISettingsProps {
     theme: any;
     toggleTheme: () => void;
 }
 
- class Settings extends Component<ISettingsProps> {
-   render(): JSX.Element {
+interface Styles extends Partial<Record<SwitchClassKey, string>> {
+  focusVisible?: string;
+}
+
+interface Props extends SwitchProps {
+  classes: Styles;
+}
+
+const blackSwitch = makeStyles({
+  switchBase: {
+    color: grey[900],
+    '&$checked': {
+      color: grey[900],
+    },
+    '&$checked + $track': {
+      backgroundColor: grey[800],
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+
+
+ function Settings(props: ISettingsProps):JSX.Element {
     return (
       <React.Fragment>
         <NavBar />
-        <MuiThemeProvider theme={this.props.theme}>
+        <MuiThemeProvider theme={props.theme}>
           <CssBaseline />
           <div className="settings-header">
             Settings
@@ -43,18 +67,24 @@ interface ISettingsProps{
             </div>
             <div className="settings-toggle">
               <Switch
-                checked={this.props.theme.palette.type === 'dark'}
-                onClick={this.props.toggleTheme}
-                color="primary"
+                checked={props.theme.palette.type === 'dark'}
+                onClick={props.toggleTheme}
                 inputProps={{ 'aria-label': 'checkbox with default color' }}
-                id="switch"
+                style={{color:'black'}}
+                className="switch"
+                classes={{
+                  root: props.classes.root,
+                  switchBase: props.classes.switchBase,
+                  thumb: props.classes.thumb,
+                  track: props.classes.track,
+                  checked: props.classes.checked,
+                }}
               />
             </div>
           </div>
         </MuiThemeProvider>
       </React.Fragment>
     )
-   }
-}
+ }
 
 export default withTheme(Settings);

@@ -29,6 +29,7 @@ import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
 import * as routes from "./shared/routes"
+import classes from "*.module.css";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -36,7 +37,7 @@ const darkTheme = createMuiTheme({
       default: "#fafafa",
     },
     type: 'dark',
-  }
+  },
 });
 
 const lightTheme = createMuiTheme ({
@@ -62,7 +63,8 @@ function App():JSX.Element {
               <Route path={routes.GOAL} component={Goal} />
               <Route 
                 path={routes.SETTINGS} 
-                render={() => <Settings  theme={theme} toggleTheme={toggleTheme} />} />
+                render={() => 
+                <Settings  theme={theme} toggleTheme={toggleTheme} />} />
               <Route path={routes.STATS} component={Stats} />
           </BrowserRouter>
         </ThemeProvider>
