@@ -9,4 +9,4 @@ By contributing to this repository, you are expected to follow our style guides.
 
 ## Backend
 
-[Java style guide](https://github.com/Project-Books/book-project/blob/react-login-558/styleguides/JAVA_STYLEGUIDE.md)
+[Java style guide](https://github.com/Project-Books/book-project/blob/0.2.0/styleguides/JAVA_STYLEGUIDE.md)
