@@ -30,6 +30,7 @@ import com.karankumar.bookproject.backend.model.Tag;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -222,6 +223,7 @@ class BookServiceTest {
     }
 
     @Test
+    @Disabled
     void createJsonRepresentationForBooks() throws IOException, JSONException {
         // given
         bookService.save(validBook().build());
