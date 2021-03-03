@@ -571,9 +571,9 @@ In every test method, try to minimise the number of assertions. Ideally, there s
 
 If a test method needs multiple assertions, `assertSoftly()` should be used. Otherwise, lazy evaluation is used. For example, if you had two assertions, and both assertions fail, you will not know about the second assertion failing until you have fixed the first assertion.
 
-### Disabling failing tests
+### No disabling failing tests
 
-Instead of commenting out tests, we use the `@Disable` annotation. Please note that if a test fails, you are generally expected to fix it. This should be used as a last resort if you are unable to fix the failing test.
+If a test fails, you are generally expected to fix it. We generally prefer for builds to fail rather than commenting out or disabling tests wtih the `@Disable` annotation.
 
 ### Using DisplayName
 
