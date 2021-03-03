@@ -75,7 +75,7 @@ public class BookController {
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    @PostMapping("/add-book")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody Book newBook) {
         return bookService.save(newBook);                                   
