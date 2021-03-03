@@ -17,40 +17,15 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, {Component} from 'react'
 import { NavBar } from '../shared/navigation/NavBar';
-import Switch , { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
-import {grey} from '@material-ui/core/colors';
-import { makeStyles, withTheme,MuiThemeProvider} from '@material-ui/core/styles';
+import ColoredSwitch from '../settings/Switch';
+import { withTheme,MuiThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './Settings.css'
-
 
 interface ISettingsProps {
     theme: any;
     toggleTheme: () => void;
 }
-
-interface Styles extends Partial<Record<SwitchClassKey, string>> {
-  focusVisible?: string;
-}
-
-interface Props extends SwitchProps {
-  classes: Styles;
-}
-
-const blackSwitch = makeStyles({
-  switchBase: {
-    color: grey[900],
-    '&$checked': {
-      color: grey[900],
-    },
-    '&$checked + $track': {
-      backgroundColor: grey[800],
-    },
-  },
-  checked: {},
-  track: {},
-})(Switch);
-
 
  function Settings(props: ISettingsProps):JSX.Element {
     return (
@@ -66,19 +41,12 @@ const blackSwitch = makeStyles({
                 Enable dark mode
             </div>
             <div className="settings-toggle">
-              <Switch
+              <ColoredSwitch
                 checked={props.theme.palette.type === 'dark'}
                 onClick={props.toggleTheme}
                 inputProps={{ 'aria-label': 'checkbox with default color' }}
                 style={{color:'black'}}
                 className="switch"
-                classes={{
-                  root: props.classes.root,
-                  switchBase: props.classes.switchBase,
-                  thumb: props.classes.thumb,
-                  track: props.classes.track,
-                  checked: props.classes.checked,
-                }}
               />
             </div>
           </div>

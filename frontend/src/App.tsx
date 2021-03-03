@@ -29,7 +29,6 @@ import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
 import * as routes from "./shared/routes"
-import classes from "*.module.css";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -52,7 +51,7 @@ function App():JSX.Element {
   function toggleTheme():void {
     theme === lightTheme ? setTheme(darkTheme) : setTheme(lightTheme)
   } 
-   
+
     return (
         <ThemeProvider theme={theme}>
           <BrowserRouter>
