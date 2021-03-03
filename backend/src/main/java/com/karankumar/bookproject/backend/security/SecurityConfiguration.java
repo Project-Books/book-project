@@ -99,5 +99,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/api/register").permitAll()
             .anyRequest()
             .authenticated();
+
+            system.out.println(secretKey);
     }
 }

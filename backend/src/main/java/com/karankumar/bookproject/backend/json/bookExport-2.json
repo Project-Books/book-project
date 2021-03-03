@@ -1,0 +1,322 @@
+{
+  "AllBooks" : [ {
+    "title" : "Harry Potter and the Philosopher's stone",
+    "numberOfPages" : 669,
+    "pagesRead" : 753,
+    "bookGenre" : "COOKBOOK",
+    "bookFormat" : null,
+    "seriesPosition" : 9,
+    "edition" : null,
+    "bookRecommendedBy" : "Luke",
+    "isbn" : null,
+    "yearOfPublication" : 2007,
+    "author" : {
+      "firstName" : "Neil",
+      "lastName" : "Gaiman"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "Did not finish"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Pokemon"
+    } ],
+    "publishers" : [ {
+      "name" : "Scholastic Corporation"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : "2021-02-20",
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Stardust",
+    "numberOfPages" : 563,
+    "pagesRead" : 731,
+    "bookGenre" : "HORROR",
+    "bookFormat" : null,
+    "seriesPosition" : 4,
+    "edition" : null,
+    "bookRecommendedBy" : "Thomas",
+    "isbn" : null,
+    "yearOfPublication" : 2013,
+    "author" : {
+      "firstName" : "Neil",
+      "lastName" : "Gaiman"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "To read"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Interesting"
+    } ],
+    "publishers" : [ {
+      "name" : "Scholastic Corporation"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : null,
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Harry Potter and the Chamber of Secrets",
+    "numberOfPages" : 826,
+    "pagesRead" : 428,
+    "bookGenre" : "FAIRY_TALE",
+    "bookFormat" : null,
+    "seriesPosition" : 4,
+    "edition" : null,
+    "bookRecommendedBy" : "John",
+    "isbn" : null,
+    "yearOfPublication" : 1976,
+    "author" : {
+      "firstName" : "Roald",
+      "lastName" : "Dahl"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "To read"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Pokemon"
+    } ],
+    "publishers" : [ {
+      "name" : "Scholastic Corporation"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : null,
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Harry Potter and the Prisoner of Azkaban",
+    "numberOfPages" : 736,
+    "pagesRead" : 303,
+    "bookGenre" : "ANTHOLOGY",
+    "bookFormat" : null,
+    "seriesPosition" : 4,
+    "edition" : null,
+    "bookRecommendedBy" : "Luke",
+    "isbn" : null,
+    "yearOfPublication" : 1988,
+    "author" : {
+      "firstName" : "J.R.R",
+      "lastName" : "Tolkien"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "Did not finish"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Pokemon"
+    } ],
+    "publishers" : [ {
+      "name" : "Scholastic Corporation"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : "2021-02-20",
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Origin",
+    "numberOfPages" : 757,
+    "pagesRead" : 497,
+    "bookGenre" : "PSYCHOLOGY",
+    "bookFormat" : null,
+    "seriesPosition" : 5,
+    "edition" : null,
+    "bookRecommendedBy" : "Sally",
+    "isbn" : null,
+    "yearOfPublication" : 1992,
+    "author" : {
+      "firstName" : "J.K.",
+      "lastName" : "Rowling"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "Did not finish"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Interesting"
+    } ],
+    "publishers" : [ {
+      "name" : "Scholastic Corporation"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : "2021-02-20",
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Harry Potter and the Goblet of Fire",
+    "numberOfPages" : 482,
+    "pagesRead" : 558,
+    "bookGenre" : "ROMANCE",
+    "bookFormat" : null,
+    "seriesPosition" : 3,
+    "edition" : null,
+    "bookRecommendedBy" : "Sally",
+    "isbn" : null,
+    "yearOfPublication" : 1944,
+    "author" : {
+      "firstName" : "Roald",
+      "lastName" : "Dahl"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "To read"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Pokemon"
+    } ],
+    "publishers" : [ {
+      "name" : "Bloomsbury Publishing"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : null,
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Harry Potter and the Order of Phoenix",
+    "numberOfPages" : 469,
+    "pagesRead" : 452,
+    "bookGenre" : "ART",
+    "bookFormat" : null,
+    "seriesPosition" : 8,
+    "edition" : null,
+    "bookRecommendedBy" : "Luke",
+    "isbn" : null,
+    "yearOfPublication" : 1972,
+    "author" : {
+      "firstName" : "Neil",
+      "lastName" : "Gaiman"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "Reading"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Pokemon"
+    } ],
+    "publishers" : [ {
+      "name" : "Scholastic Corporation"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : "2021-02-20",
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Matilda",
+    "numberOfPages" : 435,
+    "pagesRead" : 825,
+    "bookGenre" : "ANTHOLOGY",
+    "bookFormat" : null,
+    "seriesPosition" : 8,
+    "edition" : null,
+    "bookRecommendedBy" : "Thomas",
+    "isbn" : null,
+    "yearOfPublication" : 1988,
+    "author" : {
+      "firstName" : "J.R.R",
+      "lastName" : "Tolkien"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "Did not finish"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Tolkien"
+    } ],
+    "publishers" : [ {
+      "name" : "Bloomsbury Publishing"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : "2021-02-20",
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Harry Potter and the Half-Blood Prince",
+    "numberOfPages" : 650,
+    "pagesRead" : 680,
+    "bookGenre" : "ANTHOLOGY",
+    "bookFormat" : null,
+    "seriesPosition" : 6,
+    "edition" : null,
+    "bookRecommendedBy" : "Christina",
+    "isbn" : null,
+    "yearOfPublication" : 1947,
+    "author" : {
+      "firstName" : "J.K.",
+      "lastName" : "Rowling"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "Reading"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Adventure"
+    } ],
+    "publishers" : [ {
+      "name" : "Bloomsbury Publishing"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : "2021-02-20",
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "The Hobbit",
+    "numberOfPages" : 698,
+    "pagesRead" : 829,
+    "bookGenre" : "COMICS",
+    "bookFormat" : null,
+    "seriesPosition" : 7,
+    "edition" : null,
+    "bookRecommendedBy" : "Christina",
+    "isbn" : null,
+    "yearOfPublication" : 1946,
+    "author" : {
+      "firstName" : "J.K.",
+      "lastName" : "Rowling"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "Read"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Tolkien"
+    } ],
+    "publishers" : [ {
+      "name" : "Bloomsbury Publishing"
+    } ],
+    "rating" : "NINE_POINT_FIVE",
+    "dateStartedReading" : "2021-02-20",
+    "dateFinishedReading" : "2021-02-22",
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  }, {
+    "title" : "Harry Potter and the Deathly Hallows",
+    "numberOfPages" : 460,
+    "pagesRead" : 564,
+    "bookGenre" : "ROMANCE",
+    "bookFormat" : null,
+    "seriesPosition" : 9,
+    "edition" : null,
+    "bookRecommendedBy" : "John",
+    "isbn" : null,
+    "yearOfPublication" : 1978,
+    "author" : {
+      "firstName" : "J.K.",
+      "lastName" : "Rowling"
+    },
+    "predefinedShelf" : {
+      "shelfName" : "Did not finish"
+    },
+    "customShelf" : null,
+    "tags" : [ {
+      "name" : "Adventure"
+    } ],
+    "publishers" : [ {
+      "name" : "Bloomsbury Publishing"
+    } ],
+    "rating" : "NO_RATING",
+    "dateStartedReading" : "2021-02-20",
+    "dateFinishedReading" : null,
+    "bookReview" : "Must Read Book. Really Enjoyed it"
+  } ]
+}
