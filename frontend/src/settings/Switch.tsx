@@ -28,11 +28,6 @@ interface Props extends SwitchProps {
   classes: Styles;
 }
 
-interface ISBlackSwitchProps {
-  classes: Styles;
-  checked: boolean;
-}
-
 const useStyles = makeStyles({
   root: {
     color: grey[900]
@@ -50,7 +45,6 @@ const useStyles = makeStyles({
   track: {},
   thumb: {},
 })
-
 
 function ColoredSwitch(props:any): JSX.Element {
   const classes = useStyles()
