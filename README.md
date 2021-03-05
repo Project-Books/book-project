@@ -127,7 +127,7 @@ If you wish to contribute (thanks!), please first see the [contributing document
 
 ### Help
 
-If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a) or on Slack.
+If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a).
 
 ## Further information
 
