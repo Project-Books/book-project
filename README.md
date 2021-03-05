@@ -126,11 +126,15 @@ To access the MySQL database when docker-compose is running:
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
 
+You can join our Slack workspace to chat with the maintainers and contributors, as well as to help shape the future of the project.
+
+If you're interested and are able to contribute from a UI/UX perspective, we'd love to hear from you! Feel free to get in touch with us over our Slack workspace.
+
 ### Help
 
-If you need help with anything, feel free to ask by starting a new discussion on our [GitHub Q&A](https://github.com/Project-Books/book-project/discussions/categories/q-a) or on Slack.
+If you need help with anything, feel free to ask by starting a new discussion on our [GitHub Q&A](https://github.com/Project-Books/book-project/discussions/categories/q-a).
 
-Both the Slack #help channel and GitHub Q&A discussions are community-driven efforts. While the maintainers try their best to help everyone, it is not always possible. If you're able to help someone else, feel free to do so (much appreciated!).
+The GitHub Q&A discussions is a community-driven effort. While the maintainers try their best to help everyone, it is not always possible. If you're able to help someone else, feel free to do so (much appreciated!).
 
 ## Further information
 
