@@ -26,7 +26,11 @@ import com.karankumar.bookproject.backend.model.RatingScale;
 import com.karankumar.bookproject.backend.model.Tag;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
