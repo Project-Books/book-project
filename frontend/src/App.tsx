@@ -17,8 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import Login from "./login/Login";
 import {useState} from 'react';
-import React, {Component} from 'react';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import React from 'react';
+import { ThemeProvider } from '@material-ui/core/styles';
 import {
     BrowserRouter,
     Route,
@@ -31,10 +31,10 @@ import Stats from "./statistics/Stats";
 import { theme as lightTheme, darkTheme} from './shared/theme';
 import * as routes from "./shared/routes"
 
-function App():JSX.Element {
+function App(): JSX.Element {
     const [theme, setTheme] = useState(lightTheme);
 
-    function toggleTheme():void {
+    function toggleTheme(): void {
         theme === lightTheme ? setTheme(darkTheme) : setTheme(lightTheme)
     } 
     return (
@@ -48,7 +48,8 @@ function App():JSX.Element {
               <Route 
                 path={routes.SETTINGS} 
                 render={() => 
-                <Settings  theme={theme} toggleTheme={toggleTheme} />} />
+                <Settings  theme={theme} toggleTheme={toggleTheme} />} 
+              />
               <Route path={routes.STATS} component={Stats} />
           </BrowserRouter>
         </ThemeProvider>

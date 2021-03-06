@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, {Component} from 'react'
+import React from 'react'
 import { NavBar } from '../shared/navigation/NavBar';
 import ColoredSwitch from '../settings/Switch';
 import { withTheme,MuiThemeProvider} from '@material-ui/core/styles';
@@ -27,7 +27,7 @@ interface ISettingsProps {
     toggleTheme: () => void;
 }
 
- function Settings(props: ISettingsProps):JSX.Element {
+ function Settings(props: ISettingsProps): JSX.Element {
     return (
       <React.Fragment>
         <NavBar />

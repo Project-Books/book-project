@@ -21,9 +21,9 @@ import { ExitToApp, MenuBook, Settings, TrackChanges, TrendingUp } from '@materi
 import logo from '../media/logo/logo-two-lines-white@1x.png'
 import darkLogo from '../media/logo/dark-logo.png';
 import * as routes from '../routes'
-import {useTheme} from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom'
-import {makeStyles,MuiThemeProvider} from "@material-ui/core/styles";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
   
   const useStyles = makeStyles({
