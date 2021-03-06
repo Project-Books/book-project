@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -226,7 +227,6 @@ class BookServiceTest {
     }
 
     @Test
-    @Disabled
     void createJsonRepresentationForBooks() throws IOException, JSONException {
         // given
         bookService.save(validBook().build());
@@ -290,6 +290,6 @@ class BookServiceTest {
         Tag tag2 = new Tag("adventure");
         tagService.save(tag1);
         tagService.save(tag2);
-        return new HashSet<>(Arrays.asList(tag1, tag2));
+        return new HashSet<Tag>(Arrays.asList(tag1, tag2));
     }
 }
