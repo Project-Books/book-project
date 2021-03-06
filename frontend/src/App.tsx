@@ -28,30 +28,15 @@ import MyBooks from "./my-books/MyBooks";
 import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
+import { theme as lightTheme, darkTheme} from './shared/theme';
 import * as routes from "./shared/routes"
 
-const darkTheme = createMuiTheme({
-  palette: {
-    background: {
-      default: "#fafafa",
-    },
-    type: 'dark',
-  },
-});
-
-const lightTheme = createMuiTheme ({
-  palette: {
-    type:'light'
-  }
-});
-
 function App():JSX.Element {
-  const [theme, setTheme] = useState(lightTheme);
+    const [theme, setTheme] = useState(lightTheme);
 
-  function toggleTheme():void {
-    theme === lightTheme ? setTheme(darkTheme) : setTheme(lightTheme)
-  } 
-
+    function toggleTheme():void {
+        theme === lightTheme ? setTheme(darkTheme) : setTheme(lightTheme)
+    } 
     return (
         <ThemeProvider theme={theme}>
           <BrowserRouter>
