@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -78,10 +79,13 @@ public class GenreStatistics extends Statistics {
     }
 
     private List<BookGenre> genresRead() {
-        return readShelfBooks.stream()
-                             .takeWhile(book -> book.getBookGenre() != null)
-                             .map(Book::getBookGenre)
-                             .collect(Collectors.toList());
+        List<Set<BookGenre>> genreList = readShelfBooks.stream()
+                .takeWhile(book -> book.getBookGenre() != null)
+                .map(Book::getBookGenre)
+                .collect(Collectors.toList());
+        List<BookGenre> genres = new ArrayList<>();
+        genreList.forEach(genres::addAll);
+        return genres;
     }
 
     /**
@@ -112,11 +116,13 @@ public class GenreStatistics extends Statistics {
         Map<BookGenre, Double> totalRatingForReadGenre = populateEmptyGenreRatings();
 
         for (Book book : readBooksWithGenresAndRatings) {
-            BookGenre bookGenre = book.getBookGenre();
-            double totalGenreRating = totalRatingForReadGenre.get(bookGenre);
-            double genreRating = RatingScale.toDouble(book.getRating()).orElse(0.0);
-            totalGenreRating += genreRating;
-            totalRatingForReadGenre.replace(bookGenre, totalGenreRating);
+            Set<BookGenre> bookGenre = book.getBookGenre();
+            bookGenre.forEach(genre -> {
+                double totalGenreRating = totalRatingForReadGenre.get(genre);
+                double genreRating = RatingScale.toDouble(book.getRating()).orElse(0.0);
+                totalGenreRating += genreRating;
+                totalRatingForReadGenre.replace(genre, totalGenreRating);
+            });
         }
 
         return totalRatingForReadGenre;
@@ -126,7 +132,9 @@ public class GenreStatistics extends Statistics {
         // we only want genres in this map that exist in the read books shelf
         Map<BookGenre, Double> genreMap = new EnumMap<>(BookGenre.class);
         for (Book book : readBooksWithGenresAndRatings) {
-            genreMap.put(book.getBookGenre(), 0.0);
+            book.getBookGenre().forEach(bookGenre -> {
+                genreMap.put(bookGenre, 0.0);
+            });
         }
         return genreMap;
     }

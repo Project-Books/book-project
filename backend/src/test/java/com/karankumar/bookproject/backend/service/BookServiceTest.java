@@ -30,6 +30,7 @@ import com.karankumar.bookproject.backend.model.Tag;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -41,7 +42,9 @@ import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +52,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assumptions.assumeThat;
@@ -261,7 +263,7 @@ class BookServiceTest {
                 .title("Another Book Name")
                 .numberOfPages(420)
                 .pagesRead(42)
-                .bookGenre(BookGenre.ADVENTURE)
+                .bookGenre(Collections.singleton(BookGenre.ADVENTURE))
                 .bookFormat(BookFormat.PAPERBACK)
                 .seriesPosition(3)
                 .edition(2)
@@ -288,6 +290,6 @@ class BookServiceTest {
         Tag tag2 = new Tag("adventure");
         tagService.save(tag1);
         tagService.save(tag2);
-        return new HashSet<>(Arrays.asList(tag1, tag2));
+        return new HashSet<Tag>(Arrays.asList(tag1, tag2));
     }
 }

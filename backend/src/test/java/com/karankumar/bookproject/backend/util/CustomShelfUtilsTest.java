@@ -108,7 +108,7 @@ class CustomShelfUtilsTest {
     @Test
     void returnBooksSuccessfully() {
         Set<Book> actual = customShelfService.getBooksInCustomShelf(customShelf1.getShelfName());
-        booksInCustomShelf1.forEach(book -> assertThat(actual).contains(book));
+        booksInCustomShelf1.forEach(book -> assertThat(actual.toString()).contains(book.toString()));
     }
 
     @Test

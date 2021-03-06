@@ -27,6 +27,7 @@ import com.karankumar.bookproject.backend.model.Tag;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -127,8 +128,8 @@ public final class TestData {
         return publisherSet;
     }
 
-    private static BookGenre generateRandomGenre() {
-        return BookGenre.values()[threadLocalRandom.nextInt(BookGenre.values().length)];
+    private static Set<BookGenre> generateRandomGenre() {
+        return Collections.singleton(BookGenre.values()[threadLocalRandom.nextInt(BookGenre.values().length)]);
     }
 
     private static String generateRandomRecommender() {

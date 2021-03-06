@@ -28,6 +28,7 @@ import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 public class StatisticTestUtils {
@@ -134,7 +135,7 @@ public class StatisticTestUtils {
                                    int pages, LocalDate startedReading) {
         Author author = new Author("Joe", "Bloggs");
         Book book = new Book(bookTitle, author, shelf);
-        book.setBookGenre(bookGenre);
+        book.setBookGenre(Collections.singleton(bookGenre));
         book.setNumberOfPages(pages);
         book.setDateStartedReading(startedReading);
         return book;
