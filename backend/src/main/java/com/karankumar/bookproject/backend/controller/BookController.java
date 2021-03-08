@@ -15,8 +15,11 @@
 package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,10 +42,13 @@ import java.util.List;
 public class BookController {
 	
     private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, 
+    		PredefinedShelfService predefinedShelfService) {
         this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
     }
     
     @GetMapping()
@@ -77,9 +83,23 @@ public class BookController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Book> addBook(@RequestBody Book newBook) {
+    public Optional<Book> addBook(@RequestBody Book newBook) { //@RequestBody String shelfName) {
+    	//PredefinedShelf predefinedShelfToSave = predefinedShelfService.getPredefinedShelfByNameAsString("Read");	newBook.predefinedShelf.shelfName);
+    	PredefinedShelf predefinedShelfToSave = newBook.getPredefinedShelf();
+    	predefinedShelfService.save(predefinedShelfToSave);
+    	
         return bookService.save(newBook);                                   
     }
+    
+//    @PostMapping()
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Optional<Book> addBook(@RequestBody String title, @RequestBody Author author, @RequestBody String shelfName) {
+//    	PredefinedShelf predefinedShelfToSave = predefinedShelfService.getPredefinedShelfByNameAsString(shelfName);	//newBook.predefinedShelf.shelfName);
+//    	predefinedShelfService.save(predefinedShelfToSave);
+//    	
+//    	Book newBook = new Book(title,author,predefinedShelfToSave);
+//        return bookService.save(newBook);                                   
+//    }
     
     @PutMapping("/update-book/{id}")
     @ResponseStatus(HttpStatus.OK)
