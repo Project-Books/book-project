@@ -17,7 +17,8 @@ package com.karankumar.bookproject.backend.controller;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.service.BookNotFoundException;
+import com.karankumar.bookproject.backend.service.JsonToDbService;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
-import javax.validation.contraints.NotNull;
 
 @RestController
 @RequestMapping("/api/my-books")
@@ -52,22 +52,22 @@ public class BookController {
         return bookService.findAll();
     }
 
-    @GetMapping("/find-by-id/{id}")
-    public List<Book> findById(@PathVariable("id") UUID id){
-        return bookService.findById();
-    }
+//    @GetMapping("/find-by-id/{id}")
+//    public List<Book> findById(@PathVariable("id") UUID id) {
+////        return bookService.findById();
+//    }
 
     @PostMapping("/add-book")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addBook(@NotNull @RequestBody @Valid Book book){
-        return bookService.save(book);
+    public void addBook(@NonNull @RequestBody @Valid Book book){
+//        return bookService.save(book);
     }
 
     @GetMapping("/import-json")
     @ResponseStatus(HttpStatus.CREATED)
-    public void importJson(@NotNull @Valid String file){
+    public void importJson(@NonNull @Valid String file){
         System.out.println("ran import-json");
-        return JsonToDbService.importJson("/Users/zacharyhollander/Documents/Development/FOSS/book-project/backend/src/main/java/com/karankumar/bookproject/backend/json/bookExport-2.json");
+//        return JsonToDbService.importJson("/Users/zacharyhollander/Documents/Development/FOSS/book-project/backend/src/main/java/com/karankumar/bookproject/backend/json/bookExport-2.json");
     }
 
 }

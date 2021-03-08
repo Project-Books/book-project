@@ -17,13 +17,10 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import java.beans.BeanProperty;
+import java.awt.print.Book;
 
-import org.springframework.boot.ComandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframeworl.context.annotation.Bean;
-import com.karankumar.bookproject.backend.controller.BookController;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,20 +29,20 @@ import java.util.List;
 public class JsonToDbService {
     
    public void importJson(String file){
-        return args -> { 
-            //read jason and write to db
-            ObjectMapper mapper = new ObjectMapper();
-            TypeReference <List<Book>> typeReference = new TypeReference<List<Book>>(){};
-            InputStream inputStream = typeReference.class.getResourceAsStream(file);
-            try { 
-                List<Book> books = mapper.readValue(inputStream, typeReference);
-                for (Book b: books){
-                    bookcontroller.addBook(b);
-                }
-                System.out.println("Books Saved!");
-            } catch (IOException e){
-                System.out.println("Unable to save books: " + e.getMessage());
-            }
-        }; 
+//        return args -> {
+//            //read jason and write to db
+//            ObjectMapper mapper = new ObjectMapper();
+//            TypeReference<List<Book>> typeReference = new TypeReference<List<Book>>(){};
+//            InputStream inputStream = typeReference.class.getResourceAsStream(file);
+//            try {
+//                List<Book> books = mapper.readValue(inputStream, typeReference);
+//                for (Book b: books){
+//                    bookcontroller.addBook(b);
+//                }
+//                System.out.println("Books Saved!");
+//            } catch (IOException e){
+//                System.out.println("Unable to save books: " + e.getMessage());
+//            }
+//        };
     }
 }
