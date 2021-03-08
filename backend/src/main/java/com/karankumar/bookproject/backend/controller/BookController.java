@@ -14,10 +14,13 @@
 
 package com.karankumar.bookproject.backend.controller;
 
+import com.karankumar.bookproject.backend.dto.BookDto;
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.BookNotFoundException;
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +42,12 @@ import java.util.List;
 public class BookController {
 	
     private final BookService bookService;
+    private final PredefinedShelfService predefinedShelfService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, PredefinedShelfService predefinedShelfService) {
         this.bookService = bookService;
+        this.predefinedShelfService = predefinedShelfService;
     }
     
     @GetMapping()
@@ -67,18 +72,21 @@ public class BookController {
     }
     		
     @GetMapping("/find-by-author/{author}") 	
-    public Optional<List<Book>> findByAuthor(@PathVariable String authorsName, 
-    		@RequestParam(required=false) String title,
-    		@RequestParam Long id) {
-    		//@RequestParam String authorsName) {   
-    	return Optional.ofNullable(bookService.findByTitleOrAuthor(title, authorsName))
-    		.orElseThrow(() -> new BookNotFoundException(id));
+    public Optional<List<Book>> findByAuthor(@PathVariable String author /*authorsName*/,
+    		@RequestParam(required=false) String title//,
+    		/*@RequestParam Long id*/) {
+    		//@RequestParam String authorsName) {
+        System.out.println("here");
+    	return bookService.findByTitleOrAuthor(title, author /*authorsName*/);
+//    		.orElseThrow(() -> new BookNotFoundException(id));
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Book> addBook(@RequestBody Book newBook) {
-        return bookService.save(newBook);                                   
+    public Optional<Book> addBook(@RequestBody BookDto bookDto) {
+        PredefinedShelf predefinedShelf = predefinedShelfService.findToReadShelf();
+        Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), predefinedShelf);
+        return bookService.save(book);
     }
     
     @PutMapping("/update-book/{id}")
