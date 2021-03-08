@@ -113,20 +113,20 @@ class Login extends Component<LoginProps, IState> {
   }
 
   renderLoginError() {
-    return <p style={{ color: 'red' }}>Your email or password is incorrect. Please try again</p>
+    return <p className="error-message">Your email or password is incorrect. Please try again</p>
   }
 
   render() {
     return (
       <div className="center-table">
         <div className="center-table-cell">
-          <img src={logo} alt="Logo" className="center app-logo" />
+          <img src={logo} alt="Logo" className="center" />
 
           <br />
           <br />
           <br />
 
-          <div className="center login-form">
+          <div className="center">
             <EmailAddress
               class="center login"
               isInvalid={this.isEmailInvalid()}

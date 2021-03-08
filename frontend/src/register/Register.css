@@ -15,22 +15,41 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-.App-header {
-  position: fixed;
-  top: 40%;
-  left: 45%;
+.center-table {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
-#app-logo {
-  position: fixed;
-  top: 30%;
-  left: 42.5%;
+.center-table-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.center {
+  display: block;
+  margin: 0 auto;
+  width: 500px;
+}
+
+.center.login {
+  width: 500px;
 }
 
 #standard-basic {
-  width: 290px;
+  width: 500px !important;
 }
 
-.login {
-  width: 290px;
+/* mobile screens */
+@media screen and (max-width: 600px) {
+  .center {
+    width: 300px;
+  }
+  
+  .center.login {
+    width: 300px;
+  }
 }
