@@ -19,8 +19,8 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.service.BookNotFoundException;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
+import com.karankumar.bookproject.backend.service.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,6 +88,16 @@ public class BookController {
         Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), predefinedShelf);
         return bookService.save(book);
     }
+    
+//    @PostMapping()
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Optional<Book> addBook(@RequestBody String title, @RequestBody Author author, @RequestBody String shelfName) {
+//    	PredefinedShelf predefinedShelfToSave = predefinedShelfService.getPredefinedShelfByNameAsString(shelfName);	//newBook.predefinedShelf.shelfName);
+//    	predefinedShelfService.save(predefinedShelfToSave);
+//    	
+//    	Book newBook = new Book(title,author,predefinedShelfToSave);
+//        return bookService.save(newBook);                                   
+//    }
     
     @PutMapping("/update-book/{id}")
     @ResponseStatus(HttpStatus.OK)
