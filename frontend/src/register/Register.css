@@ -39,6 +39,12 @@ If not, see <https://www.gnu.org/licenses/>.
   width: 500px;
 }
 
+.center.helper {
+  text-align: center;
+  margin: auto;
+  font-size: medium;
+}
+
 #standard-basic {
   width: 500px !important;
 }
