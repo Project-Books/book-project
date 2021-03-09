@@ -75,7 +75,7 @@ function PasswordStrengthMeter({ score }: PasswordStrengthMeterProps) {
         classes={{ barColorPrimary: classes.barColorPrimary }}
         variant="determinate"
         value={progress} />
-      {descriptor}
+      <p style={{ textAlign: "center" }}>{descriptor}</p>
     </div>
   );
 }

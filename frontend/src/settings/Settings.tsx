@@ -16,15 +16,43 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from 'react'
-import { NavBar } from '../shared/navigation/NavBar'
+import { NavBar } from '../shared/navigation/NavBar';
+import ColoredSwitch from '../settings/Switch';
+import { withTheme,MuiThemeProvider} from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import './Settings.css'
 
-function Settings() {
-    return (
-        <React.Fragment>
-            <NavBar />
-            {/* <h1>Settings</h1> */}
-        </React.Fragment>
-    )
+interface ISettingsProps {
+    theme: any;
+    toggleTheme: () => void;
 }
 
-export default Settings;
+ function Settings(props: ISettingsProps): JSX.Element {
+    return (
+      <React.Fragment>
+        <NavBar />
+        <MuiThemeProvider theme={props.theme}>
+          <CssBaseline />
+          <div className="settings-header">
+            Settings
+          </div>
+          <div className="switch-container">
+            <div className="toggle-text">
+                Enable dark mode
+            </div>
+            <div className="settings-toggle">
+              <ColoredSwitch
+                checked={props.theme.palette.type === 'dark'}
+                onClick={props.toggleTheme}
+                inputProps={{ 'aria-label': 'checkbox with default color' }}
+                style={{color:'black'}}
+                className="switch"
+              />
+            </div>
+          </div>
+        </MuiThemeProvider>
+      </React.Fragment>
+    )
+ }
+
+export default withTheme(Settings);

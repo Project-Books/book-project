@@ -32,6 +32,7 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
@@ -78,10 +79,10 @@ class CustomShelfServiceTest {
         customShelfService.save(newShelf);
 
         // when
-        CustomShelf shelfFound = customShelfService.findById(newShelf.getId());
+        Optional<CustomShelf> shelfFound = customShelfService.findById(newShelf.getId());
 
         // then
-        assertThat(shelfFound).isNotNull();
+        assertThat(shelfFound).isPresent();
     }
 
     @Test
@@ -122,7 +123,7 @@ class CustomShelfServiceTest {
         customShelfService.save(expected);
 
         // when
-        Shelf actual = customShelfService.getCustomShelfByName(expected.getShelfName());
+        Shelf actual = customShelfService.getCustomShelfByName(expected.getShelfName()).get();
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -148,8 +149,7 @@ class CustomShelfServiceTest {
         customShelfService.delete(customShelf);
 
         // then
-        assertThatExceptionOfType(JpaObjectRetrievalFailureException.class)
-                .isThrownBy(() -> customShelfService.findById(id));
+        assertThat(customShelfService.findById(id)).isEmpty();
     }
 
     @Test

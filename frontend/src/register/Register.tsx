@@ -24,7 +24,7 @@ import EmailAddress from '../shared/form/EmailAddress';
 import Password from '../shared/form/Password';
 import PasswordStrengthMeter from '../shared/form/PasswordStrengthMeter';
 import Verb from '../shared/http/verb';
-import logo from '../shared/media/logo/logo-black.png';
+import logo from '../shared/media/logo/logo_one_line@1x.png';
 import './Register.css';
 
 enum PassStrengthEnum {
@@ -130,64 +130,66 @@ class Register extends Component<Record<string, unknown>, IState> {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} alt="Logo" id="app-logo" />
-
-          <br />
-          <EmailAddress
-            class="login"
-            isInvalid={this.state.areCredentialsInvalid}
-            onChange={this.onEmailChanged}
-            areCredentialsInvalid={this.state.areCredentialsInvalid}
-          />
-
-          <br />
-
-          <Password
-            fieldName={'Password'}
-            class={'login'}
-            onPasswordChanged={this.handlePasswordChanged}
-            isInvalid={this.isPasswordInvalid()}
-            errorMessage={'Please enter a password'}
-          />
-          <br />
-          <br />
-
-          <PasswordStrengthMeter score={this.state.passwordStrengthScore}></PasswordStrengthMeter>
-
-          <br />
-
-          <Password
-            fieldName={'Confirm password'}
-            class={'login'}
-            onPasswordChanged={this.handleConfirmPasswordChanged}
-            isInvalid={!this.state.passwordsMatch || this.state.areCredentialsInvalid}
-            errorMessage={'Passwords do not match. Please try again'}
-          />
+      <div className="center-table">
+        <div className="center-table-cell">
+          <img src={logo} alt="Logo" className="center" id="app-logo" />
 
           <br />
           <br />
-
-          <Button
-            className="login"
-            variant="contained"
-            color="primary"
-            onClick={this.onCreateAccountClicked}>
-            Create account
-          </Button>
-
           <br />
-          <br />
+          
+            <div className="center">
+              <EmailAddress
+                class="center login"
+                isInvalid={this.state.areCredentialsInvalid}
+                onChange={this.onEmailChanged}
+                areCredentialsInvalid={this.state.areCredentialsInvalid}
+              />
+    
+              <br />
+    
+              <Password
+                fieldName={'Password'}
+                class={'center login'}
+                onPasswordChanged={this.handlePasswordChanged}
+                isInvalid={this.isPasswordInvalid()}
+                errorMessage={'Please enter a password'}
+              />
+              <br />
+              <br />
+    
+              <PasswordStrengthMeter score={this.state.passwordStrengthScore}></PasswordStrengthMeter>
+    
+              <br />
+    
+              <Password
+                fieldName={'Confirm password'}
+                class={'center login'}
+                onPasswordChanged={this.handleConfirmPasswordChanged}
+                isInvalid={!this.state.passwordsMatch || this.state.areCredentialsInvalid}
+                errorMessage={'Passwords do not match. Please try again'}
+              />
+    
+              <br />
+              <br />
+    
+              <Button
+                className="center login"
+                variant="contained"
+                color="primary"
+                onClick={this.onCreateAccountClicked}>
+                Create account
+              </Button>
+    
+              <br />
+              <br />
+    
+              <Button className="center login" id="createAccount" component={Link} to="/sign-in">
+                Sign in instead
+              </Button>
 
-          <Button className="login" id="createAccount" component={Link} to="/sign-in">
-            Sign in instead
-          </Button>
-
-          <br />
-          <br />
-
-        </header>
+          </div> 
+        </div>
       </div>
     )
   }

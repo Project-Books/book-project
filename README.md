@@ -13,8 +13,8 @@
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
 	
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-lvr8oi47-8BjZzov0QDsx4RvjkNjOcA">
-    <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-nf4awxuo-sj9Aa37CgLcbrUr8z4P8Ag">
+    <img src="https://img.shields.io/badge/slack-teambookproject-4A154B?logo=slack" alt="Slack" />
   </a>
 	
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
@@ -127,7 +127,7 @@ If you wish to contribute (thanks!), please first see the [contributing document
 
 ### Help
 
-If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a) or on Slack.
+If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a).
 
 ## Further information
 

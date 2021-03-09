@@ -21,7 +21,8 @@ export const theme  = createMuiTheme({
     palette: {
         primary: {
             main: "#000000",
-        }
+        },
+        type:'light'
     },
     overrides: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -33,3 +34,12 @@ export const theme  = createMuiTheme({
         }
     }
 })
+
+export const darkTheme = createMuiTheme({
+    palette: {
+      background: {
+        default: "#fafafa",
+      },
+      type: 'dark',
+    },
+  });
