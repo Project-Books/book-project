@@ -157,7 +157,7 @@ class Register extends Component<Record<string, unknown>, IState> {
                             classHelper="center helper"
                             isInvalid={this.isEmailInvalid()}
                             onChange={this.onEmailChanged}
-                            errorMessage={'Please enter an e-mail address'}
+                            errorMessage={'Please enter an email address'}
                         />
 
                         <br />
