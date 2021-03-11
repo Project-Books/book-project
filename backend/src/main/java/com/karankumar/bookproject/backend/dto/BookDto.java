@@ -28,4 +28,7 @@ public class BookDto {
 
     @JsonProperty("author")
     private Author author;
+    
+    @JsonProperty("shelfName")
+    private String shelfName;
 }

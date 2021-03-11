@@ -84,20 +84,11 @@ public class BookController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody BookDto bookDto) {
-        PredefinedShelf predefinedShelf = predefinedShelfService.findToReadShelf();
+        PredefinedShelf predefinedShelf = predefinedShelfService
+        		.getPredefinedShelfByNameAsString(bookDto.getShelfName());
         Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), predefinedShelf);
         return bookService.save(book);
     }
-    
-//    @PostMapping()
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Optional<Book> addBook(@RequestBody String title, @RequestBody Author author, @RequestBody String shelfName) {
-//    	PredefinedShelf predefinedShelfToSave = predefinedShelfService.getPredefinedShelfByNameAsString(shelfName);	//newBook.predefinedShelf.shelfName);
-//    	predefinedShelfService.save(predefinedShelfToSave);
-//    	
-//    	Book newBook = new Book(title,author,predefinedShelfToSave);
-//        return bookService.save(newBook);                                   
-//    }
     
     @PutMapping("/update-book/{id}")
     @ResponseStatus(HttpStatus.OK)
