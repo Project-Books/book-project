@@ -48,6 +48,12 @@ If not, see <https://www.gnu.org/licenses/>.
   text-align: center;
 }
 
+.center.helper {
+  text-align: center;
+  margin: auto;
+  font-size: medium;
+}
+
 /* mobile screens */
 @media screen and (max-width: 600px) {
   .center {
