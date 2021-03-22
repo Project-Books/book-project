@@ -51,7 +51,7 @@ public class Tag {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
     private Set<Book> books = new HashSet<>();
 
     public Tag(String name) {

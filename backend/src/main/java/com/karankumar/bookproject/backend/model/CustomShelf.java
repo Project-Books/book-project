@@ -44,7 +44,7 @@ public class CustomShelf extends Shelf {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customShelf")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customShelf")
     protected Set<Book> books;
 
     public CustomShelf(String shelfName, User user) {

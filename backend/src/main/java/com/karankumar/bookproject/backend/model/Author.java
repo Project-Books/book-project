@@ -52,7 +52,7 @@ public class Author {
     @NotBlank
     private String lastName;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     @Setter
     private Set<Book> books = new HashSet<>();
 

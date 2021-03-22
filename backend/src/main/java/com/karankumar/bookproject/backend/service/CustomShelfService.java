@@ -24,6 +24,7 @@ import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Log
+@Transactional
 public class CustomShelfService {
     private final CustomShelfRepository customShelfRepository;
     private final UserService userService;

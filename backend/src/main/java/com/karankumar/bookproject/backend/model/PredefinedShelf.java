@@ -50,7 +50,7 @@ public class PredefinedShelf extends Shelf {
     @Setter(AccessLevel.NONE)
     private ShelfName predefinedShelfName;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "predefinedShelf")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "predefinedShelf")
     protected Set<Book> books;
 
     public PredefinedShelf(ShelfName predefinedShelfName, User user) {

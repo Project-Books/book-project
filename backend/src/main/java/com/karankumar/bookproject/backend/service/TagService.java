@@ -21,11 +21,13 @@ import com.karankumar.bookproject.backend.model.Tag;
 import com.karankumar.bookproject.backend.repository.TagRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class TagService {
 
     private final TagRepository tagRepository;

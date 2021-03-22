@@ -59,7 +59,7 @@ public class Publisher {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "publishers")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "publishers")
     private Set<Book> books;
 
     public Publisher(@NotBlank String name) {
