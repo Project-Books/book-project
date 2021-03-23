@@ -20,15 +20,59 @@ package com.karankumar.bookproject.backend.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.karankumar.bookproject.backend.model.Author;
 import lombok.Data;
+import lombok.Setter;
+import javax.persistence.Id;
+//import lombok.Builder;
+//import lombok.AccessLevel;
+//import lombok.AllArgsConstructor;
+//import lombok.NoArgsConstructor;
 
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@AllArgsConstructor
+//@Builder
 @Data
 public class BookDto {
+	@Setter
+	@Id
+	@JsonProperty("id")
+	private Long id;
+	
     @JsonProperty("title")
     private String title;
 
     @JsonProperty("author")
     private Author author;
     
-    @JsonProperty("shelfName")
-    private String shelfName;
+    @JsonProperty("predefinedShelfString")
+    private String predefinedShelfString;
+    
+    @JsonProperty("numberOfPages")
+    //@Max(value = MAX_PAGES)
+    private Integer numberOfPages;
+
+    @JsonProperty("pagesRead")
+    //@Max(value = MAX_PAGES)
+    private Integer pagesRead;
+
+    @JsonProperty("bookGenre")
+    private String bookGenre;	//currently need to use the constant names in request body (use "HORROR" vs "Horror")
+    
+    @JsonProperty("bookFormat")
+    private String bookFormat;	//currently need to use the constant names in request body (use "EBOOK" vs "eBook")
+    
+    @JsonProperty("seriesPosition")
+    private Integer seriesPosition;
+    
+    @JsonProperty("edition")
+    private String edition;
+    
+    @JsonProperty("bookRecommendedBy")
+    private String bookRecommendedBy;
+
+    //@ISBN
+    @JsonProperty("isbn")
+    private String isbn;
+
+    @JsonProperty("yearofPublication")
+    private Integer yearOfPublication;
 }

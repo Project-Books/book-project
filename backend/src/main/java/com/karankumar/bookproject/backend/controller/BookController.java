@@ -14,8 +14,14 @@
 
 package com.karankumar.bookproject.backend.controller;
 
+import org.modelmapper.Converter;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import com.karankumar.bookproject.backend.dto.BookDto;
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.BookGenre;
+import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
@@ -36,6 +42,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 import java.util.List;
+//import java.text.ParseException;
 
 @RestController
 @RequestMapping("/api/my-books")
@@ -43,11 +50,18 @@ public class BookController {
 	
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public BookController(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    public BookController(BookService bookService, PredefinedShelfService predefinedShelfService,
+    		ModelMapper modelMapper) {
         this.bookService = bookService;
         this.predefinedShelfService = predefinedShelfService;
+        this.modelMapper = modelMapper;
+        
+        this.modelMapper.addConverter(predefinedShelfConverter);
+        this.modelMapper.addConverter(bookGenreConverter);
+        this.modelMapper.addConverter(bookFormatConverter);
     }
     
     @GetMapping()
@@ -81,25 +95,46 @@ public class BookController {
 //    		.orElseThrow(() -> new BookNotFoundException(id));
     }
 
+//    @PostMapping()
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Optional<Book> addBook(@RequestBody BookDto bookDto) {
+//        PredefinedShelf predefinedShelf = predefinedShelfService
+//        		.getPredefinedShelfByNameAsString(bookDto.getShelfName());
+//        Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), predefinedShelf);
+//        return bookService.save(book);
+//    }
+    
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody BookDto bookDto) {
-        PredefinedShelf predefinedShelf = predefinedShelfService
-        		.getPredefinedShelfByNameAsString(bookDto.getShelfName());
-        Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), predefinedShelf);
-        return bookService.save(book);
+    	// convert DTO to entity
+    	Book bookToAdd = convertToBook(bookDto);
+
+        return bookService.save(bookToAdd);
     }
     
     @PutMapping("/update-book/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Book> update(@PathVariable Long id, @RequestBody Book updatedBook) {
+    public Optional<Book> update(@PathVariable Long id, @RequestBody BookDto updatedBookDto) {
     	Optional<Book> bookToUpdate = bookService.findById(id);
     	
     	if (!bookToUpdate.isPresent()) {
     		throw new BookNotFoundException(id);
     	}
     	
+    	updatedBookDto.setId(id);
+    	Book updatedBook = convertToBook(updatedBookDto);
     	return bookService.save(updatedBook);
+    }
+    
+//    private BookDto convertToDto(Book book) {
+//    	BookDto bookDto = modelMapper.map(book, BookDto.class);
+//    	return bookDto;
+//    }
+    
+    private Book convertToBook(BookDto bookDto) { //throws ParseException {
+    	Book book = modelMapper.map(bookDto, Book.class);
+    	return book;
     }
     
     @DeleteMapping("/delete-book/{id}")
@@ -108,5 +143,28 @@ public class BookController {
     		.orElseThrow(() -> new BookNotFoundException(id));
     	bookService.delete(bookToDelete);
     }
+    
+    Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<String, PredefinedShelf>() {
+    	//public PredefinedShelf convert(MappingContext<String, PredefinedShelf> context) {
+    	public PredefinedShelf convert(String predefinedShelfString) {
+    		PredefinedShelf predefinedShelf = null;
+    		predefinedShelf = predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString);
+    		return predefinedShelf;
+    	}
+    };
+    
+    Converter<String, BookGenre> bookGenreConverter = new AbstractConverter<String, BookGenre>() {
+    	public BookGenre convert(String bookGenreString) {
+    		BookGenre bookGenre = BookGenre.valueOf(bookGenreString);
+    		return bookGenre;
+    	}
+    };
+    
+    Converter<String, BookFormat> bookFormatConverter = new AbstractConverter<String, BookFormat>() {
+    	public BookFormat convert(String bookFormatString) {
+    		BookFormat bookFormat = BookFormat.valueOf(bookFormatString);
+    		return bookFormat;
+    	}
+    };
 
 }
