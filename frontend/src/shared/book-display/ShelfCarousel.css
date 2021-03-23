@@ -1,0 +1,92 @@
+/* Styles for carousel */
+
+.container {
+    margin-top: 40px;
+    margin-left: 180px;
+}
+
+.shelf-container {
+    padding: 0px 40px;
+}
+
+.shelf-title {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.view-all {
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.books-and-shelf {
+    overflow: visible;
+    padding: 20px;
+    /* makes shelf width of the books */
+    display: inline-block;
+}
+
+.book-wrap {
+    margin: 0px 30px;
+}
+
+.clear {
+    clear: both;
+}
+
+.shelf {
+    border-radius: 4px 4px 999px 999px;
+    background-color: white;
+    box-shadow: 0px 10px 20px 9px rgba(197, 197, 197, 0.5);
+    position: relative;
+    height: 15px;
+}
+
+/* Styles for Book */
+
+.book {
+    float: left;
+    width: 110px;
+    height: 160px;
+    background-color: white;
+    margin: 0px 25px;
+    border-radius: 1px;
+    filter: drop-shadow(0px 40px 40px rgba(0, 0, 0, .4));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.book.image {
+    background-size: cover; 
+}
+
+.book.add-new {
+    background-color: lightgray;
+    color: dimgray;
+}
+
+.book-title {
+    margin: 0px;
+    padding: 15px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.book-title.hide {
+    display: none;
+}
+
+.book-title.add-new {
+    padding-top: 5px;
+    padding-bottom: 0px;
+    font-size: 10px;
+}
+
+.icon {
+    font-size: 50px !important;
+    font-weight: bold;
+}
