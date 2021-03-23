@@ -55,7 +55,7 @@ import java.util.Set;
 @Entity
 @Builder
 @Data
-@DynamicUpdate
+//@DynamicUpdate
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -167,6 +167,12 @@ public class Book {
     private LocalDate dateFinishedReading;
     private String bookReview;
 
+    //need public parameterless constructor for mapstruct, delete this later
+//    public Book() {
+//    	this.title = "";
+//    	this.author = null;
+//    	this.predefinedShelf = null;
+//    }
 
     public Book(String title, Author author, PredefinedShelf predefinedShelf) {
         this.title = title;
