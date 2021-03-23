@@ -34,7 +34,6 @@ function ShelfBook(props: BookProps) {
 
 type BookProps = {
     title: string;
-    // type: "add-new" | "picture" | "no-picture";
     img: string;
 }
 
@@ -67,7 +66,6 @@ export function ShelfCarousel(props: ShelfCarouselProps) {
                             img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg" 
                         />
                         <ShelfBook title="Start With Why" img="" />
-                        <ShelfBook title="Unbroken" img="" />
                         <ShelfBook title="Unbroken" img="" />
                         <AddBook />
                         <div className="clear" />
