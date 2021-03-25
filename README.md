@@ -23,6 +23,8 @@
 
 Book tracker web app made using Spring Boot and Vaadin 14 (only the free components will be used).
 
+**Update: we are currently redesigning the web app from scratch (with React instead of Vaadin). Take a look at the [0.2.0 branch](https://github.com/Project-Books/book-project/tree/0.2.0).**
+
 See a [live demo](http://bookprojectv010-env.eba-22zuiphf.eu-west-2.elasticbeanstalk.com/login). Instead of creating an
 account, you can use the test credentials shown in the [Access site](https://github.com/Project-Books/book-project#access-site) section.
 This is only for demonstration purposes, so please do not rely on any saved data persisting.
