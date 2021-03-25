@@ -24,20 +24,6 @@
 
 Book tracker web app made in Spring Boot. We are currently migrating from Vaadin 14 to React (with Typescript).
 
-**The images, feature list and demo are v0.1.0. v0.2.0 will look different.**
-
-<p align="center">
-    <img src="/media/docs/readme/book_form.png" alt="New book form"/>
-</p>
-
-![Books in shelf](/media/docs/readme/books_in_shelf.png)
-        
-![Reading goal](/media/docs/readme/reading_goal.png)
-
-<p align="center">
-    <img src="/media/docs/readme/statistics.png" alt="Reading statistics"/>
-</p>
-
 ![image](https://user-images.githubusercontent.com/11173328/112493885-739b0d80-8d7a-11eb-85a1-b4c500dc61ab.png)
 
 *The image above is from our mockup designs, so this may look slightly different to the app. If major changes are made, we will upload a new image.*
