@@ -22,14 +22,12 @@ import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Log
-@Transactional
 public class AuthorService {
     private final AuthorRepository authorRepository;
 

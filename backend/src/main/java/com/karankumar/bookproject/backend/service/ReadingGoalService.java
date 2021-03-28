@@ -21,13 +21,11 @@ import com.karankumar.bookproject.backend.model.ReadingGoal;
 import com.karankumar.bookproject.backend.repository.ReadingGoalRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class ReadingGoalService {
     private final ReadingGoalRepository goalRepository;
 

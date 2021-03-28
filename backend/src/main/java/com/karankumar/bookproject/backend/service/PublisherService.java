@@ -24,7 +24,6 @@ import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +33,6 @@ import java.util.stream.Stream;
 
 @Service
 @Log
-@Transactional
 public class PublisherService {
     private final PublisherRepository publisherRepository;
 

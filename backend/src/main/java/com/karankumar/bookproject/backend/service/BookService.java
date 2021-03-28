@@ -29,7 +29,6 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +37,6 @@ import java.util.logging.Level;
 
 @Service
 @Log
-@Transactional
 public class BookService {
     private final AuthorService authorService;
     private final BookRepository bookRepository;

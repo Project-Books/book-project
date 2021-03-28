@@ -26,7 +26,6 @@ import com.karankumar.bookproject.backend.model.RatingScale;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
@@ -42,7 +41,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Transactional
 public class ImportService {
     private static final double GOODREADS_RATING_SCALE_FACTOR = 2;
 

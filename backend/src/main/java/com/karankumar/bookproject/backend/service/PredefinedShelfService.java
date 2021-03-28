@@ -30,7 +30,6 @@ import com.karankumar.bookproject.backend.repository.TagRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
@@ -55,7 +54,6 @@ import static com.karankumar.bookproject.backend.util.TestData.generatePublisher
 
 @Service
 @Log
-@Transactional
 public class PredefinedShelfService {
 
     private final BookRepository bookRepository;
