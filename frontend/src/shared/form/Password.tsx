@@ -15,21 +15,21 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react'
-import { FormControl, IconButton, InputAdornment, InputLabel} from '@material-ui/core'
+import React, {ReactElement} from 'react'
+import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel} from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import {useState} from 'react';
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 
-function Password(props: PasswordProps) {
+function Password(props: PasswordProps): ReactElement {
   const [showPassword, setShowPassword] = useState(false);
   function handlePasswordToggle () {
     setShowPassword(!showPassword)
   }
   
   return (
-        <FormControl variant="outlined" required>
+        <FormControl variant="outlined" required error = {props.isInvalid}>
           <InputLabel htmlFor="outlined-adornment-password">{props.fieldName}</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
@@ -48,8 +48,12 @@ function Password(props: PasswordProps) {
             </InputAdornment>
             }
             onChange={(event) => props.onPasswordChanged(event.target.value)}
-            error={props.isInvalid}
           />
+          {props.isInvalid && (
+              <FormHelperText className={props.classHelper}>
+                  {props.errorMessage}
+              </FormHelperText>
+          )}
         </FormControl>
   )
 }
@@ -57,6 +61,7 @@ function Password(props: PasswordProps) {
 type PasswordProps = {
   fieldName: string,
   class?: string,
+  classHelper?: string,
   onPasswordChanged: any,
   isInvalid: boolean,
   errorMessage: string

@@ -15,13 +15,13 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react'
+import React, {ReactElement} from 'react'
 import TextField from '@material-ui/core/TextField'
+import {Typography} from "@material-ui/core";
 
-function EmailAddress(props: EmailProps) {
+function EmailAddress(props: EmailProps): ReactElement {
   const {
     onChange,
-    areCredentialsInvalid,
     isInvalid,
   } = props;
 
@@ -36,7 +36,10 @@ function EmailAddress(props: EmailProps) {
         autoFocus
         error={isInvalid}
         onChange={(event) => onChange(event.target.value)}
-        helperText={areCredentialsInvalid && 'Please enter an email address'}
+        helperText={isInvalid && <Typography
+            className={props.classHelper}>
+          {props.errorMessage}
+        </Typography>}
     />
     </div>
   )
@@ -44,9 +47,10 @@ function EmailAddress(props: EmailProps) {
 
 type EmailProps = {
   class?: string,
+  classHelper?: string,
   isInvalid: boolean,
   onChange: (event: any) => void,
-  areCredentialsInvalid:boolean,
+  errorMessage: string
 };
 
 export default EmailAddress;
