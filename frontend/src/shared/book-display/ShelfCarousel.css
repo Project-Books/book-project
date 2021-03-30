@@ -1,3 +1,10 @@
+* {
+    --book-width: 110px;
+    --book-height: 160px;
+    --book-margin: 25px;
+    --book-icon: 50px;
+}
+
 /* Styles for carousel */
 
 .container {
@@ -48,10 +55,10 @@
 
 .book {
     float: left;
-    width: 110px;
-    height: 160px;
+    width: var(--book-width);
+    height: var(--book-height);
+    margin: 0px var(--book-margin);
     background-color: white;
-    margin: 0px 25px;
     border-radius: 1px;
     filter: drop-shadow(0px 40px 40px rgba(0, 0, 0, .4));
     display: flex;
@@ -87,6 +94,6 @@
 }
 
 .icon {
-    font-size: 50px !important;
+    font-size: var(--book-icon) !important;
     font-weight: bold;
 }
