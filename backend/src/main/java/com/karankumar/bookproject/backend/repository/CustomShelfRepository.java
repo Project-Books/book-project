@@ -23,9 +23,10 @@ import com.karankumar.bookproject.backend.model.account.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomShelfRepository extends JpaRepository<CustomShelf, Long> {
     List<CustomShelf> findAllByUser(User user);
-    CustomShelf findByShelfNameAndUser(String shelfName, User user);
+    Optional<CustomShelf> findByShelfNameAndUser(String shelfName, User user);
     List<CustomShelf> findByShelfName(String shelfName);
 }

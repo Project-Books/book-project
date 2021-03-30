@@ -13,8 +13,8 @@
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
 	
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-lvr8oi47-8BjZzov0QDsx4RvjkNjOcA">
-    <img src="https://img.shields.io/badge/chat%20on-slack-%233f0e40" alt="Slack" />
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-nf4awxuo-sj9Aa37CgLcbrUr8z4P8Ag">
+    <img src="https://img.shields.io/badge/slack-teambookproject-4A154B?logo=slack" alt="Slack" />
   </a>
 	
   <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
@@ -24,43 +24,9 @@
 
 Book tracker web app made in Spring Boot. We are currently migrating from Vaadin 14 to React (with Typescript).
 
-See a [live demo](http://bookprojectv010-env.eba-22zuiphf.eu-west-2.elasticbeanstalk.com/login). Instead of creating an
-account, you can use the test credentials shown in the [Access site](https://github.com/Project-Books/book-project#access-site) section.
-This is only for demonstration purposes, so please do not rely on any saved data persisting.
+![image](https://user-images.githubusercontent.com/11173328/112493885-739b0d80-8d7a-11eb-85a1-b4c500dc61ab.png)
 
-**The images, feature list and demo are v0.1.0. v0.2.0 will look different.**
-
-*Features:*
-- Add books that you have read to a 'to read', 'currently reading', 'read' or 'did not finish' shelf (or a custom shelf)
-- A rating scale from 0-10 that that goes up in steps of 0.5
-- Track your progress towards a reading goal: the number of books or pages you hope to read by the end of the year
-- Statistics about your reading habits
-- Export your saved data to JSON
-- User registration and accounts
-- Import books from Goodreads
-- And much more!
-
-*Coming soon:*
-- Import books from LibraryThing
-- Search from a catalogue of books
-- 2-factor authentication
-- Magic links
-- And much more!
-
-<p align="center">
-    <img src="/media/docs/readme/book_form.png" alt="New book form"/>
-</p>
-
-![Books in shelf](/media/docs/readme/books_in_shelf.png)
-        
-![Reading goal](/media/docs/readme/reading_goal.png)
-
-<p align="center">
-    <img src="/media/docs/readme/statistics.png" alt="Reading statistics"/>
-</p>
-
-
-*The images above may look slightly different to the app. If major changes are made, we will upload new images.*
+*The image above is from our mockup designs, so this may look slightly different to the app. If major changes are made, we will upload a new image.*
 
 ## Setup
 
@@ -127,7 +93,7 @@ If you wish to contribute (thanks!), please first see the [contributing document
 
 ### Help
 
-If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a) or on Slack.
+If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a).
 
 ## Further information
 

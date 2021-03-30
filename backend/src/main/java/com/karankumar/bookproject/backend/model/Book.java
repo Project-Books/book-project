@@ -31,6 +31,9 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -73,7 +76,13 @@ public class Book {
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
 
-    private BookGenre bookGenre;
+    @ElementCollection(targetClass = BookGenre.class)
+    @CollectionTable(
+            name = "book_genre",
+            joinColumns = @JoinColumn(name = "book_id")
+    )
+    @Column(name = "genre")
+    private Set<BookGenre> bookGenre;
     private BookFormat bookFormat;
     private Integer seriesPosition;
     private String edition;
