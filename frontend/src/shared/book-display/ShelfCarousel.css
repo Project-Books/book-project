@@ -97,3 +97,22 @@
     font-size: var(--book-icon) !important;
     font-weight: bold;
 }
+
+/* styling for tablet screens */
+@media screen and (max-width: 800px) {
+
+    /* resize books to be 0.6x original size */
+    .book {
+        width: calc(var(--book-width) * 0.6);
+        height: calc(var(--book-height) * 0.6);
+        margin: 0px 15px;
+    }
+
+    .book-title {
+        font-size: 10px;
+    }
+
+    .icon {
+        font-size: calc(var(--book-icon) * 0.6) !important;
+    }
+}
