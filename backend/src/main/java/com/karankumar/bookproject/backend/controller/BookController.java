@@ -131,7 +131,9 @@ public class BookController {
         //updatedBookDto.setId(id);
         //Book updatedBook = convertToBook(updatedBookDto);
         //modelMapper.map(updatedBookDto, bookToUpdate);
-        
+
+        //map persistant data to REST BookDto
+        //BookDto bookDtoToUpdate = convertToDto(bookToUpdate.get());
 
         //apply the changes to the REST BookDto
         // changes.forEach(
@@ -193,9 +195,10 @@ public class BookController {
         return bookService.save(updatedBook);
         //return bookService.save(bookToUpdate.get());
     }
-    
+
     private BookDto convertToDto(Book book) {
-        return modelMapper.map(book, BookDto.class);
+        BookDto bookDto = modelMapper.map(book, BookDto.class);
+        return bookDto;
     }
     
     private Book convertToBook(BookDto bookDto) { //throws ParseException {
