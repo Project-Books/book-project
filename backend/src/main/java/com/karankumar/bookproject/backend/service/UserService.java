@@ -36,6 +36,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.List;
 import java.util.Set;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -91,6 +92,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User findUser(long id){
+        return userRepository.findById(id).orElseThrow();
+    }
+
     private void authenticateUser(User user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
@@ -110,7 +115,7 @@ public class UserService {
         return !emailIsInUse(email);
     }
 
-    public void deleteUser(Long id){
-        userRepository.deleteById(id);
+    public void deleteUser(@NonNull User user){
+        userRepository.delete(user);
     }
 }

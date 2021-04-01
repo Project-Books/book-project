@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -44,6 +45,11 @@ public class UserController {
         return userService.findAll();
     }
 
+    @GetMapping("/user/{id}")
+    public User getUser(@PathVariable Long id){
+        return userService.findUser(id);
+    }
+
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody User user) {
@@ -52,6 +58,6 @@ public class UserController {
 
     @DeleteMapping("/delete/{id}")
     public void deleteUserById(@PathVariable Long id){
-        userService.deleteUser(id);
+        userService.deleteUser(userService.findUser(id));
     }
 }
