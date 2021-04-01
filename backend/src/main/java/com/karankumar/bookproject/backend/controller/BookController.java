@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Optional;
 import java.util.List;
 //import java.text.ParseException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/my-books")
@@ -113,24 +114,50 @@ public class BookController {
         return bookService.save(bookToAdd);
     }
     
-    @PutMapping("/update-book/{id}")
+    @PatchMapping("/update-book/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Book> update(@PathVariable Long id, @RequestBody BookDto updatedBookDto) {
-    	Optional<Book> bookToUpdate = bookService.findById(id);
-    	
+    public Optional<Book> update(@PathVariable Long id, @RequestBody Map<String, Object> changes) { //@RequestBody BookDto updatedBookDto) {
+    	//fetch existing Book entity and ensure it exists
+        Optional<Book> bookToUpdate = bookService.findById(id);
     	if (!bookToUpdate.isPresent()) {
     		throw new BookNotFoundException(id);
     	}
-    	
-    	updatedBookDto.setId(id);
-    	Book updatedBook = convertToBook(updatedBookDto);
-    	return bookService.save(updatedBook);
+
+        //map persistant data to REST BookDto
+        //BookDto bookDtoToUpdate = convertToDto(bookToUpdate.get());
+
+        //apply the changes to the REST BookDto
+        // changes.forEach(
+        //     (change, value) -> {
+        //         switch (change){
+        //             case "title": bookDtoToUpdate.setTitle((String) value); break;
+        //             case "numberOfPages": bookDtoToUpdate.setNumberOfPages((Integer) value); break;
+        //             case "pagesRead": bookDtoToUpdate.setPagesRead((Integer) value); break;
+        //         }
+        //     }
+        // );
+        changes.forEach(
+            (change, value) -> {
+                switch (change){
+                    case "title": bookToUpdate.get().setTitle((String) value); break;
+                    case "numberOfPages": bookToUpdate.get().setNumberOfPages((Integer) value); break;
+                    case "pagesRead": bookToUpdate.get().setPagesRead((Integer) value); break;
+                }
+            }
+        );
+
+        //modelMapper.map(changes, bookDtoToUpdate);
+    	//Book updatedBook = convertToBook(bookDtoToUpdate);
+
+    	//updatedBookDto.setId(id);
+    	//Book updatedBook = convertToBook(updatedBookDto);
+    	return bookService.save(bookToUpdate.get());
     }
     
-//    private BookDto convertToDto(Book book) {
-//    	BookDto bookDto = modelMapper.map(book, BookDto.class);
-//    	return bookDto;
-//    }
+    private BookDto convertToDto(Book book) {
+        BookDto bookDto = modelMapper.map(book, BookDto.class);
+        return bookDto;
+    }
     
     private Book convertToBook(BookDto bookDto) { //throws ParseException {
     	Book book = modelMapper.map(bookDto, Book.class);
