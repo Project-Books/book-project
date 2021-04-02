@@ -19,6 +19,7 @@ import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import com.karankumar.bookproject.backend.dto.BookDto;
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
@@ -145,6 +146,7 @@ public class BookController {
         //         }
         //     }
         // );
+
         // changes.forEach(
         //     (change, value) -> {
         //         switch (change) {
@@ -186,7 +188,6 @@ public class BookController {
         //         }
         //     }
         // );
-
         modelMapper.map(changes, bookDtoToUpdate);
         Book updatedBook = convertToBook(bookDtoToUpdate);
 
