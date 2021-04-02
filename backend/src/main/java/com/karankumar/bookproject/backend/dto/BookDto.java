@@ -54,17 +54,17 @@ public class BookDto {
     //@Max(value = MAX_PAGES)
     private Integer pagesRead;
 
-    // @JsonProperty("bookGenre")
-    // private String bookGenre;	//currently need to use the constant names in request body (use "HORROR" vs "Horror")
+    @JsonProperty("bookGenre")
+    private String bookGenre;	//currently need to use the constant names in request body (use "HORROR" vs "Horror")
     
-    // @JsonProperty("bookFormat")
-    // private String bookFormat;	//currently need to use the constant names in request body (use "EBOOK" vs "eBook")
+    @JsonProperty("bookFormat")
+    private String bookFormat;	//currently need to use the constant names in request body (use "EBOOK" vs "eBook")
     
     @JsonProperty("seriesPosition")
     private Integer seriesPosition;
     
     @JsonProperty("edition")
-    private String edition;
+    private Integer edition;
     
     @JsonProperty("bookRecommendedBy")
     private String bookRecommendedBy;

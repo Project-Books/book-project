@@ -20,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import com.karankumar.bookproject.backend.dto.BookDto;
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
@@ -95,15 +96,6 @@ public class BookController {
     	return bookService.findByTitleOrAuthor(title, author /*authorsName*/);
 //    		.orElseThrow(() -> new BookNotFoundException(id));
     }
-
-//    @PostMapping()
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Optional<Book> addBook(@RequestBody BookDto bookDto) {
-//        PredefinedShelf predefinedShelf = predefinedShelfService
-//        		.getPredefinedShelfByNameAsString(bookDto.getShelfName());
-//        Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), predefinedShelf);
-//        return bookService.save(book);
-//    }
     
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -140,8 +132,21 @@ public class BookController {
             (change, value) -> {
                 switch (change){
                     case "title": bookToUpdate.get().setTitle((String) value); break;
+                    case "author": bookToUpdate.get().setAuthor(
+                        (Author) modelMapper.map(value, Author.class)); break;
+                    case "predefinedShelfString": bookToUpdate.get().setPredefinedShelf(
+                        (PredefinedShelf) modelMapper.map(value, PredefinedShelf.class)); break;
                     case "numberOfPages": bookToUpdate.get().setNumberOfPages((Integer) value); break;
                     case "pagesRead": bookToUpdate.get().setPagesRead((Integer) value); break;
+                    case "bookGenre": bookToUpdate.get().setBookGenre(
+                        (BookGenre) modelMapper.map(value, BookGenre.class)); break;
+                    case "bookFormat": bookToUpdate.get().setBookFormat(
+                        (BookFormat) modelMapper.map(value, BookFormat.class)); break;  
+                    case "seriesPosition": bookToUpdate.get().setSeriesPosition((Integer) value); break;
+                    case "edition": bookToUpdate.get().setEdition((Integer) value); break;
+                    case "bookRecommendedBy": bookToUpdate.get().setBookRecommendedBy((String) value); break;
+                    case "isbn": bookToUpdate.get().setIsbn((String) value);
+                    case "yearofPublication": bookToUpdate.get().setPublicationYear((Integer) value); break;
                 }
             }
         );
