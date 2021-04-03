@@ -26,7 +26,7 @@ import Endpoints from '../shared/api/endpoints';
 import Verb from '../shared/http/verb';
 import {RouteComponentProps} from 'react-router-dom';
 import {MY_BOOKS, SIGN_UP} from "../shared/routes";
-import Modal from '../shared/components/Modal';
+import ForgotPasswordModal from '../shared/components/ForgotPasswordModal';
 
 interface IState {
     email: string,
@@ -201,12 +201,7 @@ class Login extends Component<LoginProps, IState> {
 
                     </div>
                 </div>
-                <Modal open={this.state.showForgotPasswordModal}>
-                  <div className="modal-content">
-                    <div>Forgot Your Password</div>
-                    <div>We&apos;ll email you a link to reset your Password</div>
-                 </div>
-                </Modal>
+                <ForgotPasswordModal open={this.state.showForgotPasswordModal} />
             </div>
         )
     }
