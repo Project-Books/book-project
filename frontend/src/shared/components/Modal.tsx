@@ -46,33 +46,27 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function SimpleModal(){
+export interface ISimpleModalProps{
+  open: boolean,
+  onClose?:() => void,
+  children: JSX.Element
+}
+
+export default function SimpleModal(props: ISimpleModalProps): JSX.Element{
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+  
   return (
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
+    <Modal
+        open={props.open}
+        onClose={props.onClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div className="modal-content">
-          <div>Forgot Your Password</div>
-          <div>We&apos;ll email you a link to reset your Password</div>
+        <div style={modalStyle} className={classes.paper}>
+          {props.children}
         </div>
       </Modal>
-    </div>
   );
 }
 

@@ -26,6 +26,7 @@ import Endpoints from '../shared/api/endpoints';
 import Verb from '../shared/http/verb';
 import {RouteComponentProps} from 'react-router-dom';
 import {MY_BOOKS, SIGN_UP} from "../shared/routes";
+import Modal from '../shared/components/Modal';
 
 interface IState {
     email: string,
@@ -34,7 +35,8 @@ interface IState {
     isPasswordDirty: boolean,
     isEmailInvalid: boolean,
     isPasswordInvalid: boolean,
-    loginFailed: boolean
+    loginFailed: boolean,
+    showForgotPasswordModal: boolean
 }
 
 type LoginProps = Record<string, unknown> & RouteComponentProps
@@ -50,10 +52,12 @@ class Login extends Component<LoginProps, IState> {
             isPasswordDirty: false,
             isEmailInvalid: false,
             isPasswordInvalid: false,
-            loginFailed: false
+            loginFailed: false,
+            showForgotPasswordModal: false
         }
 
         this.onPasswordChanged = this.onPasswordChanged.bind(this)
+        this.onForgotPassword = this.onForgotPassword.bind(this)
         this.onEmailChanged = this.onEmailChanged.bind(this)
         this.onClickLogin = this.onClickLogin.bind(this)
         this.sendLoginRequest = this.sendLoginRequest.bind(this)
@@ -83,6 +87,12 @@ class Login extends Component<LoginProps, IState> {
             isPasswordDirty: true,
             isPasswordInvalid: password === ''
         })
+    }
+    
+    onForgotPassword(): void{
+      this.setState({
+          showForgotPasswordModal: true
+      })
     }
 
     isEmailInvalid(): boolean {
@@ -183,11 +193,20 @@ class Login extends Component<LoginProps, IState> {
                             to={SIGN_UP}>
                             Create account
                         </Button>
+                        <Button className="center login" onClick={this.onForgotPassword}>
+                            Forgot Password
+                        </Button>
 
                         {this.state.loginFailed && this.renderLoginError()}
 
                     </div>
                 </div>
+                <Modal open={this.state.showForgotPasswordModal}>
+                  <div className="modal-content">
+                    <div>Forgot Your Password</div>
+                    <div>We&apos;ll email you a link to reset your Password</div>
+                 </div>
+                </Modal>
             </div>
         )
     }
