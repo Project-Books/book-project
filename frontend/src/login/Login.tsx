@@ -58,6 +58,7 @@ class Login extends Component<LoginProps, IState> {
 
         this.onPasswordChanged = this.onPasswordChanged.bind(this)
         this.onForgotPassword = this.onForgotPassword.bind(this)
+        this.onForgotPasswordModalClose = this.onForgotPasswordModalClose.bind(this)
         this.onEmailChanged = this.onEmailChanged.bind(this)
         this.onClickLogin = this.onClickLogin.bind(this)
         this.sendLoginRequest = this.sendLoginRequest.bind(this)
@@ -94,7 +95,12 @@ class Login extends Component<LoginProps, IState> {
           showForgotPasswordModal: true
       })
     }
-
+    
+    onForgotPasswordModalClose() {
+        this.setState({
+            showForgotPasswordModal: false
+        })
+    }
     isEmailInvalid(): boolean {
         const isEmailDirtyAndBlank = this.state.email === '' && this.state.isEmailDirty
         return isEmailDirtyAndBlank || this.state.isEmailInvalid
@@ -201,7 +207,10 @@ class Login extends Component<LoginProps, IState> {
 
                     </div>
                 </div>
-                <ForgotPasswordModal open={this.state.showForgotPasswordModal} />
+                <ForgotPasswordModal 
+                  open={this.state.showForgotPasswordModal} 
+                  onClose={this.onForgotPasswordModalClose}
+                />
             </div>
         )
     }

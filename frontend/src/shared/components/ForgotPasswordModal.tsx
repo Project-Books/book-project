@@ -43,7 +43,7 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
   render(): JSX.Element {
     return (
       <div>
-        <Modal open={this.props.open}>
+        <Modal open={this.props.open} onClose={this.props.onClose}>
           <div className="modal-container">
             <div className="modal-content">
               <div className="modal-title">
