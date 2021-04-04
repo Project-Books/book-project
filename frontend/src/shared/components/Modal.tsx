@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import MaterialModal from '@material-ui/core/Modal';
 
 function getModalStyle() {
   const top = 50;
@@ -43,18 +43,18 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export interface ISimpleModalProps{
+export interface IModalProps{
   open: boolean,
   onClose?:() => void,
   children?: JSX.Element
 }
 
-export default function SimpleModal(props: ISimpleModalProps): JSX.Element{
+export default function Modal(props: IModalProps): JSX.Element{
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   
   return (
-    <Modal
+    <MaterialModal
         open={props.open}
         onClose={props.onClose}
         aria-labelledby="simple-modal-title"
@@ -63,7 +63,7 @@ export default function SimpleModal(props: ISimpleModalProps): JSX.Element{
         <div style={modalStyle} className={classes.paper}>
           {props.children}
         </div>
-      </Modal>
+      </MaterialModal>
   );
 }
 

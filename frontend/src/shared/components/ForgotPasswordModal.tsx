@@ -16,12 +16,13 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, { Component } from 'react'
-import Modal, {ISimpleModalProps} from './Modal'
+import Modal, {IModalProps} from './Modal'
 import Email from '../form/EmailAddress';
+import Button from '@material-ui/core/Button';
 import './ForgotPasswordModal.css';
 
-export default class ForgotPasswordModal extends Component<ISimpleModalProps> {
-  constructor(props: ISimpleModalProps) {
+export default class ForgotPasswordModal extends Component<IModalProps> {
+  constructor(props: IModalProps) {
     super(props)
     this.onEmailChanged = this.onEmailChanged.bind(this);
   }
@@ -53,14 +54,27 @@ export default class ForgotPasswordModal extends Component<ISimpleModalProps> {
               </div>
             </div>
             <div className="form-container">
-              <div className="email-form">
-                <Email 
-                  onChange={this.onEmailChanged} 
-                  isInvalid={this.state.isInvalid} 
-                  errorMessage={this.state.errorMessage} 
-                />
+              <Email 
+                onChange={this.onEmailChanged} 
+                isInvalid={this.state.isInvalid} 
+                errorMessage={this.state.errorMessage} 
+                class='forgotPasswordInput'
+              />
+              <div className="password-form-spacer" />
+              <div className="password-form-spacer" />
+              <Button
+                className="reset-password-button"
+                variant="contained"
+                color="primary">
+                  Send me a password reset link
+              </Button>
+              <div className="password-form-spacer" />
+              <Button
+                className="cancel-button"
+                variant="contained">
+                  Cancel
+              </Button>
             </div>
-          </div>
           </div>
         </Modal>
       </div>
