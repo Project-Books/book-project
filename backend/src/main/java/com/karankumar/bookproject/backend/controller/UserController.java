@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -33,10 +34,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/users")
@@ -56,7 +59,18 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUserById(@PathVariable Long id){
-        userService.deleteUser(userService.findUser(id));
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUserById(@RequestBody String password, @PathVariable Long id){
+        if(userService.findUser(id).getPassword().equals(passwordEncoder.encode(password))){
+            userService.deleteUser(userService.findUser(id));
+        }
+    }
+
+    @DeleteMapping("/delete_current")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUserById(@RequestBody String password){
+        if(userService.getCurrentUser().getPassword().equals(passwordEncoder.encode(password))){
+            userService.deleteUser(userService.getCurrentUser());
+        }
     }
 }
