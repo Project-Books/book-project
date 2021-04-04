@@ -30,6 +30,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedAttributeNode;
 import java.util.Set;
 
 /**
@@ -41,6 +43,9 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NamedEntityGraph(name = "PredefinedShelf.books",
+        attributeNodes = @NamedAttributeNode("books")
+)
 public class PredefinedShelf extends Shelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

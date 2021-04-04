@@ -34,6 +34,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedAttributeNode;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
@@ -49,6 +51,9 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "books")
+@NamedEntityGraph(name = "Publisher.books",
+        attributeNodes = @NamedAttributeNode("books")
+)
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
