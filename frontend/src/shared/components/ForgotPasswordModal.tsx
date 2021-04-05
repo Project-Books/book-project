@@ -71,6 +71,7 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
               <div className="password-form-spacer" />
               <Button
                 className="cancel-button"
+                onClick={this.props.onClose}
                 variant="contained">
                   Cancel
               </Button>

@@ -90,13 +90,13 @@ class Login extends Component<LoginProps, IState> {
         })
     }
     
-    onForgotPassword(): void{
-      this.setState({
-          showForgotPasswordModal: true
-      })
+    onForgotPassword(): void {
+        this.setState({
+           showForgotPasswordModal: true
+        })
     }
     
-    onForgotPasswordModalClose() {
+    onForgotPasswordModalClose(): void {
         this.setState({
             showForgotPasswordModal: false
         })
@@ -208,8 +208,8 @@ class Login extends Component<LoginProps, IState> {
                     </div>
                 </div>
                 <ForgotPasswordModal 
-                  open={this.state.showForgotPasswordModal} 
-                  onClose={this.onForgotPasswordModalClose}
+                    open={this.state.showForgotPasswordModal} 
+                    onClose={this.onForgotPasswordModalClose}
                 />
             </div>
         )
