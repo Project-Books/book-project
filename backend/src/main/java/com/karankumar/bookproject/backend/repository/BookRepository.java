@@ -33,8 +33,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "LEFT JOIN b.author a " +
             "WHERE (b.predefinedShelf = :shelf OR b.customShelf = :shelf) AND " +
             "LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
-            "(LOWER(a.firstName) LIKE LOWER(CONCAT('%', :authorsName, '%')) OR " +
-            "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :authorsName, '%')))")
+            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :authorsName, '%'))")
     List<Book> findByShelfAndTitleOrAuthor(@Param("shelf") Shelf shelf,
                                            @Param("title") String title,
                                            @Param("authorsName") String authorsName);
@@ -43,8 +42,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "FROM Book b " +
             "LEFT JOIN b.author AS a " +
             "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
-            "(LOWER(a.firstName) LIKE LOWER(CONCAT('%', :authorsName, '%')) OR " +
-            "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :authorsName, '%')))")
+            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :authorsName, '%'))")
     List<Book> findByTitleOrAuthor(@Param("title") String title,
                                    @Param("authorsName") String authorsName);
 

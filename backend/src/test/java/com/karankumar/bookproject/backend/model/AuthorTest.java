@@ -67,7 +67,7 @@ class AuthorTest {
     }
 
     private static Book createBook(String title, PredefinedShelf shelf) {
-        Author author = new Author("Steven", "Pinker");
+        Author author = new Author("Steven Pinker");
         return new Book(title, author, shelf);
     }
 
@@ -84,7 +84,7 @@ class AuthorTest {
         bookService.save(testBook2);
 
         // when
-        Author newAuthor = new Author("Matthew", "Walker");
+        Author newAuthor = new Author("Matthew Walker");
         testBook1.setAuthor(newAuthor);
         bookService.save(testBook1);
 
@@ -97,7 +97,7 @@ class AuthorTest {
         assumeThat(authorService.findAll()).isEmpty();
 
         // given
-        Author orphan = new Author("Jostein", "Gaarder");
+        Author orphan = new Author("Jostein Gaarder");
         Book book = new Book("Sophie's World", orphan, toRead);
         bookService.save(book);
 
@@ -112,7 +112,7 @@ class AuthorTest {
     @DisplayName("Non-orphan authors shouldn't be removed when one of their books is deleted")
     void notRemoveNonOrphans() {
         // given
-        Author nonOrphan = new Author("Jostein", "Gaarder");
+        Author nonOrphan = new Author("Jostein Gaarder");
 
         Book book = new Book("Sophie's World", nonOrphan, toRead);
         bookService.save(book);
@@ -127,32 +127,16 @@ class AuthorTest {
     }
     
     @Test
-    void notAcceptNullFirstName() {
-    	Author authorWithNullFirstName = new Author(null, "Gaarder");
-        violations = validator.validateProperty(authorWithNullFirstName, "firstName");
+    void notAcceptNullFullName() {
+    	Author authorWithNullFullName = new Author(null);
+        violations = validator.validateProperty(authorWithNullFullName, "fullName");
     	assertThat(violations.size()).isOne();
     }
     
     @Test
-    void notAcceptNullLastName() {
-    	Author authorWithNullLastName = new Author("Jostein", null);
-        violations = validator.validateProperty(authorWithNullLastName, "lastName");
-    	assertThat(violations.size()).isOne();
-    }
-    
-    @Test
-    void notAcceptBlankFirstName() {
-    	Author authorWithBlankFirstName = new Author(" ", "Gaarder");
-        violations = validator.validateProperty(authorWithBlankFirstName, "firstName");
-    	assertThat(violations.size()).isOne();
-    }
-    
-    @Test
-    void notAcceptBlankLastName() {
-    	Author authorWithBlankLastName = new Author("Jostein", " ");
-    	violations = validator.validateProperty(authorWithBlankLastName, "lastName");
+    void notAcceptBlankFullName() {
+    	Author authorWithBlankFullName = new Author(" ");
+        violations = validator.validateProperty(authorWithBlankFullName, "fullName");
     	assertThat(violations.size()).isOne();
     }
 }
-
-

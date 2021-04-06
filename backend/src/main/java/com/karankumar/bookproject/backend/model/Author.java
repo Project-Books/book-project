@@ -47,23 +47,19 @@ public class Author {
     private Long id;
 
     @NotBlank
-    private String firstName;
-
-    @NotBlank
-    private String lastName;
+    private String fullName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
     @Setter
     private Set<Book> books = new HashSet<>();
 
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Author(String fullName) {
+        this.fullName = fullName;
     }
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return fullName;
     }
 
     public void removeBook(Book book) {

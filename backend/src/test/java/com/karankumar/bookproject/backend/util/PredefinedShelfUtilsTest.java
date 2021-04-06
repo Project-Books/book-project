@@ -78,7 +78,7 @@ class PredefinedShelfUtilsTest {
         this.bookRepository = bookRepository;
         this.predefinedShelfService = predefinedShelfService;
 
-        this.author = new Author("first", "last");
+        this.author = new Author("first last");
         authorService.save(author);
     }
 
