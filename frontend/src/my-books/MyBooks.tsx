@@ -31,6 +31,8 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                 <div>
                     <ShelfCarousel title="Reading" />
                     <ShelfCarousel title="To Read" />
+                    <ShelfCarousel title="Read" />
+                    <ShelfCarousel title="Did not finish" />
                 </div>
             </div>
         )
