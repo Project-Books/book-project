@@ -7,7 +7,7 @@
     color:black;
    }
 
-.container {
+.current-goal-container {
     /* nav bar is 180px, so set left margin to 180+80 */
     margin-left: 260px;
     margin-right: 80px;
@@ -16,5 +16,4 @@
     border-radius: 8px;
     padding: 25px 0;
     box-shadow: 0px 14px 46px rgba(128, 128, 128, 0.25);
-
 }

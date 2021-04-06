@@ -26,7 +26,7 @@ function Goal() {
             <div className="goal-header">
                 Reading goal
             </div>
-            <div className="container">
+            <div className="current-goal-container">
                 <h3>No goal set</h3>
                 <p>Click here to add a new goal</p>
             </div>
