@@ -41,7 +41,7 @@ function AddBook() {
     return (
         <div className="book add-new">
             <Icon className="icon">add</Icon>
-            <p className="book-title add-new">Add new book</p>
+            <p className="book-title add-new">Add book</p>
         </div>
     )
 }
@@ -59,7 +59,7 @@ export function ShelfCarousel(props: ShelfCarouselProps) {
                         <ShelfBook 
                             title="Harry Potter"
                             img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />
-                        <ShelfBook title="Harry Potter" img="" />
+                        <ShelfBook title="Harry Potter and the Chamber of Secrets" img="" />
                         <ShelfBook title="How Not to Die" img="" />
                         <ShelfBook 
                             title="Little Fires Everywhere" 
