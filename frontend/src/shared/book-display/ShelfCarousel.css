@@ -74,8 +74,8 @@
 }
 
 .book.add-new {
-    background-color: lightgray;
-    color: dimgray;
+    background-color: white;
+    color: var(--primary-color);
 }
 
 .book-title {
