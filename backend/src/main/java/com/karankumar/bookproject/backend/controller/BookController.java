@@ -198,8 +198,7 @@ public class BookController {
     }
 
     private BookDto convertToDto(Book book) {
-        BookDto bookDto = modelMapper.map(book, BookDto.class);
-        return bookDto;
+        return modelMapper.map(book, BookDto.class);
     }
     
     private Book convertToBook(BookDto bookDto) { //throws ParseException {
@@ -221,6 +220,7 @@ public class BookController {
             PredefinedShelf predefinedShelf = null;
             predefinedShelf =
                     predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString).get();
+
             return predefinedShelf;
         }
     };
