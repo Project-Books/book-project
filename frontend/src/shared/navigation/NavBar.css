@@ -27,6 +27,8 @@ If not, see <https://www.gnu.org/licenses/>.
 .nav-bar {
     height: 100vh;
     width: 180px;
+    top: 0;
+    left: 0;
     position: fixed;
     display: flex;
     flex-direction: column;
