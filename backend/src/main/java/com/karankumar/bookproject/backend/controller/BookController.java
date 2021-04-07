@@ -130,23 +130,42 @@ public class BookController {
         // );
         changes.forEach(
             (change, value) -> {
-                switch (change){
-                    case "title": bookToUpdate.get().setTitle((String) value); break;
-                    case "author": bookToUpdate.get().setAuthor(
-                        (Author) modelMapper.map(value, Author.class)); break;
-                    case "predefinedShelfString": bookToUpdate.get().setPredefinedShelf(
-                        (PredefinedShelf) modelMapper.map(value, PredefinedShelf.class)); break;
-                    case "numberOfPages": bookToUpdate.get().setNumberOfPages((Integer) value); break;
-                    case "pagesRead": bookToUpdate.get().setPagesRead((Integer) value); break;
-                    case "bookGenre": bookToUpdate.get().setBookGenre(
-                        (BookGenre) modelMapper.map(value, BookGenre.class)); break;
-                    case "bookFormat": bookToUpdate.get().setBookFormat(
-                        (BookFormat) modelMapper.map(value, BookFormat.class)); break;  
-                    case "seriesPosition": bookToUpdate.get().setSeriesPosition((Integer) value); break;
-                    case "edition": bookToUpdate.get().setEdition((Integer) value); break;
-                    case "bookRecommendedBy": bookToUpdate.get().setBookRecommendedBy((String) value); break;
-                    case "isbn": bookToUpdate.get().setIsbn((String) value);
-                    case "yearofPublication": bookToUpdate.get().setPublicationYear((Integer) value); break;
+                switch (change) {
+                    case "title":
+                        bookToUpdate.get().setTitle((String) value);
+                        break;
+                    case "author":
+                        bookToUpdate.get().setAuthor((Author) modelMapper.map(value, Author.class));
+                        break;
+                    case "predefinedShelfString":
+                        bookToUpdate.get().setPredefinedShelf((PredefinedShelf) modelMapper.map(value, PredefinedShelf.class));
+                        break;
+                    case "numberOfPages":
+                        bookToUpdate.get().setNumberOfPages((Integer) value);
+                        break;
+                    case "pagesRead":
+                        bookToUpdate.get().setPagesRead((Integer) value);
+                        break;
+                    case "bookGenre":
+                        bookToUpdate.get().setBookGenre((BookGenre) modelMapper.map(value, BookGenre.class));
+                        break;
+                    case "bookFormat":
+                        bookToUpdate.get().setBookFormat((BookFormat) modelMapper.map(value, BookFormat.class));
+                        break;
+                    case "seriesPosition":
+                        bookToUpdate.get().setSeriesPosition((Integer) value);
+                        break;
+                    case "edition":
+                        bookToUpdate.get().setEdition((Integer) value);
+                        break;
+                    case "bookRecommendedBy":
+                        bookToUpdate.get().setBookRecommendedBy((String) value);
+                        break;
+                    case "isbn":
+                        bookToUpdate.get().setIsbn((String) value);
+                    case "yearofPublication":
+                        bookToUpdate.get().setPublicationYear((Integer) value);
+                        break;
                 }
             }
         );
@@ -160,13 +179,11 @@ public class BookController {
     }
     
     private BookDto convertToDto(Book book) {
-        BookDto bookDto = modelMapper.map(book, BookDto.class);
-        return bookDto;
+        return modelMapper.map(book, BookDto.class);
     }
     
     private Book convertToBook(BookDto bookDto) { //throws ParseException {
-    	Book book = modelMapper.map(bookDto, Book.class);
-    	return book;
+        return modelMapper.map(bookDto, Book.class);
     }
     
     @DeleteMapping("/delete-book/{id}")
@@ -176,27 +193,26 @@ public class BookController {
     	bookService.delete(bookToDelete);
     }
     
-    Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<String, PredefinedShelf>() {
-    	//public PredefinedShelf convert(MappingContext<String, PredefinedShelf> context) {
-    	public PredefinedShelf convert(String predefinedShelfString) {
-    		PredefinedShelf predefinedShelf = null;
-    		predefinedShelf = predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString);
-    		return predefinedShelf;
-    	}
+    Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {
+        //public PredefinedShelf convert(MappingContext<String, PredefinedShelf> context) {
+        public PredefinedShelf convert(String predefinedShelfString) {
+            PredefinedShelf predefinedShelf = null;
+            predefinedShelf =
+                    predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString);
+            return predefinedShelf;
+        }
     };
     
-    Converter<String, BookGenre> bookGenreConverter = new AbstractConverter<String, BookGenre>() {
-    	public BookGenre convert(String bookGenreString) {
-    		BookGenre bookGenre = BookGenre.valueOf(bookGenreString);
-    		return bookGenre;
-    	}
+    Converter<String, BookGenre> bookGenreConverter = new AbstractConverter<>() {
+        public BookGenre convert(String bookGenreString) {
+            return BookGenre.valueOf(bookGenreString);
+        }
     };
     
-    Converter<String, BookFormat> bookFormatConverter = new AbstractConverter<String, BookFormat>() {
-    	public BookFormat convert(String bookFormatString) {
-    		BookFormat bookFormat = BookFormat.valueOf(bookFormatString);
-    		return bookFormat;
-    	}
+    Converter<String, BookFormat> bookFormatConverter = new AbstractConverter<>() {
+        public BookFormat convert(String bookFormatString) {
+            return BookFormat.valueOf(bookFormatString);
+        }
     };
 
 }
