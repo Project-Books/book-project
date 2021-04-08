@@ -25,11 +25,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedAttributeNode;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.GenerationType;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,6 +42,9 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(exclude= "books")
+@NamedEntityGraph(name = "Author.books",
+        attributeNodes = @NamedAttributeNode("books")
+)
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +57,7 @@ public class Author {
     @NotBlank
     private String lastName;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     @Setter
     private Set<Book> books = new HashSet<>();
 

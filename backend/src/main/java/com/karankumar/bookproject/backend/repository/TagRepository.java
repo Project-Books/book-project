@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Repository;
 import com.karankumar.bookproject.backend.model.Tag;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
@@ -32,4 +34,10 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
             "FROM Tag t " +
             "WHERE LOWER(t.name) LIKE LOWER(:name)")
     List<Tag> findByName(@Param("name") String name);
+
+    @EntityGraph(value = "Tag.books")
+    Optional<Tag> findById(Long id);
+
+    @EntityGraph(value = "Tag.books")
+    List<Tag> findAll();
 }
