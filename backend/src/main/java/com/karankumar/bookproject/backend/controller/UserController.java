@@ -31,7 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -43,13 +43,14 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> AllUsers(){
+    public List<User> getAllUsers() {
         return userService.findAll();
     }
 
     @GetMapping("/user/{id}")
-    public User getUser(@PathVariable Long id){
-        return userService.findUser(id);
+    public User getUser(@PathVariable Long id) {
+        // TODO: throw not found
+        return userService.findUserById(id).orElseThrow();
     }
 
     @PostMapping("/register")
@@ -60,17 +61,24 @@ public class UserController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUserById(@RequestBody String password, @PathVariable Long id){
-        if(userService.findUser(id).getPassword().equals(passwordEncoder.encode(password))){
-            userService.deleteUser(userService.findUser(id));
-        }
+    public void deleteUserById(/*@RequestBody String password,*/ @PathVariable Long id) {
+        userService.findUserById(id).ifPresent(user -> userService.deleteUserById(user.getId()));
+
+//        if (userService.findUserById(id).getPassword().equals(passwordEncoder.encode(password))) {
+//            userService.deleteUser(userService.findUserById(id));
+//        }
     }
 
-    @DeleteMapping("/delete_current")
+    @DeleteMapping("/delete-current")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUserById(@RequestBody String password){
-        if(userService.getCurrentUser().getPassword().equals(passwordEncoder.encode(password))){
-            userService.deleteUser(userService.getCurrentUser());
+    public void deleteCurrentUser(@RequestBody String password) {
+        if (userService.getCurrentUser().getPassword().equals(passwordEncoder.encode(password))) {
+            Long userId = userService.getCurrentUser().getId();
+            if (userId != null) {
+                userService.deleteUserById(userId);
+            }
+            // TODO: else throw exception
         }
+        // TODO: else throw an incorrect password exception
     }
 }

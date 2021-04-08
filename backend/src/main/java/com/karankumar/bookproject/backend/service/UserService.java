@@ -17,16 +17,16 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.account.Role;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
-import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
 import lombok.NonNull;
 
-import org.springframework.security.access.method.P;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +39,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -47,25 +49,22 @@ import java.util.Set;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PredefinedShelfRepository predefinedShelfRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final CustomShelfRepository customShelfRepository;
     private final BookRepository bookRepository;
+    private final PredefinedShelfService predefinedShelfService;
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
-                       PredefinedShelfRepository predefinedShelfRepository,
-                       CustomShelfRepository customShelfRepository,
+                       @Lazy PredefinedShelfService predefinedShelfService,
                        BookRepository bookRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.predefinedShelfRepository = predefinedShelfRepository;
-        this.customShelfRepository = customShelfRepository;
+        this.predefinedShelfService = predefinedShelfService;
         this.bookRepository = bookRepository;
     }
 
@@ -106,8 +105,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findUser(long id){
-        return userRepository.findById(id).orElseThrow();
+    public Optional<User> findUserById(@NonNull Long id) {
+        return userRepository.findById(id);
     }
 
     private void authenticateUser(User user) {
@@ -129,11 +128,26 @@ public class UserService {
         return !emailIsInUse(email);
     }
 
-    public void deleteUser(@NonNull User user){
-        // bookRepository.deleteAll(bookRepository.findByPredefinedShelfId(predefinedShelfRepository.findAllByUser(user).get(0).getId());
-        // customShelfRepository.deleteAll(customShelfRepository.findAllByUser(user));
-        // predefinedShelfRepository.deleteAll(predefinedShelfRepository.findAllByUser(user)
-        // );
-        userRepository.delete(user);
+    public void deleteUserById(@NonNull Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAllForLoggedInUser();
+
+            // Add all of the books in each predefined shelf to this set outside of the loop to
+            // avoid a concurrent modification exception
+            Set<Book> outerBooks = new HashSet<>();
+            for (PredefinedShelf p : predefinedShelves) {
+                p.removeUser();
+                outerBooks.addAll(p.getBooks());
+            }
+
+            outerBooks.forEach(Book::removePredefinedShelf);
+
+            bookRepository.deleteAll();
+            userRepository.deleteById(id);
+        }
+
+
+        // TODO: otherwise throw/return false
     }
 }

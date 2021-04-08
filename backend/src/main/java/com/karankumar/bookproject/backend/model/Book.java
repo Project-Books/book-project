@@ -158,7 +158,7 @@ public class Book {
                 Set<Publisher> publishers) {
         this.title = title;
         this.author = author;
-        this.predefinedShelf = predefinedShelf;
+        addPredefinedShelf(predefinedShelf);
         this.publishers = publishers;
     }
 
@@ -194,6 +194,16 @@ public class Book {
     public void removeTag(@NonNull Tag tag) {
         tags.remove(tag);
         tag.getBooks().remove(this);
+    }
+
+    public void addPredefinedShelf(@NonNull PredefinedShelf predefinedShelf) {
+        this.predefinedShelf = predefinedShelf;
+        predefinedShelf.getBooks().add(this);
+    }
+
+    public void removePredefinedShelf() {
+        predefinedShelf.getBooks().remove(this);
+        predefinedShelf = null;
     }
 
     public void setPublicationYear(Integer yearOfPublication) {

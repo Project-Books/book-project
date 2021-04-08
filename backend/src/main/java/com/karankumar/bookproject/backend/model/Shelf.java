@@ -29,16 +29,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Shelf {
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotNull
     @JsonIgnore
     protected User user;
 
@@ -47,5 +45,9 @@ public abstract class Shelf {
     protected Shelf(String shelfName, User user) {
         this.shelfName = shelfName;
         this.user = user;
+    }
+
+    public void removeUser() {
+        user = null;
     }
 }
