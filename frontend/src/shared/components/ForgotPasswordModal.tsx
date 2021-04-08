@@ -46,10 +46,10 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
         <Modal open={this.props.open} onClose={this.props.onClose}>
           <div className="modal-container">
             <div className="modal-content">
-              <div className="modal-title">
+              <div className="forgot-password-title">
                 Forgot your password?
               </div>
-              <div className="modal-desc">
+              <div className="reset-password-desc">
                 We&apos;ll email you a link to reset your Password
               </div>
             </div>
