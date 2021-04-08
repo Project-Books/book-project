@@ -57,8 +57,7 @@ public final class TestData {
                 "Robert Galbraith",
                 "Dan Brown"
         ).map(name -> {
-            String[] fullName = name.split(" ");
-            return new Author(fullName[0], fullName[1]);
+            return new Author(name);
         }).collect(Collectors.toList());
     }
 

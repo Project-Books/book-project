@@ -59,7 +59,7 @@ class BookTest {
     }
 
     private Book createBook(String title, PredefinedShelf shelf) {
-        Author author = new Author("Firstname", "Lastname");
+        Author author = new Author("Firstname Lastname");
         Book book = new Book(title, author, shelf);
         book.addTag(testTag);
         return book;

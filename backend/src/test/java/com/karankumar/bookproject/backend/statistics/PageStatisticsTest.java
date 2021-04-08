@@ -69,7 +69,7 @@ class PageStatisticsTest {
         PredefinedShelf readingShelf = predefinedShelfService.findReadingShelf();
 
         Book readingBook = new Book("More pages than any read book",
-                new Author("Joe", "Bloggs"), readingShelf);
+                new Author("Joe Bloggs"), readingShelf);
         readingBook.setNumberOfPages(StatisticTestUtils.getBookWithMostPages()
                                                        .getNumberOfPages() + 50);
         bookService.save(readingBook);

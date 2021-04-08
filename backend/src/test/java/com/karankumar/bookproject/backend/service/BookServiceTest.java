@@ -67,7 +67,7 @@ class BookServiceTest {
     private final PublisherService publisherService;
 
     private PredefinedShelf toRead;
-    private final Author author = new Author("Test First Name", "Test Last Name");
+    private final Author author = new Author("First Last");
     private final Set<Publisher> publishers = Stream.of(
             new Publisher("Test Publisher")).collect(Collectors.toSet()
     );
