@@ -144,7 +144,7 @@ class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfService.getBooksInChosenPredefinedShelf(shelf);
 
         // then
-        assertThat(actualBooks.toString()).isEqualTo(expectedBooks.toString());
+        assertThat(actualBooks.toString()).hasToString(expectedBooks.toString());
     }
 
     @Test
