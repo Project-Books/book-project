@@ -61,6 +61,9 @@ public class BookController {
         this.predefinedShelfService = predefinedShelfService;
         this.modelMapper = modelMapper;
         
+        // Condition notNull = ctx -> ctx.getSource() != null;
+
+        // this.modelMapper.addMappings()
         this.modelMapper.addConverter(predefinedShelfConverter);
         this.modelMapper.addConverter(bookGenreConverter);
         this.modelMapper.addConverter(bookFormatConverter);
@@ -116,7 +119,12 @@ public class BookController {
     	}
 
         //map persistant data to REST BookDto
-        //BookDto bookDtoToUpdate = convertToDto(bookToUpdate.get());
+        BookDto bookDtoToUpdate = convertToDto(bookToUpdate.get());
+
+        //updatedBookDto.setId(id);
+        //Book updatedBook = convertToBook(updatedBookDto);
+        //modelMapper.map(updatedBookDto, bookToUpdate);
+        
 
         //apply the changes to the REST BookDto
         // changes.forEach(
@@ -128,54 +136,55 @@ public class BookController {
         //         }
         //     }
         // );
-        changes.forEach(
-            (change, value) -> {
-                switch (change) {
-                    case "title":
-                        bookToUpdate.get().setTitle((String) value);
-                        break;
-                    case "author":
-                        bookToUpdate.get().setAuthor((Author) modelMapper.map(value, Author.class));
-                        break;
-                    case "predefinedShelfString":
-                        bookToUpdate.get().setPredefinedShelf((PredefinedShelf) modelMapper.map(value, PredefinedShelf.class));
-                        break;
-                    case "numberOfPages":
-                        bookToUpdate.get().setNumberOfPages((Integer) value);
-                        break;
-                    case "pagesRead":
-                        bookToUpdate.get().setPagesRead((Integer) value);
-                        break;
-                    case "bookGenre":
-                        bookToUpdate.get().setBookGenre((BookGenre) modelMapper.map(value, BookGenre.class));
-                        break;
-                    case "bookFormat":
-                        bookToUpdate.get().setBookFormat((BookFormat) modelMapper.map(value, BookFormat.class));
-                        break;
-                    case "seriesPosition":
-                        bookToUpdate.get().setSeriesPosition((Integer) value);
-                        break;
-                    case "edition":
-                        bookToUpdate.get().setEdition((Integer) value);
-                        break;
-                    case "bookRecommendedBy":
-                        bookToUpdate.get().setBookRecommendedBy((String) value);
-                        break;
-                    case "isbn":
-                        bookToUpdate.get().setIsbn((String) value);
-                    case "yearofPublication":
-                        bookToUpdate.get().setPublicationYear((Integer) value);
-                        break;
-                }
-            }
-        );
+        // changes.forEach(
+        //     (change, value) -> {
+        //         switch (change) {
+        //             case "title":
+        //                 bookToUpdate.get().setTitle((String) value);
+        //                 break;
+        //             case "author":
+        //                 bookToUpdate.get().setAuthor((Author) modelMapper.map(value, Author.class));
+        //                 break;
+        //             case "predefinedShelfString":
+        //                 bookToUpdate.get().setPredefinedShelf((PredefinedShelf) modelMapper.map(value, PredefinedShelf.class));
+        //                 break;
+        //             case "numberOfPages":
+        //                 bookToUpdate.get().setNumberOfPages((Integer) value);
+        //                 break;
+        //             case "pagesRead":
+        //                 bookToUpdate.get().setPagesRead((Integer) value);
+        //                 break;
+        //             case "bookGenre":
+        //                 bookToUpdate.get().setBookGenre((BookGenre) modelMapper.map(value, BookGenre.class));
+        //                 break;
+        //             case "bookFormat":
+        //                 bookToUpdate.get().setBookFormat((BookFormat) modelMapper.map(value, BookFormat.class));
+        //                 break;
+        //             case "seriesPosition":
+        //                 bookToUpdate.get().setSeriesPosition((Integer) value);
+        //                 break;
+        //             case "edition":
+        //                 bookToUpdate.get().setEdition((Integer) value);
+        //                 break;
+        //             case "bookRecommendedBy":
+        //                 bookToUpdate.get().setBookRecommendedBy((String) value);
+        //                 break;
+        //             case "isbn":
+        //                 bookToUpdate.get().setIsbn((String) value);
+        //             case "yearofPublication":
+        //                 bookToUpdate.get().setPublicationYear((Integer) value);
+        //                 break;
+        //         }
+        //     }
+        // );
 
-        //modelMapper.map(changes, bookDtoToUpdate);
-    	//Book updatedBook = convertToBook(bookDtoToUpdate);
+        modelMapper.map(changes, bookDtoToUpdate);
+    	Book updatedBook = convertToBook(bookDtoToUpdate);
 
     	//updatedBookDto.setId(id);
     	//Book updatedBook = convertToBook(updatedBookDto);
-    	return bookService.save(bookToUpdate.get());
+        return bookService.save(updatedBook);
+    	//return bookService.save(bookToUpdate.get());
     }
     
     private BookDto convertToDto(Book book) {
