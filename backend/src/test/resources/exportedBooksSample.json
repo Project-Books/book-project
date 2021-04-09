@@ -29,7 +29,9 @@
       "title": "Another Book Name",
       "numberOfPages": 420,
       "pagesRead": 42,
-      "bookGenre": "ADVENTURE",
+      "bookGenre": [
+        "ADVENTURE"
+      ],
       "bookFormat": "PAPERBACK",
       "seriesPosition": 3,
       "edition": "2nd edition",
