@@ -107,6 +107,7 @@ public class Book {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
@@ -129,6 +130,7 @@ public class Book {
             )
     )
     @Setter(AccessLevel.NONE)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
@@ -137,7 +139,8 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "publisher_id", referencedColumnName = "id")
     )
-    private Set<Publisher> publishers;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Set<Publisher> publishers = new HashSet<>();
 
     // For books that have been read
     private RatingScale rating;
@@ -187,6 +190,9 @@ public class Book {
     }
 
     public void addTag(@NonNull Tag tag) {
+        if (tags == null) {
+            tags = new HashSet<>();
+        }
         tags.add(tag);
         tag.getBooks().add(this);
     }

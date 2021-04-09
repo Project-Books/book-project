@@ -56,6 +56,7 @@ public class PredefinedShelf extends Shelf {
     private ShelfName predefinedShelfName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "predefinedShelf")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     protected Set<Book> books;
 
     public PredefinedShelf(ShelfName predefinedShelfName, User user) {
