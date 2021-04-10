@@ -1,7 +1,7 @@
 /*
 The book project lets a user keep track of different books they would like to read, are currently
 reading, have read or did not finish.
-Copyright (C) 2020  Karan Kumar
+Copyright (C) 2021  Karan Kumar
 
 This program is free software: you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -19,22 +19,32 @@ If not, see <https://www.gnu.org/licenses/>.
     margin-left: 30px;
 }
 
-#nav-bar-logo:hover {
+#nav-bar-logo {
+    margin-left: 30px;
     cursor: pointer;
 }
 
 .nav-bar {
     height: 100vh;
     width: 180px;
+    top: 0;
+    left: 0;
     position: fixed;
-    background-color: #111;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-bar-light {
+    box-shadow: 13px 0 8px -8px rgb(224, 221, 221); 
+}
+
+.nav-bar-dark {
+    background-color:black;
 }
 
 .nav-top {
-    padding-top:50px;
-    padding-bottom:100px;
+    padding-top: 50px;
+    padding-bottom: 100px;
 }
 
 .nav-links {
@@ -43,21 +53,15 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 #nav-links-top {
- flex-grow:1;
+    flex-grow: 1;
 }
 
 .nav-item {
-    padding-left: 10px;
+    padding-left: 32px;
     margin-bottom: 15px;
     cursor: pointer;
     display: block;
     flex-grow:1;
-}
-
-.nav-bar button {
-    background: none;
-    color: white;
-    border: none;
 }
 
 .nav-item-text {
@@ -66,10 +70,3 @@ If not, see <https://www.gnu.org/licenses/>.
     position: relative;
     top: -4px;
 }
-
-button:hover {
-    color: #ccc;
-}
-
-
-

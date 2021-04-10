@@ -127,16 +127,8 @@ public class ImportService {
         if (StringUtils.isBlank(name)) {
             return Optional.empty();
         }
-        String[] authorNames = name.trim().split(" ");
 
-        StringBuilder firstNameBuilder = new StringBuilder(authorNames[0]);
-        int length = authorNames.length;
-        for (int index = 1; index < length - 1; ++index) {
-            firstNameBuilder.append(" ").append(authorNames[index]);
-        }
-        String lastName = authorNames[length - 1];
-
-        return Optional.of(new Author(firstNameBuilder.toString(), lastName));
+        return Optional.of(new Author(name));
     }
 
     private Optional<PredefinedShelf> toPredefinedShelf(
@@ -155,7 +147,8 @@ public class ImportService {
                      .filter(Optional::isPresent)
                      .findFirst()
                      .map(Optional::get)
-                     .map(predefinedShelfService::findByPredefinedShelfNameAndLoggedInUser);
+                     .map(predefinedShelfService::findByPredefinedShelfNameAndLoggedInUser)
+                     .map(Optional::get);
     }
 
     private Optional<CustomShelf> toCustomShelf(

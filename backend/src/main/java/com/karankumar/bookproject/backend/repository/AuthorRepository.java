@@ -19,7 +19,23 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Author;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface AuthorRepository extends JpaRepository<Author, Long> {
+
+    @EntityGraph(value = "Author.books")
+    Optional<Author> findById(Long id);
+
+    @EntityGraph(value = "Author.books")
+    List<Author> findAll();
+
+    @EntityGraph(value = "Author.books")
+    void delete(Author author);
+
+    @EntityGraph(value = "Author.books")
+    void deleteAll();
 }

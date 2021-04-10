@@ -61,7 +61,7 @@ class BookRepositoryTest {
     void init() {
         bookRepository.deleteAll();
         user = getTestUser(userRepository);
-        author = authorRepository.save(new Author("firstName", "lastName"));
+        author = authorRepository.save(new Author("firstName lastName"));
         read = predefinedShelfRepository.save(
                 new PredefinedShelf(PredefinedShelf.ShelfName.READ, user)
         );
@@ -188,10 +188,10 @@ class BookRepositoryTest {
         String lastName = "lastName";
 
         assertSoftly(softly -> {
-            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, firstName).get())
-            	.size().isOne();
-            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, lastName).get())
-            	.size().isOne();
+            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, firstName).size())
+                  .isOne();
+            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, lastName).size())
+            	  .isOne();
         });
     }
 }

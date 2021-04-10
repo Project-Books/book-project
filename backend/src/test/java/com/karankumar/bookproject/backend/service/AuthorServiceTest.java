@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -56,10 +57,10 @@ class AuthorServiceTest {
     @Test
     void saveAndConfirmDuplicateNameWithDifferentId() {
         // given
-        Author author = new Author("Nyor", "Ja");
+        Author author = new Author("Nyor Ja");
         authorService.save(author);
 
-        Author authorCopy = new Author(author.getFirstName(), author.getLastName());
+        Author authorCopy = new Author(author.getFullName());
         authorService.save(authorCopy);
 
         // when
@@ -74,11 +75,11 @@ class AuthorServiceTest {
     @Test
     void saveCorrectly() {
         // given
-        Author author = new Author("daks", "oten");
+        Author author = new Author("daks oten");
         authorService.save(author);
 
         // when
-        Author existingAuthor = authorService.findById(author.getId());
+        Author existingAuthor = authorService.findById(author.getId()).get();
         authorService.save(existingAuthor);
 
         // then
@@ -88,14 +89,14 @@ class AuthorServiceTest {
     @Test
     void savedAuthorCanBeFound() {
         // given
-        Author author = new Author("First", "Last");
+        Author author = new Author("First Last");
         authorService.save(author);
 
         // when
-        Author actual = authorService.findById(author.getId());
+        Optional<Author> actual = authorService.findById(author.getId());
 
         // then
-        assertThat(actual).isNotNull();
+        assertThat(actual).isPresent();
     }
 
     @Test
@@ -104,7 +105,7 @@ class AuthorServiceTest {
         assumeThat(authorService.count()).isZero();
 
         // given
-        Author authorWithoutBooks = new Author("First", "Last");
+        Author authorWithoutBooks = new Author("First Last");
         authorService.save(authorWithoutBooks);
 
         // when

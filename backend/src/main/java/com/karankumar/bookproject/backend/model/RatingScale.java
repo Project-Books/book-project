@@ -22,7 +22,6 @@ import lombok.extern.java.Log;
 
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.logging.Level;
 
 @Log
 public enum RatingScale {
@@ -62,13 +61,9 @@ public enum RatingScale {
         return rating;
     }
 
-    public static Double toDouble(RatingScale ratingScale) {
-        if (ratingScale == null) {
-            LOGGER.log(Level.INFO, "Returning null as rating was null");
-            return null;
-        }
-
-        return ratingScale.value;
+    public static Optional<Double> toDouble(RatingScale ratingScale) {
+    	return (ratingScale == null || ratingScale.value == null) ? Optional.empty() :
+				Optional.of(ratingScale.value);
     }
 
     public static Optional<RatingScale> of(Double ratingValue) {

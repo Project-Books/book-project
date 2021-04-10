@@ -1,7 +1,7 @@
 /*
  * The book project lets a user keep track of different books they would like to read, are currently
  * reading, have read or did not finish.
- * Copyright (C) 2020  Karan Kumar
+ * Copyright (C) 2021  Karan Kumar
 
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -41,15 +41,14 @@ import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assumptions.assumeThat;
@@ -66,7 +65,7 @@ class BookServiceTest {
     private final PublisherService publisherService;
 
     private PredefinedShelf toRead;
-    private final Author author = new Author("Test First Name", "Test Last Name");
+    private final Author author = new Author("Test Full Name");
     private final Set<Publisher> publishers = Stream.of(
             new Publisher("Test Publisher")).collect(Collectors.toSet()
     );
@@ -87,7 +86,7 @@ class BookServiceTest {
     @BeforeEach
     public void setUp() {
         resetServices();
-        toRead = predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(TO_READ);
+        toRead = predefinedShelfService.findToReadShelf();
     }
 
     private Book.BookBuilder validBook() {
@@ -102,6 +101,7 @@ class BookServiceTest {
         authorService.deleteAll();
         customShelfService.deleteAll();
         publisherService.deleteAll();
+        tagService.deleteAll();
     }
 
     @Test
@@ -189,7 +189,7 @@ class BookServiceTest {
         Optional<Book> actual = bookService.findById(validBook.getId());
 
         // then
-        assertThat(actual).isNotNull();
+        assertThat(actual).isPresent();
     }
 
     @Test
@@ -225,10 +225,18 @@ class BookServiceTest {
     }
 
     @Test
+    @Transactional
     void createJsonRepresentationForBooks() throws IOException, JSONException {
         // given
-        bookService.save(validBook().build());
+        bookService.save(new Book("Book Name", author, toRead));
         Book anotherValidBook = createBookWithAllAttributes().build();
+
+        Tag tag1 = new Tag("adventure");
+        tagService.save(tag1);
+        anotherValidBook.addTag(tag1);
+        Tag tag2 = new Tag("book");
+        tagService.save(tag2);
+        anotherValidBook.addTag(tag2);
         bookService.save(anotherValidBook);
 
         String expectedJsonString = FileUtils.readFileToString(
@@ -253,8 +261,7 @@ class BookServiceTest {
         bookService.save(bookToSave);
 
         // then
-        assertThat(bookService.findById(bookToSave.getId())).get()
-        	.isEqualTo(bookToSave);
+        assertThat(bookService.findById(bookToSave.getId())).contains(bookToSave);
     }
 
     private Book.BookBuilder createBookWithAllAttributes() {
@@ -262,7 +269,7 @@ class BookServiceTest {
                 .title("Another Book Name")
                 .numberOfPages(420)
                 .pagesRead(42)
-                .bookGenre(BookGenre.ADVENTURE)
+                .bookGenre(Collections.singleton(BookGenre.ADVENTURE))
                 .bookFormat(BookFormat.PAPERBACK)
                 .seriesPosition(3)
                 .edition(2)
@@ -270,7 +277,6 @@ class BookServiceTest {
                 .isbn("9780151010264")
                 .yearOfPublication(2014)
                 .customShelf(createAndSaveCustomShelf())
-                .tags(createAndSaveTags())
                 .rating(RatingScale.EIGHT)
                 .dateStartedReading(LocalDate.of(2020, 7, 5))
                 .dateFinishedReading(LocalDate.of(2020, 9, 5))
@@ -282,13 +288,5 @@ class BookServiceTest {
         CustomShelf customShelf = customShelfService.createCustomShelf("My Shelf");
         customShelfService.save(customShelf);
         return customShelf;
-    }
-
-    private Set<Tag> createAndSaveTags() {
-        Tag tag1 = new Tag("book");
-        Tag tag2 = new Tag("adventure");
-        tagService.save(tag1);
-        tagService.save(tag2);
-        return new HashSet<>(Arrays.asList(tag1, tag2));
     }
 }

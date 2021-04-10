@@ -84,7 +84,7 @@ class CustomShelfUtilsTest {
 
     private Book createAndSaveBook(String title, PredefinedShelf predefinedShelf,
                                           CustomShelf customShelf) {
-        Book book = new Book(title, new Author("John", "Doe"), predefinedShelf);
+        Book book = new Book(title, new Author("John Doe"), predefinedShelf);
         book.setCustomShelf(customShelf);
         bookService.save(book);
         return book;
@@ -108,7 +108,7 @@ class CustomShelfUtilsTest {
     @Test
     void returnBooksSuccessfully() {
         Set<Book> actual = customShelfService.getBooksInCustomShelf(customShelf1.getShelfName());
-        booksInCustomShelf1.forEach(book -> assertThat(actual).contains(book));
+        booksInCustomShelf1.forEach(book -> assertThat(actual.toString()).contains(book.toString()));
     }
 
     @Test

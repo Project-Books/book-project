@@ -56,7 +56,7 @@ class PageStatisticsTest {
     @Test
     void findBookWithMostPages() {
         // when
-        String actual = pageStatistics.findBookWithMostPages().getTitle();
+        String actual = pageStatistics.findBookWithMostPages().get().getTitle();
 
         // then
         String expected = StatisticTestUtils.getBookWithMostPages().getTitle();
@@ -69,13 +69,13 @@ class PageStatisticsTest {
         PredefinedShelf readingShelf = predefinedShelfService.findReadingShelf();
 
         Book readingBook = new Book("More pages than any read book",
-                new Author("Joe", "Bloggs"), readingShelf);
+                new Author("Joe Bloggs"), readingShelf);
         readingBook.setNumberOfPages(StatisticTestUtils.getBookWithMostPages()
                                                        .getNumberOfPages() + 50);
         bookService.save(readingBook);
 
         // when
-        String actual = pageStatistics.findBookWithMostPages().getTitle();
+        String actual = pageStatistics.findBookWithMostPages().get().getTitle();
 
         // then
         assertThat(actual)
@@ -85,14 +85,15 @@ class PageStatisticsTest {
     @Test
     void notDivideAveragePageLengthByZero() {
         resetPageStatistics();
-        assertThat(pageStatistics.calculateAveragePageLength()).isNull();
+        assertThat(pageStatistics.calculateAveragePageLength()).isEmpty();
     }
 
     @Test
     void calculateAveragePageLengthCorrectly() {
         int averagePageLength =
                 StatisticTestUtils.getTotalNumberOfPages() / StatisticTestUtils.getNumberOfBooks();
-        assertThat(pageStatistics.calculateAveragePageLength()).isEqualTo(averagePageLength);
+        assertThat(pageStatistics.calculateAveragePageLength())
+        		.contains(Double.valueOf(averagePageLength));
     }
 
     @Test
@@ -102,7 +103,7 @@ class PageStatisticsTest {
         pageStatistics = new PageStatistics(predefinedShelfService);
 
         // when
-        Double actual = pageStatistics.calculateAveragePageLength();
+        Double actual = pageStatistics.calculateAveragePageLength().get();
 
         // then
         Double averagePageLength = 274.0;
