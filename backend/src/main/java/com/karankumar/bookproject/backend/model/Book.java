@@ -93,7 +93,7 @@ public class Book {
 
     private Integer yearOfPublication;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(
             name = "author_id",
             nullable = false,
@@ -103,20 +103,21 @@ public class Book {
     private Author author;
 
     @ManyToOne(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "custom_shelf_id", referencedColumnName = "id")
     private CustomShelf customShelf;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "book_tag",
             joinColumns = @JoinColumn(
@@ -129,15 +130,17 @@ public class Book {
             )
     )
     @Setter(AccessLevel.NONE)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "book_publisher",
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "publisher_id", referencedColumnName = "id")
     )
-    private Set<Publisher> publishers;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Set<Publisher> publishers = new HashSet<>();
 
     // For books that have been read
     private RatingScale rating;
@@ -187,6 +190,9 @@ public class Book {
     }
 
     public void addTag(@NonNull Tag tag) {
+        if (tags == null) {
+            tags = new HashSet<>();
+        }
         tags.add(tag);
         tag.getBooks().add(this);
     }

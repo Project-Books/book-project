@@ -31,6 +31,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedAttributeNode;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,6 +44,9 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(exclude = "books")
+@NamedEntityGraph(name = "Tag.books",
+        attributeNodes = @NamedAttributeNode("books")
+)
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +56,7 @@ public class Tag {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
     private Set<Book> books = new HashSet<>();
 
     public Tag(String name) {
