@@ -157,7 +157,7 @@ public final class TestData {
         for (Book book : books) {
             PredefinedShelf shelf = generateRandomPredefinedShelf(predefinedShelves);
             PredefinedShelf.ShelfName predefinedShelfName = shelf.getPredefinedShelfName();
-            book.setPredefinedShelf(shelf);
+            book.addPredefinedShelf(shelf);
             switch (predefinedShelfName) {
                 case TO_READ:
                     book.setDateStartedReading(null);
