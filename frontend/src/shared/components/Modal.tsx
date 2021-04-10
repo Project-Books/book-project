@@ -59,11 +59,11 @@ export default function Modal(props: IModalProps): JSX.Element{
         onClose={props.onClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-      >
+    >
         <div style={modalStyle} className={classes.paper}>
           {props.children}
         </div>
-      </MaterialModal>
+    </MaterialModal>
   );
 }
 

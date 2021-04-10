@@ -66,7 +66,7 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
                 className="reset-password-button"
                 variant="contained"
                 color="primary">
-                  Send me a password reset link
+                Send me a password reset link
               </Button>
               <div className="password-form-spacer" />
               <Button
