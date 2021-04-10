@@ -18,11 +18,10 @@ import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -38,5 +37,22 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody User user) {
         userService.register(user);
+    }
+    
+    //change email address
+    @PutMapping("/change-email-address/{oldEmail}/{newEmail}")
+    public void changeEmailAddress(@PathVariable("oldEmail") String oldEmail, @PathVariable("newEmail") String newEmail) {
+    	System.out.println("test");
+    	Optional<User> optionalUser = userService.findByEmail(oldEmail);
+    	if (optionalUser.isPresent()) {
+    	    User user = optionalUser.get();
+    	    user.setEmail(newEmail);
+    	    userService.save(user);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the user");
+        }
+    	// time of use (verify/ confirm that the user is the user - ask for the user's password)
+        // --> RequestBody?
+        // print(test)
     }
 }

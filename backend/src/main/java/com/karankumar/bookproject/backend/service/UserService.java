@@ -35,6 +35,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -77,7 +78,7 @@ public class UserService {
                                   .roles(Set.of(userRole))
                                   .build();
 
-        userRepository.save(userToRegister);
+        save(userToRegister);
 
         authenticateUser(user);
     }
@@ -89,6 +90,14 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public void save(@NonNull User user) {
+        userRepository.save(user);
     }
 
     private void authenticateUser(User user) {
