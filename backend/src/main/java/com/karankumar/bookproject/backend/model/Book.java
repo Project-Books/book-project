@@ -222,6 +222,11 @@ public class Book {
         predefinedShelf.getBooks().add(this);
     }
 
+    public void removePredefinedShelf() {
+        predefinedShelf.getBooks().remove(this);
+        predefinedShelf = null;
+    }
+
     public void setPublicationYear(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
     }
