@@ -17,15 +17,26 @@
 
 package com.karankumar.bookproject.backend.util;
 
+import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.model.Book;
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DisplayName("BookUtils should")
+@IntegrationTest
 class BookUtilsTest {
     private final String bookTitle = "Title";
-    private final Book book = new Book(bookTitle, null, null);
+    private final Book book;// = new Book(bookTitle, null, null);
+
+    @Autowired
+    BookUtilsTest(PredefinedShelfService predefinedShelfService) {
+        // TODO: mock predefinedShelfService
+        book = new Book(bookTitle, null, predefinedShelfService.findById(1L).get());
+    }
 
     @Test
     void notShowSeriesPositionIfBookIsNotInSeries() {

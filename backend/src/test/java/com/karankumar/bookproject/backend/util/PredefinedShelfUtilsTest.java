@@ -144,7 +144,8 @@ class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfService.getBooksInChosenPredefinedShelf(shelf);
 
         // then
-        assertThat(actualBooks.toString()).hasToString(expectedBooks.toString());
+//        assertThat(actualBooks.toString()).hasToString(expectedBooks.toString());
+        assertThat(actualBooks).containsExactlyInAnyOrderElementsOf(expectedBooks);
     }
 
     @Test

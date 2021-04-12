@@ -224,4 +224,8 @@ public class PredefinedShelfService {
     public Set<Book> getBooksInAllPredefinedShelves() {
         return getBooksInPredefinedShelves(findAllForLoggedInUser());
     }
+
+    public List<PredefinedShelf> findReadShelf2() {
+	    return predefinedShelfRepository.findReadShelf2();
+    }
 }

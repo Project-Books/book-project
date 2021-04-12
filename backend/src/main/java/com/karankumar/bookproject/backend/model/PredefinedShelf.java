@@ -32,6 +32,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedAttributeNode;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -57,7 +58,7 @@ public class PredefinedShelf extends Shelf {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "predefinedShelf")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    protected Set<Book> books;
+    protected Set<Book> books = new HashSet<>();
 
     public PredefinedShelf(ShelfName predefinedShelfName, User user) {
         super(predefinedShelfName.toString(), user);

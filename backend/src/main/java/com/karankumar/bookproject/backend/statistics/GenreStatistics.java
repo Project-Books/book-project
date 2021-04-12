@@ -27,8 +27,8 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GenreStatistics extends Statistics {
@@ -132,9 +132,7 @@ public class GenreStatistics extends Statistics {
         // we only want genres in this map that exist in the read books shelf
         Map<BookGenre, Double> genreMap = new EnumMap<>(BookGenre.class);
         for (Book book : readBooksWithGenresAndRatings) {
-            book.getBookGenre().forEach(bookGenre -> {
-                genreMap.put(bookGenre, 0.0);
-            });
+            book.getBookGenre().forEach(bookGenre -> genreMap.put(bookGenre, 0.0));
         }
         return genreMap;
     }
