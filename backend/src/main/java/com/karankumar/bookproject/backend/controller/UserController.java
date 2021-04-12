@@ -41,13 +41,13 @@ public class UserController {
     
     //change email address
     @PutMapping("/change-email-address/{oldEmail}/{newEmail}")
-    public void changeEmailAddress(@PathVariable("oldEmail") String oldEmail, @PathVariable("newEmail") String newEmail) {
+    public User changeEmailAddress(@PathVariable("oldEmail") String oldEmail, @PathVariable("newEmail") String newEmail) {
     	System.out.println("test");
     	Optional<User> optionalUser = userService.findByEmail(oldEmail);
     	if (optionalUser.isPresent()) {
     	    User user = optionalUser.get();
     	    user.setEmail(newEmail);
-    	    userService.save(user);
+    	    return userService.save(user);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the user");
         }
