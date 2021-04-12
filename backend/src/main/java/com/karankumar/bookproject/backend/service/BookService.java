@@ -151,10 +151,10 @@ public class BookService {
     }
 
     public Optional<List<Book>> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
-        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
+        return Optional.ofNullable(bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName));
     }
 
     public Optional<List<Book>> findByTitleOrAuthor(String title, String authorsName){
-        return bookRepository.findByTitleOrAuthor(title, authorsName);
+        return Optional.ofNullable(bookRepository.findByTitleOrAuthor(title, authorsName));
     }
 }

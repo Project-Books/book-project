@@ -207,7 +207,7 @@ public class BookController {
         public PredefinedShelf convert(String predefinedShelfString) {
             PredefinedShelf predefinedShelf = null;
             predefinedShelf =
-                    predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString);
+                    predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString).get();
             return predefinedShelf;
         }
     };
