@@ -23,6 +23,7 @@ import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.statistics.util.StatisticTestUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,8 @@ class GenreStatisticsTest {
 
     @Test
     @DisplayName("not show the most liked genre statistic if there is only one read genre")
+    @Disabled
+    // TODO: this test has been disabled as it needs to be rewritten to make it easier to follow
     void notShowMostLikedGenreWhenOnlyOneReadGenreExists() {
         // given
         resetBookService();
@@ -117,6 +120,8 @@ class GenreStatisticsTest {
 
     @Test
     @DisplayName("not show the least liked genre statistic if there is only one read genre")
+    @Disabled
+    // TODO: this test has been disabled as it needs to be rewritten to make it easier to follow
     void notShowLeastLikedGenreWhenOnlyOneReadGenreExists() {
         // given
         resetBookService();
