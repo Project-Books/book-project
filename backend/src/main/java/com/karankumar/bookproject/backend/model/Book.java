@@ -57,7 +57,7 @@ import java.util.Set;
 @Data
 //@DynamicUpdate
 @JsonIgnoreProperties(value = {"id"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 //@EqualsAndHashCode(exclude = {"id", "tags","publishers", "predefinedShelf", "customShelf"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
