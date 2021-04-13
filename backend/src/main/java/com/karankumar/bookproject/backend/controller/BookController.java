@@ -17,17 +17,14 @@ package com.karankumar.bookproject.backend.controller;
 import org.modelmapper.Converter;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import com.karankumar.bookproject.backend.dto.BookDto;
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
-import com.karankumar.bookproject.backend.service.BookNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.List;
@@ -53,6 +51,8 @@ public class BookController {
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
     private ModelMapper modelMapper;
+
+    private final String bookNotFoundErrorMessage = "Could not find book with ID %d";
 
     @Autowired
     public BookController(BookService bookService, PredefinedShelfService predefinedShelfService,
@@ -74,20 +74,24 @@ public class BookController {
     	return bookService.findAll();
     }
     
-    @GetMapping("/find-by-id/{id}") 	
+    @GetMapping("/find-by-id/{id}")
     public Book findById(@PathVariable Long id) {
     	return bookService.findById(id)
-    		.orElseThrow(() -> new BookNotFoundException(id));
+    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format(bookNotFoundErrorMessage, id))
+            );
     }
-    
+
     @GetMapping("/find-by-shelf/{shelf}") 	
     public Optional<List<Book>> findByShelf(@PathVariable Shelf shelf, 
     		//@RequestParam Shelf shelf, 
     		@RequestParam(required=false) String title, 
     		@RequestParam(required=false) String authorsName,
-    		@RequestParam Long id) { 
+    		@RequestParam Long id) {
     	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))
-    		.orElseThrow(() -> new BookNotFoundException(id));
+    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format(bookNotFoundErrorMessage, id))
+            );
     }
     		
     @GetMapping("/find-by-author/{author}") 	
@@ -114,11 +118,14 @@ public class BookController {
     public Optional<Book> update(@PathVariable Long id, @RequestBody Map<String, Object> changes) { //@RequestBody BookDto updatedBookDto) {
     	//fetch existing Book entity and ensure it exists
         Optional<Book> bookToUpdate = bookService.findById(id);
-    	if (!bookToUpdate.isPresent()) {
-    		throw new BookNotFoundException(id);
+    	if (bookToUpdate.isEmpty()) {
+    		throw new ResponseStatusException(
+    		        HttpStatus.NOT_FOUND,
+                    String.format(bookNotFoundErrorMessage, id)
+            );
     	}
 
-        //map persistant data to REST BookDto
+        //map persistent data to REST BookDto
         BookDto bookDtoToUpdate = convertToDto(bookToUpdate.get());
 
         //updatedBookDto.setId(id);
@@ -198,8 +205,10 @@ public class BookController {
     @DeleteMapping("/delete-book/{id}")
     public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
-    		.orElseThrow(() -> new BookNotFoundException(id));
-    	bookService.delete(bookToDelete);
+    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format(bookNotFoundErrorMessage, id))
+        );
+        bookService.delete(bookToDelete);
     }
     
     Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {

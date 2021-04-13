@@ -15,12 +15,15 @@
 package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.service.BookNotFoundException;
+import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -45,6 +48,27 @@ class BookControllerTest {
     }
 
     @Test
+    void all_returnsEmptyList_whenNoBooksExist() {
+        when(mockedBookService.findAll()).thenReturn(new ArrayList<>());
+
+        assertThat(bookController.all().size()).isZero();
+    }
+
+    @Test
+    void all_returnsNonEmptyList_whenBooksExist() {
+        // given
+        List<Book> books = new ArrayList<>();
+        books.add(new Book());
+        books.add(new Book());
+
+        // when
+        when(mockedBookService.findAll()).thenReturn(books);
+
+        // then
+        assertThat(bookController.all().size()).isEqualTo(books.size());
+    }
+
+    @Test
     void findById_returnsBook_ifPresent() {
         Book book = new Book();
         when(mockedBookService.findById(any(Long.class)))
@@ -55,9 +79,33 @@ class BookControllerTest {
 
     @Test
     void findById_returnsNotFound_ifBookIsEmpty() {
-        when(mockedBookService.findById(any(Long.class))).thenThrow(new BookNotFoundException(1L));
+        when(mockedBookService.findById(any(Long.class)))
+                .thenReturn(Optional.empty());
 
-        assertThatExceptionOfType(BookNotFoundException.class)
+        assertThatExceptionOfType(ResponseStatusException.class)
                 .isThrownBy(() -> bookController.findById(0L));
+    }
+
+    @Test
+    // TODO: finish writing this test
+    void findByShelf_returnsNotFound_ifBookDoesNotExist() {
+        when(mockedBookService.findByShelfAndTitleOrAuthor(
+                any(Shelf.class),
+                any(String.class),
+                any(String.class))
+        ).thenThrow(new BookNotFoundException(1L));
+
+//        assertThatExceptionOfType(BookNotFoundException.class)
+//                .isThrownBy(bookController.findByShelf(new CustomShelf(), "title", "author"));
+    }
+
+    @Test
+    // TODO: finish writing this test
+    void delete_returnsNotFound_ifBookDoesNotExist() {
+        when(mockedBookService.findById(any(Long.class)))
+                .thenThrow(new BookNotFoundException(1L));
+
+//        assertThatExceptionOfType(BookNotFoundException.class)
+//                .isThrownBy(bookController.delete(1L));
     }
 }
