@@ -31,12 +31,11 @@ import static org.mockito.Mockito.when;
 
 class BookControllerTest {
     private final BookController bookController;
-    private final PredefinedShelfService mockedPredefinedShelfService;
     private final BookService mockedBookService;
 
     BookControllerTest() {
         mockedBookService = mock(BookService.class);
-        mockedPredefinedShelfService = mock(PredefinedShelfService.class);
+        PredefinedShelfService mockedPredefinedShelfService = mock(PredefinedShelfService.class);
         ModelMapper mockedModelMapper = mock(ModelMapper.class);
         bookController = new BookController(
                 mockedBookService,
@@ -47,11 +46,11 @@ class BookControllerTest {
 
     @Test
     void findById_returnsBook_ifPresent() {
-        Optional<Book> optionalBook = Optional.of(new Book());
+        Book book = new Book();
         when(mockedBookService.findById(any(Long.class)))
-                .thenReturn(optionalBook);
+                .thenReturn(Optional.of(book));
 
-        assertThat(bookController.findById(0L)).isEqualTo(optionalBook);
+        assertThat(bookController.findById(0L)).isEqualTo(book);
     }
 
     @Test

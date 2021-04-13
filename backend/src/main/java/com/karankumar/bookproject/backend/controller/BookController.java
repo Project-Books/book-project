@@ -75,8 +75,8 @@ public class BookController {
     }
     
     @GetMapping("/find-by-id/{id}") 	
-    public Optional<Book> findById(@PathVariable Long id) { 
-    	return Optional.ofNullable(bookService.findById(id))
+    public Book findById(@PathVariable Long id) {
+    	return bookService.findById(id)
     		.orElseThrow(() -> new BookNotFoundException(id));
     }
     
