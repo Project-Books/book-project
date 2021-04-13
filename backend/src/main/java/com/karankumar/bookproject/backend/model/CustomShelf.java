@@ -37,7 +37,7 @@ import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties(value = {"id", "books"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Setter
 @NamedEntityGraph(name = "CustomShelf.books",

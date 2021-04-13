@@ -19,7 +19,6 @@ import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import com.karankumar.bookproject.backend.dto.BookDto;
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
@@ -48,7 +47,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/my-books")
 public class BookController {
-    
+	
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
     private ModelMapper modelMapper;
@@ -57,7 +56,7 @@ public class BookController {
 
     @Autowired
     public BookController(BookService bookService, PredefinedShelfService predefinedShelfService,
-            ModelMapper modelMapper) {
+    		ModelMapper modelMapper) {
         this.bookService = bookService;
         this.predefinedShelfService = predefinedShelfService;
         this.modelMapper = modelMapper;
@@ -72,44 +71,44 @@ public class BookController {
     
     @GetMapping()
     public List<Book> all() {
-        return bookService.findAll();
+    	return bookService.findAll();
     }
     
     @GetMapping("/find-by-id/{id}")
     public Book findById(@PathVariable Long id) {
-        return bookService.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+    	return bookService.findById(id)
+    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format(bookNotFoundErrorMessage, id))
             );
     }
 
-    @GetMapping("/find-by-shelf/{shelf}")   
+    @GetMapping("/find-by-shelf/{shelf}") 	
     public Optional<List<Book>> findByShelf(@PathVariable Shelf shelf, 
-            //@RequestParam Shelf shelf, 
-            @RequestParam(required=false) String title, 
-            @RequestParam(required=false) String authorsName,
-            @RequestParam Long id) {
-        return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+    		//@RequestParam Shelf shelf, 
+    		@RequestParam(required=false) String title, 
+    		@RequestParam(required=false) String authorsName,
+    		@RequestParam Long id) {
+    	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))
+    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format(bookNotFoundErrorMessage, id))
             );
     }
-            
-    @GetMapping("/find-by-author/{author}")     
+    		
+    @GetMapping("/find-by-author/{author}") 	
     public Optional<List<Book>> findByAuthor(@PathVariable String author /*authorsName*/,
-            @RequestParam(required=false) String title//,
-            /*@RequestParam Long id*/) {
-            //@RequestParam String authorsName) {
+    		@RequestParam(required=false) String title//,
+    		/*@RequestParam Long id*/) {
+    		//@RequestParam String authorsName) {
         System.out.println("here");
-        return bookService.findByTitleOrAuthor(title, author /*authorsName*/);
-//          .orElseThrow(() -> new BookNotFoundException(id));
+    	return bookService.findByTitleOrAuthor(title, author /*authorsName*/);
+//    		.orElseThrow(() -> new BookNotFoundException(id));
     }
     
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody BookDto bookDto) {
-        // convert DTO to entity
-        Book bookToAdd = convertToBook(bookDto);
+    	// convert DTO to entity
+    	Book bookToAdd = convertToBook(bookDto);
 
         return bookService.save(bookToAdd);
     }
@@ -117,14 +116,14 @@ public class BookController {
     @PatchMapping("/update-book/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Book> update(@PathVariable Long id, @RequestBody Map<String, Object> changes) { //@RequestBody BookDto updatedBookDto) {
-        //fetch existing Book entity and ensure it exists
+    	//fetch existing Book entity and ensure it exists
         Optional<Book> bookToUpdate = bookService.findById(id);
-        if (bookToUpdate.isEmpty()) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
+    	if (bookToUpdate.isEmpty()) {
+    		throw new ResponseStatusException(
+    		        HttpStatus.NOT_FOUND,
                     String.format(bookNotFoundErrorMessage, id)
             );
-        }
+    	}
 
         //map persistent data to REST BookDto
         BookDto bookDtoToUpdate = convertToDto(bookToUpdate.get());
@@ -132,9 +131,7 @@ public class BookController {
         //updatedBookDto.setId(id);
         //Book updatedBook = convertToBook(updatedBookDto);
         //modelMapper.map(updatedBookDto, bookToUpdate);
-
-        //map persistant data to REST BookDto
-        //BookDto bookDtoToUpdate = convertToDto(bookToUpdate.get());
+        
 
         //apply the changes to the REST BookDto
         // changes.forEach(
@@ -146,7 +143,6 @@ public class BookController {
         //         }
         //     }
         // );
-
         // changes.forEach(
         //     (change, value) -> {
         //         switch (change) {
@@ -188,15 +184,16 @@ public class BookController {
         //         }
         //     }
         // );
+
         modelMapper.map(changes, bookDtoToUpdate);
-        Book updatedBook = convertToBook(bookDtoToUpdate);
+    	Book updatedBook = convertToBook(bookDtoToUpdate);
 
-        //updatedBookDto.setId(id);
-        //Book updatedBook = convertToBook(updatedBookDto);
+    	//updatedBookDto.setId(id);
+    	//Book updatedBook = convertToBook(updatedBookDto);
         return bookService.save(updatedBook);
-        //return bookService.save(bookToUpdate.get());
+    	//return bookService.save(bookToUpdate.get());
     }
-
+    
     private BookDto convertToDto(Book book) {
         return modelMapper.map(book, BookDto.class);
     }
@@ -207,8 +204,8 @@ public class BookController {
     
     @DeleteMapping("/delete-book/{id}")
     public void delete(@PathVariable Long id) {
-        Book bookToDelete = bookService.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+    	Book bookToDelete = bookService.findById(id)
+    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format(bookNotFoundErrorMessage, id))
         );
         bookService.delete(bookToDelete);
@@ -220,7 +217,6 @@ public class BookController {
             PredefinedShelf predefinedShelf = null;
             predefinedShelf =
                     predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString).get();
-
             return predefinedShelf;
         }
     };
