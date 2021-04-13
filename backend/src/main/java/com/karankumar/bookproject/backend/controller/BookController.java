@@ -1,7 +1,7 @@
 /*
  * The book project lets a user keep track of different books they would like to read, are currently
  * reading, have read or did not finish.
- * Copyright (C) 2020  Karan Kumar
+ * Copyright (C) 2021  Karan Kumar
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
