@@ -14,7 +14,9 @@ import static org.mockito.Mockito.when;
 public class UserControllerTest {
 
     /*
-    1. valid email addr. form xxx@xxx.xxx - service layer
+    1. valid email addser> findByEmail(String email);
+}
+r. form xxx@xxx.xxx - service layer
     2. does not match with the existing email addr.
      */
     @Test

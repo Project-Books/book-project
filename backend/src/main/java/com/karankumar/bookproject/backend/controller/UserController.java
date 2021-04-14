@@ -38,11 +38,10 @@ public class UserController {
     public void register(@RequestBody User user) {
         userService.register(user);
     }
-    
+
     //change email address
     @PutMapping("/change-email-address/{oldEmail}/{newEmail}")
     public User changeEmailAddress(@PathVariable("oldEmail") String oldEmail, @PathVariable("newEmail") String newEmail) {
-    	System.out.println("test");
     	Optional<User> optionalUser = userService.findByEmail(oldEmail);
     	if (optionalUser.isPresent()) {
     	    User user = optionalUser.get();
@@ -51,8 +50,5 @@ public class UserController {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the user");
         }
-    	// time of use (verify/ confirm that the user is the user - ask for the user's password)
-        // --> RequestBody?
-        // print(test)
     }
 }
