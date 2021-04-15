@@ -29,6 +29,7 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -87,6 +88,7 @@ public class BookService {
         return bookRepository.count();
     }
 
+    @Transactional
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
