@@ -50,9 +50,9 @@ public class BookController {
 	
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    private final String bookNotFoundErrorMessage = "Could not find book with ID %d";
+    private static final String BOOK_NOT_FOUND_ERROR_MESSAGE = "Could not find book with ID %d";
 
     @Autowired
     public BookController(BookService bookService, PredefinedShelfService predefinedShelfService,
@@ -79,7 +79,7 @@ public class BookController {
     public Book findById(@PathVariable Long id) {
     	return bookService.findById(id)
     		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format(bookNotFoundErrorMessage, id))
+                String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
             );
     }
 
@@ -91,18 +91,13 @@ public class BookController {
     		@RequestParam Long id) {
     	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))
     		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format(bookNotFoundErrorMessage, id))
+                    String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
             );
     }
     		
     @GetMapping("/find-by-author/{author}") 	
-    public Optional<List<Book>> findByAuthor(@PathVariable String author /*authorsName*/,
-    		@RequestParam(required=false) String title//,
-    		/*@RequestParam Long id*/) {
-    		//@RequestParam String authorsName) {
-        System.out.println("here");
-    	return bookService.findByTitleOrAuthor(title, author /*authorsName*/);
-//    		.orElseThrow(() -> new BookNotFoundException(id));
+    public Optional<List<Book>> findByAuthor(@PathVariable String author) {
+    	return bookService.findByTitleOrAuthor("", author);
     }
     
     @PostMapping()
@@ -122,7 +117,7 @@ public class BookController {
     	if (bookToUpdate.isEmpty()) {
     		throw new ResponseStatusException(
     		        HttpStatus.NOT_FOUND,
-                    String.format(bookNotFoundErrorMessage, id)
+                    String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)
             );
     	}
 
@@ -207,7 +202,7 @@ public class BookController {
     public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
     		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format(bookNotFoundErrorMessage, id))
+                String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
         );
         bookService.delete(bookToDelete);
     }
