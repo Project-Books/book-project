@@ -52,7 +52,7 @@ public class BookService {
     }
 
     public Optional<Book> findById(Long id) {
-        return bookRepository.findById(id);
+        return bookRepository.findBookById(id);
     }
 
     public Optional<Book> save(Book book) {

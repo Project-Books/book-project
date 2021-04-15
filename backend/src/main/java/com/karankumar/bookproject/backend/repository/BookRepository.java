@@ -24,6 +24,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
@@ -34,6 +35,16 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "INNER JOIN FETCH b.tags " +
             "INNER JOIN FETCH b.publishers" )
     List<Book> findAllBooks();
+
+
+    @Query("SELECT b " +
+            "FROM Book b " +
+            "INNER JOIN FETCH b.author " +
+            "INNER JOIN FETCH b.predefinedShelf " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers " +
+            "WHERE b.id = :id" )
+    Optional<Book> findBookById(@Param("id") Long id);
 
     List<Book> findByTitleContainingIgnoreCase(String title);
 
