@@ -17,10 +17,20 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React from 'react'
 import { NavBar } from '../shared/navigation/NavBar';
+import "./Goal.css";
 
 function Goal() {
     return (
-        <NavBar />
+        <div>
+            <NavBar />
+            <div className="goal-header">
+                Reading goal
+            </div>
+            <div className="current-goal-container">
+                <h3>No goal set</h3>
+                <p>Click here to add a new goal</p>
+            </div>
+        </div>
     )
 }
 

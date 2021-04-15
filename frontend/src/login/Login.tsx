@@ -26,6 +26,7 @@ import Endpoints from '../shared/api/endpoints';
 import Verb from '../shared/http/verb';
 import {RouteComponentProps} from 'react-router-dom';
 import {MY_BOOKS, SIGN_UP} from "../shared/routes";
+import ForgotPasswordModal from '../shared/components/ForgotPasswordModal';
 
 interface IState {
     email: string,
@@ -34,7 +35,8 @@ interface IState {
     isPasswordDirty: boolean,
     isEmailInvalid: boolean,
     isPasswordInvalid: boolean,
-    loginFailed: boolean
+    loginFailed: boolean,
+    showForgotPasswordModal: boolean
 }
 
 type LoginProps = Record<string, unknown> & RouteComponentProps
@@ -50,10 +52,13 @@ class Login extends Component<LoginProps, IState> {
             isPasswordDirty: false,
             isEmailInvalid: false,
             isPasswordInvalid: false,
-            loginFailed: false
+            loginFailed: false,
+            showForgotPasswordModal: false
         }
 
         this.onPasswordChanged = this.onPasswordChanged.bind(this)
+        this.onForgotPassword = this.onForgotPassword.bind(this)
+        this.onForgotPasswordModalClose = this.onForgotPasswordModalClose.bind(this)
         this.onEmailChanged = this.onEmailChanged.bind(this)
         this.onClickLogin = this.onClickLogin.bind(this)
         this.sendLoginRequest = this.sendLoginRequest.bind(this)
@@ -84,7 +89,18 @@ class Login extends Component<LoginProps, IState> {
             isPasswordInvalid: password === ''
         })
     }
-
+    
+    onForgotPassword(): void {
+        this.setState({
+           showForgotPasswordModal: true
+        })
+    }
+    
+    onForgotPasswordModalClose(): void {
+        this.setState({
+            showForgotPasswordModal: false
+        })
+    }
     isEmailInvalid(): boolean {
         const isEmailDirtyAndBlank = this.state.email === '' && this.state.isEmailDirty
         return isEmailDirtyAndBlank || this.state.isEmailInvalid
@@ -183,11 +199,18 @@ class Login extends Component<LoginProps, IState> {
                             to={SIGN_UP}>
                             Create account
                         </Button>
+                        <Button className="center login" onClick={this.onForgotPassword}>
+                            Forgot Password
+                        </Button>
 
                         {this.state.loginFailed && this.renderLoginError()}
 
                     </div>
                 </div>
+                <ForgotPasswordModal 
+                    open={this.state.showForgotPasswordModal} 
+                    onClose={this.onForgotPasswordModalClose}
+                />
             </div>
         )
     }
