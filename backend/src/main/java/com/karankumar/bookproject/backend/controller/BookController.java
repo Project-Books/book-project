@@ -94,10 +94,11 @@ public class BookController {
                     String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
             );
     }
-    		
-    @GetMapping("/find-by-author/{author}") 	
-    public Optional<List<Book>> findByAuthor(@PathVariable String author) {
-    	return bookService.findByTitleOrAuthor("", author);
+
+    @GetMapping("/find-by-title-or-author/{title}/{author}")
+    public Optional<List<Book>> findByTitleOrAuthor(@PathVariable String title,
+                                                    @PathVariable String author) {
+    	return bookService.findByTitleOrAuthor(title, author);
     }
     
     @PostMapping()
