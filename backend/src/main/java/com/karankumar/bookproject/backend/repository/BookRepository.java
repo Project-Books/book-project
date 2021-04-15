@@ -26,6 +26,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
+
+    @Query("SELECT b " +
+            "FROM Book b " +
+            "INNER JOIN FETCH b.author " +
+            "INNER JOIN FETCH b.predefinedShelf " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers" )
+    List<Book> findAllBooks();
+
     List<Book> findByTitleContainingIgnoreCase(String title);
 
     @Query("SELECT b " +

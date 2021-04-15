@@ -70,9 +70,8 @@ public class BookController {
     }
     
     @GetMapping()
-    // TODO: fix could not initialise proxy error
     public List<Book> all() {
-    	return bookService.findAll();
+        return bookService.findAll();
     }
     
     @GetMapping("/find-by-id/{id}")
