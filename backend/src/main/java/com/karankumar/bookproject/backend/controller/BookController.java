@@ -82,16 +82,11 @@ public class BookController {
             );
     }
 
-    @GetMapping("/find-by-shelf/{shelf}") 	
-    public Optional<List<Book>> findByShelf(@PathVariable Shelf shelf, 
-    		//@RequestParam Shelf shelf, 
-    		@RequestParam(required=false) String title, 
-    		@RequestParam(required=false) String authorsName,
-    		@RequestParam Long id) {
-    	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))
-    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
-            );
+
+    // TODO fix
+    @GetMapping("/find-by-shelf/{shelfName}")
+    public List<Book> findByShelf(@PathVariable String shelfName) {
+        return bookService.findByShelf(shelfName);
     }
 
     @GetMapping("/find-by-title-or-author/{title}/{author}")

@@ -148,10 +148,16 @@ public class BookService {
         return jsonWriter.writeValueAsString(books);
     }
 
+    public List<Book> findByShelf(String shelfName) {
+        return bookRepository.findByShelf(shelfName);
+    }
+
+    // TODO: remove this method and the corresponding repository method
     public Optional<List<Book>> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
         return Optional.ofNullable(bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName));
     }
 
+    // TODO: remove optional
     public Optional<List<Book>> findByTitleOrAuthor(String title, String authorsName){
         return Optional.ofNullable(bookRepository.findByTitleOrAuthor(title, authorsName));
     }

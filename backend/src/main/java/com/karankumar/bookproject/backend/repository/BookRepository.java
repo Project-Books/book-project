@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-
     @Query("SELECT b " +
             "FROM Book b " +
             "INNER JOIN FETCH b.author " +
@@ -47,6 +46,12 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<Book> findBookById(@Param("id") Long id);
 
     List<Book> findByTitleContainingIgnoreCase(String title);
+
+    @Query("SELECT b " +
+            "FROM Book b " +
+            "WHERE LOWER(b.predefinedShelf.shelfName) = LOWER(:shelfName) OR " +
+            "LOWER(b.customShelf.shelfName) = LOWER(:shelfName)")
+    List<Book> findByShelf(@Param("shelfName") String shelfName);
 
     @Query("SELECT b " +
             "FROM Book b " +
