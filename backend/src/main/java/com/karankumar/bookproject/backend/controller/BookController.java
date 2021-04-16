@@ -22,7 +22,6 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +39,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.List;
-//import java.text.ParseException;
 import java.util.Map;
 
 @RestController
@@ -50,9 +47,9 @@ public class BookController {
 	
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
-    private final String bookNotFoundErrorMessage = "Could not find book with ID %d";
+    private static final String BOOK_NOT_FOUND_ERROR_MESSAGE = "Could not find book with ID %d";
 
     @Autowired
     public BookController(BookService bookService, PredefinedShelfService predefinedShelfService,
@@ -61,9 +58,6 @@ public class BookController {
         this.predefinedShelfService = predefinedShelfService;
         this.modelMapper = modelMapper;
         
-        // Condition notNull = ctx -> ctx.getSource() != null;
-
-        // this.modelMapper.addMappings()
         this.modelMapper.addConverter(predefinedShelfConverter);
         this.modelMapper.addConverter(bookGenreConverter);
         this.modelMapper.addConverter(bookFormatConverter);
@@ -71,45 +65,33 @@ public class BookController {
     
     @GetMapping()
     public List<Book> all() {
-    	return bookService.findAll();
+        return bookService.findAll();
     }
     
     @GetMapping("/find-by-id/{id}")
     public Book findById(@PathVariable Long id) {
     	return bookService.findById(id)
     		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format(bookNotFoundErrorMessage, id))
+                String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
             );
     }
 
-    @GetMapping("/find-by-shelf/{shelf}") 	
-    public Optional<List<Book>> findByShelf(@PathVariable Shelf shelf, 
-    		//@RequestParam Shelf shelf, 
-    		@RequestParam(required=false) String title, 
-    		@RequestParam(required=false) String authorsName,
-    		@RequestParam Long id) {
-    	return Optional.ofNullable(bookService.findByShelfAndTitleOrAuthor(shelf, title, authorsName))
-    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format(bookNotFoundErrorMessage, id))
-            );
+
+    // TODO fix. This always returns an empty list
+    @GetMapping("/find-by-shelf/{shelfName}")
+    public List<Book> findByShelf(@PathVariable String shelfName) {
+        return bookService.findByShelf(shelfName);
     }
-    		
-    @GetMapping("/find-by-author/{author}") 	
-    public Optional<List<Book>> findByAuthor(@PathVariable String author /*authorsName*/,
-    		@RequestParam(required=false) String title//,
-    		/*@RequestParam Long id*/) {
-    		//@RequestParam String authorsName) {
-        System.out.println("here");
-    	return bookService.findByTitleOrAuthor(title, author /*authorsName*/);
-//    		.orElseThrow(() -> new BookNotFoundException(id));
+
+    @GetMapping("/find-by-title-or-author/{titleOrAuthor}")
+    public List<Book> findByTitleOrAuthor(@PathVariable String titleOrAuthor) {
+        return bookService.findByTitleOrAuthor(titleOrAuthor);
     }
-    
+
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody BookDto bookDto) {
-    	// convert DTO to entity
     	Book bookToAdd = convertToBook(bookDto);
-
         return bookService.save(bookToAdd);
     }
     
@@ -121,7 +103,7 @@ public class BookController {
     	if (bookToUpdate.isEmpty()) {
     		throw new ResponseStatusException(
     		        HttpStatus.NOT_FOUND,
-                    String.format(bookNotFoundErrorMessage, id)
+                    String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)
             );
     	}
 
@@ -206,7 +188,7 @@ public class BookController {
     public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
     		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format(bookNotFoundErrorMessage, id))
+                String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
         );
         bookService.delete(bookToDelete);
     }
