@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.karankumar.bookproject.backend.service.IncorrectPasswordException;
+import com.karankumar.bookproject.backend.service.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -49,8 +52,7 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public User getUser(@PathVariable Long id) {
-        // TODO: throw not found
-        return userService.findUserById(id).orElseThrow();
+        return userService.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @PostMapping("/register")
@@ -69,16 +71,18 @@ public class UserController {
 //        }
     }
 
-    @DeleteMapping("/delete-current")
+    @DeleteMapping("/delete-current/{password}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteCurrentUser(@RequestBody String password) {
-        if (userService.getCurrentUser().getPassword().equals(passwordEncoder.encode(password))) {
+    public void deleteCurrentUser(@PathVariable String password) {
+        if (passwordEncoder.matches(password, userService.getCurrentUser().getPassword())){
             Long userId = userService.getCurrentUser().getId();
             if (userId != null) {
                 userService.deleteUserById(userId);
+            }else{
+                throw new NullPointerException("UserID cannot be null");
             }
-            // TODO: else throw exception
+        }else{
+            throw new IncorrectPasswordException();
         }
-        // TODO: else throw an incorrect password exception
-    }
+   }
 }

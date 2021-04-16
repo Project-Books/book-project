@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.model.account.Role;
 import com.karankumar.bookproject.backend.model.account.User;
+import com.karankumar.bookproject.backend.service.UserService;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -171,5 +172,21 @@ class UserServiceTest {
 
         // then
         assertThat(actual).containsAll(users);
+    }
+
+    @Test
+    void findUserById(){
+        //given
+        User user = getTestUser(userRepository);
+
+        List<User> users = Arrays.asList(
+            insertTestUser(userRepository),
+            getTestUser(userRepository),
+            insertTestUser(userRepository),
+            insertTestUser(userRepository)
+        );
+
+        //then
+        assertThat(userService.findUserById((long) 1)).hasValue(user);
     }
 }

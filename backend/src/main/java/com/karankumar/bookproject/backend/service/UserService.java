@@ -145,9 +145,8 @@ public class UserService {
 
             bookRepository.deleteAll();
             userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException(id);
         }
-
-
-        // TODO: otherwise throw/return false
     }
 }
