@@ -7,6 +7,8 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.router.PageTitle;
@@ -22,6 +24,15 @@ public class DeleteAccountView extends VerticalLayout {
 
     public DeleteAccountView(UserService userService)   {
         VerticalLayout verticalLayout = new VerticalLayout();
+
+        Icon backIcon = new Icon(VaadinIcon.ARROW_LEFT);
+        verticalLayout.add(backIcon);
+
+        backIcon.getStyle().set("cursor", "pointer");
+        backIcon.addClickListener(
+                event -> getUI().ifPresent(ui -> ui.navigate(SettingsView.class)));
+
+
         verticalLayout.add(new H1(DELETE_ACCOUNT));
         verticalLayout.add(new H3("Warning: this action is irreversible"));
         verticalLayout.add(new Text("If you'd like to first export your data, please do so below. " +
