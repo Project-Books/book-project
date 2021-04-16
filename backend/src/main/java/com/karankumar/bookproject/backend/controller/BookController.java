@@ -22,7 +22,6 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +39,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.List;
-//import java.text.ParseException;
 import java.util.Map;
 
 @RestController
@@ -61,9 +58,6 @@ public class BookController {
         this.predefinedShelfService = predefinedShelfService;
         this.modelMapper = modelMapper;
         
-        // Condition notNull = ctx -> ctx.getSource() != null;
-
-        // this.modelMapper.addMappings()
         this.modelMapper.addConverter(predefinedShelfConverter);
         this.modelMapper.addConverter(bookGenreConverter);
         this.modelMapper.addConverter(bookFormatConverter);
@@ -83,24 +77,21 @@ public class BookController {
     }
 
 
-    // TODO fix
+    // TODO fix. This always returns an empty list
     @GetMapping("/find-by-shelf/{shelfName}")
     public List<Book> findByShelf(@PathVariable String shelfName) {
         return bookService.findByShelf(shelfName);
     }
 
-    @GetMapping("/find-by-title-or-author/{title}/{author}")
-    public Optional<List<Book>> findByTitleOrAuthor(@PathVariable String title,
-                                                    @PathVariable String author) {
-    	return bookService.findByTitleOrAuthor(title, author);
+    @GetMapping("/find-by-title-or-author/{titleOrAuthor}")
+    public List<Book> findByTitleOrAuthor(@PathVariable String titleOrAuthor) {
+        return bookService.findByTitleOrAuthor(titleOrAuthor);
     }
-    
+
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody BookDto bookDto) {
-    	// convert DTO to entity
     	Book bookToAdd = convertToBook(bookDto);
-
         return bookService.save(bookToAdd);
     }
     

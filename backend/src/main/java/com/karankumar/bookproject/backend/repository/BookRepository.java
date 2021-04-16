@@ -65,10 +65,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT b " +
             "FROM Book b " +
-            "LEFT JOIN b.author AS a " +
-            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
-            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :authorsName, '%'))")
-    List<Book> findByTitleOrAuthor(@Param("title") String title,
-                                   @Param("authorsName") String authorsName);
-
+            "INNER JOIN FETCH b.author AS a " +
+            "INNER JOIN FETCH b.predefinedShelf " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers " +
+            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR " +
+                "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%'))")
+    List<Book> findByTitleOrAuthor(@Param("titleOrAuthor") String titleOrAuthor);
 }

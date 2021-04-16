@@ -72,13 +72,13 @@ class BookRepositoryTest {
     void successfullyDeleteABook_whenAuthorHasOtherBooks() {
         // given
         bookRepository.saveAndFlush(new Book("Book2", author, read));
-        Book book = bookRepository.findByTitleOrAuthor("title", WILDCARD).get(0);
+        Book book = bookRepository.findByTitleOrAuthor("title").get(0);
 
         // when
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").size())
+        assertThat(bookRepository.findByTitleOrAuthor("firstName").size())
                 .isOne();
     }
 
@@ -92,7 +92,7 @@ class BookRepositoryTest {
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, "firstName").size())
+        assertThat(bookRepository.findByTitleOrAuthor("firstName").size())
                 .isZero();
     }
 
@@ -160,7 +160,7 @@ class BookRepositoryTest {
         int allBooks = bookRepository.findAll().size();
 
         // when
-        int actual = bookRepository.findByTitleOrAuthor(WILDCARD, WILDCARD)
+        int actual = bookRepository.findByTitleOrAuthor(WILDCARD)
                                  .size();
 
         // then
@@ -177,7 +177,7 @@ class BookRepositoryTest {
         bookRepository.saveAndFlush(new Book("anotherBook", author, read));
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor(title, WILDCARD).size()).isOne();
+        assertThat(bookRepository.findByTitleOrAuthor(title).size()).isOne();
     }
 
     @Test
@@ -187,9 +187,9 @@ class BookRepositoryTest {
         String lastName = "lastName";
 
         assertSoftly(softly -> {
-            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, firstName).size())
+            softly.assertThat(bookRepository.findByTitleOrAuthor(firstName).size())
                   .isOne();
-            softly.assertThat(bookRepository.findByTitleOrAuthor(WILDCARD, lastName).size())
+            softly.assertThat(bookRepository.findByTitleOrAuthor(lastName).size())
             	  .isOne();
         });
     }

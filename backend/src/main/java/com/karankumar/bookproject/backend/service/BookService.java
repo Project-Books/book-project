@@ -157,8 +157,7 @@ public class BookService {
         return Optional.ofNullable(bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName));
     }
 
-    // TODO: remove optional
-    public Optional<List<Book>> findByTitleOrAuthor(String title, String authorsName){
-        return Optional.ofNullable(bookRepository.findByTitleOrAuthor(title, authorsName));
+    public List<Book> findByTitleOrAuthor(String titleOrAuthorFullName) {
+        return bookRepository.findByTitleOrAuthor(titleOrAuthorFullName);
     }
 }
