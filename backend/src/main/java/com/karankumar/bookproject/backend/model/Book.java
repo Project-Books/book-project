@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
-import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -45,6 +45,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -59,7 +61,6 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
-//@EqualsAndHashCode(exclude = {"id", "tags","publishers", "predefinedShelf", "customShelf"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Book {
     public static final int MAX_PAGES = 23_000;
@@ -226,6 +227,11 @@ public class Book {
     public void removePredefinedShelf() {
         predefinedShelf.getBooks().remove(this);
         predefinedShelf = null;
+    }
+
+    public void removeAuthor() {
+        author.getBooks().remove(this);
+        author = null;
     }
 
     public void setPublicationYear(Integer yearOfPublication) {

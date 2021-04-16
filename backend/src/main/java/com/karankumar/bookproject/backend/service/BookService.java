@@ -38,6 +38,7 @@ import java.util.logging.Level;
 
 @Service
 @Log
+@Transactional
 public class BookService {
     private final AuthorService authorService;
     private final BookRepository bookRepository;
@@ -51,7 +52,7 @@ public class BookService {
     }
 
     public Optional<Book> findById(Long id) {
-        return bookRepository.findById(id);
+        return bookRepository.findBookById(id);
     }
 
     public Optional<Book> save(Book book) {
@@ -88,9 +89,8 @@ public class BookService {
         return bookRepository.count();
     }
 
-    @Transactional
     public List<Book> findAll() {
-        return bookRepository.findAll();
+        return bookRepository.findAllBooks();
     }
 
     public List<Book> findAll(String filterText) {
@@ -113,13 +113,9 @@ public class BookService {
                     bookRepository.count());
 
             Author author = book.getAuthor();
-            removeBookFromAuthor(book, author);
+            book.removeAuthor();
             removeAuthorWithoutBooks(author);
         }
-    }
-
-    private void removeBookFromAuthor(Book book, Author author) {
-        author.removeBook(book);
     }
 
     private void removeAuthorWithoutBooks(Author author) {
@@ -137,8 +133,8 @@ public class BookService {
                 bookRepository.count());
         bookRepository.deleteAll();
         authorService.deleteAll();
-        LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = " +
-                bookRepository.count());
+        LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = "
+                + bookRepository.count());
     }
 
     public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
@@ -152,11 +148,16 @@ public class BookService {
         return jsonWriter.writeValueAsString(books);
     }
 
+    public List<Book> findByShelf(String shelfName) {
+        return bookRepository.findByShelf(shelfName);
+    }
+
+    // TODO: remove this method and the corresponding repository method
     public Optional<List<Book>> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
         return Optional.ofNullable(bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName));
     }
 
-    public Optional<List<Book>> findByTitleOrAuthor(String title, String authorsName){
-        return Optional.ofNullable(bookRepository.findByTitleOrAuthor(title, authorsName));
+    public List<Book> findByTitleOrAuthor(String titleOrAuthorFullName) {
+        return bookRepository.findByTitleOrAuthor(titleOrAuthorFullName);
     }
 }
