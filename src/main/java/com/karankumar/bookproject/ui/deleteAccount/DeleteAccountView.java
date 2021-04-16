@@ -24,6 +24,7 @@ public class DeleteAccountView extends VerticalLayout {
 
     public DeleteAccountView(UserService userService)   {
         VerticalLayout verticalLayout = new VerticalLayout();
+        VerticalLayout mainFunctionality = new VerticalLayout();
 
         Icon backIcon = new Icon(VaadinIcon.ARROW_LEFT);
         verticalLayout.add(backIcon);
@@ -33,28 +34,29 @@ public class DeleteAccountView extends VerticalLayout {
                 event -> getUI().ifPresent(ui -> ui.navigate(SettingsView.class)));
 
 
-        verticalLayout.add(new H1(DELETE_ACCOUNT));
-        verticalLayout.add(new H3("Warning: this action is irreversible"));
-        verticalLayout.add(new Text("If you'd like to first export your data, please do so below. " +
+        mainFunctionality.add(new H1(DELETE_ACCOUNT));
+        mainFunctionality.add(new H3("Warning: this action is irreversible"));
+        mainFunctionality.add(new Text("If you'd like to first export your data, please do so below. " +
                 "This gives you a chance to save your data in case you'd ever like to create an account again."));
         Button exportAccountButton = new Button(EXPORT, click -> {
 
         });
-        verticalLayout.add(exportAccountButton);
+        mainFunctionality.add(exportAccountButton);
 
-        verticalLayout.add(new Text("If you're sure you want to delete your account, confirm deletion by entering your password in the field below"));
+        mainFunctionality.add(new Text("If you're sure you want to delete your account, confirm deletion by entering your password in the field below"));
 
         PasswordField passwordField = new PasswordField();
-        verticalLayout.add(passwordField);
+        mainFunctionality.add(passwordField);
 
         Button deleteAccountButton = new Button(DELETE_ACCOUNT, click -> {
 
         });
-        verticalLayout.add(deleteAccountButton);
+        mainFunctionality.add(deleteAccountButton);
+        mainFunctionality.setAlignItems(Alignment.CENTER);
+        verticalLayout.add(mainFunctionality);
         Button cancelButton = new Button("Cancel",   event -> getUI().ifPresent(ui -> ui.navigate(SettingsView.class)));
-
         verticalLayout.add(cancelButton);
-        verticalLayout.setAlignItems(Alignment.CENTER);
+        verticalLayout.setHorizontalComponentAlignment(Alignment.CENTER, cancelButton);
         add(verticalLayout);
     }
 
