@@ -189,4 +189,23 @@ class UserServiceTest {
         //then
         assertThat(userService.findUserById((long) 1)).hasValue(user);
     }
-}
+    
+      @Test
+      void deleteUserByIdTest() {
+        //given
+          User user = getTestUser(userRepository);
+    
+          List<User> users = Arrays.asList(
+              insertTestUser(userRepository),
+              getTestUser(userRepository),
+              insertTestUser(userRepository),
+              insertTestUser(userRepository)
+          );
+    
+          //when 
+          userService.deleteUserById((long) 1);
+          
+          //then
+          assertThat(!users.contains(user));
+      }
+  }
