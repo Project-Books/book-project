@@ -21,21 +21,29 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.ImportService;
+import com.karankumar.bookproject.backend.service.UserService;
 import com.karankumar.bookproject.backend.util.CsvUtils;
 import com.karankumar.bookproject.ui.MainView;
 import com.karankumar.bookproject.ui.components.AppFooter;
+import com.karankumar.bookproject.ui.components.dialog.DeleteAccountDialog;
 import com.karankumar.bookproject.ui.components.dialog.ResetShelvesDialog;
 import com.karankumar.bookproject.ui.components.toggle.SwitchToggle;
+import com.karankumar.bookproject.ui.deleteAccount.DeleteAccountView;
+import com.karankumar.bookproject.ui.registration.RegistrationView;
 import com.vaadin.flow.component.HtmlComponent;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.dom.ThemeList;
@@ -58,13 +66,23 @@ public class SettingsView extends HorizontalLayout {
 
     private static final String ENABLE_DARK_MODE = "Enable dark mode";
     private static final String APPEARANCE = "Appearance:";
+    private static final String ACCOUNT = "Account:";
     private static final String MY_BOOKS = "My books:";
     private static final String DISABLE_DARK_MODE = "Disable dark mode";
+    private static final String EMAIL = "Email: ";
+    private static final String PASSWORD = "Password: ";
 
     private static SwitchToggle darkModeToggle;
     private static boolean darkModeOn = false;
     private static final Label darkModeLabel = new Label(ENABLE_DARK_MODE);
 
+    private static final Label emailLabel = new Label(EMAIL);
+    private static final Label passwordLabel = new Label(PASSWORD);
+
+    private static final String DELETE_ACCOUNT = "Delete account";
+    private static DeleteAccountDialog deleteAccountDialog;
+
+    private static final H3 accountHeading = new H3(ACCOUNT);
     private static final H3 appearanceHeading = new H3(APPEARANCE);
     private static final H3 myBooksHeading = new H3(MY_BOOKS);
     private static final HtmlComponent lineBreak = new HtmlComponent("br");
@@ -84,9 +102,18 @@ public class SettingsView extends HorizontalLayout {
     private final BookService bookService;
     private final transient ImportService importService;
 
+    private final UserService userService;
     static {
+        Account();
+        Appearance();
+    }
+
+    private static void Appearance()   {
         configureDarkModeToggle();
         createExportBooksAnchor();
+    }
+    private static void Account()   {
+        configureDarkModeToggle();
     }
 
     private static void configureDarkModeToggle() {
@@ -111,11 +138,15 @@ public class SettingsView extends HorizontalLayout {
         exportBooksAnchor.add(new Button(EXPORT_BOOKS, new Icon(VaadinIcon.DOWNLOAD_ALT)));
     }
 
-    SettingsView(BookService bookService, ImportService importService) {
+    SettingsView(BookService bookService, ImportService importService, UserService userService) {
         this.bookService = bookService;
         this.importService = importService;
 
+        this.userService = userService;
+
         setDarkModeState();
+
+        HorizontalLayout pageLayout = new HorizontalLayout();
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.add(darkModeLabel, darkModeToggle);
@@ -124,6 +155,45 @@ public class SettingsView extends HorizontalLayout {
         configureImportGoodreadsUpload();
 
         createImportGoodreadsUpload();
+
+        Text email = new Text(userService.getCurrentUser().getEmail());
+        Icon editEmail = new Icon(VaadinIcon.PENCIL);
+        Icon saveEmail = new Icon(VaadinIcon.PENCIL);
+        HorizontalLayout emailLayout = new HorizontalLayout();
+        emailLayout.add(emailLabel, email, editEmail);
+        editEmail.addClickListener(event -> {
+            TextField changeEmail = new TextField();
+            emailLayout.replace(email, changeEmail);
+            emailLayout.replace(editEmail, saveEmail);
+            saveEmail.addClickListener(e -> {
+                String newEmail = changeEmail.getValue();
+                userService.getCurrentUser().setEmail(newEmail);
+                email.setText(newEmail);
+                emailLayout.replace(changeEmail, email);
+                emailLayout.replace(saveEmail, editEmail);
+            });
+        });
+
+
+
+        Text password = new Text(userService.getCurrentUser().getPassword());
+        Icon editPassword = new Icon(VaadinIcon.PENCIL);
+        Icon savePassword = new Icon(VaadinIcon.PENCIL);
+        HorizontalLayout passwordLayout = new HorizontalLayout(passwordLabel, password, editPassword);
+        editPassword.addClickListener(event -> {
+            PasswordField changePassword = new PasswordField();
+            passwordLayout.replace(password, changePassword);
+            passwordLayout.replace(editPassword, savePassword);
+            savePassword.addClickListener(e -> {
+               userService.getCurrentUser().setPassword(changePassword.getValue());
+               password.setText(changePassword.getValue());
+               passwordLayout.replace(changePassword, password);
+               passwordLayout.replace(savePassword, editPassword);
+            });
+        });
+
+        VerticalLayout accountLayout = new VerticalLayout(accountHeading, emailLayout, passwordLayout, deleteAccountButton());
+        accountLayout.setAlignItems(Alignment.CENTER);
         VerticalLayout verticalLayout = new VerticalLayout(
                 appearanceHeading,
                 horizontalLayout,
@@ -135,10 +205,12 @@ public class SettingsView extends HorizontalLayout {
                 new AppFooter()
         );
         verticalLayout.setAlignItems(Alignment.CENTER);
-        add(verticalLayout);
-
         setSizeFull();
         setAlignItems(Alignment.CENTER);
+
+        pageLayout.add(accountLayout, verticalLayout);
+
+        add(pageLayout);
     }
 
     private void createImportGoodreadsUpload() {
@@ -155,6 +227,11 @@ public class SettingsView extends HorizontalLayout {
             resetShelvesDialog.openDialog();
         });
     }
+
+    private Button deleteAccountButton()    {
+        return new Button(DELETE_ACCOUNT,
+            e -> getUI().ifPresent(ui -> ui.navigate(DeleteAccountView.class)));
+    };
 
     private void setDarkModeState() {
         if (darkModeOn) {

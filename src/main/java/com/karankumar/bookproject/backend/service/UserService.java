@@ -123,4 +123,8 @@ public class UserService {
     public boolean emailIsNotInUse(String email) {
         return !emailIsInUse(email);
     }
+
+    public void deleteAccount(){
+
+    }
 }
