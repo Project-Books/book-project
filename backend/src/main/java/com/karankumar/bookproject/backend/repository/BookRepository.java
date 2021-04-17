@@ -47,21 +47,26 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findByTitleContainingIgnoreCase(String title);
 
+    // TODO: remove this. This was for testing purposes.
     @Query("SELECT b " +
             "FROM Book b " +
-            "WHERE LOWER(b.predefinedShelf.shelfName) = LOWER(:shelfName) OR " +
-            "LOWER(b.customShelf.shelfName) = LOWER(:shelfName)")
-    List<Book> findByShelf(@Param("shelfName") String shelfName);
+            "INNER JOIN FETCH b.predefinedShelf AS p " +
+            "INNER JOIN FETCH b.customShelf AS c " +
+            "WHERE (LOWER(p.shelfName) = LOWER(:shelf) OR LOWER(c.shelfName) = LOWER(:shelf))")
+            /* +
+            "(LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR " +
+            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')))")*/
+    List<Book> findByShelfAndTitleOrAuthor2(@Param("shelf") String shelfName);
+
 
     @Query("SELECT b " +
             "FROM Book b " +
-            "LEFT JOIN b.author a " +
-            "WHERE (b.predefinedShelf = :shelf OR b.customShelf = :shelf) AND " +
-            "LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
-            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :authorsName, '%'))")
-    List<Book> findByShelfAndTitleOrAuthor(@Param("shelf") Shelf shelf,
-                                           @Param("title") String title,
-                                           @Param("authorsName") String authorsName);
+            "INNER JOIN FETCH b.author a " +
+            "WHERE (b.predefinedShelf.shelfName = :shelf OR b.customShelf.shelfName = :shelf) AND " +
+            "(LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR " +
+            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')))")
+    List<Book> findByShelfAndTitleOrAuthor(@Param("shelf") String shelfName,
+                                           @Param("titleOrAuthor") String titleOrAuthor);
 
     @Query("SELECT b " +
             "FROM Book b " +

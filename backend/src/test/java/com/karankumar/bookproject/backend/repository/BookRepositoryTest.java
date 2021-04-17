@@ -119,9 +119,11 @@ class BookRepositoryTest {
     @DisplayName("should successfully find list of books for any shelf no other filter")
     void findBookByShelf_withoutParameters() {
         int allBooks = bookRepository.findAll().size();
-        int radBooks = bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, WILDCARD).size();
+        int readBooks = bookRepository.findByShelfAndTitleOrAuthor(
+                read.getShelfName(), WILDCARD
+        ).size();
 
-        assertThat(allBooks).isEqualTo(radBooks);
+        assertThat(allBooks).isEqualTo(readBooks);
     }
 
     @Test
@@ -134,9 +136,8 @@ class BookRepositoryTest {
 
         bookRepository.saveAndFlush(new Book(title, author, toRead));
 
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toRead, title, WILDCARD).size())
-                .isOne();
-
+        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toRead.getShelfName(), title)
+                                 .size()).isOne();
     }
 
     @Test
@@ -146,10 +147,14 @@ class BookRepositoryTest {
         String lastName = "lastName";
 
         assertSoftly(softly -> {
-            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, firstName)
-                                            .size()).isOne();
-            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(read, WILDCARD, lastName)
-                                            .size()).isOne();
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(
+                    read.getShelfName(),
+                    firstName
+            ).size()).isOne();
+            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(
+                    read.getShelfName(),
+                    lastName
+            ).size()).isOne();
         });
     }
 
