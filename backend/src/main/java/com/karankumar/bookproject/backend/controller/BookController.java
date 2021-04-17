@@ -246,7 +246,6 @@ public class BookController {
         return modelMapper.map(bookDto, Book.class);
     }
 
-    // TODO: fix lazy initialization exception
     @DeleteMapping("/delete-book/{id}")
     public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
@@ -255,5 +254,4 @@ public class BookController {
         );
         bookService.delete(bookToDelete);
     }
-;
 }

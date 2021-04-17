@@ -29,7 +29,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -45,8 +44,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -57,7 +54,6 @@ import java.util.Set;
 @Entity
 @Builder
 @Data
-//@DynamicUpdate
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
