@@ -40,8 +40,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "FROM Book b " +
             "INNER JOIN FETCH b.author " +
             "INNER JOIN FETCH b.predefinedShelf " +
-//            "INNER JOIN FETCH b.tags " +
-//            "INNER JOIN FETCH b.publishers " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers " +
             "WHERE b.id = :id" )
     Optional<Book> findBookById(@Param("id") Long id);
 

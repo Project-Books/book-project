@@ -254,27 +254,4 @@ public class BookController {
         );
         bookService.delete(bookToDelete);
     }
-
-    Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {
-        //public PredefinedShelf convert(MappingContext<String, PredefinedShelf> context) {
-        public PredefinedShelf convert(String predefinedShelfString) {
-            PredefinedShelf predefinedShelf = null;
-            predefinedShelf =
-                    predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString).get();
-            return predefinedShelf;
-        }
-    };
-    
-    Converter<String, BookGenre> bookGenreConverter = new AbstractConverter<>() {
-        public BookGenre convert(String bookGenreString) {
-            return BookGenre.valueOf(bookGenreString);
-        }
-    };
-    
-    Converter<String, BookFormat> bookFormatConverter = new AbstractConverter<>() {
-        public BookFormat convert(String bookFormatString) {
-            return BookFormat.valueOf(bookFormatString);
-        }
-    };
-
 }
