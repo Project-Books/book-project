@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.print.attribute.standard.Destination;
 import java.util.Optional;
 import java.util.List;
 import java.util.Map;
@@ -57,18 +58,50 @@ public class BookController {
         this.bookService = bookService;
         this.predefinedShelfService = predefinedShelfService;
         this.modelMapper = modelMapper;
-        
+
         this.modelMapper.addConverter(predefinedShelfConverter);
         this.modelMapper.addConverter(bookGenreConverter);
         this.modelMapper.addConverter(bookFormatConverter);
     }
-    
+
+    // TODO: fix this. A book always gets a null predefined shelf
+    Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {
+        @Override
+        public PredefinedShelf convert(String predefinedShelfString) {
+            Optional<PredefinedShelf> optionalPredefinedShelf =
+                    predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString);
+            if (optionalPredefinedShelf.isEmpty()) {
+                String errorMessage = String.format(
+                        "%s does not match a predefined shelf",
+                        predefinedShelfString
+                );
+                throw new IllegalStateException(errorMessage);
+            }
+
+            return optionalPredefinedShelf.get();
+        }
+    };
+
+    Converter<String, BookGenre> bookGenreConverter = new AbstractConverter<>() {
+        public BookGenre convert(String bookGenreString) {
+            return BookGenre.valueOf(bookGenreString);
+        }
+    };
+
+    Converter<String, BookFormat> bookFormatConverter = new AbstractConverter<>() {
+        public BookFormat convert(String bookFormatString) {
+            return BookFormat.valueOf(bookFormatString);
+        }
+    };
+
     @GetMapping()
+    // TODO: only retrieve books that belong to the logged in user
     public List<Book> all() {
         return bookService.findAll();
     }
     
     @GetMapping("/find-by-id/{id}")
+    // TODO: only retrieve books that belong to the logged in user
     public Book findById(@PathVariable Long id) {
     	return bookService.findById(id)
     		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -78,23 +111,52 @@ public class BookController {
 
 
     // TODO fix. This always returns an empty list
-    @GetMapping("/find-by-shelf/{shelfName}")
-    public List<Book> findByShelf(@PathVariable String shelfName) {
-        return bookService.findByShelf(shelfName);
+    // TODO: only retrieve books that belong to the logged in user
+    @GetMapping("/find-by-shelf-and-title-or-author/{shelfName}/{titleOrAuthor}")
+    public List<Book> findByShelfAndTitleOrAuthor(@PathVariable String shelfName,
+                                                  @PathVariable String titleOrAuthor) {
+//        return bookService.findByShelfAndTitleOrAuthor(shelfName, titleOrAuthor);
+        return bookService.findByShelfAndTitleOrAuthor2(shelfName);
     }
 
     @GetMapping("/find-by-title-or-author/{titleOrAuthor}")
+    // TODO: only retrieve books that belong to the logged in user
     public List<Book> findByTitleOrAuthor(@PathVariable String titleOrAuthor) {
         return bookService.findByTitleOrAuthor(titleOrAuthor);
     }
 
-    @PostMapping()
+    @PostMapping("/add-to-read-book")
     @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Book> addBook(@RequestBody BookDto bookDto) {
+    public Optional<Book> addToReadBook(@RequestBody BookDto bookDto) {
     	Book bookToAdd = convertToBook(bookDto);
+    	bookToAdd.addPredefinedShelf(predefinedShelfService.findToReadShelf());
         return bookService.save(bookToAdd);
     }
-    
+
+    @PostMapping("/add-reading-book")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Optional<Book> addReadingBook(@RequestBody BookDto bookDto) {
+        Book bookToAdd = convertToBook(bookDto);
+        bookToAdd.addPredefinedShelf(predefinedShelfService.findReadingShelf());
+        return bookService.save(bookToAdd);
+    }
+
+    @PostMapping("/add-read-book")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Optional<Book> addReadBook(@RequestBody BookDto bookDto) {
+        Book bookToAdd = convertToBook(bookDto);
+        bookToAdd.addPredefinedShelf(predefinedShelfService.findReadShelf());
+        return bookService.save(bookToAdd);
+    }
+
+    @PostMapping("/add-did-not-finish-book")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Optional<Book> addDidNotFinishBook(@RequestBody BookDto bookDto) {
+        Book bookToAdd = convertToBook(bookDto);
+        bookToAdd.addPredefinedShelf(predefinedShelfService.findDidNotFinishShelf());
+        return bookService.save(bookToAdd);
+    }
+
     @PatchMapping("/update-book/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Book> update(@PathVariable Long id, @RequestBody Map<String, Object> changes) { //@RequestBody BookDto updatedBookDto) {
@@ -180,10 +242,10 @@ public class BookController {
         return modelMapper.map(book, BookDto.class);
     }
     
-    private Book convertToBook(BookDto bookDto) { //throws ParseException {
+    private Book convertToBook(BookDto bookDto) {
         return modelMapper.map(bookDto, Book.class);
     }
-    
+
     @DeleteMapping("/delete-book/{id}")
     public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
@@ -192,7 +254,7 @@ public class BookController {
         );
         bookService.delete(bookToDelete);
     }
-    
+
     Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {
         //public PredefinedShelf convert(MappingContext<String, PredefinedShelf> context) {
         public PredefinedShelf convert(String predefinedShelfString) {

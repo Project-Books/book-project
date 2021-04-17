@@ -90,11 +90,11 @@ class BookControllerTest {
     @Test
     // TODO: finish writing this test
     void findByShelf_returnsNotFound_ifBookDoesNotExist() {
-        when(mockedBookService.findByShelfAndTitleOrAuthor(
-                any(Shelf.class),
-                any(String.class),
-                any(String.class))
-        ).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        when(mockedBookService.findByShelfAndTitleOrAuthor(
+//                any(Shelf.class),
+//                any(String.class),
+//                any(String.class))
+//        ).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
 //        assertThatExceptionOfType(BookNotFoundException.class)
 //                .isThrownBy(bookController.findByShelf(new CustomShelf(), "title", "author"));

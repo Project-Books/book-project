@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Publisher;
-import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
@@ -52,7 +51,8 @@ public class BookService {
     }
 
     public Optional<Book> findById(Long id) {
-        return bookRepository.findBookById(id);
+//        return bookRepository.findBookById(id);
+        return bookRepository.findById(id);
     }
 
     public Optional<Book> save(Book book) {
@@ -101,24 +101,15 @@ public class BookService {
     }
 
     public void delete(@NonNull Book book) {
-        LOGGER.log(Level.INFO, "Deleting book. Book repository size = " + bookRepository.count());
+//        book.removeAuthor();
         bookRepository.delete(book);
 
-        List<Book> books = bookRepository.findAll();
-        if (books.contains(book)) {
-
-            LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
-        } else {
-            LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
-                    bookRepository.count());
-
-            Author author = book.getAuthor();
-            book.removeAuthor();
-            removeAuthorWithoutBooks(author);
-        }
+        // TODO: fix this
+//        Author author = book.getAuthor();
+//        removeAuthorWithoutBooks(author);
     }
 
-    private void removeAuthorWithoutBooks(Author author) {
+    private void removeAuthorWithoutBooks(@NonNull Author author) {
         if (author.getBooks().isEmpty()) {
             authorService.delete(author);
         }
@@ -148,13 +139,12 @@ public class BookService {
         return jsonWriter.writeValueAsString(books);
     }
 
-    public List<Book> findByShelf(String shelfName) {
-        return bookRepository.findByShelf(shelfName);
+    public List<Book> findByShelfAndTitleOrAuthor(String shelf, String titleOrAuthor) {
+        return bookRepository.findByShelfAndTitleOrAuthor(shelf, titleOrAuthor);
     }
 
-    // TODO: remove this method and the corresponding repository method
-    public Optional<List<Book>> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
-        return Optional.ofNullable(bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName));
+    public List<Book> findByShelfAndTitleOrAuthor2(String shelf) {
+        return bookRepository.findByShelfAndTitleOrAuthor2(shelf);
     }
 
     public List<Book> findByTitleOrAuthor(String titleOrAuthorFullName) {
