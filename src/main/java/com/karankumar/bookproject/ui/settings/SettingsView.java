@@ -135,7 +135,7 @@ public class SettingsView extends HorizontalLayout {
     SettingsView(BookService bookService, ImportService importService, UserService userService, DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService, DatabaseUserDetailsService databaseUserDetailsService) {
         this.bookService = bookService;
         this.importService = importService;
-        
+
         setDarkModeState();
 
         HorizontalLayout pageLayout = new HorizontalLayout();
@@ -147,6 +147,8 @@ public class SettingsView extends HorizontalLayout {
         configureImportGoodreadsUpload();
 
         createImportGoodreadsUpload();
+
+        //placeholder to illustrate layout
 
         Text email = new Text(userService.getCurrentUser().getEmail());
         Icon editEmailIcon = new Icon(VaadinIcon.PENCIL);
@@ -181,7 +183,7 @@ public class SettingsView extends HorizontalLayout {
                passwordLayout.replace(savePassword, editPasswordIcon);
             });
         });
-
+        //end placeholder
         VerticalLayout accountLayout = new VerticalLayout(accountHeading, emailLayout, passwordLayout, deleteAccountButton());
         accountLayout.setAlignItems(Alignment.CENTER);
         VerticalLayout verticalLayout = new VerticalLayout(
