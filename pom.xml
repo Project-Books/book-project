@@ -17,7 +17,7 @@
     <properties>
         <start-class>com.karankumar.bookproject.BookProjectApplication</start-class>
         <java.version>11</java.version>
-        <vaadin.version>14.4.4</vaadin.version>
+        <vaadin.version>19.0.5</vaadin.version>
         <lombok.version>1.18.12</lombok.version>
     </properties>
 
