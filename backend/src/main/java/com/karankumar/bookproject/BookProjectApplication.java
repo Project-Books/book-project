@@ -25,7 +25,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.Conditions;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
-import com.karankumar.bookproject.backend.model.BookGenre;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
@@ -35,8 +34,8 @@ public class BookProjectApplication extends SpringBootServletInitializer {
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
-            .setPropertyCondition(Conditions.isNotNull())
-            .setMatchingStrategy(MatchingStrategies.STRICT);
+            .setPropertyCondition(Conditions.isNotNull());
+           // .setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper;
 	}
 

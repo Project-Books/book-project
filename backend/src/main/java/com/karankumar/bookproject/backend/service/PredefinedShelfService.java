@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.model.account.User;
@@ -189,7 +190,7 @@ public class PredefinedShelfService {
     public Optional<PredefinedShelf> getPredefinedShelfByNameAsString(String shelfName) {
     	List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
                 .stream()
-                .filter(shelf -> shelf.getShelfName().equals(shelfName))
+                .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.valueOf(shelfName)))
                 .collect(Collectors.toList());
 
         if (shelfFound.isEmpty()) {
@@ -197,6 +198,21 @@ public class PredefinedShelfService {
         }
 
         return Optional.of(shelfFound.get(0)); // there should only be one
+    }
+
+    public Optional<PredefinedShelf> getPredefinedShelfByPredefinedShelfName(
+                PredefinedShelfName predefinedShelfName) {
+        List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
+                .stream()
+                .filter(shelf -> shelf.getPredefinedShelfName().equals(predefinedShelfName))
+                .collect(Collectors.toList());
+
+            if (shelfFound.isEmpty()) {
+                return Optional.empty();
+            }
+    
+            return Optional.of(shelfFound.get(0)); // there should only be one 
+        
     }
 
 	/**

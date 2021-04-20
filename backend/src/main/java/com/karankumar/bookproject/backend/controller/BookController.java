@@ -22,6 +22,7 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,10 +67,16 @@ public class BookController {
 
     // TODO: fix this. A book always gets a null predefined shelf
     Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {
-        @Override
+        //@Override
         public PredefinedShelf convert(String predefinedShelfString) {
-            Optional<PredefinedShelf> optionalPredefinedShelf =
-                    predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString);
+            PredefinedShelfName optionalPredefinedShelfName =
+                    PredefinedShelfName.valueOf(predefinedShelfString);
+                    
+            Optional<PredefinedShelf> optionalPredefinedShelf = 
+                    predefinedShelfService.getPredefinedShelfByPredefinedShelfName(optionalPredefinedShelfName);
+            // Optional<PredefinedShelf> optionalPredefinedShelf = 
+            //         predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString);
+
             if (optionalPredefinedShelf.isEmpty()) {
                 String errorMessage = String.format(
                         "%s does not match a predefined shelf",
@@ -123,6 +130,13 @@ public class BookController {
     // TODO: only retrieve books that belong to the logged in user
     public List<Book> findByTitleOrAuthor(@PathVariable String titleOrAuthor) {
         return bookService.findByTitleOrAuthor(titleOrAuthor);
+    }
+
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public Optional<Book> addBook(@RequestBody BookDto bookDto) {
+    	Book bookToAdd = convertToBook(bookDto);
+        return bookService.save(bookToAdd);
     }
 
     @PostMapping("/add-to-read-book")
