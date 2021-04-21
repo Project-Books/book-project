@@ -27,6 +27,7 @@ import Verb from '../shared/http/verb';
 import {RouteComponentProps} from 'react-router-dom';
 import {MY_BOOKS, SIGN_UP} from "../shared/routes";
 import ForgotPasswordModal from '../shared/components/ForgotPasswordModal';
+import PasswordResetModal from '../shared/components/PasswordResetModal';
 
 interface IState {
     email: string,
@@ -36,7 +37,8 @@ interface IState {
     isEmailInvalid: boolean,
     isPasswordInvalid: boolean,
     loginFailed: boolean,
-    showForgotPasswordModal: boolean
+    showForgotPasswordModal: boolean,
+    showPasswordResetModal: boolean
 }
 
 type LoginProps = Record<string, unknown> & RouteComponentProps
@@ -53,17 +55,19 @@ class Login extends Component<LoginProps, IState> {
             isEmailInvalid: false,
             isPasswordInvalid: false,
             loginFailed: false,
-            showForgotPasswordModal: false
+            showForgotPasswordModal: false,
+            showPasswordResetModal: false
         }
 
         this.onPasswordChanged = this.onPasswordChanged.bind(this)
         this.onForgotPassword = this.onForgotPassword.bind(this)
         this.onForgotPasswordModalClose = this.onForgotPasswordModalClose.bind(this)
+        this.onPasswordResetModalClose = this.onPasswordResetModalClose.bind(this);
         this.onEmailChanged = this.onEmailChanged.bind(this)
         this.onClickLogin = this.onClickLogin.bind(this)
         this.sendLoginRequest = this.sendLoginRequest.bind(this)
         this.sendLoginRequestIfCredentialsAreValid =
-            this.sendLoginRequestIfCredentialsAreValid.bind(this)
+         this.sendLoginRequestIfCredentialsAreValid.bind(this)
     }
 
     onClickLogin(): void {
@@ -99,6 +103,12 @@ class Login extends Component<LoginProps, IState> {
     onForgotPasswordModalClose(): void {
         this.setState({
             showForgotPasswordModal: false
+        })
+    }
+
+    onPasswordResetModalClose(): void {
+        this.setState({
+            showPasswordResetModal: false
         })
     }
     isEmailInvalid(): boolean {
@@ -145,8 +155,12 @@ class Login extends Component<LoginProps, IState> {
     }
 
     renderLoginError(): ReactElement {
-        return <p className="error-message">Your email or password is incorrect. Please try again</p>
-    }
+        return (
+               <p className="error-message">
+                 Your email or password is incorrect. Please try again
+               </p>
+        )
+    }  
 
     render(): ReactElement {
         return (
@@ -210,6 +224,10 @@ class Login extends Component<LoginProps, IState> {
                 <ForgotPasswordModal 
                     open={this.state.showForgotPasswordModal} 
                     onClose={this.onForgotPasswordModalClose}
+                />
+                <PasswordResetModal
+                    open={this.state.showPasswordResetModal} 
+                    onClose={this.onPasswordResetModalClose}
                 />
             </div>
         )

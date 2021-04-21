@@ -30,7 +30,7 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
   state = {
     isInvalid: false,
     errorMessage: '',
-    emailEntered: ''
+    emailEntered: '',
   }
 
   onEmailChanged(emailEntered: string): void {

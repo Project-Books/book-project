@@ -27,26 +27,28 @@ export default class PasswordResetModal extends Component<IModalProps> {
   render() :JSX.Element{
     return (
       <div>
-        <Modal open={this.props.open} onClose={this.props.onClose}></Modal>
-        <div className="modal-container">
-            <div className="modal-content">
-              <div className="forgot-password-title">
-                Forgot your password?
+        <Modal open={this.props.open} onClose={this.props.onClose}>
+          <div className="modal-container">
+              <div className="modal-content">
+                <div className="forgot-password-title">
+                  Forgot your password?
+                </div>
+                <div className="reset-success-text">
+                Success!If there&apos;s an account associated with that email,
+                we&apos;ve sent a link to reset your password.
+                </div>
               </div>
-              <div className="reset-success-text">
-               Success!If there&apos;s an account associated with that email,
-               we&apos;ve sent a link to reset your password.
+              <div className="button-container">
+                <Button
+                  className="close-reset-modal-button"
+                  variant="contained"
+                  onClick={this.props.onClose}
+                  color="primary">
+                  Done
+                </Button>
               </div>
-            </div>
-            <div className="button-container">
-              <Button
-                className="close-reset-modal-button"
-                variant="contained"
-                color="primary">
-                 Done
-              </Button>
-            </div>
-        </div>
+           </div>
+        </Modal>
       </div>
     )
   }
