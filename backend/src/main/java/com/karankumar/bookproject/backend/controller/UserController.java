@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.karankumar.bookproject.backend.service.IncorrectPasswordException;
-import com.karankumar.bookproject.backend.service.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -38,6 +38,8 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+
+    private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
 
     @Autowired
     public UserController(UserService userService, PasswordEncoder passwordEncoder) {
@@ -52,7 +54,7 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public User getUser(@PathVariable Long id) {
-        return userService.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+        return userService.findUserById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)));
     }
 
     @PostMapping("/register")
@@ -82,7 +84,7 @@ public class UserController {
                 throw new NullPointerException("UserID cannot be null");
             }
         }else{
-            throw new IncorrectPasswordException();
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
         }
    }
 }

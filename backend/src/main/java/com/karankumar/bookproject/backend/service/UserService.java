@@ -27,6 +27,7 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +35,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -53,6 +55,8 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final BookRepository bookRepository;
     private final PredefinedShelfService predefinedShelfService;
+
+    private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
@@ -98,7 +102,9 @@ public class UserService {
 
     public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email).orElseThrow();
+        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND, "Curret User can not be found")
+        );
     }
 
     public List<User> findAll() {
@@ -146,7 +152,10 @@ public class UserService {
             bookRepository.deleteAll();
             userRepository.deleteById(id);
         } else {
-            throw new UserNotFoundException(id);
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, 
+                    String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)
+            );
         }
     }
 }
