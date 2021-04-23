@@ -68,19 +68,19 @@ public class BookController {
     // TODO: fix this. A book always gets a null predefined shelf
     Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {
         //@Override
-        public PredefinedShelf convert(String predefinedShelfString) {
-            PredefinedShelfName optionalPredefinedShelfName =
-                    PredefinedShelfName.valueOf(predefinedShelfString);
-                    
-            Optional<PredefinedShelf> optionalPredefinedShelf = 
-                    predefinedShelfService.getPredefinedShelfByPredefinedShelfName(optionalPredefinedShelfName);
+        public PredefinedShelf convert(String predefinedShelf) {
+            PredefinedShelf.ShelfName optionalPredefinedShelfName =
+                    PredefinedShelf.ShelfName.valueOf(predefinedShelf);
+
             // Optional<PredefinedShelf> optionalPredefinedShelf = 
-            //         predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelfString);
+            //         predefinedShelfService.getPredefinedShelfByPredefinedShelfName(optionalPredefinedShelfName);
+            Optional<PredefinedShelf> optionalPredefinedShelf = 
+                    predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelf);
 
             if (optionalPredefinedShelf.isEmpty()) {
                 String errorMessage = String.format(
                         "%s does not match a predefined shelf",
-                        predefinedShelfString
+                        predefinedShelf
                 );
                 throw new IllegalStateException(errorMessage);
             }

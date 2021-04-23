@@ -190,6 +190,7 @@ public class PredefinedShelfService {
     public Optional<PredefinedShelf> getPredefinedShelfByNameAsString(String shelfName) {
     	List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
                 .stream()
+                //.filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.valueOf(shelfName)))
                 .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.valueOf(shelfName)))
                 .collect(Collectors.toList());
 
@@ -201,7 +202,7 @@ public class PredefinedShelfService {
     }
 
     public Optional<PredefinedShelf> getPredefinedShelfByPredefinedShelfName(
-                PredefinedShelfName predefinedShelfName) {
+                PredefinedShelf.ShelfName predefinedShelfName) {
         List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
                 .stream()
                 .filter(shelf -> shelf.getPredefinedShelfName().equals(predefinedShelfName))

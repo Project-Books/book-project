@@ -73,8 +73,8 @@ public class BookDto {
     @JsonProperty("author")
     private Author author;
     
-    @JsonProperty("predefinedShelfString")
-    private String predefinedShelfString;
+    @JsonProperty("predefinedShelf")
+    private String predefinedShelf;
     
     // For books that have been read
     // @JsonProperty("rating")
