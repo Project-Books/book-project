@@ -46,10 +46,10 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
         <Modal open={this.props.open} onClose={this.props.onClose}>
           <div className="modal-container">
             <div className="modal-content">
-              <div className="forgot-password-title">
+              <div className="modal-title">
                 Forgot your password?
               </div>
-              <div className="reset-password-desc">
+              <div className="modal-desc">
                 We&apos;ll email you a link to reset your Password
               </div>
             </div>
@@ -63,7 +63,7 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
               <div className="password-form-spacer" />
               <div className="password-form-spacer" />
               <Button
-                className="reset-password-button"
+                className="modal-button-primary"
                 variant="contained"
                 onClick={this.props.onPasswordResetClicked}
                 color="primary">
@@ -71,7 +71,7 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
               </Button>
               <div className="password-form-spacer" />
               <Button
-                className="cancel-button"
+                className="modal-button-secondary"
                 onClick={this.props.onClose}
                 variant="contained">
                   Cancel

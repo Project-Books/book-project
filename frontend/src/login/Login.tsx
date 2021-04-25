@@ -87,7 +87,6 @@ class Login extends Component<LoginProps, IState> {
     }
 
     onPasswordChanged(password: string): void {
-        console.log(`login password: ${password}`)
         this.setState({
             password,
             isPasswordDirty: true,

@@ -18,27 +18,25 @@ If not, see <https://www.gnu.org/licenses/>.
 import React, { Component } from 'react'
 import Modal, {IModalProps} from './Modal'
 import Button from '@material-ui/core/Button';
+import './ForgotPasswordModal.css';
 
 export default class PasswordResetModal extends Component<IModalProps> {
-  constructor(props: IModalProps) {
-    super(props)
-  }
-
+ 
   render() :JSX.Element{
     return (
       <div>
         <Modal open={this.props.open} onClose={this.props.onClose}>
           <div className="modal-container">
               <div className="modal-content">
-                <div className="forgot-password-title">
+                <div className="modal-title">
                   Forgot your password?
                 </div>
-                <div className="reset-success-text">
+                <div className="modal-desc">
                 Success!If there&apos;s an account associated with that email,
                 we&apos;ve sent a link to reset your password.
                 </div>
               </div>
-              <div className="button-container">
+              <div className="password-form-spacer" />
                 <Button
                   className="close-reset-modal-button"
                   variant="contained"
@@ -46,7 +44,6 @@ export default class PasswordResetModal extends Component<IModalProps> {
                   color="primary">
                   Done
                 </Button>
-              </div>
            </div>
         </Modal>
       </div>
