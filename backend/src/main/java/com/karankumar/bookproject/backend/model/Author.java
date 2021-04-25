@@ -25,11 +25,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedAttributeNode;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.GenerationType;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,6 +42,9 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(exclude= "books")
+@NamedEntityGraph(name = "Author.books",
+        attributeNodes = @NamedAttributeNode("books")
+)
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,23 +52,19 @@ public class Author {
     private Long id;
 
     @NotBlank
-    private String firstName;
+    private String fullName;
 
-    @NotBlank
-    private String lastName;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     @Setter
     private Set<Book> books = new HashSet<>();
 
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Author(String fullName) {
+        this.fullName = fullName;
     }
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return fullName;
     }
 
     public void removeBook(Book book) {

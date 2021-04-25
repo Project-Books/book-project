@@ -18,8 +18,17 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Publisher;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 
 public interface PublisherRepository extends JpaRepository<Publisher, Long> {
+    @EntityGraph(value = "Publisher.books")
+    Optional<Publisher> findById(Long id);
+
+    @EntityGraph(value = "Publisher.books")
+    List<Publisher> findAll();
 }

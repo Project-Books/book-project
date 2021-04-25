@@ -224,7 +224,7 @@ public class PredefinedShelfService {
     public Set<Book> getBooksInAllPredefinedShelves() {
         return getBooksInPredefinedShelves(findAllForLoggedInUser());
     }
-
+  
     public void deleteAll() {
 	    predefinedShelfRepository.deleteAll();
     }

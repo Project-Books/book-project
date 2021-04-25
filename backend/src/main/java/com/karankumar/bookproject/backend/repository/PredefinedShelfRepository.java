@@ -20,14 +20,33 @@ package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf, Long> {
+    @EntityGraph(value = "PredefinedShelf.books")
     List<PredefinedShelf> findAllByUser(User user);
+
+    @EntityGraph(value = "PredefinedShelf.books")
     Optional<PredefinedShelf> findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName shelfName,
     		User user);
+
     int countAllByUser(User user);
+
+    @EntityGraph(value = "PredefinedShelf.books")
+    Optional<PredefinedShelf> findById(Long id);
+
+    @EntityGraph(value = "PredefinedShelf.books")
+    List<PredefinedShelf> findAll();
+
+    @Query("SELECT p " +
+            "FROM PredefinedShelf p " +
+            "LEFT JOIN p.books AS b " +
+            "WHERE p.predefinedShelfName = com.karankumar.bookproject.backend.model.PredefinedShelfName.READ"
+    )
+    List<PredefinedShelf> findReadShelf2();
 }

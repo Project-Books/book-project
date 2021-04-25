@@ -16,7 +16,12 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, {ReactElement} from 'react'
-import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel} from '@material-ui/core'
+import { 
+  FormControl, 
+  FormHelperText, 
+  IconButton, 
+  InputAdornment, 
+  InputLabel} from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import {useState} from 'react';

@@ -30,6 +30,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedAttributeNode;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -41,6 +44,9 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NamedEntityGraph(name = "PredefinedShelf.books",
+        attributeNodes = @NamedAttributeNode("books")
+)
 public class PredefinedShelf extends Shelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,8 +56,9 @@ public class PredefinedShelf extends Shelf {
     @Setter(AccessLevel.NONE)
     private ShelfName predefinedShelfName;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "predefinedShelf")
-    protected Set<Book> books;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "predefinedShelf")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    protected Set<Book> books = new HashSet<>();
 
     public PredefinedShelf(ShelfName predefinedShelfName, User user) {
         super(predefinedShelfName.toString(), user);

@@ -57,17 +57,20 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"id", "tags","publishers", "predefinedShelf", "customShelf"})
+//@EqualsAndHashCode(exclude = {"id", "tags","publishers", "predefinedShelf", "customShelf"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Book {
     public static final int MAX_PAGES = 23_000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @NotNull
     @NotBlank
+    @EqualsAndHashCode.Include
     private String title;
 
     @Max(value = MAX_PAGES)
@@ -76,16 +79,20 @@ public class Book {
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
 
-    @ElementCollection(targetClass = BookGenre.class)
+    @ElementCollection(targetClass = BookGenre.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "book_genre",
             joinColumns = @JoinColumn(name = "book_id")
     )
     @Column(name = "genre")
     private Set<BookGenre> bookGenre;
+
     private BookFormat bookFormat;
+
     private Integer seriesPosition;
+
     private String edition;
+
     private String bookRecommendedBy;
 
     @ISBN
@@ -93,30 +100,39 @@ public class Book {
 
     private Integer yearOfPublication;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH
+    })
     @JoinColumn(
             name = "author_id",
             nullable = false,
             referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "book_author_id_fk")
     )
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    // TODO: include Author in equals and hashcode
+//    @EqualsAndHashCode.Include
     private Author author;
 
     @ManyToOne(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Setter(AccessLevel.NONE)
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "custom_shelf_id", referencedColumnName = "id")
     private CustomShelf customShelf;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "book_tag",
             joinColumns = @JoinColumn(
@@ -129,15 +145,17 @@ public class Book {
             )
     )
     @Setter(AccessLevel.NONE)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "book_publisher",
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "publisher_id", referencedColumnName = "id")
     )
-    private Set<Publisher> publishers;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Set<Publisher> publishers = new HashSet<>();
 
     // For books that have been read
     private RatingScale rating;
@@ -151,7 +169,7 @@ public class Book {
     public Book(String title, Author author, PredefinedShelf predefinedShelf) {
         this.title = title;
         this.author = author;
-        this.predefinedShelf = predefinedShelf;
+        addPredefinedShelf(predefinedShelf);
     }
 
     public Book(String title, Author author, PredefinedShelf predefinedShelf,
@@ -187,6 +205,9 @@ public class Book {
     }
 
     public void addTag(@NonNull Tag tag) {
+        if (tags == null) {
+            tags = new HashSet<>();
+        }
         tags.add(tag);
         tag.getBooks().add(this);
     }

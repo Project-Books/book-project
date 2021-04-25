@@ -31,6 +31,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedAttributeNode;
 import java.util.Set;
 
 @Entity
@@ -38,13 +40,16 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
+@NamedEntityGraph(name = "CustomShelf.books",
+        attributeNodes = @NamedAttributeNode("books")
+)
 public class CustomShelf extends Shelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customShelf")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customShelf")
     protected Set<Book> books;
 
     public CustomShelf(String shelfName, User user) {

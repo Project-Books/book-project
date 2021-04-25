@@ -300,7 +300,7 @@ class ReadingGoalCalculatorTest {
 
     private Book.BookBuilder createBook() {
         return Book.builder().title("title")
-                   .author(new Author("J.K.", "Rowling"))
+                   .author(new Author("J.K. Rowling"))
                    .predefinedShelf(null);
     }
 

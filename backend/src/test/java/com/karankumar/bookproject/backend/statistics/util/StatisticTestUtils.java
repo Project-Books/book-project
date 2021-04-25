@@ -133,7 +133,7 @@ public class StatisticTestUtils {
 
     private static Book createBook(String bookTitle, PredefinedShelf shelf, BookGenre bookGenre,
                                    int pages, LocalDate startedReading) {
-        Author author = new Author("Joe", "Bloggs");
+        Author author = new Author("Joe Bloggs");
         Book book = new Book(bookTitle, author, shelf);
         book.setBookGenre(Collections.singleton(bookGenre));
         book.setNumberOfPages(pages);

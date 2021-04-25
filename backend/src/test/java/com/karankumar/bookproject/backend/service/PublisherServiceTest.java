@@ -167,7 +167,7 @@ class PublisherServiceTest {
     void addBookToPublisher() {
         // given
         PredefinedShelf shelf = predefinedShelfService.findToReadShelf();
-        Book book = new Book("Title", new Author("First", "Last"), shelf);
+        Book book = new Book("Title", new Author("First Last"), shelf);
         bookService.save(book);
 
         Publisher publisher = new Publisher("Publisher");
@@ -189,7 +189,8 @@ class PublisherServiceTest {
     @DisplayName("throw exception on attempt to add a book to a null publisher")
     void throwExceptionForNullPublisherInAddBookToPublisher() {
         // given
-        Book book = new Book("Title", new Author("a", "b"), null);
+        PredefinedShelf shelf = predefinedShelfService.findToReadShelf();
+        Book book = new Book("Title", new Author("a b"), shelf);
 
         // when and then
         assertThatExceptionOfType(NullPointerException.class)

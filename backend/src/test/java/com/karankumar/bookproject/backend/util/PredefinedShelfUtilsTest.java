@@ -78,7 +78,7 @@ class PredefinedShelfUtilsTest {
         this.bookRepository = bookRepository;
         this.predefinedShelfService = predefinedShelfService;
 
-        this.author = new Author("first", "last");
+        this.author = new Author("first last");
         authorService.save(author);
     }
 
@@ -144,7 +144,8 @@ class PredefinedShelfUtilsTest {
         Set<Book> actualBooks = predefinedShelfService.getBooksInChosenPredefinedShelf(shelf);
 
         // then
-        assertThat(actualBooks.toString()).isEqualTo(expectedBooks.toString());
+//        assertThat(actualBooks.toString()).hasToString(expectedBooks.toString());
+        assertThat(actualBooks).containsExactlyInAnyOrderElementsOf(expectedBooks);
     }
 
     @Test
