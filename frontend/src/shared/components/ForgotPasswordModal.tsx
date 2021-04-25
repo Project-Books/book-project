@@ -35,11 +35,11 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
 
   onEmailChanged(emailEntered: string): void {
     this.setState({
-        emailEntered,
-        isInvalid: emailEntered === ''
+      emailEntered,
+      isInvalid: emailEntered === ''
     })
   }
-
+  
   render(): JSX.Element {
     return (
       <div>
@@ -65,6 +65,7 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
               <Button
                 className="reset-password-button"
                 variant="contained"
+                onClick={this.props.onPasswordResetClicked}
                 color="primary">
                 Send me a password reset link
               </Button>

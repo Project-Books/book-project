@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface IModalProps{
   open: boolean,
   onClose?:() => void,
+  onPasswordResetClicked?: () => void,
   children?: JSX.Element
 }
 
