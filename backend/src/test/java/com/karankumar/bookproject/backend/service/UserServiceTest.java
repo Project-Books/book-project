@@ -172,4 +172,15 @@ class UserServiceTest {
         // then
         assertThat(actual).containsAll(users);
     }
+
+    @Test
+    void checkIfOldPasswordIsValid() {
+        assertThat(userService.checkIfValidOldPassword(validUser, "aaaaAAAA1234@")).isTrue();
+    }
+
+    @Test
+    void changeUserPassword() {
+        userService.changeUserPassword(validUser, "aAAAA1234@");
+    }
+
 }

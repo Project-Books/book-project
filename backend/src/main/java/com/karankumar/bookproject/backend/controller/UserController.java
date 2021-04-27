@@ -15,14 +15,11 @@
 package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.account.User;
+import com.karankumar.bookproject.backend.service.InvalidOldPasswordException;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -38,5 +35,18 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody User user) {
         userService.register(user);
+    }
+
+    @PostMapping("/update-password")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePassword(@RequestParam("password") String password,
+                               @RequestParam("oldPassword") String oldPassword) throws InvalidOldPasswordException {
+        User user = userService.getCurrentUser();
+
+        if (!userService.checkIfValidOldPassword(user, oldPassword)) {
+            throw new InvalidOldPasswordException("old password is not correct");
+        }
+        userService.changeUserPassword(user, password);
+
     }
 }
