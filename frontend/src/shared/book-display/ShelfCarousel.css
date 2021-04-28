@@ -9,6 +9,10 @@
 
 /* Styles for carousel */
 
+.shelf-container {
+    margin-bottom: 40px;
+}
+
 .shelf-title {
     display: inline-block;
     font-size: 20px;
