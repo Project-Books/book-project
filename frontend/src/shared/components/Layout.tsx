@@ -40,5 +40,5 @@ export function Layout(props: LayoutProps) {
 type LayoutProps = {
     title: string;
     centered?: boolean;
-    children: JSX.Element | JSX.Element[];
+    children?: JSX.Element | JSX.Element[];
 }
