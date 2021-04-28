@@ -15,20 +15,20 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-.settings-header {
+/* .settings-header {
  padding-left: 260px;
  padding-top:100px;
  padding-bottom:28px;
  font-size: 22pt;
  font-weight:bold;
  color:black;
-}
+} */
 
 .switch-container {
   display:flex;
   flex-direction:row;
-  padding-top: 26px;
-  padding-left: 260px;
+  /* padding-top: 26px;
+  padding-left: 260px; */
 }
 
 .toggle-text {
