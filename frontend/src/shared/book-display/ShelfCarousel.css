@@ -9,20 +9,12 @@
 
 /* Styles for carousel */
 
-.container {
-    margin-top: 40px;
-    margin-left: 180px;
-}
-
-.shelf-container {
-    padding: 0px 40px;
-}
-
 .shelf-title {
     display: inline-block;
     font-size: 20px;
     font-weight: bold;
     padding: 20px;
+    padding-left: 0px;
 }
 
 .view-all {
