@@ -16,22 +16,16 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from 'react'
-import { NavBar } from '../shared/navigation/NavBar';
 import "./Goal.css";
+import { Layout } from "../shared/components/Layout"
 
-function Goal() {
+export default function Goal() {
     return (
-        <div>
-            <NavBar />
-            <div className="goal-header">
-                Reading goal
-            </div>
+        <Layout title="Reading goal">
             <div className="current-goal-container">
                 <h3>No goal set</h3>
                 <p>Click here to add a new goal</p>
             </div>
-        </div>
+        </Layout>
     )
 }
-
-export default Goal;
