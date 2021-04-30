@@ -72,7 +72,7 @@ public class UserService {
         this.bookRepository = bookRepository;
     }
 
-    public void register(@NonNull User user) throws UserAlreadyRegisteredException {
+    public User register(@NonNull User user) throws UserAlreadyRegisteredException {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
 
@@ -97,7 +97,9 @@ public class UserService {
 
         userRepository.save(userToRegister);
 
-        authenticateUser(user);
+//        authenticateUser(user);
+        authenticateUser(userToRegister);
+        return userToRegister;
     }
 
     public User getCurrentUser() {

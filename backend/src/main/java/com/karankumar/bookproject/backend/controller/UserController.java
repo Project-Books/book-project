@@ -54,7 +54,11 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public User getUser(@PathVariable Long id) {
-        return userService.findUserById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)));
+        return userService.findUserById(id)
+                          .orElseThrow(() ->
+                                  new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                  String.format(USER_NOT_FOUND_ERROR_MESSAGE, id))
+                          );
     }
 
     @PostMapping("/register")
@@ -63,27 +67,17 @@ public class UserController {
         userService.register(user);
     }
 
-    @DeleteMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteUserById(/*@RequestBody String password,*/ @PathVariable Long id) {
-        userService.findUserById(id).ifPresent(user -> userService.deleteUserById(user.getId()));
-
-//        if (userService.findUserById(id).getPassword().equals(passwordEncoder.encode(password))) {
-//            userService.deleteUser(userService.findUserById(id));
-//        }
-    }
-
     @DeleteMapping("/delete-current/{password}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCurrentUser(@PathVariable String password) {
-        if (passwordEncoder.matches(password, userService.getCurrentUser().getPassword())){
+        if (passwordEncoder.matches(password, userService.getCurrentUser().getPassword())) {
             Long userId = userService.getCurrentUser().getId();
             if (userId != null) {
                 userService.deleteUserById(userId);
-            }else{
+            } else {
                 throw new NullPointerException("UserID cannot be null");
             }
-        }else{
+        } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
         }
    }
