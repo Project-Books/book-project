@@ -26,8 +26,8 @@ import Endpoints from '../shared/api/endpoints';
 import Verb from '../shared/http/verb';
 import {RouteComponentProps} from 'react-router-dom';
 import {MY_BOOKS, SIGN_UP} from "../shared/routes";
-import ForgotPasswordModal from '../shared/components/ForgotPasswordModal';
-import PasswordResetModal from '../shared/components/PasswordResetModal';
+import ForgotPasswordModal from './forgotPassword/ForgotPasswordModal';
+import PasswordResetModal from './forgotPassword/PasswordResetModal';
 
 interface IState {
     email: string,

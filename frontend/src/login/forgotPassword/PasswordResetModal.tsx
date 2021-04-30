@@ -16,13 +16,13 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, { Component } from 'react'
-import Modal, {IModalProps} from './Modal'
+import Modal, {IModalProps} from '../../shared/components/Modal'
 import Button from '@material-ui/core/Button';
 import './ForgotPasswordModal.css';
 
 export default class PasswordResetModal extends Component<IModalProps> {
  
-  render() :JSX.Element{
+  render() : JSX.Element {
     return (
       <div>
         <Modal open={this.props.open} onClose={this.props.onClose}>
