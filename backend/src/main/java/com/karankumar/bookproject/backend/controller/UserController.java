@@ -19,6 +19,7 @@ import com.karankumar.bookproject.backend.service.InvalidOldPasswordException;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +31,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
@@ -44,14 +47,14 @@ public class UserController {
 
     @PostMapping("/update-password")
     @ResponseStatus(HttpStatus.OK)
-    public void updatePassword(@RequestParam("password") String password,
-                               @RequestParam("oldPassword") String oldPassword) throws InvalidOldPasswordException {
+    public void updatePassword(@RequestParam("currentPassword") String currentPassword,
+                               @RequestParam("newPassword") String newPassword) throws InvalidOldPasswordException {
         User user = userService.getCurrentUser();
 
-        if (!userService.checkIfValidOldPassword(user, oldPassword)) {
-            throw new InvalidOldPasswordException("old password is not correct");
+        if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+            userService.changeUserPassword(user, newPassword);
+        } else {
+            throw new InvalidOldPasswordException("current password is not correct");
         }
-        userService.changeUserPassword(user, password);
-
     }
 }

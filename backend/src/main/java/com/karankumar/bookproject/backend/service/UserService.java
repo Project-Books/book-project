@@ -110,10 +110,6 @@ public class UserService {
         return !emailIsInUse(email);
     }
 
-    public boolean checkIfValidOldPassword(User user, String oldPassword) {
-        return user.getPassword().equals(oldPassword);
-    }
-
     public void changeUserPassword(User user, String password) {
         user.setPassword(password);
         userRepository.save(user);
