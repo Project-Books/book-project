@@ -35,7 +35,7 @@ import javax.persistence.MappedSuperclass;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Shelf {
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnore
     protected User user;
