@@ -15,7 +15,6 @@
 package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.account.User;
-import com.karankumar.bookproject.backend.service.InvalidOldPasswordException;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api")
@@ -48,13 +48,16 @@ public class UserController {
     @PostMapping("/update-password")
     @ResponseStatus(HttpStatus.OK)
     public void updatePassword(@RequestParam("currentPassword") String currentPassword,
-                               @RequestParam("newPassword") String newPassword) throws InvalidOldPasswordException {
+                               @RequestParam("newPassword") String newPassword) {
         User user = userService.getCurrentUser();
 
         if (passwordEncoder.matches(currentPassword, user.getPassword())) {
             userService.changeUserPassword(user, newPassword);
         } else {
-            throw new InvalidOldPasswordException("current password is not correct");
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "The current password entered is incorrect"
+            );
         }
     }
 }
