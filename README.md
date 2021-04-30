@@ -67,6 +67,7 @@ Next, follow one of the approaches below:
 
 3. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
     - May need to add `sudo` to this command
+    - phpmyadmin is optional
 4. Run the project from your IDE
 
 ### Fixing Lombok errors
