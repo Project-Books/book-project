@@ -68,7 +68,7 @@ class Login extends Component<LoginProps, IState> {
         this.onClickLogin = this.onClickLogin.bind(this)
         this.sendLoginRequest = this.sendLoginRequest.bind(this)
         this.sendLoginRequestIfCredentialsAreValid =
-         this.sendLoginRequestIfCredentialsAreValid.bind(this)
+        this.sendLoginRequestIfCredentialsAreValid.bind(this)
     }
 
     onClickLogin(): void {

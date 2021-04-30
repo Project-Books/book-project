@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, { Component } from 'react'
-import Modal, {IModalProps} from './Modal'
+import Modal, { IModalProps } from './Modal'
 import Email from '../form/EmailAddress';
 import Button from '@material-ui/core/Button';
 import './ForgotPasswordModal.css';
