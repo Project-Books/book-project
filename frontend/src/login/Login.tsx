@@ -26,7 +26,8 @@ import Endpoints from '../shared/api/endpoints';
 import Verb from '../shared/http/verb';
 import {RouteComponentProps} from 'react-router-dom';
 import {MY_BOOKS, SIGN_UP} from "../shared/routes";
-import ForgotPasswordModal from '../shared/components/ForgotPasswordModal';
+import ForgotPasswordModal from './forgotPassword/ForgotPasswordModal';
+import PasswordResetModal from './forgotPassword/PasswordResetModal';
 
 interface IState {
     email: string,
@@ -36,7 +37,8 @@ interface IState {
     isEmailInvalid: boolean,
     isPasswordInvalid: boolean,
     loginFailed: boolean,
-    showForgotPasswordModal: boolean
+    showForgotPasswordModal: boolean,
+    showPasswordResetModal: boolean
 }
 
 type LoginProps = Record<string, unknown> & RouteComponentProps
@@ -53,17 +55,20 @@ class Login extends Component<LoginProps, IState> {
             isEmailInvalid: false,
             isPasswordInvalid: false,
             loginFailed: false,
-            showForgotPasswordModal: false
+            showForgotPasswordModal: false,
+            showPasswordResetModal: false
         }
 
         this.onPasswordChanged = this.onPasswordChanged.bind(this)
         this.onForgotPassword = this.onForgotPassword.bind(this)
         this.onForgotPasswordModalClose = this.onForgotPasswordModalClose.bind(this)
+        this.onPasswordResetClicked = this.onPasswordResetClicked.bind(this)
+        this.onPasswordResetModalClose = this.onPasswordResetModalClose.bind(this)
         this.onEmailChanged = this.onEmailChanged.bind(this)
         this.onClickLogin = this.onClickLogin.bind(this)
         this.sendLoginRequest = this.sendLoginRequest.bind(this)
         this.sendLoginRequestIfCredentialsAreValid =
-            this.sendLoginRequestIfCredentialsAreValid.bind(this)
+        this.sendLoginRequestIfCredentialsAreValid.bind(this)
     }
 
     onClickLogin(): void {
@@ -82,7 +87,6 @@ class Login extends Component<LoginProps, IState> {
     }
 
     onPasswordChanged(password: string): void {
-        console.log(`login password: ${password}`)
         this.setState({
             password,
             isPasswordDirty: true,
@@ -101,6 +105,20 @@ class Login extends Component<LoginProps, IState> {
             showForgotPasswordModal: false
         })
     }
+
+    onPasswordResetClicked(): void {
+        this.onForgotPasswordModalClose();
+        this.setState({
+           showPasswordResetModal: true
+        })
+    }
+    
+    onPasswordResetModalClose(): void {
+        this.setState({
+            showPasswordResetModal: false
+        })
+    }
+
     isEmailInvalid(): boolean {
         const isEmailDirtyAndBlank = this.state.email === '' && this.state.isEmailDirty
         return isEmailDirtyAndBlank || this.state.isEmailInvalid
@@ -145,8 +163,12 @@ class Login extends Component<LoginProps, IState> {
     }
 
     renderLoginError(): ReactElement {
-        return <p className="error-message">Your email or password is incorrect. Please try again</p>
-    }
+        return (
+               <p className="error-message">
+                 Your email or password is incorrect. Please try again
+               </p>
+        )
+    }  
 
     render(): ReactElement {
         return (
@@ -210,6 +232,11 @@ class Login extends Component<LoginProps, IState> {
                 <ForgotPasswordModal 
                     open={this.state.showForgotPasswordModal} 
                     onClose={this.onForgotPasswordModalClose}
+                    onPasswordResetClicked={this.onPasswordResetClicked}
+                />
+                <PasswordResetModal
+                    open={this.state.showPasswordResetModal} 
+                    onClose={this.onPasswordResetModalClose}
                 />
             </div>
         )

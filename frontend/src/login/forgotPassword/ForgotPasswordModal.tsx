@@ -16,8 +16,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, { Component } from 'react'
-import Modal, {IModalProps} from './Modal'
-import Email from '../form/EmailAddress';
+import Modal, { IModalProps } from '../../shared/components/Modal'
+import Email from '../../shared/form/EmailAddress';
 import Button from '@material-ui/core/Button';
 import './ForgotPasswordModal.css';
 
@@ -30,26 +30,26 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
   state = {
     isInvalid: false,
     errorMessage: '',
-    emailEntered: ''
+    emailEntered: '',
   }
 
   onEmailChanged(emailEntered: string): void {
     this.setState({
-        emailEntered,
-        isInvalid: emailEntered === ''
+      emailEntered,
+      isInvalid: emailEntered === ''
     })
   }
-
+  
   render(): JSX.Element {
     return (
       <div>
         <Modal open={this.props.open} onClose={this.props.onClose}>
           <div className="modal-container">
             <div className="modal-content">
-              <div className="forgot-password-title">
+              <div className="modal-title">
                 Forgot your password?
               </div>
-              <div className="reset-password-desc">
+              <div className="modal-desc">
                 We&apos;ll email you a link to reset your Password
               </div>
             </div>
@@ -63,14 +63,15 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
               <div className="password-form-spacer" />
               <div className="password-form-spacer" />
               <Button
-                className="reset-password-button"
+                className="modal-button-primary"
                 variant="contained"
+                onClick={this.props.onPasswordResetClicked}
                 color="primary">
                 Send me a password reset link
               </Button>
               <div className="password-form-spacer" />
               <Button
-                className="cancel-button"
+                className="modal-button-secondary"
                 onClick={this.props.onClose}
                 variant="contained">
                   Cancel
