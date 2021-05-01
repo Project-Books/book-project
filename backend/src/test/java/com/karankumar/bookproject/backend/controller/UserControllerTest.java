@@ -28,7 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
-@SpringBootTest
+@SpringBootTest(classes = {UserService.class, PasswordEncoder.class})
 @ActiveProfiles("test")
 class UserControllerTest {
     @MockBean UserService userService;
