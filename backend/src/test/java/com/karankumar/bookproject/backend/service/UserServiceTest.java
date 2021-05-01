@@ -172,10 +172,4 @@ class UserServiceTest {
         // then
         assertThat(actual).containsAll(users);
     }
-
-    @Test
-    void changeUserPassword() {
-        userService.changeUserPassword(validUser, "aAAAA1234@");
-    }
-
 }
