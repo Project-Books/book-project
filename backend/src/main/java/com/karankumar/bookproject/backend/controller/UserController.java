@@ -1,7 +1,7 @@
 /*
  * The book project lets a user keep track of different books they would like to read, are currently
  * reading, have read or did not finish.
- * Copyright (C) 2020  Karan Kumar
+ * Copyright (C) 2021  Karan Kumar
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
@@ -30,6 +30,9 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/api")
 public class UserController {
+    public static final String INCORRECT_PASSWORD_ERROR_MESSAGE =
+            "The current password entered is incorrect";
+
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -47,16 +50,17 @@ public class UserController {
 
     @PostMapping("/update-password")
     @ResponseStatus(HttpStatus.OK)
-    public void updatePassword(@RequestParam("currentPassword") String currentPassword,
+    public User updatePassword(@RequestParam("currentPassword") String currentPassword,
                                @RequestParam("newPassword") String newPassword) {
         User user = userService.getCurrentUser();
 
         if (passwordEncoder.matches(currentPassword, user.getPassword())) {
             userService.changeUserPassword(user, newPassword);
+            return user;
         } else {
             throw new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED,
-                    "The current password entered is incorrect"
+                    INCORRECT_PASSWORD_ERROR_MESSAGE
             );
         }
     }
