@@ -111,7 +111,8 @@ public class UserService {
     }
 
     public void changeUserPassword(User user, String password) {
-        user.setPassword(password);
+        String encodedPassword = passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
         userRepository.save(user);
     }
 }
