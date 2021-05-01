@@ -109,4 +109,10 @@ public class UserService {
     public boolean emailIsNotInUse(String email) {
         return !emailIsInUse(email);
     }
+
+    public void changeUserPassword(User user, String password) {
+        String encodedPassword = passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+    }
 }

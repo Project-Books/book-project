@@ -17,7 +17,7 @@
     <properties>
         <start-class>com.karankumar.bookproject.BookProjectApplication</start-class>
         <java.version>11</java.version>
-        <lombok.version>1.18.12</lombok.version>
+        <lombok.version>1.18.20</lombok.version>
     </properties>
 
     <dependencies>
