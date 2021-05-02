@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.model.UserRole;
 import com.karankumar.bookproject.backend.model.account.Role;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
@@ -67,7 +68,7 @@ public class UserService {
                     "A user with the email address " + user.getEmail() + " already exists");
         }
 
-        Role userRole = roleRepository.findByRole("USER")
+        Role userRole = roleRepository.findByRole(UserRole.USER.toString())
                                       .orElseThrow(() -> new AuthenticationServiceException(
                                               "The default user role could not be found"));
         User userToRegister = User.builder()
