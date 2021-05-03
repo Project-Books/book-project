@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.backend.model.account.UserRole;
 import com.karankumar.bookproject.backend.model.account.Role;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
@@ -99,7 +100,7 @@ class UserServiceTest {
     @Test
     void registerValidUser() {
         // given
-        roleRepository.save(Role.builder().role("USER").build());
+        roleRepository.save(Role.builder().role(UserRole.USER.toString()).build());
 
         // when
         userService.register(validUser);
@@ -110,7 +111,7 @@ class UserServiceTest {
 
     @Test
     void logUserInAfterRegister() {
-        roleRepository.save(Role.builder().role("USER").build());
+        roleRepository.save(Role.builder().role(UserRole.USER.toString()).build());
         userService.register(validUser);
 
         assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
