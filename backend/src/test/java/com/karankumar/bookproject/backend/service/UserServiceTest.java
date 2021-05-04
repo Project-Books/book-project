@@ -240,6 +240,6 @@ class UserServiceTest {
           userService.deleteUserById(id);
           
           // then
-          assertThat(userService.findUserById(id)).isEmpty();
+          assertThat(userService.findAll().size()).isZero();
       }
   }
