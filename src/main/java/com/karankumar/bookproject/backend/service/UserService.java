@@ -29,6 +29,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.nulabinc.zxcvbn.*;
+
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -57,7 +59,10 @@ public class UserService {
     public void register(@NonNull User user) throws UserAlreadyRegisteredException {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
-
+        
+        // setting an instance variables of Strength
+        Strength strength = Zxcvbn.measure(user.getPassword);
+                
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
         }
@@ -75,6 +80,12 @@ public class UserService {
         Role userRole = roleRepository.findByRole("USER")
                                       .orElseThrow(() -> new AuthenticationServiceException(
                                               "The default user role could not be found"));
+       
+        // while the password's strength score is less than or equal to 2 do the following
+        if (strength.getScore() <= 2) {
+        	throw new ConstraintViolationException(constraintViolations);
+        }
+
         User userToRegister = User.builder()
                                   .username(user.getUsername())
                                   .email(user.getEmail())
