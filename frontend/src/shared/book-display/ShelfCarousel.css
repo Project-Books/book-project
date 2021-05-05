@@ -1,0 +1,135 @@
+* {
+    --book-width: 110px;
+    --book-height: 160px;
+    --book-margin: 25px;
+    --book-icon: 50px;
+    --primary-color-gradient: linear-gradient(170deg, rgba(40, 61, 255, 0.54) -13.03%, rgba(255, 255, 255, 0) 93.19%), #2E24A3;
+    --primary-color: #2E24A3;
+}
+
+/* Styles for carousel */
+
+.container {
+    margin-top: 40px;
+    margin-left: 180px;
+}
+
+.shelf-container {
+    padding: 0px 40px;
+}
+
+.shelf-title {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.view-all {
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.books-and-shelf {
+    overflow: visible;
+    padding: 20px;
+    /* makes shelf width of the books */
+    display: inline-block;
+}
+
+.book-wrap {
+    margin: 0px 30px;
+}
+
+.clear {
+    clear: both;
+}
+
+.shelf {
+    border-radius: 4px 4px 999px 999px;
+    background-color: white;
+    box-shadow: 0px 10px 20px 9px rgba(197, 197, 197, 0.5);
+    position: relative;
+    height: 15px;
+}
+
+/* Styles for Book */
+
+.book {
+    float: left;
+    width: var(--book-width);
+    height: var(--book-height);
+    margin: 0px var(--book-margin);
+    background-color: white;
+    border-radius: 1px;
+    filter: drop-shadow(0px 40px 40px rgba(0, 0, 0, .4));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.book.image {
+    background-size: cover; 
+}
+
+.book.add-new {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+.book-title {
+    margin: 0px;
+    padding: 15px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.book-title.hide {
+    display: none;
+}
+
+.book-title.add-new {
+    padding-top: 5px;
+    padding-bottom: 0px;
+    font-size: 10px;
+}
+
+.icon {
+    font-size: var(--book-icon) !important;
+    font-weight: bold;
+}
+
+/* styling for tablet screens */
+@media screen and (max-width: 800px) {
+
+    /* resize books to be 0.6x original size */
+    .book {
+        width: calc(var(--book-width) * 0.6);
+        height: calc(var(--book-height) * 0.6);
+        margin: 0px 15px;
+    }
+
+    .book-title {
+        font-size: 10px;
+    }
+
+    .icon {
+        font-size: calc(var(--book-icon) * 0.6) !important;
+    }
+}
+
+/* styling for smaller desktops */
+@media screen and (min-width: 801px) and (max-width: 1200px) {
+
+    /* resize books to be 0.8x original size */
+    .book {
+        width: calc(var(--book-width) * 0.8);
+        height: calc(var(--book-height) * 0.8);
+        margin: 0px 15px;
+    }
+
+    .icon {
+        font-size: calc(var(--book-icon) * 0.8) !important;
+    }
+}

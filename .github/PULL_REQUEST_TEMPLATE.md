@@ -31,4 +31,4 @@ Please keep this checklist in & ensure you have done the following:
 
 For any of the optional checkboxes (e.g. the screenshots one), still check it if it does not apply.
 
-If in doubt, get in touch with us by creating a [Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a) on GitHub or ask on the #help channel in our Slack workspace
+If in doubt, get in touch with us via our [Slack workspace](https://join.slack.com/t/teambookproject/shared_invite/zt-jcijyenp-JiKFGBv62FIPoFnvOW6Ubg)

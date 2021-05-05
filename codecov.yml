@@ -6,4 +6,4 @@ coverage:
         threshold: 0%
     patch: off
 ignore:
-  - "src/main/java/com/karankumar/bookproject/BookProjectApplication.java"
+  - "backend/src/main/java/com/karankumar/bookproject/BookProjectApplication.java"
