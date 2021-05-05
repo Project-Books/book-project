@@ -14,3 +14,20 @@ PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program.
 If not, see <https://www.gnu.org/licenses/>.
 */
+
+
+.my-book-top{
+    display: flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-left: 240px;
+    padding-top: 100px;
+    padding-bottom: 30px;
+}
+
+.my-book-top-buttons{
+    width: 18%;
+    margin-right: 80px;
+    display:flex;
+    justify-content: space-between;
+}

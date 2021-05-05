@@ -19,6 +19,9 @@ import React, { Component } from 'react'
 import { NavBar } from '../shared/navigation/NavBar'
 import { ShelfCarousel } from '../shared/book-display/ShelfCarousel'
 import './MyBooks.css'
+import Button from '@material-ui/core/Button';
+import Modal, { IModalProps } from '../shared/components/Modal'
+
 
 interface IState {
 }
@@ -28,6 +31,23 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         return (
             <div>
                 <NavBar />
+
+                <div className="my-book-top">
+                    <h1>My books</h1>
+                    <div className="my-book-top-buttons">
+                    <Button
+                    variant="contained"
+                    color="primary">
+                        Add Book
+                    </Button>
+                    <Button
+                    variant="contained"
+                    color="primary">
+                        Add Shelf
+                    </Button>
+                    </div>
+                    
+                </div>
                 <div>
                     <ShelfCarousel title="Reading" />
                     <ShelfCarousel title="To Read" />
