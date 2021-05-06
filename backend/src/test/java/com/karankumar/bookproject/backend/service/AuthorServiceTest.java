@@ -1,7 +1,7 @@
 /*
  * The book project lets a user keep track of different books they would like to read, are currently
  * reading, have read or did not finish.
- * Copyright (C) 2020  Karan Kumar
+ * Copyright (C) 2021  Karan Kumar
 
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -17,115 +17,107 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.model.Author;
-
-import lombok.extern.java.Log;
+import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.transaction.Transactional;
-
-import java.util.List;
-import java.util.Optional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assumptions.assumeThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-@Log
-@IntegrationTest
-@DisplayName("AuthorService should")
+@ExtendWith(MockitoExtension.class)
 class AuthorServiceTest {
-    private final AuthorService authorService;
-    private final BookService bookService;
-
-    @Autowired
-    AuthorServiceTest(AuthorService authorService, BookService bookService) {
-        this.authorService = authorService;
-        this.bookService = bookService;
-    }
+    @Mock private AuthorRepository authorRepository;
+    private AuthorService authorService;
 
     @BeforeEach
-    void reset() {
-        bookService.deleteAll();
-        authorService.deleteAll();
+    void setUp() {
+        authorService = new AuthorService(authorRepository);
     }
 
     @Test
-    void saveAndConfirmDuplicateNameWithDifferentId() {
-        // given
-        Author author = new Author("Nyor Ja");
-        authorService.save(author);
-
-        Author authorCopy = new Author(author.getFullName());
-        authorService.save(authorCopy);
-
-        // when
-        List<Author> savedAuthors = authorService.findAll();
-
-        // then
-        int expected = 2;
-        assertThat(savedAuthors.size()).isEqualTo(expected);
-    }
-
-    @Transactional
-    @Test
-    void saveCorrectly() {
-        // given
-        Author author = new Author("daks oten");
-        authorService.save(author);
-
-        // when
-        Author existingAuthor = authorService.findById(author.getId()).get();
-        authorService.save(existingAuthor);
-
-        // then
-        assertThat(authorService.count()).isOne();
+    void findById_throwsException_ifIdIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> authorService.findById(null));
+        verify(authorRepository, never()).findById(any(Long.class));
     }
 
     @Test
-    void savedAuthorCanBeFound() {
-        // given
-        Author author = new Author("First Last");
-        authorService.save(author);
-
-        // when
-        Optional<Author> actual = authorService.findById(author.getId());
-
-        // then
-        assertThat(actual).isPresent();
+    void canFindByNonNullId() {
+        authorService.findById(1L);
+        verify(authorRepository).findById(any(Long.class));
     }
 
     @Test
-    @DisplayName("be able to delete an author without any books")
-    void deleteAuthorWithoutBooks() {
-        assumeThat(authorService.count()).isZero();
-
-        // given
-        Author authorWithoutBooks = new Author("First Last");
-        authorService.save(authorWithoutBooks);
-
-        // when
-        authorService.delete(authorWithoutBooks);
-
-        // then
-        assertThat(authorService.count()).isZero();
+    void canFindAll() {
+        authorService.findAll();
+        verify(authorRepository).findAll();
     }
 
     @Test
-    @DisplayName("throw error on attempt to save a null author")
-    void throwErrorOnSavingNullAuthor() {
+    void save_throwsException_ifAuthorIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> authorService.save(null));
+        verify(authorRepository, never()).save(any(Author.class));
     }
 
     @Test
-    @DisplayName("throw error on attempt to delete a null author")
-    void throwErrorOnDeletingNullAuthor() {
+    void authorSavedIfNotNull() {
+        // given
+        Author author = new Author("full name");
+
+        // when
+        authorService.save(author);
+
+        // then
+        ArgumentCaptor<Author> authorArgumentCaptor = ArgumentCaptor.forClass(Author.class);
+
+        verify(authorRepository).save(authorArgumentCaptor.capture());
+
+        Author capturedAuthor = authorArgumentCaptor.getValue();
+        assertThat(capturedAuthor).isEqualTo(author);
+    }
+
+    @Test
+    void delete_throwsException_ifAuthorIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> authorService.delete(null));
+        verify(authorRepository, never()).delete(any(Author.class));
+    }
+
+    @Test
+    void authorDeletedIfNotNull() {
+        // given
+        Author author = new Author("full name");
+
+        // when
+        authorService.delete(author);
+
+        // then
+        ArgumentCaptor<Author> authorArgumentCaptor = ArgumentCaptor.forClass(Author.class);
+
+        verify(authorRepository).delete(authorArgumentCaptor.capture());
+
+        Author capturedAuthor = authorArgumentCaptor.getValue();
+        assertThat(capturedAuthor).isEqualTo(author);
+    }
+
+    @Test
+    void canDeleteAll() {
+        authorService.deleteAll();
+        verify(authorRepository).deleteAll();
+    }
+
+    @Test
+    void canCount() {
+        authorService.count();
+        verify(authorRepository).count();
     }
 }
