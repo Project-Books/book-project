@@ -29,6 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -46,13 +47,13 @@ class AuthorServiceTest {
     void findById_throwsException_ifIdIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> authorService.findById(null));
-        verify(authorRepository, never()).findById(any(Long.class));
+        verify(authorRepository, never()).findById(anyLong());
     }
 
     @Test
     void canFindByNonNullId() {
         authorService.findById(1L);
-        verify(authorRepository).findById(any(Long.class));
+        verify(authorRepository).findById(anyLong());
     }
 
     @Test
