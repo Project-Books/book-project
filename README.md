@@ -13,7 +13,7 @@
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
 	
-  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-nf4awxuo-sj9Aa37CgLcbrUr8z4P8Ag">
+  <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A">
     <img src="https://img.shields.io/badge/slack-teambookproject-4A154B?logo=slack" alt="Slack" />
   </a>
 	
