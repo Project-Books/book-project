@@ -8,7 +8,6 @@
     <img src="https://dev.azure.com/project-books/Book%20Project/_apis/build/status/Project-Books.book-project?branchName=0.2.0" alt="Build Status"/>
   </a>
 
-	
   <a href="https://codecov.io/gh/Project-Books/book-project">
     <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
   </a>
