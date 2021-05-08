@@ -27,7 +27,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -47,14 +46,9 @@ class UserServiceTest {
 
     @Mock private RoleRepository roleRepository;
     @Mock private AuthenticationManager authenticationManager;
-//    @Mock private Authentication authentication;
     @Mock private UserRepository userRepository;
     @Mock private BookRepository bookRepository;
 
-//    private final User validUser = User.builder()
-//                                       .email("valid@testmail.com")
-//                                       .password("aaaaAAAA1234@")
-//                                       .build();
 
     @BeforeEach
     void setUp() {
@@ -71,131 +65,6 @@ class UserServiceTest {
         );
     }
 
-//    @Test
-//    void throwExceptionOnRegisterWithBeanViolations() {
-//        final User invalidUser = User.builder()
-//                                     .email("testmail")
-//                                     .password("invalidpassword")
-//                                     .build();
-//
-//        assertThatThrownBy(() -> userService.register(invalidUser))
-//                .isInstanceOf(ConstraintViolationException.class);
-//    }
-//
-//    @Test
-//    void throwExceptionOnRegisterWithEmailTaken() {
-//        userRepository.save(validUser);
-//
-//        assertThatThrownBy(() -> userService.register(validUser))
-//                .isInstanceOf(UserAlreadyRegisteredException.class);
-//    }
-//
-//    @Test
-//    void throwExceptionOnRegisterWithoutUserRole() {
-//        assertThatThrownBy(() -> userService.register(validUser))
-//                .isInstanceOf(AuthenticationServiceException.class);
-//    }
-//
-//    @Test
-//    @DisplayName("throw an exception on an attempt to register a null user")
-//    void throwExceptionWhenRegisteringNullUser() {
-//        assertThatExceptionOfType(NullPointerException.class)
-//                .isThrownBy(() -> userService.register(null));
-//    }
-//
-//    @Test
-//    void registerValidUser() {
-//        // given
-//        roleRepository.save(new Role("USER"));
-//
-//        // when
-//        userService.register(validUser);
-//
-//        // then
-//        assertThat(userRepository.findByEmail(validUser.getEmail())).isPresent();
-//    }
-//
-//    @Test
-//    void logUserInAfterRegister() {
-//        roleRepository.save(new Role("USER"));
-//        userService.register(validUser);
-//
-//        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
-//                .isTrue();
-//    }
-//
-//    @Test
-//    void correctlyReportEmailIsNotInUse() {
-//        assertThat(userService.emailIsInUse("testmail")).isFalse();
-//    }
-//
-//    @Test
-//    void correctlyReportEmailIsInUse() {
-//        userRepository.save(validUser);
-//
-//        assertThat(userService.emailIsInUse(validUser.getEmail())).isTrue();
-//    }
-//
-//    @Test
-//    void checkIfEmailIsNotInUseWithEmailNotInUse() {
-//        assertThat(userService.emailIsNotInUse("testmail")).isTrue();
-//    }
-//
-//    @Test
-//    void checkIfEmailIsNotInUseWithEmailInUse() {
-//        userRepository.save(validUser);
-//
-//        assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
-//    }
-//
-//    @Test
-//    void getLoggedUser() {
-//        // given
-//        Optional<User> dbUser = userRepository.findByEmail(TEST_USER_EMAIL);
-//
-//        // when
-//        User currentUser = userService.getCurrentUser();
-//
-//        // then
-//        assertSoftly(softly -> {
-//            softly.assertThat(currentUser.getEmail()).isEqualTo(TEST_USER_EMAIL);
-//            softly.assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
-//        });
-//    }
-//
-//    @Test
-//    void findAllUsers() {
-//        // given
-//        List<User> users = Arrays.asList(
-//                getTestUser(userRepository),
-//                insertTestUser(userRepository),
-//                insertTestUser(userRepository),
-//                insertTestUser(userRepository)
-//        );
-//
-//        // when
-//        List<User> actual = userService.findAll();
-//
-//        // then
-//        assertThat(actual).containsAll(users);
-//    }
-
-//    @Test
-//    void findUserById(){
-//        //given
-//        User user = getTestUser(userRepository);
-//
-//        List<User> users = Arrays.asList(
-//            insertTestUser(userRepository),
-//            getTestUser(userRepository),
-//            insertTestUser(userRepository),
-//            insertTestUser(userRepository)
-//        );
-//
-//        //then
-//        assertThat(userService.findUserById((long) 1)).hasValue(user);
-//    }
-//
       @Test
       void deleteUserById_deletesUser_ifUserExists() {
           // given
