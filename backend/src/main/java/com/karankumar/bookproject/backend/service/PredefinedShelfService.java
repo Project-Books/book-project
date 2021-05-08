@@ -195,6 +195,7 @@ public class PredefinedShelfService {
         	return Optional.empty();
         }
 
+        // TODO: throw exception if there is more than one
         return Optional.of(shelfFound.get(0)); // there should only be one
     }
 
@@ -239,7 +240,7 @@ public class PredefinedShelfService {
                      .anyMatch(shelfName::equalsIgnoreCase);
     }
 
-    public static Optional<ShelfName> getPredefinedShelfName(String predefinedShelfName) {
+    public static Optional<ShelfName> getPredefinedShelfName(@NonNull String predefinedShelfName) {
         switch (predefinedShelfName) {
             case "To read":
                 return Optional.of(ShelfName.TO_READ);

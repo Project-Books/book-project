@@ -27,8 +27,13 @@ import com.karankumar.bookproject.backend.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -175,46 +180,42 @@ class PredefinedShelfServiceTest {
         verify(predefinedShelfRepository).count();
     }
 
-//
-//    @Test
-//    void findPredefinedShelfForPredefinedShelfNameAndLoggedInUser() {
-//        Optional<PredefinedShelf> shelf =
-//                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
-//                        PredefinedShelf.ShelfName.TO_READ
-//                );
-//        assertSoftly(softly -> {
-//            assertThat(shelf).isNotEmpty();
-//            softly.assertThat(shelf.get().getPredefinedShelfName())
-//                  .isEqualTo(PredefinedShelf.ShelfName.TO_READ);
-//            softly.assertThat(shelf.get().getUser().getEmail()).isEqualTo(TEST_USER_EMAIL);
-//        });
-//    }
-//
+    @Test
+    void isPredefinedShelf_throwsNullPointerException_ifShelfNameIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> PredefinedShelfService.isPredefinedShelf(null));
+    }
 
-//
-//    @Test
-//    void getPredefinedShelfNamesCorrectlyAsStrings() {
-//        List<String> actualShelfNames = predefinedShelfService.getPredefinedShelfNamesAsStrings();
-//        List<String> expectedShelfNames =
-//                Stream.of(PredefinedShelf.ShelfName.values()).map(Enum::toString).collect(
-//                        Collectors.toList());
-//
-//        assertSoftly(softly -> {
-//            softly.assertThat(actualShelfNames).hasSize(expectedShelfNames.size());
-//            softly.assertThat(expectedShelfNames).containsAll(actualShelfNames);
-//        });
-//    }
-//
-//    @Test
-//    @DisplayName("return an empty set of books for a non-existent predefined shelf")
-//    void returnEmptySetForNonExistentShelf() {
-//        // given
-//        String nonExistentShelf = "not a predefined shelf";
-//
-//        // when
-//        Set<Book> actual = predefinedShelfService.getBooksInChosenPredefinedShelf(nonExistentShelf);
-//
-//        // then
-//        assertThat(actual).isEmpty();
-//    }
+    @Test
+    void getPredefinedShelfName_throwsNullPointerException_ifShelfNameIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> PredefinedShelfService.getPredefinedShelfName(null));
+    }
+
+    @ParameterizedTest
+    @EnumSource(PredefinedShelf.ShelfName.class)
+    void canFindValidPredefinedShelfName(PredefinedShelf.ShelfName shelfName) {
+        // given
+        String predefinedShelfNameString = shelfName.toString();
+
+        // when
+        Optional<PredefinedShelf.ShelfName> predefinedShelfName =
+                PredefinedShelfService.getPredefinedShelfName(predefinedShelfNameString);
+
+        // then
+        assertThat(predefinedShelfName).isPresent();
+    }
+
+    @Test
+    void getPredefinedShelfName_returnsEmpty_ifNotMatched() {
+        // given
+        String invalidPredefinedShelf = "test";
+
+        // when
+        Optional<PredefinedShelf.ShelfName> predefinedShelfName =
+                PredefinedShelfService.getPredefinedShelfName(invalidPredefinedShelf);
+
+        // then
+        assertThat(predefinedShelfName).isEmpty();
+    }
 }
