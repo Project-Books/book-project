@@ -1,7 +1,7 @@
 /*
  * The book project lets a user keep track of different books they would like to read, are currently
  * reading, have read or did not finish.
- * Copyright (C) 2020  Karan Kumar
+ * Copyright (C) 2021  Karan Kumar
 
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -17,185 +17,168 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.model.account.Role;
 import com.karankumar.bookproject.backend.model.account.User;
-import com.karankumar.bookproject.backend.service.UserService;
+import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import org.h2.engine.UserBuilder;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.ConstraintViolationException;
-
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
-import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
-import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.karankumar.bookproject.backend.service.UserService.USER_NOT_FOUND_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-@IntegrationTest
-@Transactional
-@DisplayName("UserService should")
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    private final UserService userService;
-//    private final UserRepository userRepository;
-//    private final RoleRepository roleRepository;
+    private UserService userService;
 
-    @MockBean
-    RoleRepository roleRepository;
+    @Mock private RoleRepository roleRepository;
+    @Mock private AuthenticationManager authenticationManager;
+//    @Mock private Authentication authentication;
+    @Mock private UserRepository userRepository;
+    @Mock private BookRepository bookRepository;
 
-    @MockBean
-    AuthenticationManager authenticationManager;
+//    private final User validUser = User.builder()
+//                                       .email("valid@testmail.com")
+//                                       .password("aaaaAAAA1234@")
+//                                       .build();
 
-    @MockBean
-    Authentication authentication;
-
-    @MockBean
-    UserRepository userRepository;
-
-    private final User validUser = User.builder()
-                                       .email("valid@testmail.com")
-                                       .password("aaaaAAAA1234@")
-                                       .build();
-
-    @Autowired
-    UserServiceTest(UserService userService, UserRepository userRepository//,
-                    /*RoleRepository roleRepository*/) {
-        this.userService = userService;
-//        this.userRepository = userRepository;
-//        this.roleRepository = roleRepository;
-    }
-
-    @Test
-    void throwExceptionOnRegisterWithBeanViolations() {
-        final User invalidUser = User.builder()
-                                     .email("testmail")
-                                     .password("invalidpassword")
-                                     .build();
-
-        assertThatThrownBy(() -> userService.register(invalidUser))
-                .isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
-    void throwExceptionOnRegisterWithEmailTaken() {
-        userRepository.save(validUser);
-
-        assertThatThrownBy(() -> userService.register(validUser))
-                .isInstanceOf(UserAlreadyRegisteredException.class);
-    }
-
-    @Test
-    void throwExceptionOnRegisterWithoutUserRole() {
-        assertThatThrownBy(() -> userService.register(validUser))
-                .isInstanceOf(AuthenticationServiceException.class);
-    }
-
-    @Test
-    @DisplayName("throw an exception on an attempt to register a null user")
-    void throwExceptionWhenRegisteringNullUser() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> userService.register(null));
-    }
-
-    @Test
-    void registerValidUser() {
-        // given
-        roleRepository.save(new Role("USER"));
-
-        // when
-        userService.register(validUser);
-
-        // then
-        assertThat(userRepository.findByEmail(validUser.getEmail())).isPresent();
-    }
-
-    @Test
-    void logUserInAfterRegister() {
-        roleRepository.save(new Role("USER"));
-        userService.register(validUser);
-
-        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
-                .isTrue();
-    }
-
-    @Test
-    void correctlyReportEmailIsNotInUse() {
-        assertThat(userService.emailIsInUse("testmail")).isFalse();
-    }
-
-    @Test
-    void correctlyReportEmailIsInUse() {
-        userRepository.save(validUser);
-
-        assertThat(userService.emailIsInUse(validUser.getEmail())).isTrue();
-    }
-
-    @Test
-    void checkIfEmailIsNotInUseWithEmailNotInUse() {
-        assertThat(userService.emailIsNotInUse("testmail")).isTrue();
-    }
-
-    @Test
-    void checkIfEmailIsNotInUseWithEmailInUse() {
-        userRepository.save(validUser);
-
-        assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
-    }
-
-    @Test
-    void getLoggedUser() {
-        // given
-        Optional<User> dbUser = userRepository.findByEmail(TEST_USER_EMAIL);
-
-        // when
-        User currentUser = userService.getCurrentUser();
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(currentUser.getEmail()).isEqualTo(TEST_USER_EMAIL);
-            softly.assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
-        });
-    }
-
-    @Test
-    void findAllUsers() {
-        // given
-        List<User> users = Arrays.asList(
-                getTestUser(userRepository),
-                insertTestUser(userRepository),
-                insertTestUser(userRepository),
-                insertTestUser(userRepository)
+    @BeforeEach
+    void setUp() {
+        bookRepository = mock(BookRepository.class);
+        PredefinedShelfService predefinedShelfService = mock(PredefinedShelfService.class);
+        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+        userService = new UserService(
+                userRepository,
+                roleRepository,
+                passwordEncoder,
+                authenticationManager,
+                predefinedShelfService,
+                bookRepository
         );
-
-        // when
-        List<User> actual = userService.findAll();
-
-        // then
-        assertThat(actual).containsAll(users);
     }
+
+//    @Test
+//    void throwExceptionOnRegisterWithBeanViolations() {
+//        final User invalidUser = User.builder()
+//                                     .email("testmail")
+//                                     .password("invalidpassword")
+//                                     .build();
+//
+//        assertThatThrownBy(() -> userService.register(invalidUser))
+//                .isInstanceOf(ConstraintViolationException.class);
+//    }
+//
+//    @Test
+//    void throwExceptionOnRegisterWithEmailTaken() {
+//        userRepository.save(validUser);
+//
+//        assertThatThrownBy(() -> userService.register(validUser))
+//                .isInstanceOf(UserAlreadyRegisteredException.class);
+//    }
+//
+//    @Test
+//    void throwExceptionOnRegisterWithoutUserRole() {
+//        assertThatThrownBy(() -> userService.register(validUser))
+//                .isInstanceOf(AuthenticationServiceException.class);
+//    }
+//
+//    @Test
+//    @DisplayName("throw an exception on an attempt to register a null user")
+//    void throwExceptionWhenRegisteringNullUser() {
+//        assertThatExceptionOfType(NullPointerException.class)
+//                .isThrownBy(() -> userService.register(null));
+//    }
+//
+//    @Test
+//    void registerValidUser() {
+//        // given
+//        roleRepository.save(new Role("USER"));
+//
+//        // when
+//        userService.register(validUser);
+//
+//        // then
+//        assertThat(userRepository.findByEmail(validUser.getEmail())).isPresent();
+//    }
+//
+//    @Test
+//    void logUserInAfterRegister() {
+//        roleRepository.save(new Role("USER"));
+//        userService.register(validUser);
+//
+//        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
+//                .isTrue();
+//    }
+//
+//    @Test
+//    void correctlyReportEmailIsNotInUse() {
+//        assertThat(userService.emailIsInUse("testmail")).isFalse();
+//    }
+//
+//    @Test
+//    void correctlyReportEmailIsInUse() {
+//        userRepository.save(validUser);
+//
+//        assertThat(userService.emailIsInUse(validUser.getEmail())).isTrue();
+//    }
+//
+//    @Test
+//    void checkIfEmailIsNotInUseWithEmailNotInUse() {
+//        assertThat(userService.emailIsNotInUse("testmail")).isTrue();
+//    }
+//
+//    @Test
+//    void checkIfEmailIsNotInUseWithEmailInUse() {
+//        userRepository.save(validUser);
+//
+//        assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
+//    }
+//
+//    @Test
+//    void getLoggedUser() {
+//        // given
+//        Optional<User> dbUser = userRepository.findByEmail(TEST_USER_EMAIL);
+//
+//        // when
+//        User currentUser = userService.getCurrentUser();
+//
+//        // then
+//        assertSoftly(softly -> {
+//            softly.assertThat(currentUser.getEmail()).isEqualTo(TEST_USER_EMAIL);
+//            softly.assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
+//        });
+//    }
+//
+//    @Test
+//    void findAllUsers() {
+//        // given
+//        List<User> users = Arrays.asList(
+//                getTestUser(userRepository),
+//                insertTestUser(userRepository),
+//                insertTestUser(userRepository),
+//                insertTestUser(userRepository)
+//        );
+//
+//        // when
+//        List<User> actual = userService.findAll();
+//
+//        // then
+//        assertThat(actual).containsAll(users);
+//    }
 
 //    @Test
 //    void findUserById(){
@@ -214,32 +197,29 @@ class UserServiceTest {
 //    }
 //
       @Test
-      // TODO: fix.
-      void deleteUserByIdTest() {
+      void deleteUserById_deletesUser_ifUserExists() {
           // given
-          Role role = new Role("USER");
-          roleRepository.save(role);
-          when(roleRepository.findByRole(any(String.class))).thenReturn(Optional.of(role));
-          User user = User.builder()
-                          .email("test@domain.com")
-                          .password("sldkfjslk53")
-                          .roles(Set.of(role))
-                          .build();
-
-          when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                  .thenReturn(authentication);
-          when(authentication.isAuthenticated()).thenReturn(true);
-
-          when(userRepository.save(any(User.class))).thenReturn(user);
-          User savedUser = userService.register(user);
-          Long id = savedUser.getId();
-//          UserRepository userRepository = Mockito.mock(UserRepository.class);
-          when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(savedUser));
+          User user = User.builder().build();
+          given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
 
           // when
-          userService.deleteUserById(id);
-          
+          userService.deleteUserById(1L);
+
           // then
-          assertThat(userService.findAll().size()).isZero();
+          verify(bookRepository).deleteAll();
+          verify(userRepository).deleteById(anyLong());
+      }
+
+      @Test
+      void deleteUserById_throwsNotFound_IfUserDoesNotExist() {
+          given(userRepository.findById(anyLong())).willReturn(Optional.empty());
+          Long id = 1L;
+          String expectedMessage = String.format(USER_NOT_FOUND_ERROR_MESSAGE, id);
+
+          assertThatExceptionOfType(ResponseStatusException.class)
+                  .isThrownBy(() -> userService.deleteUserById(id))
+                  .withMessageContaining(expectedMessage);
+          verify(bookRepository, never()).deleteAll();
+          verify(userRepository, never()).deleteById(anyLong());
       }
   }

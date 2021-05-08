@@ -56,7 +56,7 @@ public class UserService {
     private final BookRepository bookRepository;
     private final PredefinedShelfService predefinedShelfService;
 
-    private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
+    public static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
@@ -139,17 +139,8 @@ public class UserService {
     public void deleteUserById(@NonNull Long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAllForLoggedInUser();
-
-            // Add all of the books in each predefined shelf to this set outside of the loop to
-            // avoid a concurrent modification exception
-            Set<Book> outerBooks = new HashSet<>();
-            for (PredefinedShelf p : predefinedShelves) {
-                p.removeUser();
-                outerBooks.addAll(p.getBooks());
-            }
-
-            outerBooks.forEach(Book::removePredefinedShelf);
+            // TODO: make the temporal coupling explicit -- this needs to be called before bookRepository.deleteAll()
+            removePredefinedShelfFromUserBooks();
 
             bookRepository.deleteAll();
             userRepository.deleteById(id);
@@ -159,5 +150,19 @@ public class UserService {
                     String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)
             );
         }
+    }
+
+    private void removePredefinedShelfFromUserBooks() {
+        List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAllForLoggedInUser();
+
+        // Add all of the books in each predefined shelf to this set outside of the loop to
+        // avoid a concurrent modification exception
+        Set<Book> outerBooks = new HashSet<>();
+        for (PredefinedShelf p : predefinedShelves) {
+            p.removeUser();
+            outerBooks.addAll(p.getBooks());
+        }
+
+        outerBooks.forEach(Book::removePredefinedShelf);
     }
 }
