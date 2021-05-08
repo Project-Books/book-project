@@ -85,6 +85,7 @@ public class UserService {
 
     public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        // TODO: throw custom exception
         return userRepository.findByEmail(email).orElseThrow();
     }
 

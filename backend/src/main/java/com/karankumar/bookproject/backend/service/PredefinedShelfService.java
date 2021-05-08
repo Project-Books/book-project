@@ -32,6 +32,7 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -43,14 +44,12 @@ import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READING;
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getBooksInPredefinedShelves;
-import static com.karankumar.bookproject.backend.util.PredefinedShelfUtils.getPredefinedShelfName;
 import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
 import static com.karankumar.bookproject.backend.util.TestData.generateAuthors;
 import static com.karankumar.bookproject.backend.util.TestData.generateBooks;
 import static com.karankumar.bookproject.backend.util.TestData.generateListOfTags;
-import static com.karankumar.bookproject.backend.util.TestData.setPredefinedShelfForBooks;
 import static com.karankumar.bookproject.backend.util.TestData.generatePublishers;
+import static com.karankumar.bookproject.backend.util.TestData.setPredefinedShelfForBooks;
 
 @Service
 @Log
@@ -77,10 +76,11 @@ public class PredefinedShelfService {
         this.publisherRepository=publisherRepository;
     }
 
-    public Optional<PredefinedShelf> findById(Long id) {
+    public Optional<PredefinedShelf> findById(@NonNull Long id) {
         return predefinedShelfRepository.findById(id);
     }
 
+    // TODO: make private. We should create predefined shelves when a user registers and then not allow further predefined shelves to be created
     public void save(@NonNull PredefinedShelf shelf) {
         predefinedShelfRepository.save(shelf);
     }
@@ -173,7 +173,6 @@ public class PredefinedShelfService {
         bookRepository.saveAll(books);
     }
 
-
     private List<PredefinedShelf> createPredefinedShelves(User user) {
         return Stream.of(PredefinedShelf.ShelfName.values())
                 .map(shelfName -> new PredefinedShelf(shelfName, user))
@@ -225,7 +224,33 @@ public class PredefinedShelfService {
         return getBooksInPredefinedShelves(findAllForLoggedInUser());
     }
 
-    public List<PredefinedShelf> findReadShelf2() {
-	    return predefinedShelfRepository.findReadShelf2();
+    /**
+     * Fetches all of the books in the chosen predefined shelves
+     */
+    public static Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
+        return predefinedShelves.stream()
+                                .map(PredefinedShelf::getBooks)
+                                .collect(HashSet::new, Set::addAll, Set::addAll);
+    }
+
+    public static boolean isPredefinedShelf(String shelfName) {
+        return Arrays.stream(ShelfName.values())
+                     .map(ShelfName::toString)
+                     .anyMatch(shelfName::equalsIgnoreCase);
+    }
+
+    public static Optional<ShelfName> getPredefinedShelfName(String predefinedShelfName) {
+        switch (predefinedShelfName) {
+            case "To read":
+                return Optional.of(ShelfName.TO_READ);
+            case "Reading":
+                return Optional.of(ShelfName.READING);
+            case "Read":
+                return Optional.of(ShelfName.READ);
+            case "Did not finish":
+                return Optional.of(ShelfName.DID_NOT_FINISH);
+            default:
+                return Optional.empty();
+        }
     }
 }
