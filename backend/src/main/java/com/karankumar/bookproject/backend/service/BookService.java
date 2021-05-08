@@ -49,11 +49,11 @@ public class BookService {
         this.publisherService = publisherService;
     }
 
-    public Optional<Book> findById(Long id) {
+    public Optional<Book> findById(@NonNull Long id) {
         return bookRepository.findById(id);
     }
 
-    public Optional<Book> save(Book book) {
+    public Optional<Book> save(@NonNull Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
             addBookToAuthor(book);
             addBookToPublisher(book);
@@ -63,7 +63,7 @@ public class BookService {
         return Optional.empty();
     }
 
-    private boolean bookHasAuthorAndPredefinedShelf(@NonNull Book book) {
+    private boolean bookHasAuthorAndPredefinedShelf(Book book) {
         return book.getAuthor() != null && book.getPredefinedShelf() != null;
     }
 
@@ -104,7 +104,6 @@ public class BookService {
 
         List<Book> books = bookRepository.findAll();
         if (books.contains(book)) {
-
             LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
         } else {
             LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
@@ -127,16 +126,14 @@ public class BookService {
     }
 
     public void deleteAll() {
-        if (bookRepository.count() == 0) {
-            LOGGER.log(Level.INFO, "All books already deleted");
-            return;
-        }
         LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " +
                 bookRepository.count());
         bookRepository.deleteAll();
         authorService.deleteAll();
-        LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = " +
-                bookRepository.count());
+        LOGGER.log(
+                Level.INFO, "Deleted all books in books & authors. Book repository size = " +
+                bookRepository.count()
+        );
     }
 
     public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
@@ -150,11 +147,12 @@ public class BookService {
         return jsonWriter.writeValueAsString(books);
     }
 
-    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
+    // TODO: split into findByShelfAndTitle and findShelfAndAuthor queries, and then merge result sets
+    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName) {
         return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
     }
 
-    public List<Book> findByTitleOrAuthor(String title, String authorsName){
+    public List<Book> findByTitleOrAuthor(String title, String authorsName) {
         return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
 }

@@ -17,160 +17,112 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.model.account.UserRole;
-import com.karankumar.bookproject.backend.model.account.Role;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.ArgumentCaptor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.validation.ConstraintViolationException;
-
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
-import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
-import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
-import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-@IntegrationTest
-@Transactional
-@DisplayName("UserService should")
 class UserServiceTest {
-    private final UserService userService;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private UserService underTest;
+    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
-    private final User validUser = User.builder()
-                                       .email("valid@testmail.com")
-                                       .password("aaaaAAAA1234@")
-                                       .build();
-
-    @Autowired
-    UserServiceTest(UserService userService, UserRepository userRepository,
-                    RoleRepository roleRepository) {
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
-
-    @Test
-    void throwExceptionOnRegisterWithBeanViolations() {
-        final User invalidUser = User.builder()
-                                     .email("testmail")
-                                     .password("invalidpassword")
-                                     .build();
-
-        assertThatThrownBy(() -> userService.register(invalidUser))
-                .isInstanceOf(ConstraintViolationException.class);
-    }
-
-    @Test
-    void throwExceptionOnRegisterWithEmailTaken() {
-        userRepository.save(validUser);
-
-        assertThatThrownBy(() -> userService.register(validUser))
-                .isInstanceOf(UserAlreadyRegisteredException.class);
-    }
-
-    @Test
-    void throwExceptionOnRegisterWithoutUserRole() {
-        assertThatThrownBy(() -> userService.register(validUser))
-                .isInstanceOf(AuthenticationServiceException.class);
-    }
-
-    @Test
-    @DisplayName("throw an exception on an attempt to register a null user")
-    void throwExceptionWhenRegisteringNullUser() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> userService.register(null));
-    }
-
-    @Test
-    void registerValidUser() {
-        // given
-        roleRepository.save(Role.builder().role(UserRole.USER.toString()).build());
-
-        // when
-        userService.register(validUser);
-
-        // then
-        assertThat(userRepository.findByEmail(validUser.getEmail())).isPresent();
-    }
-
-    @Test
-    void logUserInAfterRegister() {
-        roleRepository.save(Role.builder().role(UserRole.USER.toString()).build());
-        userService.register(validUser);
-
-        assertThat(SecurityContextHolder.getContext().getAuthentication().isAuthenticated())
-                .isTrue();
-    }
-
-    @Test
-    void correctlyReportEmailIsNotInUse() {
-        assertThat(userService.emailIsInUse("testmail")).isFalse();
-    }
-
-    @Test
-    void correctlyReportEmailIsInUse() {
-        userRepository.save(validUser);
-
-        assertThat(userService.emailIsInUse(validUser.getEmail())).isTrue();
-    }
-
-    @Test
-    void checkIfEmailIsNotInUseWithEmailNotInUse() {
-        assertThat(userService.emailIsNotInUse("testmail")).isTrue();
-    }
-
-    @Test
-    void checkIfEmailIsNotInUseWithEmailInUse() {
-        userRepository.save(validUser);
-
-        assertThat(userService.emailIsNotInUse(validUser.getEmail())).isFalse();
-    }
-
-    @Test
-    void getLoggedUser() {
-        // given
-        Optional<User> dbUser = userRepository.findByEmail(TEST_USER_EMAIL);
-
-        // when
-        User currentUser = userService.getCurrentUser();
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(currentUser.getEmail()).isEqualTo(TEST_USER_EMAIL);
-            softly.assertThat(dbUser).isPresent().get().isEqualTo(currentUser);
-        });
-    }
-
-    @Test
-    void findAllUsers() {
-        // given
-        List<User> users = Arrays.asList(
-                getTestUser(userRepository),
-                insertTestUser(userRepository),
-                insertTestUser(userRepository),
-                insertTestUser(userRepository)
+    @BeforeEach
+    void setUp() {
+        userRepository = mock(UserRepository.class);
+        RoleRepository roleRepository = mock(RoleRepository.class);
+        passwordEncoder = mock(PasswordEncoder.class);
+        AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
+        underTest = new UserService(
+                userRepository,
+                roleRepository,
+                passwordEncoder,
+                authenticationManager
         );
+    }
+
+    @Test
+    void register_throwsNullPointerException_ifUserIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.register(null));
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.isEmailInUse(null));
+        verify(userRepository, never()).findByEmail(anyString());
+    }
+
+    @Test
+    void returnTrueIfEmailInUse() {
+        // given
+        User user = User.builder().build();
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
 
         // when
-        List<User> actual = userService.findAll();
+        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
 
         // then
-        assertThat(actual).containsAll(users);
+        assertThat(emailInUse).isTrue();
+    }
+
+    @Test
+    void returnFalseIfEmailInUse() {
+        // given
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
+
+        // when
+        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
+
+        // then
+        assertThat(emailInUse).isFalse();
+    }
+
+    @Test
+    void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
+    }
+
+    @Test
+    void changeUserPassword_throwsNullPointerException_ifPasswordIsNull() {
+        User user = User.builder().build();
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.changeUserPassword(user, null));
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void changeUserPassword_encodesPassword_beforeSaving() {
+        // given
+        String password = "password";
+
+        // when
+        underTest.changeUserPassword(User.builder().build(), password);
+
+        // then
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userArgumentCaptor.capture());
+        User expected = User.builder()
+                            .password(passwordEncoder.encode(password))
+                            .build();
+        assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
     }
 }
