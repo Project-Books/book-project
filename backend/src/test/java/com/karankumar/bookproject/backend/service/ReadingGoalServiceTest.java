@@ -21,6 +21,8 @@ import com.karankumar.bookproject.backend.model.ReadingGoal;
 import com.karankumar.bookproject.backend.repository.ReadingGoalRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,6 +31,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class ReadingGoalServiceTest {
     private ReadingGoalService underTest;
     private ReadingGoalRepository readingGoalRepository;

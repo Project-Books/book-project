@@ -1,7 +1,7 @@
 /*
     The book project lets a user keep track of different books they would like to read, are currently
     reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+    Copyright (C) 2021  Karan Kumar
 
     This program is free software: you can redistribute it and/or modify it under the terms of the
     GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -63,7 +63,7 @@ public class UserService {
             throw new ConstraintViolationException(constraintViolations);
         }
         
-        if (user.getEmail() != null && emailIsInUse(user.getEmail())) {
+        if (user.getEmail() != null && isEmailInUse(user.getEmail())) {
             throw new UserAlreadyRegisteredException(
                     "A user with the email address " + user.getEmail() + " already exists");
         }
@@ -89,11 +89,12 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow();
     }
 
+    // TODO: this can be removed once we are no longer populating test data
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    private void authenticateUser(User user) {
+    private void authenticateUser(@NonNull User user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         Authentication authResult =
@@ -104,15 +105,15 @@ public class UserService {
         }
     }
 
-    public boolean emailIsInUse(String email) {
+    public boolean isEmailInUse(@NonNull String email) {
         return userRepository.findByEmail(email).isPresent();
     }
 
     public boolean emailIsNotInUse(String email) {
-        return !emailIsInUse(email);
+        return !isEmailInUse(email);
     }
 
-    public void changeUserPassword(User user, String password) {
+    public void changeUserPassword(@NonNull User user, @NonNull String password) {
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
         userRepository.save(user);
