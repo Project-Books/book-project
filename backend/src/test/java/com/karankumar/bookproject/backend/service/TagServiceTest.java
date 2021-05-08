@@ -22,10 +22,13 @@ import com.karankumar.bookproject.backend.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -82,6 +85,33 @@ class TagServiceTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> tagService.save(null));
         verify(tagRepository, never()).save(any(Tag.class));
+    }
+
+    @Test
+    void tagNotSavedIfTagNameTaken() {
+        // given
+        given(tagRepository.findByName(anyString()))
+                .willReturn(Optional.of(new Tag("tag name")));
+        Tag tag = new Tag("test");
+
+        // when
+        tagService.save(tag);
+
+        // then
+        verify(tagRepository, never()).save(tag);
+    }
+
+    @Test
+    void tagSavedIfTagNameNotTaken() {
+        // given
+        given(tagRepository.findByName(anyString())).willReturn(Optional.empty());
+        Tag tag = new Tag("test");
+
+        // when
+        tagService.save(tag);
+
+        // then
+        verify(tagRepository).save(tag);
     }
 
     @Test

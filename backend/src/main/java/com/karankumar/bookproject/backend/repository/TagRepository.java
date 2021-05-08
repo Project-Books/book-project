@@ -30,11 +30,14 @@ import java.util.Optional;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    // TODO: change this to return an exact match if found, rather than a list (use equals, not LIKE)
-    @Query("SELECT t " +
-            "FROM Tag t " +
-            "WHERE LOWER(t.name) LIKE LOWER(:name)")
-    List<Tag> findByName(@Param("name") String name);
+//    // TODO: change this to return an exact match if found, rather than a list (use equals, not LIKE)
+//    @Query("SELECT t " +
+//            "FROM Tag t " +
+//            "WHERE LOWER(t.name) LIKE LOWER(:name)")
+//    List<Tag> findByName(@Param("name") String name);
+
+    @Query("SELECT t FROM Tag t WHERE LOWER(t.name) = :name")
+    Optional<Tag> findByName(@Param("name") String tagName);
 
     @EntityGraph(value = "Tag.books")
     Optional<Tag> findById(Long id);

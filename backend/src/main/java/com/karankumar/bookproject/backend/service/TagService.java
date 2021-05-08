@@ -38,7 +38,7 @@ public class TagService {
         return tagRepository.findById(id);
     }
 
-    public List<Tag> findByName(@NonNull String name) {
+    public Optional<Tag> findByName(@NonNull String name) {
         return tagRepository.findByName(name.trim());
     }
 
@@ -47,10 +47,10 @@ public class TagService {
     }
 
     public void save(@NonNull Tag tag) {
-        // TODO: change this to search for an exact match. If not found, then we can save the tag.
-        List<Tag> matchingTags = findByName(tag.getName());
-        if (matchingTags == null || matchingTags.isEmpty()) {
-          tagRepository.save(tag);
+        Optional<Tag> optionalTag = findByName(tag.getName());
+        boolean tagNameNotTaken = optionalTag.isEmpty();
+        if (tagNameNotTaken) {
+            tagRepository.save(tag);
         }
     }
 
