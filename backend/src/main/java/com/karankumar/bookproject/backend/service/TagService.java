@@ -34,7 +34,7 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-    public Optional<Tag> findById(Long id) {
+    public Optional<Tag> findById(@NonNull Long id) {
         return tagRepository.findById(id);
     }
 
@@ -47,6 +47,7 @@ public class TagService {
     }
 
     public void save(@NonNull Tag tag) {
+        // TODO: change this to search for an exact match. If not found, then we can save the tag.
         List<Tag> matchingTags = findByName(tag.getName());
         if (matchingTags == null || matchingTags.isEmpty()) {
           tagRepository.save(tag);

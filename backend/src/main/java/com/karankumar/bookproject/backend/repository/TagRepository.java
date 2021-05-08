@@ -30,6 +30,7 @@ import java.util.Optional;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
+    // TODO: change this to return an exact match if found, rather than a list (use equals, not LIKE)
     @Query("SELECT t " +
             "FROM Tag t " +
             "WHERE LOWER(t.name) LIKE LOWER(:name)")

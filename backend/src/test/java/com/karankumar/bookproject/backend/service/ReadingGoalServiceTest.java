@@ -1,7 +1,7 @@
 /*
  * The book project lets a user keep track of different books they would like to read, are currently
  * reading, have read or did not finish.
- * Copyright (C) 2020  Karan Kumar
+ * Copyright (C) 2021  Karan Kumar
 
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -17,95 +17,81 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.model.ReadingGoal;
+import com.karankumar.bookproject.backend.repository.ReadingGoalRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.karankumar.bookproject.util.ReadingGoalTestUtils.resetGoalService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assumptions.assumeThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-import java.util.Optional;
-
-@IntegrationTest
-@DisplayName("ReadingGoalService should")
 class ReadingGoalServiceTest {
-    private final ReadingGoalService goalService;
-    private ReadingGoal existingReadingGoal;
-
-    @Autowired
-    ReadingGoalServiceTest(ReadingGoalService goalService) {
-        this.goalService = goalService;
-    }
+    private ReadingGoalService underTest;
+    private ReadingGoalRepository readingGoalRepository;
 
     @BeforeEach
-    void setUp(){
-        resetGoalService(goalService);
-        initReadingGoalServiceTest();
-    }
-
-    private void initReadingGoalServiceTest() {
-        existingReadingGoal = new ReadingGoal(20, ReadingGoal.GoalType.BOOKS);
-        goalService.save(existingReadingGoal);
+    void setUp() {
+        readingGoalRepository = mock(ReadingGoalRepository.class);
+        underTest = new ReadingGoalService(readingGoalRepository);
     }
 
     @Test
-    void overwriteExistingGoalOnSave() {
+    void findById_throwsNullPointerException_ifIdIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.findById(null));
+        verify(readingGoalRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    void canFindByNonNullId() {
         // given
-        assumeThat(goalService.count()).isOne();
+        Long id = 1L;
 
         // when
-        ReadingGoal newReadingGoal = new ReadingGoal(40, ReadingGoal.GoalType.PAGES);
-        goalService.save(newReadingGoal);
+        underTest.findById(id);
 
         // then
-        ReadingGoal actual = goalService.findAll().get(0);
-        assertSoftly(softly -> {
-            softly.assertThat(goalService.count()).isOne();
-            softly.assertThat(newReadingGoal).isEqualToComparingFieldByField(actual);
-        });
+        verify(readingGoalRepository).findById(id);
     }
 
     @Test
-    void findExistingGoal() {
+    void canFindAll() {
+        underTest.findAll();
+        verify(readingGoalRepository).findAll();
+    }
+
+    @Test
+    void save_throwsNullPointerException_ifGoalIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.save(null));
+        verify(readingGoalRepository, never()).save(any(ReadingGoal.class));
+    }
+
+    @Test
+    void canSaveNonNullGoal() {
         // given
-        assumeThat(goalService.count()).isOne();
+        ReadingGoal goal = new ReadingGoal(1, ReadingGoal.GoalType.BOOKS);
 
         // when
-        Optional<ReadingGoal> actual = goalService.findById(existingReadingGoal.getId());
+        underTest.save(goal);
 
         // then
-        assertThat(actual).isPresent();
+        verify(readingGoalRepository).save(goal);
     }
 
     @Test
-    void deleteExistingGoal() {
-        // given
-        assumeThat(goalService.count()).isOne();
-
-        // when
-        goalService.delete(existingReadingGoal);
-
-        // then
-        assertThat(goalService.count()).isZero();
+    void canDeleteAll() {
+        underTest.deleteAll();;
+        verify(readingGoalRepository).deleteAll();
     }
 
     @Test
-    @DisplayName("throw an exception on an attempt to delete a null goal")
-    void throwExceptionOnAttemptToDeleteANullGoal() {
-        assertThatThrownBy(() -> goalService.delete(null))
-                .isInstanceOf(NullPointerException.class);
-    }
-
-    @Test
-    @DisplayName("throw an exception on an attempt to save a null goal")
-    void throwExceptionOnAttemptToSaveANullGoal() {
-        assertThatThrownBy(() -> goalService.save(null))
-                .isInstanceOf(NullPointerException.class);
+    void canCount() {
+        underTest.count();
+        verify(readingGoalRepository).count();
     }
 }
