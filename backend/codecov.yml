@@ -1,3 +1,4 @@
+language: java
 coverage:
   status:
     project:
