@@ -31,12 +31,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.modelmapper.extensions</groupId>
-            <artifactId>modelmapper-spring</artifactId>
-            <version>2.4.1</version>
-          </dependency>
-
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.21</version>
