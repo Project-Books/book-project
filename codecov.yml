@@ -6,7 +6,6 @@ coverage:
         threshold: 0%
         paths:
           - backend
-    patch: off
 ignore:
   - "backend/src/main/java/com/karankumar/bookproject/BookProjectApplication.java"
 
