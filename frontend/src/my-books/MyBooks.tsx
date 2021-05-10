@@ -16,8 +16,8 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, { Component } from 'react'
-import { NavBar } from '../shared/navigation/NavBar'
 import { ShelfCarousel } from '../shared/book-display/ShelfCarousel'
+import { Layout } from "../shared/components/Layout";
 import './MyBooks.css'
 
 interface IState {
@@ -26,15 +26,12 @@ interface IState {
 class MyBooks extends Component<Record<string, unknown>, IState> {
     render() {
         return (
-            <div>
-                <NavBar />
-                <div>
-                    <ShelfCarousel title="Reading" />
-                    <ShelfCarousel title="To Read" />
-                    <ShelfCarousel title="Read" />
-                    <ShelfCarousel title="Did not finish" />
-                </div>
-            </div>
+            <Layout title="My books">
+                <ShelfCarousel title="Reading" />
+                <ShelfCarousel title="To Read" />
+                <ShelfCarousel title="Read" />
+                <ShelfCarousel title="Did not finish" />
+            </Layout>
         )
     }
 }
