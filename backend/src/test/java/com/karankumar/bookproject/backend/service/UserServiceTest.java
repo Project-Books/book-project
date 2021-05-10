@@ -36,10 +36,6 @@ import static com.karankumar.bookproject.backend.service.UserService.USER_NOT_FO
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.ArgumentCaptor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
@@ -53,7 +49,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     private UserService userTest;
-    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
     @Mock private RoleRepository roleRepository;
@@ -67,7 +62,7 @@ class UserServiceTest {
         bookRepository = mock(BookRepository.class);
         PredefinedShelfService predefinedShelfService = mock(PredefinedShelfService.class);
         PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-        userService = new UserService(
+        userTest = new UserService(
                 userRepository,
                 roleRepository,
                 passwordEncoder,
@@ -80,14 +75,14 @@ class UserServiceTest {
     @Test
     void register_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.register(null));
+                .isThrownBy(() -> userTest.register(null));
         verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
     void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.isEmailInUse(null));
+                .isThrownBy(() -> userTest.isEmailInUse(null));
         verify(userRepository, never()).findByEmail(anyString());
     }
 
@@ -98,7 +93,7 @@ class UserServiceTest {
         given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
 
         // when
-        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
+        boolean emailInUse = userTest.isEmailInUse("test@gmail.com");
 
         // then
         assertThat(emailInUse).isTrue();
@@ -110,7 +105,7 @@ class UserServiceTest {
         given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
         // when
-        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
+        boolean emailInUse = userTest.isEmailInUse("test@gmail.com");
 
         // then
         assertThat(emailInUse).isFalse();
@@ -119,14 +114,14 @@ class UserServiceTest {
     @Test
     void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
+                .isThrownBy(() -> userTest.changeUserPassword(null, "test"));
     }
 
     @Test
     void changeUserPassword_throwsNullPointerException_ifPasswordIsNull() {
         User user = User.builder().build();
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.changeUserPassword(user, null));
+                .isThrownBy(() -> userTest.changeUserPassword(user, null));
         verify(userRepository, never()).save(any(User.class));
     }
 
@@ -136,7 +131,7 @@ class UserServiceTest {
         String password = "password";
 
         // when
-        underTest.changeUserPassword(User.builder().build(), password);
+        userTest.changeUserPassword(User.builder().build(), password);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -155,7 +150,7 @@ class UserServiceTest {
           given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
 
           // when
-          userService.deleteUserById(1L);
+          userTest.deleteUserById(1L);
 
           // then
           verify(bookRepository).deleteAll();
