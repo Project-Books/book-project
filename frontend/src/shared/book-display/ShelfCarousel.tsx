@@ -18,7 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 import React from 'react'
 import './ShelfCarousel.css'
 import { Icon } from '@material-ui/core';
-import { url } from 'inspector';
 
 function ShelfBook(props: BookProps) {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
@@ -48,30 +47,28 @@ function AddBook() {
 
 export function ShelfCarousel(props: ShelfCarouselProps) {
     return (
-        <div className="container">
-            <div className="shelf-container">
-                <span className="shelf-title">{props.title}</span>
-                <span className="view-all">View all</span>
-                <div className="clear" />
+        <div className="shelf-container">
+            <span className="shelf-title">{props.title}</span>
+            <span className="view-all">View all</span>
+            <div className="clear" />
 
-                <div className="books-and-shelf">
-                    <div className="book-wrap">
-                        <ShelfBook 
-                            title="Harry Potter"
-                            img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />
-                        <ShelfBook title="Harry Potter and the Chamber of Secrets" img="" />
-                        <ShelfBook title="How Not to Die" img="" />
-                        <ShelfBook 
-                            title="Little Fires Everywhere" 
-                            img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg" 
-                        />
-                        <ShelfBook title="Start With Why" img="" />
-                        <ShelfBook title="Unbroken" img="" />
-                        <AddBook />
-                        <div className="clear" />
-                    </div>
-                    <div className="shelf"></div>
+            <div className="books-and-shelf">
+                <div className="book-wrap">
+                    <ShelfBook 
+                        title="Harry Potter"
+                        img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />
+                    <ShelfBook title="Harry Potter and the Chamber of Secrets" img="" />
+                    <ShelfBook title="How Not to Die" img="" />
+                    <ShelfBook 
+                        title="Little Fires Everywhere" 
+                        img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg" 
+                    />
+                    <ShelfBook title="Start With Why" img="" />
+                    <ShelfBook title="Unbroken" img="" />
+                    <AddBook />
+                    <div className="clear" />
                 </div>
+                <div className="shelf"></div>
             </div>
         </div>
     )

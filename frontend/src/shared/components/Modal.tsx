@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       position: 'absolute',
       width: 380,
-      height:356,
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       borderRadius: 40,
@@ -46,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface IModalProps{
   open: boolean,
   onClose?:() => void,
+  onPasswordResetClicked?: () => void,
   children?: JSX.Element
 }
 

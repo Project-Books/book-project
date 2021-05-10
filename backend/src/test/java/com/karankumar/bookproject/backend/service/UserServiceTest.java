@@ -35,6 +35,16 @@ import java.util.Optional;
 import static com.karankumar.bookproject.backend.service.UserService.USER_NOT_FOUND_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyLong;
+import org.mockito.ArgumentCaptor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -42,7 +52,9 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    private UserService userService;
+    private UserService userTest;
+    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Mock private RoleRepository roleRepository;
     @Mock private AuthenticationManager authenticationManager;
@@ -63,6 +75,77 @@ class UserServiceTest {
                 predefinedShelfService,
                 bookRepository
         );
+    }
+
+    @Test
+    void register_throwsNullPointerException_ifUserIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.register(null));
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.isEmailInUse(null));
+        verify(userRepository, never()).findByEmail(anyString());
+    }
+
+    @Test
+    void returnTrueIfEmailInUse() {
+        // given
+        User user = User.builder().build();
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
+
+        // when
+        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
+
+        // then
+        assertThat(emailInUse).isTrue();
+    }
+
+    @Test
+    void returnFalseIfEmailInUse() {
+        // given
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
+
+        // when
+        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
+
+        // then
+        assertThat(emailInUse).isFalse();
+    }
+
+    @Test
+    void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
+    }
+
+    @Test
+    void changeUserPassword_throwsNullPointerException_ifPasswordIsNull() {
+        User user = User.builder().build();
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.changeUserPassword(user, null));
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void changeUserPassword_encodesPassword_beforeSaving() {
+        // given
+        String password = "password";
+
+        // when
+        underTest.changeUserPassword(User.builder().build(), password);
+
+        // then
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userArgumentCaptor.capture());
+        User expected = User.builder()
+                            .password(passwordEncoder.encode(password))
+                            .build();
+        assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
+
     }
 
       @Test

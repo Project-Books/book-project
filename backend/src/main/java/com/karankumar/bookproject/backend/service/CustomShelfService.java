@@ -49,7 +49,7 @@ public class CustomShelfService {
         return new CustomShelf(shelfName, userService.getCurrentUser());
     }
 
-    public Optional<CustomShelf> findById(Long id) {
+    public Optional<CustomShelf> findById(@NonNull Long id) {
         return customShelfRepository.findById(id);
     }
 
@@ -57,10 +57,11 @@ public class CustomShelfService {
         return customShelfRepository.findAllByUser(userService.getCurrentUser());
     }
 
-    public Optional<CustomShelf> findByShelfNameAndLoggedInUser(String shelfName) {
+    public Optional<CustomShelf> findByShelfNameAndLoggedInUser(@NonNull String shelfName) {
         return customShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
     }
 
+    // TODO: only save custom shelf if the shelf name does not match the name of an existing (including predefined) shelf
     public CustomShelf save(@NonNull CustomShelf customShelf) {
         return customShelfRepository.save(customShelf);
     }
@@ -98,7 +99,7 @@ public class CustomShelfService {
     /**
      * Gets all of the books in the specified custom shelf
      */
-    public Set<Book> getBooksInCustomShelf(String shelfName) {
+    public Set<Book> getBooksInCustomShelf(@NonNull String shelfName) {
         Set<Book> books;
         List<CustomShelf> customShelves = this.findAll(shelfName);
         if (customShelves.isEmpty()) {
@@ -110,7 +111,7 @@ public class CustomShelfService {
         return books;
     }
 
-    public Optional<Shelf> getCustomShelfByName(String shelfName) {
+    public Optional<Shelf> getCustomShelfByName(@NonNull String shelfName) {
         return Optional.ofNullable(customShelfRepository.findByShelfName(shelfName).get(0));
     }
 

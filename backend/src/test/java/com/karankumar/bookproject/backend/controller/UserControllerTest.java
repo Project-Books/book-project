@@ -13,11 +13,11 @@
  */
 
 package com.karankumar.bookproject.backend.controller;
+
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.junit.jupiter.api.Test;
-//import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
@@ -34,7 +34,21 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.assertj.core.api.ThrowableAssert;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.test.context.ActiveProfiles;
+
+
+@SpringBootTest(classes = {UserService.class, PasswordEncoder.class})
+@ActiveProfiles("test")
 class UserControllerTest {
+  
+   @MockBean UserService userService;
+   @MockBean PasswordEncoder passwordEncoder;
+  
     private final UserController userController;
     private final UserService mockedUserService;
 
@@ -91,5 +105,32 @@ class UserControllerTest {
 
         assertThatExceptionOfType(ResponseStatusException.class)
             .isThrownBy(() -> userController.getUser(0L));
+    }
+  
+    @Test
+    void updatePassword_returnsUnauthorised_ifExistingPasswordNotCorrect() {
+        // given
+        User user = User.builder().build();
+        Mockito.when(userService.getCurrentUser())
+               .thenReturn(user);
+
+        Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString()))
+               .thenReturn(false);
+        UserController userController = new UserController(userService, passwordEncoder);
+
+        String expectedMessage = String.format(
+                "%s \"%s\"",
+                HttpStatus.UNAUTHORIZED,
+                UserController.INCORRECT_PASSWORD_ERROR_MESSAGE
+        );
+
+        // when
+        ThrowableAssert.ThrowingCallable callable =
+                () -> userController.updatePassword("current", "new");
+
+        // then
+        assertThatExceptionOfType(ResponseStatusException.class)
+                .isThrownBy(callable)
+                .withMessage(expectedMessage);
     }
 }
