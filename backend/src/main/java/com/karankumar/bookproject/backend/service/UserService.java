@@ -98,16 +98,14 @@ public class UserService {
 
         userRepository.save(userToRegister);
 
-//        authenticateUser(user);
         authenticateUser(userToRegister);
         return userToRegister;
     }
 
     public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND, "Curret User can not be found.")
-        );
+        // TODO: throw custom exception
+        return userRepository.findByEmail(email).orElseThrow();
     }
 
     // TODO: this can be removed once we are no longer populating test data
