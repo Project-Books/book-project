@@ -38,18 +38,17 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.ArgumentCaptor;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     private UserService underTest;
-    @Mock private PasswordEncoder passwordEncoder;
 
+    @Mock private PasswordEncoder passwordEncoder;
     @Mock private RoleRepository roleRepository;
     @Mock private AuthenticationManager authenticationManager;
     @Mock private UserRepository userRepository;
@@ -73,21 +72,20 @@ class UserServiceTest {
     void register_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.register(null));
-        verify(userRepository, never()).save(any(User.class));
+        then(userRepository).shouldHaveNoInteractions();
     }
 
     @Test
     void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.isEmailInUse(null));
-        verify(userRepository, never()).findByEmail(anyString());
+        then(userRepository).shouldHaveNoInteractions();
     }
 
     @Test
     void returnTrueIfEmailInUse() {
         // given
-        User user = User.builder().build();
-        given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.of(mock(User.class)));
 
         // when
         boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
@@ -112,6 +110,7 @@ class UserServiceTest {
     void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
+        then(userRepository).shouldHaveNoInteractions();
     }
 
     @Test
@@ -119,7 +118,7 @@ class UserServiceTest {
         User user = User.builder().build();
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.changeUserPassword(user, null));
-        verify(userRepository, never()).save(any(User.class));
+        then(userRepository).shouldHaveNoInteractions();
     }
 
     @Test
@@ -145,13 +144,18 @@ class UserServiceTest {
           // given
           User user = User.builder().build();
           given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+          Long expectedId = 1L;
 
           // when
-          underTest.deleteUserById(1L);
+          underTest.deleteUserById(expectedId);
 
           // then
           verify(bookRepository).deleteAll();
-          verify(userRepository).deleteById(anyLong());
+
+          ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+          verify(userRepository).deleteById(longArgumentCaptor.capture());
+          Long actual = longArgumentCaptor.getValue();
+          assertThat(actual).isEqualTo(expectedId);
       }
 
       @Test
@@ -163,7 +167,7 @@ class UserServiceTest {
           assertThatExceptionOfType(ResponseStatusException.class)
                   .isThrownBy(() -> underTest.deleteUserById(id))
                   .withMessageContaining(expectedMessage);
-          verify(bookRepository, never()).deleteAll();
-          verify(userRepository, never()).deleteById(anyLong());
+          then(bookRepository).shouldHaveNoInteractions();;
+          then(userRepository).shouldHaveNoMoreInteractions();
       }
   }
