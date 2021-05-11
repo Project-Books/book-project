@@ -33,12 +33,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 import static com.karankumar.bookproject.backend.service.UserService.USER_NOT_FOUND_ERROR_MESSAGE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.ArgumentCaptor;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -48,21 +47,19 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    private UserService userTest;
-    private PasswordEncoder passwordEncoder;
+    private UserService underTest;
+    @Mock private PasswordEncoder passwordEncoder;
 
     @Mock private RoleRepository roleRepository;
     @Mock private AuthenticationManager authenticationManager;
     @Mock private UserRepository userRepository;
     @Mock private BookRepository bookRepository;
 
-
     @BeforeEach
     void setUp() {
         bookRepository = mock(BookRepository.class);
         PredefinedShelfService predefinedShelfService = mock(PredefinedShelfService.class);
-        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-        userTest = new UserService(
+        underTest = new UserService(
                 userRepository,
                 roleRepository,
                 passwordEncoder,
@@ -75,14 +72,14 @@ class UserServiceTest {
     @Test
     void register_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> userTest.register(null));
+                .isThrownBy(() -> underTest.register(null));
         verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
     void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> userTest.isEmailInUse(null));
+                .isThrownBy(() -> underTest.isEmailInUse(null));
         verify(userRepository, never()).findByEmail(anyString());
     }
 
@@ -93,7 +90,7 @@ class UserServiceTest {
         given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
 
         // when
-        boolean emailInUse = userTest.isEmailInUse("test@gmail.com");
+        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
 
         // then
         assertThat(emailInUse).isTrue();
@@ -105,7 +102,7 @@ class UserServiceTest {
         given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
         // when
-        boolean emailInUse = userTest.isEmailInUse("test@gmail.com");
+        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
 
         // then
         assertThat(emailInUse).isFalse();
@@ -114,14 +111,14 @@ class UserServiceTest {
     @Test
     void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> userTest.changeUserPassword(null, "test"));
+                .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
     }
 
     @Test
     void changeUserPassword_throwsNullPointerException_ifPasswordIsNull() {
         User user = User.builder().build();
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> userTest.changeUserPassword(user, null));
+                .isThrownBy(() -> underTest.changeUserPassword(user, null));
         verify(userRepository, never()).save(any(User.class));
     }
 
@@ -131,7 +128,7 @@ class UserServiceTest {
         String password = "password";
 
         // when
-        userTest.changeUserPassword(User.builder().build(), password);
+        underTest.changeUserPassword(User.builder().build(), password);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -150,7 +147,7 @@ class UserServiceTest {
           given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
 
           // when
-          userTest.deleteUserById(1L);
+          underTest.deleteUserById(1L);
 
           // then
           verify(bookRepository).deleteAll();
@@ -164,7 +161,7 @@ class UserServiceTest {
           String expectedMessage = String.format(USER_NOT_FOUND_ERROR_MESSAGE, id);
 
           assertThatExceptionOfType(ResponseStatusException.class)
-                  .isThrownBy(() -> userService.deleteUserById(id))
+                  .isThrownBy(() -> underTest.deleteUserById(id))
                   .withMessageContaining(expectedMessage);
           verify(bookRepository, never()).deleteAll();
           verify(userRepository, never()).deleteById(anyLong());
