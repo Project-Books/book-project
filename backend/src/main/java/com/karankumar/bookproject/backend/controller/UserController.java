@@ -65,13 +65,13 @@ public class UserController {
                           );
     }
 
-    @PostMapping("/register")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody User user) {
         userService.register(user);
     }
 
-    @DeleteMapping("/delete-current/{password}")
+    @DeleteMapping("/{password}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCurrentUser(@PathVariable String password) {
         if (passwordEncoder.matches(password, userService.getCurrentUser().getPassword())) {
