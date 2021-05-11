@@ -76,11 +76,10 @@ public class UserController {
     public void deleteCurrentUser(@PathVariable String password) {
         if (passwordEncoder.matches(password, userService.getCurrentUser().getPassword())) {
             Long userId = userService.getCurrentUser().getId();
-            if (userId != null) {
-                userService.deleteUserById(userId);
-            } else {
-                throw new NullPointerException("User ID cannot be null");
+            if (userId == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
             }
+            userService.deleteUserById(userId);
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
         }
