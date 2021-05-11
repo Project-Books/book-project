@@ -15,12 +15,10 @@
 package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.account.User;
-import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -62,35 +59,34 @@ class UserControllerTest {
                                        .password("aaaaAAAA1234@")
                                        .build();
 
-    UserControllerTest(){
+    UserControllerTest() {
         mockedUserService = mock(UserService.class);
         PasswordEncoder mockedPasswordEncoder = mock(PasswordEncoder.class);
         userController = new UserController(mockedUserService, mockedPasswordEncoder);
     }
 
     @Test
-    void getAllUsers_returnsEmptyList_whenNoUsersExist(){
+    void getAllUsers_returnsEmptyList_whenNoUsersExist() {
         when(mockedUserService.findAll()).thenReturn(new ArrayList<>());
-
         assertThat(userController.getAllUsers().size()).isZero();
     }
 
     @Test
-    void getAllUsers_returnNonEmptyList_whenUserExist(){
-        //given
+    void getAllUsers_returnNonEmptyList_whenUserExist() {
+        // given
         List<User> users = new ArrayList<>();
         users.add(validUser);
         users.add(validUser);
 
-        //when
+        // when
         when(mockedUserService.findAll()).thenReturn(users);
 
-        //then
+        // then
         assertThat(userController.getAllUsers().size()).isEqualTo(users.size());
     }
 
     @Test
-    void getUser_returnsUser_ifPresent(){
+    void getUser_returnsUser_ifPresent() {
         User user = validUser;
         when(mockedUserService.findUserById(any(Long.class)))
             .thenReturn(Optional.of(user));
@@ -99,7 +95,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getUser_returnsNotFound_ifUserIsEmpty(){
+    void getUser_returnsNotFound_ifUserIsEmpty() {
         when(mockedUserService.findUserById(any(Long.class)))
             .thenReturn(Optional.empty());
 

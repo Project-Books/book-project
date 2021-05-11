@@ -151,6 +151,7 @@ public class UserService {
             bookRepository.deleteAll();
             userRepository.deleteById(id);
         } else {
+            // TODO: throw custom exception.
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, 
                     String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)
