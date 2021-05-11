@@ -18,7 +18,6 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.Shelf;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,7 +27,6 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByTitleContainingIgnoreCase(String title);
-    List<Book> findByPredefinedShelfId(Long predefined_shelf_id);
 
     @Query("SELECT b " +
             "FROM Book b " +
