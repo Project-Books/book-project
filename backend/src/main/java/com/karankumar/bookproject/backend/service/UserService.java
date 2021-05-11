@@ -17,12 +17,18 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.account.UserRole;
 import com.karankumar.bookproject.backend.model.account.Role;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
+import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,13 +36,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
 
 @Service
 public class UserService {
@@ -44,18 +54,26 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final BookRepository bookRepository;
+    private final PredefinedShelfService predefinedShelfService;
+
+    public static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
                        PasswordEncoder passwordEncoder,
-                       AuthenticationManager authenticationManager) {
+                       AuthenticationManager authenticationManager,
+                       @Lazy PredefinedShelfService predefinedShelfService,
+                       BookRepository bookRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.predefinedShelfService = predefinedShelfService;
+        this.bookRepository = bookRepository;
     }
 
-    public void register(@NonNull User user) throws UserAlreadyRegisteredException {
+    public User register(@NonNull User user) throws UserAlreadyRegisteredException {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
 
@@ -80,7 +98,8 @@ public class UserService {
 
         userRepository.save(userToRegister);
 
-        authenticateUser(user);
+        authenticateUser(userToRegister);
+        return userToRegister;
     }
 
     public User getCurrentUser() {
@@ -94,7 +113,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private void authenticateUser(@NonNull User user) {
+    public Optional<User> findUserById(@NonNull Long id) {
+        return userRepository.findById(id);
+    }
+
+    private void authenticateUser(User user) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         Authentication authResult =
@@ -117,5 +140,36 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
         userRepository.save(user);
+    }
+
+    public void deleteUserById(@NonNull Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            // TODO: make the temporal coupling explicit -- this needs to be called before bookRepository.deleteAll()
+            removePredefinedShelfFromUserBooks();
+
+            bookRepository.deleteAll();
+            userRepository.deleteById(id);
+        } else {
+            // TODO: throw custom exception.
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, 
+                    String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)
+            );
+        }
+    }
+
+    private void removePredefinedShelfFromUserBooks() {
+        List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAllForLoggedInUser();
+
+        // Add all of the books in each predefined shelf to this set outside of the loop to
+        // avoid a concurrent modification exception
+        Set<Book> outerBooks = new HashSet<>();
+        for (PredefinedShelf p : predefinedShelves) {
+            p.removeUser();
+            outerBooks.addAll(p.getBooks());
+        }
+
+        outerBooks.forEach(Book::removePredefinedShelf);
     }
 }

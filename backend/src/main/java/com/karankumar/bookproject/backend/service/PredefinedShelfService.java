@@ -225,6 +225,10 @@ public class PredefinedShelfService {
         return getBooksInPredefinedShelves(findAllForLoggedInUser());
     }
 
+    public void deleteAll() {
+	    predefinedShelfRepository.deleteAll();
+    }
+  
     /**
      * Fetches all of the books in the chosen predefined shelves
      */
