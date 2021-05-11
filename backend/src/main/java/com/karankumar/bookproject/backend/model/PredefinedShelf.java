@@ -82,16 +82,4 @@ public class PredefinedShelf extends Shelf {
             return name;
         }
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId(){
-        return id;
-    }
-
-    public void setPredefinedShelfName(ShelfName predefinedShelfName) {
-        this.predefinedShelfName = predefinedShelfName;
-    }
 }

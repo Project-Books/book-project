@@ -79,7 +79,7 @@ public class UserController {
             if (userId != null) {
                 userService.deleteUserById(userId);
             } else {
-                throw new NullPointerException("UserID cannot be null");
+                throw new NullPointerException("User ID cannot be null");
             }
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
