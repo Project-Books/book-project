@@ -4,11 +4,11 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
-- master
+- main
 - 0.2.0
 
 pr:
-- master
+- main
 - 0.2.0
 
 pool:
