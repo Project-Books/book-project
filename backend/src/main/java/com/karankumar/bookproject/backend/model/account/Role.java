@@ -18,11 +18,11 @@
 package com.karankumar.bookproject.backend.model.account;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -32,14 +32,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
-/**
- * Represents a single Role
- */
 @Entity
-@Builder
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Role {
@@ -50,4 +45,8 @@ public class Role {
 
     @NotBlank
     private String role;
+
+    public Role(@NonNull String role) {
+        this.role = role;
+    }
 }
