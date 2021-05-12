@@ -34,11 +34,11 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-    public Optional<Tag> findById(Long id) {
+    public Optional<Tag> findById(@NonNull Long id) {
         return tagRepository.findById(id);
     }
 
-    public List<Tag> findByName(@NonNull String name) {
+    public Optional<Tag> findByName(@NonNull String name) {
         return tagRepository.findByName(name.trim());
     }
 
@@ -47,9 +47,10 @@ public class TagService {
     }
 
     public void save(@NonNull Tag tag) {
-        List<Tag> matchingTags = findByName(tag.getName());
-        if (matchingTags == null || matchingTags.isEmpty()) {
-          tagRepository.save(tag);
+        Optional<Tag> optionalTag = findByName(tag.getName());
+        boolean tagNameNotTaken = optionalTag.isEmpty();
+        if (tagNameNotTaken) {
+            tagRepository.save(tag);
         }
     }
 

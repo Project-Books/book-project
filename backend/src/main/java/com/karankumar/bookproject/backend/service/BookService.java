@@ -24,9 +24,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Publisher;
+import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,12 +52,12 @@ public class BookService {
         this.publisherService = publisherService;
     }
 
-    public Optional<Book> findById(Long id) {
-//        return bookRepository.findBookById(id);
+    public Optional<Book> findById(@NonNull Long id) {
         return bookRepository.findBookById(id);
+//        return bookRepository.findById(id);
     }
 
-    public Optional<Book> save(Book book) {
+    public Optional<Book> save(@NonNull Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
             addBookToAuthor(book);
             addBookToPublisher(book);
@@ -65,7 +67,7 @@ public class BookService {
         return Optional.empty();
     }
 
-    private boolean bookHasAuthorAndPredefinedShelf(@NonNull Book book) {
+    private boolean bookHasAuthorAndPredefinedShelf(Book book) {
         return book.getAuthor() != null && book.getPredefinedShelf() != null;
     }
 
@@ -104,9 +106,17 @@ public class BookService {
 //        book.removeAuthor();
         bookRepository.delete(book);
 
-        // TODO: fix this
-//        Author author = book.getAuthor();
-//        removeAuthorWithoutBooks(author);
+        List<Book> books = bookRepository.findAll();
+        if (books.contains(book)) {
+            LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
+        } else {
+            LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
+                    bookRepository.count());
+
+            Author author = book.getAuthor();
+//            removeBookFromAuthor(book, author);
+            removeAuthorWithoutBooks(author);
+        }
     }
 
     private void removeAuthorWithoutBooks(@NonNull Author author) {
@@ -116,16 +126,15 @@ public class BookService {
     }
 
     public void deleteAll() {
-        if (bookRepository.count() == 0) {
-            LOGGER.log(Level.INFO, "All books already deleted");
-            return;
-        }
         LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " +
                 bookRepository.count());
         bookRepository.deleteAll();
         authorService.deleteAll();
-        LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = "
-                + bookRepository.count());
+
+        LOGGER.log(
+                Level.INFO, "Deleted all books in books & authors. Book repository size = " +
+                bookRepository.count()
+        );
     }
 
     public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
@@ -139,15 +148,14 @@ public class BookService {
         return jsonWriter.writeValueAsString(books);
     }
 
-    public List<Book> findByShelfAndTitleOrAuthor(String shelf, String titleOrAuthor) {
-        return bookRepository.findByShelfAndTitleOrAuthor(shelf, titleOrAuthor);
+    // TODO: split into findByShelfAndTitle and findShelfAndAuthor queries, and then merge result sets
+    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName) {
+        throw new NotImplementedException();
+//        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
     }
 
-    public List<Book> findByShelfAndTitleOrAuthor2(String shelf) {
-        return bookRepository.findByShelfAndTitleOrAuthor2(shelf);
-    }
-
-    public List<Book> findByTitleOrAuthor(String titleOrAuthorFullName) {
-        return bookRepository.findByTitleOrAuthor(titleOrAuthorFullName);
+    public List<Book> findByTitleOrAuthor(String title, String authorsName) {
+        throw new NotImplementedException();
+//        return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
 }

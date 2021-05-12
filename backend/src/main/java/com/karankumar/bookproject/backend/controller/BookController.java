@@ -14,6 +14,7 @@
 
 package com.karankumar.bookproject.backend.controller;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.modelmapper.Converter;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
@@ -22,7 +23,6 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.BookFormat;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.print.attribute.standard.Destination;
 import java.util.Optional;
 import java.util.List;
 import java.util.Map;
@@ -122,14 +121,16 @@ public class BookController {
     @GetMapping("/find-by-shelf-and-title-or-author/{shelfName}/{titleOrAuthor}")
     public List<Book> findByShelfAndTitleOrAuthor(@PathVariable String shelfName,
                                                   @PathVariable String titleOrAuthor) {
+        throw new NotImplementedException();
 //        return bookService.findByShelfAndTitleOrAuthor(shelfName, titleOrAuthor);
-        return bookService.findByShelfAndTitleOrAuthor2(shelfName);
+//        return bookService.findByShelfAndTitleOrAuthor2(shelfName);
     }
 
     @GetMapping("/find-by-title-or-author/{titleOrAuthor}")
     // TODO: only retrieve books that belong to the logged in user
     public List<Book> findByTitleOrAuthor(@PathVariable String titleOrAuthor) {
-        return bookService.findByTitleOrAuthor(titleOrAuthor);
+        throw new NotImplementedException();
+//        return bookService.findByTitleOrAuthor(titleOrAuthor);
     }
 
     @PostMapping()

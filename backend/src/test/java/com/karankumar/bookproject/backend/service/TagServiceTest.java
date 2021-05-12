@@ -17,113 +17,131 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.model.Tag;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
+import com.karankumar.bookproject.backend.repository.TagRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
-import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-@IntegrationTest
-@DisplayName("TagService should")
 class TagServiceTest {
-    private final TagService tagService;
+    private TagService tagService;
+    private TagRepository tagRepository;
 
-    @Autowired
-    TagServiceTest(BookService bookService, TagService tagService) {
-        // Tags can only be deleted if it does not belong to a book, hence why the bookService needs
-        // to be reset
-        bookService.deleteAll();
-        tagService.deleteAll();
-        this.tagService = tagService;
+    @BeforeEach
+    void setUp() {
+        tagRepository = mock(TagRepository.class);
+        tagService = new TagService(tagRepository);
     }
 
     @Test
-    void saveAValidTag() {
+    void findById_throwsNullPointerException_ifIdIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> tagService.findById(null));
+        verify(tagRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    void canFindByNonNullId() {
         // given
-        Tag tag = new Tag("dystopian");
+        Long id = 1L;
+
+        // when
+        tagService.findById(id);
+
+        verify(tagRepository).findById(id);
+    }
+
+    @Test
+    void findByName_throwsNullPointerException_ifNameIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> tagService.findByName(null));
+        verify(tagRepository, never()).findByName(anyString());
+    }
+
+    @Test
+    void canFindByNonNullName() {
+        tagService.findByName("test");
+        verify(tagRepository).findByName(anyString());
+    }
+
+    @Test
+    void canFindAll() {
+        tagService.findAll();
+        verify(tagRepository).findAll();
+    }
+
+    @Test
+    void save_throwsNullPointerException_ifTagIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> tagService.save(null));
+        verify(tagRepository, never()).save(any(Tag.class));
+    }
+
+    @Test
+    void tagNotSavedIfTagNameTaken() {
+        // given
+        given(tagRepository.findByName(anyString()))
+                .willReturn(Optional.of(new Tag("tag name")));
+        Tag tag = new Tag("test");
 
         // when
         tagService.save(tag);
 
         // then
-        assertThat(tagService.findById(tag.getId())).isPresent();
+        verify(tagRepository, never()).save(tag);
     }
 
     @Test
-    @DisplayName("throw exception on an attempt to save a null tag")
-    void throwExceptionWhenSavingANullTag() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> tagService.save(null));
-    }
-
-    @Test
-    @DisplayName("throw exception on an attempt to delete a null tag")
-    void throwExceptionWhenDeletingANullTag() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> tagService.delete(null));
-    }
-
-    @Test
-    @Transactional
-    void deleteExistingTag() {
+    void tagSavedIfTagNameNotTaken() {
         // given
-        Tag tag = new Tag("dystopian");
+        given(tagRepository.findByName(anyString())).willReturn(Optional.empty());
+        Tag tag = new Tag("test");
+
+        // when
         tagService.save(tag);
 
-        Long tagId = tag.getId();
+        // then
+        verify(tagRepository).save(tag);
+    }
+
+    @Test
+    void canCount() {
+        tagService.count();
+        verify(tagRepository).count();
+    }
+
+    @Test
+    void delete_throwsNullPointerException_ifTagIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> tagService.delete(null));
+        verify(tagRepository, never()).save(any(Tag.class));
+    }
+
+    @Test
+    void canDeleteNonNullTag() {
+        // given
+        Tag tag = new Tag("test");
 
         // when
         tagService.delete(tag);
 
         // then
-        assertThat(tagService.findById(tagId)).isEmpty();
+        verify(tagRepository).delete(tag);
     }
 
     @Test
-    void findAllSavedTags() {
-        // given
-        Tag tag1 = new Tag("favourites");
-        Tag tag2 = new Tag("dystopian");
-        tagService.save(tag1);
-        tagService.save(tag2);
-
-        // when
-        List<Tag> allTags = tagService.findAll();
-
-        // then
-        assertThat(allTags).contains(tag1, tag2);
-    }
-
-    @Test
-    void doNotSaveDuplicateTag() {
-        // given
-        Tag tag1  = new Tag("dystopian");
-        Tag tag2  = new Tag("Dystopian ");
-
-        // when
-        tagService.save(tag1);
-        tagService.save(tag2);
-
-        // then
-        assertThat(tagService.count()).isOne();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        resetTagService();
-    }
-
-    private void resetTagService() {
+    void canDeleteAll() {
         tagService.deleteAll();
+        verify(tagRepository).deleteAll();
     }
 }
