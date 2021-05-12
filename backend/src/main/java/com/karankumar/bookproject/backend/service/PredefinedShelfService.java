@@ -44,7 +44,6 @@ import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READING;
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
 import static com.karankumar.bookproject.backend.util.TestData.generateAuthors;
 import static com.karankumar.bookproject.backend.util.TestData.generateBooks;
 import static com.karankumar.bookproject.backend.util.TestData.generateListOfTags;
@@ -54,6 +53,7 @@ import static com.karankumar.bookproject.backend.util.TestData.setPredefinedShel
 @Service
 @Log
 public class PredefinedShelfService {
+    private static final String ALL_BOOKS_SHELF = "All books";
 
     private final BookRepository bookRepository;
     private final PredefinedShelfRepository predefinedShelfRepository;
@@ -219,6 +219,10 @@ public class PredefinedShelfService {
     	}
 
     	return predefinedShelf.get().getBooks();
+    }
+
+    private boolean isAllBooksShelf(@NonNull String shelfName) {
+        return shelfName.equals(ALL_BOOKS_SHELF);
     }
 
     public Set<Book> getBooksInAllPredefinedShelves() {
