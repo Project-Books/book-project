@@ -64,24 +64,26 @@ public class BookController {
         this.modelMapper.addConverter(bookFormatConverter);
     }
 
-    // TODO: fix this. A book always gets a null predefined shelf
     Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {
-        //@Override
-        public PredefinedShelf convert(String predefinedShelf) {
-            PredefinedShelf.ShelfName optionalPredefinedShelfName =
-                    PredefinedShelf.ShelfName.valueOf(predefinedShelf);
+        @Override
+        public PredefinedShelf convert(String predefinedShelfName) {
+            Optional<PredefinedShelf.ShelfName> optionalShelfName =
+                    PredefinedShelfService.getPredefinedShelfName(predefinedShelfName);
 
-            // Optional<PredefinedShelf> optionalPredefinedShelf = 
-            //         predefinedShelfService.getPredefinedShelfByPredefinedShelfName(optionalPredefinedShelfName);
-            Optional<PredefinedShelf> optionalPredefinedShelf = 
-                    predefinedShelfService.getPredefinedShelfByNameAsString(predefinedShelf);
-
-            if (optionalPredefinedShelf.isEmpty()) {
+            if (optionalShelfName.isEmpty()) {
                 String errorMessage = String.format(
                         "%s does not match a predefined shelf",
-                        predefinedShelf
+                        predefinedShelfName
                 );
                 throw new IllegalStateException(errorMessage);
+            }
+
+            Optional<PredefinedShelf> optionalPredefinedShelf = predefinedShelfService
+                    .getPredefinedShelfByPredefinedShelfName(optionalShelfName.get());
+
+            if (optionalPredefinedShelf.isEmpty()) {
+                // TODO: throw custom exception
+                throw new IllegalStateException();
             }
 
             return optionalPredefinedShelf.get();
@@ -115,7 +117,6 @@ public class BookController {
             );
     }
 
-
     // TODO fix. This always returns an empty list
     // TODO: only retrieve books that belong to the logged in user
     @GetMapping("/find-by-shelf-and-title-or-author/{shelfName}/{titleOrAuthor}")
@@ -137,38 +138,6 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody BookDto bookDto) {
     	Book bookToAdd = convertToBook(bookDto);
-        return bookService.save(bookToAdd);
-    }
-
-    @PostMapping("/add-to-read-book")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Book> addToReadBook(@RequestBody BookDto bookDto) {
-    	Book bookToAdd = convertToBook(bookDto);
-    	bookToAdd.addPredefinedShelf(predefinedShelfService.findToReadShelf());
-        return bookService.save(bookToAdd);
-    }
-
-    @PostMapping("/add-reading-book")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Book> addReadingBook(@RequestBody BookDto bookDto) {
-        Book bookToAdd = convertToBook(bookDto);
-        bookToAdd.addPredefinedShelf(predefinedShelfService.findReadingShelf());
-        return bookService.save(bookToAdd);
-    }
-
-    @PostMapping("/add-read-book")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Book> addReadBook(@RequestBody BookDto bookDto) {
-        Book bookToAdd = convertToBook(bookDto);
-        bookToAdd.addPredefinedShelf(predefinedShelfService.findReadShelf());
-        return bookService.save(bookToAdd);
-    }
-
-    @PostMapping("/add-did-not-finish-book")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Optional<Book> addDidNotFinishBook(@RequestBody BookDto bookDto) {
-        Book bookToAdd = convertToBook(bookDto);
-        bookToAdd.addPredefinedShelf(predefinedShelfService.findDidNotFinishShelf());
         return bookService.save(bookToAdd);
     }
 

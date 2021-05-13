@@ -121,7 +121,7 @@ public class Book {
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @Setter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
