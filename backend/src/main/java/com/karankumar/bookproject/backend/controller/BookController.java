@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/my-books")
+@RequestMapping("/api/books")
 public class BookController {
 	
     private final BookService bookService;
@@ -106,7 +106,7 @@ public class BookController {
         return bookService.findAll();
     }
     
-    @GetMapping("/find-by-id/{id}")
+    @GetMapping("/{id}")
     // TODO: only retrieve books that belong to the logged in user
     public Book findById(@PathVariable Long id) {
     	return bookService.findById(id)
@@ -172,7 +172,7 @@ public class BookController {
         return bookService.save(bookToAdd);
     }
 
-    @PatchMapping("/update-book/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<Book> update(@PathVariable Long id, @RequestBody Map<String, Object> changes) { //@RequestBody BookDto updatedBookDto) {
     	//fetch existing Book entity and ensure it exists
@@ -261,7 +261,7 @@ public class BookController {
         return modelMapper.map(bookDto, Book.class);
     }
 
-    @DeleteMapping("/delete-book/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
     	Book bookToDelete = bookService.findById(id)
     		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,

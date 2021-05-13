@@ -103,19 +103,12 @@ public class BookService {
     }
 
     public void delete(@NonNull Book book) {
-//        book.removeAuthor();
         bookRepository.delete(book);
 
-        List<Book> books = bookRepository.findAll();
-        if (books.contains(book)) {
-            LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
-        } else {
-            LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
-                    bookRepository.count());
-
+        if (!bookRepository.existsById(book.getId())) {
             Author author = book.getAuthor();
-//            removeBookFromAuthor(book, author);
-            removeAuthorWithoutBooks(author);
+            // TODO: fix method. It returns lazy initialization exception
+//            removeAuthorWithoutBooks(author);
         }
     }
 
