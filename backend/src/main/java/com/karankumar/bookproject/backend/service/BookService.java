@@ -97,7 +97,7 @@ public class BookService {
 
     public List<Book> findAll(String filterText) {
         if (filterText == null || filterText.isEmpty()) {
-            return bookRepository.findAll();
+            return findAll();
         }
         return bookRepository.findByTitleContainingIgnoreCase(filterText);
     }
@@ -108,7 +108,7 @@ public class BookService {
         if (!bookRepository.existsById(book.getId())) {
             Author author = book.getAuthor();
             // TODO: fix method. It returns lazy initialization exception
-//            removeAuthorWithoutBooks(author);
+            removeAuthorWithoutBooks(author);
         }
     }
 
