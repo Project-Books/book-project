@@ -137,7 +137,7 @@ class BookServiceTest {
     @Test
     void findAll_searchesWithoutFilter_ifFilterIsEmpty() {
         bookService.findAll("");
-        verify(bookRepository).findAll();
+        verify(bookRepository).findAllBooks();
     }
 
     @Test
