@@ -121,7 +121,6 @@ public class Book {
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//    @Setter(AccessLevel.NONE)
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
@@ -232,6 +231,10 @@ public class Book {
 
     public void setPublicationYear(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
+    }
+
+    public void addGenre(BookGenre genre) {
+        bookGenre.add(genre);
     }
 
     public static class BookBuilder {

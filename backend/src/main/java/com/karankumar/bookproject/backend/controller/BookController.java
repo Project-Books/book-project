@@ -38,9 +38,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/books")
@@ -117,115 +117,30 @@ public class BookController {
             );
     }
 
-    // TODO fix. This always returns an empty list
-    // TODO: only retrieve books that belong to the logged in user
-    @GetMapping("/find-by-shelf-and-title-or-author/{shelfName}/{titleOrAuthor}")
-    public List<Book> findByShelfAndTitleOrAuthor(@PathVariable String shelfName,
-                                                  @PathVariable String titleOrAuthor) {
-        throw new NotImplementedException();
-//        return bookService.findByShelfAndTitleOrAuthor(shelfName, titleOrAuthor);
-//        return bookService.findByShelfAndTitleOrAuthor2(shelfName);
-    }
-
-    @GetMapping("/find-by-title-or-author/{titleOrAuthor}")
-    // TODO: only retrieve books that belong to the logged in user
-    public List<Book> findByTitleOrAuthor(@PathVariable String titleOrAuthor) {
-        throw new NotImplementedException();
-//        return bookService.findByTitleOrAuthor(titleOrAuthor);
-    }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Optional<Book> addBook(@RequestBody BookDto bookDto) {
     	Book bookToAdd = convertToBook(bookDto);
+    	// TODO: check whether the book to save has a title, an author and a predefined shelf. If not, throw a 400-level exception
         return bookService.save(bookToAdd);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Book> update(@PathVariable Long id, @RequestBody Map<String, Object> changes) { //@RequestBody BookDto updatedBookDto) {
-    	//fetch existing Book entity and ensure it exists
+    public Optional<Book> update(@PathVariable Long id, @RequestBody Map<String, Object> changes) {
         Optional<Book> bookToUpdate = bookService.findById(id);
-    	if (bookToUpdate.isEmpty()) {
-    		throw new ResponseStatusException(
-    		        HttpStatus.NOT_FOUND,
+        if (bookToUpdate.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
                     String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)
             );
-    	}
+        }
 
-        //map persistent data to REST BookDto
-        BookDto bookDtoToUpdate = convertToDto(bookToUpdate.get());
-
-        //updatedBookDto.setId(id);
-        //Book updatedBook = convertToBook(updatedBookDto);
-        //modelMapper.map(updatedBookDto, bookToUpdate);
-        
-
-        //apply the changes to the REST BookDto
-        // changes.forEach(
-        //     (change, value) -> {
-        //         switch (change){
-        //             case "title": bookDtoToUpdate.setTitle((String) value); break;
-        //             case "numberOfPages": bookDtoToUpdate.setNumberOfPages((Integer) value); break;
-        //             case "pagesRead": bookDtoToUpdate.setPagesRead((Integer) value); break;
-        //         }
-        //     }
-        // );
-        // changes.forEach(
-        //     (change, value) -> {
-        //         switch (change) {
-        //             case "title":
-        //                 bookToUpdate.get().setTitle((String) value);
-        //                 break;
-        //             case "author":
-        //                 bookToUpdate.get().setAuthor((Author) modelMapper.map(value, Author.class));
-        //                 break;
-        //             case "predefinedShelfString":
-        //                 bookToUpdate.get().setPredefinedShelf((PredefinedShelf) modelMapper.map(value, PredefinedShelf.class));
-        //                 break;
-        //             case "numberOfPages":
-        //                 bookToUpdate.get().setNumberOfPages((Integer) value);
-        //                 break;
-        //             case "pagesRead":
-        //                 bookToUpdate.get().setPagesRead((Integer) value);
-        //                 break;
-        //             case "bookGenre":
-        //                 bookToUpdate.get().setBookGenre((BookGenre) modelMapper.map(value, BookGenre.class));
-        //                 break;
-        //             case "bookFormat":
-        //                 bookToUpdate.get().setBookFormat((BookFormat) modelMapper.map(value, BookFormat.class));
-        //                 break;
-        //             case "seriesPosition":
-        //                 bookToUpdate.get().setSeriesPosition((Integer) value);
-        //                 break;
-        //             case "edition":
-        //                 bookToUpdate.get().setEdition((Integer) value);
-        //                 break;
-        //             case "bookRecommendedBy":
-        //                 bookToUpdate.get().setBookRecommendedBy((String) value);
-        //                 break;
-        //             case "isbn":
-        //                 bookToUpdate.get().setIsbn((String) value);
-        //             case "yearofPublication":
-        //                 bookToUpdate.get().setPublicationYear((Integer) value);
-        //                 break;
-        //         }
-        //     }
-        // );
-
-        modelMapper.map(changes, bookDtoToUpdate);
-    	Book updatedBook = convertToBook(bookDtoToUpdate);
-
-    	//updatedBookDto.setId(id);
-    	//Book updatedBook = convertToBook(updatedBookDto);
-        return bookService.save(updatedBook);
-    	//return bookService.save(bookToUpdate.get());
+        // TODO: implement
+        throw new NotImplementedException();
     }
-    
-    private BookDto convertToDto(Book book) {
-        return modelMapper.map(book, BookDto.class);
-    }
-    
+
     private Book convertToBook(BookDto bookDto) {
         return modelMapper.map(bookDto, Book.class);
     }

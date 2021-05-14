@@ -1,13 +1,16 @@
 /*
  * The book project lets a user keep track of different books they would like to read, are currently
  * reading, have read or did not finish.
- * Copyright (C) 2020  Karan Kumar
+ * Copyright (C) 2021  Karan Kumar
+
  * This program is free software: you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
+
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU General Public License for more details.
+
  * You should have received a copy of the GNU General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
@@ -20,6 +23,7 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +42,8 @@ class BookRepositoryTest {
     private final AuthorRepository authorRepository;
     private final UserRepository userRepository;
     private final PredefinedShelfRepository predefinedShelfRepository;
-    private User user;
     private Author author;
     private PredefinedShelf read;
-    private final String WILDCARD = "%";
 
     @Autowired
     BookRepositoryTest(BookRepository bookRepository, AuthorRepository authorRepository,
@@ -56,7 +58,7 @@ class BookRepositoryTest {
     @BeforeEach
     void init() {
         bookRepository.deleteAll();
-        user = getTestUser(userRepository);
+        User user = getTestUser(userRepository);
         author = authorRepository.save(new Author("firstName lastName"));
         read = predefinedShelfRepository.save(
                 new PredefinedShelf(PredefinedShelf.ShelfName.READ, user)
@@ -65,22 +67,20 @@ class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("should successfully delete a book when the author has more than one book")
     void successfullyDeleteABook_whenAuthorHasOtherBooks() {
         // given
-        bookRepository.saveAndFlush(new Book("Book2", author, read));
-        Book book = bookRepository.findByTitleOrAuthor("title").get(0);
+        Book book = new Book("Book2", author, read);
+        bookRepository.saveAndFlush(book);
+        Long id = book.getId();
 
         // when
         bookRepository.delete(book);
 
         // then
-        assertThat(bookRepository.findByTitleOrAuthor("firstName").size())
-                .isOne();
+        assertThat(bookRepository.findBookById(id)).isEmpty();
     }
 
     @Test
-    @DisplayName("should successfully delete a book when the author has no other books")
     void successfullyDeleteSingleAuthoredBook() {
         //given
         Book book = bookRepository.findByTitleContainingIgnoreCase("title").get(0);
@@ -94,8 +94,7 @@ class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("should successfully find list of books by their title")
-    void findBookByTitle() {
+    void canFindBookByTitle() {
         //given
         bookRepository.saveAndFlush(new Book("someTitle", author, read));
 
@@ -113,65 +112,23 @@ class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("should successfully find list of books for any shelf no other filter")
-    void findBookByShelf_withoutParameters() {
-        int allBooks = bookRepository.findAll().size();
-        int readBooks = bookRepository.findByShelfAndTitleOrAuthor(
-                read.getShelfName(), WILDCARD
-        ).size();
-
-        assertThat(allBooks).isEqualTo(readBooks);
-    }
-
-    @Test
-    @DisplayName("should successfully find list of books for any shelf and title")
-    void findBookByShelf_onlyTitle() {
-        String title = "anotherBook";
-        PredefinedShelf toRead = predefinedShelfRepository.saveAndFlush(
-                new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, user)
-        );
-
-        bookRepository.saveAndFlush(new Book(title, author, toRead));
-
-        assertThat(bookRepository.findByShelfAndTitleOrAuthor(toRead.getShelfName(), title)
-                                 .size()).isOne();
-    }
-
-    @Test
-    @DisplayName("should successfully find books for any shelf and author")
-    void findBookByShelf_onyAuthor() {
-        String firstName = "firstName";
-        String lastName = "lastName";
-
-        assertSoftly(softly -> {
-            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(
-                    read.getShelfName(),
-                    firstName
-            ).size()).isOne();
-            softly.assertThat(bookRepository.findByShelfAndTitleOrAuthor(
-                    read.getShelfName(),
-                    lastName
-            ).size()).isOne();
-        });
-    }
-
-    @Test
-    @DisplayName("should successfully find all books by not passing any filter")
-    void successfullyFindAllBooksWithoutFilter() {
+    @Disabled // TODO: re-enable. This is disabled until implemented
+    void allBooksFoundWhenNoFilterPassed() {
         // given
         int allBooks = bookRepository.findAll().size();
 
         // when
+        String WILDCARD = "%";
         int actual = bookRepository.findByTitleOrAuthor(WILDCARD)
-                                 .size();
+                                   .size();
 
         // then
         assertThat(actual).isEqualTo(allBooks);
     }
 
     @Test
-    @DisplayName("should successfully find book by title without author name")
-    void successfullyFindBookWithOnlyTitle() {
+    @Disabled // TODO: re-enable. This is disabled until implemented
+    void canFindBookByTitleOrAuthor() {
         // given
         String title = "title";
 
@@ -183,8 +140,8 @@ class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("should successfully find book by author without title")
-    void successfullyFindBookWithOnlyAuthor() {
+    @Disabled // TODO: re-enable. This is disabled until implemented
+    void canFindBookByAuthor() {
         String firstName = "firstName";
         String lastName = "lastName";
 

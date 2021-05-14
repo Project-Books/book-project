@@ -61,15 +61,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT b " +
             "FROM Book b " +
-            "INNER JOIN FETCH b.author a " +
-            "WHERE (b.predefinedShelf.shelfName = :shelf OR b.customShelf.shelfName = :shelf) AND " +
-            "(LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR " +
-            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')))")
-    List<Book> findByShelfAndTitleOrAuthor(@Param("shelf") String shelfName,
-                                           @Param("titleOrAuthor") String titleOrAuthor);
-
-    @Query("SELECT b " +
-            "FROM Book b " +
             "INNER JOIN FETCH b.author AS a " +
             "INNER JOIN FETCH b.predefinedShelf " +
             "INNER JOIN FETCH b.tags " +
