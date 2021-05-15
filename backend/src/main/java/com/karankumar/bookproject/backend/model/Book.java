@@ -55,9 +55,8 @@ import java.util.Set;
 @Builder
 @Data
 @JsonIgnoreProperties(value = {"id"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
-//@EqualsAndHashCode(exclude = {"id", "tags","publishers", "predefinedShelf", "customShelf"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Book {
     public static final int MAX_PAGES = 23_000;
@@ -122,7 +121,6 @@ public class Book {
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @Setter(AccessLevel.NONE)
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
@@ -164,7 +162,6 @@ public class Book {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateFinishedReading;
     private String bookReview;
-
 
     public Book(String title, Author author, PredefinedShelf predefinedShelf) {
         this.title = title;
@@ -227,8 +224,17 @@ public class Book {
         predefinedShelf = null;
     }
 
+    public void removeAuthor() {
+        author.getBooks().remove(this);
+        author = null;
+    }
+
     public void setPublicationYear(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
+    }
+
+    public void addGenre(BookGenre genre) {
+        bookGenre.add(genre);
     }
 
     public static class BookBuilder {
