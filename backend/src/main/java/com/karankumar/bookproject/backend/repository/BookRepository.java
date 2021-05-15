@@ -18,7 +18,6 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Shelf;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,7 +34,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "INNER JOIN FETCH b.publishers" )
     List<Book> findAllBooks();
 
-
     @Query("SELECT b " +
             "FROM Book b " +
             "INNER JOIN FETCH b.author " +
@@ -46,18 +44,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<Book> findBookById(@Param("id") Long id);
 
     List<Book> findByTitleContainingIgnoreCase(String title);
-
-    // TODO: remove this. This was for testing purposes.
-    @Query("SELECT b " +
-            "FROM Book b " +
-            "INNER JOIN FETCH b.predefinedShelf AS p " +
-            "INNER JOIN FETCH b.customShelf AS c " +
-            "WHERE (LOWER(p.shelfName) = LOWER(:shelf) OR LOWER(c.shelfName) = LOWER(:shelf))")
-            /* +
-            "(LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR " +
-            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')))")*/
-    List<Book> findByShelfAndTitleOrAuthor2(@Param("shelf") String shelfName);
-
 
     @Query("SELECT b " +
             "FROM Book b " +
