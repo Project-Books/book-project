@@ -17,9 +17,9 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
-import com.karankumar.bookproject.backend.repository.CustomShelfRepository;
+import com.karankumar.bookproject.backend.repository.UserCreatedShelfRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -38,35 +38,35 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class CustomShelfServiceTest {
-    @Mock private CustomShelfRepository customShelfRepository;
-    private CustomShelfService customShelfService;
+class UserCreatedShelfServiceTest {
+    @Mock private UserCreatedShelfRepository userCreatedShelfRepository;
+    private UserCreatedShelfService userCreatedShelfService;
 
     @BeforeEach
     void setUp() {
         UserService userService = mock(UserService.class);
-        customShelfService = new CustomShelfService(customShelfRepository, userService);
+        userCreatedShelfService = new UserCreatedShelfService(userCreatedShelfRepository, userService);
     }
 
     @Test
     void findById_throwsException_ifIdIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> customShelfService.findById(null));
-        verify(customShelfRepository, never()).findById(anyLong());
+                .isThrownBy(() -> userCreatedShelfService.findById(null));
+        verify(userCreatedShelfRepository, never()).findById(anyLong());
     }
 
     @Test
     void canFindById() {
-        customShelfService.findById(1L);
-        verify(customShelfRepository).findById(anyLong());
+        userCreatedShelfService.findById(1L);
+        verify(userCreatedShelfRepository).findById(anyLong());
     }
 
     @Test
     // TODO: fix
     @Disabled
     void canFindAllForLoggedInUser() {
-        customShelfService.findAllForLoggedInUser();
-        verify(customShelfRepository).findAllByUser(any(User.class));
+        userCreatedShelfService.findAllForLoggedInUser();
+        verify(userCreatedShelfRepository).findAllByUser(any(User.class));
     }
 
     @Test
@@ -74,100 +74,100 @@ class CustomShelfServiceTest {
     @Disabled
     void findByShelfNameAndLoggedInUser_throwsException_IfShelfNameIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> customShelfService.findByShelfNameAndLoggedInUser(null));
-        verify(customShelfRepository).findByShelfNameAndUser(anyString(), any());
+                .isThrownBy(() -> userCreatedShelfService.findByShelfNameAndLoggedInUser(null));
+        verify(userCreatedShelfRepository).findByShelfNameAndUser(anyString(), any());
     }
 
     @Test
     void save_throwsException_ifShelfIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> customShelfService.save(null));
-        verify(customShelfRepository, never()).save(any(CustomShelf.class));
+                .isThrownBy(() -> userCreatedShelfService.save(null));
+        verify(userCreatedShelfRepository, never()).save(any(UserCreatedShelf.class));
     }
 
     @Test
     void canSaveNonNullCustomShelf() {
         // given
         User user = User.builder().build();
-        CustomShelf customShelf = new CustomShelf("test", user);
+        UserCreatedShelf userCreatedShelf = new UserCreatedShelf("test", user);
 
         // when
-        customShelfService.save(customShelf);
+        userCreatedShelfService.save(userCreatedShelf);
 
         // then
-        ArgumentCaptor<CustomShelf> customShelfArgumentCaptor =
-                ArgumentCaptor.forClass(CustomShelf.class);
-        verify(customShelfRepository).save(customShelfArgumentCaptor.capture());
-        CustomShelf actual = customShelfArgumentCaptor.getValue();
-        assertThat(actual).isEqualTo(customShelf);
+        ArgumentCaptor<UserCreatedShelf> customShelfArgumentCaptor =
+                ArgumentCaptor.forClass(UserCreatedShelf.class);
+        verify(userCreatedShelfRepository).save(customShelfArgumentCaptor.capture());
+        UserCreatedShelf actual = customShelfArgumentCaptor.getValue();
+        assertThat(actual).isEqualTo(userCreatedShelf);
     }
 
     @Test
     void delete_throwsException_ifShelfIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> customShelfService.delete(null));
-        verify(customShelfRepository, never()).delete(any(CustomShelf.class));
+                .isThrownBy(() -> userCreatedShelfService.delete(null));
+        verify(userCreatedShelfRepository, never()).delete(any(UserCreatedShelf.class));
     }
 
     @Test
     void canDeleteNonNullCustomShelf() {
         // given
         User user = User.builder().build();
-        CustomShelf customShelf = new CustomShelf("test", user);
+        UserCreatedShelf userCreatedShelf = new UserCreatedShelf("test", user);
 
         // when
-        customShelfService.delete(customShelf);
+        userCreatedShelfService.delete(userCreatedShelf);
 
         // then
-        verify(customShelfRepository).delete(any(CustomShelf.class));
+        verify(userCreatedShelfRepository).delete(any(UserCreatedShelf.class));
     }
 
     @Test
     void canDeleteAll() {
-        customShelfService.deleteAll();
-        verify(customShelfRepository).deleteAll();
+        userCreatedShelfService.deleteAll();
+        verify(userCreatedShelfRepository).deleteAll();
     }
 
     @Test
     void canCount() {
-        customShelfService.count();
-        verify(customShelfRepository).count();
+        userCreatedShelfService.count();
+        verify(userCreatedShelfRepository).count();
     }
 
     @Test
     void canFindAll() {
-        customShelfService.findAll();
-        verify(customShelfRepository).findAll();
+        userCreatedShelfService.findAll();
+        verify(userCreatedShelfRepository).findAll();
     }
 
     @Test
     void findAll_searchesWithoutFilter_ifFilterIsNull() {
-        customShelfService.findAll(null);
-        verify(customShelfRepository).findAll();
+        userCreatedShelfService.findAll(null);
+        verify(userCreatedShelfRepository).findAll();
     }
 
     @Test
     void findAll_searchesForFilter_ifFilterIsNotNull() {
-        customShelfService.findAll("test");
-        verify(customShelfRepository).findByShelfName(anyString());
+        userCreatedShelfService.findAll("test");
+        verify(userCreatedShelfRepository).findByShelfName(anyString());
     }
 
     @Test
     void getBooksInCustomShelf_throwsException_ifShelfNameIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> customShelfService.getBooksInCustomShelf(null));
+                .isThrownBy(() -> userCreatedShelfService.getBooksInCustomShelf(null));
     }
 
     @Test
     void getCustomShelByName_throwsException_ifShelfNameIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> customShelfService.getCustomShelfByName(null));
+                .isThrownBy(() -> userCreatedShelfService.getCustomShelfByName(null));
     }
 
     @Test
     void findOrCreate_throwsException_ifShelfNameIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> customShelfService.findOrCreate(null));
+                .isThrownBy(() -> userCreatedShelfService.findOrCreate(null));
     }
 
 }

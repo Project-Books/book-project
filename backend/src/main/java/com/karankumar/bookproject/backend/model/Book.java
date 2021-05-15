@@ -127,8 +127,8 @@ public class Book {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
-    @JoinColumn(name = "custom_shelf_id", referencedColumnName = "id")
-    private CustomShelf customShelf;
+    @JoinColumn(name = "user_created_shelf_id", referencedColumnName = "id")
+    private UserCreatedShelf userCreatedShelf;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
