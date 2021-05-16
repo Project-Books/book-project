@@ -41,12 +41,17 @@ If not, see <https://www.gnu.org/licenses/>.
     width:100%;
 }
 
+.password-input {
+    margin-top:30px;
+}
+
 .delete-account-password-input {
     width: 400px;
 }
 
 .delete-account-page-button {
     width:400px;
+    margin-top:30px;
 }
 
 #export-data-button {
@@ -63,4 +68,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 #cancel-button {
     margin-bottom:40px;
+}
+
+/* mobile screens */
+@media screen and (max-width: 600px) {
+    .delete-account-body {
+        width:100vw;
+        box-shadow:none
+    }
 }

@@ -19,62 +19,68 @@ import React from 'react'
 import {Layout} from '../shared/components/Layout';
 import Button from '@material-ui/core/Button';
 import PasswordInput from '../shared/form/Password';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+// import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {Link} from 'react-router-dom';
 import './DeleteAccount.css'
 
 export default function DeleteAccount():JSX.Element {
     return (
-      <Layout title="Delete Account" centered={true}>
-          {/* This section for layout? */}
-          {/* <div className="back-icon-button-container">
-              <div className="arrow-back">
-                  <ArrowBackIcon />
-              </div>
-              <Link to="/settings" className="link-to-settings">
-                  Back
-              </Link>
-          </div> */}
-        <div className="delete-account-body">
-          <h2 className="delete-account-text">Warning: this action is irreversible.</h2>
-          <p className="delete-account-text">If you&apos;d like to first
-            export your data, please do so below. This gives you a chance to 
-            save your data in case you&apos;d ever like to create an accountpage again!
-          </p>
-          <Button 
-            className="delete-account-page-button"
-            id="export-data-button"
-            variant="contained"
-            color="primary">
-            Export account data
-          </Button>
-          <p className="delete-account-text">If you&apos;re sure you want to 
-            delete your account, confirm deletion by entering your password below.
-          </p>
-          <PasswordInput
-            class={'delete-account-password-input'}
-            fieldName="Confirm Password"
-            onPasswordChanged={() => null}
-            isInvalid={false}
-            errorMessage={'Please enter a password'}
-          />
-          <Button
-            className="delete-account-page-button"
-            id="delete-account-button"
-            variant="contained"
-            color="secondary">
-            Delete my account
-          </Button>
-        </div>
-        <Link to="/settings" className="link-to-settings">
-          <Button
-            className="delete-account-page-button"
-            id="cancel-button"
-            variant="contained"
-            color="default">
-            Cancel
-          </Button>
-        </Link>
-      </Layout>
+        <Layout title="Delete Account" centered={true}>
+           {/* This section for layout? */}
+            {/* <div className="back-icon-button-container">
+                    <div className="arrow-back">
+                        <ArrowBackIcon />
+                    </div>
+                    <Link to="/settings" className="link-to-settings">
+                        Back
+                    </Link>
+                </div> */}
+            <div className="delete-account-body">
+              <h2 className="delete-account-text">
+                  Warning: this action is irreversible.
+              </h2>
+              <p className="delete-account-text">
+                  If you&apos;d like to first export your data, please do so below. 
+                  This gives you a chance to save your data in case you&apos;d ever 
+                  like to create an accountpage again!
+              </p>
+              <Button 
+                  className="delete-account-page-button"
+                  id="export-data-button"
+                  variant="contained"
+                  color="primary">
+                  Export account data
+               </Button>
+                <p className="delete-account-text">
+                  If you&apos;re sure you want to delete your account, 
+                  confirm deletion by entering your password below.
+                </p>
+                <div className="password-input">
+                    <PasswordInput
+                        class={'delete-account-password-input'}
+                        fieldName="Confirm Password"
+                        onPasswordChanged={() => null}
+                        isInvalid={false}
+                        errorMessage={'Please enter a password'}
+                    />
+                </div>
+                <Button
+                    className="delete-account-page-button"
+                    id="delete-account-button"
+                    variant="contained"
+                    color="secondary">
+                    Delete my account
+                </Button>
+            </div>
+            <Link to="/settings" className="link-to-settings">
+                <Button
+                    className="delete-account-page-button"
+                    id="cancel-button"
+                    variant="contained"
+                    color="default">
+                    Cancel
+                </Button>
+            </Link>
+        </Layout>
     )
 }
