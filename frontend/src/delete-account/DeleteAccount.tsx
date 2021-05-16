@@ -15,27 +15,13 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-.switch-container {
-  display:flex;
-  flex-direction:row;
-}
+import React from 'react'
+import {Layout} from '../shared/components/Layout';
 
-.toggle-text {
-  padding-top:9px;
-  color:black;
-  padding-right:52px;
-}
+export default function DeleteAccount():JSX.Element {
+    return (
+      <Layout title="Delete Account">
 
-.settings-toggle {
-  color:black;
+      </Layout>
+    )
 }
-
-.delete-account-link-container {
-  padding-top:40px;
-}
-
-.delete-account-link {
-  color: red;
-  text-decoration:none;
-}
-
