@@ -64,9 +64,11 @@ function Password(props: PasswordProps): ReactElement {
 }
 
 type PasswordProps = {
+  /** string placeholder text for input */
   fieldName: string,
   class?: string,
   classHelper?: string,
+  /** a callback that will pass value of input when it changes */
   onPasswordChanged: any,
   isInvalid: boolean,
   errorMessage: string

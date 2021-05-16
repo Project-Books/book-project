@@ -17,11 +17,46 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React from 'react'
 import {Layout} from '../shared/components/Layout';
+import Button from '@material-ui/core/Button';
+import PasswordInput from '../shared/form/Password';
 
 export default function DeleteAccount():JSX.Element {
     return (
-      <Layout title="Delete Account">
-
+      <Layout title="Delete Account" centered={true}>
+        <div className="delete-account-body">
+          <h2>Warning: this action is irreversible.</h2>
+          <p className="delete-account-text">If you&apos;d like to first
+            export your data, please do so below. This gives you a chance to 
+            save your data in case you&apos;d ever like to create an accountpage again!
+          </p>
+          <Button 
+            className="modal-button-primary"
+            variant="contained"
+            color="primary">
+            Export account data
+          </Button>
+          <p className="delete-account-text">If you&apos;re sure you want to 
+            delete your account, confirm deletion by entering your password below.
+          </p>
+          <PasswordInput
+            fieldName="Confirm Password"
+            onPasswordChanged={() => null}
+            isInvalid={false}
+            errorMessage=""
+          />
+          <Button
+            className="modal-button-primary"
+            variant="contained"
+            color="secondary">
+            Delete my account
+          </Button>
+        </div>
+        <Button
+          className="modal-button-primary"
+          variant="contained"
+          color="default">
+          Cancel
+        </Button>
       </Layout>
     )
 }
