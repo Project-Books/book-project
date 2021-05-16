@@ -1,0 +1,66 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2020  Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/* This section for layout component? */
+/* .back-icon-button-container {
+    display:flex;
+    flex-direction:row;
+}
+
+.arrow-back {
+    padding-right:10px;
+} */
+
+.delete-account-body {
+    display:flex;
+    flex-direction:column;
+    width: 60vw;
+    align-items: center;
+    text-align:left;
+    justify-content: center;
+    box-shadow: 0px 0 14px 4px rgb(238, 236, 236); 
+    padding:30px 40px;
+    margin: 20px auto 60px auto;
+}
+
+.delete-account-text {
+    width:100%;
+}
+
+.delete-account-password-input {
+    width: 400px;
+}
+
+.delete-account-page-button {
+    width:400px;
+}
+
+#export-data-button {
+    margin:26px 0px 48px 0px
+}
+
+#delete-account-button {
+    margin:36px 0px 42px 0px;
+}
+
+.link-to-settings {
+    text-decoration:none;
+}
+
+#cancel-button {
+    margin-bottom:40px;
+}
