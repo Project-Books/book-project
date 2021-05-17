@@ -15,23 +15,47 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, { Component } from 'react'
+import React, { Component, ReactElement } from 'react'
 import { NavBar } from '../shared/navigation/NavBar'
 import { ShelfCarousel } from '../shared/book-display/ShelfCarousel'
 import './MyBooks.css'
 import Button from '@material-ui/core/Button';
-import Modal, { IModalProps } from '../shared/components/Modal'
-
+import ShelfModal from './myBookModal/ShelfModal';
+import Hidden from "@material-ui/core/Hidden";
+import MenuIcon from '@material-ui/icons/Menu';
 
 interface IState {
+    showShelfModal: boolean,
 }
 
 class MyBooks extends Component<Record<string, unknown>, IState> {
-    render() {
+    constructor(props: Record<string, unknown>) {
+        super(props)
+        this.state = {
+        showShelfModal: false,
+        }
+        this.onAddShelf = this.onAddShelf.bind(this)
+        this.onAddShelfModalClose = this.onAddShelfModalClose.bind(this)
+    }
+
+    onAddShelf(): void {
+        this.setState({
+            showShelfModal: true
+        })
+    }
+    
+    onAddShelfModalClose(): void {
+        this.setState({
+            showShelfModal: false,
+        })
+    }
+    render(): ReactElement {
         return (
             <div>
                 <NavBar />
 
+                
+                <Hidden smDown implementation="css">
                 <div className="my-book-top">
                     <h1>My books</h1>
                     <div className="my-book-top-buttons">
@@ -41,19 +65,29 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                         Add Book
                     </Button>
                     <Button
+                     onClick={this.onAddShelf}
                     variant="contained"
                     color="primary">
                         Add Shelf
                     </Button>
-                    </div>
-                    
-                </div>
+                    </div>  
+                    </div> 
+                </Hidden>
+
+                <Hidden mdUp implementation="css">
+                    <MenuIcon className="my-book-top" />                              
+                </Hidden>
+         
                 <div>
                     <ShelfCarousel title="Reading" />
                     <ShelfCarousel title="To Read" />
                     <ShelfCarousel title="Read" />
                     <ShelfCarousel title="Did not finish" />
                 </div>
+                <ShelfModal 
+                    open={this.state.showShelfModal} 
+                    onClose={this.onAddShelfModalClose}
+                />
             </div>
         )
     }

@@ -1,0 +1,1 @@
+{"version":3,"file":"wrapWithObserver.js","sourceRoot":"","sources":["../src/wrapWithObserver.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;GAcG;AAOH;;;;;;;GAOG;AACH,MAAM,UAAU,gBAAgB,CAAI,QAA2B;IAC7D,IAAI,OAAO,QAAQ,KAAK,UAAU,EAAE;QAClC,OAAO;YACL,IAAI,EAAE,QAAQ;SACf,CAAC;KAEH;SAAM;QACL,OAAO,QAAQ,CAAC;KACjB;AACH,CAAC;AACD,eAAe,gBAAgB,CAAC"}
