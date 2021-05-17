@@ -45,7 +45,7 @@ export default function DeleteAccount():JSX.Element {
                   like to create an accountpage again!
               </p>
               <Button 
-                  className="delete-account-page-button"
+                  className="delete-account-page-input"
                   id="export-data-button"
                   variant="contained"
                   color="primary">
@@ -55,17 +55,15 @@ export default function DeleteAccount():JSX.Element {
                   If you&apos;re sure you want to delete your account, 
                   confirm deletion by entering your password below.
                 </p>
-                <div className="password-input">
-                    <PasswordInput
-                        class={'delete-account-password-input'}
-                        fieldName="Confirm Password"
-                        onPasswordChanged={() => null}
-                        isInvalid={false}
-                        errorMessage={'Please enter a password'}
-                    />
-                </div>
+                <PasswordInput
+                    class={'delete-account-page-input'}
+                    fieldName="Confirm Password"
+                    onPasswordChanged={() => null}
+                    isInvalid={false}
+                    errorMessage={'Please enter a password'}
+                />
                 <Button
-                    className="delete-account-page-button"
+                    className="delete-account-page-input"
                     id="delete-account-button"
                     variant="contained"
                     color="secondary">
@@ -74,7 +72,7 @@ export default function DeleteAccount():JSX.Element {
             </div>
             <Link to="/settings" className="link-to-settings">
                 <Button
-                    className="delete-account-page-button"
+                    className="delete-account-page-input"
                     id="cancel-button"
                     variant="contained"
                     color="default">

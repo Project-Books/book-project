@@ -39,23 +39,15 @@ If not, see <https://www.gnu.org/licenses/>.
 
 .delete-account-text {
     width:100%;
+    margin-bottom:34px;
 }
 
-.password-input {
-    margin-top:30px;
-}
-
-.delete-account-password-input {
+.delete-account-page-input {
     width: 400px;
 }
 
-.delete-account-page-button {
-    width:400px;
-    margin-top:30px;
-}
-
 #export-data-button {
-    margin:26px 0px 48px 0px
+    margin-bottom:48px;
 }
 
 #delete-account-button {
@@ -74,6 +66,23 @@ If not, see <https://www.gnu.org/licenses/>.
 @media screen and (max-width: 600px) {
     .delete-account-body {
         width:100vw;
-        box-shadow:none
+        box-shadow:none;
+        margin:0px;
+    }
+
+    .delete-account-password-input {
+        width: 100%;
+    }
+
+    #export-data-button {
+        width:100%;
+    }
+    
+    #delete-account-button {
+        width:100%;
+    }
+
+    #cancel-button {
+        width:100%;
     }
 }
