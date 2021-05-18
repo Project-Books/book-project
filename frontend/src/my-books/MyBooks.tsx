@@ -15,9 +15,12 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+
 import React, { Component, ReactElement } from 'react'
 import { NavBar } from '../shared/navigation/NavBar'
+
 import { ShelfCarousel } from '../shared/book-display/ShelfCarousel'
+import { Layout } from "../shared/components/Layout";
 import './MyBooks.css'
 import Button from '@material-ui/core/Button';
 import ShelfModal from './myBookModal/ShelfModal';
@@ -51,6 +54,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
     }
     render(): ReactElement {
         return (
+
             <div>
                 <NavBar />
 
@@ -89,6 +93,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                     onClose={this.onAddShelfModalClose}
                 />
             </div>
+
         )
     }
 }

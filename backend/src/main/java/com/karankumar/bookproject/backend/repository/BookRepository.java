@@ -18,32 +18,40 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.Shelf;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
+    @Query("SELECT b " +
+            "FROM Book b " +
+            "INNER JOIN FETCH b.author " +
+            "INNER JOIN FETCH b.predefinedShelf " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers" )
+    List<Book> findAllBooks();
+
+    @Query("SELECT b " +
+            "FROM Book b " +
+            "INNER JOIN FETCH b.author " +
+            "INNER JOIN FETCH b.predefinedShelf " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers " +
+            "WHERE b.id = :id" )
+    Optional<Book> findBookById(@Param("id") Long id);
+
     List<Book> findByTitleContainingIgnoreCase(String title);
 
     @Query("SELECT b " +
             "FROM Book b " +
-            "LEFT JOIN b.author a " +
-            "WHERE (b.predefinedShelf = :shelf OR b.customShelf = :shelf) AND " +
-            "LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
-            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :authorsName, '%'))")
-    List<Book> findByShelfAndTitleOrAuthor(@Param("shelf") Shelf shelf,
-                                           @Param("title") String title,
-                                           @Param("authorsName") String authorsName);
-
-    @Query("SELECT b " +
-            "FROM Book b " +
-            "LEFT JOIN b.author AS a " +
-            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) AND " +
-            "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :authorsName, '%'))")
-    List<Book> findByTitleOrAuthor(@Param("title") String title,
-                                   @Param("authorsName") String authorsName);
-
+            "INNER JOIN FETCH b.author AS a " +
+            "INNER JOIN FETCH b.predefinedShelf " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers " +
+            "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR " +
+                "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%'))")
+    List<Book> findByTitleOrAuthor(@Param("titleOrAuthor") String titleOrAuthor);
 }
