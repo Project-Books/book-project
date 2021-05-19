@@ -15,17 +15,30 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react'
-import "./Goal.css";
-import { Layout } from "../shared/components/Layout"
+import React, { Component } from 'react'
+import { NavBar } from '../navigation/NavBar'
+import './Layout.css'
 
-export default function Goal() {
+export function Layout(props: LayoutProps) {
+    const format = (props.centered ? "centered" : "");
+
     return (
-        <Layout title="Reading goal">
-            <div className="current-goal-container">
-                <h3>No goal set</h3>
-                <p>Click here to add a new goal</p>
+        <div className="layoutContainer">
+            <div className="navBar">
+                <NavBar />
             </div>
-        </Layout>
+            <div className="pageContent">
+                <div className={format}>
+                    <h1 className="pageTitle">{props.title}</h1>
+                    {props.children}
+                </div>
+            </div>
+        </div>
     )
+}
+
+type LayoutProps = {
+    title: string;
+    centered?: boolean;
+    children?: JSX.Element | JSX.Element[];
 }

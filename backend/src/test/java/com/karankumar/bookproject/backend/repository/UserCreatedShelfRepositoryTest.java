@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
-import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,16 +37,16 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
 @DisplayName("CustomShelfRepository should")
-class CustomShelfRepositoryTest {
+class UserCreatedShelfRepositoryTest {
     private static final String CUSTOM_SHELF_NAME = "Test1";
 
     private final UserRepository userRepository;
-    private final CustomShelfRepository repository;
+    private final UserCreatedShelfRepository repository;
 
     private User user;
 
     @Autowired
-    CustomShelfRepositoryTest(UserRepository userRepository, CustomShelfRepository repository) {
+    UserCreatedShelfRepositoryTest(UserRepository userRepository, UserCreatedShelfRepository repository) {
         this.userRepository = userRepository;
         this.repository = repository;
     }
@@ -60,7 +60,7 @@ class CustomShelfRepositoryTest {
 
     @Test
     void findCorrectShelf() {
-    	Optional<CustomShelf> shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
+    	Optional<UserCreatedShelf> shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
         assertThat(shelf).isPresent();
 
         assertSoftly(softly -> {
@@ -76,7 +76,7 @@ class CustomShelfRepositoryTest {
         repository.deleteAll();
 
         // when
-        Optional<CustomShelf> shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
+        Optional<UserCreatedShelf> shelf = repository.findByShelfNameAndUser(CUSTOM_SHELF_NAME, user);
 
         // then
         assertThat(shelf).isEmpty();
@@ -85,7 +85,7 @@ class CustomShelfRepositoryTest {
     @Test
     @DisplayName("findAllByUser correctly returns shelves for a user")
     void findAllByUser() {
-        List<CustomShelf> shelves = repository.findAllByUser(user);
+        List<UserCreatedShelf> shelves = repository.findAllByUser(user);
         assertThat(shelves).isNotNull().isNotEmpty();
 
         assertSoftly(softly ->
@@ -102,7 +102,7 @@ class CustomShelfRepositoryTest {
         repository.deleteAll();
 
         // when
-        List<CustomShelf> shelves = repository.findAllByUser(user);
+        List<UserCreatedShelf> shelves = repository.findAllByUser(user);
 
         // then
         assertThat(shelves).isNotNull().isEmpty();
@@ -111,7 +111,7 @@ class CustomShelfRepositoryTest {
     private void createShelvesForUser(User user) {
         repository.saveAll(
                 Stream.of(CUSTOM_SHELF_NAME, "Test2", "Test3")
-                        .map(shelfName -> new CustomShelf(shelfName, user))
+                        .map(shelfName -> new UserCreatedShelf(shelfName, user))
                         .collect(Collectors.toList())
         );
     }

@@ -17,118 +17,205 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.repository.UserRepository;
-import com.karankumar.bookproject.util.SecurityTestUtils;
-import org.junit.jupiter.api.DisplayName;
+import com.karankumar.bookproject.backend.model.account.User;
+import com.karankumar.bookproject.backend.repository.AuthorRepository;
+import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
+import com.karankumar.bookproject.backend.repository.PublisherRepository;
+import com.karankumar.bookproject.backend.repository.TagRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-@IntegrationTest
-@DisplayName("PredefinedShelfService should")
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class PredefinedShelfServiceTest {
-    private final PredefinedShelfService predefinedShelfService;
-    private final UserRepository userRepository;
+    private PredefinedShelfService underTest;
+    private PredefinedShelfRepository predefinedShelfRepository;
+    private UserService userService;
 
-    @Autowired
-    PredefinedShelfServiceTest(PredefinedShelfService predefinedShelfService,
-                               UserRepository userRepository) {
-        this.predefinedShelfService = predefinedShelfService;
-        this.userRepository = userRepository;
+    @BeforeEach
+    void setUp() {
+        BookRepository bookRepository = mock(BookRepository.class);
+        AuthorRepository authorRepository = mock(AuthorRepository.class);
+        predefinedShelfRepository = mock(PredefinedShelfRepository.class);
+        TagRepository tagRepository = mock(TagRepository.class);
+        userService = mock(UserService.class);
+        PublisherRepository publisherRepository = mock(PublisherRepository.class);
+        underTest = new PredefinedShelfService(
+                bookRepository,
+                authorRepository,
+                predefinedShelfRepository,
+                tagRepository,
+                userService,
+                publisherRepository
+        );
     }
 
     @Test
-    @DisplayName("throw an exception on an attempt to save a null predefined shelf")
-    void notSaveNullPredefinedShelf() {
+    void findById_throwsNullPointerException_ifIdIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> predefinedShelfService.save(null));
+                .isThrownBy(() -> underTest.findById(null));
+        verify(predefinedShelfRepository, never()).findById(anyLong());
     }
 
     @Test
-    void findAllPredefinedShelvesForLoggedInUser() {
-        List<PredefinedShelf> shelves = predefinedShelfService.findAllForLoggedInUser();
-
-        assertSoftly(softly -> {
-            softly.assertThat(shelves).isNotNull().hasSameSizeAs(PredefinedShelf.ShelfName.values());
-            softly.assertThat(shelves).allSatisfy(shelf ->
-                            assertThat(shelf.getUser().getEmail()).isEqualTo(TEST_USER_EMAIL)
-            );
-        });
+    void canFindByNonNullId() {
+        underTest.findById(1L);
+        verify(predefinedShelfRepository).findById(anyLong());
     }
 
     @Test
-    void findPredefinedShelfForPredefinedShelfNameAndLoggedInUser() {
-        Optional<PredefinedShelf> shelf =
-                predefinedShelfService.findByPredefinedShelfNameAndLoggedInUser(
-                        PredefinedShelf.ShelfName.TO_READ
-                );
-        assertSoftly(softly -> {
-            assertThat(shelf).isNotEmpty();
-            softly.assertThat(shelf.get().getPredefinedShelfName())
-                  .isEqualTo(PredefinedShelf.ShelfName.TO_READ);
-            softly.assertThat(shelf.get().getUser().getEmail()).isEqualTo(TEST_USER_EMAIL);
-        });
+    void save_throwsNullPointerException_ifNullPredefinedShelf() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.save(null));
+        verify(predefinedShelfRepository, never()).save(any(PredefinedShelf.class));
     }
 
     @Test
-    void saveValidPredefinedShelf() {
+    void saveNonNullPredefinedShelf() {
         // given
-        long initialCount = predefinedShelfService.count();
-        PredefinedShelf existingToReadShelf = predefinedShelfService.findToReadShelf();
-        PredefinedShelf testShelf = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ,
-                SecurityTestUtils.getTestUser(userRepository));
+        User user = User.builder().build();
+        PredefinedShelf predefinedShelf =
+                new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, user);
 
         // when
-        predefinedShelfService.save(testShelf);
+        underTest.save(predefinedShelf);
 
         // then
-        List<PredefinedShelf> expected = Arrays.asList(existingToReadShelf, testShelf);
-
-        assertSoftly(softly -> {
-            softly.assertThat(predefinedShelfService.count()).isEqualTo(initialCount + 1);
-            softly.assertThat(predefinedShelfService.findAllForLoggedInUser()).containsAll(expected);
-        });
+        verify(predefinedShelfRepository).save(any(PredefinedShelf.class));
     }
 
     @Test
-    void getPredefinedShelfNamesCorrectlyAsStrings() {
-        List<String> actualShelfNames = predefinedShelfService.getPredefinedShelfNamesAsStrings();
-        List<String> expectedShelfNames =
-                Stream.of(PredefinedShelf.ShelfName.values()).map(Enum::toString).collect(
-                        Collectors.toList());
-
-        assertSoftly(softly -> {
-            softly.assertThat(actualShelfNames).hasSize(expectedShelfNames.size());
-            softly.assertThat(expectedShelfNames).containsAll(actualShelfNames);
-        });
-    }
-
-    @Test
-    @DisplayName("return an empty set of books for a non-existent predefined shelf")
-    void returnEmptySetForNonExistentShelf() {
+    void canFindAllForLoggedInUser() {
         // given
-        String nonExistentShelf = "not a predefined shelf";
+        User user = User.builder().build();
+        given(userService.getCurrentUser()).willReturn(user);
 
         // when
-        Set<Book> actual = predefinedShelfService.getBooksInChosenPredefinedShelf(nonExistentShelf);
+        underTest.findAllForLoggedInUser();
 
         // then
-        assertThat(actual).isEmpty();
+        verify(predefinedShelfRepository).findAllByUser(any(User.class));
+    }
+
+    @Test
+    void canFindToReadShelf() {
+        // given
+        User user = User.builder().build();
+        given(userService.getCurrentUser()).willReturn(user);
+
+        // when
+        underTest.findToReadShelf();
+
+        // then
+        verify(predefinedShelfRepository).findByPredefinedShelfNameAndUser(
+                eq(PredefinedShelf.ShelfName.TO_READ), any(User.class)
+        );
+    }
+
+    @Test
+    void canFindReadingShelf() {
+        // given
+        User user = User.builder().build();
+        given(userService.getCurrentUser()).willReturn(user);
+
+        // when
+        underTest.findReadingShelf();
+
+        // then
+        verify(predefinedShelfRepository).findByPredefinedShelfNameAndUser(
+                eq(PredefinedShelf.ShelfName.READING), any(User.class)
+        );
+    }
+
+    @Test
+    void canFindReadShelf() {
+        // given
+        User user = User.builder().build();
+        given(userService.getCurrentUser()).willReturn(user);
+
+        // when
+        underTest.findReadShelf();
+
+        // then
+        verify(predefinedShelfRepository).findByPredefinedShelfNameAndUser(
+                eq(PredefinedShelf.ShelfName.READ), any(User.class)
+        );
+    }
+
+    @Test
+    void canFindDidNotFinishShelf() {
+        // given
+        User user = User.builder().build();
+        given(userService.getCurrentUser()).willReturn(user);
+
+        // when
+        underTest.findDidNotFinishShelf();
+
+        // then
+        verify(predefinedShelfRepository).findByPredefinedShelfNameAndUser(
+                eq(PredefinedShelf.ShelfName.DID_NOT_FINISH), any(User.class)
+        );
+    }
+
+    @Test
+    void canCount() {
+        underTest.count();
+        verify(predefinedShelfRepository).count();
+    }
+
+    @Test
+    void isPredefinedShelf_throwsNullPointerException_ifShelfNameIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> PredefinedShelfService.isPredefinedShelf(null));
+    }
+
+    @Test
+    void getPredefinedShelfName_throwsNullPointerException_ifShelfNameIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> PredefinedShelfService.getPredefinedShelfName(null));
+    }
+
+    @ParameterizedTest
+    @EnumSource(PredefinedShelf.ShelfName.class)
+    void canFindValidPredefinedShelfName(PredefinedShelf.ShelfName shelfName) {
+        // given
+        String predefinedShelfNameString = shelfName.toString();
+
+        // when
+        Optional<PredefinedShelf.ShelfName> predefinedShelfName =
+                PredefinedShelfService.getPredefinedShelfName(predefinedShelfNameString);
+
+        // then
+        assertThat(predefinedShelfName).isPresent();
+    }
+
+    @Test
+    void getPredefinedShelfName_returnsEmpty_ifNotMatched() {
+        // given
+        String invalidPredefinedShelf = "test";
+
+        // when
+        Optional<PredefinedShelf.ShelfName> predefinedShelfName =
+                PredefinedShelfService.getPredefinedShelfName(invalidPredefinedShelf);
+
+        // then
+        assertThat(predefinedShelfName).isEmpty();
     }
 }

@@ -17,183 +17,103 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.backend.model.Author;
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.Publisher;
+import com.karankumar.bookproject.backend.repository.PublisherRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.transaction.Transactional;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-
-@IntegrationTest
-@DisplayName("PublisherService should")
+@ExtendWith(MockitoExtension.class)
 class PublisherServiceTest {
-
-    private final PublisherService publisherService;
-    private final BookService bookService;
-    private final PredefinedShelfService predefinedShelfService;
-
-    @Autowired
-    PublisherServiceTest(PublisherService publisherService, BookService bookService,
-                         PredefinedShelfService predefinedShelfService) {
-        this.publisherService = publisherService;
-        this.bookService = bookService;
-        this.predefinedShelfService = predefinedShelfService;
-    }
+    private PublisherService underTest;
+    private PublisherRepository publisherRepository;
 
     @BeforeEach
-    public void setUp() {
-        resetServices();
-    }
-
-    void resetServices() {
-        bookService.deleteAll();
-        publisherService.deleteAll();
+    void setUp() {
+        publisherRepository = mock(PublisherRepository.class);
+        underTest = new PublisherService(publisherRepository);
     }
 
     @Test
-    void saveValidPublisher() {
-        // given
-        Publisher publisher = new Publisher("Test SavePublisher ");
-
-        // when
-        publisherService.save(publisher);
-
-        // then
-        assertThat(publisherService.findById(publisher.getId())).isPresent();
-    }
-
-    @Test
-    void notSaveAPublisherWithEmptyName() {
-        // given
-        Long initialCount = publisherService.count();
-
-        // when
-        publisherService.save(new Publisher(""));
-
-        // then
-        assertThat(publisherService.count()).isEqualTo(initialCount);
-    }
-
-    @Test
-    @DisplayName("throw exception on an attempt to save a null Publisher")
-    void throwExceptionWhenSavingANullPublisher() {
+    void findById_throwsNullPointerException_ifIdIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> publisherService.save(null));
+                .isThrownBy(() -> underTest.findById(null));
+        verify(publisherRepository, never()).findById(anyLong());
     }
 
     @Test
-    @DisplayName("throw exception on an attempt to delete a null Publisher")
-    void throwExceptionWhenDeletingANullPublisher() {
+    void canFindByNonNullId() {
+        // given
+        Long id = 1L;
+
+        // when
+        underTest.findById(id);
+
+        // then
+        verify(publisherRepository).findById(id);
+    }
+
+    @Test
+    void save_throwsNullPointerException_ifPublisherIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> publisherService.delete(null));
+                .isThrownBy(() -> underTest.save(null));
+        verify(publisherRepository, never()).save(any(Publisher.class));
     }
 
     @Test
-    @Transactional
-    @DisplayName("Delete a Publisher")
-    void deleteExistingPublisher() {
+    void canSaveValidPublisher() {
         // given
-        Publisher publisher = new Publisher("Test DeletePublisher");
-        publisherService.save(publisher);
-        Long publisherId = publisher.getId();
+        Publisher publisher = new Publisher("test");
 
         // when
-        publisherService.delete(publisher);
+        underTest.save(publisher);
 
         // then
-        Optional<Publisher> deletedPublisher = publisherService.findById(publisherId);
-        assertThat(deletedPublisher).isEmpty();
+        verify(publisherRepository).save(publisher);
     }
 
     @Test
-    void findAllSavedPublishers() {
-        // given
-        Publisher publisher1 = new Publisher("Test SavePublisher1");
-        Publisher publisher2 = new Publisher("Test SavePublisher2");
-        publisherService.save(publisher1);
-        publisherService.save(publisher2);
-
-        // when
-        List<Publisher> allPublishers = publisherService.findAll();
-
-        // then
-        assertThat(allPublishers).contains(publisher1, publisher2);
+    void canFindAll() {
+        underTest.findAll();
+        verify(publisherRepository).findAll();
     }
 
     @Test
-    @DisplayName("Throw exception when saving a new Publisher with existing name")
-    void throwExceptionWhileSavingDuplicatePublisher() {
-        // given
-        Publisher publisher1 = new Publisher("Test DuplicatePublisher");
-        Publisher publisher2 = new Publisher("Test DuplicatePublisher");
-
-        // when
-        publisherService.save(publisher1);
-
-        // then
-        assertThatThrownBy(() -> publisherService.save(publisher2)).isInstanceOf(
-                DataIntegrityViolationException.class);
-    }
-
-    @Test
-    @DisplayName("throw exception on attempt to add a null book to a publisher")
-    void throwExceptionForNullBookInAddBookToPublisher() {
-        // given
-        Publisher publisher = new Publisher("Test");
-
-        // when and then
+    void delete_throwsNullPointerException_ifPublisherIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> publisherService.addBookToPublisher(null, publisher));
+                .isThrownBy(() -> underTest.delete(null));
+        verify(publisherRepository, never()).delete(any(Publisher.class));
     }
 
     @Test
-    @Disabled
-    // TODO: fix failing test. This does not retrieve the correct books
-    void addBookToPublisher() {
+    void canDeleteValidPublisher() {
         // given
-        PredefinedShelf shelf = predefinedShelfService.findToReadShelf();
-        Book book = new Book("Title", new Author("First Last"), shelf);
-        bookService.save(book);
-
-        Publisher publisher = new Publisher("Publisher");
-        Long initialCount = publisherService.count();
+        Publisher publisher = new Publisher("test");
 
         // when
-        publisherService.addBookToPublisher(book, publisher);
-        Optional<Publisher> foundPublisher = publisherService.findById(publisher.getId());
+        underTest.delete(publisher);
 
         // then
-        assertSoftly(softly -> {
-            softly.assertThat(publisherService.count()).isEqualTo(initialCount + 1);
-            softly.assertThat(foundPublisher).isPresent();
-            softly.assertThat(foundPublisher.get().getBooks()).contains(book);
-        });
+        verify(publisherRepository).delete(publisher);
     }
 
     @Test
-    @DisplayName("throw exception on attempt to add a book to a null publisher")
-    void throwExceptionForNullPublisherInAddBookToPublisher() {
-        // given
-        PredefinedShelf shelf = predefinedShelfService.findToReadShelf();
-        Book book = new Book("Title", new Author("a b"), shelf);
+    void canDeleteAll() {
+        underTest.deleteAll();;
+        verify(publisherRepository).deleteAll();
+    }
 
-        // when and then
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> publisherService.addBookToPublisher(book, null));
+    @Test
+    void canCount() {
+        underTest.count();
+        verify(publisherRepository).count();
     }
 }

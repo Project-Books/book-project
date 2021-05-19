@@ -53,7 +53,7 @@ public class Tag {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
