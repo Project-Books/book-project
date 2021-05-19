@@ -20,33 +20,15 @@ package com.karankumar.bookproject.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.karankumar.bookproject.backend.json.LocalDateSerializer;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.ISBN;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -54,7 +36,7 @@ import java.util.Set;
 @Entity
 @Builder
 @Data
-@JsonIgnoreProperties(value = {"id"})
+@JsonIgnoreProperties(value = {"id", "predefinedShelf", "customShelf"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 //@EqualsAndHashCode(exclude = {"id", "tags","publishers", "predefinedShelf", "customShelf"})
@@ -78,6 +60,7 @@ public class Book {
 
     @Max(value = MAX_PAGES)
     private Integer pagesRead;
+
 
     @ElementCollection(targetClass = BookGenre.class, fetch = FetchType.EAGER)
     @CollectionTable(

@@ -18,6 +18,10 @@
 
 package com.karankumar.bookproject.backend.model;
 
+
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 public enum BookGenre {
     // This should be kept in alphabetical order
     ADVENTURE("Adventure"),

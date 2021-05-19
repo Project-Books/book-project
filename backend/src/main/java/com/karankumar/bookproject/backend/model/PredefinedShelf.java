@@ -18,6 +18,8 @@
 package com.karankumar.bookproject.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.karankumar.bookproject.backend.json.BookSerializer;
 import com.karankumar.bookproject.backend.model.account.User;
 import lombok.AccessLevel;
 import lombok.Getter;
