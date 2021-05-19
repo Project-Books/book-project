@@ -36,7 +36,7 @@ import java.util.Set;
 @Entity
 @Builder
 @Data
-@JsonIgnoreProperties(value = {"id"})
+@JsonIgnoreProperties(value = {"id", "predefinedShelf", "userCreatedShelf"})
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
