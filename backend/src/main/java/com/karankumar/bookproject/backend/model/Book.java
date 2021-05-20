@@ -21,14 +21,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.karankumar.bookproject.backend.json.LocalDateSerializer;
 import lombok.*;
-import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
