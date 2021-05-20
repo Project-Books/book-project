@@ -33,6 +33,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.karankumar.bookproject.backend.service.PredefinedShelfService.isPredefinedShelf;
+
 @Service
 @Log
 public class UserCreatedShelfService {
@@ -118,5 +120,12 @@ public class UserCreatedShelfService {
         Assert.hasText(shelfName, "Shelf Name cannot be empty");
         return findByShelfNameAndLoggedInUser(shelfName)
         		.orElseGet(() -> save(createCustomShelf(shelfName)));
+    }
+
+    public boolean shelfWithNameExists(String shelfName) {
+        if (isPredefinedShelf(shelfName)) return true;
+        return findAll().stream()
+                .map(UserCreatedShelf::getShelfName)
+                .anyMatch(shelfName::equalsIgnoreCase);
     }
 }

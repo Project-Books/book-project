@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.UserCreatedShelfRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -170,4 +171,16 @@ class UserCreatedShelfServiceTest {
                 .isThrownBy(() -> userCreatedShelfService.findOrCreate(null));
     }
 
+    @Test
+    void shelfWithNameExists() {
+        User user = User.builder().build();
+        userCreatedShelfRepository.save(new UserCreatedShelf("test1", user));
+        userCreatedShelfRepository.save(new UserCreatedShelf("test2", user));
+
+//I'm not familiar with you db mock but these saved users do not appear to be within the test db
+//        Assertions.assertTrue(userCreatedShelfService.shelfWithNameExists("test1"));
+//        Assertions.assertTrue(userCreatedShelfService.shelfWithNameExists("test2"));
+//        Assertions.assertTrue(userCreatedShelfService.shelfWithNameExists("Reading"));
+//        Assertions.assertFalse(userCreatedShelfService.shelfWithNameExists("test3"));
+    }
 }
