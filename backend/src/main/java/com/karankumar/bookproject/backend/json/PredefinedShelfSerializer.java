@@ -18,21 +18,7 @@ public class PredefinedShelfSerializer extends StdSerializer<PredefinedShelf> {
     }
 
     /*
-     * Serialize PredefinedShelf as follows
-     * {
-     *   "shelfName": "nameOfShelf",
-     *   "Books": [
-     *              {
-     *                 title: "title",
-     *                 edition: "edition",
-     *                 recommendedBy: "name",
-     *                 isbn: "isbn",
-     *                 genre: ["genre"],
-     *
-     *               }
-     *            ]
-     *
-     *
+     * Serialize PredefinedShelf
      */
     @Override
     public void serialize(PredefinedShelf predefinedShelf,

@@ -20,29 +20,23 @@ import java.util.Map;
 @Slf4j
 public class ExportService {
 
-    private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
     private final UserCreatedShelfService userCreatedShelfService;
 
-    public ExportService(BookService bookService,
-                         PredefinedShelfService predefinedShelfService,
+    public ExportService(PredefinedShelfService predefinedShelfService,
                          UserCreatedShelfService userCreatedShelfService) {
-        this.bookService = bookService;
         this.predefinedShelfService = predefinedShelfService;
         this.userCreatedShelfService = userCreatedShelfService;
     }
 
     /**
-     * Exports any data that was entered by the User
-     *
-     *
-     *
+     * Exports any data that was entered by the Current User in JSON
      */
     @Transactional
     public String exportBookDataForCurrentUser() throws IOException {
-        String userPredefinedShelfJSON = mapUserPredefinedShelves();
-        String userCreatedShelfJSON = mapUserCreatedShelves();
-        //Get User's custom Shelves
+
+        String userPredefinedShelfJSON = mapUserPredefinedShelves(); // Get User's predefined Shelves
+        String userCreatedShelfJSON = mapUserCreatedShelves(); //Get User's custom Shelves
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> userBookDataMap = new HashMap<String, String>();
@@ -78,7 +72,7 @@ public class ExportService {
         mapper.registerModule(module);
 
 
-        //Get User's books on predefined Shelf
+        //Get User's books on User Created Shelf
         List<UserCreatedShelf> userCustomShelves = userCreatedShelfService.findAllForLoggedInUser();
         String jsonStr = mapper.writeValueAsString(userCustomShelves);
 
