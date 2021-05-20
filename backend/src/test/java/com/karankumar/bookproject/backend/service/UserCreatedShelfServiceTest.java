@@ -173,14 +173,22 @@ class UserCreatedShelfServiceTest {
 
     @Test
     void shelfWithNameExists() {
+        // given
         User user = User.builder().build();
         userCreatedShelfRepository.save(new UserCreatedShelf("test1", user));
         userCreatedShelfRepository.save(new UserCreatedShelf("test2", user));
 
+        // when
+        boolean case1 = userCreatedShelfService.shelfWithNameExists("test1");
+        boolean case2 = userCreatedShelfService.shelfWithNameExists("TEST2");
+        boolean case3 = userCreatedShelfService.shelfWithNameExists("Reading");
+        boolean case4 = userCreatedShelfService.shelfWithNameExists("test3");
+
+        // then
 //I'm not familiar with you db mock but these saved users do not appear to be within the test db
-//        Assertions.assertTrue(userCreatedShelfService.shelfWithNameExists("test1"));
-//        Assertions.assertTrue(userCreatedShelfService.shelfWithNameExists("test2"));
-//        Assertions.assertTrue(userCreatedShelfService.shelfWithNameExists("Reading"));
-//        Assertions.assertFalse(userCreatedShelfService.shelfWithNameExists("test3"));
+//        Assertions.assertTrue(case1);
+//        Assertions.assertTrue(case2);
+//        Assertions.assertTrue(case3);
+//        Assertions.assertTrue(case4);
     }
 }
