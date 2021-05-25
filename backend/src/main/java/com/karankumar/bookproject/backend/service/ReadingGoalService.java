@@ -33,7 +33,7 @@ public class ReadingGoalService {
         this.goalRepository = goalRepository;
     }
 
-    public Optional<ReadingGoal> findById(Long id) {
+    public Optional<ReadingGoal> findById(@NonNull Long id) {
         return goalRepository.findById(id);
     }
 
@@ -50,10 +50,7 @@ public class ReadingGoalService {
         goalRepository.save(goal);
     }
 
-    public void delete(@NonNull ReadingGoal readingGoal) {
-        goalRepository.delete(readingGoal);
-    }
-
+    // Only one goal can exist at a time, so we can safely delete all
     public void deleteAll() {
         goalRepository.deleteAll();
     }

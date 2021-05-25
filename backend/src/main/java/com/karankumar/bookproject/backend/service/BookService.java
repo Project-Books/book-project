@@ -28,7 +28,9 @@ import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +39,7 @@ import java.util.logging.Level;
 
 @Service
 @Log
+@Transactional
 public class BookService {
     private final AuthorService authorService;
     private final BookRepository bookRepository;
@@ -49,11 +52,12 @@ public class BookService {
         this.publisherService = publisherService;
     }
 
-    public Optional<Book> findById(Long id) {
-        return bookRepository.findById(id);
+    public Optional<Book> findById(@NonNull Long id) {
+        return bookRepository.findBookById(id);
+//        return bookRepository.findById(id);
     }
 
-    public Optional<Book> save(Book book) {
+    public Optional<Book> save(@NonNull Book book) {
         if (bookHasAuthorAndPredefinedShelf(book)) {
             addBookToAuthor(book);
             addBookToPublisher(book);
@@ -63,7 +67,7 @@ public class BookService {
         return Optional.empty();
     }
 
-    private boolean bookHasAuthorAndPredefinedShelf(@NonNull Book book) {
+    private boolean bookHasAuthorAndPredefinedShelf(Book book) {
         return book.getAuthor() != null && book.getPredefinedShelf() != null;
     }
 
@@ -88,55 +92,42 @@ public class BookService {
     }
 
     public List<Book> findAll() {
-        return bookRepository.findAll();
+        return bookRepository.findAllBooks();
     }
 
     public List<Book> findAll(String filterText) {
         if (filterText == null || filterText.isEmpty()) {
-            return bookRepository.findAll();
+            return findAll();
         }
         return bookRepository.findByTitleContainingIgnoreCase(filterText);
     }
 
     public void delete(@NonNull Book book) {
-        LOGGER.log(Level.INFO, "Deleting book. Book repository size = " + bookRepository.count());
         bookRepository.delete(book);
 
-        List<Book> books = bookRepository.findAll();
-        if (books.contains(book)) {
-
-            LOGGER.log(Level.SEVERE, book.getTitle() + " not deleted");
-        } else {
-            LOGGER.log(Level.INFO, book.getTitle() + " deleted. Book repository size = " +
-                    bookRepository.count());
-
+        if (!bookRepository.existsById(book.getId())) {
             Author author = book.getAuthor();
-            removeBookFromAuthor(book, author);
+            // TODO: fix method. It returns lazy initialization exception
             removeAuthorWithoutBooks(author);
         }
     }
 
-    private void removeBookFromAuthor(Book book, Author author) {
-        author.removeBook(book);
-    }
-
-    private void removeAuthorWithoutBooks(Author author) {
+    private void removeAuthorWithoutBooks(@NonNull Author author) {
         if (author.getBooks().isEmpty()) {
             authorService.delete(author);
         }
     }
 
     public void deleteAll() {
-        if (bookRepository.count() == 0) {
-            LOGGER.log(Level.INFO, "All books already deleted");
-            return;
-        }
         LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " +
                 bookRepository.count());
         bookRepository.deleteAll();
         authorService.deleteAll();
-        LOGGER.log(Level.INFO, "Deleted all books in books & authors. Book repository size = " +
-                bookRepository.count());
+
+        LOGGER.log(
+                Level.INFO, "Deleted all books in books & authors. Book repository size = " +
+                bookRepository.count()
+        );
     }
 
     public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
@@ -150,11 +141,14 @@ public class BookService {
         return jsonWriter.writeValueAsString(books);
     }
 
-    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName){
-        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
+    // TODO: split into findByShelfAndTitle and findShelfAndAuthor queries, and then merge result sets
+    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName) {
+        throw new NotImplementedException();
+//        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
     }
 
-    public List<Book> findByTitleOrAuthor(String title, String authorsName){
-        return bookRepository.findByTitleOrAuthor(title, authorsName);
+    public List<Book> findByTitleOrAuthor(String title, String authorsName) {
+        throw new NotImplementedException();
+//        return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
 }

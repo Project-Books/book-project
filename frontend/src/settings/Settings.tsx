@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from 'react'
-import { NavBar } from '../shared/navigation/NavBar';
+import { Layout } from '../shared/components/Layout';
 import ColoredSwitch from '../settings/Switch';
 import { withTheme,MuiThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -30,27 +30,25 @@ interface ISettingsProps {
  function Settings(props: ISettingsProps): JSX.Element {
     return (
       <React.Fragment>
-        <NavBar />
-        <MuiThemeProvider theme={props.theme}>
-          <CssBaseline />
-          <div className="settings-header">
-            Settings
-          </div>
-          <div className="switch-container">
-            <div className="toggle-text">
-                Enable dark mode
+        <Layout title="Settings">
+          <MuiThemeProvider theme={props.theme}>
+            <CssBaseline />
+            <div className="switch-container">
+              <div className="toggle-text">
+                  Enable dark mode
+              </div>
+              <div className="settings-toggle">
+                <ColoredSwitch
+                  checked={props.theme.palette.type === 'dark'}
+                  onClick={props.toggleTheme}
+                  inputProps={{ 'aria-label': 'checkbox with default color' }}
+                  style={{color:'black'}}
+                  className="switch"
+                />
+              </div>
             </div>
-            <div className="settings-toggle">
-              <ColoredSwitch
-                checked={props.theme.palette.type === 'dark'}
-                onClick={props.toggleTheme}
-                inputProps={{ 'aria-label': 'checkbox with default color' }}
-                style={{color:'black'}}
-                className="switch"
-              />
-            </div>
-          </div>
-        </MuiThemeProvider>
+          </MuiThemeProvider>
+        </Layout>
       </React.Fragment>
     )
  }

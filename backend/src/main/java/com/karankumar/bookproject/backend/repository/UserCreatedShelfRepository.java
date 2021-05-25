@@ -15,27 +15,31 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
+
 package com.karankumar.bookproject.backend.repository;
 
+import com.karankumar.bookproject.backend.model.UserCreatedShelf;
+import com.karankumar.bookproject.backend.model.account.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
-import com.karankumar.bookproject.backend.model.Tag;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface TagRepository extends JpaRepository<Tag, Long> {
-    @Query("SELECT t FROM Tag t WHERE LOWER(t.name) = :name")
-    Optional<Tag> findByName(@Param("name") String tagName);
+public interface UserCreatedShelfRepository extends JpaRepository<UserCreatedShelf, Long> {
 
-    @EntityGraph(value = "Tag.books")
-    Optional<Tag> findById(Long id);
+    @EntityGraph(value = "CustomShelf.books")
+    List<UserCreatedShelf> findAllByUser(User user);
 
-    @EntityGraph(value = "Tag.books")
-    List<Tag> findAll();
+    @EntityGraph(value = "CustomShelf.books")
+    Optional<UserCreatedShelf> findByShelfNameAndUser(String shelfName, User user);
+
+    @EntityGraph(value = "CustomShelf.books")
+    List<UserCreatedShelf> findByShelfName(String shelfName);
+
+    @EntityGraph(value = "CustomShelf.books")
+    Optional<UserCreatedShelf> findById(Long id);
+
+    @EntityGraph(value = "CustomShelf.books")
+    List<UserCreatedShelf> findAll();
 }

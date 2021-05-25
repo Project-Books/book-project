@@ -15,38 +15,48 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.model.account;
 
+package com.karankumar.bookproject.backend.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.karankumar.bookproject.backend.model.account.User;
 import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.OneToMany;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedAttributeNode;
+import java.util.Set;
 
 @Entity
-@Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode
-@ToString
-public class Role {
+@JsonIgnoreProperties(value = {"id", "books"})
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@Getter
+@Setter
+@NamedEntityGraph(name = "CustomShelf.books",
+        attributeNodes = @NamedAttributeNode("books")
+)
+public class UserCreatedShelf extends Shelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @NotBlank
-    private String role;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCreatedShelf")
+    protected Set<Book> books;
 
-    public Role(@NonNull String role) {
-        this.role = role;
+    public UserCreatedShelf(String shelfName, User user) {
+        super(shelfName, user);
+    }
+
+    public void setShelfName(String shelfName) {
+        super.shelfName = shelfName;
     }
 }

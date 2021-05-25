@@ -22,20 +22,22 @@ import TextField from "@material-ui/core/TextField";
 import "./ShelfModal.css";
 import Hidden from "@material-ui/core/Hidden";
 
-export default class ShelfModal extends Component<IModalProps> {
+type MyState = { name: string };
+export default class ShelfModal extends Component<IModalProps, MyState> {
   constructor(props: never) {
     super(props);
-    this.state = { value: "" };
+    this.state = { name: "" };
     this.submitShelf = this.submitShelf.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange = (event: any) => {
-    this.setState({ value: event.target.value });
+    this.setState({ name: event.target.value });
   };
 
-  submitShelf = () => {
-    this.setState({ value: "" });
+  submitShelf = (event: any) => {
+    alert(`Shelf added: ${this.state.name}`);
+    event.preventDefault();
   };
 
   render(): JSX.Element {
@@ -53,6 +55,7 @@ export default class ShelfModal extends Component<IModalProps> {
                     size="small"
                     id="outlined-basic"
                     variant="outlined"
+                    value={this.state.name}
                     onChange={this.handleChange}
                   />
                 </Hidden>
@@ -63,6 +66,7 @@ export default class ShelfModal extends Component<IModalProps> {
                     id="name"
                     variant="outlined"
                     label="shelf name"
+                    value={this.state.name}
                     onChange={this.handleChange}
                   />
                 </Hidden>

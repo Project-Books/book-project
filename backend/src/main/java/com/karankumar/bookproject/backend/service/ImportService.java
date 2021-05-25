@@ -20,7 +20,7 @@ package com.karankumar.bookproject.backend.service;
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.RatingScale;
 import lombok.extern.slf4j.Slf4j;
@@ -46,14 +46,14 @@ public class ImportService {
 
     private final BookService bookService;
     private final PredefinedShelfService predefinedShelfService;
-    private final CustomShelfService customShelfService;
+    private final UserCreatedShelfService userCreatedShelfService;
 
     public ImportService(BookService bookService,
                          PredefinedShelfService predefinedShelfService,
-                         CustomShelfService customShelfService) {
+                         UserCreatedShelfService userCreatedShelfService) {
         this.bookService = bookService;
         this.predefinedShelfService = predefinedShelfService;
-        this.customShelfService = customShelfService;
+        this.userCreatedShelfService = userCreatedShelfService;
     }
 
     /**
@@ -112,9 +112,9 @@ public class ImportService {
 
         Book book = new Book(goodreadsBookImport.getTitle(), author.get(), predefinedShelf.get());
 
-        Optional<CustomShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves(),
+        Optional<UserCreatedShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves(),
                 GoodreadsBookImport::toPredefinedShelfName);
-        customShelf.ifPresent(book::setCustomShelf);
+        customShelf.ifPresent(book::setUserCreatedShelf);
 
         Optional<RatingScale> ratingScale =
                 toRatingScale(goodreadsBookImport.getRating(), GOODREADS_RATING_SCALE_FACTOR);
@@ -151,7 +151,7 @@ public class ImportService {
                      .map(Optional::get);
     }
 
-    private Optional<CustomShelf> toCustomShelf(
+    private Optional<UserCreatedShelf> toCustomShelf(
             String shelves,
             Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
         if (StringUtils.isBlank(shelves)) {
@@ -166,7 +166,7 @@ public class ImportService {
                      .filter(isNotPredefinedShelf)
                      .findFirst()
                      .map(String::trim)
-                     .map(customShelfService::findOrCreate);
+                     .map(userCreatedShelfService::findOrCreate);
     }
 
     private Optional<RatingScale> toRatingScale(Double ratingValue, double scaleFactor) {

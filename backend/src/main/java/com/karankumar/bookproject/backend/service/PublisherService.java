@@ -40,10 +40,11 @@ public class PublisherService {
         this.publisherRepository = publisherRepository;
     }
 
-    public Optional<Publisher> findById(Long id) {
+    public Optional<Publisher> findById(@NonNull Long id) {
         return publisherRepository.findById(id);
     }
 
+    // TODO: move to model
     public void addBookToPublisher(@NonNull Book book, @NonNull Publisher publisher) {
         Set<Book> publisherBooks = publisher.getBooks();
         if (publisherBooks == null) {
@@ -55,7 +56,7 @@ public class PublisherService {
         save(publisher);
     }
 
-    public void save(@NonNull Publisher publisher){
+    public void save(@NonNull Publisher publisher) {
         if (StringUtils.isNotEmpty(publisher.getName())) {
             publisherRepository.save(publisher);
         }
