@@ -14,9 +14,9 @@ PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program.
 If not, see <https://www.gnu.org/licenses/>.
 */
-import React from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import MaterialModal from '@material-ui/core/Modal';
+import React from "react";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import MaterialModal from "@material-ui/core/Modal";
 
 function getModalStyle() {
   const top = 50;
@@ -32,38 +32,39 @@ function getModalStyle() {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
-      position: 'absolute',
-      width: 380,
+      position: "absolute",
+      // width: 380, 
+      // I had to change the width to 50% to make it responsive for mobile
+      width: "50%",
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       borderRadius: 40,
       padding: theme.spacing(2, 6, 3),
     },
-  }),
+  })
 );
 
-export interface IModalProps{
-  open: boolean,
-  onClose?:() => void,
-  onPasswordResetClicked?: () => void,
-  children?: JSX.Element
+export interface IModalProps {
+  open: boolean;
+  onClose?: () => void;
+  onPasswordResetClicked?: () => void;
+  children?: JSX.Element;
 }
 
-export default function Modal(props: IModalProps): JSX.Element{
+export default function Modal(props: IModalProps): JSX.Element {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
-  
+
   return (
     <MaterialModal
-        open={props.open}
-        onClose={props.onClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+      open={props.open}
+      onClose={props.onClose}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
     >
-        <div style={modalStyle} className={classes.paper}>
-          {props.children}
-        </div>
+      <div style={modalStyle} className={classes.paper}>
+        {props.children}
+      </div>
     </MaterialModal>
   );
 }
-
