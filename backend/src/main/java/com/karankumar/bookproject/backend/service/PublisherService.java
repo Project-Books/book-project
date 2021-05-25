@@ -44,18 +44,6 @@ public class PublisherService {
         return publisherRepository.findById(id);
     }
 
-    // TODO: move to model
-    public void addBookToPublisher(@NonNull Book book, @NonNull Publisher publisher) {
-        Set<Book> publisherBooks = publisher.getBooks();
-        if (publisherBooks == null) {
-            publisher.setBooks(Stream.of(book).collect(Collectors.toSet()));
-        } else {
-            publisherBooks.add(book);
-            publisher.setBooks(publisherBooks);
-        }
-        save(publisher);
-    }
-
     public void save(@NonNull Publisher publisher) {
         if (StringUtils.isNotEmpty(publisher.getName())) {
             publisherRepository.save(publisher);
