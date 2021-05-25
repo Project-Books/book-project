@@ -34,9 +34,25 @@ If not, see <https://www.gnu.org/licenses/>.
     margin: 0 60px;
 }
 
+.back-icon-button-container {
+    display:flex;
+    flex-direction:row;
+    margin-top:36px;
+    cursor:pointer;
+}
+
+.arrow-back {
+    padding-right:10px;
+} 
+
+.link-to-settings {
+    text-decoration:none;
+    color:black;
+}
+
 .pageTitle {
     margin-bottom: 40px;
-    margin-top: 130px;
+    margin-top: 100px;
     font-size: 32px;
     color: black;
 }

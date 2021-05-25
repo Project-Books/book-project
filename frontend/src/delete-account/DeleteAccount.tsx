@@ -19,22 +19,16 @@ import React from 'react'
 import {Layout} from '../shared/components/Layout';
 import Button from '@material-ui/core/Button';
 import PasswordInput from '../shared/form/Password';
-// import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {Link} from 'react-router-dom';
 import './DeleteAccount.css'
 
 export default function DeleteAccount():JSX.Element {
     return (
-        <Layout title="Delete Account" centered={true}>
-           {/* This section for layout? */}
-            {/* <div className="back-icon-button-container">
-                    <div className="arrow-back">
-                        <ArrowBackIcon />
-                    </div>
-                    <Link to="/settings" className="link-to-settings">
-                        Back
-                    </Link>
-                </div> */}
+        <Layout 
+          title="Delete Account" 
+          centered={true} 
+          showBackArrow={true}
+          >
             <div className="delete-account-body">
               <h2 className="delete-account-text">
                   Warning: this action is irreversible.
