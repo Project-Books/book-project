@@ -82,7 +82,7 @@ public class BookService {
         Set<Publisher> publishers = book.getPublishers();
         if (publishers != null && !publishers.isEmpty()) {
             for (Publisher publisher : publishers) {
-                book.addBookToPublisher(book, publisher);
+                publisher.addBook(book);
                 publisherService.save(publisher);
             }
         }

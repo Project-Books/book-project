@@ -246,15 +246,18 @@ public class Book {
         }
     }
 
-    public Publisher addBookToPublisher(@NonNull Book book, @NonNull Publisher publisher) {
-        Set<Book> publisherBooks = publisher.getBooks();
-        if (publisherBooks == null) {
-            publisher.setBooks(Stream.of(book).collect(Collectors.toSet()));
+    public void addPublisher(@NonNull Publisher publisher) {
+        Set<Publisher> bookPublishers = this.getPublishers();
+        if (bookPublishers == null) {
+            this.setPublishers(Stream.of(publisher).collect(Collectors.toSet()));
         } else {
-            publisherBooks.add(book);
-            publisher.setBooks(publisherBooks);
+            bookPublishers.add(publisher);
+            this.setPublishers(bookPublishers);
         }
-        return publisher;
+    }
+
+    public void removePublisher(@NonNull Publisher publisher) {
+        this.getPublishers().remove(publisher);
     }
 
     @Override
