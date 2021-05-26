@@ -74,7 +74,7 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
               </Hidden>
               <Hidden mdUp>
                 <Button
-					size="medium"
+					size="small"
 					className="modal-button-mobile"
 					variant="contained"
 					onClick={this.props.onPasswordResetClicked}
@@ -83,12 +83,23 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
                 </Button>
               </Hidden>
               <div className="password-form-spacer" />
-                <Button
-					className="modal-button-secondary"
-					onClick={this.props.onClose}
-					variant="contained">
-					Cancel
-                </Button>
+				<Hidden smDown>
+					<Button 
+						className="modal-button-secondary"
+						onClick={this.props.onClose}
+						variant="contained">
+						Cancel
+					</Button>
+				</Hidden>
+				<Hidden mdUp>
+					<Button 
+						size="small"
+						className="modal-button-secondary-mobile"
+						onClick={this.props.onClose}
+						variant="contained">
+						Cancel
+					</Button>
+				</Hidden>
             </div>
           </div>
         </Modal>

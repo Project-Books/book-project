@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       position: 'absolute',
       width: 380,
-      [theme.breakpoints.between(300, 640)]:{width: '40%'},
+      [theme.breakpoints.between(300, 640)]:{width: '50%'},
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       borderRadius: 40,
