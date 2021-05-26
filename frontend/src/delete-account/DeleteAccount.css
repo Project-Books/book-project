@@ -52,7 +52,8 @@ If not, see <https://www.gnu.org/licenses/>.
     margin-bottom:40px;
 }
 
-/* mobile screens */
+/* mobile screens/ base start of responsiveness 
+  edits needed after nav is responsive */
 @media screen and (max-width: 600px) {
     .delete-account-body {
         width:100vw;

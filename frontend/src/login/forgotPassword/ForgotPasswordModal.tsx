@@ -60,34 +60,35 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
                 isInvalid={this.state.isInvalid} 
                 errorMessage={this.state.errorMessage} 
                 class='forgotPasswordInput'
-              />
+               />
               <div className="password-form-spacer" />
               <div className="password-form-spacer" />
               <Hidden smDown>
                 <Button
-                  className="modal-button-primary"
-                  variant="contained"
-                  onClick={this.props.onPasswordResetClicked}
-                  color="primary">
-                  Send me a password reset link
+					className="modal-button-primary"
+					variant="contained"
+					onClick={this.props.onPasswordResetClicked}
+					color="primary">
+					Send me a password reset link
                 </Button>
               </Hidden>
               <Hidden mdUp>
                 <Button
-                  className="modal-button-mobile"
-                  variant="contained"
-                  onClick={this.props.onPasswordResetClicked}
-                  color="primary">
-                  Reset password
+					size="medium"
+					className="modal-button-mobile"
+					variant="contained"
+					onClick={this.props.onPasswordResetClicked}
+					color="primary">
+					Reset password
                 </Button>
               </Hidden>
               <div className="password-form-spacer" />
-              <Button
-                className="modal-button-secondary"
-                onClick={this.props.onClose}
-                variant="contained">
-                  Cancel
-              </Button>
+                <Button
+					className="modal-button-secondary"
+					onClick={this.props.onClose}
+					variant="contained">
+					Cancel
+                </Button>
             </div>
           </div>
         </Modal>
