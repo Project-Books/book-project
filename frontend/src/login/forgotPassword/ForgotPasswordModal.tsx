@@ -19,6 +19,7 @@ import React, { Component } from 'react'
 import Modal, { IModalProps } from '../../shared/components/Modal'
 import Email from '../../shared/form/EmailAddress';
 import Button from '@material-ui/core/Button';
+import { Hidden } from '@material-ui/core';
 import './ForgotPasswordModal.css';
 
 export default class ForgotPasswordModal extends Component<IModalProps> {
@@ -62,13 +63,24 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
               />
               <div className="password-form-spacer" />
               <div className="password-form-spacer" />
-              <Button
-                className="modal-button-primary"
-                variant="contained"
-                onClick={this.props.onPasswordResetClicked}
-                color="primary">
-                Send me a password reset link
-              </Button>
+              <Hidden smDown>
+                <Button
+                  className="modal-button-primary"
+                  variant="contained"
+                  onClick={this.props.onPasswordResetClicked}
+                  color="primary">
+                  Send me a password reset link
+                </Button>
+              </Hidden>
+              <Hidden mdUp>
+                <Button
+                  className="modal-button-mobile"
+                  variant="contained"
+                  onClick={this.props.onPasswordResetClicked}
+                  color="primary">
+                  Reset password
+                </Button>
+              </Hidden>
               <div className="password-form-spacer" />
               <Button
                 className="modal-button-secondary"
