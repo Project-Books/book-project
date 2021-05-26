@@ -15,18 +15,18 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 import React from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles} from '@material-ui/core/styles';
 import MaterialModal from '@material-ui/core/Modal';
 
 function getModalStyle() {
   const top = 50;
   const left = 50;
-
+ 
   return {
     top: `${top}%`,
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
-  };
+  }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       position: 'absolute',
       width: 380,
+      [theme.breakpoints.between(300, 640)]:{width: '40%'},
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       borderRadius: 40,
@@ -46,7 +47,7 @@ export interface IModalProps{
   open: boolean,
   onClose?:() => void,
   onPasswordResetClicked?: () => void,
-  children?: JSX.Element
+  children?: JSX.Element,
 }
 
 export default function Modal(props: IModalProps): JSX.Element{
@@ -55,14 +56,14 @@ export default function Modal(props: IModalProps): JSX.Element{
   
   return (
     <MaterialModal
-        open={props.open}
-        onClose={props.onClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-    >
-        <div style={modalStyle} className={classes.paper}>
-          {props.children}
-        </div>
+      open={props.open}
+      onClose={props.onClose}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+      >
+      <div style={modalStyle} className={classes.paper}>
+        {props.children}
+      </div>
     </MaterialModal>
   );
 }
