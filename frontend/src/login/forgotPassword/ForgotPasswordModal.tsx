@@ -24,21 +24,21 @@ import './ForgotPasswordModal.css';
 
 export default class ForgotPasswordModal extends Component<IModalProps> {
   constructor(props: IModalProps) {
-    super(props)
-    this.onEmailChanged = this.onEmailChanged.bind(this);
+	super(props)
+	this.onEmailChanged = this.onEmailChanged.bind(this);
   }
 
   state = {
-    isInvalid: false,
-    errorMessage: '',
-    emailEntered: '',
+	isInvalid: false,
+	errorMessage: '',
+	emailEntered: '',
   }
 
   onEmailChanged(emailEntered: string): void {
-    this.setState({
-      emailEntered,
-      isInvalid: emailEntered === ''
-    })
+	this.setState({
+		emailEntered,
+		isInvalid: emailEntered === ''
+	})
   }
   
   render(): JSX.Element {
