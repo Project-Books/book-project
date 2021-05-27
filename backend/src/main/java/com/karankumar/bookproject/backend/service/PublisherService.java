@@ -17,7 +17,6 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Publisher;
 import com.karankumar.bookproject.backend.repository.PublisherRepository;
 import lombok.NonNull;
@@ -27,9 +26,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Log

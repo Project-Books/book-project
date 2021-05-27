@@ -247,17 +247,17 @@ public class Book {
     }
 
     public void addPublisher(@NonNull Publisher publisher) {
-        Set<Publisher> bookPublishers = this.getPublishers();
-        if (bookPublishers == null) {
-            this.setPublishers(Stream.of(publisher).collect(Collectors.toSet()));
-        } else {
-            bookPublishers.add(publisher);
-            this.setPublishers(bookPublishers);
-        }
+            publishers.add(publisher);
+            publisher.getBooks().add(this);
     }
 
     public void removePublisher(@NonNull Publisher publisher) {
-        this.getPublishers().remove(publisher);
+        publishers.forEach(bookPublisher -> {
+            if (bookPublisher.getId().equals(publisher.getId())) {
+                bookPublisher.getBooks().remove(this);
+            }
+        });
+        publishers.remove(publisher);
     }
 
     @Override
