@@ -15,64 +15,106 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react'
+import React, {Component} from 'react'
 import {Layout} from '../shared/components/Layout';
 import Button from '@material-ui/core/Button';
 import PasswordInput from '../shared/form/Password';
 import {Link} from 'react-router-dom';
 import './DeleteAccount.css'
 
-export default function DeleteAccount():JSX.Element {
-    return (
-        <Layout 
-          title="Delete Account" 
-          centered={true} 
-          showBackArrow={true}
-          >
-            <div className="delete-account-body">
-              <h2 className="delete-account-text">
-                  Warning: this action is irreversible.
-              </h2>
-              <p className="delete-account-text">
-                  If you&apos;d like to first export your data, please do so below. 
-                  This gives you a chance to save your data in case you&apos;d ever 
-                  like to create an accountpage again!
-              </p>
-              <Button 
-                  className="delete-account-page-input"
-                  id="export-data-button"
-                  variant="contained"
-                  color="primary">
-                  Export account data
-               </Button>
-                <p className="delete-account-text">
-                  If you&apos;re sure you want to delete your account, 
-                  confirm deletion by entering your password below.
-                </p>
-                <PasswordInput
-                    class={'delete-account-page-input'}
-                    fieldName="Confirm Password"
-                    onPasswordChanged={() => null}
-                    isInvalid={false}
-                    errorMessage={'Please enter a password'}
-                />
-                <Button
-                    className="delete-account-page-input"
-                    id="delete-account-button"
-                    variant="contained"
-                    color="secondary">
-                    Delete my account
-                </Button>
-            </div>
-            <Link to="/settings" className="link-to-settings">
-                <Button
-                    className="delete-account-page-input"
-                    id="cancel-button"
-                    variant="contained"
-                    color="default">
-                    Cancel
-                </Button>
-            </Link>
-        </Layout>
-    )
+interface IDeleteAccountState {
+    password: string,
+    isPasswordDirty: boolean,
+    isPasswordInvalid: boolean,
 }
+
+type IDeleteAccountProps = Record<string,unknown>
+
+export default class DeleteAccount extends Component<IDeleteAccountProps, IDeleteAccountState>{
+    constructor(props:IDeleteAccountProps) {
+        super(props)
+
+        this.state = {
+            password: '',
+            isPasswordDirty: false,
+            isPasswordInvalid: false,
+        }
+        this.onPasswordChanged = this.onPasswordChanged.bind(this)
+    }
+
+    onPasswordChanged(password: string): void {
+        this.setState({
+            password,
+            isPasswordDirty: true,
+            isPasswordInvalid: password === ''
+        })
+    }
+
+    isPasswordInvalid(): boolean {
+        const isPasswordDirtyAndBlank = this.state.password === '' && this.state.isPasswordDirty
+        return isPasswordDirtyAndBlank || this.state.isPasswordInvalid
+    }
+
+    render():JSX.Element {
+        return (
+            <div>
+                <Layout 
+                    title="Delete Account" 
+                    centered={true} 
+                    showBackArrow={true}
+                    >
+                    <div className="delete-account-body">
+                        <h2 className="delete-account-text">
+                            Warning: this action is irreversible.
+                        </h2>
+                        <p className="delete-account-text">
+                            If you&apos;d like to first export your data, please do so below. 
+                            This gives you a chance to save your data in case you&apos;d ever 
+                            like to create an account again!
+                        </p>
+                        <Button 
+                            className="delete-account-page-input"
+                            id="export-data-button"
+                            variant="contained"
+                            color="primary">
+                            Export account data
+                        </Button>
+                        <p className="delete-account-text">
+                        If you&apos;re sure you want to delete your account, 
+                        confirm deletion by entering your password in the field below.
+                        </p>
+                        <PasswordInput
+                            class={'delete-account-page-input'}
+                            fieldName="Confirm Password"
+                            onPasswordChanged={this.onPasswordChanged}
+                            isInvalid={this.isPasswordInvalid()}
+                            errorMessage={'Incorrect password'}
+                        />
+                        <Button
+                            className="delete-account-page-input"
+                            id="delete-account-button"
+                            variant="contained"
+                            color="secondary">
+                            Delete my account
+                        </Button>
+                    </div>
+                    <Link to="/settings" className="link-to-settings">
+                        <Button
+                            className="delete-account-page-input"
+                            id="cancel-button"
+                            variant="contained"
+                            color="default">
+                            Cancel
+                        </Button>
+                    </Link>
+                </Layout>
+            </div>
+        )
+    }
+}
+
+// export default function DeleteAccount():JSX.Element {
+//     return (
+        
+//     )
+// }
