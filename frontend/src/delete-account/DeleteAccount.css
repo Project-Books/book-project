@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
     display:flex;
     flex-direction:column;
     width: 60vw;
+    max-width:780px;
     align-items: center;
     text-align:left;
     justify-content: center;
