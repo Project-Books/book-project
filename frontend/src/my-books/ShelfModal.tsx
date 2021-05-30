@@ -24,79 +24,78 @@ import Hidden from "@material-ui/core/Hidden";
 
 type MyState = { name: string };
 export default class ShelfModal extends Component<IModalProps, MyState> {
-  constructor(props: never) {
-    super(props);
-    this.state = { name: "" };
-    this.submitShelf = this.submitShelf.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
+    constructor(props: never) {
+        super(props);
+        this.state = { name: "" };
+        this.submitShelf = this.submitShelf.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
 
-  handleChange = (event: any) => {
-    this.setState({ name: event.target.value });
-  };
+    handleChange = (event: any) => {
+        this.setState({ name: event.target.value });
+    };
 
-  submitShelf = (event: any) => {
-    event.preventDefault();
-  };
+    submitShelf = (event: any) => {
+        event.preventDefault();
+    };
+    render(): JSX.Element {
+        return (
+            <div>
+                <Modal open={this.props.open} onClose={this.props.onClose}>
+                    <div className="shelf-modal-container">
+                        <div className="modal-content">
+                            <div className="modal-title">Add shelf</div>
+                            <div className="shelf-modal-desc-container">
+                                <Hidden smDown implementation="css">
+                                    <div className="shelf-modal-desc-items">
+                                        <p>Shelf name</p>
+                                        <TextField
+                                            className="shelfInput"
+                                            size="small"
+                                            id="outlined-basic"
+                                            variant="outlined"
+                                            value={this.state.name}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                </Hidden>
+                                <Hidden mdUp implementation="css">
+                                    <div className="shelf-modal-desc-items">
+                                        <TextField
+                                            className="shelfInput"
+                                            size="small"
+                                            id="name"
+                                            variant="outlined"
+                                            label="shelf name"
+                                            value={this.state.name}
+                                            onChange={this.handleChange}
+                                        />
+                                    </div>
+                                </Hidden>
+                            </div>
+                        </div>
+                        <div className="modal-form-spacer" />
 
-  render(): JSX.Element {
-    return (
-      <div>
-        <Modal open={this.props.open} onClose={this.props.onClose}>
-          <div className="shelf-modal-container">
-            <div className="modal-content">
-              <div className="modal-title">Add shelf</div>
-              <div className="shelf-modal-desc-container">
-                <Hidden smDown implementation="css">
-                  <div className="shelf-modal-desc-items">
-                    <p>Shelf name</p>
-                    <TextField
-                      className="shelfInput"
-                      size="small"
-                      id="outlined-basic"
-                      variant="outlined"
-                      value={this.state.name}
-                      onChange={this.handleChange}
-                    />
-                  </div>
-                </Hidden>
-                <Hidden mdUp implementation="css">
-                  <div className="shelf-modal-desc-items">
-                    <TextField
-                      className="shelfInput"
-                      size="small"
-                      id="name"
-                      variant="outlined"
-                      label="shelf name"
-                      value={this.state.name}
-                      onChange={this.handleChange}
-                    />
-                  </div>
-                </Hidden>
-              </div>
-            </div>
-            <div className="modal-form-spacer" />
-
-            <div className="shelf-button-container">
-              <Button
-                className="shelf-modal-button"
-                variant="contained"
-                onClick={this.props.onClose}
-              >
-                Cancel
+                        <div className="shelf-button-container">
+                            <Button
+                                className="shelf-modal-button"
+                                variant="contained"
+                                onClick={this.props.onClose}
+                            >
+                                Cancel
               </Button>
-              <Button
-                className="shelf-modal-button"
-                variant="contained"
-                onClick={this.submitShelf}
-                color="primary"
-              >
-                Add shelf
+                            <Button
+                                className="shelf-modal-button"
+                                variant="contained"
+                                onClick={this.submitShelf}
+                                color="primary"
+                            >
+                                Add shelf
               </Button>
+                        </div>
+                    </div>
+                </Modal>
             </div>
-          </div>
-        </Modal>
-      </div>
-    );
-  }
+        );
+    }
 }
