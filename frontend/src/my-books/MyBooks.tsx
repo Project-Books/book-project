@@ -25,70 +25,70 @@ import Hidden from "@material-ui/core/Hidden";
 import MenuIcon from "@material-ui/icons/Menu";
 
 interface IState {
-  showShelfModal: boolean;
+    showShelfModal: boolean;
 }
 
 class MyBooks extends Component<Record<string, unknown>, IState> {
-  constructor(props: Record<string, unknown>) {
-    super(props);
-    this.state = {
-      showShelfModal: false,
-    };
-    this.onAddShelf = this.onAddShelf.bind(this);
-    this.onAddShelfModalClose = this.onAddShelfModalClose.bind(this);
-  }
+    constructor(props: Record<string, unknown>) {
+        super(props);
+        this.state = {
+            showShelfModal: false,
+        };
+        this.onAddShelf = this.onAddShelf.bind(this);
+        this.onAddShelfModalClose = this.onAddShelfModalClose.bind(this);
+    }
 
-  onAddShelf(): void {
-    this.setState({
-      showShelfModal: true,
-    });
-  }
+    onAddShelf(): void {
+        this.setState({
+            showShelfModal: true,
+        });
+    }
 
-  onAddShelfModalClose(): void {
-    this.setState({
-      showShelfModal: false,
-    });
-  }
-  render(): ReactElement {
-    return (
-      <div>
-        <NavBar />
-        <Hidden smDown implementation="css">
-          <div className="my-book-top">
-            <h1>My books</h1>
-            <div className="my-book-top-buttons">
-              <Button
-                variant="contained"
-                className="tempButton"
-                color="primary"
-              >
-                Add Book
-              </Button>
-              <Button
-                onClick={this.onAddShelf}
-                variant="contained"
-                color="primary"
-              >
-                Add Shelf
-              </Button>
+    onAddShelfModalClose(): void {
+        this.setState({
+            showShelfModal: false,
+        });
+    }
+    render(): ReactElement {
+        return (
+            <div>
+                <NavBar />
+                <Hidden smDown implementation="css">
+                    <div className="my-book-top">
+                        <h1>My books</h1>
+                        <div className="my-book-top-buttons">
+                            <Button
+                                variant="contained"
+                                className="tempButton"
+                                color="primary"
+                            >
+                                Add Book
+                            </Button>
+                            <Button
+                                onClick={this.onAddShelf}
+                                variant="contained"
+                                color="primary"
+                            >
+                                Add Shelf
+                            </Button>
+                        </div>
+                    </div>
+                </Hidden>
+                <Hidden mdUp implementation="css">
+                    <MenuIcon className="my-book-top" />
+                </Hidden>
+                <div>
+                    <ShelfCarousel title="Reading" />
+                    <ShelfCarousel title="To Read" />
+                    <ShelfCarousel title="Read" />
+                    <ShelfCarousel title="Did not finish" />
+                </div>
+                <ShelfModal
+                    open={this.state.showShelfModal}
+                    onClose={this.onAddShelfModalClose}
+                />
             </div>
-          </div>
-        </Hidden>
-        <Hidden mdUp implementation="css">
-          <MenuIcon className="my-book-top" />
-        </Hidden>
-        <div>
-          <ShelfCarousel title="Reading" />
-          <ShelfCarousel title="To Read" />
-          <ShelfCarousel title="Read" />
-          <ShelfCarousel title="Did not finish" />
-        </div>
-        <ShelfModal
-          open={this.state.showShelfModal}
-          onClose={this.onAddShelfModalClose}
-        />
-      </div>
-    );
-  }
+        );
+    }
 }
 export default MyBooks;

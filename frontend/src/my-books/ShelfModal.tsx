@@ -83,7 +83,7 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
                                 onClick={this.props.onClose}
                             >
                                 Cancel
-              </Button>
+                            </Button>
                             <Button
                                 className="shelf-modal-button"
                                 variant="contained"
@@ -91,7 +91,7 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
                                 color="primary"
                             >
                                 Add shelf
-              </Button>
+                            </Button>
                         </div>
                     </div>
                 </Modal>

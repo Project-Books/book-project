@@ -16,79 +16,74 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 .shelf-modal-container {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  padding-top: 32px;
-  padding-bottom: 32px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
 }
 
 .modal-title {
-  color: black;
-  font-size: 40pt;
-  letter-spacing: -0.5px;
-  font-weight: bold;
+    color: black;
+    font-size: 40pt;
+    letter-spacing: -0.5px;
+    font-weight: bold;
 }
 
 .shelf-modal-desc-container {
-  font-size: 16pt;
-  padding-top: 40px;
-  padding-bottom: 60px;
+    font-size: 16pt;
+    padding-top: 40px;
+    padding-bottom: 60px;
 }
 
 .shelf-modal-desc-items {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.shelf-modal-desc-items > p {
-  width: 30%;
-  margin-right: 15px;
-}
-
-.shelfInput > .MuiOutlinedInput-root {
-  width: 100%;
-  margin-right: 600px;
-  border-radius: 20px;
-}
-
-.shelf-button-container {
-  display: flex;
-  justify-content: space-between;
-}
-.shelf-modal-button {
-  width: 100px;
-}
-
-@media screen and (max-width: 959px) {
-  .shelfInput > .MuiOutlinedInput-root {
-    width: 100%;
-    margin-right: 600px;
-    border-radius: 20px;
-  }
-  shelf-modal-desc-items {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
+}
+
+.shelf-modal-desc-items > p {
+    width: 30%;
+    margin-right: 15px;
+}
+
+.shelfInput > .MuiOutlinedInput-root {
+    width: 100%;
+    margin-right: 600px;
+    border-radius: 20px;
+}
+
+.shelf-button-container {
+    display: flex;
+    justify-content: space-between;
+}
+.shelf-modal-button {
+    width: 100px;
+}
+
+@media screen and (max-width: 959px) {
+    .shelfInput > .MuiOutlinedInput-root {
+        width: 100%;
+        margin-right: 600px;
+        border-radius: 20px;
+    }
 }
 
 @media screen and (max-width: 420px) {
-  .shelf-modal-container {
-    text-align: center;
-  }
-  .shelf-button-container {
-    display: flex;
-    flex-direction: column-reverse;
-  }
+    .shelf-modal-container {
+        text-align: center;
+    }
+    .shelf-button-container {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 
-  .shelf-modal-button {
-    width: 100%;
-    /* override the default margin-top:0px of material-ui buttons */
-    margin-top: 24px !important;
-  }
+    .shelf-modal-button {
+        width: 100%;
+        /* override the default margin-top:0px of material-ui buttons */
+        margin-top: 24px !important;
+    }
 }

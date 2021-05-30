@@ -16,17 +16,17 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 .my-book-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-left: 240px;
-  padding-top: 100px;
-  padding-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 240px;
+    padding-top: 100px;
+    padding-bottom: 30px;
 }
 
 .my-book-top-buttons {
-  width: 200px;
-  display: flex;
-  justify-content: space-between;
-  margin-left: 800px;
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 800px;
 }
