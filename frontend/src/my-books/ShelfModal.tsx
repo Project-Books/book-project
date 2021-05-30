@@ -1,7 +1,7 @@
 /*
 The book project lets a user keep track of different books they would like to read, are currently
 reading, have read or did not finish.
-Copyright (C) 2020  Karan Kumar
+Copyright (C) 2021  Karan Kumar
 
 This program is free software: you can redistribute it and/or modify it under the terms of the
 GNU General Public License as published by the Free Software Foundation, either version 3 of the
@@ -36,7 +36,6 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
   };
 
   submitShelf = (event: any) => {
-    alert(`Shelf added: ${this.state.name}`);
     event.preventDefault();
   };
 
@@ -49,26 +48,30 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
               <div className="modal-title">Add shelf</div>
               <div className="shelf-modal-desc-container">
                 <Hidden smDown implementation="css">
-                  <p>Shelf name</p>
-                  <TextField
-                    className="shelfInput"
-                    size="small"
-                    id="outlined-basic"
-                    variant="outlined"
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                  />
+                  <div className="shelf-modal-desc-items">
+                    <p>Shelf name</p>
+                    <TextField
+                      className="shelfInput"
+                      size="small"
+                      id="outlined-basic"
+                      variant="outlined"
+                      value={this.state.name}
+                      onChange={this.handleChange}
+                    />
+                  </div>
                 </Hidden>
                 <Hidden mdUp implementation="css">
-                  <TextField
-                    className="shelfInput"
-                    size="small"
-                    id="name"
-                    variant="outlined"
-                    label="shelf name"
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                  />
+                  <div className="shelf-modal-desc-items">
+                    <TextField
+                      className="shelfInput"
+                      size="small"
+                      id="name"
+                      variant="outlined"
+                      label="shelf name"
+                      value={this.state.name}
+                      onChange={this.handleChange}
+                    />
+                  </div>
                 </Hidden>
               </div>
             </div>

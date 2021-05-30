@@ -1,3 +1,20 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2021  Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
 .shelf-modal-container {
   display: flex;
   flex-direction: column;
@@ -22,13 +39,13 @@
   padding-bottom: 60px;
 }
 
-.PrivateHiddenCss-smDown-44 {
+.shelf-modal-desc-items {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.shelf-modal-desc-container > .PrivateHiddenCss-smDown-44 > p {
+.shelf-modal-desc-items > p {
   width: 30%;
   margin-right: 15px;
 }
@@ -53,7 +70,7 @@
     margin-right: 600px;
     border-radius: 20px;
   }
-  .PrivateHiddenCss-mdUp-46 {
+  shelf-modal-desc-items {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -66,7 +83,7 @@
   }
   .shelf-button-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   .shelf-modal-button {
