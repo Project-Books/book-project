@@ -172,23 +172,34 @@ class UserCreatedShelfServiceTest {
     }
 
     @Test
-    void shelfWithNameExists() {
+    void ableToSave_shelfWithNameExists_ifNameIsUnique() {
         // given
         User user = User.builder().build();
-        userCreatedShelfRepository.save(new UserCreatedShelf("test1", user));
-        userCreatedShelfRepository.save(new UserCreatedShelf("test2", user));
+        UserCreatedShelf userCreatedShelf = new UserCreatedShelf("test1", user);
 
         // when
-        boolean case1 = userCreatedShelfService.shelfWithNameExists("test1");
-        boolean case2 = userCreatedShelfService.shelfWithNameExists("TEST2");
-        boolean case3 = userCreatedShelfService.shelfWithNameExists("Reading");
-        boolean case4 = userCreatedShelfService.shelfWithNameExists("test3");
+        userCreatedShelfService.save(userCreatedShelf);
 
         // then
-//I'm not familiar with you db mock but these saved users do not appear to be within the test db
-//        Assertions.assertTrue(case1);
-//        Assertions.assertTrue(case2);
-//        Assertions.assertTrue(case3);
-//        Assertions.assertTrue(case4);
+        ArgumentCaptor<UserCreatedShelf> customShelfArgumentCaptor =
+                ArgumentCaptor.forClass(UserCreatedShelf.class);
+        verify(userCreatedShelfRepository).save(customShelfArgumentCaptor.capture());
+        UserCreatedShelf actual = customShelfArgumentCaptor.getValue();
+        assertThat(actual).isEqualTo(userCreatedShelf);
+    }
+
+    @Test
+    void UnableToSave_shelfWithNameExists_ifNameAlreadyExists() {
+        // given
+        User user = User.builder().build();
+        UserCreatedShelf userCreatedShelf = new UserCreatedShelf("test1", user);
+        UserCreatedShelf userCreatedShelfCopy = new UserCreatedShelf("test1", user);
+
+        // when
+        userCreatedShelfService.save(userCreatedShelf);
+
+        // then
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> userCreatedShelfService.save(userCreatedShelfCopy));
     }
 }
