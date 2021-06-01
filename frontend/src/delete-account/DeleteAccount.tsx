@@ -17,8 +17,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, {Component} from 'react'
 import {Layout} from '../shared/components/Layout';
+import {RouteComponentProps} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import PasswordInput from '../shared/form/Password';
+import Endpoints from '../shared/api/endpoints';
+import Verb from '../shared/http/verb';
 import {Link} from 'react-router-dom';
 import './DeleteAccount.css'
 
@@ -28,11 +31,11 @@ interface IDeleteAccountState {
     isPasswordInvalid: boolean,
 }
 
-type IDeleteAccountProps = Record<string,unknown>
+type IDeleteAccountProps = Record<string,unknown>& RouteComponentProps;
 
 export default class DeleteAccount extends Component<IDeleteAccountProps, IDeleteAccountState>{
     constructor(props:IDeleteAccountProps) {
-        super(props)
+        super(props);
 
         this.state = {
             password: '',
@@ -40,6 +43,7 @@ export default class DeleteAccount extends Component<IDeleteAccountProps, IDelet
             isPasswordInvalid: false,
         }
         this.onPasswordChanged = this.onPasswordChanged.bind(this)
+        this.onDeleteInvoked = this.onDeleteInvoked.bind(this)
     }
 
     onPasswordChanged(password: string): void {
@@ -53,6 +57,31 @@ export default class DeleteAccount extends Component<IDeleteAccountProps, IDelet
     isPasswordInvalid(): boolean {
         const isPasswordDirtyAndBlank = this.state.password === '' && this.state.isPasswordDirty
         return isPasswordDirtyAndBlank || this.state.isPasswordInvalid
+    }
+
+    onDeleteInvoked():void {
+        const requestOptions = {
+            method: Verb.DELETE,
+            headers: {
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                password: this.state.password
+            })
+        }
+
+        fetch(Endpoints.user, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    this.props.history.push('/')
+                } else {
+                    this.setState({isPasswordInvalid:true});
+                }
+            })
+            .catch(error => {
+                console.error('error: ', error);
+            })
     }
 
     render():JSX.Element {
@@ -94,6 +123,7 @@ export default class DeleteAccount extends Component<IDeleteAccountProps, IDelet
                             className="delete-account-page-input"
                             id="delete-account-button"
                             variant="contained"
+                            onClick={this.onDeleteInvoked}
                             color="secondary">
                             Delete my account
                         </Button>
