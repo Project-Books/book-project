@@ -252,11 +252,12 @@ public class Book {
     }
 
     public void removePublisher(@NonNull Publisher publisher) {
-        publishers.forEach(bookPublisher -> {
+        for (Publisher bookPublisher : publishers) {
             if (bookPublisher.getId().equals(publisher.getId())) {
                 bookPublisher.getBooks().remove(this);
+                break;
             }
-        });
+        }
         publishers.remove(publisher);
     }
 
