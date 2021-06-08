@@ -114,7 +114,7 @@ export default class DeleteAccount extends Component<IDeleteAccountProps, IDelet
                         </p>
                         <PasswordInput
                             class={'delete-account-page-input'}
-                            fieldName="Confirm Password"
+                            placeholderText="Confirm Password"
                             onPasswordChanged={this.onPasswordChanged}
                             isInvalid={this.isPasswordInvalid()}
                             errorMessage={'Incorrect password'}
@@ -143,8 +143,3 @@ export default class DeleteAccount extends Component<IDeleteAccountProps, IDelet
     }
 }
 
-// export default function DeleteAccount():JSX.Element {
-//     return (
-        
-//     )
-// }

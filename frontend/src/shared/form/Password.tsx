@@ -35,11 +35,11 @@ function Password(props: PasswordProps): ReactElement {
   
   return (
         <FormControl variant="outlined" required error = {props.isInvalid}>
-          <InputLabel htmlFor="outlined-adornment-password">{props.fieldName}</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-password">{props.placeholderText}</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             className={props.class + " rounded"}
-            label={props.fieldName}
+            label={props.placeholderText}
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
@@ -64,11 +64,9 @@ function Password(props: PasswordProps): ReactElement {
 }
 
 type PasswordProps = {
-  /** string placeholder text for input */
-  fieldName: string,
+  placeholderText: string,
   class?: string,
   classHelper?: string,
-  /** a callback that will pass value of input when it changes */
   onPasswordChanged: any,
   isInvalid: boolean,
   errorMessage: string
