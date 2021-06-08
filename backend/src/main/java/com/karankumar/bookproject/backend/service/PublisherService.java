@@ -17,7 +17,6 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.Publisher;
 import com.karankumar.bookproject.backend.repository.PublisherRepository;
 import lombok.NonNull;
@@ -27,9 +26,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Log
@@ -42,18 +38,6 @@ public class PublisherService {
 
     public Optional<Publisher> findById(@NonNull Long id) {
         return publisherRepository.findById(id);
-    }
-
-    // TODO: move to model
-    public void addBookToPublisher(@NonNull Book book, @NonNull Publisher publisher) {
-        Set<Book> publisherBooks = publisher.getBooks();
-        if (publisherBooks == null) {
-            publisher.setBooks(Stream.of(book).collect(Collectors.toSet()));
-        } else {
-            publisherBooks.add(book);
-            publisher.setBooks(publisherBooks);
-        }
-        save(publisher);
     }
 
     public void save(@NonNull Publisher publisher) {

@@ -50,6 +50,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Builder
@@ -242,6 +244,21 @@ public class Book {
             this.edition = convertToBookEdition(edition);
             return this;
         }
+    }
+
+    public void addPublisher(@NonNull Publisher publisher) {
+            publishers.add(publisher);
+            publisher.getBooks().add(this);
+    }
+
+    public void removePublisher(@NonNull Publisher publisher) {
+        for (Publisher bookPublisher : publishers) {
+            if (bookPublisher.getId().equals(publisher.getId())) {
+                bookPublisher.getBooks().remove(this);
+                break;
+            }
+        }
+        publishers.remove(publisher);
     }
 
     @Override
