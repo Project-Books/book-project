@@ -31,6 +31,7 @@ If not, see <https://www.gnu.org/licenses/>.
 .delete-account-text {
     width:100%;
     margin-bottom:34px;
+    color:black;
 }
 
 .delete-account-page-input {
@@ -39,10 +40,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 #export-data-button {
     margin-bottom:48px;
+    box-shadow:none;
+    background-color:black;
 }
 
 #delete-account-button {
     margin:36px 0px 42px 0px;
+    box-shadow:none;
 }
 
 .link-to-settings {
@@ -51,6 +55,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 #cancel-button {
     margin-bottom:40px;
+    box-shadow:none;
 }
 
 /* mobile screens/ base start of responsiveness 
