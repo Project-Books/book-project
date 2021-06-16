@@ -17,17 +17,32 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, { Component } from 'react'
 import { NavBar } from '../navigation/NavBar'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { useHistory } from "react-router-dom";
 import './Layout.css'
 
-export function Layout(props: LayoutProps) {
+export function Layout(props: LayoutProps):JSX.Element {
     const format = (props.centered ? "centered" : "");
+    const history = useHistory();
 
+    function handleClickToGoBack() {
+        history.goBack();
+    }
+    
     return (
         <div className="layoutContainer">
             <div className="navBar">
                 <NavBar />
             </div>
             <div className="pageContent">
+              {props.showBackArrow === true && 
+                    <div className="back-icon-button-container" onClick={handleClickToGoBack}>
+                        <div className="arrow-back">
+                            <ArrowBackIcon />
+                        </div>
+                        Back
+                    </div>
+                }
                 <div className={format}>
                     <h1 className="pageTitle">{props.title}</h1>
                     {props.children}
@@ -41,4 +56,5 @@ type LayoutProps = {
     title: string;
     centered?: boolean;
     children?: JSX.Element | JSX.Element[];
+    showBackArrow?:boolean;
 }
