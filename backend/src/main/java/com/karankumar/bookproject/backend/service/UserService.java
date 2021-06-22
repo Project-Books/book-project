@@ -17,6 +17,8 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.constraints.PasswordStrengthCheck;
+import com.karankumar.bookproject.backend.constraints.PasswordStrengthValidator;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.account.UserRole;
@@ -56,6 +58,7 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final BookRepository bookRepository;
     private final PredefinedShelfService predefinedShelfService;
+    private final PasswordStrengthValidator passwordStrengthValidator;
 
     public static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
 
@@ -64,13 +67,14 @@ public class UserService {
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
                        @Lazy PredefinedShelfService predefinedShelfService,
-                       BookRepository bookRepository) {
+                       BookRepository bookRepository, PasswordStrengthValidator passwordStrengthValidator) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.predefinedShelfService = predefinedShelfService;
         this.bookRepository = bookRepository;
+        this.passwordStrengthValidator = passwordStrengthValidator;
     }
 
     public User register(@NonNull User user) throws UserAlreadyRegisteredException {
@@ -89,6 +93,10 @@ public class UserService {
         Role userRole = roleRepository.findByRole(UserRole.USER.toString())
                                       .orElseThrow(() -> new AuthenticationServiceException(
                                               "The default user role could not be found"));
+
+        if (!passwordStrengthValidator.isValid(user.getPassword(), null)) {
+            throw new ConstraintViolationException(constraintViolations);
+        }
         User userToRegister = User.builder()
                                   .email(user.getEmail())
                                   .password(passwordEncoder.encode(user.getPassword()))
@@ -137,6 +145,11 @@ public class UserService {
     }
 
     public void changeUserPassword(@NonNull User user, @NonNull String password) {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+        if (!passwordStrengthValidator.isValid(user.getPassword(), null)) {
+            throw new ConstraintViolationException(constraintViolations);
+        }
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
         userRepository.save(user);

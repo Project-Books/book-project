@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.constraints.PasswordStrengthValidator;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
@@ -53,6 +54,7 @@ class UserServiceTest {
     @Mock private AuthenticationManager authenticationManager;
     @Mock private UserRepository userRepository;
     @Mock private BookRepository bookRepository;
+    @Mock private PasswordStrengthValidator passwordStrengthValidator;
 
     @BeforeEach
     void setUp() {
@@ -64,8 +66,8 @@ class UserServiceTest {
                 passwordEncoder,
                 authenticationManager,
                 predefinedShelfService,
-                bookRepository
-        );
+                bookRepository,
+                passwordStrengthValidator);
     }
 
     @Test
