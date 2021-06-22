@@ -42,4 +42,13 @@ export const darkTheme = createMuiTheme({
       },
       type: 'dark',
     },
+    overrides: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        MuiButton: {
+            root: {
+                borderRadius: 100,
+                textTransform: "none"
+            },
+        },
+    }
   });

@@ -19,25 +19,26 @@ import React, { Component } from 'react'
 import Modal, { IModalProps } from '../../shared/components/Modal'
 import Email from '../../shared/form/EmailAddress';
 import Button from '@material-ui/core/Button';
+import { Hidden } from '@material-ui/core';
 import './ForgotPasswordModal.css';
 
 export default class ForgotPasswordModal extends Component<IModalProps> {
   constructor(props: IModalProps) {
-    super(props)
-    this.onEmailChanged = this.onEmailChanged.bind(this);
+	super(props)
+	this.onEmailChanged = this.onEmailChanged.bind(this);
   }
 
   state = {
-    isInvalid: false,
-    errorMessage: '',
-    emailEntered: '',
+	isInvalid: false,
+	errorMessage: '',
+	emailEntered: '',
   }
 
   onEmailChanged(emailEntered: string): void {
-    this.setState({
-      emailEntered,
-      isInvalid: emailEntered === ''
-    })
+	this.setState({
+		emailEntered,
+		isInvalid: emailEntered === ''
+	})
   }
   
   render(): JSX.Element {
@@ -59,23 +60,46 @@ export default class ForgotPasswordModal extends Component<IModalProps> {
                 isInvalid={this.state.isInvalid} 
                 errorMessage={this.state.errorMessage} 
                 class='forgotPasswordInput'
-              />
+               />
               <div className="password-form-spacer" />
               <div className="password-form-spacer" />
-              <Button
-                className="modal-button-primary"
-                variant="contained"
-                onClick={this.props.onPasswordResetClicked}
-                color="primary">
-                Send me a password reset link
-              </Button>
+              <Hidden smDown>
+                <Button
+					className="modal-button-primary"
+					variant="contained"
+					onClick={this.props.onPasswordResetClicked}
+					color="primary">
+					Send me a password reset link
+                </Button>
+              </Hidden>
+              <Hidden mdUp>
+                <Button
+					size="small"
+					className="modal-button-mobile"
+					variant="contained"
+					onClick={this.props.onPasswordResetClicked}
+					color="primary">
+					Reset password
+                </Button>
+              </Hidden>
               <div className="password-form-spacer" />
-              <Button
-                className="modal-button-secondary"
-                onClick={this.props.onClose}
-                variant="contained">
-                  Cancel
-              </Button>
+				<Hidden smDown>
+					<Button 
+						className="modal-button-secondary"
+						onClick={this.props.onClose}
+						variant="contained">
+						Cancel
+					</Button>
+				</Hidden>
+				<Hidden mdUp>
+					<Button 
+						size="small"
+						className="modal-button-secondary-mobile"
+						onClick={this.props.onClose}
+						variant="contained">
+						Cancel
+					</Button>
+				</Hidden>
             </div>
           </div>
         </Modal>

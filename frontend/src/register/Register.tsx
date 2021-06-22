@@ -163,7 +163,7 @@ class Register extends Component<Record<string, unknown>, IState> {
                         <br />
 
                         <Password
-                            fieldName={'Password'}
+                            placeholderText={'Password'}
                             class={'center login'}
                             classHelper={'center helper'}
                             onPasswordChanged={this.handlePasswordChanged}
@@ -178,7 +178,7 @@ class Register extends Component<Record<string, unknown>, IState> {
                         <br />
 
                         <Password
-                            fieldName={'Confirm password'}
+                            placeholderText={'Confirm password'}
                             class={'center login'}
                             classHelper={'center helper'}
                             onPasswordChanged={this.handleConfirmPasswordChanged}
@@ -200,7 +200,11 @@ class Register extends Component<Record<string, unknown>, IState> {
                         <br />
                         <br />
 
-                        <Button className="center login" id="createAccount" component={Link} to="/sign-in">
+                        <Button 
+                          className="center login" 
+                          id="createAccount" 
+                          component={Link} to="/sign-in"
+                          >
                             Sign in instead
                         </Button>
 

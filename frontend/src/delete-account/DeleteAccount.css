@@ -1,0 +1,85 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2021  Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
+.delete-account-body {
+    display:flex;
+    flex-direction:column;
+    width: 60vw;
+    max-width:780px;
+    align-items: center;
+    text-align:left;
+    justify-content: center;
+    box-shadow: 0px 0 14px 4px rgb(238, 236, 236); 
+    padding:30px 40px;
+    margin: 20px auto 60px auto;
+}
+
+.delete-account-text {
+    width:100%;
+    margin-bottom:34px;
+    color:black;
+}
+
+.delete-account-page-input {
+    width: 400px;
+}
+
+#export-data-button {
+    margin-bottom:48px;
+    box-shadow:none;
+    background-color:black;
+}
+
+#delete-account-button {
+    margin:36px 0px 42px 0px;
+    box-shadow:none;
+}
+
+.link-to-settings {
+    text-decoration:none;
+}
+
+#cancel-button {
+    margin-bottom:40px;
+    box-shadow:none;
+}
+
+/* mobile screens/ base start of responsiveness 
+  edits needed after nav is responsive */
+@media screen and (max-width: 600px) {
+    .delete-account-body {
+        width:100vw;
+        box-shadow:none;
+        margin:0px;
+    }
+
+    .delete-account-password-input {
+        width: 100%;
+    }
+
+    #export-data-button {
+        width:100%;
+    }
+    
+    #delete-account-button {
+        width:100%;
+    }
+
+    #cancel-button {
+        width:100%;
+    }
+}

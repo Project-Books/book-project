@@ -20,9 +20,9 @@ package com.karankumar.bookproject.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Data;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -37,6 +37,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedAttributeNode;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -65,7 +66,7 @@ public class Publisher {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "publishers")
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 
     public Publisher(@NotBlank String name) {
         this.name = name;
