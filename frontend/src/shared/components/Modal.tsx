@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       position: 'absolute',
-      maxWidth: 600,
-      [theme.breakpoints.between(300, 724)]:{maxWidth: '60%'},
+      maxWidth: '80%',
+      [theme.breakpoints.between(300, 600)]:{maxWidth: '60%'},
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       borderRadius: 40,

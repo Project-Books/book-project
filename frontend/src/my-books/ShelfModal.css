@@ -48,6 +48,7 @@ If not, see <https://www.gnu.org/licenses/>.
 .shelf-modal-desc-items > p {
     width: 30%;
     margin-right: 15px;
+    white-space:nowrap
 }
 
 .shelfInput > .MuiOutlinedInput-root {
@@ -64,15 +65,7 @@ If not, see <https://www.gnu.org/licenses/>.
     width: 100px;
 }
 
-@media screen and (max-width: 959px) {
-    .shelfInput > .MuiOutlinedInput-root {
-        width: 100%;
-        margin-right: 600px;
-        border-radius: 20px;
-    }
-}
-
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 600px) {
     .shelf-modal-container {
         text-align: center;
     }
@@ -80,10 +73,12 @@ If not, see <https://www.gnu.org/licenses/>.
         display: flex;
         flex-direction: column-reverse;
     }
+    .shelf-button-container > .MuiButton-containedPrimary { 
+        margin-bottom:14px; 
+    }
 
     .shelf-modal-button {
         width: 100%;
-        /* override the default margin-top:0px of material-ui buttons */
-        margin-top: 24px !important;
+        margin-top: 24px 
     }
 }
