@@ -37,8 +37,6 @@ type HttpReponse = Promise<Record <string,any>>
 
 // Base class for managing HTTP requests
 class HttpClientBase {
-    bearerToken : string | null = null;
-    refreshToken = undefined;
     mode = "cors";
     cache = "no-cache";
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,8 +78,7 @@ class HttpClientBase {
         return fetch(Endpoints.login, requestOptions)
         .then(response => {
             const headers = response.headers;
-            this.bearerToken = headers.get('authorization');
-            this.headers['Authorization'] = this.bearerToken;
+            this.headers['Authorization'] = headers.get('authorization');
             return response;
         })
     }
