@@ -140,7 +140,6 @@ class Login extends Component<LoginProps, IState> {
                     this.props.history.push(MY_BOOKS)
                 } else {
                     this.setState({loginFailed: true});
-                    this.props.history.push('/');
                 }
             })
             .catch(error => {
