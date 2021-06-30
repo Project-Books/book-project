@@ -55,10 +55,10 @@ class HttpClientBase {
             headers: this.headers
         }
         return fetch(url, requestOptions)
-        .then(response => response.json())
-        .catch((error) => {
-        console.log(error);
-        })
+            .then(response => response.json())
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     login(email: string, password: string):HttpReponse  {
