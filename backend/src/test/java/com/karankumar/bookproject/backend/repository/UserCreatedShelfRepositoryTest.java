@@ -20,9 +20,13 @@ package com.karankumar.bookproject.backend.repository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -33,6 +37,7 @@ import java.util.stream.Stream;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
@@ -106,6 +111,28 @@ class UserCreatedShelfRepositoryTest {
 
         // then
         assertThat(shelves).isNotNull().isEmpty();
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideExistingUserCreatedShelfNames")
+    void returnTrueWhenUserCreatedShelfNameExists(String existingShelfName) {
+        // when/then
+        Assertions.assertTrue(repository.shelfNameExists(existingShelfName));
+    }
+
+    private static Stream<Arguments> provideExistingUserCreatedShelfNames() {
+        return Stream.of(
+                Arguments.of("Test1"),
+                Arguments.of("TEST1"),
+                Arguments.of("test1"),
+                Arguments.of("  test1   ")
+        );
+    }
+
+    @Test
+    void returnFalseWhenUserCreatedShelfNameNotExists() {
+        // when/then
+        Assertions.assertFalse(repository.shelfNameExists("NotExistingShelfName"));
     }
 
     private void createShelvesForUser(User user) {
