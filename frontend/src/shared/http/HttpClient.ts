@@ -82,6 +82,21 @@ class HttpClientBase {
             return response;
         })
     }
+
+    deleteAccount(password: string) {
+        const requestOptions = {
+            method: Verb.DELETE,
+            headers: this.headers,
+            body: JSON.stringify({
+                password: password
+            })
+        }
+        return fetch(Endpoints.user, requestOptions)
+        .then(response => {
+            this.headers['Authorization'] = null;
+            return response;
+        });
+    }
 }
 
 export default HttpClient();
