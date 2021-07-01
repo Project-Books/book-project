@@ -20,7 +20,6 @@ package com.karankumar.bookproject.backend.repository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,6 @@ import java.util.stream.Stream;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
@@ -117,7 +115,7 @@ class UserCreatedShelfRepositoryTest {
     @MethodSource("provideExistingUserCreatedShelfNames")
     void returnTrueWhenUserCreatedShelfNameExists(String existingShelfName) {
         // when/then
-        Assertions.assertTrue(repository.shelfNameExists(existingShelfName));
+        assertThat(repository.shelfNameExists(existingShelfName)).isTrue();
     }
 
     private static Stream<Arguments> provideExistingUserCreatedShelfNames() {
@@ -132,7 +130,7 @@ class UserCreatedShelfRepositoryTest {
     @Test
     void returnFalseWhenUserCreatedShelfNameNotExists() {
         // when/then
-        Assertions.assertFalse(repository.shelfNameExists("NotExistingShelfName"));
+        assertThat(repository.shelfNameExists("NotExistingShelfName")).isFalse();
     }
 
     private void createShelvesForUser(User user) {
