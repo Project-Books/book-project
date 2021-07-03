@@ -21,9 +21,8 @@ import { ShelfCarousel } from "../shared/book-display/ShelfCarousel";
 import "./MyBooks.css";
 import Button from "@material-ui/core/Button";
 import ShelfModal from "./ShelfModal";
-import Hidden from "@material-ui/core/Hidden";
-import MenuIcon from "@material-ui/icons/Menu";
 import { Layout } from "../shared/components/Layout";
+
 
 interface IState {
     showShelfModal: boolean;
@@ -52,27 +51,24 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
     }
     render(): ReactElement {
         return (
-            <Layout title="My books">
+            <Layout title="My books" btn={<div className="my-book-top-buttons">
+                <Button
+                    variant="contained"
+                    className="tempButton"
+                    color="primary"
+                >
+                    Add Book
+            </Button>
+                <Button
+                    onClick={this.onAddShelf}
+                    variant="contained"
+                    color="primary"
+                >
+                    Add Shelf
+            </Button>
+            </div>}>
                 <NavBar />
-                    <div className="my-book-top">
-                        <h1>My books</h1>
-                        <div className="my-book-top-buttons">
-                            <Button
-                                variant="contained"
-                                className="tempButton"
-                                color="primary"
-                            >
-                                Add Book
-                            </Button>
-                            <Button
-                                onClick={this.onAddShelf}
-                                variant="contained"
-                                color="primary"
-                            >
-                                Add Shelf
-                            </Button>
-                        </div>
-                    </div>
+
                 <div>
                     <ShelfCarousel title="Reading" />
                     <ShelfCarousel title="To Read" />
