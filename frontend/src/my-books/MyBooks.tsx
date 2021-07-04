@@ -15,25 +15,72 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, { Component } from 'react'
-import { ShelfCarousel } from '../shared/book-display/ShelfCarousel'
+import React, { Component, ReactElement } from "react";
+import { NavBar } from "../shared/navigation/NavBar";
+import { ShelfCarousel } from "../shared/book-display/ShelfCarousel";
+import "./MyBooks.css";
+import Button from "@material-ui/core/Button";
+import ShelfModal from "./ShelfModal";
 import { Layout } from "../shared/components/Layout";
-import './MyBooks.css'
+
 
 interface IState {
+    showShelfModal: boolean;
 }
 
 class MyBooks extends Component<Record<string, unknown>, IState> {
-    render() {
+    constructor(props: Record<string, unknown>) {
+        super(props);
+        this.state = {
+            showShelfModal: false,
+        };
+        this.onAddShelf = this.onAddShelf.bind(this);
+        this.onAddShelfModalClose = this.onAddShelfModalClose.bind(this);
+    }
+
+    onAddShelf(): void {
+        this.setState({
+            showShelfModal: true,
+        });
+    }
+
+    onAddShelfModalClose(): void {
+        this.setState({
+            showShelfModal: false,
+        });
+    }
+    render(): ReactElement {
         return (
-            <Layout title="My books">
-                <ShelfCarousel title="Reading" />
-                <ShelfCarousel title="To Read" />
-                <ShelfCarousel title="Read" />
-                <ShelfCarousel title="Did not finish" />
+            <Layout title="My books" btn={<div className="my-book-top-buttons">
+                <Button
+                    variant="contained"
+                    className="tempButton"
+                    color="primary"
+                >
+                    Add Book
+            </Button>
+                <Button
+                    onClick={this.onAddShelf}
+                    variant="contained"
+                    color="primary"
+                >
+                    Add Shelf
+            </Button>
+            </div>}>
+                <NavBar />
+
+                <div>
+                    <ShelfCarousel title="Reading" />
+                    <ShelfCarousel title="To Read" />
+                    <ShelfCarousel title="Read" />
+                    <ShelfCarousel title="Did not finish" />
+                </div>
+                <ShelfModal
+                    open={this.state.showShelfModal}
+                    onClose={this.onAddShelfModalClose}
+                />
             </Layout>
-        )
+        );
     }
 }
-
 export default MyBooks;

@@ -15,56 +15,56 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 import React from 'react';
-import { makeStyles, Theme, createStyles} from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import MaterialModal from '@material-ui/core/Modal';
 
 function getModalStyle() {
-  const top = 50;
-  const left = 50;
- 
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  }
+    const top = 50;
+    const left = 50;
+
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    }
 }
 
 const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      position: 'absolute',
-      maxWidth: 600,
-      [theme.breakpoints.between(300, 724)]:{maxWidth: '60%'},
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[5],
-      borderRadius: 40,
-      padding: theme.spacing(2, 6, 3),
-    },
-  }),
+    createStyles({
+        paper: {
+            position: 'absolute',
+            maxWidth: '80%',
+            [theme.breakpoints.between(300, 600)]: { maxWidth: '60%' },
+            backgroundColor: theme.palette.background.paper,
+            boxShadow: theme.shadows[5],
+            borderRadius: 40,
+            padding: theme.spacing(2, 6, 3),
+        },
+    }),
 );
 
-export interface IModalProps{
-  open: boolean,
-  onClose?:() => void,
-  onPasswordResetClicked?: () => void,
-  children?: JSX.Element,
+export interface IModalProps {
+    open: boolean,
+    onClose?: () => void,
+    onPasswordResetClicked?: () => void,
+    children?: JSX.Element,
 }
 
-export default function Modal(props: IModalProps): JSX.Element{
-  const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
-  
-  return (
-    <MaterialModal
-      open={props.open}
-      onClose={props.onClose}
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
-      >
-      <div style={modalStyle} className={classes.paper}>
-        {props.children}
-      </div>
-    </MaterialModal>
-  );
+export default function Modal(props: IModalProps): JSX.Element {
+    const classes = useStyles();
+    const [modalStyle] = React.useState(getModalStyle);
+
+    return (
+        <MaterialModal
+            open={props.open}
+            onClose={props.onClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+        >
+            <div style={modalStyle} className={classes.paper}>
+                {props.children}
+            </div>
+        </MaterialModal>
+    );
 }
 

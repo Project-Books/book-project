@@ -1,0 +1,84 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2021  Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
+.shelf-modal-container {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+}
+
+.modal-title {
+    color: black;
+    font-size: 22pt;
+    letter-spacing: -0.5px;
+    font-weight: bold;
+}
+
+.shelf-modal-desc-container {
+    font-size: 16pt;
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.shelf-modal-desc-items {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shelf-modal-desc-items > p {
+    width: 30%;
+    margin-right: 15px;
+    white-space:nowrap
+}
+
+.shelfInput > .MuiOutlinedInput-root {
+    width: 100%;
+    margin-right: 600px;
+    border-radius: 20px;
+}
+
+.shelf-button-container {
+    display: flex;
+    justify-content: space-between;
+}
+.shelf-modal-button {
+    width: 100px;
+}
+
+@media screen and (max-width: 600px) {
+    .shelf-modal-container {
+        text-align: center;
+    }
+    .shelf-button-container {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .shelf-button-container > .MuiButton-containedPrimary { 
+        margin-bottom:14px; 
+    }
+
+    .shelf-modal-button {
+        width: 100%;
+        margin-top: 24px 
+    }
+}
