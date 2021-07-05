@@ -37,7 +37,8 @@ type HttpReponse = Promise<Record <string,any>>
 
 // Base class for managing HTTP requests
 class HttpClientBase {
-    mode = "cors";
+    baseUrl = 'http://localhost:8081/';
+    mode: "cors" | "navigate" | "no-cors" | "same-origin" | undefined = "no-cors";
     cache = "no-cache";
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     headers: any = {
@@ -52,7 +53,7 @@ class HttpClientBase {
     get(url: string): HttpReponse {
         const requestOptions = {
             method:Verb.GET,
-            headers: this.headers
+            headers: this.headers,
         }
         return fetch(url, requestOptions)
             .then(response => response.json())
@@ -61,21 +62,25 @@ class HttpClientBase {
             })
     }
 
-    login(email: string, password: string):HttpReponse  {
+    login(email: string, password: string):HttpReponse {
         const requestOptions = {
+            url: this.baseUrl,
             method: Verb.POST,
+            mode: this.mode,
             headers: {
                  // eslint-disable-next-line @typescript-eslint/naming-convention
                 Accept: 'application/json',
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                 // eslint-disable-next-line @typescript-eslint/naming-convention
+                "Access-Control-Allow-Origin": "*",
             },
             body: JSON.stringify({
                 username: email,
                 password: password
             })
         }
-        return fetch(Endpoints.login, requestOptions)
+        return fetch(this.baseUrl + Endpoints.login, requestOptions)
         .then(response => {
             const headers = response.headers;
             this.headers['Authorization'] = headers.get('authorization');
@@ -87,11 +92,12 @@ class HttpClientBase {
         const requestOptions = {
             method: Verb.DELETE,
             headers: this.headers,
+            mode:this.mode,
             body: JSON.stringify({
                 password: password
             })
         }
-        return fetch(Endpoints.user, requestOptions)
+        return fetch(this.baseUrl + Endpoints.user, requestOptions)
         .then(response => {
             this.headers['Authorization'] = null;
             return response;
