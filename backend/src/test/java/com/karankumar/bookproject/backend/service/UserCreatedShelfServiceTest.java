@@ -91,9 +91,11 @@ class UserCreatedShelfServiceTest {
 
     @ParameterizedTest
     @EnumSource(PredefinedShelfName.class)
-    void save_shouldThrowException_whenNameExistsInPredefinedShelfNames(PredefinedShelfName predefinedShelfName) {
+    void save_throws_whenNameExistsInPredefinedShelfNames(PredefinedShelfName predefinedShelfName) {
         // given
-        UserCreatedShelf createdShelf = new UserCreatedShelf(predefinedShelfName.toString(), User.builder().build());
+        UserCreatedShelf createdShelf = new UserCreatedShelf(
+                predefinedShelfName.toString(), User.builder().build()
+        );
 
         // when/then
         assertThatExceptionOfType(IllegalArgumentException.class)
@@ -102,10 +104,12 @@ class UserCreatedShelfServiceTest {
 
     @ParameterizedTest
     @EnumSource(PredefinedShelfName.class)
-    void save_shouldThrowException_whenNameExistsInPredefinedShelfNames_andContainsWhiteSpaces(PredefinedShelfName predefinedShelfName) {
+    void save_throws_whenNameExistsInPredefinedShelfNames_andContainsWhiteSpaces(PredefinedShelfName predefinedShelfName) {
         // given
         UserCreatedShelf createdShelf = new UserCreatedShelf(
-                "\t\n\f\r" + predefinedShelfName.toString() + "\t\n\f\r", User.builder().build());
+                "\t\n\f\r" + predefinedShelfName.toString() + "\t\n\f\r",
+                User.builder().build()
+        );
 
         // when/then
         assertThatExceptionOfType(IllegalArgumentException.class)
@@ -113,10 +117,13 @@ class UserCreatedShelfServiceTest {
     }
 
     @Test
-    void save_shouldThrowException_whenUserCreatedShelfNameAlreadyExists() {
+    void save_throws_whenUserCreatedShelfNameAlreadyExists() {
         // given
-        UserCreatedShelf createdShelf = new UserCreatedShelf("ExistingName", User.builder().build());
-        when(userCreatedShelfRepository.shelfNameExists("ExistingName")).thenReturn(true);
+        UserCreatedShelf createdShelf = new UserCreatedShelf(
+                "ExistingName",
+                User.builder().build()
+        );
+        when(userCreatedShelfRepository.shelfNameExists(anyString())).thenReturn(true);
 
         // when/then
         assertThatExceptionOfType(IllegalArgumentException.class)
@@ -126,8 +133,11 @@ class UserCreatedShelfServiceTest {
     @Test
     void save_whenUserCreatedShelfNameNotExists() {
         // given
-        UserCreatedShelf createdShelf = new UserCreatedShelf("NotExistingName", User.builder().build());
-        when(userCreatedShelfRepository.shelfNameExists("NotExistingName")).thenReturn(true);
+        UserCreatedShelf createdShelf = new UserCreatedShelf(
+                "NotExistingName",
+                User.builder().build()
+        );
+        when(userCreatedShelfRepository.shelfNameExists(anyString())).thenReturn(true);
 
         // when/then
         assertThatExceptionOfType(IllegalArgumentException.class)

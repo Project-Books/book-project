@@ -114,7 +114,6 @@ class UserCreatedShelfRepositoryTest {
     @ParameterizedTest
     @MethodSource("provideExistingUserCreatedShelfNames")
     void returnTrueWhenUserCreatedShelfNameExists(String existingShelfName) {
-        // when/then
         assertThat(repository.shelfNameExists(existingShelfName)).isTrue();
     }
 
@@ -129,7 +128,6 @@ class UserCreatedShelfRepositoryTest {
 
     @Test
     void returnFalseWhenUserCreatedShelfNameNotExists() {
-        // when/then
         assertThat(repository.shelfNameExists("NotExistingShelfName")).isFalse();
     }
 

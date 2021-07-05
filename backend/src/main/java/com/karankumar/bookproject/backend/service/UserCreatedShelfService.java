@@ -62,7 +62,10 @@ public class UserCreatedShelfService {
 
     public UserCreatedShelf save(@NonNull UserCreatedShelf userCreatedShelf) {
         if (shelfNameExists(userCreatedShelf.getShelfName())) {
-            throw new IllegalArgumentException(String.format("Given shelfName %s already exists", userCreatedShelf.getShelfName()));
+            throw new IllegalArgumentException(
+                    String.format("Given shelfName %s already exists",
+                            userCreatedShelf.getShelfName())
+            );
         }
         return userCreatedShelfRepository.save(userCreatedShelf);
     }
