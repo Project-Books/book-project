@@ -22,6 +22,8 @@ import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,4 +44,11 @@ public interface UserCreatedShelfRepository extends JpaRepository<UserCreatedShe
 
     @EntityGraph(value = "CustomShelf.books")
     List<UserCreatedShelf> findAll();
+
+    @Query("SELECT " +
+            "CASE WHEN COUNT(s) > 0 THEN TRUE " +
+            "ELSE FALSE END " +
+            "FROM UserCreatedShelf s " +
+            "WHERE LOWER(TRIM(s.shelfName)) LIKE LOWER(TRIM(:shelfName))")
+    boolean shelfNameExists(@Param("shelfName") String shelfName);
 }
