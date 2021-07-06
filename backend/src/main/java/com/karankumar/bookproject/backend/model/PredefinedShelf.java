@@ -82,4 +82,9 @@ public class PredefinedShelf extends Shelf {
             return name;
         }
     }
+
+    @Override
+    public String toString() {
+        return predefinedShelfName.toString();
+    }
 }

@@ -19,6 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.model.account.User;
@@ -44,7 +45,6 @@ import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READ;
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READING;
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
-import static com.karankumar.bookproject.backend.util.ShelfUtils.isAllBooksShelf;
 import static com.karankumar.bookproject.backend.util.TestData.generateAuthors;
 import static com.karankumar.bookproject.backend.util.TestData.generateBooks;
 import static com.karankumar.bookproject.backend.util.TestData.generateListOfTags;
@@ -54,6 +54,7 @@ import static com.karankumar.bookproject.backend.util.TestData.setPredefinedShel
 @Service
 @Log
 public class PredefinedShelfService {
+    private static final String ALL_BOOKS_SHELF = "All books";
 
     private final BookRepository bookRepository;
     private final PredefinedShelfRepository predefinedShelfRepository;
@@ -179,16 +180,10 @@ public class PredefinedShelfService {
                 .collect(Collectors.toList());
     }
 
-    public List<String> getPredefinedShelfNamesAsStrings() {
-        return findAllForLoggedInUser().stream()
-                .map(Shelf::getShelfName)
-                .collect(Collectors.toList());
-    }
-
     public Optional<PredefinedShelf> getPredefinedShelfByNameAsString(String shelfName) {
     	List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
                 .stream()
-                .filter(shelf -> shelf.getShelfName().equals(shelfName))
+                .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.valueOf(shelfName)))
                 .collect(Collectors.toList());
 
         if (shelfFound.isEmpty()) {
@@ -197,6 +192,21 @@ public class PredefinedShelfService {
 
         // TODO: throw exception if there is more than one
         return Optional.of(shelfFound.get(0)); // there should only be one
+    }
+
+    public Optional<PredefinedShelf> getPredefinedShelfByPredefinedShelfName(
+                PredefinedShelf.ShelfName predefinedShelfName) {
+        List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
+                .stream()
+                .filter(shelf -> shelf.getPredefinedShelfName().equals(predefinedShelfName))
+                .collect(Collectors.toList());
+
+            if (shelfFound.isEmpty()) {
+                return Optional.empty();
+            }
+    
+            return Optional.of(shelfFound.get(0)); // there should only be one 
+        
     }
 
 	/**
@@ -219,6 +229,10 @@ public class PredefinedShelfService {
     	}
 
     	return predefinedShelf.get().getBooks();
+    }
+
+    private boolean isAllBooksShelf(@NonNull String shelfName) {
+        return shelfName.equals(ALL_BOOKS_SHELF);
     }
 
     public Set<Book> getBooksInAllPredefinedShelves() {

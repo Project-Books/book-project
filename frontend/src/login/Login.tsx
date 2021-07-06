@@ -192,7 +192,7 @@ class Login extends Component<LoginProps, IState> {
                         <br />
 
                         <Password
-                            fieldName={'Password'}
+                            placeholderText={'Password'}
                             class={'center login'}
                             classHelper={'center helper'}
                             onPasswordChanged={this.onPasswordChanged}

@@ -20,10 +20,10 @@ package com.karankumar.bookproject.backend.util;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.service.BookService;
-import com.karankumar.bookproject.backend.service.CustomShelfService;
+import com.karankumar.bookproject.backend.service.UserCreatedShelfService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,22 +37,22 @@ import java.util.Set;
 
 @IntegrationTest
 @DisplayName("CustomShelfUtils should")
-class CustomShelfUtilsTest {
+class UserCreatedShelfUtilsTest {
     private final BookService bookService;
-    private final CustomShelfService customShelfService;
+    private final UserCreatedShelfService userCreatedShelfService;
     private final PredefinedShelfService predefinedShelfService;
 
-    private CustomShelf customShelf1;
-    private CustomShelf customShelf2;
-    private CustomShelf customShelfWithNoBooks;
+    private UserCreatedShelf userCreatedShelf1;
+    private UserCreatedShelf userCreatedShelf2;
+    private UserCreatedShelf userCreatedShelfWithNoBooks;
 
     private Set<Book> booksInCustomShelf1;
 
     @Autowired
-    CustomShelfUtilsTest(BookService bookService, CustomShelfService customShelfService,
-                         PredefinedShelfService predefinedShelfService) {
+    UserCreatedShelfUtilsTest(BookService bookService, UserCreatedShelfService userCreatedShelfService,
+                              PredefinedShelfService predefinedShelfService) {
         this.bookService = bookService;
-        this.customShelfService = customShelfService;
+        this.userCreatedShelfService = userCreatedShelfService;
         this.predefinedShelfService = predefinedShelfService;
     }
 
@@ -60,64 +60,64 @@ class CustomShelfUtilsTest {
     public void setUp() {
         resetServices();
 
-        customShelf1 = customShelfService.createCustomShelf("CustomShelf1");
-        customShelf2 = customShelfService.createCustomShelf("CustomShelf2");
-        customShelfWithNoBooks = customShelfService.createCustomShelf("CustomShelf3");
-        saveCustomShelves(customShelf1, customShelf2, customShelfWithNoBooks);
+        userCreatedShelf1 = userCreatedShelfService.createCustomShelf("CustomShelf1");
+        userCreatedShelf2 = userCreatedShelfService.createCustomShelf("CustomShelf2");
+        userCreatedShelfWithNoBooks = userCreatedShelfService.createCustomShelf("CustomShelf3");
+        saveCustomShelves(userCreatedShelf1, userCreatedShelf2, userCreatedShelfWithNoBooks);
 
         addBooksToCustomShelves(predefinedShelfService.findToReadShelf());
     }
 
     private void resetServices() {
         bookService.deleteAll();
-        customShelfService.deleteAll();
+        userCreatedShelfService.deleteAll();
     }
 
     private HashSet<Book> createSetOfBooks(String title1, String title2,
                                                   PredefinedShelf predefinedShelf,
-                                                  CustomShelf customShelf) {
+                                                  UserCreatedShelf userCreatedShelf) {
         return new HashSet<>(List.of(
-                createAndSaveBook(title1, predefinedShelf, customShelf),
-                createAndSaveBook(title2, predefinedShelf, customShelf)
+                createAndSaveBook(title1, predefinedShelf, userCreatedShelf),
+                createAndSaveBook(title2, predefinedShelf, userCreatedShelf)
         ));
     }
 
     private Book createAndSaveBook(String title, PredefinedShelf predefinedShelf,
-                                          CustomShelf customShelf) {
+                                          UserCreatedShelf userCreatedShelf) {
         Book book = new Book(title, new Author("John Doe"), predefinedShelf);
-        book.setCustomShelf(customShelf);
+        book.setUserCreatedShelf(userCreatedShelf);
         bookService.save(book);
         return book;
     }
 
     private void addBooksToCustomShelves(PredefinedShelf predefinedShelf) {
         booksInCustomShelf1
-                = createSetOfBooks("Title1", "Title2", predefinedShelf, customShelf1);
-        customShelf1.setBooks(booksInCustomShelf1);
-        customShelf2.setBooks(
-                createSetOfBooks("Title3", "Title4", predefinedShelf, customShelf2)
+                = createSetOfBooks("Title1", "Title2", predefinedShelf, userCreatedShelf1);
+        userCreatedShelf1.setBooks(booksInCustomShelf1);
+        userCreatedShelf2.setBooks(
+                createSetOfBooks("Title3", "Title4", predefinedShelf, userCreatedShelf2)
         );
     }
 
-    private void saveCustomShelves(CustomShelf... customShelves) {
-        for (CustomShelf c : customShelves) {
-            customShelfService.save(c);
+    private void saveCustomShelves(UserCreatedShelf... customShelves) {
+        for (UserCreatedShelf c : customShelves) {
+            userCreatedShelfService.save(c);
         }
     }
 
     @Test
     void returnBooksSuccessfully() {
-        Set<Book> actual = customShelfService.getBooksInCustomShelf(customShelf1.getShelfName());
+        Set<Book> actual = userCreatedShelfService.getBooksInCustomShelf(userCreatedShelf1.getShelfName());
         booksInCustomShelf1.forEach(book -> assertThat(actual.toString()).contains(book.toString()));
     }
 
     @Test
     void returnNoBooksIfNoBooksInCustomShelf() {
         // given
-        String customShelfWithoutBooks = customShelfWithNoBooks.getShelfName();
+        String customShelfWithoutBooks = userCreatedShelfWithNoBooks.getShelfName();
 
         // when
-        Set<Book> actual = customShelfService.getBooksInCustomShelf(customShelfWithoutBooks);
+        Set<Book> actual = userCreatedShelfService.getBooksInCustomShelf(customShelfWithoutBooks);
 
         // then
         assertThat(actual).isEmpty();
@@ -129,7 +129,7 @@ class CustomShelfUtilsTest {
         String nonExistentShelf = "InvalidShelf";
 
         // when
-        Set<Book> actual = customShelfService.getBooksInCustomShelf(nonExistentShelf);
+        Set<Book> actual = userCreatedShelfService.getBooksInCustomShelf(nonExistentShelf);
 
         // then
         assertThat(actual).isEmpty();
