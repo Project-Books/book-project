@@ -24,10 +24,26 @@ public class ShelfController {
         this.predefinedShelfService = predefinedShelfService;
     }
 
+    @GetMapping("/predefined/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PredefinedShelf getShelfById(@PathVariable Long id){
+        return predefinedShelfService.findById(id).orElseThrow(
+                () ->  new IllegalStateException("Shelf not found")
+        );
+    }
     @GetMapping("/predefined/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<PredefinedShelf> getAllShelf(){
+    public List<PredefinedShelf> getAllShelfForLoggedInUser(){
         return predefinedShelfService.findAllForLoggedInUser();
+    }
+    @GetMapping("/predefined/all")
+    @ResponseStatus(HttpStatus.OK)
+    public PredefinedShelf getPredefinedShelfByName(@RequestParam String name){
+        String errorMessage = String.format("no shelf matches the shelf name: %s",
+                name);
+        return predefinedShelfService.getPredefinedShelfByNameAsString(name).orElseThrow(
+                () -> new IllegalStateException(errorMessage)
+        );
     }
 
     @GetMapping("/all/to-read")
@@ -50,6 +66,8 @@ public class ShelfController {
     public PredefinedShelf getDidNotFinishShelf(){
         return predefinedShelfService.findDidNotFinishShelf();
     }
+
+
 
 
 
