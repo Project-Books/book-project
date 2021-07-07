@@ -17,16 +17,42 @@
 
 package com.karankumar.bookproject.backend.util;
 
+import org.atteo.evo.inflector.English;
+
+import java.util.HashMap;
+
 public final class StringUtils {
-    private StringUtils() {}
+    private StringUtils() {
+    }
+
+    private static HashMap<String, String> pluralsMap = new HashMap<>();
 
     /**
      * Determine if a String should be singular or plural
-     * @param num the number of book or pages
+     *
+     * @param num     the number of book or pages
      * @param itemStr the String that will be pluralized
      * @return either the original String or the original string with an "s" concatenated to it
      */
     public static String pluralize(String itemStr, int num) {
-        return (num > 1) ? (itemStr + "s") : (itemStr);
+        itemStr = itemStr.toLowerCase();
+        initializeMap();
+        if (pluralsMap.containsKey(itemStr) && num > 1)
+            return pluralsMap.get(itemStr);
+
+        return English.plural(itemStr, num);
+    }
+
+    private static void initializeMap() {
+        if (!pluralsMap.isEmpty())
+            return;
+
+        pluralsMap.put("fez", "fezzes");
+        pluralsMap.put("gas", "gasses");
+        pluralsMap.put("halo", "halos");
+        pluralsMap.put("cactus", "cacti");
+        pluralsMap.put("focus", "foci");
+        pluralsMap.put("person", "people");
+
     }
 }
