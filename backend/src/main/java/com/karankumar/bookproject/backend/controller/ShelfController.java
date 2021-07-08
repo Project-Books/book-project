@@ -53,7 +53,7 @@ public class ShelfController {
         return predefinedShelfService.getPredefinedShelfByPredefinedShelfName(predefinedShelfName)
                 .orElseThrow(() -> new IllegalStateException("Shelf not found"));
     }
-    @GetMapping("predefined/to-read")
+    @GetMapping("/predefined/to-read")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getToReadShelf(){
         return predefinedShelfService.findReadShelf();
@@ -88,13 +88,14 @@ public class ShelfController {
                 () -> new IllegalStateException(errorMessage)
         );
     }
-    @GetMapping("/user-created/all")
+
+    @GetMapping("/users/all")
     @ResponseStatus(HttpStatus.OK)
     public List<UserCreatedShelf> getAllUserCreatedShelf(){
         return userCreatedShelfService.findAll();
     }
 
-    @GetMapping("/user-created/all")
+    @GetMapping("/users/all")
     @ResponseStatus(HttpStatus.OK)
     public List<UserCreatedShelf> getAllUserCreatedShelfByName(@RequestParam String shelfName) {
         List<UserCreatedShelf> allShelvesByName = userCreatedShelfService.findAll(shelfName);
@@ -106,7 +107,7 @@ public class ShelfController {
         return allShelvesByName;
     }
 
-    @GetMapping("/user-created/")
+    @GetMapping("/user-created/all")
     @ResponseStatus(HttpStatus.OK)
     public List<UserCreatedShelf> getAllUserCreatedShelfForLoggedInUser(){
         List<UserCreatedShelf> loggedInUserCreatedShelves = userCreatedShelfService.findAllForLoggedInUser();
@@ -114,6 +115,17 @@ public class ShelfController {
             throw new IllegalStateException("there is no shelve present at the moment");
         }
         return loggedInUserCreatedShelves;
+    }
+
+    @GetMapping("/user-created/all")
+    @ResponseStatus(HttpStatus.OK)
+    public UserCreatedShelf getUserCreatedShelfByNameForLoggedInUser(@RequestParam String shelfName) {
+        String errorMessage = String.format("no shelf matches the shelf name: %s",
+                shelfName);
+        return userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName)
+                .orElseThrow(
+                        () -> new IllegalStateException(errorMessage)
+                );
     }
 
 
