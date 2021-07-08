@@ -84,10 +84,9 @@ public class ShelfController {
     public UserCreatedShelf getUserCreatedShelfById(@PathVariable("id") Long shelfId){
         String errorMessage = String.format("no shelf matches the shelf name: %d",
                 shelfId);
-        userCreatedShelfService.findById(shelfId).orElseThrow(
+        return userCreatedShelfService.findById(shelfId).orElseThrow(
                 () -> new IllegalStateException(errorMessage)
         );
-        return null;
     }
     @GetMapping("/user-created/all")
     @ResponseStatus(HttpStatus.OK)
