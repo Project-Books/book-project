@@ -90,13 +90,13 @@ public class ShelfController {
     }
     @GetMapping("/user-created/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserCreatedShelf> getAllCustomShelf(){
+    public List<UserCreatedShelf> getAllUserCreatedShelf(){
         return userCreatedShelfService.findAll();
     }
 
     @GetMapping("/user-created/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserCreatedShelf> getAllCustomShelf(@RequestParam String shelfName) {
+    public List<UserCreatedShelf> getAllUserCreatedShelfByName(@RequestParam String shelfName) {
         List<UserCreatedShelf> allShelvesByName = userCreatedShelfService.findAll(shelfName);
         if(allShelvesByName.isEmpty()){
             String errorMessage = String.format("no shelf matches the shelf name: %s",
@@ -104,6 +104,16 @@ public class ShelfController {
             throw new IllegalStateException(errorMessage);
         }
         return allShelvesByName;
+    }
+
+    @GetMapping("/user-created/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserCreatedShelf> getAllUserCreatedShelfForLoggedInUser(){
+        List<UserCreatedShelf> loggedInUserCreatedShelves = userCreatedShelfService.findAllForLoggedInUser();
+        if(loggedInUserCreatedShelves.isEmpty()){
+            throw new IllegalStateException("there is no shelve present at the moment");
+        }
+        return loggedInUserCreatedShelves;
     }
 
 
