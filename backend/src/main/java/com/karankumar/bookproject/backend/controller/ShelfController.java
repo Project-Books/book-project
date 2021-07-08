@@ -53,22 +53,22 @@ public class ShelfController {
         return predefinedShelfService.getPredefinedShelfByPredefinedShelfName(predefinedShelfName)
                 .orElseThrow(() -> new IllegalStateException("Shelf not found"));
     }
-    @GetMapping("/all/to-read")
+    @GetMapping("predefined/to-read")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getToReadShelf(){
         return predefinedShelfService.findReadShelf();
     }
-    @GetMapping("/all/reading")
+    @GetMapping("/predefined/reading")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getReadingShelf(){
         return predefinedShelfService.findReadingShelf();
     }
-    @GetMapping("/all/read")
+    @GetMapping("/predefined/read")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getReadShelf(){
         return predefinedShelfService.findReadShelf();
     }
-    @GetMapping("/all/unfinished")
+    @GetMapping("/predefined/unfinished")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getDidNotFinishShelf(){
         return predefinedShelfService.findDidNotFinishShelf();
