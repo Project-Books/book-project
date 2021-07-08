@@ -36,9 +36,9 @@ public class ShelfController {
     public List<PredefinedShelf> getAllShelfForLoggedInUser(){
         return predefinedShelfService.findAllForLoggedInUser();
     }
-    @GetMapping("/predefined/all")
+    @GetMapping("/predefined")
     @ResponseStatus(HttpStatus.OK)
-    public PredefinedShelf getPredefinedShelfByName(@RequestParam String name){
+    public PredefinedShelf getPredefinedShelfByShelfName(@RequestParam String name){
         String errorMessage = String.format("no shelf matches the shelf name: %s",
                 name);
         return predefinedShelfService.getPredefinedShelfByNameAsString(name).orElseThrow(
@@ -46,6 +46,13 @@ public class ShelfController {
         );
     }
 
+    @GetMapping("/predefined")
+    @ResponseStatus(HttpStatus.OK)
+    public PredefinedShelf getPredefinedShelfByPredefinedShelfName(
+            @RequestParam PredefinedShelf.ShelfName predefinedShelfName){
+        return predefinedShelfService.getPredefinedShelfByPredefinedShelfName(predefinedShelfName)
+                .orElseThrow(() -> new IllegalStateException("Shelf not found"));
+    }
     @GetMapping("/all/to-read")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getToReadShelf(){
