@@ -18,28 +18,37 @@
 
 package com.karankumar.bookproject.backend.repository;
 
-import com.karankumar.bookproject.backend.model.CustomShelf;
+import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CustomShelfRepository extends JpaRepository<CustomShelf, Long> {
+public interface UserCreatedShelfRepository extends JpaRepository<UserCreatedShelf, Long> {
 
     @EntityGraph(value = "CustomShelf.books")
-    List<CustomShelf> findAllByUser(User user);
+    List<UserCreatedShelf> findAllByUser(User user);
 
     @EntityGraph(value = "CustomShelf.books")
-    Optional<CustomShelf> findByShelfNameAndUser(String shelfName, User user);
+    Optional<UserCreatedShelf> findByShelfNameAndUser(String shelfName, User user);
 
     @EntityGraph(value = "CustomShelf.books")
-    List<CustomShelf> findByShelfName(String shelfName);
+    List<UserCreatedShelf> findByShelfName(String shelfName);
 
     @EntityGraph(value = "CustomShelf.books")
-    Optional<CustomShelf> findById(Long id);
+    Optional<UserCreatedShelf> findById(Long id);
 
     @EntityGraph(value = "CustomShelf.books")
-    List<CustomShelf> findAll();
+    List<UserCreatedShelf> findAll();
+
+    @Query("SELECT " +
+            "CASE WHEN COUNT(s) > 0 THEN TRUE " +
+            "ELSE FALSE END " +
+            "FROM UserCreatedShelf s " +
+            "WHERE LOWER(TRIM(s.shelfName)) LIKE LOWER(TRIM(:shelfName))")
+    boolean shelfNameExists(@Param("shelfName") String shelfName);
 }

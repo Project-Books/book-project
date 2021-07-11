@@ -28,6 +28,7 @@ import MyBooks from "./my-books/MyBooks";
 import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
+import DeleteAccount from "./delete-account/DeleteAccount";
 import { theme as lightTheme, darkTheme} from './shared/theme';
 import * as routes from "./shared/routes"
 
@@ -50,6 +51,7 @@ function App(): JSX.Element {
                 render={() => 
                 <Settings  theme={theme} toggleTheme={toggleTheme} />} 
               />
+              <Route path={routes.DELETE_ACCOUNT} component={DeleteAccount} />
               <Route path={routes.STATS} component={Stats} />
           </BrowserRouter>
         </ThemeProvider>

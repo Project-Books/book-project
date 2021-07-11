@@ -50,14 +50,15 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Builder
 @Data
 @JsonIgnoreProperties(value = {"id"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
-//@EqualsAndHashCode(exclude = {"id", "tags","publishers", "predefinedShelf", "customShelf"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Book {
     public static final int MAX_PAGES = 23_000;
@@ -122,15 +123,14 @@ public class Book {
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @Setter(AccessLevel.NONE)
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
-    @JoinColumn(name = "custom_shelf_id", referencedColumnName = "id")
-    private CustomShelf customShelf;
+    @JoinColumn(name = "user_created_shelf_id", referencedColumnName = "id")
+    private UserCreatedShelf userCreatedShelf;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
@@ -164,7 +164,6 @@ public class Book {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateFinishedReading;
     private String bookReview;
-
 
     public Book(String title, Author author, PredefinedShelf predefinedShelf) {
         this.title = title;
@@ -227,8 +226,17 @@ public class Book {
         predefinedShelf = null;
     }
 
+    public void removeAuthor() {
+        author.getBooks().remove(this);
+        author = null;
+    }
+
     public void setPublicationYear(Integer yearOfPublication) {
         this.yearOfPublication = yearOfPublication;
+    }
+
+    public void addGenre(BookGenre genre) {
+        bookGenre.add(genre);
     }
 
     public static class BookBuilder {
@@ -236,6 +244,21 @@ public class Book {
             this.edition = convertToBookEdition(edition);
             return this;
         }
+    }
+
+    public void addPublisher(@NonNull Publisher publisher) {
+            publishers.add(publisher);
+            publisher.getBooks().add(this);
+    }
+
+    public void removePublisher(@NonNull Publisher publisher) {
+        for (Publisher bookPublisher : publishers) {
+            if (bookPublisher.getId().equals(publisher.getId())) {
+                bookPublisher.getBooks().remove(this);
+                break;
+            }
+        }
+        publishers.remove(publisher);
     }
 
     @Override

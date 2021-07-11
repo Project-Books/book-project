@@ -30,4 +30,12 @@ If not, see <https://www.gnu.org/licenses/>.
   color:black;
 }
 
+.delete-account-link-container {
+  padding-top:40px;
+}
+
+.delete-account-link {
+  color: red;
+  text-decoration:none;
+}
 

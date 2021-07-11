@@ -37,22 +37,22 @@ import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties(value = {"id", "books"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Setter
 @NamedEntityGraph(name = "CustomShelf.books",
         attributeNodes = @NamedAttributeNode("books")
 )
-public class CustomShelf extends Shelf {
+public class UserCreatedShelf extends Shelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customShelf")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCreatedShelf")
     protected Set<Book> books;
 
-    public CustomShelf(String shelfName, User user) {
+    public UserCreatedShelf(String shelfName, User user) {
         super(shelfName, user);
     }
 

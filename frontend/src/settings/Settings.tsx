@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React from 'react'
 import { Layout } from '../shared/components/Layout';
+import {Link} from 'react-router-dom';
 import ColoredSwitch from '../settings/Switch';
 import { withTheme,MuiThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -46,6 +47,9 @@ interface ISettingsProps {
                   className="switch"
                 />
               </div>
+            </div>
+            <div className="delete-account-link-container">
+              <Link to="/delete-account" className="delete-account-link">Delete my account</Link>
             </div>
           </MuiThemeProvider>
         </Layout>

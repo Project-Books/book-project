@@ -36,7 +36,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -63,7 +62,7 @@ class BookServiceTest {
     @Test
     void canFindByNonNullId() {
         bookService.findById(1L);
-        verify(bookRepository).findById(anyLong());
+        verify(bookRepository).findBookById(anyLong());
     }
 
     @Test
@@ -126,19 +125,19 @@ class BookServiceTest {
     @Test
     void canFindAll() {
         bookService.findAll();
-        verify(bookRepository).findAll();
+        verify(bookRepository).findAllBooks();
     }
 
     @Test
     void findAll_searchesWithoutFilter_ifFilterIsNull() {
         bookService.findAll(null);
-        verify(bookRepository).findAll();
+        verify(bookRepository).findAllBooks();
     }
 
     @Test
     void findAll_searchesWithoutFilter_ifFilterIsEmpty() {
         bookService.findAll("");
-        verify(bookRepository).findAll();
+        verify(bookRepository).findAllBooks();
     }
 
     @Test
@@ -165,9 +164,9 @@ class BookServiceTest {
         verify(bookRepository).deleteAll();
     }
 
-    @Test
-    void canFindByTitleOrAuthor() {
-        bookService.findByTitleOrAuthor("test", "author");
-        verify(bookRepository).findByTitleOrAuthor(anyString(), anyString());
-    }
+//    @Test
+//    void canFindByTitleOrAuthor() {
+//        bookService.findByTitleOrAuthor("test", "author");
+//        verify(bookRepository).findByTitleOrAuthor(anyString(), anyString());
+//    }
 }
