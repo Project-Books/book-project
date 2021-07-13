@@ -17,7 +17,6 @@
 
 package com.karankumar.bookproject.backend.service;
 
-import com.karankumar.bookproject.backend.constraints.PasswordStrengthValidator;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
@@ -39,6 +38,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.ArgumentCaptor;
 
+import javax.validation.ConstraintViolationException;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -54,7 +55,6 @@ class UserServiceTest {
     @Mock private AuthenticationManager authenticationManager;
     @Mock private UserRepository userRepository;
     @Mock private BookRepository bookRepository;
-    @Mock private PasswordStrengthValidator passwordStrengthValidator;
 
     @BeforeEach
     void setUp() {
@@ -66,14 +66,21 @@ class UserServiceTest {
                 passwordEncoder,
                 authenticationManager,
                 predefinedShelfService,
-                bookRepository,
-                passwordStrengthValidator);
+                bookRepository);
     }
 
     @Test
     void register_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.register(null));
+        then(userRepository).shouldHaveNoInteractions();
+    }
+
+    @Test
+    void register_throwsConstraintViolationException_ifPasswordWeak() {
+        User user = User.builder().email("anu@gmail.com").password("password").build();
+        assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> underTest.register(user));
         then(userRepository).shouldHaveNoInteractions();
     }
 
@@ -126,7 +133,7 @@ class UserServiceTest {
     @Test
     void changeUserPassword_encodesPassword_beforeSaving() {
         // given
-        String password = "password";
+        String password = "Pass12word34";
 
         // when
         underTest.changeUserPassword(User.builder().build(), password);
@@ -139,6 +146,17 @@ class UserServiceTest {
                             .build();
         assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
 
+    }
+
+    @Test
+    void changeUserPassword_throwsException_whenPasswordIsWeak() {
+        // given
+        String password = "Password";
+
+        // then
+        assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(() -> underTest.changeUserPassword(User.builder().build(), password));
+        then(userRepository).shouldHaveNoInteractions();
     }
 
       @Test
