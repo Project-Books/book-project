@@ -94,7 +94,7 @@ public class UserService {
                                               "The default user role could not be found"));
 
         Strength passwordStrength = zxcvbn.measure(user.getPassword());
-        if (passwordStrength.getScore() <= 2){
+        if (passwordStrength.getScore() <= 2) {
             throw new ConstraintViolationException("weak password!!", constraintViolations);
         }
 

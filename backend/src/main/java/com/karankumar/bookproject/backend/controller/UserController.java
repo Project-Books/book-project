@@ -14,6 +14,7 @@
 
 package com.karankumar.bookproject.backend.controller;
 
+import com.karankumar.bookproject.backend.dto.UserDto;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,11 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void register(@RequestBody User user) {
+    public void register(@RequestBody UserDto userDto) {
+        User user = User.builder()
+                .email(userDto.getUsername())
+                .password(userDto.getPassword())
+                .build();
         userService.register(user);
     }
 

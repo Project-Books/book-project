@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.dto.UserDto;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
@@ -79,6 +80,7 @@ class UserServiceTest {
     @Test
     void register_throwsConstraintViolationException_ifPasswordWeak() {
         User user = User.builder().email("anu@gmail.com").password("password").build();
+
         assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> underTest.register(user));
         then(userRepository).shouldHaveNoInteractions();
