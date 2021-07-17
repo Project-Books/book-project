@@ -18,6 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 import Verb from "./verb";
 import Endpoints from "../api/endpoints";
 
+// Add error messaging to routes as well as internal server error response 500, 403
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 let HttpClient: () => HttpClientBase;
 (function() {
@@ -68,8 +70,8 @@ class HttpClientBase {
             method: Verb.POST,
             mode: this.mode,
             headers: {
-                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                Accept: 'application/json',
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                "Accept": 'application/json',
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 'Content-Type': 'application/json',
                  // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -88,17 +90,19 @@ class HttpClientBase {
         })
     }
 
-    deleteAccount(password: string) {
+    deleteAccount(password: string): HttpReponse {
+        const mode: 'cors' | undefined = 'cors';
         const requestOptions = {
             method: Verb.DELETE,
+            mode:mode,
             headers: this.headers,
-            mode:this.mode,
             body: JSON.stringify({
                 password: password
             })
         }
         return fetch(this.baseUrl + Endpoints.user, requestOptions)
         .then(response => {
+            console.log('hitting response', response);
             this.headers['Authorization'] = null;
             return response;
         });
