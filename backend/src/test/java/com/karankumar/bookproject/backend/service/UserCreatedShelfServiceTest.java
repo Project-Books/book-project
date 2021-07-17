@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.UserCreatedShelfRepository;
@@ -24,6 +25,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -36,6 +39,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserCreatedShelfServiceTest {
@@ -83,6 +87,61 @@ class UserCreatedShelfServiceTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> userCreatedShelfService.save(null));
         verify(userCreatedShelfRepository, never()).save(any(UserCreatedShelf.class));
+    }
+
+    @ParameterizedTest
+    @EnumSource(PredefinedShelfName.class)
+    void save_throws_whenNameExistsInPredefinedShelfNames(PredefinedShelfName predefinedShelfName) {
+        // given
+        UserCreatedShelf createdShelf = new UserCreatedShelf(
+                predefinedShelfName.toString(), User.builder().build()
+        );
+
+        // when/then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> userCreatedShelfService.save(createdShelf));
+    }
+
+    @ParameterizedTest
+    @EnumSource(PredefinedShelfName.class)
+    void save_throws_whenNameExistsInPredefinedShelfNames_andContainsWhiteSpaces(PredefinedShelfName predefinedShelfName) {
+        // given
+        UserCreatedShelf createdShelf = new UserCreatedShelf(
+                "\t\n\f\r" + predefinedShelfName.toString() + "\t\n\f\r",
+                User.builder().build()
+        );
+
+        // when/then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> userCreatedShelfService.save(createdShelf));
+    }
+
+    @Test
+    void save_throws_whenUserCreatedShelfNameAlreadyExists() {
+        // given
+        UserCreatedShelf createdShelf = new UserCreatedShelf(
+                "ExistingName",
+                User.builder().build()
+        );
+        when(userCreatedShelfRepository.shelfNameExists(anyString())).thenReturn(true);
+
+        // when/then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> userCreatedShelfService.save(createdShelf));
+    }
+
+    @Test
+    void save_whenUserCreatedShelfNameNotExists() {
+        // given
+        UserCreatedShelf createdShelf = new UserCreatedShelf(
+                "NotExistingName",
+                User.builder().build()
+        );
+        when(userCreatedShelfRepository.shelfNameExists(anyString())).thenReturn(true);
+
+        // when/then
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> userCreatedShelfService.save(createdShelf));
     }
 
     @Test
