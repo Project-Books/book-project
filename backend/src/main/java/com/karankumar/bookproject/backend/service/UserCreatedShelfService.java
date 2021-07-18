@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.UserCreatedShelfRepository;
@@ -108,6 +109,15 @@ public class UserCreatedShelfService {
             books = userCreatedShelf.getBooks();
         }
         return books;
+    }
+
+    /**
+     * Fetches all of the books in the chosen user created shelves
+     */
+    public Set<Book> getBooksInUserCreatedShelves(List<UserCreatedShelf> userCreatedShelves) {
+        return userCreatedShelves.stream()
+                .map(UserCreatedShelf::getBooks)
+                .collect(HashSet::new, Set::addAll, Set::addAll);
     }
 
     public Optional<Shelf> getCustomShelfByName(@NonNull String shelfName) {

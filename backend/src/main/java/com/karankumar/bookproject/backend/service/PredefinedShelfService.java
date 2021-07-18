@@ -19,9 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
-import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.AuthorRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
@@ -246,7 +244,7 @@ public class PredefinedShelfService {
     /**
      * Fetches all of the books in the chosen predefined shelves
      */
-    public static Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
+    public Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
         return predefinedShelves.stream()
                                 .map(PredefinedShelf::getBooks)
                                 .collect(HashSet::new, Set::addAll, Set::addAll);
@@ -254,8 +252,8 @@ public class PredefinedShelfService {
 
     public static boolean isPredefinedShelf(String shelfName) {
         return Arrays.stream(ShelfName.values())
-                     .map(ShelfName::toString)
-                     .anyMatch(shelfName::equalsIgnoreCase);
+                .map(ShelfName::toString)
+                .anyMatch(shelfName::equalsIgnoreCase);
     }
 
     public static Optional<ShelfName> getPredefinedShelfName(@NonNull String predefinedShelfName) {
