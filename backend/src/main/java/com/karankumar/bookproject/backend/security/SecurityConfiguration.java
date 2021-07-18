@@ -99,5 +99,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/api/register").permitAll()
             .anyRequest()
             .authenticated();
+        http.cors();
     }
 }
