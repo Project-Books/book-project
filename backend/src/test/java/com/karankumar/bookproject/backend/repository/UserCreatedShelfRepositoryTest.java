@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.test.context.TestPropertySource;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
@@ -39,6 +40,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
+@TestPropertySource(properties = {
+    "spring.datasource.data=classpath:dev_data_user.sql"
+})
 @DisplayName("CustomShelfRepository should")
 class UserCreatedShelfRepositoryTest {
     private static final String CUSTOM_SHELF_NAME = "Test1";

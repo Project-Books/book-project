@@ -22,12 +22,16 @@ import com.karankumar.bookproject.backend.model.Author;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
+@TestPropertySource(properties = {
+    "spring.datasource.initialization-mode=never"
+})
 class AuthorRepositoryTest {
   @Autowired private AuthorRepository underTest;
 

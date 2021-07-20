@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.test.context.TestPropertySource;
 
 import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
@@ -37,6 +38,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaIntegrationTest
+@TestPropertySource(properties = {
+    "spring.datasource.data=classpath:dev_data_user.sql"
+})
 @DisplayName("PredefinedShelfRepository should")
 class PredefinedShelfRepositoryTest {
     private final UserRepository userRepository;
