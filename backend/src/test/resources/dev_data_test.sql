@@ -41,6 +41,12 @@ INSERT INTO author (full_name)
 WHERE NOT EXISTS
   (SELECT full_name FROM author WHERE full_name='Dan Brown');
 
+--Insert into user table
+
+INSERT INTO user (id,email,password,active)
+  SELECT 1,'user@user.user','$2a$10$XUNDtM8r1v6pIjZFy8Ov7.qw4G9rj7DdqKcS36uVtQNWFosdnw/hu',1 FROM DUAL
+WHERE NOT EXISTS
+	 (SELECT id FROM user WHERE id = 1);
 
 --Insert into predefined_shelf table
 

@@ -17,9 +17,14 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.backend.dto.GoodreadsBookImport;
 import com.karankumar.bookproject.backend.model.Book;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,17 +32,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @IntegrationTest
 @DisplayName("ImportService should")
-@SqlGroup({@Sql(scripts = "/dev_data.sql")})
 class ImportServiceTest {
     private final ImportService importService;
     private final BookService bookService;
