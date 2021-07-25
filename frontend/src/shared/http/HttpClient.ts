@@ -40,8 +40,7 @@ type HttpReponse = Promise<Record <string,any>>
 // Base class for managing HTTP requests
 class HttpClientBase {
     baseUrl = 'http://localhost:8080/';
-    mode: "cors" | "navigate" | "no-cors" | "same-origin" | undefined = "no-cors";
-    cache = "no-cache";
+    mode: "cors" | "navigate" | "no-cors" | "same-origin" | undefined = "cors";
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     headers: any = {
          // eslint-disable-next-line @typescript-eslint/naming-convention
