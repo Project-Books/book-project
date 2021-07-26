@@ -48,7 +48,7 @@ public class ShelfController {
     @GetMapping("/predefined")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getPredefinedShelfByPredefinedShelfName(
-            @RequestParam PredefinedShelf.ShelfName predefinedShelfName){
+            @RequestParam(name= "name") PredefinedShelf.ShelfName predefinedShelfName){
         return predefinedShelfService.getPredefinedShelfByPredefinedShelfName(predefinedShelfName)
                 .orElseThrow(() -> new IllegalStateException("Shelf not found"));
     }

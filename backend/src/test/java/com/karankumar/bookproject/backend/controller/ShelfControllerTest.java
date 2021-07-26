@@ -1,6 +1,7 @@
 package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.UserCreatedShelfService;
@@ -52,6 +53,9 @@ class ShelfControllerTest {
 
     SecurityMockMvcRequestPostProcessors.UserRequestPostProcessor userRole;
 
+    final String PREDEFINED_SHELF_BASE_URL = "/api/shelf/predefined";
+    final String USER_DEFINED_SHELF_BASE_URL = "/api/shelf/predefined";
+
 
     @BeforeEach
     void setUp() {
@@ -81,27 +85,35 @@ class ShelfControllerTest {
     }
 
     @Test
-    @DisplayName("Test 1")
+    @DisplayName("Get All Predefined Shelves")
     void testToGetAllPredefinedShelf() throws Exception {
         //when
         when(predefinedShelfService.findAllForLoggedInUser()).thenReturn(allPredefinedShelves);
         LOGGER.info("list of predefined shelf --> {}", shelfController.getAllShelfForLoggedInUser());
 
         //assert
-        assertThat(shelfController.getAllShelfForLoggedInUser().size()).isEqualTo(4);
+        assertThat(shelfController
+                .getAllShelfForLoggedInUser()
+                .size()
+        ).isEqualTo(4);
 
 
-        RequestBuilder request = get("/api/shelf/predefined/all")
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/all")
                 .with(userRole);
 
         MvcResult result = mvc.perform(request).andReturn();
 
-        assertEquals("[{\"shelfName\":\"Read\"},{\"shelfName\":\"Reading\"},{\"shelfName\":\"Did not finish\"},{\"shelfName\":\"To read\"}]", result.getResponse().getContentAsString());
-        assertEquals(200, result.getResponse().getStatus());
+        assertEquals("[{\"shelfName\":\"Read\"},{\"shelfName\":\"Reading\"},{\"shelfName\":\"Did not finish\"},{\"shelfName\":\"To read\"}]",
+                result.getResponse().getContentAsString());
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test
-    @DisplayName("Test 2")
+    @DisplayName("Get Predifined Shelf By Shelf Id")
     void testToGetPredefinedShelfByTheShelf_id() throws Exception {
 
         //when
@@ -118,22 +130,30 @@ class ShelfControllerTest {
         LOGGER.info("Shelf name is: --> {}", shelfController.getShelfById(0L));
 
         //assert
-        assertThat(shelfController.getShelfById(0L).getShelfName()).isEqualTo("Read");
+        assertThat(shelfController
+                .getShelfById(0L)
+                .getShelfName()
+        ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
 
-        RequestBuilder request = get("/api/shelf/predefined/0")
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/0")
                 .with(userRole);
 
         MvcResult result = mvc.perform(request).andReturn();
 
 
         //assert
-        assertEquals("{\"shelfName\":\"Read\"}", result.getResponse().getContentAsString());
-        assertEquals(200, result.getResponse().getStatus());
+        assertEquals("{\"shelfName\":\"Read\"}",
+                result.getResponse().getContentAsString());
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
 
     }
 
     @Test
-    @DisplayName("Test 3")
+    @DisplayName("Get Predifined Shelf By Shelf Name")
     void getPredefinedShelfByShelfName() throws Exception {
         //when
         when(predefinedShelfService.
@@ -149,22 +169,63 @@ class ShelfControllerTest {
         LOGGER.info("Shelf name is: --> {}", shelfController.getPredefinedShelfByShelfName("Read"));
 
         //assert
-        assertThat(shelfController.getPredefinedShelfByShelfName("Read").getShelfName()).isEqualTo("Read");
+        assertThat(shelfController
+                .getPredefinedShelfByShelfName("Read")
+                .getShelfName()
+        ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
 
-        RequestBuilder request = get("/api/shelf/predefined/shelfName?name=Read")
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/shelfName?name=Read")
                 .with(userRole);
 
         MvcResult result = mvc.perform(request).andReturn();
 
         //assert
         assertEquals("{\"shelfName\":\"Read\"}", result.getResponse().getContentAsString());
-        assertEquals(200, result.getResponse().getStatus());
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
 
     }
 
     @Test
-    @DisplayName("Test 3")
-    void testToGetShelfByShelfName() {
+    @DisplayName("Get Shelf By Predefined ShelfName")
+    void testToGetShelfByShelfName() throws Exception {
+        //when
+        when(predefinedShelfService.
+                getPredefinedShelfByPredefinedShelfName(PredefinedShelf.ShelfName.READ))
+                .thenReturn(
+                        Optional.of(allPredefinedShelves
+                                .stream()
+                                .findFirst()
+                                .get()
+                        )
+                );
+
+        LOGGER.info("Shelf name is: --> {}", shelfController.getPredefinedShelfByPredefinedShelfName(PredefinedShelf.ShelfName.READ));
+
+        //assert
+        assertThat(shelfController
+                .getPredefinedShelfByPredefinedShelfName(
+                        PredefinedShelf.ShelfName.READ
+                ).getShelfName()
+        ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
+
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"?name=READ")
+                .with(userRole);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+        System.out.println(result.getResponse().getContentLengthLong());
+
+        //assert
+        assertEquals("{\"shelfName\":\"Read\"}", result.getResponse().getContentAsString());
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
 
     }
 
