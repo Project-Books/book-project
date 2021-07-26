@@ -15,14 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping(value ="/api/shelf")
 public class ShelfController {
-    private final UserCreatedShelfService userCreatedShelfService;
-    private final PredefinedShelfService predefinedShelfService;
 
     @Autowired
-    public ShelfController(UserCreatedShelfService userCreatedShelfService, PredefinedShelfService predefinedShelfService) {
-        this.userCreatedShelfService = userCreatedShelfService;
-        this.predefinedShelfService = predefinedShelfService;
-    }
+    private UserCreatedShelfService userCreatedShelfService;
+
+    @Autowired
+    private PredefinedShelfService predefinedShelfService;
+
 
     @GetMapping("/predefined/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -36,7 +35,7 @@ public class ShelfController {
     public List<PredefinedShelf> getAllShelfForLoggedInUser(){
         return predefinedShelfService.findAllForLoggedInUser();
     }
-    @GetMapping("/predefined")
+    @GetMapping("/predefined/shelfName")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getPredefinedShelfByShelfName(@RequestParam String name){
         String errorMessage = String.format("no shelf matches the shelf name: %s",
@@ -79,7 +78,7 @@ public class ShelfController {
 
 
 
-    @GetMapping("/user-created/{id}")
+    @GetMapping("/user/created-shelves/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserCreatedShelf getUserCreatedShelfById(@PathVariable("id") Long shelfId){
         String errorMessage = String.format("no shelf matches the shelf name: %d",
@@ -89,15 +88,15 @@ public class ShelfController {
         );
     }
 
-    @GetMapping("/users/all")
+    @GetMapping("/user/shelves/all/")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserCreatedShelf> getAllUserCreatedShelf(){
+    public List<UserCreatedShelf> getAllUserCreatedShelves(){
         return userCreatedShelfService.findAll();
     }
 
-    @GetMapping("/users/all")
+    @GetMapping("/user/created-shelves/named/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserCreatedShelf> getAllUserCreatedShelfByName(@RequestParam String shelfName) {
+    public List<UserCreatedShelf> getAllUserCreatedShelvesByName(@RequestParam String shelfName) {
         List<UserCreatedShelf> allShelvesByName = userCreatedShelfService.findAll(shelfName);
         if(allShelvesByName.isEmpty()){
             String errorMessage = String.format("no shelf matches the shelf name: %s",
@@ -107,7 +106,7 @@ public class ShelfController {
         return allShelvesByName;
     }
 
-    @GetMapping("/user-created/all")
+    @GetMapping("/user/created-shelves/all")
     @ResponseStatus(HttpStatus.OK)
     public List<UserCreatedShelf> getAllUserCreatedShelfForLoggedInUser(){
         List<UserCreatedShelf> loggedInUserCreatedShelves = userCreatedShelfService.findAllForLoggedInUser();
@@ -117,7 +116,7 @@ public class ShelfController {
         return loggedInUserCreatedShelves;
     }
 
-    @GetMapping("/user-created/all")
+    @GetMapping("/user/created-shelves")
     @ResponseStatus(HttpStatus.OK)
     public UserCreatedShelf getUserCreatedShelfByNameForLoggedInUser(@RequestParam String shelfName) {
         String errorMessage = String.format("no shelf matches the shelf name: %s",
