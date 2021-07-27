@@ -1,6 +1,7 @@
 package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
+import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.UserCreatedShelfService;
@@ -55,10 +56,10 @@ class ShelfControllerTest {
     final String PREDEFINED_SHELF_BASE_URL = "/api/shelf/predefined";
     final String USER_DEFINED_SHELF_BASE_URL = "/api/shelf/created-shelves";
 
-    PredefinedShelf reading;
-    PredefinedShelf toRead;
-    PredefinedShelf didNotFinish;
-    PredefinedShelf read;
+//    PredefinedShelf reading;
+//    PredefinedShelf toRead;
+//    PredefinedShelf didNotFinish;
+//    PredefinedShelf read;
 
     @BeforeEach
     void setUp() {
@@ -68,10 +69,10 @@ class ShelfControllerTest {
                 .password("aaaaAAAA1234@")
                 .build();
         //list of predefined shelves
-        reading = new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser);
-        toRead = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser);
-        didNotFinish = new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser);
-        read = new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser);
+        PredefinedShelf reading = new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser);
+        PredefinedShelf toRead = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser);
+        PredefinedShelf didNotFinish = new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser);
+        PredefinedShelf read = new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser);
 
         allPredefinedShelves = new ArrayList<>();
         allPredefinedShelves.add(read);
@@ -194,11 +195,9 @@ class ShelfControllerTest {
         when(predefinedShelfService.
                 getPredefinedShelfByPredefinedShelfName(PredefinedShelf.ShelfName.READ))
                 .thenReturn(
-                        Optional.of(allPredefinedShelves
-                                .stream()
-                                .findFirst()
-                                .get()
-                        )
+                        allPredefinedShelves
+                            .stream()
+                            .findFirst()
                 );
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getPredefinedShelfByPredefinedShelfName(PredefinedShelf.ShelfName.READ));
@@ -231,7 +230,7 @@ class ShelfControllerTest {
         //when
         when(predefinedShelfService
                 .findToReadShelf()
-        ).thenReturn(toRead);
+        ).thenReturn(allPredefinedShelves.get(3));
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getToReadShelf());
 
@@ -246,7 +245,6 @@ class ShelfControllerTest {
 
         MvcResult result = mvc.perform(request).andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
 
 
 //        assert
@@ -263,7 +261,7 @@ class ShelfControllerTest {
         //when
         when(predefinedShelfService
                 .findReadShelf()
-        ).thenReturn(read);
+        ).thenReturn(allPredefinedShelves.get(0));
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getReadShelf());
 
@@ -278,7 +276,6 @@ class ShelfControllerTest {
 
         MvcResult result = mvc.perform(request).andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
 
 
 //        assert
@@ -295,7 +292,7 @@ class ShelfControllerTest {
         //when
         when(predefinedShelfService
                 .findReadingShelf()
-        ).thenReturn(reading);
+        ).thenReturn(allPredefinedShelves.get(1));
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getToReadShelf());
 
@@ -309,8 +306,6 @@ class ShelfControllerTest {
                 .with(userRole);
 
         MvcResult result = mvc.perform(request).andReturn();
-
-        System.out.println(result.getResponse().getContentAsString());
 
 
 //        assert
@@ -327,7 +322,7 @@ class ShelfControllerTest {
         //when
         when(predefinedShelfService
                 .findDidNotFinishShelf()
-        ).thenReturn(didNotFinish);
+        ).thenReturn(allPredefinedShelves.get(2));
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getDidNotFinishShelf());
 
@@ -342,7 +337,6 @@ class ShelfControllerTest {
 
         MvcResult result = mvc.perform(request).andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
 
 
 //        assert
@@ -355,7 +349,34 @@ class ShelfControllerTest {
     }
 
     @Test
-    void getUserCreatedShelfById() {
+    void testToGetUserCreatedShelfById() throws Exception {
+
+        //when
+        when(userCreatedShelfService.findById(any(Long.class))
+        ).thenReturn(Optional.of(
+                new UserCreatedShelf())
+        );
+
+        LOGGER.info("Shelf is: --> {}", shelfController.getUserCreatedShelfById(0L));
+
+//        assert
+        assertThat(shelfController
+                .getUserCreatedShelfById(0L)
+        ).isNotNull();
+
+
+        RequestBuilder request = get(USER_DEFINED_SHELF_BASE_URL+"/0")
+                .with(userRole);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+//        assert
+        assertThat(result.getResponse()).isNotNull();
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test

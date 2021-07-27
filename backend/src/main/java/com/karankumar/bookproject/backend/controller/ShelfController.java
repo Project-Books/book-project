@@ -94,7 +94,7 @@ public class ShelfController {
         return userCreatedShelfService.findAll();
     }
 
-    @GetMapping("/created-shelves/all")
+    @GetMapping("/created-shelves/named/all")
     @ResponseStatus(HttpStatus.OK)
     public List<UserCreatedShelf> getAllUserCreatedShelvesByName(@RequestParam(name = "shelf-name", required = false) String shelfName) {
         List<UserCreatedShelf> allShelvesByName = userCreatedShelfService.findAll(shelfName);
