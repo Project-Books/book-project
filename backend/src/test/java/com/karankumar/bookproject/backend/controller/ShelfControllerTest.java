@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -268,15 +269,99 @@ class ShelfControllerTest {
     }
 
     @Test
-    void testToGetReadShelf() {
+    void testToGetReadShelf() throws Exception {
+        //when
+        when(predefinedShelfService
+                .findReadShelf()
+        ).thenReturn(read);
+
+        LOGGER.info("Shelf name is: --> {}", shelfController.getReadShelf());
+
+//        assert
+        assertThat(shelfController
+                .getReadShelf()
+                .getShelfName()
+        ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
+
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/read")
+                .with(userRole);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
+
+
+//        assert
+        assertEquals("{\"shelfName\":\"Read\"}", result.getResponse().getContentAsString());
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test
-    void getReadShelf() {
+    void testToGetReadingShelf() throws Exception {
+        //when
+        when(predefinedShelfService
+                .findReadingShelf()
+        ).thenReturn(reading);
+
+        LOGGER.info("Shelf name is: --> {}", shelfController.getToReadShelf());
+
+//        assert
+        assertThat(shelfController
+                .getReadingShelf()
+                .getShelfName()
+        ).isEqualTo(PredefinedShelf.ShelfName.READING.toString());
+
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/reading")
+                .with(userRole);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
+
+
+//        assert
+        assertEquals("{\"shelfName\":\"Reading\"}", result.getResponse().getContentAsString());
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test
-    void getDidNotFinishShelf() {
+    void toToGetDidNotFinishShelf() throws Exception {
+        //when
+        when(predefinedShelfService
+                .findDidNotFinishShelf()
+        ).thenReturn(didNotFinish);
+
+        LOGGER.info("Shelf name is: --> {}", shelfController.getDidNotFinishShelf());
+
+//        assert
+        assertThat(shelfController
+                .getDidNotFinishShelf()
+                .getShelfName()
+        ).isEqualTo(PredefinedShelf.ShelfName.DID_NOT_FINISH.toString());
+
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/unfinished")
+                .with(userRole);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
+
+
+//        assert
+        assertEquals("{\"shelfName\":\"Did not finish\"}", result.getResponse().getContentAsString());
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test
