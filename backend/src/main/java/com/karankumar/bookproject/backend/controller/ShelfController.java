@@ -90,7 +90,7 @@ public class ShelfController {
 
     @GetMapping("/created-shelves/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserCreatedShelf> getAllUserCreatedShelves(){
+    public List<UserCreatedShelf> getAllUsersCreatedShelves(){
         return userCreatedShelfService.findAll();
     }
 

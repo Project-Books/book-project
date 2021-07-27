@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,21 +51,21 @@ class ShelfControllerTest {
 
 
     List<PredefinedShelf> allPredefinedShelves;
-
-    SecurityMockMvcRequestPostProcessors.UserRequestPostProcessor userRole;
+    List<UserCreatedShelf> allUsersCreatedShelves;
+    SecurityMockMvcRequestPostProcessors.UserRequestPostProcessor authenticatedUser;
 
     final String PREDEFINED_SHELF_BASE_URL = "/api/shelf/predefined";
     final String USER_DEFINED_SHELF_BASE_URL = "/api/shelf/created-shelves";
 
-//    PredefinedShelf reading;
-//    PredefinedShelf toRead;
-//    PredefinedShelf didNotFinish;
-//    PredefinedShelf read;
 
     @BeforeEach
     void setUp() {
         //mocked user details
         User testUser = User.builder()
+                .email("valid@testmail.com")
+                .password("aaaaAAAA1234@")
+                .build();
+        User testUser1 = User.builder()
                 .email("valid@testmail.com")
                 .password("aaaaAAAA1234@")
                 .build();
@@ -74,6 +75,13 @@ class ShelfControllerTest {
         PredefinedShelf didNotFinish = new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser);
         PredefinedShelf read = new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser);
 
+        allUsersCreatedShelves = Arrays.asList(
+                new UserCreatedShelf("inspirational", testUser),
+                new UserCreatedShelf("inspirational", testUser),
+                new UserCreatedShelf("inspirational", testUser1),
+                new UserCreatedShelf("inspirational", testUser1),
+                new UserCreatedShelf("inspirational", testUser1));
+
         allPredefinedShelves = new ArrayList<>();
         allPredefinedShelves.add(read);
         allPredefinedShelves.add(reading);
@@ -81,7 +89,7 @@ class ShelfControllerTest {
         allPredefinedShelves.add(toRead);
 
         //mocked secured user
-        userRole = SecurityMockMvcRequestPostProcessors
+        authenticatedUser = SecurityMockMvcRequestPostProcessors
                 .user("valid@testmail.com")
                 .roles("ADMIN", "USER");
 
@@ -102,7 +110,7 @@ class ShelfControllerTest {
 
 
         RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/all")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -137,7 +145,7 @@ class ShelfControllerTest {
         ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
 
         RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/0")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -174,7 +182,7 @@ class ShelfControllerTest {
         ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
 
         RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/shelfName?name=Read")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -210,7 +218,7 @@ class ShelfControllerTest {
         ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
 
         RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"?name=READ")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -241,7 +249,7 @@ class ShelfControllerTest {
         ).isEqualTo(PredefinedShelf.ShelfName.TO_READ.toString());
 
         RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/to-read")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -272,7 +280,7 @@ class ShelfControllerTest {
         ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
 
         RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/read")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -303,7 +311,7 @@ class ShelfControllerTest {
         ).isEqualTo(PredefinedShelf.ShelfName.READING.toString());
 
         RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/reading")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -333,7 +341,7 @@ class ShelfControllerTest {
         ).isEqualTo(PredefinedShelf.ShelfName.DID_NOT_FINISH.toString());
 
         RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/unfinished")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -366,7 +374,7 @@ class ShelfControllerTest {
 
 
         RequestBuilder request = get(USER_DEFINED_SHELF_BASE_URL+"/0")
-                .with(userRole);
+                .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -380,7 +388,31 @@ class ShelfControllerTest {
     }
 
     @Test
-    void getAllUserCreatedShelf() {
+    void getAllUsersCreatedShelves() throws Exception {
+        //when
+        when(userCreatedShelfService.findAll()
+        ).thenReturn(allUsersCreatedShelves);
+
+        LOGGER.info("All Shelves: --> {}", shelfController.getAllUsersCreatedShelves());
+
+//        assert
+        assertThat(shelfController
+                .getAllUsersCreatedShelves().size()
+        ).isEqualTo(5);
+
+
+        RequestBuilder request = get(USER_DEFINED_SHELF_BASE_URL+"/all")
+                .with(authenticatedUser);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+//        assert
+        assertThat(result.getResponse()).isNotNull();
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test
