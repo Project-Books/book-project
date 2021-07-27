@@ -20,10 +20,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,23 +72,19 @@ class ShelfControllerTest {
                 .password("aaaaAAAA1234@")
                 .build();
         //list of predefined shelves
-        PredefinedShelf reading = new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser);
-        PredefinedShelf toRead = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser);
-        PredefinedShelf didNotFinish = new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser);
-        PredefinedShelf read = new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser);
+        allPredefinedShelves = Arrays.asList(
+                new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser),
+                new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser),
+                new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser),
+                new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser));
 
+        //list of users defined shelves
         allUsersCreatedShelves = Arrays.asList(
                 new UserCreatedShelf("inspirational", testUser),
-                new UserCreatedShelf("inspirational", testUser),
-                new UserCreatedShelf("inspirational", testUser1),
-                new UserCreatedShelf("inspirational", testUser1),
+                new UserCreatedShelf("motivation", testUser),
+                new UserCreatedShelf("spiritual", testUser1),
+                new UserCreatedShelf("computer science", testUser1),
                 new UserCreatedShelf("inspirational", testUser1));
-
-        allPredefinedShelves = new ArrayList<>();
-        allPredefinedShelves.add(read);
-        allPredefinedShelves.add(reading);
-        allPredefinedShelves.add(didNotFinish);
-        allPredefinedShelves.add(toRead);
 
         //mocked secured user
         authenticatedUser = SecurityMockMvcRequestPostProcessors
@@ -416,7 +414,40 @@ class ShelfControllerTest {
     }
 
     @Test
-    void getAllUserCreatedShelfByName() {
+    void getAllUserCreatedShelfByName() throws Exception {
+        List<UserCreatedShelf> searchedShelves =
+                allUsersCreatedShelves
+                        .stream()
+                        .filter(
+                                shelves -> shelves.getShelfName()
+                                        .equals("inspirational"))
+                        .collect(Collectors.toList());
+
+        when(userCreatedShelfService.findAll("inspirational")
+        ).thenReturn(searchedShelves);
+
+        LOGGER.info("All Shelves: with name {INSPIRATIONAL}: --> {}", shelfController.
+                getAllUsersCreatedShelvesByName("inspirational")
+        );
+
+//        assert
+        assertThat(shelfController
+                .getAllUsersCreatedShelvesByName("inspirational").size()
+        ).isEqualTo(2);
+
+
+        RequestBuilder request = get(USER_DEFINED_SHELF_BASE_URL+"/search?shelf-name=inspirational")
+                .with(authenticatedUser);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+//        assert
+        assertThat(result.getResponse()).isNotNull();
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test

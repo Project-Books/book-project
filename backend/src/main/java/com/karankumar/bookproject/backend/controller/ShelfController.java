@@ -94,9 +94,9 @@ public class ShelfController {
         return userCreatedShelfService.findAll();
     }
 
-    @GetMapping("/created-shelves/named/all")
+    @GetMapping("/created-shelves/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserCreatedShelf> getAllUserCreatedShelvesByName(@RequestParam(name = "shelf-name", required = false) String shelfName) {
+    public List<UserCreatedShelf> getAllUsersCreatedShelvesByName(@RequestParam(name = "shelf-name", required = false) String shelfName) {
         List<UserCreatedShelf> allShelvesByName = userCreatedShelfService.findAll(shelfName);
         if(allShelvesByName.isEmpty()){
             String errorMessage = String.format("no shelf matches the shelf name: %s",
