@@ -78,7 +78,7 @@ public class ShelfController {
 
 
 
-    @GetMapping("/user/created-shelves/{id}")
+    @GetMapping("/created-shelves/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserCreatedShelf getUserCreatedShelfById(@PathVariable("id") Long shelfId){
         String errorMessage = String.format("no shelf matches the shelf name: %d",
@@ -88,15 +88,15 @@ public class ShelfController {
         );
     }
 
-    @GetMapping("/user/shelves/all/")
+    @GetMapping("/created-shelves/all")
     @ResponseStatus(HttpStatus.OK)
     public List<UserCreatedShelf> getAllUserCreatedShelves(){
         return userCreatedShelfService.findAll();
     }
 
-    @GetMapping("/user/created-shelves/named/all")
+    @GetMapping("/created-shelves/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserCreatedShelf> getAllUserCreatedShelvesByName(@RequestParam String shelfName) {
+    public List<UserCreatedShelf> getAllUserCreatedShelvesByName(@RequestParam(name = "shelf-name", required = false) String shelfName) {
         List<UserCreatedShelf> allShelvesByName = userCreatedShelfService.findAll(shelfName);
         if(allShelvesByName.isEmpty()){
             String errorMessage = String.format("no shelf matches the shelf name: %s",
@@ -106,7 +106,7 @@ public class ShelfController {
         return allShelvesByName;
     }
 
-    @GetMapping("/user/created-shelves/all")
+    @GetMapping("/created-shelves/user/all")
     @ResponseStatus(HttpStatus.OK)
     public List<UserCreatedShelf> getAllUserCreatedShelfForLoggedInUser(){
         List<UserCreatedShelf> loggedInUserCreatedShelves = userCreatedShelfService.findAllForLoggedInUser();
@@ -116,9 +116,9 @@ public class ShelfController {
         return loggedInUserCreatedShelves;
     }
 
-    @GetMapping("/user/created-shelves")
+    @GetMapping("/created-shelves")
     @ResponseStatus(HttpStatus.OK)
-    public UserCreatedShelf getUserCreatedShelfByNameForLoggedInUser(@RequestParam String shelfName) {
+    public UserCreatedShelf getUserCreatedShelfByNameForLoggedInUser(@RequestParam(name = "shelf-name") String shelfName) {
         String errorMessage = String.format("no shelf matches the shelf name: %s",
                 shelfName);
         return userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName)

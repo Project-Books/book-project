@@ -1,12 +1,9 @@
 package com.karankumar.bookproject.backend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.UserCreatedShelfService;
-import com.karankumar.bookproject.backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +26,6 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -59,7 +53,7 @@ class ShelfControllerTest {
     SecurityMockMvcRequestPostProcessors.UserRequestPostProcessor userRole;
 
     final String PREDEFINED_SHELF_BASE_URL = "/api/shelf/predefined";
-    final String USER_DEFINED_SHELF_BASE_URL = "/api/shelf/predefined";
+    final String USER_DEFINED_SHELF_BASE_URL = "/api/shelf/created-shelves";
 
     PredefinedShelf reading;
     PredefinedShelf toRead;
@@ -121,18 +115,16 @@ class ShelfControllerTest {
     }
 
     @Test
-    @DisplayName("Get Predifined Shelf By Shelf Id")
+    @DisplayName("Get Predefined Shelf By Shelf Id")
     void testToGetPredefinedShelfByTheShelf_id() throws Exception {
 
         //when
         when(predefinedShelfService.
                 findById(any(Long.class)))
                 .thenReturn(
-                        Optional.of(allPredefinedShelves
+                        allPredefinedShelves
                                 .stream()
                                 .findFirst()
-                                .get()
-                        )
                 );
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getShelfById(0L));
@@ -153,25 +145,23 @@ class ShelfControllerTest {
         assertEquals("{\"shelfName\":\"Read\"}",
                 result.getResponse().getContentAsString());
         assertEquals(200,
-                result
-                        .getResponse()
-                        .getStatus()
+            result
+                .getResponse()
+                .getStatus()
         );
 
     }
 
     @Test
-    @DisplayName("Get Predifined Shelf By Shelf Name")
+    @DisplayName("Get Predefined Shelf By Shelf Name")
     void getPredefinedShelfByShelfName() throws Exception {
         //when
         when(predefinedShelfService.
                 getPredefinedShelfByNameAsString("Read"))
                 .thenReturn(
-                        Optional.of(allPredefinedShelves
-                                .stream()
-                                .findFirst()
-                                .get()
-                        )
+                    allPredefinedShelves
+                        .stream()
+                        .findFirst()
                 );
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getPredefinedShelfByShelfName("Read"));
