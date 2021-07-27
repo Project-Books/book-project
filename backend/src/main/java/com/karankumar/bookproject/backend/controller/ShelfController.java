@@ -55,7 +55,7 @@ public class ShelfController {
     @GetMapping("/predefined/to-read")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getToReadShelf(){
-        return predefinedShelfService.findReadShelf();
+        return predefinedShelfService.findToReadShelf();
     }
     @GetMapping("/predefined/reading")
     @ResponseStatus(HttpStatus.OK)

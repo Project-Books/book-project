@@ -1,10 +1,12 @@
 package com.karankumar.bookproject.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.PredefinedShelfName;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import com.karankumar.bookproject.backend.service.UserCreatedShelfService;
+import com.karankumar.bookproject.backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +29,8 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -56,6 +60,10 @@ class ShelfControllerTest {
     final String PREDEFINED_SHELF_BASE_URL = "/api/shelf/predefined";
     final String USER_DEFINED_SHELF_BASE_URL = "/api/shelf/predefined";
 
+    PredefinedShelf reading;
+    PredefinedShelf toRead;
+    PredefinedShelf didNotFinish;
+    PredefinedShelf read;
 
     @BeforeEach
     void setUp() {
@@ -64,12 +72,11 @@ class ShelfControllerTest {
                 .email("valid@testmail.com")
                 .password("aaaaAAAA1234@")
                 .build();
-
         //list of predefined shelves
-        PredefinedShelf reading = new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser);
-        PredefinedShelf toRead = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser);
-        PredefinedShelf didNotFinish = new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser);
-        PredefinedShelf read = new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser);
+        reading = new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser);
+        toRead = new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser);
+        didNotFinish = new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser);
+        read = new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser);
 
         allPredefinedShelves = new ArrayList<>();
         allPredefinedShelves.add(read);
@@ -217,8 +224,6 @@ class ShelfControllerTest {
 
         MvcResult result = mvc.perform(request).andReturn();
 
-        System.out.println(result.getResponse().getContentLengthLong());
-
         //assert
         assertEquals("{\"shelfName\":\"Read\"}", result.getResponse().getContentAsString());
         assertEquals(200,
@@ -230,11 +235,40 @@ class ShelfControllerTest {
     }
 
     @Test
-    void getToReadShelf() {
+    @DisplayName("Get To_Read Shelf")
+    void testToGetToReadShelf() throws Exception {
+        //when
+        when(predefinedShelfService
+                .findToReadShelf()
+        ).thenReturn(toRead);
+
+        LOGGER.info("Shelf name is: --> {}", shelfController.getToReadShelf());
+
+//        assert
+        assertThat(shelfController
+                .getToReadShelf()
+                .getShelfName()
+        ).isEqualTo(PredefinedShelf.ShelfName.TO_READ.toString());
+
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/to-read")
+                .with(userRole);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
+
+
+//        assert
+        assertEquals("{\"shelfName\":\"To read\"}", result.getResponse().getContentAsString());
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test
-    void getReadingShelf() {
+    void testToGetReadShelf() {
     }
 
     @Test
