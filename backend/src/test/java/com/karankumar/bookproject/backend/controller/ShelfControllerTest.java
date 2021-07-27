@@ -21,11 +21,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,28 +61,28 @@ class ShelfControllerTest {
     @BeforeEach
     void setUp() {
         //mocked user details
-        User testUser = User.builder()
-                .email("valid@testmail.com")
+        User testUser1 = User.builder()
+                .email("valid1@testmail.com")
                 .password("aaaaAAAA1234@")
                 .build();
-        User testUser1 = User.builder()
-                .email("valid@testmail.com")
+        User testUser2 = User.builder()
+                .email("valid2@testmail.com")
                 .password("aaaaAAAA1234@")
                 .build();
         //list of predefined shelves
         allPredefinedShelves = Arrays.asList(
-                new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser),
-                new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser),
-                new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser),
-                new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser));
+                new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser1),
+                new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser1),
+                new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser1),
+                new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser1));
 
         //list of users defined shelves
         allUsersCreatedShelves = Arrays.asList(
-                new UserCreatedShelf("inspirational", testUser),
-                new UserCreatedShelf("motivation", testUser),
-                new UserCreatedShelf("spiritual", testUser1),
-                new UserCreatedShelf("computer science", testUser1),
-                new UserCreatedShelf("inspirational", testUser1));
+                new UserCreatedShelf("inspirational", testUser1),
+                new UserCreatedShelf("motivation", testUser1),
+                new UserCreatedShelf("spiritual", testUser2),
+                new UserCreatedShelf("computer science", testUser2),
+                new UserCreatedShelf("inspirational", testUser2));
 
         //mocked secured user
         authenticatedUser = SecurityMockMvcRequestPostProcessors
@@ -442,6 +440,7 @@ class ShelfControllerTest {
         MvcResult result = mvc.perform(request).andReturn();
 
 //        assert
+        LOGGER.info("\n\n{}",result.getResponse().getContentAsString());
         assertThat(result.getResponse()).isNotNull();
         assertEquals(200,
                 result
@@ -451,7 +450,46 @@ class ShelfControllerTest {
     }
 
     @Test
-    void getAllUserCreatedShelfForLoggedInUser() {
+    void getAllUserCreatedShelfForLoggedInUser() throws Exception {
+        User testUser1 = User.builder()
+                .email("valid1@testmail.com")
+                .password("aaaaAAAA1234@")
+                .build();
+
+        List<UserCreatedShelf> loggedInUserCreatedShelves =
+                allUsersCreatedShelves
+                        .stream()
+                        .filter(
+                                shelves -> shelves.getUser()
+                                        .equals(testUser1))
+                        .collect(Collectors.toList());
+
+        when(userCreatedShelfService.findAllForLoggedInUser()
+        ).thenReturn(loggedInUserCreatedShelves);
+
+        LOGGER.info("All Shelves: with name {INSPIRATIONAL}: --> {}", shelfController.
+                getAllUserCreatedShelfForLoggedInUser()
+        );
+
+//        assert
+        assertThat(shelfController
+                .getAllUserCreatedShelfForLoggedInUser().size()
+        ).isEqualTo(2);
+
+
+        RequestBuilder request = get(USER_DEFINED_SHELF_BASE_URL+"/user/all")
+                .with(authenticatedUser);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+//        assert
+        LOGGER.info("\n\n{}",result.getResponse().getContentAsString());
+        assertThat(result.getResponse()).isNotNull();
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
     @Test
