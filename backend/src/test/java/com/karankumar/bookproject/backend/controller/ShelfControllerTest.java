@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +29,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -522,6 +524,31 @@ class ShelfControllerTest {
 //        assert
         LOGGER.info("\n\n{}",result.getResponse().getContentAsString());
         assertThat(result.getResponse()).isNotNull();
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
+    }
+    @Test
+    void testToDeleteAllUserDefinedShelves() throws Exception {
+        when(userCreatedShelfService.findAll()
+        ).thenReturn(allUsersCreatedShelves);
+
+        assertEquals(5 ,shelfController.getAllUsersCreatedShelves().size());
+        doAnswer(
+                invocation -> when(userCreatedShelfService.findAll())
+                        .thenReturn(new ArrayList<>())
+        ).when(userCreatedShelfService).deleteAll();
+
+        shelfController.deleteAll();
+        assertEquals(0, shelfController.getAllUsersCreatedShelves().size());
+
+        RequestBuilder request = delete(USER_DEFINED_SHELF_BASE_URL+ "/delete/all")
+                .with(authenticatedUser);
+        MvcResult result = mvc.perform(request).andReturn();
+
+        assertThat(result.getResponse().getContentLength()).isEqualTo(0);
         assertEquals(200,
                 result
                         .getResponse()

@@ -127,8 +127,9 @@ public class ShelfController {
                 );
     }
 
-
-     
-
-
+    @DeleteMapping("created-shelves/delete/all")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAll() {
+        userCreatedShelfService.deleteAll();
+    }
 }
