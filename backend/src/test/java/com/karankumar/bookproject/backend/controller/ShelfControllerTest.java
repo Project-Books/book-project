@@ -586,6 +586,18 @@ class ShelfControllerTest {
                         .getStatus()
         );
     }
+
+    @Test
+    void testToThrowAnExceptionWhenLoggedInUserCreatedShelfWithASpecificNameIsNotPresent(){
+        when(userCreatedShelfService
+                .findByShelfNameAndLoggedInUser("My First Shelf"))
+                .thenThrow(new IllegalStateException("no shelf matches the shelf name: My First Shelf"));
+
+        IllegalStateException thrown = assertThrows(IllegalStateException.class,
+                ()-> shelfController.getUserCreatedShelfByNameForLoggedInUser("My First Shelf"));
+        assertThat(thrown.getLocalizedMessage()).isEqualTo("no shelf matches the shelf name: My First Shelf");
+    }
+
     @Test
     void testToDeleteAllUserDefinedShelves() throws Exception {
         when(userCreatedShelfService.findAll()
