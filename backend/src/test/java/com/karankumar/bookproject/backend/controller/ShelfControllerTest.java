@@ -78,8 +78,8 @@ class ShelfControllerTest {
 
         //list of users defined shelves
         allUsersCreatedShelves = Arrays.asList(
-                new UserCreatedShelf("inspirational", testUser1),
                 new UserCreatedShelf("motivation", testUser1),
+                new UserCreatedShelf("inspirational", testUser1),
                 new UserCreatedShelf("spiritual", testUser2),
                 new UserCreatedShelf("computer science", testUser2),
                 new UserCreatedShelf("inspirational", testUser2));
@@ -493,7 +493,40 @@ class ShelfControllerTest {
     }
 
     @Test
-    void getUserCreatedShelfByNameForLoggedInUser() {
+    void getUserCreatedShelfByNameForLoggedInUser() throws Exception {
+
+
+        UserCreatedShelf loggedInUserCreatedShelves =
+                allUsersCreatedShelves.stream().findFirst().get();
+
+        when(userCreatedShelfService.findByShelfNameAndLoggedInUser("motivation")
+        ).thenReturn(Optional.of(loggedInUserCreatedShelves));
+
+        System.out.println(userCreatedShelfService.findByShelfNameAndLoggedInUser("motivation"));
+
+        LOGGER.info("User created shelf: --> {}", shelfController.
+                getUserCreatedShelfByNameForLoggedInUser("motivation")
+        );
+
+//        assert
+        assertThat(shelfController
+                .getUserCreatedShelfByNameForLoggedInUser("motivation").getShelfName()
+        ).isEqualTo("motivation");
+
+
+        RequestBuilder request = get(USER_DEFINED_SHELF_BASE_URL+"?shelf-name=motivation")
+                .with(authenticatedUser);
+
+        MvcResult result = mvc.perform(request).andReturn();
+
+//        assert
+        LOGGER.info("\n\n{}",result.getResponse().getContentAsString());
+        assertThat(result.getResponse()).isNotNull();
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
     }
 
 }
