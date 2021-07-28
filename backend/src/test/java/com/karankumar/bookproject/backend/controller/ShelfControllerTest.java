@@ -540,6 +540,17 @@ class ShelfControllerTest {
     }
 
     @Test
+    void testToThrowAnExceptionWhenUserCreatedShelfIsNotPresent(){
+        when(userCreatedShelfService
+                .findAllForLoggedInUser())
+                .thenThrow(new IllegalStateException("there is no shelve present at the moment"));
+
+        IllegalStateException thrown = assertThrows(IllegalStateException.class,
+                ()-> shelfController.getAllUserCreatedShelfForLoggedInUser());
+        assertThat(thrown.getLocalizedMessage()).isEqualTo("there is no shelve present at the moment");
+    }
+
+    @Test
     void getUserCreatedShelfByNameForLoggedInUser() throws Exception {
 
 
