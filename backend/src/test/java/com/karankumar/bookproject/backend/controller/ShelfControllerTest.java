@@ -14,24 +14,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -179,7 +178,7 @@ class ShelfControllerTest {
                 .getShelfName()
         ).isEqualTo(PredefinedShelf.ShelfName.READ.toString());
 
-        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/shelfName?name=Read")
+        RequestBuilder request = get(PREDEFINED_SHELF_BASE_URL+"/shelf-name?name=Read")
                 .with(authenticatedUser);
 
         MvcResult result = mvc.perform(request).andReturn();
@@ -192,6 +191,16 @@ class ShelfControllerTest {
                         .getStatus()
         );
 
+    }
+
+    @Test
+    void testToThrowExceptionWhenShelfNotFound(){
+        when(predefinedShelfService
+                .getPredefinedShelfByNameAsString(any(String.class)))
+                .thenThrow(new IllegalStateException("no shelf matches the shelf name: ReadMe"));
+
+        assertThrows(IllegalStateException.class,
+                ()-> shelfController.getPredefinedShelfByShelfName("Read Me"));
     }
 
     @Test

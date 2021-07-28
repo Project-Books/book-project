@@ -37,7 +37,7 @@ public class ShelfController {
     public List<PredefinedShelf> getAllShelfForLoggedInUser(){
         return predefinedShelfService.findAllForLoggedInUser();
     }
-    @GetMapping("/predefined/shelfName")
+    @GetMapping("/predefined/shelf-name")
     @ResponseStatus(HttpStatus.OK)
     public PredefinedShelf getPredefinedShelfByShelfName(@RequestParam("name") String name){
         String errorMessage = String.format("no shelf matches the shelf name: %s",
