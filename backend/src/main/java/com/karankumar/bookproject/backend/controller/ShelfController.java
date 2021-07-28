@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 /*Get all shelves (predefined and custom)
         Delete a UserCreatedShelf
         Rename a UserCreatedShelf*/
@@ -131,5 +133,11 @@ public class ShelfController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteAll() {
         userCreatedShelfService.deleteAll();
+    }
+
+    @DeleteMapping("created-shelves/delete/{id}")
+    public void deleteUserCreatedShelf(@PathVariable(name = "id") Long shelfId) {
+        Optional<UserCreatedShelf> shelfToDelete = userCreatedShelfService.findById(shelfId);
+        shelfToDelete.ifPresent(userCreatedShelf -> userCreatedShelfService.delete(userCreatedShelf));
     }
 }

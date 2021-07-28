@@ -73,10 +73,10 @@ class ShelfControllerTest {
                 .build();
         //list of predefined shelves
         allPredefinedShelves = Arrays.asList(
+                new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser1),
                 new PredefinedShelf(PredefinedShelf.ShelfName.READING, testUser1),
                 new PredefinedShelf(PredefinedShelf.ShelfName.TO_READ, testUser1),
-                new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser1),
-                new PredefinedShelf(PredefinedShelf.ShelfName.READ, testUser1));
+                new PredefinedShelf(PredefinedShelf.ShelfName.DID_NOT_FINISH, testUser1));
 
         //list of users defined shelves
         allUsersCreatedShelves = Arrays.asList(
@@ -112,7 +112,7 @@ class ShelfControllerTest {
 
         MvcResult result = mvc.perform(request).andReturn();
 
-        assertEquals("[{\"shelfName\":\"Read\"},{\"shelfName\":\"Reading\"},{\"shelfName\":\"Did not finish\"},{\"shelfName\":\"To read\"}]",
+        assertEquals("[{\"shelfName\":\"Read\"},{\"shelfName\":\"Reading\"},{\"shelfName\":\"To read\"},{\"shelfName\":\"Did not finish\"}]",
                 result.getResponse().getContentAsString());
         assertEquals(200,
                 result
@@ -236,7 +236,7 @@ class ShelfControllerTest {
         //when
         when(predefinedShelfService
                 .findToReadShelf()
-        ).thenReturn(allPredefinedShelves.get(3));
+        ).thenReturn(allPredefinedShelves.get(2));
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getToReadShelf());
 
@@ -328,7 +328,7 @@ class ShelfControllerTest {
         //when
         when(predefinedShelfService
                 .findDidNotFinishShelf()
-        ).thenReturn(allPredefinedShelves.get(2));
+        ).thenReturn(allPredefinedShelves.get(3));
 
         LOGGER.info("Shelf name is: --> {}", shelfController.getDidNotFinishShelf());
 
@@ -499,7 +499,7 @@ class ShelfControllerTest {
 
 
         UserCreatedShelf loggedInUserCreatedShelves =
-                allUsersCreatedShelves.stream().findFirst().get();
+                allUsersCreatedShelves.stream().findFirst().orElseThrow();
 
         when(userCreatedShelfService.findByShelfNameAndLoggedInUser("motivation")
         ).thenReturn(Optional.of(loggedInUserCreatedShelves));
@@ -549,6 +549,43 @@ class ShelfControllerTest {
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(result.getResponse().getContentLength()).isEqualTo(0);
+        assertEquals(200,
+                result
+                        .getResponse()
+                        .getStatus()
+        );
+    }
+
+    @Test
+    void testToDeleteAParticularUserCreatedShelf() throws Exception {
+        //when
+        when(userCreatedShelfService.findById(any(Long.class))).thenReturn(allUsersCreatedShelves.stream().findFirst());
+
+
+        //given
+        Optional<UserCreatedShelf> shelfToDelete = userCreatedShelfService.findById(0L);
+
+        //when
+        when(userCreatedShelfService.findAll()
+        ).thenReturn(allUsersCreatedShelves);
+
+        //assert
+        assertEquals(5 ,shelfController.getAllUsersCreatedShelves().size());
+        //do
+        doAnswer(
+                invocation -> when(userCreatedShelfService.findAll())
+                        .thenReturn(allUsersCreatedShelves.subList(1, 5))
+        ).when(userCreatedShelfService).delete(shelfToDelete.orElseThrow());
+
+        //when
+        shelfController.deleteUserCreatedShelf(0L);
+        assertEquals(4, shelfController.getAllUsersCreatedShelves().size());
+
+        RequestBuilder request = delete(USER_DEFINED_SHELF_BASE_URL+ "/delete/0")
+                .with(authenticatedUser);
+        MvcResult result = mvc.perform(request).andReturn();
+
+        assertThat(result.getResponse()).isNotNull();
         assertEquals(200,
                 result
                         .getResponse()
