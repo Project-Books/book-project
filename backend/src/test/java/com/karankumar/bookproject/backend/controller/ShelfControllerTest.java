@@ -408,6 +408,18 @@ class ShelfControllerTest {
     }
 
     @Test
+    void testToThrowExceptionWhenUserCreatedShelfWithAnIdIsNotFound(){
+        when(userCreatedShelfService
+                .findById(0L))
+                .thenThrow(new IllegalStateException("Shelf not found"));
+
+        IllegalStateException thrown = assertThrows(IllegalStateException.class,
+                ()-> shelfController.getUserCreatedShelfById(0L));
+
+        assertThat(thrown.getMessage()).isEqualTo("Shelf not found");
+    }
+
+    @Test
     void getAllUsersCreatedShelves() throws Exception {
         //when
         when(userCreatedShelfService.findAll()
