@@ -486,6 +486,17 @@ class ShelfControllerTest {
     }
 
     @Test
+    void testToThrowAnExceptionWhenUserCreatedShelfWithNameNotFound(){
+        when(userCreatedShelfService
+                .findAll(any(String.class)))
+                .thenThrow(new IllegalStateException("no shelf matches the shelf name: Glorious"));
+
+        IllegalStateException thrown = assertThrows(IllegalStateException.class,
+                ()-> shelfController.getAllUsersCreatedShelvesByName("Glorious"));
+        assertThat(thrown.getLocalizedMessage()).isEqualTo("no shelf matches the shelf name: Glorious");
+    }
+
+    @Test
     void getAllUserCreatedShelfForLoggedInUser() throws Exception {
         User testUser1 = User.builder()
                 .email("valid1@testmail.com")
