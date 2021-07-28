@@ -159,6 +159,18 @@ class ShelfControllerTest {
     }
 
     @Test
+    void testToThrowExceptionWhenShelfWithAnIdIsNotFound(){
+        when(predefinedShelfService
+                .findById(0L))
+                .thenThrow(new IllegalStateException("Shelf not found"));
+
+        IllegalStateException thrown = assertThrows(IllegalStateException.class,
+                ()-> shelfController.getShelfById(0L));
+
+        assertThat(thrown.getMessage()).isEqualTo("Shelf not found");
+    }
+
+    @Test
     @DisplayName("Get Predefined Shelf By Shelf Name")
     void getPredefinedShelfByShelfName() throws Exception {
         //when
@@ -199,8 +211,9 @@ class ShelfControllerTest {
                 .getPredefinedShelfByNameAsString(any(String.class)))
                 .thenThrow(new IllegalStateException("no shelf matches the shelf name: ReadMe"));
 
-        assertThrows(IllegalStateException.class,
+        IllegalStateException thrown = assertThrows(IllegalStateException.class,
                 ()-> shelfController.getPredefinedShelfByShelfName("Read Me"));
+        assertThat(thrown.getMessage()).isEqualTo("no shelf matches the shelf name: ReadMe");
     }
 
     @Test
