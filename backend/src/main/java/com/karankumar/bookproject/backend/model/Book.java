@@ -101,7 +101,7 @@ public class Book {
 
     private Integer yearOfPublication;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
             CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH
@@ -113,8 +113,7 @@ public class Book {
             foreignKey = @ForeignKey(name = "book_author_id_fk")
     )
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    // TODO: include Author in equals and hashcode
-//    @EqualsAndHashCode.Include
+    @EqualsAndHashCode.Include
     private Author author;
 
     @ManyToOne(
