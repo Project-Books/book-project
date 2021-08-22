@@ -18,8 +18,6 @@ If not, see <https://www.gnu.org/licenses/>.
 import Verb from "./verb";
 import Endpoints from "../api/endpoints";
 
-// Add error messaging to routes as well as internal server error response 500, 403
-
 // eslint-disable-next-line @typescript-eslint/naming-convention
 let HttpClient: () => HttpClientBase;
 (function() {
@@ -55,12 +53,12 @@ class HttpClientBase {
         const requestOptions = {
             method:Verb.GET,
             headers: this.headers,
-        }
+        };
         return fetch(url, requestOptions)
             .then(response => response.json())
             .catch((error) => {
-                console.log(error);
-            })
+                console.error(error);
+            });
     }
 
     login(email: string, password: string):HttpReponse {
@@ -71,22 +69,23 @@ class HttpClientBase {
             headers: {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 "Accept": 'application/json',
-                // eslint-disable-next-line @typescript-eslint/naming-convention
+                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 'Content-Type': 'application/json',
                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": "*"
+                // eslint-disable-next-line @typescript-eslint/naming-convention
             },
             body: JSON.stringify({
                 username: email,
                 password: password
             })
-        }
+        };
         return fetch(this.baseUrl + Endpoints.login, requestOptions)
         .then(response => {
             const headers = response.headers;
-            this.headers['Authorization'] = headers.get('authorization');
+            this.headers['Authorization'] = headers.get('Authorization');
             return response;
-        })
+        });
     }
 
     deleteAccount(password: string): HttpReponse {
@@ -98,7 +97,7 @@ class HttpClientBase {
             body: JSON.stringify({
                 password: password
             })
-        }
+        };
         return fetch(this.baseUrl + Endpoints.user, requestOptions)
         .then(response => {
             console.log('hitting response', response);

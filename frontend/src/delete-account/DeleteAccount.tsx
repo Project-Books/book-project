@@ -69,7 +69,7 @@ export default class DeleteAccount extends Component<IDeleteAccountProps, IDelet
         })
         .catch(error => {
             console.error('error: ', error);
-        })
+        });
     }
 
     render():JSX.Element {
