@@ -30,20 +30,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -60,6 +47,9 @@ import java.util.stream.Stream;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NamedEntityGraph(name = "Book.author",
+        attributeNodes = {@NamedAttributeNode("author")}
+)
 public class Book {
     public static final int MAX_PAGES = 23_000;
 
@@ -101,7 +91,7 @@ public class Book {
 
     private Integer yearOfPublication;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {
             CascadeType.DETACH,
             CascadeType.MERGE,
             CascadeType.REFRESH
