@@ -265,8 +265,9 @@ public class Book {
 
     @Override
     public String toString() {
-        return Book.class.getSimpleName() + "{"
-                + "title='" + title + '\''
-                + '}';
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author=" + author +
+                '}';
     }
 }
