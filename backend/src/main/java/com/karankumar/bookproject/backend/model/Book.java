@@ -44,14 +44,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
 @Builder
@@ -60,6 +60,9 @@ import java.util.stream.Stream;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NamedEntityGraph(name = "Book.author",
+        attributeNodes = {@NamedAttributeNode("author")}
+)
 public class Book {
     public static final int MAX_PAGES = 23_000;
 
@@ -113,8 +116,7 @@ public class Book {
             foreignKey = @ForeignKey(name = "book_author_id_fk")
     )
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    // TODO: include Author in equals and hashcode
-//    @EqualsAndHashCode.Include
+    @EqualsAndHashCode.Include
     private Author author;
 
     @ManyToOne(
@@ -263,8 +265,9 @@ public class Book {
 
     @Override
     public String toString() {
-        return Book.class.getSimpleName() + "{"
-                + "title='" + title + '\''
-                + '}';
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author=" + author +
+                '}';
     }
 }

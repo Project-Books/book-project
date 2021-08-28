@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Book;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
+    @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT b " +
             "FROM Book b " +
             "INNER JOIN FETCH b.author " +
@@ -34,6 +36,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "INNER JOIN FETCH b.publishers" )
     List<Book> findAllBooks();
 
+    @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+    List<Book> findAll();
+
+
+    @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT b " +
             "FROM Book b " +
             "INNER JOIN FETCH b.author " +
@@ -43,8 +50,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "WHERE b.id = :id" )
     Optional<Book> findBookById(@Param("id") Long id);
 
+    @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
     List<Book> findByTitleContainingIgnoreCase(String title);
 
+    @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT b " +
             "FROM Book b " +
             "INNER JOIN FETCH b.author AS a " +
