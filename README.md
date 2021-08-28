@@ -34,7 +34,7 @@ Prerequisites:
 
 As Docker is our recommended approach, our instructions will assume you're following this route.
 
-First, clone the repository.
+First, clone the repository (you'll need to fork first and then clone your fork if you're contributing).
  
 ### Running the frontend
 
