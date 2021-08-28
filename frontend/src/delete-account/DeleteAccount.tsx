@@ -22,6 +22,7 @@ import Button from '@material-ui/core/Button';
 import PasswordInput from '../shared/form/Password';
 import HttpClient from '../shared/http/HttpClient';
 import {Link} from 'react-router-dom';
+import {HOME} from '../shared/routes';
 import './DeleteAccount.css'
 
 interface IDeleteAccountState {
@@ -62,9 +63,11 @@ export default class DeleteAccount extends Component<IDeleteAccountProps, IDelet
         HttpClient.deleteAccount(this.state.password)
         .then(response => {
             if (response.ok) {
-                this.props.history.push('/')
+                this.props.history.push(HOME);
             } else {
-                this.setState({isPasswordInvalid:true});
+                this.setState({
+                    isPasswordInvalid:true
+                });
             }
         })
         .catch(error => {

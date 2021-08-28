@@ -100,7 +100,9 @@ class HttpClientBase {
         };
         return fetch(this.baseUrl + Endpoints.user, requestOptions)
         .then(response => {
-            this.headers['Authorization'] = null;
+            if (response.ok) {
+                this.headers['Authorization'] = null;
+            }
             return response;
         });
     }
