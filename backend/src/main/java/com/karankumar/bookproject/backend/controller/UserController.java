@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @DeleteMapping()
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCurrentUser(@RequestBody UserToDeleteDto user) {
         String password = user.getPassword();
         if (passwordEncoder.matches(password, userService.getCurrentUser().getPassword())) {
