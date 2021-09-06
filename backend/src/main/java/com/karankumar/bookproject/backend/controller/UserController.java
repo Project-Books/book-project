@@ -89,13 +89,13 @@ public class UserController {
   
     @PostMapping("/update-password")
     @ResponseStatus(HttpStatus.OK)
-    public User updatePassword(@RequestParam("currentPassword") String currentPassword,
+    public boolean updatePassword(@RequestParam("currentPassword") String currentPassword,
                                @RequestParam("newPassword") String newPassword) {
         User user = userService.getCurrentUser();
 
         if (passwordEncoder.matches(currentPassword, user.getPassword())) {
             userService.changeUserPassword(user, newPassword);
-            return user;
+            return true;
         } else {
             throw new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED,
