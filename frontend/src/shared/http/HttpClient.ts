@@ -48,16 +48,19 @@ class HttpClientBase {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "Access-Control-Allow-Origin": "*",
     };
-
-    get(url: string): HttpReponse {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    get(url: string): any {
         const requestOptions = {
             method:Verb.GET,
             headers: this.headers,
         };
         return fetch(url, requestOptions)
-            .then(response => response.json())
-            .catch((error) => {
-                console.error(error);
+            .then(response => {
+                console.log(response.ok);
+                if (response.ok) {
+                    return response.json();
+                }
+                throw response;
             });
     }
 

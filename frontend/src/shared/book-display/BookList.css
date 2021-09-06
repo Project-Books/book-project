@@ -1,0 +1,24 @@
+.booklist-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.booklist-container-headers {
+  display: flex;
+  flex-direction: row;
+  font-size: 14pt;
+  font-weight: bold;
+  justify-content: space-evenly;
+}
+
+.booklist-book {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.booklist-book-thumbnail {
+  background-color: gray;
+  height: 120px;
+  width: 80px;
+}
