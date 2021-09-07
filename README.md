@@ -50,6 +50,8 @@ Note that you'll be able to use the app without running the backend by manually 
 
 1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
 2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
+
+If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
   
 Next, follow one of the approaches below:
 
