@@ -45,6 +45,7 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -95,5 +96,5 @@ public class User {
                     foreignKey = @ForeignKey(name = "user_role_role_id_fk")
             )
     )
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 }
