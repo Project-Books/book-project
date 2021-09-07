@@ -14,13 +14,13 @@
 
 package com.karankumar.bookproject.backend.model.account;
 
-public enum UserRole {
+public enum RoleType {
     ADMIN("ADMIN"),
     USER("USER");
 
     private final String role;
 
-    UserRole(String role) {
+    RoleType(String role) {
         this.role = role;
     }
 
