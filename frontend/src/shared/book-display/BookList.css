@@ -15,50 +15,20 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-.booklist-container {
-  display: flex;
-  flex-direction: column;
-}
-
 .booklist-container-headers {
   display: grid;
-  grid-gap: 100px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 80px;
   font-size: 14pt;
   font-weight: bold;
-  padding-left: 100px;
-}
-
-.booklist-header-title,
-.booklist-book-title {
-  grid-column: 1 / 2;
-}
-
-.booklist-header-author,
-.booklist-book-author {
-  grid-column: 2 / 3;
-}
-
-.booklist-header-shelf,
-.booklist-book-shelf {
-  grid-column: 3 / 4;
-}
-
-.booklist-header-genre,
-.booklist-book-genre {
-  grid-column: 4 / 5;
-}
-
-.booklist-header-rating,
-.booklist-book-rating {
-  grid-column: 5 / 6;
 }
 
 .booklist-book {
   display: grid;
-  display: flex;
-  flex-direction: row;
+  grid-template-columns: repeat(6, 1fr);
   grid-gap: 20px;
-  padding-top: 20px;
+  align-items: center;
+  padding-top: 80px;
 }
 
 .booklist-book-thumbnail {
