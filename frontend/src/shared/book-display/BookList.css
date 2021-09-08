@@ -1,20 +1,64 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2021  Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
 .booklist-container {
   display: flex;
   flex-direction: column;
 }
 
 .booklist-container-headers {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-gap: 100px;
   font-size: 14pt;
   font-weight: bold;
-  justify-content: space-evenly;
+  padding-left: 100px;
+}
+
+.booklist-header-title,
+.booklist-book-title {
+  grid-column: 1 / 2;
+}
+
+.booklist-header-author,
+.booklist-book-author {
+  grid-column: 2 / 3;
+}
+
+.booklist-header-shelf,
+.booklist-book-shelf {
+  grid-column: 3 / 4;
+}
+
+.booklist-header-genre,
+.booklist-book-genre {
+  grid-column: 4 / 5;
+}
+
+.booklist-header-rating,
+.booklist-book-rating {
+  grid-column: 5 / 6;
 }
 
 .booklist-book {
+  display: grid;
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  grid-gap: 20px;
+  padding-top: 20px;
 }
 
 .booklist-book-thumbnail {
