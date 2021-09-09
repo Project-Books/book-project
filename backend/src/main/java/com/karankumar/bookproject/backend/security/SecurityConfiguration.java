@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.security;
 
+import com.karankumar.bookproject.backend.controller.Mappings;
 import com.karankumar.bookproject.backend.security.jwt.JwtConfig;
 import com.karankumar.bookproject.backend.security.jwt.JwtTokenVerifier;
 import com.karankumar.bookproject.backend.security.jwt.JwtUsernamePasswordAuthFilter;
@@ -103,7 +104,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     secretKey))
             .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthFilter.class)
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/api/register").permitAll()
+            .antMatchers(HttpMethod.POST, Mappings.USER).permitAll()
             .anyRequest()
             .authenticated();
     }

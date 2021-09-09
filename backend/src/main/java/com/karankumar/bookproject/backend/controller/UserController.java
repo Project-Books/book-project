@@ -38,7 +38,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/user")
+@RequestMapping(Mappings.USER)
 public class UserController {
     public static final String INCORRECT_PASSWORD_ERROR_MESSAGE =
             "The current password entered is incorrect";
