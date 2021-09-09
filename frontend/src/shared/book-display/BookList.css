@@ -24,10 +24,10 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 .booklist-book {
+  align-items: center;
   display: grid;
   grid-gap: 60px;
   grid-template-columns: 1fr 3fr 3fr 3fr 3fr 3fr;
-  align-items: center;
   padding-top: 32px;
 }
 

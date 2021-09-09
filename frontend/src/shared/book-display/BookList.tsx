@@ -41,7 +41,6 @@ export default class BookList extends Component <BookListProps, BookListState> {
 
   getBooks():void {
     HttpClient.get(Endpoints.books).then((response: Book[]) => {
-      console.log('response', response);
       this.setState({
         bookList: response
       });
@@ -67,14 +66,14 @@ export default class BookList extends Component <BookListProps, BookListState> {
             <div className="booklist-book-thumbnail-container">
               <div className="booklist-book-thumbnail"></div>
             </div>
-              <div className="booklist-book-title">{book.title}</div>
-              <div className="booklist-book-author">{book.author.fullName}</div>
-              <div className="booklist-book-shelf">{book.predefinedShelf.shelfName}</div>
-              <div className="booklist-book-genre">{book.bookGenre}</div>
-              <div className="booklist-book-rating">{book.rating}</div>
-            </div>
+            <div className="booklist-book-title">{book.title}</div>
+            <div className="booklist-book-author">{book.author.fullName}</div>
+            <div className="booklist-book-shelf">{book.predefinedShelf.shelfName}</div>
+            <div className="booklist-book-genre">{book.bookGenre}</div>
+            <div className="booklist-book-rating">{book.rating}</div>
+          </div>
         ))}
-        </div>
+      </div>
     )
   }
 }
