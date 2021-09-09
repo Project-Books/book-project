@@ -56,7 +56,6 @@ class HttpClientBase {
         };
         return fetch(url, requestOptions)
             .then(response => {
-                console.log(response.ok);
                 if (response.ok) {
                     return response.json();
                 }

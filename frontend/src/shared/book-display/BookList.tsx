@@ -55,6 +55,7 @@ export default class BookList extends Component <BookListProps, BookListState> {
     return (
       <div className="booklist-container">
         <div className="booklist-container-headers">
+          <div className="booklist-book-thumbnail-placeholder"></div>
           <div className="booklist-header-title">Title</div>
           <div className="booklist-header-author">Author</div>
           <div className="booklist-header-shelf">Shelf</div>
@@ -64,8 +65,7 @@ export default class BookList extends Component <BookListProps, BookListState> {
         {this.state.bookList.map(book => (
           <div className="booklist-book" key={book.title}>
             <div className="booklist-book-thumbnail-container">
-              <div className="booklist-book-thumbnail">
-              </div>
+              <div className="booklist-book-thumbnail"></div>
             </div>
               <div className="booklist-book-title">{book.title}</div>
               <div className="booklist-book-author">{book.author.fullName}</div>
