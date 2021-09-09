@@ -15,7 +15,9 @@
 package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.dto.UserToDeleteDto;
+import com.karankumar.bookproject.backend.dto.UserToRegisterDto;
 import com.karankumar.bookproject.backend.model.account.User;
+import com.karankumar.bookproject.backend.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,8 +70,12 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void register(@RequestBody User user) {
-        userService.register(user);
+    public void register(@RequestBody UserToRegisterDto user) {
+        try {
+            userService.register(user);
+        } catch (UserAlreadyRegisteredException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email taken");
+        }
     }
 
     @DeleteMapping()
