@@ -25,6 +25,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserToRegisterDto {
-    private String email;
+    private String username;
     private String password;
 }
