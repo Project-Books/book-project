@@ -75,7 +75,7 @@ public class UserService {
 
     public User register(@NonNull UserToRegisterDto userToRegisterDto) throws UserAlreadyRegisteredException {
         User userToRegister = User.builder()
-                                .email(userToRegisterDto.getEmail())
+                                .email(userToRegisterDto.getUsername())
                                 .password(userToRegisterDto.getPassword())
                                 .build();
 
