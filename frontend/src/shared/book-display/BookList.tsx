@@ -53,19 +53,17 @@ export default class BookList extends Component <BookListProps, BookListState> {
   render():JSX.Element {
     return (
       <div className="booklist-container">
-        <div className="booklist-container-headers">
-          <div className="booklist-book-thumbnail-placeholder"></div>
-          <div className="booklist-header-title">Title</div>
-          <div className="booklist-header-author">Author</div>
-          <div className="booklist-header-shelf">Shelf</div>
-          <div className="booklist-header-genre">Genre</div>
-          <div className="booklist-header-rating">Rating</div>
+        <div className="booklist-container-headers booklist-book">
+          <div className="booklist-book-thumbnail"></div>
+          <div className="booklist-book-title">Title</div>
+          <div className="booklist-book-author">Author</div>
+          <div className="booklist-book-shelf">Shelf</div>
+          <div className="booklist-book-genre">Genre</div>
+          <div className="booklist-book-rating">Rating</div>
         </div>
         {this.state.bookList.map(book => (
           <div className="booklist-book" key={book.title}>
-            <div className="booklist-book-thumbnail-container">
               <div className="booklist-book-thumbnail"></div>
-            </div>
             <div className="booklist-book-title">{book.title}</div>
             <div className="booklist-book-author">{book.author.fullName}</div>
             <div className="booklist-book-shelf">{book.predefinedShelf.shelfName}</div>
