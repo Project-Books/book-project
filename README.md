@@ -2,10 +2,9 @@
 	<img src="/media/banner/book_project_newlogo_2x.png" alt="Logo"/>
   </p>
 
-<p align="center">
-	
-   <a href="https://dev.azure.com/project-books/Book%20Project/_build/latest?definitionId=2&branchName=0.2.0">
-    <img src="https://dev.azure.com/project-books/Book%20Project/_apis/build/status/Project-Books.book-project?branchName=0.2.0" alt="Build Status"/>
+<p align="center">	
+  <a href="https://github.com/Project-Books/book-project/actions/workflows/build.yml">
+    <img src="https://github.com/Project-Books/book-project/actions/workflows/build.yml/badge.svg" alt="Build Status"/>
   </a>
 	
   <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A">
