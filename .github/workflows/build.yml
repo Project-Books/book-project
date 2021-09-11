@@ -7,11 +7,9 @@ on:
   push:
     branches:
       - main
-      - '0.2.0'
   pull_request:
     branches:
       - main
-      - '0.2.0'
 
 jobs:
   build:
