@@ -7,11 +7,6 @@
    <a href="https://dev.azure.com/project-books/Book%20Project/_build/latest?definitionId=2&branchName=0.2.0">
     <img src="https://dev.azure.com/project-books/Book%20Project/_apis/build/status/Project-Books.book-project?branchName=0.2.0" alt="Build Status"/>
   </a>
-
-	
-  <a href="https://codecov.io/gh/Project-Books/book-project">
-    <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
-  </a>
 	
   <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A">
     <img src="https://img.shields.io/badge/slack-teambookproject-4A154B?logo=slack" alt="Slack" />
@@ -35,7 +30,7 @@ Prerequisites:
 
 As Docker is our recommended approach, our instructions will assume you're following this route.
 
-First, clone the repository.
+First, clone the repository (you'll need to fork first and then clone your fork if you're contributing).
  
 ### Running the frontend
 
@@ -51,6 +46,8 @@ Note that you'll be able to use the app without running the backend by manually 
 
 1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
 2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
+
+If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
   
 Next, follow one of the approaches below:
 

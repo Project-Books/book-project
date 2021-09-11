@@ -12,20 +12,13 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.model.account;
+package com.karankumar.bookproject.backend.dto;
 
-public enum UserRole {
-    ADMIN("ADMIN"),
-    USER("USER");
+import lombok.Getter;
+import lombok.Setter;
 
-    private final String role;
-
-    UserRole(String role) {
-        this.role = role;
-    }
-
-    @Override
-    public String toString() {
-        return role;
-    }
+@Getter
+@Setter
+public class UserToDeleteDto {
+    private String password;
 }
