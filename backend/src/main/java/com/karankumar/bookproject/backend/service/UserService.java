@@ -19,7 +19,7 @@ package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.account.UserRole;
+import com.karankumar.bookproject.backend.model.account.RoleType;
 import com.karankumar.bookproject.backend.model.account.Role;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
@@ -46,7 +46,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 
 @Service
 public class UserService {
@@ -86,7 +85,7 @@ public class UserService {
                     "A user with the email address " + user.getEmail() + " already exists");
         }
 
-        Role userRole = roleRepository.findByRole(UserRole.USER.toString())
+        Role userRole = roleRepository.findByRole(RoleType.USER.toString())
                                       .orElseThrow(() -> new AuthenticationServiceException(
                                               "The default user role could not be found"));
         User userToRegister = User.builder()

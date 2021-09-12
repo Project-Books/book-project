@@ -2,14 +2,9 @@
 	<img src="/media/banner/book_project_newlogo_2x.png" alt="Logo"/>
   </p>
 
-<p align="center">
-	
-   <a href="https://dev.azure.com/project-books/Book%20Project/_build/latest?definitionId=2&branchName=0.2.0">
-    <img src="https://dev.azure.com/project-books/Book%20Project/_apis/build/status/Project-Books.book-project?branchName=0.2.0" alt="Build Status"/>
-  </a>
-	
-  <a href="https://codecov.io/gh/Project-Books/book-project">
-    <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
+<p align="center">	
+  <a href="https://github.com/Project-Books/book-project/actions/workflows/build.yml">
+    <img src="https://github.com/Project-Books/book-project/actions/workflows/build.yml/badge.svg" alt="Build Status"/>
   </a>
 	
   <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A">
@@ -50,6 +45,8 @@ Note that you'll be able to use the app without running the backend by manually 
 
 1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
 2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
+
+If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
   
 Next, follow one of the approaches below:
 
@@ -99,7 +96,7 @@ If you wish to contribute (thanks!), please first see the [contributing document
 
 ### Help
 
-If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a).
+If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a). Alternatively, feel free to chat with us on the #book-project channel on our Slack workspace (click on the badge at the top of the README).
 
 ## Further information
 

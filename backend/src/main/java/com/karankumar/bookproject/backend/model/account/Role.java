@@ -18,7 +18,6 @@
 package com.karankumar.bookproject.backend.model.account;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -43,6 +42,7 @@ public class Role {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    // TODO: use RoleType here instead
     @NotBlank
     private String role;
 

@@ -39,12 +39,17 @@ public class UserCreatedShelfService {
     private final UserCreatedShelfRepository userCreatedShelfRepository;
     private final UserService userService;
 
-    public UserCreatedShelfService(UserCreatedShelfRepository userCreatedShelfRepository, UserService userService) {
+    public UserCreatedShelfService(UserCreatedShelfRepository userCreatedShelfRepository,
+                                   UserService userService) {
         this.userCreatedShelfRepository = userCreatedShelfRepository;
         this.userService = userService;
     }
 
-    public UserCreatedShelf createCustomShelf(String shelfName) {
+    public UserCreatedShelf createCustomShelf(@NonNull String shelfName) {
+        shelfName = shelfName.trim();
+        if (shelfName.isEmpty()) {
+            throw new IllegalArgumentException("Shelf name cannot be empty");
+        }
         return new UserCreatedShelf(shelfName, userService.getCurrentUser());
     }
 
@@ -57,15 +62,15 @@ public class UserCreatedShelfService {
     }
 
     public Optional<UserCreatedShelf> findByShelfNameAndLoggedInUser(@NonNull String shelfName) {
-        return userCreatedShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
+        return userCreatedShelfRepository.findByShelfNameAndUser(
+                shelfName,
+                userService.getCurrentUser()
+        );
     }
 
     public UserCreatedShelf save(@NonNull UserCreatedShelf userCreatedShelf) {
         if (shelfNameExists(userCreatedShelf.getShelfName())) {
-            throw new IllegalArgumentException(
-                    String.format("Given shelfName %s already exists",
-                            userCreatedShelf.getShelfName())
-            );
+            throw new ShelfNameExistsException(userCreatedShelf.getShelfName());
         }
         return userCreatedShelfRepository.save(userCreatedShelf);
     }
