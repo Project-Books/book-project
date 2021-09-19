@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.dto.UserToRegisterDto;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.account.RoleType;
@@ -72,33 +73,39 @@ public class UserService {
         this.bookRepository = bookRepository;
     }
 
-    public User register(@NonNull User user) throws UserAlreadyRegisteredException {
+    public User register(@NonNull UserToRegisterDto userToRegisterDto) throws UserAlreadyRegisteredException {
+        User userToRegister = User.builder()
+                                .email(userToRegisterDto.getUsername())
+                                .password(userToRegisterDto.getPassword())
+                                .build();
+
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(userToRegister);
 
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
         }
         
-        if (user.getEmail() != null && isEmailInUse(user.getEmail())) {
+        if (userToRegister.getEmail() != null && isEmailInUse(userToRegister.getEmail())) {
             throw new UserAlreadyRegisteredException(
-                    "A user with the email address " + user.getEmail() + " already exists");
+                    "A user with the email address " + userToRegister.getEmail() + " already exists");
         }
 
+        userRepository.save(createNewUser(userToRegister));
+        authenticateUser(userToRegister);
+        return userToRegister;
+    }
+
+    private User createNewUser(User user) {
         Role userRole = roleRepository.findByRole(RoleType.USER.toString())
                                       .orElseThrow(() -> new AuthenticationServiceException(
                                               "The default user role could not be found"));
-        User userToRegister = User.builder()
-                                  .email(user.getEmail())
-                                  .password(passwordEncoder.encode(user.getPassword()))
-                                  .active(true)
-                                  .roles(Set.of(userRole))
-                                  .build();
-
-        userRepository.save(userToRegister);
-
-        authenticateUser(userToRegister);
-        return userToRegister;
+        return User.builder()
+                   .email(user.getEmail())
+                   .password(passwordEncoder.encode(user.getPassword()))
+                   .active(true)
+                   .roles(Set.of(userRole))
+                   .build();
     }
 
     public User getCurrentUser() {

@@ -125,7 +125,7 @@ class Register extends Component<Record<string, unknown>, IState> {
             })
         }
 
-        fetch(Endpoints.register, requestOptions)
+        fetch(Endpoints.user, requestOptions)
             .then(response => response.json())
             .then(data => console.log('data: ', data))
             .catch(error => console.log('error: ', error))
