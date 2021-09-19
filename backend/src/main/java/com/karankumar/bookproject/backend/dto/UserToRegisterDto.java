@@ -24,6 +24,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserToDeleteDto {
+public class UserToRegisterDto {
+    private String username;
     private String password;
 }

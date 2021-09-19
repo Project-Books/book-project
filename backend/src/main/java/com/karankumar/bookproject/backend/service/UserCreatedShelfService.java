@@ -98,7 +98,7 @@ public class UserCreatedShelfService {
         return userCreatedShelfRepository.findByShelfName(shelfName);
     }
 
-    public List<@NotNull String> getCustomShelfNames() {
+    public List<String> getCustomShelfNames() {
         return userCreatedShelfRepository.findAll()
                                          .stream()
                                          .map(UserCreatedShelf::getShelfName)
