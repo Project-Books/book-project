@@ -245,9 +245,12 @@ public class PredefinedShelfService {
      * Fetches all of the books in the chosen predefined shelves
      */
     public Set<Book> getBooksInPredefinedShelves(List<PredefinedShelf> predefinedShelves) {
-        return predefinedShelves.stream()
-                                .map(PredefinedShelf::getBooks)
-                                .collect(HashSet::new, Set::addAll, Set::addAll);
+        HashSet<Book> result = new HashSet<>();
+        for (PredefinedShelf predefinedShelf : predefinedShelves) {
+            Set<Book> books = predefinedShelf.getBooks();
+            result.addAll(books);
+        }
+        return result;
     }
 
     public static boolean isPredefinedShelf(String shelfName) {

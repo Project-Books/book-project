@@ -1,0 +1,34 @@
+package com.karankumar.bookproject.backend.json;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf;
+
+import java.io.IOException;
+
+public class PredefinedShelfSerializer extends JsonSerializer<PredefinedShelf> {
+
+    @Override
+    public void serialize(PredefinedShelf predefinedShelf,
+                          JsonGenerator jsonGenerator,
+                          SerializerProvider serializerProvider) throws IOException {
+
+
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField("shelfName", predefinedShelf.getShelfName()); // Write ShelfName
+
+        jsonGenerator.writeFieldName("books"); // Write Book JSON Object Label
+        jsonGenerator.writeStartArray(); // Start JSON Array for Book Objects
+
+        for(Book b : predefinedShelf.getBooks()){
+            jsonGenerator.writeObject(b);
+        }
+
+            jsonGenerator.writeEndArray(); // End JSON Array for Book Objects
+            jsonGenerator.writeEndObject(); // End JSON Object
+
+        }
+
+    }

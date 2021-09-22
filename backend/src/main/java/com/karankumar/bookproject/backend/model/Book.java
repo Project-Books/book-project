@@ -30,33 +30,18 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.validator.constraints.ISBN;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
 @Builder
 @Data
-@JsonIgnoreProperties(value = {"id"})
+@JsonIgnoreProperties(value = {"id", "predefinedShelf", "userCreatedShelf"})
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -85,6 +70,7 @@ public class Book {
             name = "book_genre",
             joinColumns = @JoinColumn(name = "book_id")
     )
+    @Enumerated(value = EnumType.ORDINAL)
     @Column(name = "genre")
     private Set<BookGenre> bookGenre;
 
