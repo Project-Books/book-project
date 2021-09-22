@@ -18,9 +18,8 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
-import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.Shelf;
+import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.repository.UserCreatedShelfRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
@@ -40,12 +39,17 @@ public class UserCreatedShelfService {
     private final UserCreatedShelfRepository userCreatedShelfRepository;
     private final UserService userService;
 
-    public UserCreatedShelfService(UserCreatedShelfRepository userCreatedShelfRepository, UserService userService) {
+    public UserCreatedShelfService(UserCreatedShelfRepository userCreatedShelfRepository,
+                                   UserService userService) {
         this.userCreatedShelfRepository = userCreatedShelfRepository;
         this.userService = userService;
     }
 
-    public UserCreatedShelf createCustomShelf(String shelfName) {
+    public UserCreatedShelf createCustomShelf(@NonNull String shelfName) {
+        shelfName = shelfName.trim();
+        if (shelfName.isEmpty()) {
+            throw new IllegalArgumentException("Shelf name cannot be empty");
+        }
         return new UserCreatedShelf(shelfName, userService.getCurrentUser());
     }
 
@@ -58,11 +62,16 @@ public class UserCreatedShelfService {
     }
 
     public Optional<UserCreatedShelf> findByShelfNameAndLoggedInUser(@NonNull String shelfName) {
-        return userCreatedShelfRepository.findByShelfNameAndUser(shelfName, userService.getCurrentUser());
+        return userCreatedShelfRepository.findByShelfNameAndUser(
+                shelfName,
+                userService.getCurrentUser()
+        );
     }
 
-    // TODO: only save custom shelf if the shelf name does not match the name of an existing (including predefined) shelf
     public UserCreatedShelf save(@NonNull UserCreatedShelf userCreatedShelf) {
+        if (shelfNameExists(userCreatedShelf.getShelfName())) {
+            throw new ShelfNameExistsException(userCreatedShelf.getShelfName());
+        }
         return userCreatedShelfRepository.save(userCreatedShelf);
     }
 
@@ -89,7 +98,7 @@ public class UserCreatedShelfService {
         return userCreatedShelfRepository.findByShelfName(shelfName);
     }
 
-    public List<@NotNull String> getCustomShelfNames() {
+    public List<String> getCustomShelfNames() {
         return userCreatedShelfRepository.findAll()
                                          .stream()
                                          .map(UserCreatedShelf::getShelfName)
@@ -128,5 +137,13 @@ public class UserCreatedShelfService {
         Assert.hasText(shelfName, "Shelf Name cannot be empty");
         return findByShelfNameAndLoggedInUser(shelfName)
         		.orElseGet(() -> save(createCustomShelf(shelfName)));
+    }
+
+    private boolean shelfNameExists(String shelfName) {
+        if (PredefinedShelfService.isPredefinedShelf(shelfName.trim())) {
+            return true;
+        }
+
+        return userCreatedShelfRepository.shelfNameExists(shelfName);
     }
 }
