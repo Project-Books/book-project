@@ -12,20 +12,10 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.model.account;
+package com.karankumar.bookproject.backend.service;
 
-public enum UserRole {
-    ADMIN("ADMIN"),
-    USER("USER");
-
-    private final String role;
-
-    UserRole(String role) {
-        this.role = role;
-    }
-
-    @Override
-    public String toString() {
-        return role;
+public class ShelfNameExistsException extends IllegalArgumentException {
+    public ShelfNameExistsException (final String shelfName) {
+        super(String.format("%s is already used as a shelf name", shelfName));
     }
 }
