@@ -16,26 +16,30 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 .switch-container {
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
 }
 
 .toggle-text {
-  padding-top:9px;
-  color:black;
-  padding-right:52px;
+  padding-top: 9px;
+  color: black;
+}
+
+.settings-toggle-text {
+  padding-top: 9px;
+  color: black;
+  padding-right: 52px;
 }
 
 .settings-toggle {
-  color:black;
+  color: black;
 }
 
 .delete-account-link-container {
-  padding-top:40px;
+  padding-top: 40px;
 }
 
 .delete-account-link {
   color: red;
-  text-decoration:none;
+  text-decoration: none;
 }
-

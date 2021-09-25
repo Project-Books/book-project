@@ -18,15 +18,17 @@ If not, see <https://www.gnu.org/licenses/>.
 import React, { Component, ReactElement } from "react";
 import { NavBar } from "../shared/navigation/NavBar";
 import { ShelfCarousel } from "../shared/book-display/ShelfCarousel";
-import "./MyBooks.css";
+import Switch from "../settings/Switch";
 import Button from "@material-ui/core/Button";
 import ShelfModal from "./ShelfModal";
 import { Layout } from "../shared/components/Layout";
 import BookList from '../shared/book-display/BookList';
+import "./MyBooks.css";
 
 
 interface IState {
     showShelfModal: boolean;
+    showListView:boolean;
 }
 
 class MyBooks extends Component<Record<string, unknown>, IState> {
@@ -34,9 +36,11 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         super(props);
         this.state = {
             showShelfModal: false,
+            showListView: false
         };
         this.onAddShelf = this.onAddShelf.bind(this);
         this.onAddShelfModalClose = this.onAddShelfModalClose.bind(this);
+        this.onToggleListView = this.onToggleListView.bind(this);
     }
 
     onAddShelf(): void {
@@ -50,6 +54,13 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             showShelfModal: false,
         });
     }
+
+    onToggleListView():void {
+        this.setState({
+            showListView: !this.state.showListView
+        });
+    }
+
     render(): ReactElement {
         return (
             <Layout title="My books" btn={<div className="my-book-top-buttons">
@@ -70,16 +81,30 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             </div>}>
                 <NavBar />
                 <div>
+                {this.state.showListView ? (
                     <BookList />
-                    <ShelfCarousel title="Reading" />
-                    <ShelfCarousel title="To Read" />
-                    <ShelfCarousel title="Read" />
-                    <ShelfCarousel title="Did not finish" />
+                    ) :
+                    <div>
+                        <ShelfCarousel title="Reading" />
+                        <ShelfCarousel title="To Read" />
+                        <ShelfCarousel title="Read" />
+                        <ShelfCarousel title="Did not finish" />
+                    </div>
+                }
                 </div>
                 <ShelfModal
                     open={this.state.showShelfModal}
                     onClose={this.onAddShelfModalClose}
                 />
+                <div className="my-book-switch-container">
+                    <div className="toggle-text">
+                        Shelf View
+                    </div>
+                    <Switch onClick={this.onToggleListView} />
+                    <div className="toggle-text">
+                        List View
+                    </div>
+                </div>
             </Layout>
         );
     }

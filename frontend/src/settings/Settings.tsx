@@ -35,7 +35,7 @@ interface ISettingsProps {
           <MuiThemeProvider theme={props.theme}>
             <CssBaseline />
             <div className="switch-container">
-              <div className="toggle-text">
+              <div className="toggle-text settings-toggle-text">
                   Enable dark mode
               </div>
               <div className="settings-toggle">
