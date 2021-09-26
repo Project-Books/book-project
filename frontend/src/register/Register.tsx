@@ -129,7 +129,7 @@ class Register extends Component<Record<string, unknown>, IState> {
 
         fetch(Endpoints.user, requestOptions)
             .then(response => {
-                if(response.status === 500){
+                if (response.status === 500) {
                     this.setState({serverError:true})
                 }
                 return response.json()
@@ -149,7 +149,7 @@ class Register extends Component<Record<string, unknown>, IState> {
     }
 
     // function to display server error
-    renderServerError(): ReactElement{
+    renderServerError(): ReactElement {
         return (
             <p className="error-message">
               Something went wrong. Please try again later.
