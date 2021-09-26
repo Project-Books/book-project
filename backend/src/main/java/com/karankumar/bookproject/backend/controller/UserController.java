@@ -19,7 +19,6 @@ import com.karankumar.bookproject.backend.dto.UserToRegisterDto;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.backend.service.UserService;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -69,13 +68,11 @@ public class UserController {
                           );
     }
 
-    @SneakyThrows
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void register(@RequestBody UserToRegisterDto user) {
         try {
-            throw new Exception();
-//            userService.register(user);
+            userService.register(user);
         } catch (UserAlreadyRegisteredException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email taken");
         }
