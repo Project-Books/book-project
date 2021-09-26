@@ -26,15 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class ExportController {
-
-    public final ExportService exportService;
+    private final ExportService exportService;
 
     @Autowired
     public ExportController(ExportService exportService) {
         this.exportService = exportService;
     }
 
-    @GetMapping( "/export-user-book-data")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ExportBookDto exportUserBookData(){
         return exportService.exportUserBookData();
