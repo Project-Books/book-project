@@ -46,7 +46,8 @@ interface IState {
     isEmailDirty: boolean,
     isPasswordDirty: boolean,
     isEmailInvalid: boolean,
-    isPasswordInvalid: boolean
+    isPasswordInvalid: boolean,
+    serverError: boolean
 }
 
 class Register extends Component<Record<string, unknown>, IState> {
@@ -61,7 +62,8 @@ class Register extends Component<Record<string, unknown>, IState> {
             isEmailDirty: false,
             isPasswordDirty: false,
             isEmailInvalid: false,
-            isPasswordInvalid: false
+            isPasswordInvalid: false,
+            serverError: false
         }
 
         this.handlePasswordChanged = this.handlePasswordChanged.bind(this)
@@ -126,7 +128,12 @@ class Register extends Component<Record<string, unknown>, IState> {
         }
 
         fetch(Endpoints.user, requestOptions)
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 500) {
+                    this.setState({serverError:true})
+                }
+                return response.json()
+            })
             .then(data => console.log('data: ', data))
             .catch(error => console.log('error: ', error))
     }
@@ -141,6 +148,15 @@ class Register extends Component<Record<string, unknown>, IState> {
         return isPasswordDirtyAndBlank || this.state.isPasswordInvalid
     }
 
+    // function to display server error
+    renderServerError(): ReactElement {
+        return (
+            <p className="error-message">
+              Something went wrong. Please try again later.
+            </p>
+     )
+ }  
+
     render(): ReactElement {
         return (
             <div className="center-table">
@@ -148,7 +164,7 @@ class Register extends Component<Record<string, unknown>, IState> {
                     <img src={logo} alt="Logo" className="center" id="app-logo" />
 
                     <br />
-                    <br />
+                    <br />                
                     <br />
 
                     <div className="center">
@@ -207,6 +223,8 @@ class Register extends Component<Record<string, unknown>, IState> {
                           >
                             Sign in instead
                         </Button>
+                        
+                        {this.state.serverError ? this.renderServerError(): <br></br>}   
 
                     </div>
                 </div>
