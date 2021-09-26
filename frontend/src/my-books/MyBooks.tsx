@@ -23,25 +23,47 @@ import Button from "@material-ui/core/Button";
 import ShelfModal from "./ShelfModal";
 import { Layout } from "../shared/components/Layout";
 import BookList from '../shared/book-display/BookList';
+import { Book } from '../shared/types/Book';
+import HttpClient from '../shared/http/HttpClient';
+import Endpoints from '../shared/api/endpoints';
 import "./MyBooks.css";
 
 
 interface IState {
     showShelfModal: boolean;
     showListView:boolean;
+    bookList: Book[];
 }
+
 
 class MyBooks extends Component<Record<string, unknown>, IState> {
     constructor(props: Record<string, unknown>) {
         super(props);
         this.state = {
             showShelfModal: false,
-            showListView: false
+            showListView: false,
+            bookList:[]
         };
         this.onAddShelf = this.onAddShelf.bind(this);
         this.onAddShelfModalClose = this.onAddShelfModalClose.bind(this);
         this.onToggleListView = this.onToggleListView.bind(this);
+        this.getBooks = this.getBooks.bind(this);
     }
+
+      componentDidMount():void {
+        this.getBooks();
+      }
+
+      getBooks():void {
+        HttpClient.get(Endpoints.books).then((response: Book[]) => {
+          this.setState({
+            bookList: response
+          });
+        })
+        .catch((error: Record<string, string>) => {
+          console.error('error: ', error);
+        });
+      }
 
     onAddShelf(): void {
         this.setState({
@@ -82,7 +104,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                 <NavBar />
                 <div>
                 {this.state.showListView ? (
-                    <BookList />
+                    <BookList bookListData={this.state.bookList} />
                     ) :
                     <div>
                         <ShelfCarousel title="Reading" />
