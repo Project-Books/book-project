@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "target/snippets")
 @Tag("Integration")
-class UserControllerTest {
+class UserControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
