@@ -45,6 +45,9 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NamedEntityGraph(name = "Book.author",
+        attributeNodes = {@NamedAttributeNode("author")}
+)
 public class Book {
     public static final int MAX_PAGES = 23_000;
 
@@ -99,8 +102,7 @@ public class Book {
             foreignKey = @ForeignKey(name = "book_author_id_fk")
     )
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    // TODO: include Author in equals and hashcode
-//    @EqualsAndHashCode.Include
+    @EqualsAndHashCode.Include
     private Author author;
 
     @ManyToOne(
@@ -249,8 +251,9 @@ public class Book {
 
     @Override
     public String toString() {
-        return Book.class.getSimpleName() + "{"
-                + "title='" + title + '\''
-                + '}';
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author=" + author +
+                '}';
     }
 }

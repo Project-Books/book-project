@@ -14,8 +14,11 @@
 
 package com.karankumar.bookproject.backend.controller;
 
+import com.karankumar.bookproject.backend.dto.UserToRegisterDto;
 import com.karankumar.bookproject.backend.model.account.User;
+import com.karankumar.bookproject.backend.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.backend.service.UserService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -128,5 +131,11 @@ class UserControllerTest {
         assertThatExceptionOfType(ResponseStatusException.class)
                 .isThrownBy(callable)
                 .withMessage(expectedMessage);
+    }
+
+    @Test
+    @Disabled
+    void register_throwsBadRequest_whenEmailTaken() {
+        // TODO: implement
     }
 }

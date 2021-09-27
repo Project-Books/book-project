@@ -22,7 +22,7 @@ import { Icon } from '@material-ui/core';
 function ShelfBook(props: BookProps) {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
     const titleClass = 'book-title' + (props.img === "" ? '' : ' hide');
-    const imgURL = 'url(' + props.img + ')';
+    const imgURL =  props.img && 'url(' + props.img + ')';
 
     return (
         <div className={bookClass} style={{ backgroundImage: imgURL }}>

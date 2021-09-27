@@ -14,10 +14,14 @@
 
 package com.karankumar.bookproject.backend.controller;
 
+import com.karankumar.bookproject.backend.dto.UserToDeleteDto;
+import com.karankumar.bookproject.backend.dto.UserToRegisterDto;
 import com.karankumar.bookproject.backend.model.account.User;
+import com.karankumar.bookproject.backend.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +34,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping(Mappings.USER)
 public class UserController {
     public static final String INCORRECT_PASSWORD_ERROR_MESSAGE =
             "The current password entered is incorrect";
@@ -67,13 +70,18 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void register(@RequestBody User user) {
-        userService.register(user);
+    public void register(@RequestBody UserToRegisterDto user) {
+        try {
+            userService.register(user);
+        } catch (UserAlreadyRegisteredException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email taken");
+        }
     }
 
-    @DeleteMapping("/{password}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteCurrentUser(@PathVariable String password) {
+    @DeleteMapping()
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCurrentUser(@RequestBody UserToDeleteDto user) {
+        String password = user.getPassword();
         if (passwordEncoder.matches(password, userService.getCurrentUser().getPassword())) {
             Long userId = userService.getCurrentUser().getId();
             if (userId == null) {
@@ -87,13 +95,13 @@ public class UserController {
   
     @PostMapping("/update-password")
     @ResponseStatus(HttpStatus.OK)
-    public User updatePassword(@RequestParam("currentPassword") String currentPassword,
+    public boolean updatePassword(@RequestParam("currentPassword") String currentPassword,
                                @RequestParam("newPassword") String newPassword) {
         User user = userService.getCurrentUser();
 
         if (passwordEncoder.matches(currentPassword, user.getPassword())) {
             userService.changeUserPassword(user, newPassword);
-            return user;
+            return true;
         } else {
             throw new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED,

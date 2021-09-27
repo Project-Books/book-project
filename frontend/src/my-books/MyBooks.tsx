@@ -22,6 +22,7 @@ import "./MyBooks.css";
 import Button from "@material-ui/core/Button";
 import ShelfModal from "./ShelfModal";
 import { Layout } from "../shared/components/Layout";
+import BookList from '../shared/book-display/BookList';
 
 
 interface IState {
@@ -68,8 +69,8 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             </Button>
             </div>}>
                 <NavBar />
-
                 <div>
+                    <BookList />
                     <ShelfCarousel title="Reading" />
                     <ShelfCarousel title="To Read" />
                     <ShelfCarousel title="Read" />

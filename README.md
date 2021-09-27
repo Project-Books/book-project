@@ -2,23 +2,13 @@
 	<img src="/media/banner/book_project_newlogo_2x.png" alt="Logo"/>
   </p>
 
-<p align="center">
-	
-   <a href="https://dev.azure.com/project-books/Book%20Project/_build/latest?definitionId=2&branchName=0.2.0">
-    <img src="https://dev.azure.com/project-books/Book%20Project/_apis/build/status/Project-Books.book-project?branchName=0.2.0" alt="Build Status"/>
-  </a>
-
-	
-  <a href="https://codecov.io/gh/Project-Books/book-project">
-    <img src="https://codecov.io/gh/Project-Books/book-project/branch/master/graph/badge.svg" alt="Code coverage"/>
+<p align="center">	
+  <a href="https://github.com/Project-Books/book-project/actions/workflows/build.yml">
+    <img src="https://github.com/Project-Books/book-project/actions/workflows/build.yml/badge.svg" alt="Build Status"/>
   </a>
 	
   <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A">
     <img src="https://img.shields.io/badge/slack-teambookproject-4A154B?logo=slack" alt="Slack" />
-  </a>
-	
-  <a href="https://app.codacy.com/manual/knjk04/book-project?utm_source=github.com&utm_medium=referral&utm_content=knjk04/book-project&utm_campaign=Badge_Grade_Dashboard">
-    <img src="https://api.codacy.com/project/badge/Grade/595ed2c299d7429e9938894c385b9cab" alt="Code quality" />
   </a>
 </p>
 
@@ -28,7 +18,7 @@ Book tracker web app made with Spring Boot and React (Typescript).
 
 *The image above is from our mockup designs, so this may look slightly different to the app. If major changes are made, we will upload a new image.*
 
-## Setup
+## Setup locally
 
 Prerequisites:
 - JDK 11
@@ -39,7 +29,7 @@ Prerequisites:
 
 As Docker is our recommended approach, our instructions will assume you're following this route.
 
-First, clone the repository.
+First, clone the repository (you'll need to fork first and then clone your fork if you're contributing).
  
 ### Running the frontend
 
@@ -55,6 +45,8 @@ Note that you'll be able to use the app without running the backend by manually 
 
 1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
 2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
+
+If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
   
 Next, follow one of the approaches below:
 
@@ -104,7 +96,7 @@ If you wish to contribute (thanks!), please first see the [contributing document
 
 ### Help
 
-If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a).
+If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a). Alternatively, feel free to chat with us on the #book-project channel on our Slack workspace (click on the badge at the top of the README).
 
 ## Further information
 

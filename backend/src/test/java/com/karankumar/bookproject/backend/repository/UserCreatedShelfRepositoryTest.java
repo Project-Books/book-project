@@ -23,6 +23,9 @@ import com.karankumar.bookproject.backend.model.account.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -106,6 +109,26 @@ class UserCreatedShelfRepositoryTest {
 
         // then
         assertThat(shelves).isNotNull().isEmpty();
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideExistingUserCreatedShelfNames")
+    void returnTrueWhenUserCreatedShelfNameExists(String existingShelfName) {
+        assertThat(repository.shelfNameExists(existingShelfName)).isTrue();
+    }
+
+    private static Stream<Arguments> provideExistingUserCreatedShelfNames() {
+        return Stream.of(
+                Arguments.of("Test1"),
+                Arguments.of("TEST1"),
+                Arguments.of("test1"),
+                Arguments.of("  test1   ")
+        );
+    }
+
+    @Test
+    void returnFalseWhenUserCreatedShelfNameNotExists() {
+        assertThat(repository.shelfNameExists("NotExistingShelfName")).isFalse();
     }
 
     private void createShelvesForUser(User user) {
