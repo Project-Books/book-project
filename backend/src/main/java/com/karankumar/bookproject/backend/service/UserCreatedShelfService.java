@@ -18,7 +18,6 @@
 package com.karankumar.bookproject.backend.service;
 
 import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.UserCreatedShelfRepository;

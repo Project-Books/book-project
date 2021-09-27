@@ -31,7 +31,7 @@ public class ExportService {
     public String exportBookDataForCurrentUser() throws IOException {
         JsonNode userPredefinedShelfJSON = mapUserPredefinedShelves();
 
-        String userCreatedShelfJSON = mapUserCreatedShelves();
+        JsonNode userCreatedShelfJSON = mapUserCreatedShelves();
 
         //Get User's Shelves
         ObjectMapper mapper = new ObjectMapper();
@@ -52,7 +52,7 @@ public class ExportService {
         return mapper.valueToTree(userPredefinedShelf);
     }
 
-    private String mapUserCreatedShelves() throws JsonProcessingException {
+    private JsonNode mapUserCreatedShelves() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("PredefinedShelfSerializer", new Version(1, 0, 0, null, null, null));
         module.addSerializer(UserCreatedShelf.class, new UserCreatedShelfSerializer());
@@ -60,6 +60,6 @@ public class ExportService {
 
         //Get all User's books on predefined Shelf
         List<UserCreatedShelf> userCustomShelves = userCreatedShelfService.findAllForLoggedInUser();
-        return mapper.writeValueAsString(userCustomShelves);
+        return mapper.valueToTree(userCustomShelves);
     }
 }
