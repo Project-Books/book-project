@@ -15,5 +15,5 @@ A clear and concise description of what you want to happen.
 
 **Additional context**
 - Be sure to read the contributing guidelines first!
-
-Add any other context or screenshots about the feature request here.
+- Discuss your implemenation approach with us before we assign you to it
+- Branch from `main` and set `main` as the destination branch in your pull request
