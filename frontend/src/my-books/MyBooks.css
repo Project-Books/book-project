@@ -15,9 +15,21 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-
 .my-book-top-buttons {
-    width: 200px;
-    display: flex;
-    justify-content: space-between;
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.my-book-switch-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-bottom: 40px;
+}
+
+.my-book-toggle-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

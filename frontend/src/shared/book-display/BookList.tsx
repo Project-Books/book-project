@@ -17,38 +17,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, { Component } from 'react'
 import { Book } from '../types/Book';
-import HttpClient from '../http/HttpClient';
-import Endpoints from '../api/endpoints';
 import './BookList.css';
 
-interface BookListProps {}
-
-interface BookListState {
-  bookList: Book[];
+export interface BookListProps {
+  bookListData: Book[];
 }
 
-export default class BookList extends Component <BookListProps, BookListState> {
-  constructor(props: BookListProps) {
-    super(props);
-    this.state = {
-      bookList: []
-    }
-  }
-
-  componentDidMount():void {
-    this.getBooks();
-  }
-
-  getBooks():void {
-    HttpClient.get(Endpoints.books).then((response: Book[]) => {
-      this.setState({
-        bookList: response
-      });
-    })
-    .catch((error: Record<string, string>) => {
-      console.error('error: ', error);
-    });
-  }
+export default class BookList extends Component <BookListProps> {
 
   render():JSX.Element {
     return (
@@ -61,7 +36,7 @@ export default class BookList extends Component <BookListProps, BookListState> {
           <div className="booklist-book-genre">Genre</div>
           <div className="booklist-book-rating">Rating</div>
         </div>
-        {this.state.bookList.map(book => (
+        {this.props.bookListData.map(book => (
           <div className="booklist-book" key={book.title}>
               <div className="booklist-book-thumbnail"></div>
             <div className="booklist-book-title">{book.title}</div>
