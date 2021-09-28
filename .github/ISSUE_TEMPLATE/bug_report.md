@@ -40,4 +40,8 @@ For backend-related bugs, tell us your
 
 **Additional context**
 
+- Read our contributing guidelines first!
+- Discuss your implementation approach with us first
+- Branch from main and set main as the destination branch in your pull request
+
 Add any other context about the problem here (e.g. stack trace, branch name, commit hash, etc.).
