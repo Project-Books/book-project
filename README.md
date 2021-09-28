@@ -18,7 +18,7 @@ Book tracker web app made with Spring Boot and React (Typescript).
 
 *The image above is from our mockup designs, so this may look slightly different to the app. If major changes are made, we will upload a new image.*
 
-## Setup
+## Setup locally
 
 Prerequisites:
 - JDK 11
