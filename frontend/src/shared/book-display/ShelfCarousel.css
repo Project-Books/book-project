@@ -64,7 +64,24 @@
     justify-content: center;
     align-items: center;
 }
-
+.book-spine {
+    position: absolute;
+    top: 0;
+    background: linear-gradient(
+      to right,
+      rgb(37 37 37 / 47%) 3px,
+      rgb(255 255 255 / 14%) 5px,
+      rgb(255 255 255 / 22%) 7px,
+      rgb(255 255 255 / 0%) 10px,
+      transparent 12px,
+      #0000001f 16px,
+      rgb(255 255 255 / 0%) 17px,
+      transparent 22px
+    );
+    box-shadow: 0 0 5px -1px #0d0d0d, inset -1px 1px 2px rgb(255 255 255 / 50%);
+    width: 100%;
+    height: 100%;
+  }
 .book.image {
     background-size: cover; 
 }
