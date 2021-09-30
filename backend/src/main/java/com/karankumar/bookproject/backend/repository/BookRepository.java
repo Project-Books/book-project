@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -63,4 +64,15 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR " +
                 "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%'))")
     List<Book> findByTitleOrAuthor(@Param("titleOrAuthor") String titleOrAuthor);
+
+  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @Query("SELECT b " +
+      "FROM Book b " +
+      "INNER JOIN FETCH b.author " +
+      "INNER JOIN FETCH b.predefinedShelf s " +
+      "INNER JOIN FETCH b.tags " +
+      "INNER JOIN FETCH b.publishers " +
+      "WHERE s.predefinedShelfName = :predefinedShelfName")
+  List<Book> findAllBooksByPredefinedShelfShelfName(
+      @Param("predefinedShelfName") ShelfName predefinedShelfName);
 }
