@@ -193,7 +193,9 @@ class Login extends Component<LoginProps, IState> {
                             className="center login"
                             variant="contained"
                             color="primary"
-                            onClick={this.onClickLogin}>
+                            onClick={this.onClickLogin}
+                            disableElevation
+                            >
                             Log in
                         </Button>
 
