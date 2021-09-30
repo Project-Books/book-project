@@ -26,6 +26,8 @@ If not, see <https://www.gnu.org/licenses/>.
   flex-direction: row;
   justify-content: flex-end;
   padding-bottom: 40px;
+  position: sticky;
+  bottom: 0;
 }
 
 .my-book-toggle-text {
