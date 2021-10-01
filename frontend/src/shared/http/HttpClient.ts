@@ -15,100 +15,85 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Verb from "./verb";
 import Endpoints from "../api/endpoints";
+import Axios, { AxiosInstance } from "axios";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 let HttpClient: () => HttpClientBase;
-(function() {
-    // Creating a singleton instance of an HTTP client
-    let instance : HttpClientBase;
-    HttpClient = function HttpClient(): HttpClientBase {
-        if(instance !== undefined) {
-            return instance;
-        }
-        instance = new HttpClientBase();
-        return instance;
+(function () {
+  // Creating a singleton instance of an HTTP client
+  let instance: HttpClientBase;
+  HttpClient = function HttpClient(): HttpClientBase {
+    if (instance !== undefined) {
+      return instance;
     }
+    instance = new HttpClientBase();
+    return instance;
+  };
 })();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type HttpReponse = Promise<Record <string,any>>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type HttpReponse = Promise<Record<string, any>>;
 
-// Base class for managing HTTP requests
 class HttpClientBase {
-    baseUrl = 'http://localhost:8080/';
-    mode: "cors" | "navigate" | "no-cors" | "same-origin" | undefined = "cors";
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    headers: any = {
-         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "Authorization": null,
+  axiosInstance: AxiosInstance;
+  constructor() {
+    this.axiosInstance = Axios.create({
+      baseURL: "http://localhost:8080/",
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Authorization: null,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "Content-Type": "application/json",
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "Access-Control-Allow-Origin": "*",
-    };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    get(url: string): any {
-        const requestOptions = {
-            method:Verb.GET,
-            headers: this.headers,
-        };
-        return fetch(url, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw response;
-            });
-    }
-
-    login(email: string, password: string):HttpReponse {
-        const requestOptions = {
-            url: this.baseUrl,
-            method: Verb.POST,
-            mode: this.mode,
-            headers: {
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                "Accept": 'application/json',
-                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                'Content-Type': 'application/json',
-                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                "Access-Control-Allow-Origin": "*"
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-            },
-            body: JSON.stringify({
-                username: email,
-                password: password
-            })
-        };
-        return fetch(this.baseUrl + Endpoints.login, requestOptions)
-        .then(response => {
-            const headers = response.headers;
-            this.headers['Authorization'] = headers.get('Authorization');
-            return response;
-        });
-    }
-
-    deleteAccount(password: string): HttpReponse {
-        const mode: 'cors' | undefined = 'cors';
-        const requestOptions = {
-            method: Verb.DELETE,
-            mode:mode,
-            headers: this.headers,
-            body: JSON.stringify({
-                password: password
-            })
-        };
-        return fetch(this.baseUrl + Endpoints.user, requestOptions)
-        .then(response => {
-            if (response.ok) {
-                this.headers['Authorization'] = null;
-            }
-            return response;
-        });
-    }
+      },
+    });
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get(url: string): any {
+    return this.axiosInstance(url, {
+      method: "GET",
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        if (Axios.isAxiosError(err)) {
+          throw err.response;
+        } else {
+          throw err;
+        }
+      });
+  }
+  login(email: string, password: string): HttpReponse {
+    return this.axiosInstance(Endpoints.login, {
+      method: "POST",
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Accept: "application/json",
+      },
+      data: {
+        username: email,
+        password: password,
+      },
+    }).then((res) => {
+      this.axiosInstance.defaults.headers.common["Authorization"] =
+        res.headers["Authorization"];
+      return res.data;
+    });
+  }
+  deleteAccount(password: string): HttpReponse {
+    return this.axiosInstance(Endpoints.user, {
+      method: "DELETE",
+      data: {
+        password: password,
+      },
+    }).then((res) => {
+      this.axiosInstance.defaults.headers.common["Authorization"] = null;
+      return res.data;
+    });
+  }
 }
 
 export default HttpClient();
-
