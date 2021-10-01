@@ -21,21 +21,27 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.karankumar.bookproject.backend.dto.BookPatchDto;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.BookFormat;
+import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.model.Publisher;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.logging.Level;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.logging.Level;
+
+import static java.util.stream.Collectors.toSet;
 
 @Service
 @Log
@@ -45,12 +51,14 @@ public class BookService {
   private final AuthorService authorService;
   private final BookRepository bookRepository;
   private final PublisherService publisherService;
+  private final PredefinedShelfService predefinedShelfService;
 
   public BookService(BookRepository bookRepository, AuthorService authorService,
-      PublisherService publisherService) {
+      PublisherService publisherService, PredefinedShelfService predefinedShelfService) {
     this.bookRepository = bookRepository;
     this.authorService = authorService;
     this.publisherService = publisherService;
+    this.predefinedShelfService = predefinedShelfService;
   }
 
   public Optional<Book> findById(@NonNull Long id) {
@@ -157,4 +165,59 @@ public class BookService {
   public List<Book> findAllBooksByPredefinedShelfName(ShelfName predefinedShelfName) {
     return bookRepository.findAllBooksByPredefinedShelfShelfName(predefinedShelfName);
   }
+
+  public Book updateBook(Book book, BookPatchDto bookPatchDto) {
+    updateBookMetadata(book, bookPatchDto);
+    updateAuthor(book, bookPatchDto);
+    updateGenres(book, bookPatchDto);
+    updatePredefinedShelf(book, bookPatchDto);
+    bookRepository.save(book);
+    return book;
+  }
+
+  private void updateBookMetadata(Book book, BookPatchDto bookPatchDto) {
+    Optional.ofNullable(bookPatchDto.getTitle())
+        .ifPresent(book::setTitle);
+    Optional.ofNullable(bookPatchDto.getNumberOfPages())
+        .ifPresent(book::setNumberOfPages);
+    Optional.ofNullable(bookPatchDto.getPagesRead())
+        .ifPresent(book::setPagesRead);
+    Optional.ofNullable(bookPatchDto.getBookFormat())
+        .map(BookFormat::valueOf)
+        .ifPresent(book::setBookFormat);
+    Optional.ofNullable(bookPatchDto.getSeriesPosition())
+        .ifPresent(book::setSeriesPosition);
+    Optional.ofNullable(bookPatchDto.getEdition())
+        .ifPresent(book::setEdition);
+    Optional.ofNullable(bookPatchDto.getBookRecommendedBy())
+        .ifPresent(book::setBookRecommendedBy);
+    Optional.ofNullable(bookPatchDto.getIsbn())
+        .ifPresent(book::setIsbn);
+    Optional.ofNullable(bookPatchDto.getYearOfPublication())
+        .ifPresent(book::setYearOfPublication);
+    Optional.ofNullable(bookPatchDto.getBookReview())
+        .ifPresent(book::setBookReview);
+  }
+
+  private void updateAuthor(Book book, BookPatchDto bookPatchDto) {
+    Optional.ofNullable(bookPatchDto.getAuthor())
+        .ifPresent(author -> {
+          book.setAuthor(author);
+          authorService.save(book.getAuthor());
+        });
+  }
+
+  private void updateGenres(Book book, BookPatchDto bookPatchDto) {
+    Optional.ofNullable(bookPatchDto.getBookGenres())
+        .map(genres -> genres.stream().map(BookGenre::valueOf).collect(toSet()))
+        .ifPresent(book::setBookGenre);
+  }
+
+  private void updatePredefinedShelf(Book book, BookPatchDto bookPatchDto) {
+    Optional.ofNullable(bookPatchDto.getPredefinedShelf())
+        .map(ShelfName::valueOf)
+        .flatMap(predefinedShelfService::getPredefinedShelfByPredefinedShelfName)
+        .ifPresent(book::setPredefinedShelf);
+  }
+
 }
