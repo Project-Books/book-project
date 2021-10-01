@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.backend.service;
 
+import com.karankumar.bookproject.backend.constraints.PasswordStrength;
 import com.karankumar.bookproject.backend.dto.UserToRegisterDto;
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
@@ -26,10 +27,13 @@ import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.nulabinc.zxcvbn.Strength;
+import com.nulabinc.zxcvbn.Zxcvbn;
 import lombok.NonNull;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -82,6 +86,7 @@ public class UserService {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(userToRegister);
 
+
         if (!constraintViolations.isEmpty()) {
             throw new ConstraintViolationException(constraintViolations);
         }
@@ -89,6 +94,14 @@ public class UserService {
         if (userToRegister.getEmail() != null && isEmailInUse(userToRegister.getEmail())) {
             throw new UserAlreadyRegisteredException(
                     "A user with the email address " + userToRegister.getEmail() + " already exists");
+        }
+
+        //Verifying password strength.
+        Zxcvbn zxcvbn = new Zxcvbn();
+        Strength strength = zxcvbn.measure(userToRegisterDto.getPassword());
+        if(strength.getScore() <= PasswordStrength.VERY_STRONG.getStrengthNum()){
+            throw new ConstraintViolationException(constraintViolations);
+
         }
 
         userRepository.save(createNewUser(userToRegister));
