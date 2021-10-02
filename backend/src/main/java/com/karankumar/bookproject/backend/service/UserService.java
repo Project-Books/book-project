@@ -27,13 +27,10 @@ import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import com.karankumar.bookproject.backend.repository.BookRepository;
-import com.nulabinc.zxcvbn.Strength;
-import com.nulabinc.zxcvbn.Zxcvbn;
 import lombok.NonNull;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -87,7 +84,6 @@ public class UserService {
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(userToRegister);
 
         if (!constraintViolations.isEmpty()) {
-
             throw new ConstraintViolationException(constraintViolations);
         }
         
@@ -95,8 +91,6 @@ public class UserService {
             throw new UserAlreadyRegisteredException(
                     "A user with the email address " + userToRegister.getEmail() + " already exists");
         }
-
-
 
         userRepository.save(createNewUser(userToRegister));
         authenticateUser(userToRegister);
