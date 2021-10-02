@@ -133,7 +133,6 @@ public class UserService {
 
         if (authResult.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authResult);
-            logger.info("UserService");
         }
 
     }
