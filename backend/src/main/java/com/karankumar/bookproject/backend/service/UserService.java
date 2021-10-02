@@ -27,8 +27,6 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import com.karankumar.bookproject.backend.repository.RoleRepository;
 import com.karankumar.bookproject.backend.repository.UserRepository;
 import lombok.NonNull;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -59,7 +57,6 @@ public class UserService {
     private final PredefinedShelfService predefinedShelfService;
 
     public static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
-    protected final Log logger = LogFactory.getLog(this.getClass());
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
@@ -134,7 +131,6 @@ public class UserService {
         if (authResult.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authResult);
         }
-
     }
 
     public boolean isEmailInUse(@NonNull String email) {
