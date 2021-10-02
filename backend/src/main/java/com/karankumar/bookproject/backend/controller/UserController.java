@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.service.UserAlreadyRegisteredException
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -70,12 +75,23 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void register(@RequestBody UserToRegisterDto user) {
+    public ResponseEntity<Object> register(@RequestBody UserToRegisterDto user) {
         try {
             userService.register(user);
+            return ResponseEntity.status(HttpStatus.OK).body("user created");
         } catch (UserAlreadyRegisteredException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email taken");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email taken");
         }
+        catch(ConstraintViolationException ex){
+            Set<ConstraintViolation<?>> violations= ex.getConstraintViolations();
+            List<String> errors = new ArrayList<>();
+            for(ConstraintViolation<?> vl:violations){
+                errors.add(vl.getMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        }
+
+
     }
 
     @DeleteMapping()

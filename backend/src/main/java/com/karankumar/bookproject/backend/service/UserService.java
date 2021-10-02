@@ -86,8 +86,8 @@ public class UserService {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(userToRegister);
 
-
         if (!constraintViolations.isEmpty()) {
+
             throw new ConstraintViolationException(constraintViolations);
         }
         
@@ -96,13 +96,7 @@ public class UserService {
                     "A user with the email address " + userToRegister.getEmail() + " already exists");
         }
 
-        //Verifying password strength.
-        Zxcvbn zxcvbn = new Zxcvbn();
-        Strength strength = zxcvbn.measure(userToRegisterDto.getPassword());
-        if(strength.getScore() <= PasswordStrength.VERY_STRONG.getStrengthNum()){
-            throw new ConstraintViolationException(constraintViolations);
 
-        }
 
         userRepository.save(createNewUser(userToRegister));
         authenticateUser(userToRegister);
