@@ -23,6 +23,8 @@ If not, see <https://www.gnu.org/licenses/>.
 .booklist-container-headers > .booklist-book-thumbnail {
   height: 0;
   background-color: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .booklist-book {
@@ -34,7 +36,8 @@ If not, see <https://www.gnu.org/licenses/>.
 }
 
 .booklist-book-thumbnail {
-  background-color: gray;
-  height: 120px;
+  overflow: hidden;
+  max-height: 120px;
+  max-height: 80px;
   width: 80px;
 }
