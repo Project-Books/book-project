@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.model.Publisher;
 import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.repository.BookRepository;
@@ -152,4 +153,8 @@ public class BookService {
         throw new NotImplementedException();
 //        return bookRepository.findByTitleOrAuthor(title, authorsName);
     }
+
+  public List<Book> findAllBooksByPredefinedShelfName(ShelfName predefinedShelfName) {
+    return bookRepository.findAllBooksByPredefinedShelfShelfName(predefinedShelfName);
+  }
 }
