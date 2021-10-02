@@ -18,6 +18,8 @@
 package com.karankumar.bookproject.backend.model.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.karankumar.bookproject.backend.constraints.PasswordStrength;
+import com.karankumar.bookproject.backend.constraints.PasswordStrengthCheck;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,23 +30,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import com.karankumar.bookproject.backend.constraints.PasswordStrength;
-import com.karankumar.bookproject.backend.constraints.PasswordStrengthCheck;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -83,7 +73,17 @@ public class User {
     @NotNull
     private boolean active;
 
-    // Fetch type can be eager as there are not many roles
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked;
+
+    @Column(name = "failed_attempts")
+    private Byte failedAttempts;
+
+    @Column(name = "lock_time")
+    private Timestamp lockTime;
+
+ // Fetch type can be eager as there are not many roles
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "user_role",
@@ -97,4 +97,14 @@ public class User {
             )
     )
     private Set<Role> roles = new HashSet<>();
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int num) {
+        failedAttempts = (byte) num;
+    }
+
+
+
 }

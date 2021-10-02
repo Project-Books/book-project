@@ -21,6 +21,7 @@ import com.karankumar.bookproject.backend.controller.Mappings;
 import com.karankumar.bookproject.backend.security.jwt.JwtConfig;
 import com.karankumar.bookproject.backend.security.jwt.JwtTokenVerifier;
 import com.karankumar.bookproject.backend.security.jwt.JwtUsernamePasswordAuthFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -93,6 +94,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/frontend-es5/**", "/frontend-es6/**");
     }
 
+    @Autowired
+    private CustomLoginSuccessHandler loginSuccessHandler;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
@@ -121,4 +124,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 }

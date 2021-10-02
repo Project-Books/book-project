@@ -20,6 +20,7 @@ package com.karankumar.bookproject.backend.security.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -49,21 +50,37 @@ public class JwtUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
+        UsernamePasswordAuthRequest authenticationRequest;
         try {
-            UsernamePasswordAuthRequest authenticationRequest =
+            authenticationRequest =
                     new ObjectMapper().readValue(
                             request.getInputStream(),
                             UsernamePasswordAuthRequest.class
                     );
 
+            logger.info(authenticationRequest.getUsername());
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(),
                     authenticationRequest.getPassword()
             );
-            return authenticationManager.authenticate(authentication);
-        } catch (IOException e) {
+            Authentication a = authenticationManager.authenticate(authentication);
+            logger.info("auth = ");
+            return a;
+        } catch (BadCredentialsException e) {
+            logger.error("Bad credentials!", e);
+
+            //gotta log to both the user service and ip tracker
+            //because the user service tracks failed login attempts per user
+            //while the ip tracker tracks failed login attempts per ip
+//            dtbs.increaseFailedAttempts((User) dtbs.loadUserByUsername(authenticationRequest.getUsername()));
+//            ipTracker.unsuccessfulLogin(jwtRequest.getUsername(), req.getRemoteAddr());
+
+            throw new BadCredentialsException(e.getMessage());
+            }catch (IOException e) {
+
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -82,4 +99,17 @@ public class JwtUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
         response.addHeader(jwtConfig.getAuthorizationHeader(),
                 jwtConfig.getTokenPrefix() + token);
     }
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed)  {
+        logger.info("Authentication failed");
+        if(failed.getMessage().equals("Bad credentials")){
+            logger.info("BAD CREDENTIALS");
+        }
+
+
+    }
+
+
+
 }

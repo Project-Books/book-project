@@ -151,7 +151,7 @@ class Login extends Component<LoginProps, IState> {
     renderLoginError(): ReactElement {
         return (
                <p className="error-message">
-                 Your email or password is incorrect. Please try again
+                 Your email or password is incorrect. Please try again..
                </p>
         )
     }  

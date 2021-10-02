@@ -84,6 +84,7 @@ class HttpClientBase {
         };
         return fetch(this.baseUrl + Endpoints.login, requestOptions)
         .then(response => {
+            console.log(response);
             const headers = response.headers;
             this.headers['Authorization'] = headers.get('Authorization');
             return response;

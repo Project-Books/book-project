@@ -20,7 +20,6 @@ package com.karankumar.bookproject.backend.service;
 import org.springframework.security.core.AuthenticationException;
 
 public class UserAlreadyRegisteredException extends AuthenticationException {
-    public UserAlreadyRegisteredException(final String message) {
-        super(message);
+    public UserAlreadyRegisteredException(final String message) {        super(message);
     }
 }

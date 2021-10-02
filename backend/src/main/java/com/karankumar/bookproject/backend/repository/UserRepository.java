@@ -19,9 +19,15 @@ package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.account.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+    @Query("UPDATE User u SET u.failedAttempts = :failAttempts WHERE u.email = :email")
+    @Modifying
+    void updateFailedAttempts(@Param(value ="failAttempts")int failAttempts, @Param(value = "email")String email);
     Optional<User> findByEmail(String email);
 }
