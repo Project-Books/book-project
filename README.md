@@ -39,6 +39,8 @@ First, clone the repository (you'll need to fork first and then clone your fork 
 4. Run `yarn start` to start the development server
 5. Open `localhost:3000`
 
+For using multiple node versions in your system , install NVM (Node version manager) and use multiple node versions.
+
 Note that you'll be able to use the app without running the backend by manually editing the route (URL). However, some features (e.g. creating an account and logging in) require the backend to be running.
 
 ### Running the backend
