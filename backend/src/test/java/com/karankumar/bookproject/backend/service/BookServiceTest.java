@@ -49,7 +49,8 @@ class BookServiceTest {
     public void setUp() {
         AuthorService authorService = mock(AuthorService.class);
         PublisherService publisherService = mock(PublisherService.class);
-        bookService = new BookService(bookRepository, authorService, publisherService);
+        PredefinedShelfService predefinedShelfService = mock(PredefinedShelfService.class);
+        bookService = new BookService(bookRepository, authorService, publisherService, predefinedShelfService);
     }
 
     @Test

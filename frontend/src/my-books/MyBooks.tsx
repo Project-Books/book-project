@@ -90,6 +90,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                     variant="contained"
                     className="tempButton"
                     color="primary"
+                    disableElevation
                 >
                     Add Book
             </Button>
@@ -97,6 +98,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                     onClick={this.onAddShelf}
                     variant="contained"
                     color="primary"
+                    disableElevation
                 >
                     Add Shelf
             </Button>
