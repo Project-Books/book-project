@@ -1,0 +1,8 @@
+// .asciidoctorconfig
+:experimental:
+:icons: font
+
+
+:myprojectbasedir: {asciidoctorconfigdir}
+:snippets: {myprojectbasedir}/target/snippets
+
