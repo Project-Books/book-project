@@ -28,6 +28,7 @@ import MyBooks from "./my-books/MyBooks";
 import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
+import Search from './shared/components/Search';
 import DeleteAccount from "./delete-account/DeleteAccount";
 import { theme as lightTheme, darkTheme} from './shared/theme';
 import * as routes from "./shared/routes"
@@ -46,6 +47,7 @@ function App(): JSX.Element {
               <Route path={routes.SIGN_UP} component={Register} />
               <Route path={routes.MY_BOOKS} component={MyBooks} />
               <Route path={routes.GOAL} component={Goal} />
+              <Route path={routes.SEARCH} component={Search} />
               <Route 
                 path={routes.SETTINGS} 
                 render={() => 
