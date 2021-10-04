@@ -1,0 +1,40 @@
+.search-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 98vw;
+}
+
+.search-page-title {
+  font-size: 32px;
+  margin-left: 40px;
+}
+
+.search-bar {
+  margin: 20px;
+}
+
+.search-input {
+  border-radius: 26px;
+  font-size: 14pt;
+  height: 46px;
+  padding-left: 20px;
+  width: 100%;
+}
+
+.search-input::placeholder {
+  font-size: 14pt;
+  padding-left: 20px;
+}
+
+search-input:hover,
+search-input:focus {
+  border: 1 px solid black;
+  background-color: white;
+}
+
+.search-icon-container {
+  position: absolute;
+  top: 114px;
+  right: 32px;
+}
