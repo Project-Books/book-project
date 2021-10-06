@@ -19,6 +19,8 @@ import React, { Component } from 'react'
 import { Book } from '../types/Book';
 import './BookList.css';
 
+const CHAR_LIMIT = 40;
+
 export interface BookListProps {
   bookListData: Book[];
 }
@@ -38,7 +40,10 @@ export default class BookList extends Component <BookListProps> {
         </div>
         {this.props.bookListData.map(book => (
           <div className="booklist-book" key={book.title}>
-              <div className="booklist-book-thumbnail"></div>
+            <div className="booklist-book-thumbnail">
+              {book.title.length > CHAR_LIMIT ?
+                book.title.substring(0, CHAR_LIMIT) + "..." : book.title}
+            </div>
             <div className="booklist-book-title">{book.title}</div>
             <div className="booklist-book-author">{book.author.fullName}</div>
             <div className="booklist-book-shelf">{book.predefinedShelf.shelfName}</div>

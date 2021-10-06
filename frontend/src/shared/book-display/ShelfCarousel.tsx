@@ -26,6 +26,7 @@ function ShelfBook(props: BookProps) {
 
     return (
         <div className={bookClass} style={{ backgroundImage: imgURL }}>
+            {(bookClass!=="book")&&<div className="book-spine"></div>}
             <p className={titleClass}>{props.title}</p>
         </div>
     )
