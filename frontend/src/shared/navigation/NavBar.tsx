@@ -42,7 +42,8 @@ import Button from "@material-ui/core/Button";
 function NavItem(props: NavItemProps) {
     const classes = useStyles();
     return (
-          <Link to={props.goTo} style={{ textDecoration: 'none' }}>
+          <Link
+            to={props.goTo} style={{ textDecoration: 'none' }}>
             <div className="nav-item">
                 <Button className={classes.button} startIcon={props.icon}>
                       {props.itemText}

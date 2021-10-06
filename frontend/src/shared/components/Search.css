@@ -46,3 +46,8 @@ search-input:focus {
   top: 16px;
   right: 14px;
 }
+
+.search-icon {
+  color: black;
+  cursor: pointer;
+}
