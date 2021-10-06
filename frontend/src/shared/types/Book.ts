@@ -1,5 +1,6 @@
 
 export type Book = {
+  id: number,
   title: string;
   // Add img property once we have thumbnails
   author:{
