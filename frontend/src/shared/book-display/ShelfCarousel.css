@@ -1,6 +1,7 @@
 * {
     --book-width: 110px;
     --book-height: 160px;
+    --book-overview-width: 180px;
     --book-margin: 25px;
     --book-icon: 50px;
     --primary-color-gradient: linear-gradient(170deg, rgba(40, 61, 255, 0.54) -13.03%, rgba(255, 255, 255, 0) 93.19%), #2E24A3;

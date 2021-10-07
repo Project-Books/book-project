@@ -41,7 +41,7 @@ export default class BookList extends Component <BookListProps> {
           <div className="booklist-book-rating">Rating</div>
         </div>
         {this.props.bookListData.map(book => (
-          <Link to={ routes.BOOK_OVERVIEW + book.id } style={{ textDecoration: 'none', color: 'black' }} key={book.id}>
+          <Link to={ routes.BOOK_OVERVIEW + "/" + book.id } style={{ textDecoration: 'none', color: 'black' }} key={book.id}>
             <div className="booklist-book">
 
               <div className="booklist-book-thumbnail">

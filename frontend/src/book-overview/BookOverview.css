@@ -1,0 +1,50 @@
+.book-image {
+    width: var(--book-overview-width) !important;
+    border-radius: 1px;
+    filter: drop-shadow(0px 40px 40px rgba(0, 0, 0, .4));
+    float: left;
+    margin-right: 30px;
+}
+
+.pageHeader {
+    margin-top: 20px;
+    align-items: unset;
+}
+
+.pencil-icon {
+    margin-left: 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.authorName {
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+.shelfName {
+    font-weight: 600;
+    margin-top: 30px;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.margin-right {
+    margin-right: 30px;
+}
+
+.submit-review {
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.book-details {
+    margin-top: 100px !important;
+}

@@ -32,6 +32,7 @@ import DeleteAccount from "./delete-account/DeleteAccount";
 import { theme as lightTheme, darkTheme} from './shared/theme';
 import * as routes from "./shared/routes"
 import BookOverview from "./book-overview/BookOverview";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App(): JSX.Element {
     const [theme, setTheme] = useState(lightTheme);
@@ -46,7 +47,7 @@ function App(): JSX.Element {
               <Route path={routes.SIGN_IN} component={Login} />
               <Route path={routes.SIGN_UP} component={Register} />
               <Route path={routes.MY_BOOKS} component={MyBooks} />
-              <Route path={routes.BOOK_OVERVIEW + ":id"} component={BookOverview} />
+              <Route path={routes.BOOK_OVERVIEW + "/:id"} component={BookOverview} />
               <Route path={routes.GOAL} component={Goal} />
               <Route 
                 path={routes.SETTINGS} 

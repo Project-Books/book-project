@@ -19,5 +19,4 @@ export default class Endpoints {
   static readonly login: string = "login";
   static readonly user: string = "api/user";
   static readonly books: string = "api/books";
-  static readonly concreteBook: string = "api/books/";
 }

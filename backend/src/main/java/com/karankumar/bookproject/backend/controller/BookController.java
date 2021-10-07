@@ -105,7 +105,6 @@ public class BookController {
   @GetMapping()
   // TODO: only retrieve books that belong to the logged in user
   public List<Book> all() {
-    System.out.println(bookService.findAll());
     return bookService.findAll();
   }
 
@@ -121,7 +120,7 @@ public class BookController {
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public Optional<Book>  addBook(@RequestBody BookDto bookDto) {
+  public Optional<Book> addBook(@RequestBody BookDto bookDto) {
     Book bookToAdd = convertToBook(bookDto);
     // TODO: check whether the book to save has a title, an author and a predefined shelf. If not, throw a 400-level exception
     return bookService.save(bookToAdd);
