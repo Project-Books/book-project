@@ -31,11 +31,11 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange = (event: any) => {
+    handleChange = (event: React.ChangeEventHandler<HTMLInputElement>): void => {
         this.setState({ name: event.target.value });
     };
 
-    submitShelf = (event: any) => {
+    submitShelf = (event: React.MouseEventHandler<HTMLButtonElement>): void => {
         event.preventDefault();
     };
     render(): JSX.Element {
@@ -55,7 +55,7 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
                                             id="outlined-basic"
                                             variant="outlined"
                                             value={this.state.name}
-                                            onChange={this.handleChange}
+                                            onChange={this.newMethod()}
                                         />
                                     </div>
                                 </Hidden>
@@ -100,4 +100,5 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
             </div>
         );
     }
+
 }

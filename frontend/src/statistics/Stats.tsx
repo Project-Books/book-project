@@ -17,9 +17,8 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React from 'react'
 import { Layout } from '../shared/components/Layout';
-import { NavBar } from '../shared/navigation/NavBar';
 
-function Stats() {
+function Stats(): JSX.Element {
     return (
         <Layout title="Statistics"></Layout>
     )

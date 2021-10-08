@@ -19,7 +19,7 @@ import React from 'react'
 import './ShelfCarousel.css'
 import { Icon } from '@material-ui/core';
 
-function ShelfBook(props: BookProps) {
+function ShelfBook(props: BookProps): JSX.Element {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
     const titleClass = 'book-title' + (props.img === "" ? '' : ' hide');
     const imgURL =  props.img && 'url(' + props.img + ')';
@@ -46,7 +46,7 @@ function AddBook() {
     )
 }
 
-export function ShelfCarousel(props: ShelfCarouselProps) {
+export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
     return (
         <div className="shelf-container">
             <span className="shelf-title">{props.title}</span>
@@ -57,6 +57,7 @@ export function ShelfCarousel(props: ShelfCarouselProps) {
                 <div className="book-wrap">
                     <ShelfBook 
                         title="Harry Potter"
+                        /* eslint-disable max-len */
                         img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />
                     <ShelfBook title="Harry Potter and the Chamber of Secrets" img="" />
                     <ShelfBook title="How Not to Die" img="" />

@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, { Component } from 'react'
+import React from 'react'
 import { NavBar } from '../navigation/NavBar'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from "react-router-dom";
