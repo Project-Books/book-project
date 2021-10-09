@@ -81,12 +81,11 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body("user created");
         } catch (UserAlreadyRegisteredException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email taken");
-        }
-        catch(ConstraintViolationException ex){
-            Set<ConstraintViolation<?>> violations= ex.getConstraintViolations();
+        } catch (ConstraintViolationException ex) {
+            Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
             List<String> errors = new ArrayList<>();
-            for(ConstraintViolation<?> vl:violations){
-                errors.add(vl.getMessage());
+            for (ConstraintViolation<?> v : violations) {
+                errors.add(v.getMessage());
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
