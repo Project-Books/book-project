@@ -22,7 +22,7 @@ import { Icon } from '@material-ui/core';
 function ShelfBook(props: BookProps) {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
     const titleClass = 'book-title' + (props.img === "" ? '' : ' hide');
-    const imgURL =  props.img && 'url(' + props.img + ')';
+    const imgURL = props.img && 'url(' + props.img + ')';
 
     return (
         <div className={bookClass} style={{ backgroundImage: imgURL }}>
@@ -54,16 +54,20 @@ export function ShelfCarousel(props: ShelfCarouselProps) {
 
             <div className="books-and-shelf">
                 <div className="book-wrap">
-                    <ShelfBook 
+                    <ShelfBook
                         title="Harry Potter"
                         img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />
                     <ShelfBook title="Harry Potter and the Chamber of Secrets" img="" />
                     <ShelfBook title="How Not to Die" img="" />
-                    <ShelfBook 
-                        title="Little Fires Everywhere" 
-                        img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg" 
+                    <ShelfBook
+                        title="Little Fires Everywhere"
+                        img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg"
                     />
                     <ShelfBook title="Start With Why" img="" />
+                    <ShelfBook title="Unbroken" img="" />
+                    <ShelfBook title="Unbroken" img="" />
+                    <ShelfBook title="Unbroken" img="" />
+                    <ShelfBook title="Unbroken" img="" />
                     <ShelfBook title="Unbroken" img="" />
                     <AddBook />
                     <div className="clear" />
