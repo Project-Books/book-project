@@ -35,7 +35,7 @@ interface IState {
     isPasswordDirty: boolean,
     isEmailInvalid: boolean,
     isPasswordInvalid: boolean,
-    loginFailed: boolean,
+    loginFailed: string,
     showForgotPasswordModal: boolean,
     showPasswordResetModal: boolean
 }
@@ -52,7 +52,7 @@ class Login extends Component<LoginProps, IState> {
             isPasswordDirty: false,
             isEmailInvalid: false,
             isPasswordInvalid: false,
-            loginFailed: false,
+            loginFailed: '',
             showForgotPasswordModal: false,
             showPasswordResetModal: false
         }
@@ -139,11 +139,15 @@ class Login extends Component<LoginProps, IState> {
                 if (response.ok) {
                     this.props.history.push(MY_BOOKS)
                 } else {
-                    this.setState({loginFailed: true});
+                    this.setState({
+                        loginFailed: 'Your email or password is incorrect. Please try again'
+                    });
                 }
             })
             .catch(error => {
-                this.setState({loginFailed: true})
+                this.setState({
+                    loginFailed: 'Sorry, something went wrong on our end. Please try again later.'
+                })
                 console.error('error: ', error)
             })
     }
@@ -151,7 +155,7 @@ class Login extends Component<LoginProps, IState> {
     renderLoginError(): ReactElement {
         return (
                <p className="error-message">
-                 Your email or password is incorrect. Please try again
+                 {this.state.loginFailed}
                </p>
         )
     }  
