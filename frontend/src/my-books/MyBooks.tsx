@@ -74,7 +74,6 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
 
     trackCurrentDeviceSize(): void {
         window.onresize = (): void => {
-            console.log('yeah')
             if (window.matchMedia("(max-width: 800px)").matches) {
                 this.setState({ showListView: true })
             } else {

@@ -45,6 +45,24 @@ function AddBook() {
     )
 }
 
+const SHELF_BOOKS: JSX.Element[] = [
+    <ShelfBook
+        key={0}
+        title="Harry Potter"
+        img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />,
+    <ShelfBook key={1} title="Harry Potter and the Chamber of Secrets" img="" />,
+    <ShelfBook key={2} title="How Not to Die" img="" />,
+    <ShelfBook
+        key={3}
+        title="Little Fires Everywhere"
+        img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg"
+    />,
+    <ShelfBook key={4} title="Start With Why" img="" />,
+    <ShelfBook key={5} title="Unbroken" img="" />,
+    <ShelfBook key={6} title="Unbroken" img="" />,
+    <ShelfBook key={7} title="Unbroken" img="" />
+]
+
 export function ShelfCarousel(props: ShelfCarouselProps) {
     return (
         <div className="shelf-container">
@@ -54,21 +72,9 @@ export function ShelfCarousel(props: ShelfCarouselProps) {
 
             <div className="books-and-shelf">
                 <div className="book-wrap">
-                    <ShelfBook
-                        title="Harry Potter"
-                        img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />
-                    <ShelfBook title="Harry Potter and the Chamber of Secrets" img="" />
-                    <ShelfBook title="How Not to Die" img="" />
-                    <ShelfBook
-                        title="Little Fires Everywhere"
-                        img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg"
-                    />
-                    <ShelfBook title="Start With Why" img="" />
-                    <ShelfBook title="Unbroken" img="" />
-                    <ShelfBook title="Unbroken" img="" />
-                    <ShelfBook title="Unbroken" img="" />
-                    <ShelfBook title="Unbroken" img="" />
-                    <ShelfBook title="Unbroken" img="" />
+                    {
+                        SHELF_BOOKS.map((shelfBook, index) => index < 6 ? shelfBook : null)
+                    }
                     <AddBook />
                     <div className="clear" />
                 </div>
