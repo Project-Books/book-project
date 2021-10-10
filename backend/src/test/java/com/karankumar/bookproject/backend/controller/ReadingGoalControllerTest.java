@@ -57,23 +57,7 @@ class ReadingGoalControllerTest {
 
         assertThat(readingGoalController.getPreviousReadingGoals()).isEqualTo(readingGoalList);
     }
-
-    @Test
-    void getCurrentReadingGoal_returnResponseStatusException_whenNoReadingGoalExists(){
-        when(readingGoalService.findAll()).thenReturn(Collections.emptyList());
-
-        ThrowableAssert.ThrowingCallable callable =
-                () -> readingGoalController.getExistingReadingGoal();
-
-        assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(callable)
-                .withMessage(String.format(
-                        "%s \"%s\"",
-                        HttpStatus.NOT_FOUND,
-                        ReadingGoalController.READING_GOAL_NOT_FOUND
-                ));
-    }
-
+    
     @Test
     void getCurrentReadingGoal_returnCurrentGoal_whenReadingGoalExists(){
         when(readingGoalService.findAll())
