@@ -21,8 +21,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.karankumar.bookproject.backend.dto.BookPatchDto;
 import com.karankumar.bookproject.backend.model.Author;
 import com.karankumar.bookproject.backend.model.Book;
+import com.karankumar.bookproject.backend.model.BookFormat;
+import com.karankumar.bookproject.backend.model.BookGenre;
 import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.model.Publisher;
 import com.karankumar.bookproject.backend.model.Shelf;
@@ -38,123 +41,183 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 
+import static java.util.stream.Collectors.toSet;
+
 @Service
 @Log
 @Transactional
 public class BookService {
-    private final AuthorService authorService;
-    private final BookRepository bookRepository;
-    private final PublisherService publisherService;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService,
-                       PublisherService publisherService) {
-        this.bookRepository = bookRepository;
-        this.authorService = authorService;
-        this.publisherService = publisherService;
-    }
+  private final AuthorService authorService;
+  private final BookRepository bookRepository;
+  private final PublisherService publisherService;
+  private final PredefinedShelfService predefinedShelfService;
 
-    public Optional<Book> findById(@NonNull Long id) {
-        return bookRepository.findBookById(id);
+  public BookService(BookRepository bookRepository, AuthorService authorService,
+      PublisherService publisherService, PredefinedShelfService predefinedShelfService) {
+    this.bookRepository = bookRepository;
+    this.authorService = authorService;
+    this.publisherService = publisherService;
+    this.predefinedShelfService = predefinedShelfService;
+  }
+
+  public Optional<Book> findById(@NonNull Long id) {
+    return bookRepository.findBookById(id);
 //        return bookRepository.findById(id);
+  }
+
+  public Optional<Book> save(@NonNull Book book) {
+    if (bookHasAuthorAndPredefinedShelf(book)) {
+      addBookToAuthor(book);
+      addBookToPublisher(book);
+      authorService.save(book.getAuthor());
+      return Optional.of(bookRepository.save(book));
     }
+    return Optional.empty();
+  }
 
-    public Optional<Book> save(@NonNull Book book) {
-        if (bookHasAuthorAndPredefinedShelf(book)) {
-            addBookToAuthor(book);
-            addBookToPublisher(book);
-            authorService.save(book.getAuthor());
-            return Optional.of(bookRepository.save(book));
-        }
-        return Optional.empty();
+  private boolean bookHasAuthorAndPredefinedShelf(Book book) {
+    return book.getAuthor() != null && book.getPredefinedShelf() != null;
+  }
+
+  private void addBookToAuthor(Book book) {
+    Author author = book.getAuthor();
+    Set<Book> authorBooks = author.getBooks();
+    authorBooks.add(book);
+    author.setBooks(authorBooks);
+  }
+
+  private void addBookToPublisher(Book book) {
+    Set<Publisher> publishers = book.getPublishers();
+    if (publishers != null && !publishers.isEmpty()) {
+      for (Publisher publisher : publishers) {
+        book.addPublisher(publisher);
+        publisherService.save(publisher);
+      }
     }
+  }
 
-    private boolean bookHasAuthorAndPredefinedShelf(Book book) {
-        return book.getAuthor() != null && book.getPredefinedShelf() != null;
+  public Long count() {
+    return bookRepository.count();
+  }
+
+  public List<Book> findAll() {
+    return bookRepository.findAllBooks();
+  }
+
+  public List<Book> findAll(String filterText) {
+    if (filterText == null || filterText.isEmpty()) {
+      return findAll();
     }
+    return bookRepository.findByTitleContainingIgnoreCase(filterText);
+  }
 
-    private void addBookToAuthor(Book book) {
-        Author author = book.getAuthor();
-        Set<Book> authorBooks = author.getBooks();
-        authorBooks.add(book);
-        author.setBooks(authorBooks);
+  public void delete(@NonNull Book book) {
+    bookRepository.delete(book);
+
+    if (!bookRepository.existsById(book.getId())) {
+      Author author = book.getAuthor();
+      // TODO: fix method. It returns lazy initialization exception
+      removeAuthorWithoutBooks(author);
     }
+  }
 
-    private void addBookToPublisher(Book book) {
-        Set<Publisher> publishers = book.getPublishers();
-        if (publishers != null && !publishers.isEmpty()) {
-            for (Publisher publisher : publishers) {
-                book.addPublisher(publisher);
-                publisherService.save(publisher);
-            }
-        }
+  private void removeAuthorWithoutBooks(@NonNull Author author) {
+    if (author.getBooks().isEmpty()) {
+      authorService.delete(author);
     }
+  }
 
-    public Long count() {
-        return bookRepository.count();
-    }
+  public void deleteAll() {
+    LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " +
+        bookRepository.count());
+    bookRepository.deleteAll();
+    authorService.deleteAll();
 
-    public List<Book> findAll() {
-        return bookRepository.findAllBooks();
-    }
+    LOGGER.log(
+        Level.INFO, "Deleted all books in books & authors. Book repository size = " +
+            bookRepository.count()
+    );
+  }
 
-    public List<Book> findAll(String filterText) {
-        if (filterText == null || filterText.isEmpty()) {
-            return findAll();
-        }
-        return bookRepository.findByTitleContainingIgnoreCase(filterText);
-    }
+  public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
+    List<Book> books = bookRepository.findAll();
 
-    public void delete(@NonNull Book book) {
-        bookRepository.delete(book);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
 
-        if (!bookRepository.existsById(book.getId())) {
-            Author author = book.getAuthor();
-            // TODO: fix method. It returns lazy initialization exception
-            removeAuthorWithoutBooks(author);
-        }
-    }
+    return jsonWriter.writeValueAsString(books);
+  }
 
-    private void removeAuthorWithoutBooks(@NonNull Author author) {
-        if (author.getBooks().isEmpty()) {
-            authorService.delete(author);
-        }
-    }
-
-    public void deleteAll() {
-        LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " +
-                bookRepository.count());
-        bookRepository.deleteAll();
-        authorService.deleteAll();
-
-        LOGGER.log(
-                Level.INFO, "Deleted all books in books & authors. Book repository size = " +
-                bookRepository.count()
-        );
-    }
-
-    public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
-        List<Book> books = bookRepository.findAll();
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        ObjectWriter jsonWriter = mapper.writer().withRootName("AllBooks");
-
-        return jsonWriter.writeValueAsString(books);
-    }
-
-    // TODO: split into findByShelfAndTitle and findShelfAndAuthor queries, and then merge result sets
-    public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName) {
-        throw new NotImplementedException();
+  // TODO: split into findByShelfAndTitle and findShelfAndAuthor queries, and then merge result sets
+  public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName) {
+    throw new NotImplementedException();
 //        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
-    }
+  }
 
-    public List<Book> findByTitleOrAuthor(String title, String authorsName) {
-        throw new NotImplementedException();
+  public List<Book> findByTitleOrAuthor(String title, String authorsName) {
+    throw new NotImplementedException();
 //        return bookRepository.findByTitleOrAuthor(title, authorsName);
-    }
+  }
 
   public List<Book> findAllBooksByPredefinedShelfName(ShelfName predefinedShelfName) {
     return bookRepository.findAllBooksByPredefinedShelfShelfName(predefinedShelfName);
   }
+
+  public Book updateBook(Book book, BookPatchDto bookPatchDto) {
+    updateBookMetadata(book, bookPatchDto);
+    updateAuthor(book, bookPatchDto);
+    updateGenres(book, bookPatchDto);
+    updatePredefinedShelf(book, bookPatchDto);
+    bookRepository.save(book);
+    return book;
+  }
+
+  private void updateBookMetadata(Book book, BookPatchDto bookPatchDto) {
+    Optional.ofNullable(bookPatchDto.getTitle())
+        .ifPresent(book::setTitle);
+    Optional.ofNullable(bookPatchDto.getNumberOfPages())
+        .ifPresent(book::setNumberOfPages);
+    Optional.ofNullable(bookPatchDto.getPagesRead())
+        .ifPresent(book::setPagesRead);
+    Optional.ofNullable(bookPatchDto.getBookFormat())
+        .map(BookFormat::valueOf)
+        .ifPresent(book::setBookFormat);
+    Optional.ofNullable(bookPatchDto.getSeriesPosition())
+        .ifPresent(book::setSeriesPosition);
+    Optional.ofNullable(bookPatchDto.getEdition())
+        .ifPresent(book::setEdition);
+    Optional.ofNullable(bookPatchDto.getBookRecommendedBy())
+        .ifPresent(book::setBookRecommendedBy);
+    Optional.ofNullable(bookPatchDto.getIsbn())
+        .ifPresent(book::setIsbn);
+    Optional.ofNullable(bookPatchDto.getYearOfPublication())
+        .ifPresent(book::setYearOfPublication);
+    Optional.ofNullable(bookPatchDto.getBookReview())
+        .ifPresent(book::setBookReview);
+  }
+
+  private void updateAuthor(Book book, BookPatchDto bookPatchDto) {
+    Optional.ofNullable(bookPatchDto.getAuthor())
+        .ifPresent(author -> {
+          book.setAuthor(author);
+          authorService.save(book.getAuthor());
+        });
+  }
+
+  private void updateGenres(Book book, BookPatchDto bookPatchDto) {
+    Optional.ofNullable(bookPatchDto.getBookGenres())
+        .map(genres -> genres.stream().map(BookGenre::valueOf).collect(toSet()))
+        .ifPresent(book::setBookGenre);
+  }
+
+  private void updatePredefinedShelf(Book book, BookPatchDto bookPatchDto) {
+    Optional.ofNullable(bookPatchDto.getPredefinedShelf())
+        .map(ShelfName::valueOf)
+        .flatMap(predefinedShelfService::getPredefinedShelfByPredefinedShelfName)
+        .ifPresent(book::setPredefinedShelf);
+  }
+
 }
