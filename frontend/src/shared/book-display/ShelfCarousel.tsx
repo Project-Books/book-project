@@ -63,7 +63,7 @@ const SHELF_BOOKS: JSX.Element[] = [
     <ShelfBook key={7} title="Unbroken" img="" />
 ]
 
-export function ShelfCarousel(props: ShelfCarouselProps) {
+export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
     return (
         <div className="shelf-container">
             <span className="shelf-title">{props.title}</span>
