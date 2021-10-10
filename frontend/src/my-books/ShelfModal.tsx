@@ -31,11 +31,11 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange = (event: any) => {
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({ name: event.target.value });
     };
 
-    submitShelf = (event: any) => {
+    submitShelf = (event: React.MouseEvent<HTMLButtonElement>): void => {
         event.preventDefault();
     };
     render(): JSX.Element {
@@ -100,4 +100,5 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
             </div>
         );
     }
+
 }
