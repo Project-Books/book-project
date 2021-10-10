@@ -19,13 +19,14 @@ import React from 'react'
 import './ShelfCarousel.css'
 import { Icon } from '@material-ui/core';
 
-function ShelfBook(props: BookProps) {
+function ShelfBook(props: BookProps): JSX.Element {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
     const titleClass = 'book-title' + (props.img === "" ? '' : ' hide');
     const imgURL = props.img && 'url(' + props.img + ')';
 
     return (
         <div className={bookClass} style={{ backgroundImage: imgURL }}>
+            {(bookClass!=="book")&&<div className="book-spine"></div>}
             <p className={titleClass}>{props.title}</p>
         </div>
     )

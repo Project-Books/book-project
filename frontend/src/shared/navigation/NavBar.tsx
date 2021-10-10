@@ -20,7 +20,7 @@ import './NavBar.css'
 import { ExitToApp, MenuBook, Settings, TrackChanges, TrendingUp } from '@material-ui/icons'
 import logo from '../media/logo/logo-two-lines-white@1x.png'
 import darkLogo from '../media/logo/dark-logo.png';
-import * as routes from '../routes'
+import { HOME, MY_BOOKS, GOAL, STATS, SETTINGS, SIGN_IN } from '../routes'
 import { useTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom'
 import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
@@ -46,7 +46,7 @@ function NavItem(props: NavItemProps) {
 }
 
 type NavItemProps = {
-    icon: any;
+    icon: JSX.Element;
     itemText: string;
     goTo: string;
 }
@@ -59,19 +59,19 @@ export function NavBar(): JSX.Element {
         <MuiThemeProvider theme={theme}>
         <div className={navClass}>
             <div className="nav-top">
-              <Link to={routes.HOME}>
+              <Link to={HOME}>
                   <img src={theme.palette.type === 'dark' ? logo 
                   : darkLogo} alt="Logo" id="nav-bar-logo" /> 
               </Link>
             </div>
             <div className="nav-links" id="nav-links-top">
-              <NavItem icon={<MenuBook />} itemText={"My books"} goTo={routes.MY_BOOKS} />
-              <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={routes.GOAL} />
-              <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={routes.STATS} />
+              <NavItem icon={<MenuBook />} itemText={"My books"} goTo={MY_BOOKS} />
+              <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={GOAL} />
+              <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={STATS} />
             </div>
             <div className="nav-links">
-              <NavItem icon={<Settings />} itemText={"Settings"} goTo={routes.SETTINGS} />
-              <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={routes.SIGN_IN} />
+              <NavItem icon={<Settings />} itemText={"Settings"} goTo={SETTINGS} />
+              <NavItem icon={<ExitToApp />} itemText={"Log out"} goTo={SIGN_IN} />
             </div>
         </div>
       </MuiThemeProvider>

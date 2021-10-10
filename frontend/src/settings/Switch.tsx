@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from 'react'
-import Switch from '@material-ui/core/Switch';
+import Switch, { SwitchProps } from '@material-ui/core/Switch';
 import { makeStyles} from '@material-ui/core/styles';
 import { grey } from '@material-ui/core/colors';
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
   thumb: {},
 })
 
-function ColoredSwitch(props: any): JSX.Element {
+function ColoredSwitch(props: SwitchProps): JSX.Element {
   const classes = useStyles()
   return (
     <div>

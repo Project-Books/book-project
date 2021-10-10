@@ -20,6 +20,7 @@
         <lombok.version>1.18.20</lombok.version>
         <sonar.organization>project-books</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <asciidoctor.maven.plugin.version>2.2.1</asciidoctor.maven.plugin.version>
     </properties>
 
     <dependencies>
@@ -250,6 +251,16 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>${asciidoctor.maven.plugin.version}</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/asciidoc</sourceDirectory>
+                    <sourceDocumentName>index.adoc</sourceDocumentName>
+                    <outputDirectory>${project.build.directory}/docs</outputDirectory>
+                    <backend>html</backend>
+                    <attributes>
+                        <snippets>${project.build.directory}/snippets</snippets>
+                    </attributes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>generate-docs</id>
@@ -257,13 +268,6 @@
                         <goals>
                             <goal>process-asciidoc</goal>
                         </goals>
-                        <configuration>
-                            <sourceDocumentName>index.adoc</sourceDocumentName>
-                            <backend>html</backend>
-                            <attributes>
-                                <snippets>${project.build.directory}/snippets</snippets>
-                            </attributes>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
