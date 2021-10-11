@@ -15,7 +15,6 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { type } from "os";
 import React, { Component, ReactElement } from "react";
 import Endpoints from "../api/endpoints";
 import HttpClient from "../http/HttpClient";
@@ -40,7 +39,7 @@ export default class ShelfView extends Component<Record<string, unknown>, IShelf
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         HttpClient.get(Endpoints.read).then((readBooks: Book[]) => {
             this.setState({
                 readBooks: readBooks
