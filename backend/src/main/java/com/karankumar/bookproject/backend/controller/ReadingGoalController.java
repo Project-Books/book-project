@@ -21,9 +21,9 @@ public class ReadingGoalController {
     private final ReadingGoalService readingGoalService;
     private final ModelMapper modelMapper;
 
-    static final String READING_GOAL_NOT_FOUND = "Reading goal not found.";
-    static final String GOAL_TYPE_NOT_FOUND = "Goal type not found.";
-    static final String TARGET_BAD_REQUEST = "Target minimal value is 1.";
+    public static final String READING_GOAL_NOT_FOUND = "Reading goal not found.";
+    public static final String GOAL_TYPE_NOT_FOUND = "Goal type not found.";
+    public static final String TARGET_BAD_REQUEST = "Target minimal value is 1.";
 
     @Autowired
     ReadingGoalController(ReadingGoalService readingGoalService, ModelMapper modelMapper) {
