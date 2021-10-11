@@ -1,2 +1,0 @@
-ALTER TABLE book
-    ADD COLUMN isbn VARCHAR(13);

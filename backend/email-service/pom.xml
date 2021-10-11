@@ -15,6 +15,13 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.icegreen/greenmail -->
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail-junit5</artifactId>
+            <version>${greenmail.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -34,6 +41,7 @@
     </dependencies>
 
     <properties>
+        <greenmail.version>1.6.1</greenmail.version>
         <junit.version>3.8.1</junit.version>
         <spring-boot-starter-mail.version>2.5.5</spring-boot-starter-mail.version>
         <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
