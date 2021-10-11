@@ -33,7 +33,7 @@ let HttpClient: () => HttpClientBase;
 })();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type HttpReponse = Promise<Record<string, any>>;
+type HttpResponse = Promise<Record<string, any>>;
 
 class HttpClientBase {
   axiosInstance: AxiosInstance;
@@ -41,8 +41,6 @@ class HttpClientBase {
     this.axiosInstance = Axios.create({
       baseURL: "http://localhost:8080/",
       headers: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        Authorization: null,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "Content-Type": "application/json",
         // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -66,7 +64,7 @@ class HttpClientBase {
         }
       });
   }
-  login(email: string, password: string): HttpReponse {
+  login(email: string, password: string): HttpResponse {
     return this.axiosInstance(Endpoints.login, {
       method: "POST",
       headers: {
@@ -83,7 +81,7 @@ class HttpClientBase {
       return res.data;
     });
   }
-  deleteAccount(password: string): HttpReponse {
+  deleteAccount(password: string): HttpResponse {
     return this.axiosInstance(Endpoints.user, {
       method: "DELETE",
       data: {
