@@ -2,7 +2,9 @@ package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.ReadingGoal;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
+import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.ThrowableAssert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -27,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,11 +41,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class ReadingGoalControllerTest {
     @Autowired
+    WebApplicationContext webApplicationContext;
+    @Autowired
     private MockMvc mockMvc;
 
     private ReadingGoalService readingGoalService;
     private ReadingGoalController readingGoalController;
     private List<ReadingGoal> readingGoalList = new ArrayList<>();
+
+    @BeforeEach()
+    void setup(){
+        mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+    }
 
     ReadingGoalControllerTest() {
         readingGoalService = mock(ReadingGoalService.class);
@@ -57,7 +69,7 @@ class ReadingGoalControllerTest {
 
         assertThat(readingGoalController.getPreviousReadingGoals()).isEqualTo(readingGoalList);
     }
-    
+
     @Test
     void getCurrentReadingGoal_returnCurrentGoal_whenReadingGoalExists(){
         when(readingGoalService.findAll())
@@ -137,7 +149,7 @@ class ReadingGoalControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "user@user.user")
+    @WithMockUser(username = "user@user.user", password = "password")
     void updateReadingGoals_returnBadRequestHttpStatus_whenWrongGoalTypeInput() throws Exception {
         mockMvc.perform(
                 put
