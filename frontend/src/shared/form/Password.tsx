@@ -67,7 +67,7 @@ type PasswordProps = {
   placeholderText: string,
   class?: string,
   classHelper?: string,
-  onPasswordChanged: any,
+  onPasswordChanged: (password: string) => void,
   isInvalid: boolean,
   errorMessage: string
 }

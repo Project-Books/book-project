@@ -20,7 +20,7 @@ import './ShelfCarousel.css'
 import { Icon } from '@material-ui/core';
 import { Book } from '../types/Book';
 
-function ShelfBook(props: BookProps) {
+function ShelfBook(props: BookProps): JSX.Element {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
     const titleClass = 'book-title' + (props.img === "" ? '' : ' hide');
     const imgURL =  props.img && 'url(' + props.img + ')';
@@ -47,7 +47,7 @@ function AddBook() {
     )
 }
 
-export function ShelfCarousel(props: ShelfCarouselProps): ReactElement {
+export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
     return (
         <div className="shelf-container">
             <span className="shelf-title">{props.title}</span>
