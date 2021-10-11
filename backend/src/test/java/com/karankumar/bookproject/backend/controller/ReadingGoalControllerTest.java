@@ -2,8 +2,6 @@ package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.ReadingGoal;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
-import org.aspectj.lang.annotation.Before;
-import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -11,14 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,11 +23,10 @@ import java.util.List;
 import static com.karankumar.bookproject.backend.controller.ReadingGoalController.GOAL_TYPE_NOT_FOUND;
 import static com.karankumar.bookproject.backend.controller.ReadingGoalController.TARGET_BAD_REQUEST;
 import static com.karankumar.bookproject.backend.model.ReadingGoal.GoalType.BOOKS;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -108,12 +103,12 @@ class ReadingGoalControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "user@user.user")
     void addReadingGoals_returnBadRequestHttpStatus_whenWrongGoalTypeInput() throws Exception {
         mockMvc.perform(
                 put
                         ("/api/goal/update")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                         .param("goalType", "journal")
                         .param("target", "1")        )
                 .andExpect(status().reason(GOAL_TYPE_NOT_FOUND))
