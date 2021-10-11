@@ -96,7 +96,6 @@ class ReadingGoalControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "user@user.user")
     void addReadingGoal_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
         mockMvc.perform(
                 post
