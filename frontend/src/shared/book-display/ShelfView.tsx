@@ -26,14 +26,14 @@ interface IShelfState {
     readingBooks: Book[],
     toReadBooks: Book[],
     readBooks: Book[],
-    unFinishedBooks: Book[]
+    didNotFinishBooks: Book[]
 }
 
 export default class ShelfView extends Component<Record<string, unknown>, IShelfState> {
     constructor(props: Record<string, unknown>) {
         super(props);
         this.state = {
-            unFinishedBooks: [],
+            didNotFinishBooks: [],
             readBooks: [],
             readingBooks: [],
             toReadBooks: []
@@ -56,20 +56,20 @@ export default class ShelfView extends Component<Record<string, unknown>, IShelf
                 toReadBooks: toReadBooks
             })
         });
-        HttpClient.get(Endpoints.didNotFinish).then((unFinishedBooks: Book[]) => {
+        HttpClient.get(Endpoints.didNotFinish).then((didNotFinishBooks: Book[]) => {
             this.setState({
-                unFinishedBooks: unFinishedBooks
+                didNotFinishBooks: didNotFinishBooks
             })
         });
     }
-
+    
     render(): ReactElement {
         return (
             <div>
                 <ShelfCarousel title="Reading" books={this.state.readingBooks} />
                 <ShelfCarousel title="To Read" books={this.state.toReadBooks} />
                 <ShelfCarousel title="Read" books={this.state.readBooks} />
-                <ShelfCarousel title="Did not finish" books={this.state.unFinishedBooks} />
+                <ShelfCarousel title="Did not finish" books={this.state.didNotFinishBooks} />
             </div>
         )
     }
