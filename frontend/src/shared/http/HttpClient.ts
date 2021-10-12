@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import Endpoints from "../api/endpoints";
 import Axios, { AxiosInstance } from "axios";
+import Verb from "./verb";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 let HttpClient: () => HttpClientBase;
@@ -83,7 +84,7 @@ class HttpClientBase {
   }
   deleteAccount(password: string): HttpResponse {
     return this.axiosInstance(Endpoints.user, {
-      method: "DELETE",
+      method: Verb.DELETE,
       data: {
         password: password,
       },
