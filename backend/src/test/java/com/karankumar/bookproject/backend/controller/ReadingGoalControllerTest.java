@@ -19,6 +19,8 @@ import com.karankumar.bookproject.backend.model.ReadingGoal;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
@@ -28,11 +30,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.karankumar.bookproject.backend.controller.ReadingGoalController.GOAL_TYPE_NOT_FOUND;
+import static com.karankumar.bookproject.backend.controller.ReadingGoalController.TARGET_BAD_REQUEST;
 import static com.karankumar.bookproject.backend.model.ReadingGoal.GoalType.BOOKS;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @TestPropertySource(locations = "classpath:application-test.properties")
 class ReadingGoalControllerTest {
@@ -40,12 +46,13 @@ class ReadingGoalControllerTest {
     private final ReadingGoalController readingGoalController;
     private final List<ReadingGoal> readingGoalList = new ArrayList<>();
 
+
     ReadingGoalControllerTest() {
         readingGoalService = mock(ReadingGoalService.class);
         ModelMapper modelMapper = mock(ModelMapper.class);
         readingGoalController = new ReadingGoalController(readingGoalService, modelMapper);
 
-        this.readingGoalList.add(new ReadingGoal(5, BOOKS));
+        this.readingGoalList.add(new ReadingGoal(0, BOOKS));
     }
 
     @Test

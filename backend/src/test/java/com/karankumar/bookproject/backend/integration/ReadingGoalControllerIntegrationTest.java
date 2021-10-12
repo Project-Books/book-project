@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "target/snippets")
 @Tag("Integration")
-public class ReadingGoalControllerIntegrationTest {
+class ReadingGoalControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
