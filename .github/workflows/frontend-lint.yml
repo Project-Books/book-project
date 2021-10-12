@@ -1,7 +1,19 @@
 name: Frontend Lint
 on:
   push:
+    paths:
+      - 'frontend/**/*.jsx?'
+      - 'frontend/**/*.tsx?'
+      - 'frontend/**/*.html'
+      - 'frontend/**/*.json'
+      - 'frontend/**/*.css'
   pull_request:
+    paths:
+      - 'frontend/**/*.jsx?'
+      - 'frontend/**/*.tsx?'
+      - 'frontend/**/*.html'
+      - 'frontend/**/*.json'
+      - 'frontend/**/*.css'
 
 jobs:
   lint:
