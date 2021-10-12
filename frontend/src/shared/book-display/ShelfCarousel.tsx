@@ -15,9 +15,10 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react'
+import React, { ReactElement } from 'react'
 import './ShelfCarousel.css'
 import { Icon } from '@material-ui/core';
+import { Book } from '../types/Book';
 
 function ShelfBook(props: BookProps): JSX.Element {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
@@ -26,7 +27,7 @@ function ShelfBook(props: BookProps): JSX.Element {
 
     return (
         <div className={bookClass} style={{ backgroundImage: imgURL }}>
-            {(bookClass!=="book")&&<div className="book-spine"></div>}
+            {(bookClass !== "book") && <div className="book-spine"></div>}
             <p className={titleClass}>{props.title}</p>
         </div>
     )
@@ -46,35 +47,16 @@ function AddBook() {
     )
 }
 
-const SHELF_BOOKS: JSX.Element[] = [
-    <ShelfBook
-        key={0}
-        title="Harry Potter"
-        img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />,
-    <ShelfBook key={1} title="Harry Potter and the Chamber of Secrets" img="" />,
-    <ShelfBook key={2} title="How Not to Die" img="" />,
-    <ShelfBook
-        key={3}
-        title="Little Fires Everywhere"
-        img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg"
-    />,
-    <ShelfBook key={4} title="Start With Why" img="" />,
-    <ShelfBook key={5} title="Unbroken" img="" />,
-    <ShelfBook key={6} title="Unbroken" img="" />,
-    <ShelfBook key={7} title="Unbroken" img="" />
-]
-
 export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
     return (
         <div className="shelf-container">
             <span className="shelf-title">{props.title}</span>
             <span className="view-all">View all</span>
             <div className="clear" />
-
             <div className="books-and-shelf">
                 <div className="book-wrap">
                     {
-                        SHELF_BOOKS.map((shelfBook, index) => index < 6 ? shelfBook : null)
+                        renderShelfBook(props.books)
                     }
                     <AddBook />
                     <div className="clear" />
@@ -83,8 +65,16 @@ export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
             </div>
         </div>
     )
-}
 
+    function renderShelfBook(books: Book[]): ReactElement[] {
+        const elements = Array<ReactElement>();
+        for (let i = 0; i < books.length; i++) {
+            elements.push(<ShelfBook key={i} title={books[i].title} img={''} />)
+        }
+        return elements;
+    }
+}
 type ShelfCarouselProps = {
     title: string;
+    books: Book[];
 }
