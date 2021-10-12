@@ -5,9 +5,13 @@ name: build
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'backend/**/*.java'
   pull_request:
+    branches:
+      - main
     paths:
       - 'backend/**/*.java'
 
