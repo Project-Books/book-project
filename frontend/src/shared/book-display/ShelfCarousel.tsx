@@ -68,8 +68,8 @@ export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
 
     function renderShelfBook(books: Book[]): ReactElement[] {
         const elements = Array<ReactElement>();
-        for (let i = 0; i < books.length; i++) {
-            elements.push(<ShelfBook key={i} title={books[i].title} img={''} />)
+        for (let i = 0; i < 5; i++) {
+            elements.push(<ShelfBook key={i} title={books[i].title} img={books[i].img} />)
         }
         return elements;
     }
