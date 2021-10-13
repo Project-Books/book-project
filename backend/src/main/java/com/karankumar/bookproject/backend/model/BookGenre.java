@@ -18,6 +18,8 @@
 
 package com.karankumar.bookproject.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum BookGenre {
     // This should be kept in alphabetical order
     ADVENTURE("Adventure"),
@@ -63,6 +65,7 @@ public enum BookGenre {
     TRAVEL("Travel"),
     YOUNG_ADULT("Young adult");
 
+    @JsonValue
     private final String genre;
 
     BookGenre(String genre) {

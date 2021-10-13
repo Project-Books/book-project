@@ -19,12 +19,12 @@ import React from 'react'
 import { Layout } from '../shared/components/Layout';
 import {Link} from 'react-router-dom';
 import ColoredSwitch from '../settings/Switch';
-import { withTheme,MuiThemeProvider} from '@material-ui/core/styles';
+import { withTheme,MuiThemeProvider, Theme} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './Settings.css'
 
 interface ISettingsProps {
-    theme: any;
+    theme: Theme;
     toggleTheme: () => void;
 }
 

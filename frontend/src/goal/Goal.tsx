@@ -19,7 +19,7 @@ import React from 'react'
 import "./Goal.css";
 import { Layout } from "../shared/components/Layout"
 
-export default function Goal() {
+export default function Goal(): JSX.Element {
     return (
         <Layout title="Reading goal">
             <div className="current-goal-container">
