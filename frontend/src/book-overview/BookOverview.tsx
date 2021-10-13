@@ -52,16 +52,16 @@ class BookOverview extends Component<Props, IState> {
   async getBook() {
     if (this.props.match) {
       await fetch(
-          "http://localhost:3000/api/books/" + this.props?.match?.params?.id,
-          {
-            headers: HttpClient.getHeaders(),
-          }
-        )
-        .then(res => res.json())
-        .then(data => {
-            this.setState({
-                book: data,
-            });
+        "http://localhost:3000/api/books/" + this.props?.match?.params?.id,
+        {
+          headers: HttpClient.getHeaders(),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.setState({
+            book: data,
+          });
         })
         .catch((error: Record<string, string>) => {
           console.error("error: ", error);
