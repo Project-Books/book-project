@@ -2,10 +2,20 @@
 
 This is an example output for a service running at http://localhost:8080:
 
+== Log in
+
+=== Log in with test user account
 .request
 include::{snippets}/login/http-request.adoc[]
-
 .response
 include::{snippets}/login/http-response.adoc[]
 
 As you can see the format is very simple, and in fact you always get the same message.
+
+== Register
+
+=== Register with a weak password
+.request
+include::{snippets}/register-with-weak-password/http-request.adoc[]
+.response
+include::{snippets}/register-with-weak-password/http-response.adoc[]

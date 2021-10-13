@@ -61,4 +61,27 @@ class UserControllerIntegrationTest {
                     .andExpect(status().isOk())
                     .andDo(document("login"));
     }
+
+    @Test
+    void cannotRegisterWithAWeakPassword() throws Exception {
+        // given
+        String url = "http://localhost:8080/api/user";
+        String weakPassword = "12345";
+
+        UserToRegisterDto userToRegisterDto = new UserToRegisterDto(
+            "test@test.test",
+            weakPassword
+        );
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = writer.writeValueAsString(userToRegisterDto);
+
+        // when & then
+        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
+            .andDo(print())
+            .andExpect(status().is4xxClientError())
+            .andDo(document("register-with-weak-password"));
+    }
 }
