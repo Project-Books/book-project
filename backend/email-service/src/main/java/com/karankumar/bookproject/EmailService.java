@@ -7,6 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootApplication
 @PropertySource("application.properties")
 @PropertySource("email.properties")
+@PropertySource("mailMessages.properties")
 
 public class EmailService
 {
