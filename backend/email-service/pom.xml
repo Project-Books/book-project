@@ -30,5 +30,6 @@
 
     <properties>
         <junit.version>3.8.1</junit.version>
+        <spring-boot-starter-mail.version>2.5.5</spring-boot-starter-mail.version>
     </properties>
 </project>
