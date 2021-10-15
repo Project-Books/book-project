@@ -19,6 +19,7 @@ import com.karankumar.bookproject.backend.model.Shelf;
 import com.karankumar.bookproject.backend.service.BookService;
 import com.karankumar.bookproject.backend.service.PredefinedShelfService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -50,9 +51,9 @@ class BookControllerTest {
 
     @Test
     void all_returnsEmptyList_whenNoBooksExist() {
-        when(mockedBookService.findAll()).thenReturn(new ArrayList<>());
+        when(mockedBookService.findBooksByPageNo(Mockito.anyInt())).thenReturn(new ArrayList<>());
 
-        assertThat(bookController.all().size()).isZero();
+        assertThat(bookController.allBooksByPageNumber(1).size()).isZero();
     }
 
     @Test
@@ -63,11 +64,13 @@ class BookControllerTest {
         books.add(new Book());
 
         // when
-        when(mockedBookService.findAll()).thenReturn(books);
+        when(mockedBookService.findBooksByPageNo(Mockito.anyInt())).thenReturn(books);
 
         // then
-        assertThat(bookController.all().size()).isEqualTo(books.size());
+        assertThat(bookController.allBooksByPageNumber(1).size()).isEqualTo(books.size());
     }
+
+
 
     @Test
     void findById_returnsBook_ifPresent() {

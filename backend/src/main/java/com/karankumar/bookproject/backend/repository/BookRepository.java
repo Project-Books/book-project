@@ -18,6 +18,10 @@
 package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -54,4 +58,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR " +
                 "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%'))")
     List<Book> findByTitleOrAuthor(@Param("titleOrAuthor") String titleOrAuthor);
+
+    @Query(value = "SELECT b " +
+            "FROM Book b " +
+            "INNER JOIN FETCH b.author " +
+            "INNER JOIN FETCH b.predefinedShelf " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers",
+            countQuery = "SELECT COUNT(b) FROM Book b")
+    Page<Book> findAllBooksByPageNumber(Pageable page);
 }

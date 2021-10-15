@@ -29,9 +29,13 @@ import com.karankumar.bookproject.backend.repository.BookRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -94,6 +98,18 @@ public class BookService {
 
     public List<Book> findAll() {
         return bookRepository.findAllBooks();
+    }
+
+    /**
+     * This method can be used to get all the books for a requested page no.
+     * @param pageNo
+     * @return -
+     */
+    public List<Book> findBooksByPageNo(int pageNo) {
+        //TODO : No of books per page is hardcoded as 50
+        Pageable pageable = PageRequest.of(pageNo,50);
+        Page<Book> requestedBooks =  bookRepository.findAllBooksByPageNumber(pageable);
+        return requestedBooks.getContent();
     }
 
     public List<Book> findAll(String filterText) {
