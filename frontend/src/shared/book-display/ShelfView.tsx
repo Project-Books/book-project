@@ -41,6 +41,8 @@ const SHELF_BOOKS: Book[] = [
         },
         bookGenre: [],
         rating: 0,
+        id: 0,
+        numberOfPages: 50,
     },
     {
         title: "How Not to Die",
@@ -53,6 +55,8 @@ const SHELF_BOOKS: Book[] = [
         },
         bookGenre: [],
         rating: 0,
+        id: 1,
+        numberOfPages: 60,
     },
     {
         title: "Harry Potter and the Chamber of Secrets",
@@ -65,6 +69,8 @@ const SHELF_BOOKS: Book[] = [
         },
         bookGenre: [],
         rating: 0,
+        id: 2,
+        numberOfPages: 55,
     },
     {
         title: "Start With Why",
@@ -77,6 +83,8 @@ const SHELF_BOOKS: Book[] = [
         },
         bookGenre: [],
         rating: 0,
+        id: 3,
+        numberOfPages: 1050,
     },
     {
         title: "Little Fires Everywhere",
@@ -89,6 +97,8 @@ const SHELF_BOOKS: Book[] = [
         },
         bookGenre: [],
         rating: 0,
+        id: 4,
+        numberOfPages: 600,
     },
     {
         title: "Unbroken",
@@ -101,6 +111,8 @@ const SHELF_BOOKS: Book[] = [
         },
         bookGenre: [],
         rating: 0,
+        id: 5,
+        numberOfPages: 558,
     },
     {
         title: "Unbroken",
@@ -113,6 +125,8 @@ const SHELF_BOOKS: Book[] = [
         },
         bookGenre: [],
         rating: 0,
+        id: 6,
+        numberOfPages: 405,
     },
     {
         title: "Unbroken",
@@ -125,6 +139,8 @@ const SHELF_BOOKS: Book[] = [
         },
         bookGenre: [],
         rating: 0,
+        id: 7,
+        numberOfPages: 432,
     },
 ]
 

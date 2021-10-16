@@ -45,6 +45,7 @@ class BookOverview extends Component<Props, IState> {
       book: {
         id: 0,
         title: "",
+        img: "",
         predefinedShelf: {
           shelfName: "",
         },
@@ -67,7 +68,7 @@ class BookOverview extends Component<Props, IState> {
     this.props.history.goBack();
   }
 
-  async getBook():Promise<void> {
+  async getBook(): Promise<void> {
     if (this.props.match) {
       await fetch(
         "http://localhost:3000/api/books/" + this.props?.match?.params?.id,
@@ -107,7 +108,7 @@ class BookOverview extends Component<Props, IState> {
             <div className="col-8">
               <img
                 className="book-image"
-  src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg"
+                src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg"
                 alt="book image"
               />
               <h1 className="pageTitle bold">{this.state.book.title}</h1>
