@@ -19,6 +19,8 @@ package com.karankumar.bookproject.backend.repository;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -75,4 +77,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
       "WHERE s.predefinedShelfName = :predefinedShelfName")
   List<Book> findAllBooksByPredefinedShelfShelfName(
       @Param("predefinedShelfName") ShelfName predefinedShelfName);
+
+    @Query(value = "SELECT b " +
+            "FROM Book b " +
+            "INNER JOIN FETCH b.author " +
+            "INNER JOIN FETCH b.predefinedShelf " +
+            "INNER JOIN FETCH b.tags " +
+            "INNER JOIN FETCH b.publishers",
+            countQuery = "SELECT COUNT(b) FROM Book b")
+    Page<Book> findAllBooksByPageNumber(Pageable page);
 }
