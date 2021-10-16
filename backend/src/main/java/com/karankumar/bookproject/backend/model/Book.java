@@ -56,7 +56,6 @@ import java.util.Set;
 @Entity
 @Builder
 @Data
-@JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

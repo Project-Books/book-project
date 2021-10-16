@@ -1,0 +1,63 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2021  Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
+.book-image {
+  width: var(--book-overview-width) !important;
+  border-radius: 1px;
+  filter: drop-shadow(0px 40px 40px rgba(0, 0, 0, 0.4));
+  float: left;
+  margin-right: 30px;
+}
+
+.pageHeader {
+  margin-top: 20px;
+  align-items: unset;
+}
+
+.pencil-icon {
+  margin-left: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.authorName {
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.shelfName {
+  font-weight: 600;
+  margin-top: 30px;
+}
+
+.margin-right {
+  margin-right: 30px;
+}
+
+.submit-review {
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.book-details {
+  margin-top: 100px !important;
+}

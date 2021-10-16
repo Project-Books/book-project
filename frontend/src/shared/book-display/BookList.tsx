@@ -18,6 +18,8 @@ If not, see <https://www.gnu.org/licenses/>.
 import React, { Component } from 'react'
 import { Book } from '../types/Book';
 import './BookList.css';
+import { BOOK_OVERVIEW } from '../routes'
+import { Link } from 'react-router-dom';
 
 const CHAR_LIMIT = 40;
 
@@ -39,17 +41,21 @@ export default class BookList extends Component <BookListProps> {
           <div className="booklist-book-rating">Rating</div>
         </div>
         {this.props.bookListData.map(book => (
-          <div className="booklist-book" key={book.title}>
-            <div className="booklist-book-thumbnail">
-              {book.title.length > CHAR_LIMIT ?
-                book.title.substring(0, CHAR_LIMIT) + "..." : book.title}
+          <Link to={ BOOK_OVERVIEW + "/" + book.id }
+           style={{ textDecoration: 'none', color: 'black' }} key={book.id}>
+            <div className="booklist-book">
+
+              <div className="booklist-book-thumbnail">
+                {book.title.length > CHAR_LIMIT ?
+                  book.title.substring(0, CHAR_LIMIT) + "..." : book.title}
+              </div>
+              <div className="booklist-book-title">{book.title}</div>
+              <div className="booklist-book-author">{book.author.fullName}</div>
+              <div className="booklist-book-shelf">{book.predefinedShelf.shelfName}</div>
+              <div className="booklist-book-genre">{book.bookGenre}</div>
+              <div className="booklist-book-rating">{book.rating}</div>
             </div>
-            <div className="booklist-book-title">{book.title}</div>
-            <div className="booklist-book-author">{book.author.fullName}</div>
-            <div className="booklist-book-shelf">{book.predefinedShelf.shelfName}</div>
-            <div className="booklist-book-genre">{book.bookGenre}</div>
-            <div className="booklist-book-rating">{book.rating}</div>
-          </div>
+         </Link>
         ))}
       </div>
     )
