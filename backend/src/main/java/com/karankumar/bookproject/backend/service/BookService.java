@@ -228,7 +228,6 @@ public class BookService {
    * @return -
    */
   public List<Book> findBooksByPageNo(int pageNo) {
-    //TODO : No of books per page is hardcoded as 50
     Pageable pageable = PageRequest.of(pageNo,50);
     Page<Book> requestedBooks =  bookRepository.findAllBooksByPageNumber(pageable);
     return requestedBooks.getContent();
