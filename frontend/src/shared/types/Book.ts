@@ -1,4 +1,5 @@
 export type Book = {
+  id: number,
   title: string;
   img: string;
   // Add img property once we have thumbnails
@@ -8,6 +9,7 @@ export type Book = {
   predefinedShelf: {
     shelfName: string;
   };
-  bookGenre: string[];
+  bookGenre: string [];
+  numberOfPages: number;
   rating: number;
 };

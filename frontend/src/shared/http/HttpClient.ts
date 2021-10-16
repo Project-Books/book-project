@@ -50,6 +50,9 @@ class HttpClientBase {
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     get(url: string): any {
+        if (this.headers["Authorization"] === null) {
+            window.location.replace("http://localhost:3000/sign-in");
+        }
         const requestOptions = {
             method:Verb.GET,
             headers: this.headers,
@@ -61,6 +64,14 @@ class HttpClientBase {
                 }
                 throw response;
             });
+    }
+
+    getHeaders() {
+        if (this.headers["Authorization"] === null) {
+            window.location.replace("http://localhost:3000/sign-in");
+        } else {
+            return this.headers;
+        }
     }
 
     login(email: string, password: string):HttpReponse {
