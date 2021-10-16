@@ -48,10 +48,11 @@
 
 .goal-modal-buttons {
   margin-top: 48px;
-  width: 500px;
+  width: 400px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 35px;
 }
 
 .goal-modal-cancel-btn {
