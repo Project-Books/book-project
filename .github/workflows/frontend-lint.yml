@@ -41,3 +41,4 @@ jobs:
           rm -rf node_modules
           yarn install --frozen-lockfile
           yarn lint --max-warnings 0 .
+          yarn tsc
