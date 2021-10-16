@@ -30,10 +30,13 @@ import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
 import DeleteAccount from "./delete-account/DeleteAccount";
 import { theme as lightTheme, darkTheme} from './shared/theme';
+import BookOverview from "./book-overview/BookOverview";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { 
     HOME, 
     SIGN_IN, 
-    SIGN_UP, 
+    SIGN_UP,
+    BOOK_OVERVIEW,
     MY_BOOKS, 
     GOAL, 
     SETTINGS, 
@@ -53,6 +56,7 @@ function App(): JSX.Element {
               <Route exact path={HOME} component={Login} />
               <Route path={SIGN_IN} component={Login} />
               <Route path={SIGN_UP} component={Register} />
+              <Route path={BOOK_OVERVIEW + "/:id"} component={BookOverview} />
               <Route path={MY_BOOKS} component={MyBooks} />
               <Route path={GOAL} component={Goal} />
               <Route 
