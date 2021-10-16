@@ -143,24 +143,25 @@ export default class ShelfView extends Component<Record<string, unknown>, IShelf
 
     componentDidMount(): void {
         HttpClient.get(Endpoints.read).then((readBooks: Book[]) => {
-            this.setState({
-                readBooks: readBooks
-            })
+            this.setState(state => ({
+                readBooks: Array.isArray(readBooks) ? readBooks : state.readBooks
+            }))
         });
         HttpClient.get(Endpoints.reading).then((readingBooks: Book[]) => {
-            this.setState({
-                readingBooks: readingBooks
-            })
+            this.setState(state => ({
+                readingBooks: Array.isArray(readingBooks) ? readingBooks : state.readingBooks
+            }))
         });
         HttpClient.get(Endpoints.toRead).then((toReadBooks: Book[]) => {
-            this.setState({
-                toReadBooks: toReadBooks
-            })
+            this.setState(state => ({
+                toReadBooks: Array.isArray(toReadBooks) ? toReadBooks : state.toReadBooks
+            }))
         });
         HttpClient.get(Endpoints.didNotFinish).then((didNotFinishBooks: Book[]) => {
-            this.setState({
-                didNotFinishBooks: didNotFinishBooks
-            })
+            this.setState(state => ({
+                didNotFinishBooks: Array.isArray(didNotFinishBooks)
+                    ? didNotFinishBooks : state.didNotFinishBooks
+            }))
         });
     }
 
