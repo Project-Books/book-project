@@ -108,6 +108,7 @@ class BookOverview extends Component<Props, IState> {
             <div className="col-8">
               <img
                 className="book-image"
+                // eslint-disable-next-line max-len
                 src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg"
                 alt="book image"
               />
