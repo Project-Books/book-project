@@ -40,7 +40,6 @@ class ReadingGoalControllerTest {
     private final ReadingGoalController readingGoalController;
     private final List<ReadingGoal> readingGoalList = new ArrayList<>();
 
-
     ReadingGoalControllerTest() {
         readingGoalService = mock(ReadingGoalService.class);
         ModelMapper modelMapper = mock(ModelMapper.class);

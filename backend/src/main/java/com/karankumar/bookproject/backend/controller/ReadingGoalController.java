@@ -16,66 +16,83 @@ package com.karankumar.bookproject.backend.controller;
 
 import com.karankumar.bookproject.backend.model.ReadingGoal;
 import com.karankumar.bookproject.backend.service.ReadingGoalService;
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static com.karankumar.bookproject.backend.model.ReadingGoal.*;
 
 @RestController
 @RequestMapping("/api/goal")
 public class ReadingGoalController {
 
     private final ReadingGoalService readingGoalService;
-    private final ModelMapper modelMapper;
 
     public static final String READING_GOAL_NOT_FOUND = "Reading goal not found.";
-    public static final String GOAL_TYPE_NOT_FOUND = "Goal type not found.";
-    public static final String TARGET_BAD_REQUEST = "Target minimal value is 1.";
+    public static final String TARGET_BAD_REQUEST = "Minimum target value is 1.";
 
     @Autowired
     ReadingGoalController(ReadingGoalService readingGoalService, ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-        Converter<String, GoalType> readingGoalFormatter = new AbstractConverter<>() {
-            public GoalType convert(String goalType) {
-                return GoalType.valueOf(goalType.toUpperCase());
-            }
-        };
-        this.modelMapper.addConverter(readingGoalFormatter);
         this.readingGoalService = readingGoalService;
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/delete")
+    @DeleteMapping()
     public void deleteReadingGoal() {
         readingGoalService.deleteAll();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/add")
-    public void addReadingGoal(@RequestParam(value = "goalType") String goalType,
-                               @RequestParam(value = "target") int target) {
-        try {
-            checkReadingGoalsAndSave(goalType, target);
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, GOAL_TYPE_NOT_FOUND);
+    @PostMapping("/add/books")
+    public void addBookReadingGoal(@RequestParam(value = "target") int target) {
+        if (target > 0) {
+            ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.BOOKS);
+            readingGoalService.save(readingGoal);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
+        }
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/add/pages")
+    public void addPagesReadingGoal(@RequestParam(value = "target") int target) {
+        if (target > 0) {
+            ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
+            readingGoalService.save(readingGoal);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
         }
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/update")
-    public void updateReadingGoal(@RequestParam(value = "goalType") String goalType,
-                                  @RequestParam(value = "target") int target) {
-        try {
-            checkReadingGoalsAndSave(goalType, target);
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, GOAL_TYPE_NOT_FOUND);
+    @PutMapping("/update/pages")
+    public void updatePagesReadingGoal(@RequestParam(value = "target") int target) {
+        if (target > 0) {
+            ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
+            readingGoalService.save(readingGoal);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/update/books")
+    public void updateBooksReadingGoal(@RequestParam(value = "target") int target) {
+        if (target > 0) {
+            ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
+            readingGoalService.save(readingGoal);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
         }
     }
 
@@ -91,26 +108,4 @@ public class ReadingGoalController {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, READING_GOAL_NOT_FOUND)
         );
     }
-
-    private void checkReadingGoalsAndSave(String goalType, int target) {
-
-        if (target > 0) {
-            try {
-                GoalType newGoalType = convertToReadingGoalEnum(goalType);
-                ReadingGoal newReadingGoal = new ReadingGoal(target, newGoalType);
-                readingGoalService.save(newReadingGoal);
-            }catch(Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, GOAL_TYPE_NOT_FOUND);
-            }
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
-        }
-    }
-
-
-
-    private GoalType convertToReadingGoalEnum(String goalType){
-        return modelMapper.map(goalType.toUpperCase(), GoalType.class);
-    }
-
 }

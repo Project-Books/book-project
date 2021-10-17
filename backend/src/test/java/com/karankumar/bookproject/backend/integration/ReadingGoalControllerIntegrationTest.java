@@ -27,14 +27,15 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static com.karankumar.bookproject.backend.controller.ReadingGoalController.GOAL_TYPE_NOT_FOUND;
 import static com.karankumar.bookproject.backend.controller.ReadingGoalController.TARGET_BAD_REQUEST;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -63,7 +64,8 @@ class ReadingGoalControllerIntegrationTest {
         String requestJson = writer.writeValueAsString(userToRegisterDto);
 
         // when & then
-        MvcResult result = this.mockMvc.perform(post(url + "/login").contentType(MediaType.APPLICATION_JSON).content(requestJson))
+        MvcResult result = this.mockMvc.perform(post(url + "/login")
+                .contentType(MediaType.APPLICATION_JSON).content(requestJson))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("login"))
@@ -82,10 +84,9 @@ class ReadingGoalControllerIntegrationTest {
     }
 
     @Test
-    void addReadingGoal_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
-        mockMvc.perform(post(url + "/api/goal/add")
+    void addBooksReadingGoal_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
+        mockMvc.perform(post(url + "/api/goal/add/books")
                 .header("Authorization", jwtToken)
-                .param("goalType", "books")
                 .param("target", "0"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
@@ -93,23 +94,19 @@ class ReadingGoalControllerIntegrationTest {
     }
 
     @Test
-    void addReadingGoals_returnBadRequestHttpStatus_whenWrongGoalTypeInput() throws Exception {
-        mockMvc.perform(put(url + "/api/goal/update")
+    void addPagesReadingGoal_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
+        mockMvc.perform(post(url + "/api/goal/add/pages")
                 .header("Authorization", jwtToken)
-                .param("goalType", "journal")
-                .param("target", "1"))
+                .param("target", "0"))
                 .andDo(print())
-                .andExpect(status().reason(GOAL_TYPE_NOT_FOUND))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 
     @Test
-    @WithMockUser(username = "user@user.user")
-    void addReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
-        mockMvc.perform(post(url + "/api/goal/add")
+    void addBooksReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
+        mockMvc.perform(post(url + "/api/goal/add/books")
                 .header("Authorization", jwtToken)
-                .param("goalType", "Books")
                 .param("target", "1"))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -117,10 +114,19 @@ class ReadingGoalControllerIntegrationTest {
     }
 
     @Test
-    void updateReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
-        mockMvc.perform(put(url + "/api/goal/update")
+    void addPagesReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
+        mockMvc.perform(post(url + "/api/goal/add/pages")
                 .header("Authorization", jwtToken)
-                .param("goalType", "books")
+                .param("target", "1"))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andReturn();
+    }
+
+    @Test
+    void updateBooksReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
+        mockMvc.perform(put(url + "/api/goal/update/books")
+                .header("Authorization", jwtToken)
                 .param("target", "0"))
                 .andDo(print())
                 .andExpect(status().reason(TARGET_BAD_REQUEST))
@@ -129,22 +135,30 @@ class ReadingGoalControllerIntegrationTest {
     }
 
     @Test
-    void updateReadingGoals_returnBadRequestHttpStatus_whenWrongGoalTypeInput() throws Exception {
-        mockMvc.perform(put(url + "/api/goal/update")
+    void updatePagesReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
+        mockMvc.perform(put(url + "/api/goal/update/pages")
                 .header("Authorization", jwtToken)
-                .param("goalType", "sheets")
-                .param("target", "1"))
+                .param("target", "0"))
                 .andDo(print())
-                .andExpect(status().reason(GOAL_TYPE_NOT_FOUND))
-                .andExpect(status().isNotFound())
+                .andExpect(status().reason(TARGET_BAD_REQUEST))
+                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 
     @Test
-    void updateReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
-        mockMvc.perform(put(url + "/api/goal/update")
+    void updatePagesReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
+        mockMvc.perform(put(url + "/api/goal/update/pages")
                 .header("Authorization", jwtToken)
-                .param("goalType", "books")
+                .param("target", "1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void updateBooksReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
+        mockMvc.perform(put(url + "/api/goal/update/books")
+                .header("Authorization", jwtToken)
                 .param("target", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -153,7 +167,7 @@ class ReadingGoalControllerIntegrationTest {
 
     @Test
     void deleteReadingGoal_returnIsOkRequestHttpStatus_whenRequestIsDone() throws Exception {
-        mockMvc.perform(delete(url + "/api/goal/delete")
+        mockMvc.perform(delete(url + "/api/goal")
                 .header("Authorization", jwtToken))
                 .andDo(print())
                 .andExpect(status().isNoContent())
