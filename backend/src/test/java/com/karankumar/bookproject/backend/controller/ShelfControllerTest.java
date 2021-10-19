@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -71,8 +72,10 @@ class ShelfControllerTest {
         when(mockedUserCreatedShelfService.findAllForLoggedInUser()).thenReturn(new ArrayList<>());
 
         // then
-        assertThat(shelfController.all().size()).isEqualTo(predefinedShelves.size());
-        assertThat(shelfController.all()).isEqualTo(List.of(predefinedShelf1, predefinedShelf2));
+        assertSoftly(softly -> {
+            softly.assertThat(shelfController.all().size()).isEqualTo(predefinedShelves.size());
+            softly.assertThat(shelfController.all()).isEqualTo(List.of(predefinedShelf1, predefinedShelf2));
+        });
     }
 
     @Test
@@ -89,8 +92,10 @@ class ShelfControllerTest {
         when(mockedUserCreatedShelfService.findAllForLoggedInUser()).thenReturn(userCreatedShelves);
 
         // then
-        assertThat(shelfController.all().size()).isEqualTo(userCreatedShelves.size());
-        assertThat(shelfController.all()).isEqualTo(List.of(userCreatedShelf1, userCreatedShelf2));
+        assertSoftly(softly -> {
+            softly.assertThat(shelfController.all().size()).isEqualTo(userCreatedShelves.size());
+            softly.assertThat(shelfController.all()).isEqualTo(List.of(userCreatedShelf1, userCreatedShelf2));
+        });
     }
 
     @Test
@@ -112,8 +117,10 @@ class ShelfControllerTest {
         when(mockedUserCreatedShelfService.findAllForLoggedInUser()).thenReturn(userCreatedShelves);
 
         // then
-        assertThat(shelfController.all().size()).isEqualTo(userCreatedShelves.size() + predefinedShelves.size());
-        assertThat(shelfController.all()).containsExactlyInAnyOrder(userCreatedShelf1, userCreatedShelf2, predefinedShelf1, predefinedShelf2);
+        assertSoftly(softly -> {
+            softly.assertThat(shelfController.all().size()).isEqualTo(userCreatedShelves.size() + predefinedShelves.size());
+            softly.assertThat(shelfController.all()).containsExactlyInAnyOrder(userCreatedShelf1, userCreatedShelf2, predefinedShelf1, predefinedShelf2);
+        });
     }
 
     @ParameterizedTest
@@ -127,8 +134,10 @@ class ShelfControllerTest {
             shelfController.create(specifiedName);
             fail("Should have thrown an exception for this empty-string case!");
         } catch (ResponseStatusException e) {
-            assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
+            assertSoftly(softly -> {
+                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
+            });
         }
     }
 
@@ -144,8 +153,10 @@ class ShelfControllerTest {
             shelfController.rename(oldName, "newName");
             fail("Should have thrown an exception for this empty-string case!");
         } catch (ResponseStatusException e) {
-            assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
+            assertSoftly(softly -> {
+                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
+            });
         }
     }
 
@@ -163,8 +174,10 @@ class ShelfControllerTest {
             shelfController.rename(shelf.getShelfName(), newName);
             fail("Should have thrown an exception for this empty-string case!");
         } catch (ResponseStatusException e) {
-            assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
+            assertSoftly(softly -> {
+                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
+            });
         }
     }
 
@@ -179,8 +192,10 @@ class ShelfControllerTest {
             shelfController.rename(shelfName, shelfName + "2");
             fail("Should have thrown an exception when the specified shelf does not exist!");
         } catch (ResponseStatusException e) {
-            assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-            assertThat(e.getReason()).isEqualTo("Specified shelf does not exist");
+            assertSoftly(softly -> {
+                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+                softly.assertThat(e.getReason()).isEqualTo("Specified shelf does not exist");
+            });
         }
     }
 
@@ -196,8 +211,10 @@ class ShelfControllerTest {
             shelfController.delete(oldName);
             fail("Should have thrown an exception for this empty-string case!");
         } catch (ResponseStatusException e) {
-            assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
+            assertSoftly(softly -> {
+                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
+            });
         }
     }
 
@@ -212,8 +229,10 @@ class ShelfControllerTest {
             shelfController.delete(shelfName);
             fail("Should have thrown an exception when the specified shelf does not exist!");
         } catch (ResponseStatusException e) {
-            assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-            assertThat(e.getReason()).isEqualTo("Specified shelf does not exist");
+            assertSoftly(softly -> {
+                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+                softly.assertThat(e.getReason()).isEqualTo("Specified shelf does not exist");
+            });
         }
     }
 }
