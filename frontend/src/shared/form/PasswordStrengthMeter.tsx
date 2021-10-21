@@ -66,7 +66,7 @@ function calculatePasswordMeter(score?: number): PasswordMeter {
   return STRENGTH_METERS[score]
 }
 
-function PasswordStrengthMeter({ score }: PasswordStrengthMeterProps) {
+function PasswordStrengthMeter({ score }: PasswordStrengthMeterProps): JSX.Element {
   const { color, progress, descriptor }: PasswordMeter = calculatePasswordMeter(score);
   const classes = useStyles({ color });
   return (

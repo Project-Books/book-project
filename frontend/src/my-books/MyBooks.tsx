@@ -17,7 +17,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, { Component, ReactElement } from "react";
 import { NavBar } from "../shared/navigation/NavBar";
-import { ShelfCarousel } from "../shared/book-display/ShelfCarousel";
 import Switch from "../settings/Switch";
 import Button from "@material-ui/core/Button";
 import ShelfModal from "./ShelfModal";
@@ -27,6 +26,7 @@ import { Book } from '../shared/types/Book';
 import HttpClient from '../shared/http/HttpClient';
 import Endpoints from '../shared/api/endpoints';
 import "./MyBooks.css";
+import ShelfView from "../shared/book-display/ShelfView";
 
 
 interface IState {
@@ -108,12 +108,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
                 {this.state.showListView ? (
                     <BookList bookListData={this.state.bookList} />
                     ) :
-                    <div>
-                        <ShelfCarousel title="Reading" />
-                        <ShelfCarousel title="To Read" />
-                        <ShelfCarousel title="Read" />
-                        <ShelfCarousel title="Did not finish" />
-                    </div>
+                    <ShelfView />
                 }
                 </div>
                 <ShelfModal

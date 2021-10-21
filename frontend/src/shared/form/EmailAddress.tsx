@@ -49,7 +49,7 @@ type EmailProps = {
   class?: string,
   classHelper?: string,
   isInvalid: boolean,
-  onChange: (event: any) => void,
+  onChange: (text: string) => void,
   errorMessage: string
 };
 

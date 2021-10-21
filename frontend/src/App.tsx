@@ -31,7 +31,19 @@ import Stats from "./statistics/Stats";
 import Search from './shared/components/Search';
 import DeleteAccount from "./delete-account/DeleteAccount";
 import { theme as lightTheme, darkTheme} from './shared/theme';
-import * as routes from "./shared/routes"
+import BookOverview from "./book-overview/BookOverview";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { 
+    HOME, 
+    SIGN_IN, 
+    SIGN_UP,
+    BOOK_OVERVIEW,
+    MY_BOOKS, 
+    GOAL, 
+    SETTINGS, 
+    DELETE_ACCOUNT, 
+    STATS
+} from "./shared/routes"
 
 function App(): JSX.Element {
     const [theme, setTheme] = useState(lightTheme);
@@ -42,19 +54,19 @@ function App(): JSX.Element {
     return (
         <ThemeProvider theme={theme}>
           <BrowserRouter>
-              <Route exact path={routes.HOME} component={Login} />
-              <Route path={routes.SIGN_IN} component={Login} />
-              <Route path={routes.SIGN_UP} component={Register} />
-              <Route path={routes.MY_BOOKS} component={MyBooks} />
-              <Route path={routes.GOAL} component={Goal} />
-              <Route path={routes.SEARCH} component={Search} />
+              <Route exact path={HOME} component={Login} />
+              <Route path={SIGN_IN} component={Login} />
+              <Route path={SIGN_UP} component={Register} />
+              <Route path={BOOK_OVERVIEW + "/:id"} component={BookOverview} />
+              <Route path={MY_BOOKS} component={MyBooks} />
+              <Route path={GOAL} component={Goal} />
               <Route 
-                path={routes.SETTINGS} 
+                path={SETTINGS} 
                 render={() => 
                 <Settings  theme={theme} toggleTheme={toggleTheme} />} 
               />
-              <Route path={routes.DELETE_ACCOUNT} component={DeleteAccount} />
-              <Route path={routes.STATS} component={Stats} />
+              <Route path={DELETE_ACCOUNT} component={DeleteAccount} />
+              <Route path={STATS} component={Stats} />
           </BrowserRouter>
         </ThemeProvider>
     )
