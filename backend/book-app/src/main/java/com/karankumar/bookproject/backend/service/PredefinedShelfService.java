@@ -21,18 +21,33 @@ import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.PredefinedShelf;
 import com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.backend.model.account.User;
-import com.karankumar.bookproject.backend.repository.*;
+import com.karankumar.bookproject.backend.repository.AuthorRepository;
+import com.karankumar.bookproject.backend.repository.BookRepository;
+import com.karankumar.bookproject.backend.repository.PredefinedShelfRepository;
+import com.karankumar.bookproject.backend.repository.PublisherRepository;
+import com.karankumar.bookproject.backend.repository.TagRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.*;
-import static com.karankumar.bookproject.backend.util.TestData.*;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.backend.model.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.backend.util.TestData.generateAuthors;
+import static com.karankumar.bookproject.backend.util.TestData.generateBooks;
+import static com.karankumar.bookproject.backend.util.TestData.generateListOfTags;
+import static com.karankumar.bookproject.backend.util.TestData.generatePublishers;
+import static com.karankumar.bookproject.backend.util.TestData.setPredefinedShelfForBooks;
 
 @Service
 @Log
