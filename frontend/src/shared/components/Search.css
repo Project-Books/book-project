@@ -41,13 +41,16 @@ search-input:focus {
   background-color: white;
 }
 
-.search-icon-container {
+.search-button {
+  border: none;
+  background-color: transparent;
   position: absolute;
-  top: 16px;
   right: 14px;
+  top: 12px;
 }
 
 .search-icon {
   color: black;
   cursor: pointer;
+  position: relative;
 }

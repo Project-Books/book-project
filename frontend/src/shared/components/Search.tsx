@@ -16,10 +16,18 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, { useState } from 'react'
-import HttpClient from '../http/HttpClient';
 import SearchIcon from "@material-ui/icons/Search";
 import { Layout } from '../components/Layout';
+import {
+  useQuery,
+  gql,
+} from "@apollo/client";
 import './Search.css';
+
+type Title =  {
+  id: number,
+  title: string,
+}
 
 export default function Search(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,24 +37,37 @@ export default function Search(): JSX.Element {
     setSearchTerm(e.target.value);
   }
 
-  // Create function that calls findByTitle/passes in search query
-  // Who is parent component?
-  // Should I create another method in HttpClient for this?
-  // If there is another component that has to search, then move searchBooks to httpClient
-  // Check endpoint with Karan
-  // Pass searchIcon onClick and pass it this function
-  async function searchBooks() {
-    const bookResponse = await HttpClient.get(`/api/books?title=${searchTerm}`);
-    const bookTitleData = bookResponse.data;
-    console.log('bookTitleData', bookTitleData);
+  const FIND_BY_TITLE = gql`
+   query Book {
+    findByTitleIgnoreCase {
+      title
+      id
+    }
+  }
+`;
+
+  function searchBooks() {
+    const { data, loading, error } = useQuery(FIND_BY_TITLE);
+    if (loading)  {
+      return <div>Loading</div>;
+    }
+    if (error) {
+      return <div>error</div>;
+    }
+    return data.book.map((book: Title) => (
+      <div key={book.id}>
+      <p>{JSON.stringify(book.title)}</p>
+      </div>
+    ));
   }
 
+searchBooks();
   return (
     <Layout title="Search">
       <div className="search-container">
         <div className="search-bar">
           <input
-            type="text"
+            type="string"
             className="search-input"
             id="search"
             placeholder="Search for a book title, author, or ISBN #"
@@ -54,10 +75,13 @@ export default function Search(): JSX.Element {
             onChange={handleChange}
           />
           <div className="search-icon-container">
-            <SearchIcon className="search-icon" />
+            <button className="search-button">
+             <SearchIcon className="search-icon" />
+            </button>
           </div>
         </div>
       </div>
     </Layout>
   )
 }
+
