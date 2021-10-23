@@ -31,18 +31,25 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/api/goal")
+@RequestMapping(Mappings.GOAL)
 public class ReadingGoalController {
-
     private final ReadingGoalService readingGoalService;
 
     public static final String READING_GOAL_NOT_FOUND = "Reading goal not found.";
     public static final String TARGET_BAD_REQUEST = "Minimum target value is 1.";
 
+    public static class Endpoints {
+        public static final String ADD_BOOKS = "/add/books";
+        public static final String ADD_PAGES = "/add/pages";
+        public static final String UPDATE_PAGES = "/update/pages";
+        public static final String UPDATE_BOOKS = "/update/books";
+        public static final String PREVIOUS = "/previous";
+        public static final String CURRENT = "/current";
+    }
+
     @Autowired
-    ReadingGoalController(ReadingGoalService readingGoalService, ModelMapper modelMapper) {
+    ReadingGoalController(ReadingGoalService readingGoalService) {
         this.readingGoalService = readingGoalService;
     }
 
@@ -53,7 +60,7 @@ public class ReadingGoalController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/add/books")
+    @PostMapping(Endpoints.ADD_BOOKS)
     public void addBookReadingGoal(@RequestParam(value = "target") int target) {
         if (target > 0) {
             ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.BOOKS);
@@ -64,7 +71,7 @@ public class ReadingGoalController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/add/pages")
+    @PostMapping(Endpoints.ADD_PAGES)
     public void addPagesReadingGoal(@RequestParam(value = "target") int target) {
         if (target > 0) {
             ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
@@ -75,7 +82,7 @@ public class ReadingGoalController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/update/pages")
+    @PutMapping(Endpoints.UPDATE_PAGES)
     public void updatePagesReadingGoal(@RequestParam(value = "target") int target) {
         if (target > 0) {
             ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
@@ -86,7 +93,7 @@ public class ReadingGoalController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/update/books")
+    @PutMapping(Endpoints.UPDATE_BOOKS)
     public void updateBooksReadingGoal(@RequestParam(value = "target") int target) {
         if (target > 0) {
             ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
@@ -97,12 +104,12 @@ public class ReadingGoalController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/previous")
+    @GetMapping(Endpoints.PREVIOUS)
     public List<ReadingGoal> getPreviousReadingGoals() {
         return readingGoalService.findAll();
     }
 
-    @GetMapping("/current")
+    @GetMapping(Endpoints.CURRENT)
     public ReadingGoal getExistingReadingGoal() {
         return readingGoalService.findAll().stream().findFirst().orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, READING_GOAL_NOT_FOUND)

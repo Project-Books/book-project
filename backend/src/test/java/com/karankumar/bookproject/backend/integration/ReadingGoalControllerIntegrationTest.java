@@ -18,6 +18,8 @@ package com.karankumar.bookproject.backend.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.karankumar.bookproject.backend.controller.Mappings;
+import com.karankumar.bookproject.backend.controller.ReadingGoalController;
 import com.karankumar.bookproject.backend.dto.UserToRegisterDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -44,133 +46,151 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs(outputDir = "target/snippets")
 @Tag("Integration")
 class ReadingGoalControllerIntegrationTest {
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    String url = "http://localhost:8080";
-    String jwtToken = "";
+  private final String AUTHORIZATION = "Authorization";
+  private final String url = "http://localhost:8080";
+  private String jwtToken = "";
 
-    @BeforeEach
-    void canLoginWithTestUser() throws Exception {
-        // given
-        UserToRegisterDto userToRegisterDto = new UserToRegisterDto(
-                "user@user.user",
-                "password"
-        );
+  @BeforeEach
+  void canLoginWithTestUser() throws Exception {
+    // given
+    UserToRegisterDto userToRegisterDto = new UserToRegisterDto("user@user.user", "password");
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = writer.writeValueAsString(userToRegisterDto);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+    ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+    String requestJson = writer.writeValueAsString(userToRegisterDto);
 
-        // when & then
-        MvcResult result = this.mockMvc.perform(post(url + "/login")
-                .contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andDo(document("login"))
-                .andReturn();
+    // when & then
+    MvcResult result =
+        this.mockMvc
+            .perform(
+                post(url + "/login").contentType(MediaType.APPLICATION_JSON).content(requestJson))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("login"))
+            .andReturn();
 
-        jwtToken = result.getResponse().getHeader("Authorization");
-    }
+    jwtToken = result.getResponse().getHeader(AUTHORIZATION);
+  }
 
-    @Test
-    void getPreviousReadingGoals_returnHttpStatus_whenReadingGoalExists() throws Exception {
-        mockMvc.perform(get(url + "/api/goal/previous")
-                .header("Authorization", jwtToken))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-    }
+  @Test
+  void getPreviousReadingGoals_returnHttpStatus_whenReadingGoalExists() throws Exception {
+    mockMvc
+        .perform(get(url + Mappings.GOAL + ReadingGoalController.Endpoints.PREVIOUS)
+                .header(AUTHORIZATION, jwtToken))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+  }
 
-    @Test
-    void addBooksReadingGoal_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
-        mockMvc.perform(post(url + "/api/goal/add/books")
-                .header("Authorization", jwtToken)
+  @Test
+  void addBooksReadingGoal_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
+    mockMvc
+        .perform(
+            post(url + Mappings.GOAL + ReadingGoalController.Endpoints.ADD_BOOKS)
+                .header(AUTHORIZATION, jwtToken)
                 .param("target", "0"))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andReturn();
+  }
 
-    @Test
-    void addPagesReadingGoal_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
-        mockMvc.perform(post(url + "/api/goal/add/pages")
-                .header("Authorization", jwtToken)
+  @Test
+  void addPagesReadingGoal_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
+    mockMvc
+        .perform(
+            post(url + Mappings.GOAL + ReadingGoalController.Endpoints.ADD_PAGES)
+                .header(AUTHORIZATION, jwtToken)
                 .param("target", "0"))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andReturn();
+  }
 
-    @Test
-    void addBooksReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
-        mockMvc.perform(post(url + "/api/goal/add/books")
-                .header("Authorization", jwtToken)
+  @Test
+  void addBooksReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
+    mockMvc
+        .perform(
+            post(url + Mappings.GOAL + ReadingGoalController.Endpoints.ADD_BOOKS)
+                .header(AUTHORIZATION, jwtToken)
                 .param("target", "1"))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andReturn();
-    }
+        .andDo(print())
+        .andExpect(status().isCreated())
+        .andReturn();
+  }
 
-    @Test
-    void addPagesReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
-        mockMvc.perform(post(url + "/api/goal/add/pages")
-                .header("Authorization", jwtToken)
+  @Test
+  void addPagesReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
+    mockMvc
+        .perform(
+            post(url + Mappings.GOAL + ReadingGoalController.Endpoints.ADD_PAGES)
+                .header(AUTHORIZATION, jwtToken)
                 .param("target", "1"))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andReturn();
-    }
+        .andDo(print())
+        .andExpect(status().isCreated())
+        .andReturn();
+  }
 
-    @Test
-    void updateBooksReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
-        mockMvc.perform(put(url + "/api/goal/update/books")
-                .header("Authorization", jwtToken)
+  @Test
+  void updateBooksReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
+    mockMvc
+        .perform(
+            put(url + Mappings.GOAL + ReadingGoalController.Endpoints.UPDATE_BOOKS)
+                .header(AUTHORIZATION, jwtToken)
                 .param("target", "0"))
-                .andDo(print())
-                .andExpect(status().reason(TARGET_BAD_REQUEST))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
+        .andDo(print())
+        .andExpect(status().reason(TARGET_BAD_REQUEST))
+        .andExpect(status().isBadRequest())
+        .andReturn();
+  }
 
-    @Test
-    void updatePagesReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
-        mockMvc.perform(put(url + "/api/goal/update/pages")
-                .header("Authorization", jwtToken)
+  @Test
+  void updatePagesReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
+    mockMvc
+        .perform(
+            put(url + Mappings.GOAL + ReadingGoalController.Endpoints.UPDATE_PAGES)
+                .header(AUTHORIZATION, jwtToken)
                 .param("target", "0"))
-                .andDo(print())
-                .andExpect(status().reason(TARGET_BAD_REQUEST))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
+        .andDo(print())
+        .andExpect(status().reason(TARGET_BAD_REQUEST))
+        .andExpect(status().isBadRequest())
+        .andReturn();
+  }
 
-    @Test
-    void updatePagesReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
-        mockMvc.perform(put(url + "/api/goal/update/pages")
-                .header("Authorization", jwtToken)
+  @Test
+  void updatePagesReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput()
+      throws Exception {
+    mockMvc
+        .perform(
+            put(url + Mappings.GOAL + ReadingGoalController.Endpoints.UPDATE_PAGES)
+                .header(AUTHORIZATION, jwtToken)
                 .param("target", "1"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-    }
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+  }
 
-    @Test
-    void updateBooksReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput() throws Exception {
-        mockMvc.perform(put(url + "/api/goal/update/books")
-                .header("Authorization", jwtToken)
+  @Test
+  void updateBooksReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput()
+      throws Exception {
+    mockMvc
+        .perform(
+            put(url + Mappings.GOAL + ReadingGoalController.Endpoints.UPDATE_BOOKS)
+                .header(AUTHORIZATION, jwtToken)
                 .param("target", "1"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-    }
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andReturn();
+  }
 
-    @Test
-    void deleteReadingGoal_returnIsOkRequestHttpStatus_whenRequestIsDone() throws Exception {
-        mockMvc.perform(delete(url + "/api/goal")
-                .header("Authorization", jwtToken))
-                .andDo(print())
-                .andExpect(status().isNoContent())
-                .andReturn();
-    }
+  @Test
+  void deleteReadingGoal_returnIsOkRequestHttpStatus_whenRequestIsDone() throws Exception {
+    mockMvc
+        .perform(delete(url + Mappings.GOAL).header(AUTHORIZATION, jwtToken))
+        .andDo(print())
+        .andExpect(status().isNoContent())
+        .andReturn();
+  }
 }
