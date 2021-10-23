@@ -24,15 +24,16 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
@@ -57,6 +58,9 @@ public class UserCreatedShelf extends Shelf {
     }
 
     public void setShelfName(String shelfName) {
+        if (StringUtils.isBlank(shelfName)) {
+            throw new IllegalArgumentException("Shelf name cannot be empty");
+        }
         super.shelfName = shelfName;
     }
 }
