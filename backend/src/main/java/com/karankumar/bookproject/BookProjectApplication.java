@@ -23,7 +23,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.Conditions;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
@@ -35,13 +34,10 @@ public class BookProjectApplication extends SpringBootServletInitializer {
 		ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
             .setPropertyCondition(Conditions.isNotNull());
-           // .setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper;
 	}
 
-	
     public static void main(String[] args) {
         SpringApplication.run(BookProjectApplication.class, args);
     }
-
 }
