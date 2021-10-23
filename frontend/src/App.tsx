@@ -23,6 +23,12 @@ import {
     BrowserRouter,
     Route,
 } from "react-router-dom";
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+  } from "@apollo/client";
+
 import Register from "./register/Register";
 import MyBooks from "./my-books/MyBooks";
 import Settings from "./settings/Settings";
@@ -42,8 +48,14 @@ import {
     GOAL, 
     SETTINGS, 
     DELETE_ACCOUNT, 
-    STATS
+    STATS,
+    SEARCH
 } from "./shared/routes"
+
+const client = new ApolloClient({
+    uri: 'https://localhost:8080/graphql',
+    cache: new InMemoryCache()
+});
 
 function App(): JSX.Element {
     const [theme, setTheme] = useState(lightTheme);
@@ -52,6 +64,7 @@ function App(): JSX.Element {
         theme === lightTheme ? setTheme(darkTheme) : setTheme(lightTheme)
     } 
     return (
+        <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
               <Route exact path={HOME} component={Login} />
@@ -60,6 +73,7 @@ function App(): JSX.Element {
               <Route path={BOOK_OVERVIEW + "/:id"} component={BookOverview} />
               <Route path={MY_BOOKS} component={MyBooks} />
               <Route path={GOAL} component={Goal} />
+              <Route path={SEARCH} component={Search} />
               <Route 
                 path={SETTINGS} 
                 render={() => 
@@ -69,6 +83,7 @@ function App(): JSX.Element {
               <Route path={STATS} component={Stats} />
           </BrowserRouter>
         </ThemeProvider>
+        </ApolloProvider>
     )
 }
 
