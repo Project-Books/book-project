@@ -1,15 +1,15 @@
-
 export type Book = {
-  id: number,
+  id: number;
   title: string;
+  img: string;
   // Add img property once we have thumbnails
-  author:{
+  author: {
     fullName: string;
   };
   predefinedShelf: {
     shelfName: string;
   };
-  bookGenre: string [];
+  bookGenre: string[];
   numberOfPages: number;
   rating: number;
-}
+};
