@@ -19,7 +19,7 @@ import React, { Component, ReactElement } from "react";
 import Endpoints from "../api/endpoints";
 import HttpClient from "../http/HttpClient";
 import { Book } from "../types/Book";
-import {ShelfCarousel} from "./ShelfCarousel";
+import { ShelfCarousel } from "./ShelfCarousel";
 
 interface IShelfState {
     readingBooks: Book[],
@@ -28,40 +28,159 @@ interface IShelfState {
     didNotFinishBooks: Book[]
 }
 
+
+const SHELF_BOOKS: Book[] = [
+    {
+        title: "Harry Potter",
+        img: "https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg",
+        author: {
+            fullName: ''
+        },
+        predefinedShelf: {
+            shelfName: ''
+        },
+        bookGenre: [],
+        rating: 0,
+        id: 0,
+        numberOfPages: 50,
+    },
+    {
+        title: "How Not to Die",
+        img: "",
+        author: {
+            fullName: ''
+        },
+        predefinedShelf: {
+            shelfName: ''
+        },
+        bookGenre: [],
+        rating: 0,
+        id: 1,
+        numberOfPages: 60,
+    },
+    {
+        title: "Harry Potter and the Chamber of Secrets",
+        img: "",
+        author: {
+            fullName: ''
+        },
+        predefinedShelf: {
+            shelfName: ''
+        },
+        bookGenre: [],
+        rating: 0,
+        id: 2,
+        numberOfPages: 55,
+    },
+    {
+        title: "Start With Why",
+        img: "",
+        author: {
+            fullName: ''
+        },
+        predefinedShelf: {
+            shelfName: ''
+        },
+        bookGenre: [],
+        rating: 0,
+        id: 3,
+        numberOfPages: 1050,
+    },
+    {
+        title: "Little Fires Everywhere",
+        img: "https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg",
+        author: {
+            fullName: ''
+        },
+        predefinedShelf: {
+            shelfName: ''
+        },
+        bookGenre: [],
+        rating: 0,
+        id: 4,
+        numberOfPages: 600,
+    },
+    {
+        title: "Unbroken",
+        img: "",
+        author: {
+            fullName: ''
+        },
+        predefinedShelf: {
+            shelfName: ''
+        },
+        bookGenre: [],
+        rating: 0,
+        id: 5,
+        numberOfPages: 558,
+    },
+    {
+        title: "Unbroken",
+        img: "",
+        author: {
+            fullName: ''
+        },
+        predefinedShelf: {
+            shelfName: ''
+        },
+        bookGenre: [],
+        rating: 0,
+        id: 6,
+        numberOfPages: 405,
+    },
+    {
+        title: "Unbroken",
+        img: "",
+        author: {
+            fullName: ''
+        },
+        predefinedShelf: {
+            shelfName: ''
+        },
+        bookGenre: [],
+        rating: 0,
+        id: 7,
+        numberOfPages: 432,
+    },
+]
+
+
+
 export default class ShelfView extends Component<Record<string, unknown>, IShelfState> {
     constructor(props: Record<string, unknown>) {
         super(props);
         this.state = {
-            didNotFinishBooks: [],
-            readBooks: [],
-            readingBooks: [],
-            toReadBooks: []
+            didNotFinishBooks: [...SHELF_BOOKS],
+            readBooks: [...SHELF_BOOKS],
+            readingBooks: [...SHELF_BOOKS],
+            toReadBooks: [...SHELF_BOOKS]
         };
     }
 
     componentDidMount(): void {
         HttpClient.get(Endpoints.read).then((readBooks: Book[]) => {
-            this.setState({
-                readBooks: readBooks
-            })
+            this.setState(state => ({
+                readBooks: Array.isArray(readBooks) ? readBooks : state.readBooks
+            }))
         });
         HttpClient.get(Endpoints.reading).then((readingBooks: Book[]) => {
-            this.setState({
-                readingBooks: readingBooks
-            })
+            this.setState(state => ({
+                readingBooks: Array.isArray(readingBooks) ? readingBooks : state.readingBooks
+            }))
         });
         HttpClient.get(Endpoints.toRead).then((toReadBooks: Book[]) => {
-            this.setState({
-                toReadBooks: toReadBooks
-            })
+            this.setState(state => ({
+                toReadBooks: Array.isArray(toReadBooks) ? toReadBooks : state.toReadBooks
+            }))
         });
         HttpClient.get(Endpoints.didNotFinish).then((didNotFinishBooks: Book[]) => {
-            this.setState({
-                didNotFinishBooks: didNotFinishBooks
-            })
+            this.setState(state => ({
+                didNotFinishBooks: Array.isArray(didNotFinishBooks)
+                    ? didNotFinishBooks : state.didNotFinishBooks
+            }))
         });
     }
-    
+
     render(): ReactElement {
         return (
             <div>

@@ -31,7 +31,7 @@ import ShelfView from "../shared/book-display/ShelfView";
 
 interface IState {
     showShelfModal: boolean;
-    showListView:boolean;
+    showListView: boolean;
     bookList: Book[];
 }
 
@@ -42,7 +42,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         this.state = {
             showShelfModal: false,
             showListView: false,
-            bookList:[]
+            bookList: []
         };
         this.onAddShelf = this.onAddShelf.bind(this);
         this.onAddShelfModalClose = this.onAddShelfModalClose.bind(this);
@@ -50,25 +50,37 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         this.getBooks = this.getBooks.bind(this);
     }
 
-      componentDidMount():void {
+    componentDidMount(): void {
         this.getBooks();
-      }
+        this.trackCurrentDeviceSize()
+    }
 
-      getBooks():void {
+    getBooks(): void {
         HttpClient.get(Endpoints.books).then((response: Book[]) => {
-          this.setState({
-            bookList: response
-          });
+            this.setState({
+                bookList: response
+            });
         })
-        .catch((error: Record<string, string>) => {
-          console.error('error: ', error);
-        });
-      }
+            .catch((error: Record<string, string>) => {
+                console.error('error: ', error);
+            });
+    }
 
     onAddShelf(): void {
         this.setState({
             showShelfModal: true,
         });
+    }
+
+    trackCurrentDeviceSize(): void {
+        window.onresize = (): void => {
+            if (window.matchMedia("(max-width: 800px)").matches) {
+                this.setState({ showListView: true })
+            } else {
+                this.setState({ showListView: false })
+            }
+        }
+        return
     }
 
     onAddShelfModalClose(): void {
@@ -77,7 +89,7 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
         });
     }
 
-    onToggleListView():void {
+    onToggleListView(): void {
         this.setState({
             showListView: !this.state.showListView
         });
@@ -105,11 +117,12 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             </div>}>
                 <NavBar />
                 <div>
-                {this.state.showListView ? (
-                    <BookList bookListData={this.state.bookList} />
-                    ) :
-                    <ShelfView />
-                }
+                    {
+                        this.state.showListView ? (
+                            <BookList bookListData={this.state.bookList} />
+                        ) :
+                            <ShelfView />
+                    }
                 </div>
                 <ShelfModal
                     open={this.state.showShelfModal}

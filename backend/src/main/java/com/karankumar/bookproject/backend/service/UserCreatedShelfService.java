@@ -23,10 +23,10 @@ import com.karankumar.bookproject.backend.model.UserCreatedShelf;
 import com.karankumar.bookproject.backend.repository.UserCreatedShelfRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +46,7 @@ public class UserCreatedShelfService {
     }
 
     public UserCreatedShelf createCustomShelf(@NonNull String shelfName) {
-        shelfName = shelfName.trim();
-        if (shelfName.isEmpty()) {
+        if (StringUtils.isBlank(shelfName)) {
             throw new IllegalArgumentException("Shelf name cannot be empty");
         }
         return new UserCreatedShelf(shelfName, userService.getCurrentUser());
@@ -62,6 +61,9 @@ public class UserCreatedShelfService {
     }
 
     public Optional<UserCreatedShelf> findByShelfNameAndLoggedInUser(@NonNull String shelfName) {
+        if (StringUtils.isBlank(shelfName)) {
+            throw new IllegalArgumentException("Shelf name cannot be empty");
+        }
         return userCreatedShelfRepository.findByShelfNameAndUser(
                 shelfName,
                 userService.getCurrentUser()

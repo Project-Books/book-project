@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, {ReactElement} from 'react'
+import React, { ReactElement } from 'react'
 import './ShelfCarousel.css'
 import { Icon } from '@material-ui/core';
 import { Book } from '../types/Book';
@@ -23,11 +23,11 @@ import { Book } from '../types/Book';
 function ShelfBook(props: BookProps): JSX.Element {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
     const titleClass = 'book-title' + (props.img === "" ? '' : ' hide');
-    const imgURL =  props.img && 'url(' + props.img + ')';
+    const imgURL = props.img && 'url(' + props.img + ')';
 
     return (
         <div className={bookClass} style={{ backgroundImage: imgURL }}>
-            {(bookClass!=="book")&&<div className="book-spine"></div>}
+            {(bookClass !== "book") && <div className="book-spine"></div>}
             <p className={titleClass}>{props.title}</p>
         </div>
     )
@@ -68,8 +68,9 @@ export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
 
     function renderShelfBook(books: Book[]): ReactElement[] {
         const elements = Array<ReactElement>();
-        for(let i = 0; i < books.length; i++) {
-            elements.push(<ShelfBook  title={books[i].title} img={''} />)
+        const maxBooksToDisplay = Math.min(books.length, 6)
+        for (let i = 0; i < maxBooksToDisplay; i++) {
+            elements.push(<ShelfBook key={i} title={books[i].title} img={books[i].img} />)
         }
         return elements;
     }
