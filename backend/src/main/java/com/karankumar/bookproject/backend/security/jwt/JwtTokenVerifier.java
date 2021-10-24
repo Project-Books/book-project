@@ -19,7 +19,13 @@ package com.karankumar.bookproject.backend.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Jws;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,7 +39,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -54,13 +62,13 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         String tokenPrefix = jwtConfig.getTokenPrefix();
 
         if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(tokenPrefix)) {
-            if(request.getMethod().equals("POST") && request.getRequestURI().contains("refreshToken")) {
+            if(request.getMethod().equals("POST") &&
+                    request.getRequestURI().contains("refreshToken")) {
                 Map<String, String> map = readRefreshTokenMapFromRequest(request);
                 Claims body = null;
                 try {
                     body = getJwsClaims(map.get("refreshToken"));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     filterChain.doFilter(request, response);
                     return;
                 }
@@ -85,7 +93,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } catch (ExpiredJwtException e) {
-            response.setStatus(401);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return;
         } catch (JwtException e) {
             throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
@@ -94,7 +102,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void updateResponseWithJwtAndRefreshToken(HttpServletResponse response, Authentication authentication, SecretKey secretKey) {
+    private void updateResponseWithJwtAndRefreshToken(HttpServletResponse response,
+                        Authentication authentication, SecretKey secretKey) {
         String token = jwtConfig.getToken(authentication, secretKey, false);
         String refreshToken = jwtConfig.getToken(authentication, secretKey, true);
         Cookie refreshTokenCookie = jwtConfig.getRefreshTokenCookie(refreshToken);
@@ -103,7 +112,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                 jwtConfig.getTokenPrefix() + token);
     }
 
-    private Authentication getAuthentication(String username, List<Map<String, String>> authorities) {
+    private static Authentication getAuthentication(String username,
+                              List<Map<String, String>> authorities) {
         Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
                 .map(m -> new SimpleGrantedAuthority(
                         m.get("authority")))
@@ -124,9 +134,9 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         return claimsJws.getBody();
     }
 
-    private Map<String, String> readRefreshTokenMapFromRequest(HttpServletRequest request) throws IOException {
+    private static Map<String, String> readRefreshTokenMapFromRequest(
+            HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> map = objectMapper.readValue(request.getInputStream(), Map.class);
-        return map;
+        return objectMapper.readValue(request.getInputStream(), Map.class);
     }
 }

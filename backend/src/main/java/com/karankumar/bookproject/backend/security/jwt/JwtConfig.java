@@ -52,7 +52,8 @@ public class JwtConfig {
     }
 
 
-    private String createToken(Authentication authResult, SecretKey key, Integer tokenExpirationAfterDays) {
+    private static String createToken(Authentication authResult, SecretKey key,
+                               Integer tokenExpirationAfterDays) {
         return Jwts.builder()
                 .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities())

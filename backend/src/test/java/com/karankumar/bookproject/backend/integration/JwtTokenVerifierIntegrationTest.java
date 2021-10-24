@@ -49,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "target/snippets")
 @Tag("Integration")
-public class JwtTokenVerifierIntegrationTest {
+class JwtTokenVerifierIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
