@@ -1,0 +1,44 @@
+name: Frontend Lint
+on:
+  push:
+    paths:
+      - 'frontend/**/*.jsx?'
+      - 'frontend/**/*.tsx?'
+      - 'frontend/**/*.html'
+      - 'frontend/**/*.json'
+      - 'frontend/**/*.css'
+  pull_request:
+    paths:
+      - 'frontend/**/*.jsx?'
+      - 'frontend/**/*.tsx?'
+      - 'frontend/**/*.html'
+      - 'frontend/**/*.json'
+      - 'frontend/**/*.css'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Checkout Source Files
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          cache-dependency-path: frontend
+
+      - name: Lint Source Files
+        working-directory: frontend
+        run: |
+          rm -rf node_modules
+          yarn install --frozen-lockfile
+          yarn lint --max-warnings 0 .
+          yarn tsc

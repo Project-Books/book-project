@@ -25,7 +25,11 @@ If not, see <https://www.gnu.org/licenses/>.
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding-bottom: 40px;
+  padding: 20px 0;
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 45%);
+  position: sticky;
+  bottom: 0;
 }
 
 .my-book-toggle-text {

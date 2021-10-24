@@ -18,6 +18,7 @@
 
 package com.karankumar.bookproject.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.extern.java.Log;
 
 import java.util.Arrays;
@@ -48,6 +49,7 @@ public enum RatingScale {
     NINE_POINT_FIVE("9.5/10", 9.5),
     TEN("10/10", 10.0);
 
+    @JsonValue
     private final String rating;
     private final Double value;
 

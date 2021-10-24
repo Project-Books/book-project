@@ -209,7 +209,9 @@ class Register extends Component<Record<string, unknown>, IState> {
                             className="center login"
                             variant="contained"
                             color="primary"
-                            onClick={this.onCreateAccountClicked}>
+                            onClick={this.onCreateAccountClicked}
+                            disableElevation
+                            >
                             Create account
                         </Button>
 
