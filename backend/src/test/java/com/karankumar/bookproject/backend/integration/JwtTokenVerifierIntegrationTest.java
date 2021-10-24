@@ -62,6 +62,7 @@ public class JwtTokenVerifierIntegrationTest {
 
     @Test
     void shouldReturnUnauthorizedIfIncorrectRefreshTokenPassed() throws Exception {
+        // given
         String url = "http://localhost:8080/refreshToken";
 
         Map<String, String> map = new HashMap<>();
@@ -72,6 +73,7 @@ public class JwtTokenVerifierIntegrationTest {
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = writer.writeValueAsString(map);
 
+        //when & then
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
@@ -80,8 +82,10 @@ public class JwtTokenVerifierIntegrationTest {
 
     @Test
     void shouldReturnUnauthorizedIfTokenNotPassed() throws Exception {
+        // given
         String url = "http://localhost:8080/api/books";
 
+        //when & then
         this.mockMvc.perform(get(url))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
@@ -89,9 +93,12 @@ public class JwtTokenVerifierIntegrationTest {
     }
 
     @Test
-    void shouldReturnUnauthorizedIfTokenInvalidTokenPassed() throws Exception{
+    void shouldReturnUnauthorizedIfTokenInvalidTokenPassed() {
         try {
+            // given
             String url = "http://localhost:8080/api/books";
+
+            //when & then
             this.mockMvc.perform(get(url).header("Authorization", "Bearer abc"))
                     .andDo(print())
                     .andExpect(status().is4xxClientError())
@@ -102,6 +109,7 @@ public class JwtTokenVerifierIntegrationTest {
 
     @Test
     void shouldAllowRequestIfTokenIsValid() throws Exception {
+        // given
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 "user@user.user",
                 "password"
@@ -116,6 +124,8 @@ public class JwtTokenVerifierIntegrationTest {
                 .signWith(key)
                 .compact();
         String url = "http://localhost:8080/api/books";
+
+        //when & then
         this.mockMvc.perform(get(url).header("Authorization", "Bearer "+token))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
@@ -124,6 +134,7 @@ public class JwtTokenVerifierIntegrationTest {
 
     @Test
     void shouldGetUnauthenticatedIfTokenIsExpired() throws Exception {
+        // given
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 "user@user.user",
                 "password"
@@ -137,6 +148,8 @@ public class JwtTokenVerifierIntegrationTest {
                 .signWith(key)
                 .compact();
         String url = "http://localhost:8080/api/books";
+
+        //when & then
         this.mockMvc.perform(get(url).header("Authorization", "Bearer "+token))
                 .andDo(print())
                 .andExpect(status().is(401))
@@ -145,6 +158,7 @@ public class JwtTokenVerifierIntegrationTest {
 
     @Test
     void shouldReturnJwtAndRefreshTokenWhenProvidedCorrectRefreshToken() throws Exception {
+        // given
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 "user@user.user",
                 "password"
@@ -160,12 +174,13 @@ public class JwtTokenVerifierIntegrationTest {
                 .compact();
         Map<String, String> map = new HashMap<>();
         map.put("refreshToken", token);
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = writer.writeValueAsString(map);
         String url = "http://localhost:8080/refreshToken";
+
+        //when & then
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
