@@ -22,6 +22,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.security.core.Authentication;
+
+import javax.crypto.SecretKey;
+import javax.servlet.http.Cookie;
+import java.time.LocalDate;
+import java.util.Date;
+import io.jsonwebtoken.Jwts;
 
 @ConfigurationProperties("application.jwt")
 @NoArgsConstructor
@@ -31,8 +38,36 @@ public class JwtConfig {
     private String secretKey;
     private String tokenPrefix;
     private Integer tokenExpirationAfterDays;
+    private Integer refreshExpirationAfterDays;
 
     public String getAuthorizationHeader() {
         return HttpHeaders.AUTHORIZATION;
+    }
+
+    public String getToken(Authentication authResult, SecretKey key, boolean isRefreshToken) {
+        if(isRefreshToken) {
+            return createToken(authResult, key, this.refreshExpirationAfterDays);
+        }
+        return createToken(authResult, key, this.tokenExpirationAfterDays);
+    }
+
+
+    private String createToken(Authentication authResult, SecretKey key, Integer tokenExpirationAfterDays) {
+        return Jwts.builder()
+                .setSubject(authResult.getName())
+                .claim("authorities", authResult.getAuthorities())
+                .setIssuedAt(new Date())
+                .setExpiration(java.sql.Date.valueOf(
+                        LocalDate.now().plusDays(tokenExpirationAfterDays)))
+                .signWith(key)
+                .compact();
+    }
+
+    public Cookie getRefreshTokenCookie(String refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setMaxAge(this.getRefreshExpirationAfterDays());
+        return cookie;
     }
 }
