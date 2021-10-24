@@ -18,11 +18,8 @@
 
 package com.karankumar.bookproject.backend.model;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,11 +27,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode
 public class ReadingGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -67,5 +66,18 @@ public class ReadingGoal {
     public ReadingGoal(@Min(value = 1) int target, @NotNull GoalType goalType) {
         this.target = target;
         this.goalType = goalType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReadingGoal that = (ReadingGoal) o;
+        return target == that.target && goalType == that.goalType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(target, goalType);
     }
 }

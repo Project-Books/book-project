@@ -20,46 +20,27 @@ package com.karankumar.bookproject.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.karankumar.bookproject.backend.json.LocalDateSerializer;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.ISBN;
 
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Builder
-@Data
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @JsonIgnoreProperties(value = {"id"})
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NamedEntityGraph(name = "Book.author",
         attributeNodes = {@NamedAttributeNode("author")}
 )
@@ -69,12 +50,10 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @EqualsAndHashCode.Include
     private Long id;
 
     @NotNull
     @NotBlank
-    @EqualsAndHashCode.Include
     private String title;
 
     @Max(value = MAX_PAGES)
@@ -116,7 +95,7 @@ public class Book {
             foreignKey = @ForeignKey(name = "book_author_id_fk")
     )
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @EqualsAndHashCode.Include
+    @ToString.Exclude
     private Author author;
 
     @ManyToOne(
@@ -125,6 +104,7 @@ public class Book {
     )
     @JoinColumn(name = "predefined_shelf_id", referencedColumnName = "id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ToString.Exclude
     private PredefinedShelf predefinedShelf;
 
     @ManyToOne(
@@ -132,6 +112,7 @@ public class Book {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "user_created_shelf_id", referencedColumnName = "id")
+    @ToString.Exclude
     private UserCreatedShelf userCreatedShelf;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
@@ -148,6 +129,7 @@ public class Book {
     )
     @Setter(AccessLevel.NONE)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ToString.Exclude
     private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
@@ -157,6 +139,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "publisher_id", referencedColumnName = "id")
     )
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ToString.Exclude
     private Set<Publisher> publishers = new HashSet<>();
 
     // For books that have been read
@@ -264,10 +247,15 @@ public class Book {
     }
 
     @Override
-    public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", author=" + author +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Book book = (Book) o;
+        return id != null && Objects.equals(id, book.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
     }
 }

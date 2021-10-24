@@ -29,6 +29,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import java.util.Objects;
 
 @MappedSuperclass
 @Getter
@@ -49,5 +50,18 @@ public abstract class Shelf {
 
     public void removeUser() {
         user = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Shelf shelf = (Shelf) o;
+        return user.equals(shelf.user) && shelfName.equals(shelf.shelfName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, shelfName);
     }
 }

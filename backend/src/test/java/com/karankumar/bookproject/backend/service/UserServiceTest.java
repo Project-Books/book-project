@@ -125,14 +125,16 @@ class UserServiceTest {
     void changeUserPassword_encodesPassword_beforeSaving() {
         // given
         String password = "password";
+        final String email = "user@user.somewhere";
 
         // when
-        underTest.changeUserPassword(User.builder().build(), password);
+        underTest.changeUserPassword(User.builder().email(email).build(), password);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
         User expected = User.builder()
+                            .email(email)
                             .password(passwordEncoder.encode(password))
                             .build();
         assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);

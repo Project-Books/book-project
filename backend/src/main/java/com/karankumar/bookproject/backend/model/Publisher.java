@@ -18,26 +18,12 @@
 package com.karankumar.bookproject.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedAttributeNode;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -47,11 +33,11 @@ import java.util.Set;
                 @UniqueConstraint(name = "publisher_name_unique", columnNames = "name")
         }
 )
-@Data
+@Getter
+@Setter
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "books")
 @NamedEntityGraph(name = "Publisher.books",
         attributeNodes = @NamedAttributeNode("books")
 )
@@ -66,6 +52,7 @@ public class Publisher {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "publishers")
+    @ToString.Exclude
     private Set<Book> books = new HashSet<>();
 
     public Publisher(@NotBlank String name) {
@@ -75,5 +62,18 @@ public class Publisher {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Publisher publisher = (Publisher) o;
+        return name.equals(publisher.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

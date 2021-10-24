@@ -26,12 +26,10 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Log
@@ -98,26 +96,14 @@ public class UserCreatedShelfService {
         return userCreatedShelfRepository.findByShelfName(shelfName);
     }
 
-    public List<String> getCustomShelfNames() {
-        return userCreatedShelfRepository.findAll()
-                                         .stream()
-                                         .map(UserCreatedShelf::getShelfName)
-                                         .collect(Collectors.toList());
-    }
-
     /**
      * Gets all of the books in the specified custom shelf
      */
     public Set<Book> getBooksInCustomShelf(@NonNull String shelfName) {
-        Set<Book> books;
         List<UserCreatedShelf> customShelves = this.findAll(shelfName);
-        if (customShelves.isEmpty()) {
-            books = new HashSet<>();
-        } else {
-            UserCreatedShelf userCreatedShelf = customShelves.get(0);
-            books = userCreatedShelf.getBooks();
-        }
-        return books;
+        return customShelves.isEmpty()
+                ? new HashSet<>()
+                : customShelves.get(0).getBooks();
     }
 
     public Optional<Shelf> getCustomShelfByName(@NonNull String shelfName) {

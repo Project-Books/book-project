@@ -33,6 +33,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedAttributeNode;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -58,5 +59,19 @@ public class UserCreatedShelf extends Shelf {
 
     public void setShelfName(String shelfName) {
         super.shelfName = shelfName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        UserCreatedShelf that = (UserCreatedShelf) o;
+        return id.equals(that.id) && books.equals(that.books);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, books);
     }
 }

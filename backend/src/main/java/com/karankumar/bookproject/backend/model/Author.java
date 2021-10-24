@@ -18,30 +18,19 @@
 package com.karankumar.bookproject.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
-@Data
+@Getter
+@Setter
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(exclude= "books")
 @NamedEntityGraph(name = "Author.books",
         attributeNodes = @NamedAttributeNode("books")
 )
@@ -56,6 +45,7 @@ public class Author {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     @Setter
+    @ToString.Exclude
     private Set<Book> books = new HashSet<>();
 
     public Author(String fullName) {
@@ -67,9 +57,16 @@ public class Author {
         return fullName;
     }
 
-    public void removeBook(Book book) {
-        books = books.stream()
-                     .filter(it -> !it.equals(book))
-                     .collect(Collectors.toSet());
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return fullName.equals(author.fullName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fullName);
     }
 }

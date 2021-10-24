@@ -33,6 +33,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedAttributeNode;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -86,5 +87,18 @@ public class PredefinedShelf extends Shelf {
     @Override
     public String toString() {
         return predefinedShelfName.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PredefinedShelf that = (PredefinedShelf) o;
+        return predefinedShelfName == that.predefinedShelfName;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(predefinedShelfName);
     }
 }
