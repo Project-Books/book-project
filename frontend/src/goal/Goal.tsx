@@ -25,7 +25,7 @@ export default function Goal() {
   return (
     <Layout title="Reading goal">
       <div className="current-goal-container">
-        <h3>No goal set</h3>
+        <h3>No goal set.</h3>
         <p onClick={() => setShowModal(true)}>Click here to add a new goal</p>
         <Modal open={showModal}>
           <div className="goal-modal-inner">
