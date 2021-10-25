@@ -1,0 +1,65 @@
+{
+  "AllBooks": [
+    {
+      "title": "Book Name",
+      "numberOfPages": null,
+      "pagesRead": null,
+      "bookGenre": null,
+      "bookFormat": null,
+      "seriesPosition": null,
+      "edition": null,
+      "bookRecommendedBy": null,
+      "isbn": null,
+      "yearOfPublication": null,
+      "author": {
+        "fullName": "Test Full Name"
+      },
+      "predefinedShelf": {
+        "shelfName": "To read"
+      },
+      "customShelf": null,
+      "tags": [],
+      "rating": null,
+      "dateStartedReading": null,
+      "dateFinishedReading": null,
+      "bookReview": null,
+      "publishers": []
+    },
+    {
+      "title": "Another Book Name",
+      "numberOfPages": 420,
+      "pagesRead": 42,
+      "bookGenre": [
+        "ADVENTURE"
+      ],
+      "bookFormat": "PAPERBACK",
+      "seriesPosition": 3,
+      "edition": "2nd edition",
+      "bookRecommendedBy": "Peter Parker",
+      "isbn": "9780151010264",
+      "yearOfPublication": 2014,
+      "author": {
+        "fullName": "Test Full Name"
+      },
+      "predefinedShelf": {
+        "shelfName": "To read"
+      },
+      "customShelf": {
+        "shelfName" : "My Shelf"
+      },
+      "tags": [
+        {
+          "name": "adventure"
+        },
+        {
+          "name": "book"
+        }
+      ],
+      "rating": "EIGHT",
+      "dateStartedReading": "2020-07-05",
+      "dateFinishedReading": "2020-09-05",
+      "bookReview": "Very good.",
+      "publishers": [{"name": "Test Publisher"}]
+    }
+  ]
+}
