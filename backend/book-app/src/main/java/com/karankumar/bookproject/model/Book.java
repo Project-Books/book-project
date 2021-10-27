@@ -19,7 +19,6 @@ package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.karankumar.bookproject.backend.json.LocalDateSerializer;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -43,6 +42,8 @@ import javax.persistence.NamedEntityGraph;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.karankumar.bookproject.json.LocalDateSerializer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

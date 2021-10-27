@@ -18,7 +18,10 @@ import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
+import com.karankumar.bookproject.configuration.EmailConfiguration;
+import com.karankumar.bookproject.configuration.ThymeleafConfiguration;
 import com.karankumar.bookproject.mock.MockEmailTemplate;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -33,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {EmailConfiguration.class, ThymeleafConfiguration.class, EmailServiceImpl.class})
 class EmailServiceTest {
 
     @Autowired
@@ -62,7 +65,7 @@ class EmailServiceTest {
 
         MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
 
-        assertAll(
+        Assertions.assertAll(
                 () -> assertEquals(messageBody, GreenMailUtil.getBody(receivedMessage)),
                 () -> assertEquals(1, receivedMessage.getAllRecipients().length),
                 () -> assertEquals(recipient, receivedMessage.getAllRecipients()[0].toString()),

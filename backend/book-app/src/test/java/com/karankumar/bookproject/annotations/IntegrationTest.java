@@ -22,12 +22,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.lang.annotation.ElementType;
@@ -43,9 +40,8 @@ import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
 @Inherited
 @Tag("integration-test")
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = BookProjectApplication.class)
+@SpringBootTest(classes = BookProjectApplication.class)
 @ActiveProfiles("test")
-@TestPropertySource("classpath:application-test.properties")
 @WithMockUser(TEST_USER_EMAIL)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)

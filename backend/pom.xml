@@ -17,11 +17,6 @@
     <name>book-project</name>
     <description>Book tracking system</description>
 
-    <modules>
-        <module>email-service</module>
-        <module>book-app</module>
-    </modules>
-
     <properties>
         <asciidoctor.maven.plugin.version>2.2.1</asciidoctor.maven.plugin.version>
         <checkstyle.version>8.33</checkstyle.version>
@@ -219,7 +214,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configLocation>/checkstyle.xml</configLocation>
+                    <configLocation>checkstyle.xml</configLocation>
                 </configuration>
                 <executions>
                     <execution>
@@ -245,12 +240,12 @@
                 <artifactId>asciidoctor-maven-plugin</artifactId>
                 <version>${asciidoctor.maven.plugin.version}</version>
                 <configuration>
-                    <sourceDirectory>${basedir}/src/main/asciidoc</sourceDirectory>
+                    <sourceDirectory>${basedir}/book-app/src/main/asciidoc</sourceDirectory>
                     <sourceDocumentName>index.adoc</sourceDocumentName>
-                    <outputDirectory>${project.build.directory}/docs</outputDirectory>
+                    <outputDirectory>${basedir}/book-app/target/docs</outputDirectory>
                     <backend>html</backend>
                     <attributes>
-                        <snippets>${project.build.directory}/snippets</snippets>
+                        <snippets>${basedir}/target/snippets</snippets>
                     </attributes>
                 </configuration>
                 <executions>
@@ -361,4 +356,9 @@
             </properties>
         </profile>
     </profiles>
+
+    <modules>
+        <module>book-app</module>
+        <module>email-service</module>
+    </modules>
 </project>

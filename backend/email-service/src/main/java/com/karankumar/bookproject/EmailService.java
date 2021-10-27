@@ -15,14 +15,12 @@ If not, see <https://www.gnu.org/licenses/>.
 package com.karankumar.bookproject;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
-@PropertySource("application.properties")
-@PropertySource("email.properties")
-@PropertySource("mailMessages.properties")
 
+@EnableAutoConfiguration
+@ComponentScan
 public class EmailService
 {
     public static void main(String[] args) {

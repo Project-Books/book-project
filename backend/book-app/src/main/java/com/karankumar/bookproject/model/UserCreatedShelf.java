@@ -34,6 +34,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties(value = {"id", "books"})

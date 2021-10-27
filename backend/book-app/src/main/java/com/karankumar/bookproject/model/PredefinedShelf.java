@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import com.karankumar.bookproject.backend.model.account.User;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

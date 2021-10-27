@@ -22,20 +22,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackageClasses = BookProjectApplication.class)
 @ConfigurationPropertiesScan
-public class BookProjectApplication extends SpringBootServletInitializer {
+public class BookProjectApplication {
 
-	@Bean
-	public ModelMapper modelMapper() {
-		ModelMapper modelMapper = new ModelMapper();
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
-            .setPropertyCondition(Conditions.isNotNull());
+                .setPropertyCondition(Conditions.isNotNull());
         return modelMapper;
-	}
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(BookProjectApplication.class, args);

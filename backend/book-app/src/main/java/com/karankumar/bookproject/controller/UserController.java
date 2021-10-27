@@ -14,23 +14,22 @@
 
 package com.karankumar.bookproject.controller;
 
+import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.dto.UserToDeleteDto;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.service.EmailServiceImpl;
 import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
-import com.karankumar.bookproject.constant.EmailConstant;
-import com.karankumar.bookproject.service.EmailServiceImpl;
 import com.karankumar.bookproject.template.EmailTemplate;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,14 +48,13 @@ import java.util.Set;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(Mappings.USER)
-@Log
 public class UserController {
     public static final String INCORRECT_PASSWORD_ERROR_MESSAGE =
             "The current password entered is incorrect";
 
     private final UserService userService;
-    private final EmailServiceImpl emailService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailServiceImpl emailService;
 
     private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
 
@@ -93,7 +91,7 @@ public class UserController {
             );
             return ResponseEntity.status(HttpStatus.OK).body("user created");
         } catch (UserAlreadyRegisteredException | MessagingException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email taken");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email taken");
         } catch (ConstraintViolationException ex) {
             Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
             List<String> errors = new ArrayList<>();
@@ -102,6 +100,8 @@ public class UserController {
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
+
+
     }
 
     @DeleteMapping()
@@ -110,7 +110,7 @@ public class UserController {
         String password = user.getPassword();
         if (passwordEncoder.matches(password, userService.getCurrentUser().getPassword())) {
             User userEntity = userService.getCurrentUser();
-            if (userEntity == null) {
+            if (userEntity == null || userEntity.getId() == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
             }
             userService.deleteUserById(userEntity.getId());
@@ -118,7 +118,7 @@ public class UserController {
                     userEntity.getEmail(),
                     EmailConstant.ACCOUNT_DELETED_SUBJECT,
                     EmailTemplate.getAccountDeletedEmailTemplate(emailService.getUsernameFromEmail(userEntity.getEmail()))
-                    );
+            );
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
         }
@@ -136,7 +136,7 @@ public class UserController {
                     user.getEmail(),
                     EmailConstant.ACCOUNT_PASSWORD_CHANGED_SUBJECT,
                     EmailTemplate.getChangePasswordEmailTemplate(emailService.getUsernameFromEmail(user.getEmail()))
-                    );
+            );
             return true;
         } else {
             throw new ResponseStatusException(

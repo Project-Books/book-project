@@ -17,6 +17,7 @@ package com.karankumar.bookproject.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.karankumar.bookproject.BookProjectApplication;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -32,9 +33,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(classes = BookProjectApplication.class)
 @AutoConfigureMockMvc
-@AutoConfigureRestDocs(outputDir = "target/snippets")
+@AutoConfigureRestDocs(outputDir = "../target/snippets")
 @Tag("Integration")
 class UserControllerIntegrationTest {
     @Autowired

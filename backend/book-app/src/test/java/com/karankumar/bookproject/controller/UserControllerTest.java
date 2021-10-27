@@ -15,12 +15,17 @@
 package com.karankumar.bookproject.controller;
 
 import com.karankumar.bookproject.model.account.User;
-import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.service.EmailServiceImpl;
+import com.karankumar.bookproject.service.UserService;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -33,13 +38,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.assertj.core.api.ThrowableAssert;
-import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import org.springframework.test.context.ActiveProfiles;
-
 
 @SpringBootTest(classes = {UserService.class, PasswordEncoder.class})
 @ActiveProfiles("test")
@@ -50,7 +48,7 @@ class UserControllerTest {
   
     private final UserController userController;
     private final UserService mockedUserService;
-    private final EmailServiceImpl emailService;
+    private final EmailServiceImpl mockedEmailService;
 
     private final User validUser = User.builder()
                                        .email("valid@testmail.com")
@@ -64,9 +62,9 @@ class UserControllerTest {
 
     UserControllerTest() {
         mockedUserService = mock(UserService.class);
-        emailService = mock(EmailServiceImpl.class);
+        mockedEmailService = mock(EmailServiceImpl.class);
         PasswordEncoder mockedPasswordEncoder = mock(PasswordEncoder.class);
-        userController = new UserController(mockedUserService, mockedPasswordEncoder, emailService);
+        userController = new UserController(mockedUserService, mockedPasswordEncoder, mockedEmailService);
     }
 
     @Test
@@ -116,7 +114,7 @@ class UserControllerTest {
 
         Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString()))
                .thenReturn(false);
-        UserController userController = new UserController(userService, passwordEncoder, emailService);
+        UserController userController = new UserController(userService, passwordEncoder, mockedEmailService);
 
         String expectedMessage = String.format(
                 "%s \"%s\"",

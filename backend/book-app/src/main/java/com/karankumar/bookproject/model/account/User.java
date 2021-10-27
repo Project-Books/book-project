@@ -42,6 +42,9 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /** Represents a single User */
 @Entity
