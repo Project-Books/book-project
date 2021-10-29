@@ -19,6 +19,7 @@ import React, { ReactElement } from 'react'
 import './ShelfCarousel.css'
 import { Icon } from '@material-ui/core';
 import { Book } from '../types/Book';
+import { Component } from 'react';
 
 function ShelfBook(props: BookProps): JSX.Element {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
@@ -38,6 +39,11 @@ type BookProps = {
     img: string;
 }
 
+interface IShelfCarouselState {
+    title: string;
+    books: Book[];
+}
+
 function AddBook() {
     return (
         <div className="book add-new">
@@ -47,26 +53,53 @@ function AddBook() {
     )
 }
 
-export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
-    return (
-        <div className="shelf-container">
-            <span className="shelf-title">{props.title}</span>
-            <span className="view-all">View all</span>
-            <div className="clear" />
-            <div className="books-and-shelf">
-                <div className="book-wrap">
-                    {
-                        renderShelfBook(props.books)
-                    }
-                    <AddBook />
-                    <div className="clear" />
-                </div>
-                <div className="shelf"></div>
-            </div>
-        </div>
-    )
+export default class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
+    
+    constructor(props: ShelfCarouselProps) {
+        super(props);
+        this.state = {
+            title: props.title,
+            books: props.books,
+        }
+        this.searchText = props.searchText
+    }
 
-    function renderShelfBook(books: Book[]): ReactElement[] {
+    componentDidMount(): void {
+        if(this.searchText !== '') {
+            this.setState({
+                books: this.filterBooks()
+            })
+        } 
+    }
+    searchText = '';
+
+    filterBooks(): Book[] {
+        return this.state.books.filter(book => {
+          return book.title.toLowerCase().includes(this.searchText.toLowerCase());
+        });
+      }
+
+    render(): JSX.Element {
+        return (
+            <div className="shelf-container">
+                <span className="shelf-title">{this.state.title}</span>
+                <span className="view-all">View all</span>
+                <div className="clear" />
+                <div className="books-and-shelf">
+                    <div className="book-wrap">
+                        {
+                            this.renderShelfBook(this.state.books)
+                        }
+                        <AddBook />
+                        <div className="clear" />
+                    </div>
+                    <div className="shelf"></div>
+                </div>
+            </div>
+        );
+    }
+
+    renderShelfBook(books: Book[]): ReactElement[] {
         const elements = Array<ReactElement>();
         const maxBooksToDisplay = Math.min(books.length, 6)
         for (let i = 0; i < maxBooksToDisplay; i++) {
@@ -78,4 +111,5 @@ export function ShelfCarousel(props: ShelfCarouselProps): JSX.Element {
 type ShelfCarouselProps = {
     title: string;
     books: Book[];
+    searchText: string;
 }
