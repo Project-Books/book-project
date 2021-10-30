@@ -38,8 +38,8 @@ export default function Search(): JSX.Element {
   }
 
   const FIND_BY_TITLE = gql`
-   query Book {
-    findByTitleIgnoreCase {
+   query findByTitleIgnoreCase {
+      Book {
       title
       id
     }
@@ -48,11 +48,12 @@ export default function Search(): JSX.Element {
 
   function searchBooks() {
     const { data, loading, error } = useQuery(FIND_BY_TITLE);
+    console.log('data', data)
     if (loading)  {
       return <div>Loading</div>;
     }
     if (error) {
-      return <div>error</div>;
+      return <div>error{error.message}</div>;
     }
     return data.book.map((book: Title) => (
       <div key={book.id}>

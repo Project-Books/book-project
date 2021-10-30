@@ -17,6 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import Verb from "./verb";
 import Endpoints from "../api/endpoints";
+import {
+    ApolloClient as ApolloClientBase,
+    InMemoryCache,
+} from "@apollo/client";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 let HttpClient: () => HttpClientBase;
@@ -121,5 +125,12 @@ class HttpClientBase {
     }
 }
 
-export default HttpClient();
+const httpClientInstance = HttpClient();
+export const apolloClient = new ApolloClientBase({
+    uri: 'http://localhost:8080/graphql',
+    cache: new InMemoryCache(),
+    headers:httpClientInstance.headers
+});
+
+export default httpClientInstance;
 

@@ -23,12 +23,6 @@ import {
     BrowserRouter,
     Route,
 } from "react-router-dom";
-import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloProvider,
-  } from "@apollo/client";
-
 import Register from "./register/Register";
 import MyBooks from "./my-books/MyBooks";
 import Settings from "./settings/Settings";
@@ -51,11 +45,10 @@ import {
     STATS,
     SEARCH
 } from "./shared/routes"
-
-const client = new ApolloClient({
-    uri: 'https://localhost:8080/graphql',
-    cache: new InMemoryCache()
-});
+import {
+    ApolloProvider,
+} from "@apollo/client";
+import { apolloClient } from './shared/http/HttpClient';
 
 function App(): JSX.Element {
     const [theme, setTheme] = useState(lightTheme);
@@ -64,7 +57,7 @@ function App(): JSX.Element {
         theme === lightTheme ? setTheme(darkTheme) : setTheme(lightTheme)
     } 
     return (
-        <ApolloProvider client={client}>
+        <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
               <Route exact path={HOME} component={Login} />
