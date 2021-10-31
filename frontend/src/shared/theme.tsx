@@ -40,6 +40,9 @@ export const darkTheme = createMuiTheme({
       background: {
         default: "#fafafa",
       },
+      text: {
+        primary: "#000000",
+      },
       type: 'dark',
     },
     overrides: {
