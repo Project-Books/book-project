@@ -1,10 +1,16 @@
 .filter {
-    width: 10%;
+    width: 12%;
+    text-indent: 40%;
 }
 
 .search {
     float: right;
     width: 85%;
     text-align: center;
+    text-indent: 25px;
+}
+
+.search-text {
+    padding-left: 20px;
 }
 

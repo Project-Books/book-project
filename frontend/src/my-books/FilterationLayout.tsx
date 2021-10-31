@@ -43,6 +43,7 @@ export function FilterationLayout(props: FilterProps): JSX.Element {
                     label="Search by book title"
                     type="text"
                     onChange={props.onChange}
+                    className="search-text"
                     endAdornment={
                     <InputAdornment position="end">
                     <IconButton
