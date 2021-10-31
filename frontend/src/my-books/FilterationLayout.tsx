@@ -29,6 +29,7 @@ export function FilterationLayout(props: FilterProps): JSX.Element {
                     <IconButton
                         aria-label="filter"
                         size="small"
+                        style={{paddingRight: '20px'}}
                     >
                         <FilterListIcon></FilterListIcon>
                     </IconButton>
@@ -49,7 +50,7 @@ export function FilterationLayout(props: FilterProps): JSX.Element {
                     <IconButton
                         aria-label="search"
                         size="small"
-                        style={{paddingRight: '10px'}}
+                        style={{paddingRight: '20px'}}
                     >
                         <SearchIcon></SearchIcon>
                     </IconButton>
