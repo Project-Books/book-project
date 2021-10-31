@@ -107,7 +107,7 @@ class PublisherServiceTest {
 
     @Test
     void canDeleteAll() {
-        underTest.deleteAll();;
+        underTest.deleteAll();
         verify(publisherRepository).deleteAll();
     }
 
