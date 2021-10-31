@@ -22,7 +22,9 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <asciidoctor.maven.plugin.version>2.2.1</asciidoctor.maven.plugin.version>
 	<sonar.coverage.exclusions>
-		**/BookProjectApplication.java
+		**/BookProjectApplication.java,
+		**/model/**
+		**/dto/**
 	</sonar.coverage.exclusions>
     </properties>
 
