@@ -15,6 +15,14 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
+.MuiFormControl-root label{
+    color: #7e7e7e;
+}
+
+fieldset {
+    border: 1px solid #7e7e7e !important;
+}
+
 .delete-account-body {
     display:flex;
     flex-direction:column;
