@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.backend.mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.bookImport.libraryThing.LibraryThingBookImport;
@@ -30,17 +30,17 @@ class LibraryThingMapperTest {
   @Test
   void shouldMapImportDataToBook() {
     // given
-    final LibraryThingBookImport bookImport = new LibraryThingBookImport("Title", "Author", 1999, "isbn");
+    final LibraryThingBookImport bookImport = new LibraryThingBookImport("Title", "Author", 1999,
+        "isbn");
 
     // when
     final Book book = libraryThingMapper.toBook(bookImport);
 
     // then
-    assertEquals(book.getTitle(), bookImport.getTitle());
-    assertEquals(book.getAuthor().getFullName(), bookImport.getAuthor());
-    assertEquals(book.getYearOfPublication(), bookImport.getPublicationYear());
-    assertEquals(book.getIsbn(), bookImport.getIsbn());
-
+    assertThat(book.getTitle()).isEqualTo(bookImport.getTitle());
+    assertThat(book.getAuthor().getFullName()).isEqualTo(bookImport.getAuthor());
+    assertThat(book.getYearOfPublication()).isEqualTo(bookImport.getPublicationYear());
+    assertThat(book.getIsbn()).isEqualTo(bookImport.getIsbn());
   }
 
 }
