@@ -9,8 +9,10 @@ import static org.mockito.Mockito.verify;
 import com.karankumar.bookproject.backend.controller.BookImportController;
 import com.karankumar.bookproject.backend.service.ImportServiceDelegate;
 import java.io.IOException;
+import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 class BookImportControllerTest {
 
@@ -21,7 +23,7 @@ class BookImportControllerTest {
   @Test
   void shouldInvokeProperImportHandler() {
     // given
-    final var testFile = getTestFile();
+    final MultipartFile testFile = getTestFile();
 
     // when
     bookImportController.importFromLibraryThing(testFile);
@@ -33,7 +35,7 @@ class BookImportControllerTest {
 
   private MockMultipartFile getTestFile() {
     try {
-      final var testInputStream = getClass().getResourceAsStream("/libraryThingImportSample.json");
+      final InputStream testInputStream = getClass().getResourceAsStream("/libraryThingImportSample.json");
       return new MockMultipartFile("file.json", testInputStream);
     } catch (IOException exception) {
       throw new IllegalStateException();

@@ -2,6 +2,7 @@ package com.karankumar.bookproject.backend.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.bookImport.libraryThing.LibraryThingBookImport;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +13,10 @@ class LibraryThingMapperTest {
   @Test
   void shouldMapImportDataToBook() {
     // given
-    final var bookImport = new LibraryThingBookImport("Title", "Author", 1999, "isbn");
+    final LibraryThingBookImport bookImport = new LibraryThingBookImport("Title", "Author", 1999, "isbn");
 
     // when
-    final var book = libraryThingMapper.toBook(bookImport);
+    final Book book = libraryThingMapper.toBook(bookImport);
 
     // then
     assertEquals(book.getTitle(), bookImport.getTitle());

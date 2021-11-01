@@ -27,15 +27,15 @@ public class BookImportController {
   @PostMapping(path = "/library-thing", consumes = "multipart/form-data")
   public void importFromLibraryThing(@RequestParam("file") @NotNull MultipartFile multipartForm) {
     try {
-      final var objectMapper = new ObjectMapper();
+      final ObjectMapper objectMapper = new ObjectMapper();
 
-      final var typeRef = new TypeReference<HashMap<String, LibraryThingBookImport>>() {
+      final TypeReference<HashMap<String, LibraryThingBookImport>> typeRef = new TypeReference<>() {
       };
-      final var libraryThingBookDataImport = objectMapper.readValue(
+      final HashMap<String, LibraryThingBookImport> libraryThingBookDataImport = objectMapper.readValue(
           multipartForm.getInputStream(),
           typeRef
       );
-      final var dataImport = new LibraryThingBookDataImport(libraryThingBookDataImport);
+      final LibraryThingBookDataImport dataImport = new LibraryThingBookDataImport(libraryThingBookDataImport);
 
       importServiceDelegate.importFromLibraryThing(dataImport);
     } catch (IOException e) {
