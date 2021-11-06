@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, { useState } from "react";
 import "./Goal.css";
+
 import { Layout } from "../shared/components/Layout";
 import Modal from "../shared/components/Modal";
 export default function Goal(): JSX.Element {

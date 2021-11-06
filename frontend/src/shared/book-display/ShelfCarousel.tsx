@@ -15,17 +15,20 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react'
+import React, { ReactElement } from 'react'
 import './ShelfCarousel.css'
 import { Icon } from '@material-ui/core';
+import { Book } from '../types/Book';
+import { Component } from 'react';
 
-function ShelfBook(props: BookProps) {
+function ShelfBook(props: BookProps): JSX.Element {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
     const titleClass = 'book-title' + (props.img === "" ? '' : ' hide');
-    const imgURL =  props.img && 'url(' + props.img + ')';
+    const imgURL = props.img && 'url(' + props.img + ')';
 
     return (
         <div className={bookClass} style={{ backgroundImage: imgURL }}>
+            {(bookClass !== "book") && <div className="book-spine"></div>}
             <p className={titleClass}>{props.title}</p>
         </div>
     )
@@ -34,6 +37,11 @@ function ShelfBook(props: BookProps) {
 type BookProps = {
     title: string;
     img: string;
+}
+
+interface IShelfCarouselState {
+    title: string;
+    books: Book[];
 }
 
 function AddBook() {
@@ -45,35 +53,63 @@ function AddBook() {
     )
 }
 
-export function ShelfCarousel(props: ShelfCarouselProps) {
-    return (
-        <div className="shelf-container">
-            <span className="shelf-title">{props.title}</span>
-            <span className="view-all">View all</span>
-            <div className="clear" />
+export default class ShelfCarousel extends Component<ShelfCarouselProps, IShelfCarouselState> {
+    
+    constructor(props: ShelfCarouselProps) {
+        super(props);
+        this.state = {
+            title: props.title,
+            books: props.books,
+        }
+        this.searchText = props.searchText
+    }
 
-            <div className="books-and-shelf">
-                <div className="book-wrap">
-                    <ShelfBook 
-                        title="Harry Potter"
-                        img="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" />
-                    <ShelfBook title="Harry Potter and the Chamber of Secrets" img="" />
-                    <ShelfBook title="How Not to Die" img="" />
-                    <ShelfBook 
-                        title="Little Fires Everywhere" 
-                        img="https://winterbroadhurst.files.wordpress.com/2019/05/little-fires.jpg" 
-                    />
-                    <ShelfBook title="Start With Why" img="" />
-                    <ShelfBook title="Unbroken" img="" />
-                    <AddBook />
-                    <div className="clear" />
+    componentDidMount(): void {
+        if(this.searchText !== '') {
+            this.setState({
+                books: this.filterBooks()
+            })
+        } 
+    }
+    searchText = '';
+
+    filterBooks(): Book[] {
+        return this.state.books.filter(book => {
+          return book.title.toLowerCase().includes(this.searchText.toLowerCase());
+        });
+      }
+
+    render(): JSX.Element {
+        return (
+            <div className="shelf-container">
+                <span className="shelf-title">{this.state.title}</span>
+                <span className="view-all">View all</span>
+                <div className="clear" />
+                <div className="books-and-shelf">
+                    <div className="book-wrap">
+                        {
+                            this.renderShelfBook(this.state.books)
+                        }
+                        <AddBook />
+                        <div className="clear" />
+                    </div>
+                    <div className="shelf"></div>
                 </div>
-                <div className="shelf"></div>
             </div>
-        </div>
-    )
-}
+        );
+    }
 
+    renderShelfBook(books: Book[]): ReactElement[] {
+        const elements = Array<ReactElement>();
+        const maxBooksToDisplay = Math.min(books.length, 6)
+        for (let i = 0; i < maxBooksToDisplay; i++) {
+            elements.push(<ShelfBook key={i} title={books[i].title} img={books[i].img} />)
+        }
+        return elements;
+    }
+}
 type ShelfCarouselProps = {
     title: string;
+    books: Book[];
+    searchText: string;
 }

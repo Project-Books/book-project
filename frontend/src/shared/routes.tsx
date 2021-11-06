@@ -20,6 +20,7 @@ export const SIGN_UP ='/sign-up'
 
 export const HOME = '/'
 export const MY_BOOKS = '/my-books'
+export const BOOK_OVERVIEW = '/books'
 export const GOAL ='/goal' 
 export const SETTINGS ='/settings'
 export const DELETE_ACCOUNT = '/delete-account'
