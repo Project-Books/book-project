@@ -25,8 +25,12 @@ export default function Goal(): JSX.Element {
   return (
     <Layout title="Reading goal">
       <div className="current-goal-container">
-        <h3 onClick={() => setShowModal(true)}>No goal set..</h3>
-        <p onClick={() => setShowModal(true)}>Click here to add a new goal</p>
+        <h3 className="open-modal" onClick={() => setShowModal(true)}>
+          No goal set..
+        </h3>
+        <p className="open-modal" onClick={() => setShowModal(true)}>
+          Click here to add a new goal
+        </p>
         <Modal open={showModal}>
           <div className="goal-modal-inner">
             <h2 className="goal-modal-heading">Add Goal</h2>
