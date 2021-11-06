@@ -19,13 +19,13 @@ import React, { useState } from "react";
 import "./Goal.css";
 import { Layout } from "../shared/components/Layout";
 import Modal from "../shared/components/Modal";
-export default function Goal() {
+export default function Goal(): JSX.Element {
   const [modalState, setModalState] = useState(0);
   const [showModal, setShowModal] = useState(false);
   return (
     <Layout title="Reading goal">
       <div className="current-goal-container">
-        <h3>No goal set..</h3>
+        <h3 onClick={() => setShowModal(true)}>No goal set..</h3>
         <p onClick={() => setShowModal(true)}>Click here to add a new goal</p>
         <Modal open={showModal}>
           <div className="goal-modal-inner">
