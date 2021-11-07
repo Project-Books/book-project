@@ -15,17 +15,65 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react'
+import React, { useState } from "react";
 import "./Goal.css";
-import { Layout } from "../shared/components/Layout"
 
+import { Layout } from "../shared/components/Layout";
+import Modal from "../shared/components/Modal";
 export default function Goal(): JSX.Element {
-    return (
-        <Layout title="Reading goal">
-            <div className="current-goal-container">
-                <h3>No goal set</h3>
-                <p>Click here to add a new goal</p>
+  const [modalState, setModalState] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  return (
+    <Layout title="Reading goal">
+      <div className="current-goal-container">
+        <h3 className="open-modal" onClick={() => setShowModal(true)}>
+          No goal set..
+        </h3>
+        <p className="open-modal" onClick={() => setShowModal(true)}>
+          Click here to add a new goal
+        </p>
+        <Modal open={showModal}>
+          <div className="goal-modal-inner">
+            <h2 className="goal-modal-heading">Add Goal</h2>
+            <div className="goal-modal-selector">
+              <span
+                onClick={() => setModalState(0)}
+                className={
+                  modalState === 0
+                    ? "goal-modal-pages-selector goal-modal-current"
+                    : "goal-modal-pages-selector"
+                }
+              >
+                Pages
+              </span>
+              <span
+                onClick={() => setModalState(1)}
+                className={
+                  modalState === 1
+                    ? "goal-modal-books-selector goal-modal-current"
+                    : "goal-modal-books-selector"
+                }
+              >
+                Books
+              </span>
             </div>
-        </Layout>
-    )
+            <div className="goal-modal-input-container">
+              <span>I want to read</span>
+              <input type="number" min="0" className="goal-modal-input" />
+              <span>{modalState === 0 ? "pages" : "books"}</span>
+            </div>
+            <div className="goal-modal-buttons">
+              <button
+                onClick={() => setShowModal(false)}
+                className="goal-modal-cancel-btn"
+              >
+                Cancel
+              </button>
+              <button className="goal-modal-add-btn">Add goal</button>
+            </div>
+          </div>
+        </Modal>
+      </div>
+    </Layout>
+  );
 }
