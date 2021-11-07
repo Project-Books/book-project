@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class ImportService {
+class ImportService {
     private static final double GOODREADS_RATING_SCALE_FACTOR = 2;
 
     private final BookService bookService;
