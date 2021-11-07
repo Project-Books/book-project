@@ -22,6 +22,15 @@ If not, see <https://www.gnu.org/licenses/>.
   width: 80vw;
 }
 
+.visually-hidden {
+  position: absolute;
+  left: 0;
+  top: -500px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .search-input {
   border-radius: 26px;
   font-size: 14pt;

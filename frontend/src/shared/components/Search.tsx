@@ -38,25 +38,26 @@ export default function Search(): JSX.Element {
   }
 
   const FIND_BY_TITLE = gql`
-   query getByTitleCase($title: String!) {
-     findByTitleIgnoreCase(title:$title) {
-        title
-        id
-     }
-   }
-`;
+    query getByTitleCase($title: String!) {
+      findByTitleIgnoreCase(title:$title) {
+          title
+          id
+      }
+    }
+  `;
 
   function searchBooks() {
     const { data, loading, error } = useQuery(FIND_BY_TITLE, {
       variables: { title: 'A Brief History of Time' },
     });
-    console.log('data', data)
+
     if (loading)  {
       return <div>Loading</div>;
     }
     if (error) {
       return <div>error{error.message}</div>;
     }
+
     return data.book.map((book: Title) => (
       <div key={book.id}>
       <p>{JSON.stringify(book.title)}</p>
@@ -70,8 +71,13 @@ searchBooks();
       <div className="search-container">
         <div className="search-bar">
           <form>
+            <label
+              htmlFor="book-search"
+              className="visually-hidden">
+              Search for a book title, author or ISBN #
+            </label>
             <input
-              type="string"
+              type="search"
               className="search-input"
               id="search"
               placeholder="Search for a book title, author, or ISBN #"
