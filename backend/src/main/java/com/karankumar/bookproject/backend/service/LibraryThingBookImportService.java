@@ -39,7 +39,7 @@ class LibraryThingBookImportService {
 
   public List<Book> importBooksFrom(List<LibraryThingBookImport> booksToImport) {
     if (booksToImport == null || booksToImport.isEmpty()) {
-      LOGGER.info("No books to import from LibraryThings");
+      LOGGER.info("No books to import from LibraryThing");
       return emptyList();
     }
 
