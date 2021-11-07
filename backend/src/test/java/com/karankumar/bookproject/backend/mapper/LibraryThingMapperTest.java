@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.backend.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import com.karankumar.bookproject.backend.model.Book;
 import com.karankumar.bookproject.backend.model.bookImport.libraryThing.LibraryThingBookImport;
@@ -30,17 +31,19 @@ class LibraryThingMapperTest {
   @Test
   void shouldMapImportDataToBook() {
     // given
-    final LibraryThingBookImport bookImport = new LibraryThingBookImport("Title", "Author", 1999,
-        "isbn");
+    final LibraryThingBookImport bookImport = new LibraryThingBookImport(
+            "Title", "Author", 1999, "isbn"
+    );
 
     // when
     final Book book = libraryThingMapper.toBook(bookImport);
 
     // then
-    assertThat(book.getTitle()).isEqualTo(bookImport.getTitle());
-    assertThat(book.getAuthor().getFullName()).isEqualTo(bookImport.getAuthor());
-    assertThat(book.getYearOfPublication()).isEqualTo(bookImport.getPublicationYear());
-    assertThat(book.getIsbn()).isEqualTo(bookImport.getIsbn());
+    assertSoftly(softly -> {
+      softly.assertThat(book.getTitle()).isEqualTo(bookImport.getTitle());
+      softly.assertThat(book.getAuthor().getFullName()).isEqualTo(bookImport.getAuthor());
+      softly.assertThat(book.getYearOfPublication()).isEqualTo(bookImport.getPublicationYear());
+      softly.assertThat(book.getIsbn()).isEqualTo(bookImport.getIsbn());
+    });
   }
-
 }
