@@ -15,17 +15,12 @@
    If not, see <https://www.gnu.org/licenses/>.
 */
 
-
 package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.karankumar.bookproject.model.account.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
-
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,8 +29,11 @@ import javax.persistence.Id;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
-import java.util.Objects;
-import java.util.Set;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @JsonIgnoreProperties(value = {"id", "books"})

@@ -20,7 +20,6 @@ package com.karankumar.bookproject.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.karankumar.bookproject.model.Author;
 import lombok.Data;
-
 import javax.persistence.Id;
 
 @Data

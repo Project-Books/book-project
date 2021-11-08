@@ -15,7 +15,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.controller;
+package com.karankumar.bookproject.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.karankumar.bookproject.backend.service.ImportServiceDelegate;
+import com.karankumar.bookproject.service.ImportServiceDelegate;
 import java.io.IOException;
 import java.io.InputStream;
 import org.junit.jupiter.api.Test;

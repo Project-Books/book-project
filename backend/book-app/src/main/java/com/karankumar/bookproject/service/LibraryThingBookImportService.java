@@ -15,14 +15,14 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.service;
+package com.karankumar.bookproject.service;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
-import com.karankumar.bookproject.backend.mapper.LibraryThingMapper;
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.bookImport.libraryThing.LibraryThingBookImport;
+import com.karankumar.bookproject.mapper.LibraryThingMapper;
+import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.model.bookImport.libraryThing.LibraryThingBookImport;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

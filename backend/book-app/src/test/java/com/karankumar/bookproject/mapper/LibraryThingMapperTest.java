@@ -15,12 +15,12 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.mapper;
+package com.karankumar.bookproject.mapper;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import com.karankumar.bookproject.backend.model.Book;
-import com.karankumar.bookproject.backend.model.bookImport.libraryThing.LibraryThingBookImport;
+import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.model.bookImport.libraryThing.LibraryThingBookImport;
 import org.junit.jupiter.api.Test;
 
 class LibraryThingMapperTest {

@@ -21,16 +21,15 @@ import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.Shelf;
 import com.karankumar.bookproject.model.UserCreatedShelf;
 import com.karankumar.bookproject.repository.UserCreatedShelfRepository;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Log

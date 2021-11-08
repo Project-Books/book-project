@@ -14,17 +14,17 @@
 
 package com.karankumar.bookproject.controller;
 
-import com.karankumar.bookproject.dto.BookDto;
 import com.karankumar.bookproject.dto.BookPatchDto;
+import org.modelmapper.Converter;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.ModelMapper;
+import com.karankumar.bookproject.dto.BookDto;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.BookFormat;
 import com.karankumar.bookproject.model.BookGenre;
+import com.karankumar.bookproject.model.BookFormat;
 import com.karankumar.bookproject.model.PredefinedShelf;
 import com.karankumar.bookproject.service.BookService;
 import com.karankumar.bookproject.service.PredefinedShelfService;
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,8 +39,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")

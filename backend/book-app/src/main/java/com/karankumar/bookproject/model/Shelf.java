@@ -15,21 +15,19 @@
    If not, see <https://www.gnu.org/licenses/>.
 */
 
-
 package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.karankumar.bookproject.model.account.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @MappedSuperclass
 @Getter

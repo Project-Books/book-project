@@ -18,10 +18,10 @@ package com.karankumar.bookproject.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.karankumar.bookproject.BookProjectApplication;
 import com.karankumar.bookproject.controller.Mappings;
 import com.karankumar.bookproject.controller.ReadingGoalController;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
+import com.karankumar.bookproject.BookProjectApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -35,10 +35,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static com.karankumar.bookproject.controller.ReadingGoalController.TARGET_BAD_REQUEST;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

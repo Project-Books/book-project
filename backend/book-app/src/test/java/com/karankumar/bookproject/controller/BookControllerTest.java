@@ -15,6 +15,7 @@
 package com.karankumar.bookproject.controller;
 
 import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.model.Shelf;
 import com.karankumar.bookproject.service.BookService;
 import com.karankumar.bookproject.service.PredefinedShelfService;
 import org.junit.jupiter.api.Test;

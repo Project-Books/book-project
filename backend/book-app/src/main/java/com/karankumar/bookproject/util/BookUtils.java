@@ -18,9 +18,10 @@
 package com.karankumar.bookproject.util;
 
 import com.karankumar.bookproject.model.Book;
-import lombok.NonNull;
 
 import java.util.Optional;
+
+import lombok.NonNull;
 
 public final class BookUtils {
     private BookUtils() {}

@@ -15,7 +15,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.model.bookImport.libraryThing;
+package com.karankumar.bookproject.model.bookImport.libraryThing;
 
 import java.util.ArrayList;
 import java.util.List;

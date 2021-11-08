@@ -19,11 +19,6 @@ package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.karankumar.bookproject.model.account.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -35,6 +30,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * A predefined shelf is a shelf that is created by the app and will always exist (cannot be deleted

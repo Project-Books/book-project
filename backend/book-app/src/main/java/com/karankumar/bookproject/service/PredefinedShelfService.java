@@ -19,7 +19,9 @@ package com.karankumar.bookproject.service;
 
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.model.PredefinedShelfName;
 import com.karankumar.bookproject.model.PredefinedShelf.ShelfName;
+import com.karankumar.bookproject.model.Shelf;
 import com.karankumar.bookproject.model.account.User;
 import com.karankumar.bookproject.repository.AuthorRepository;
 import com.karankumar.bookproject.repository.BookRepository;
@@ -104,7 +106,7 @@ public class PredefinedShelfService {
         return findByPredefinedShelfNameAndLoggedInUser(DID_NOT_FINISH).orElse(null);
     }
 
-    public Optional<PredefinedShelf> findByPredefinedShelfNameAndLoggedInUser(ShelfName shelfName) {
+    public Optional<PredefinedShelf> findByPredefinedShelfNameAndLoggedInUser(PredefinedShelf.ShelfName shelfName) {
         return predefinedShelfRepository.findByPredefinedShelfNameAndUser(
                 shelfName,
                 userService.getCurrentUser()
@@ -173,7 +175,7 @@ public class PredefinedShelfService {
     }
 
     private List<PredefinedShelf> createPredefinedShelves(User user) {
-        return Stream.of(ShelfName.values())
+        return Stream.of(PredefinedShelf.ShelfName.values())
                 .map(shelfName -> new PredefinedShelf(shelfName, user))
                 .collect(Collectors.toList());
     }
@@ -181,7 +183,7 @@ public class PredefinedShelfService {
     public Optional<PredefinedShelf> getPredefinedShelfByNameAsString(String shelfName) {
     	List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
                 .stream()
-                .filter(shelf -> shelf.getPredefinedShelfName().equals(ShelfName.valueOf(shelfName)))
+                .filter(shelf -> shelf.getPredefinedShelfName().equals(PredefinedShelf.ShelfName.valueOf(shelfName)))
                 .collect(Collectors.toList());
 
         if (shelfFound.isEmpty()) {
@@ -193,7 +195,7 @@ public class PredefinedShelfService {
     }
 
     public Optional<PredefinedShelf> getPredefinedShelfByPredefinedShelfName(
-                ShelfName predefinedShelfName) {
+                PredefinedShelf.ShelfName predefinedShelfName) {
         List<PredefinedShelf> shelfFound = findAllForLoggedInUser()
                 .stream()
                 .filter(shelf -> shelf.getPredefinedShelfName().equals(predefinedShelfName))

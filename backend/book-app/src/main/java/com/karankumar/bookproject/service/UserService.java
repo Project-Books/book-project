@@ -20,13 +20,14 @@ package com.karankumar.bookproject.service;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.account.Role;
 import com.karankumar.bookproject.model.account.RoleType;
+import com.karankumar.bookproject.model.account.Role;
 import com.karankumar.bookproject.model.account.User;
-import com.karankumar.bookproject.repository.BookRepository;
 import com.karankumar.bookproject.repository.RoleRepository;
 import com.karankumar.bookproject.repository.UserRepository;
+import com.karankumar.bookproject.repository.BookRepository;
 import lombok.NonNull;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;

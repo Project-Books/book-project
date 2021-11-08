@@ -13,6 +13,23 @@
           <target>11</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>${flyway-maven-plugin.version}</version>
+        <configuration>
+          <url>jdbc:mysql://localhost:3306/bookproject?useSsl=false</url>
+          <user>root</user>
+          <password>rootpassword</password>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
 
@@ -38,6 +55,11 @@
       <groupId>com.karankumar</groupId>
       <artifactId>email-service</artifactId>
       <version>0.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+      <version>${flyway-core.version}</version>
     </dependency>
   </dependencies>
 </project>

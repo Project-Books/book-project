@@ -17,10 +17,10 @@
 
 package com.karankumar.bookproject.constraints;
 
-import com.nulabinc.zxcvbn.Zxcvbn;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
+import com.nulabinc.zxcvbn.Zxcvbn;
 
 public class PasswordStrengthValidator implements ConstraintValidator<PasswordStrengthCheck, String>{
     

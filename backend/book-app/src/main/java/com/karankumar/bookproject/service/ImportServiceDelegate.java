@@ -15,11 +15,11 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.service;
+package com.karankumar.bookproject.service;
 
 import static java.util.Collections.emptyList;
 
-import com.karankumar.bookproject.backend.model.bookImport.libraryThing.LibraryThingBookDataImport;
+import com.karankumar.bookproject.model.bookImport.libraryThing.LibraryThingBookDataImport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
