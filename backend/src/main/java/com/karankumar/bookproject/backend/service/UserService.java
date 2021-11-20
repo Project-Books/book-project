@@ -143,8 +143,10 @@ public class UserService {
 
     public void changeUserEmail(@NonNull User user, @NonNull String email) {
 
-        if(user.getEmail().equalsIgnoreCase(email)) {
-            throw new UserAlreadyRegisteredException("Given email address is same as the current one");
+        if (user.getEmail().equalsIgnoreCase(email)) {
+            throw new UserAlreadyRegisteredException(
+                    "Given email address is same as the current one"
+            );
         }
 
         user.setEmail(email);
@@ -162,7 +164,6 @@ public class UserService {
         }
 
         userRepository.save(user);
-
     }
 
     public void changeUserPassword(@NonNull User user, @NonNull String password) {

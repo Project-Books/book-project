@@ -119,30 +119,28 @@ public class UserController {
 
         try {
             user = userService.getCurrentUser();
-        }
-        catch (CurrentUserNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
+        } catch (CurrentUserNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    CURRENT_USER_NOT_FOUND_ERROR_MESSAGE
+            );
         }
 
         if (passwordEncoder.matches(currentPassword, user.getPassword())) {
-
             try {
                 userService.changeUserEmail(user, newEmail);
-            }
-            catch (ConstraintViolationException | UserAlreadyRegisteredException ex) {
+            } catch (ConstraintViolationException | UserAlreadyRegisteredException ex) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
                         ex.getMessage()
                 );
             }
-
         } else {
             throw new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED,
                     INCORRECT_PASSWORD_ERROR_MESSAGE
             );
         }
-
     }
 
     @PostMapping("/update-password")
