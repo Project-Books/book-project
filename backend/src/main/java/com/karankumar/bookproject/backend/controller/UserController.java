@@ -18,6 +18,7 @@ import com.karankumar.bookproject.backend.dto.UserToDeleteDto;
 import com.karankumar.bookproject.backend.dto.UserToRegisterDto;
 import com.karankumar.bookproject.backend.model.account.User;
 import com.karankumar.bookproject.backend.service.UserAlreadyRegisteredException;
+import com.karankumar.bookproject.backend.service.CurrentUserNotFoundException;
 import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
+    private static final String CURRENT_USER_NOT_FOUND_ERROR_MESSAGE = "Could not determine the current user";
 
     @Autowired
     public UserController(UserService userService, PasswordEncoder passwordEncoder) {
@@ -107,7 +109,40 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
         }
    }
-  
+
+    @PostMapping("/update-email")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateEmail(@RequestParam("newEmail") String newEmail,
+                            @RequestParam("currentPassword") String currentPassword) {
+
+        User user;
+
+        try {
+            user = userService.getCurrentUser();
+        } catch (CurrentUserNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    CURRENT_USER_NOT_FOUND_ERROR_MESSAGE
+            );
+        }
+
+        if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+            try {
+                userService.changeUserEmail(user, newEmail);
+            } catch (ConstraintViolationException | UserAlreadyRegisteredException ex) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        ex.getMessage()
+                );
+            }
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    INCORRECT_PASSWORD_ERROR_MESSAGE
+            );
+        }
+    }
+
     @PostMapping("/update-password")
     @ResponseStatus(HttpStatus.OK)
     public boolean updatePassword(@RequestParam("currentPassword") String currentPassword,
