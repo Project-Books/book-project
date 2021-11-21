@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @DisplayName("ReadingGoalCalculator should")
@@ -313,6 +314,7 @@ class ReadingGoalCalculatorTest {
                                 .build();
 
         // when
+        mockDateUtils.when(() -> DateUtils.dateIsInCurrentYear(lastYear)).thenReturn(false);
         boolean actual = ReadingGoalCalculator.bookHasFinishDateInThisYear(book);
 
         // then
@@ -320,13 +322,15 @@ class ReadingGoalCalculatorTest {
     }
 
     @Test
-    @Disabled
+    @DisplayName("return true if book was read this year")
     void returnTrueIfBookReadThisYear() {
         // given
-        Book book = createBook().dateFinishedReading(LocalDate.now())
+        LocalDate currentDate = LocalDate.now();
+        Book book = createBook().dateFinishedReading(currentDate)
                                 .build();
 
         // when
+        mockDateUtils.when(() -> DateUtils.dateIsInCurrentYear(currentDate)).thenReturn(true);
         boolean actual = ReadingGoalCalculator.bookHasFinishDateInThisYear(book);
 
         // then

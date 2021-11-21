@@ -110,8 +110,7 @@ public class UserService {
 
     public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        // TODO: throw custom exception
-        return userRepository.findByEmail(email).orElseThrow();
+        return userRepository.findByEmail(email).orElseThrow(() -> new CurrentUserNotFoundException("Current user could not be found"));
     }
 
     // TODO: this can be removed once we are no longer populating test data
@@ -140,6 +139,31 @@ public class UserService {
 
     public boolean emailIsNotInUse(String email) {
         return !isEmailInUse(email);
+    }
+
+    public void changeUserEmail(@NonNull User user, @NonNull String email) {
+
+        if (user.getEmail().equalsIgnoreCase(email)) {
+            throw new UserAlreadyRegisteredException(
+                    "Given email address is same as the current one"
+            );
+        }
+
+        user.setEmail(email);
+
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(constraintViolations);
+        }
+
+        if (user.getEmail() != null && isEmailInUse(user.getEmail())) {
+            throw new UserAlreadyRegisteredException(
+                    "A user with the email address " + user.getEmail() + " already exists");
+        }
+
+        userRepository.save(user);
     }
 
     public void changeUserPassword(@NonNull User user, @NonNull String password) {

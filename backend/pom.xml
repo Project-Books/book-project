@@ -21,6 +21,11 @@
         <sonar.organization>project-books</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <asciidoctor.maven.plugin.version>2.2.1</asciidoctor.maven.plugin.version>
+	<sonar.coverage.exclusions>
+		**/BookProjectApplication.java,
+		**/model/**
+		**/dto/**
+	</sonar.coverage.exclusions>
     </properties>
 
     <dependencies>
@@ -117,6 +122,12 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>3.4.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>3.8.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>

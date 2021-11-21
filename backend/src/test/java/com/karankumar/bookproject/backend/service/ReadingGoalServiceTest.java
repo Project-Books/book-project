@@ -88,7 +88,7 @@ class ReadingGoalServiceTest {
 
     @Test
     void canDeleteAll() {
-        underTest.deleteAll();;
+        underTest.deleteAll();
         verify(readingGoalRepository).deleteAll();
     }
 
