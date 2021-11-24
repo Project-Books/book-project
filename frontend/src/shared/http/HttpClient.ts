@@ -127,7 +127,7 @@ class HttpClientBase {
 
 const httpClientInstance = HttpClient();
 export const apolloClient = new ApolloClientBase({
-    uri: 'http://localhost:8080/graphql',
+    uri: 'http://localhost:8082/graphql',
     cache: new InMemoryCache(),
     headers:httpClientInstance.headers
 });

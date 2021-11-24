@@ -29,28 +29,27 @@ type Title =  {
   title: string,
 }
 
+const FIND_BY_TITLE = gql`
+query getByTitleCase($title: String!) {
+  findByTitleIgnoreCase(title:$title) {
+      title
+      id
+  }
+}
+`;
+
 export default function Search(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('');
+  const { data, loading, error } = useQuery(FIND_BY_TITLE, {
+    variables: { title: 'A Brief History of Time' },
+  });
 
   function handleChange(e: any) {
     e.preventDefault();
     setSearchTerm(e.target.value);
   }
 
-  const FIND_BY_TITLE = gql`
-    query getByTitleCase($title: String!) {
-      findByTitleIgnoreCase(title:$title) {
-          title
-          id
-      }
-    }
-  `;
-
   function searchBooks() {
-    const { data, loading, error } = useQuery(FIND_BY_TITLE, {
-      variables: { title: 'A Brief History of Time' },
-    });
-
     if (loading)  {
       return <div>Loading</div>;
     }
@@ -64,8 +63,6 @@ export default function Search(): JSX.Element {
       </div>
     ));
   }
-
-searchBooks();
   return (
     <Layout title="Search">
       <div className="search-container">
@@ -87,7 +84,7 @@ searchBooks();
           </form>
           <div className="search-icon-container">
             <button className="search-button">
-             <SearchIcon className="search-icon" onClick={searchBooks()} />
+             <SearchIcon className="search-icon" onClick={searchBooks} />
             </button>
           </div>
         </div>
