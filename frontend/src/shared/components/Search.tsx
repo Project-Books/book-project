@@ -27,15 +27,17 @@ import './Search.css';
 type Title =  {
   id: number,
   title: string,
+  blurb: string
 }
 
 const FIND_BY_TITLE = gql`
-query getByTitleCase($title: String!) {
-  findByTitleIgnoreCase(title:$title) {
-      title
-      id
+  query getByTitleCase($title: String!) {
+    findByTitleIgnoreCase(title:$title) {
+        id
+        title
+        blurb
+    }
   }
-}
 `;
 
 export default function Search(): JSX.Element {
@@ -49,7 +51,7 @@ export default function Search(): JSX.Element {
     setSearchTerm(e.target.value);
   }
 
-  function searchBooks() {
+  function onSearchBooks() {
     if (loading)  {
       return <div>Loading</div>;
     }
@@ -57,11 +59,16 @@ export default function Search(): JSX.Element {
       return <div>error{error.message}</div>;
     }
 
-    return data.book.map((book: Title) => (
-      <div key={book.id}>
-      <p>{JSON.stringify(book.title)}</p>
+    return (
+      <div>
+       {data.book.map((book: Title) => (
+        <div key={book.id}>
+        <p>{JSON.stringify(book.title)}</p>
+        <p>{JSON.stringify(book.blurb)}</p>
+        </div>
+       ))};
       </div>
-    ));
+    )
   }
   return (
     <Layout title="Search">
@@ -84,7 +91,7 @@ export default function Search(): JSX.Element {
           </form>
           <div className="search-icon-container">
             <button className="search-button">
-             <SearchIcon className="search-icon" onClick={searchBooks} />
+             <SearchIcon className="search-icon" onClick={onSearchBooks} />
             </button>
           </div>
         </div>
