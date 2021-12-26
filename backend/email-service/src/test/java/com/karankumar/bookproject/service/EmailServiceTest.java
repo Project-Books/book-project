@@ -21,6 +21,8 @@ import com.icegreen.greenmail.util.ServerSetupTest;
 import com.karankumar.bookproject.configuration.EmailConfiguration;
 import com.karankumar.bookproject.configuration.ThymeleafConfiguration;
 import com.karankumar.bookproject.mock.MockEmailTemplate;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -65,25 +68,37 @@ class EmailServiceTest {
 
         MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
 
-        Assertions.assertAll(
-                () -> assertEquals(messageBody, GreenMailUtil.getBody(receivedMessage)),
-                () -> assertEquals(1, receivedMessage.getAllRecipients().length),
-                () -> assertEquals(recipient, receivedMessage.getAllRecipients()[0].toString()),
-                () -> assertEquals(subject, receivedMessage.getSubject())
-        );
+    assertSoftly(
+        softly -> {
+          softly.assertThat(messageBody).isEqualTo(GreenMailUtil.getBody(receivedMessage));
+          try {
+            softly.assertThat(receivedMessage.getAllRecipients().length).isOne();
+            softly.assertThat(recipient).isEqualTo(receivedMessage.getAllRecipients()[0].toString());
+            softly.assertThat(subject).isEqualTo(receivedMessage.getSubject());
+          } catch (MessagingException e) {
+            Assertions.fail("Messaging exception thrown");
+          }
+        });
     }
 
     @Test
-    void GivenRecipientSubjectBody_WhenSendMessageUsingThymeleafTemplate_ThenSendMessage() throws MessagingException {
+    void GivenRecipientSubjectBody_WhenSendMessageUsingThymeleafTemplate_ThenSendMessage()
+            throws MessagingException {
         emailService.sendMessageUsingThymeleafTemplate(recipient, subject,thymeleafModel);
 
         MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
 
-        assertAll(
-                () -> assertTrue(GreenMailUtil.getBody(receivedMessage).contains("<p>" + messageBody + "</p>")),
-                () -> assertEquals(1, receivedMessage.getAllRecipients().length),
-                () -> assertEquals(recipient, receivedMessage.getAllRecipients()[0].toString()),
-                () -> assertEquals(subject, receivedMessage.getSubject())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(GreenMailUtil.getBody(receivedMessage))
+                  .contains("<p>" + messageBody + "</p>");
+            try {
+                softly.assertThat(receivedMessage.getAllRecipients().length).isOne();
+                softly.assertThat(recipient)
+                      .isEqualTo(receivedMessage.getAllRecipients()[0].toString());
+                softly.assertThat(subject).isEqualTo(receivedMessage.getSubject());
+            } catch (MessagingException e) {
+                Assertions.fail("Messaging exception thrown");
+            }
+        });
     }
 }
