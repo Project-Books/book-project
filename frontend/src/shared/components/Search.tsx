@@ -53,7 +53,8 @@ export default function Search(): JSX.Element {
     setSearchTerm(e.target.value);
   }
 
-  function onSearchBooks() {
+  function onSearchBooks(e:any) {
+    e.preventDefault();
     if (loading)  {
       return <div>Loading</div>;
     }
@@ -65,8 +66,8 @@ export default function Search(): JSX.Element {
       <div>
        {data.book.map((book: Title) => (
         <div key={book.id}>
-        <p>{JSON.stringify(book.title)}</p>
-        <p>{JSON.stringify(book.authors)}</p>
+        <p>{book.title}</p>
+        <p>{book.authors}</p>
         </div>
        ))};
       </div>
