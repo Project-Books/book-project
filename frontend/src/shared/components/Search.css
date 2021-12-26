@@ -17,9 +17,9 @@ If not, see <https://www.gnu.org/licenses/>.
 
 .search-container {
   display: flex;
-  flex-direction: column;
-  position: absolute;
-  width: 80vw;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
 }
 
 .visually-hidden {
@@ -55,11 +55,10 @@ search-input:focus {
   background-color: transparent;
   position: absolute;
   right: 14px;
-  top: 12px;
+  top: 10px;
 }
 
 .search-icon {
   color: black;
   cursor: pointer;
-  position: relative;
 }

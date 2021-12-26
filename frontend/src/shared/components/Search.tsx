@@ -27,7 +27,7 @@ import './Search.css';
 type Title =  {
   id: number,
   title: string,
-  blurb: string
+  authors: string
 }
 
 const FIND_BY_TITLE = gql`
@@ -35,7 +35,9 @@ const FIND_BY_TITLE = gql`
     findByTitleIgnoreCase(title:$title) {
         id
         title
-        blurb
+        authors {
+          fullName
+        }
     }
   }
 `;
@@ -64,7 +66,7 @@ export default function Search(): JSX.Element {
        {data.book.map((book: Title) => (
         <div key={book.id}>
         <p>{JSON.stringify(book.title)}</p>
-        <p>{JSON.stringify(book.blurb)}</p>
+        <p>{JSON.stringify(book.authors)}</p>
         </div>
        ))};
       </div>
@@ -72,30 +74,24 @@ export default function Search(): JSX.Element {
   }
   return (
     <Layout title="Search">
-      <div className="search-container">
-        <div className="search-bar">
-          <form>
-            <label
-              htmlFor="book-search"
-              className="visually-hidden">
-              Search for a book title, author or ISBN #
-            </label>
-            <input
-              type="search"
-              className="search-input"
-              id="search"
-              placeholder="Search for a book title, author, or ISBN #"
-              value={searchTerm}
-              onChange={handleChange}
-            />
-          </form>
-          <div className="search-icon-container">
-            <button className="search-button">
-             <SearchIcon className="search-icon" onClick={onSearchBooks} />
-            </button>
-          </div>
-        </div>
-      </div>
+      <form className="search-container">
+        <label
+          htmlFor="book-search"
+          className="visually-hidden">
+          Search for a book title, author or ISBN #
+        </label>
+        <input
+          type="search"
+          className="search-input"
+          id="search"
+          placeholder="Search for a book title, author, or ISBN #"
+          value={searchTerm}
+          onChange={handleChange}
+        />
+        <button className="search-button" onClick={onSearchBooks}>
+          <SearchIcon className="search-icon" />
+        </button>
+      </form>
     </Layout>
   )
 }
