@@ -45,7 +45,6 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @Slf4j
 @RestController
@@ -60,6 +59,7 @@ public class UserController {
     private final EmailServiceImpl emailService;
 
     private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
+    private static final String CURRENT_USER_NOT_FOUND_ERROR_MESSAGE = "Could not determine the current user";
 
     @Autowired
     public UserController(UserService userService, PasswordEncoder passwordEncoder, EmailServiceImpl emailService) {
@@ -127,7 +127,40 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
         }
    }
-  
+
+    @PostMapping("/update-email")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateEmail(@RequestParam("newEmail") String newEmail,
+                            @RequestParam("currentPassword") String currentPassword) {
+
+        User user;
+
+        try {
+            user = userService.getCurrentUser();
+        } catch (com.karankumar.bookproject.backend.service.CurrentUserNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    CURRENT_USER_NOT_FOUND_ERROR_MESSAGE
+            );
+        }
+
+        if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+            try {
+                userService.changeUserEmail(user, newEmail);
+            } catch (ConstraintViolationException | UserAlreadyRegisteredException ex) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        ex.getMessage()
+                );
+            }
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    INCORRECT_PASSWORD_ERROR_MESSAGE
+            );
+        }
+    }
+
     @PostMapping("/update-password")
     @ResponseStatus(HttpStatus.OK)
     public boolean updatePassword(@RequestParam("currentPassword") String currentPassword,
