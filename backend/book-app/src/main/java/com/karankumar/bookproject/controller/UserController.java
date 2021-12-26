@@ -22,6 +22,7 @@ import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.template.EmailTemplate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,9 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
+@Slf4j
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(Mappings.USER)
@@ -90,7 +93,7 @@ public class UserController {
                     EmailTemplate.getAccountCreatedEmailTemplate(emailService.getUsernameFromEmail(user.getUsername()))
             );
             return ResponseEntity.status(HttpStatus.OK).body("user created");
-        } catch (UserAlreadyRegisteredException | MessagingException e) {
+        } catch (UserAlreadyRegisteredException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email taken");
         } catch (ConstraintViolationException ex) {
             Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
@@ -99,9 +102,10 @@ public class UserController {
                 errors.add(v.getMessage());
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        } catch (MessagingException e) {
+            LOGGER.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
-
     }
 
     @DeleteMapping()
