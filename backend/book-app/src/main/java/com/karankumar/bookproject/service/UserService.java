@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.service;
 
+import com.karankumar.bookproject.backend.service.CurrentUserNotFoundException;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.PredefinedShelf;
@@ -110,7 +111,8 @@ public class UserService {
 
     public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email).orElseThrow(() -> new CurrentUserNotFoundException("Current user could not be found"));
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new CurrentUserNotFoundException("Current user could not be found"));
     }
 
     // TODO: this can be removed once we are no longer populating test data
