@@ -21,10 +21,13 @@ import com.karankumar.bookproject.backend.controller.Mappings;
 import com.karankumar.bookproject.backend.security.jwt.JwtConfig;
 import com.karankumar.bookproject.backend.security.jwt.JwtTokenVerifier;
 import com.karankumar.bookproject.backend.security.jwt.JwtUsernamePasswordAuthFilter;
+import com.karankumar.bookproject.backend.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,15 +48,18 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private final UserService userService;
     private final DatabaseUserDetailsService databaseUserDetailsService;
     private final DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService;
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
 
-    public SecurityConfiguration(DatabaseUserDetailsService databaseUserDetailsService,
+    public SecurityConfiguration(@Lazy UserService userService,
+                                 DatabaseUserDetailsService databaseUserDetailsService,
                                  DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService,
                                  SecretKey secretKey,
                                  JwtConfig jwtConfig) {
+        this.userService = userService;
         this.databaseUserDetailsService = databaseUserDetailsService;
         this.databaseUserDetailsPasswordService = databaseUserDetailsPasswordService;
         this.secretKey = secretKey;
@@ -67,9 +73,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(databaseUserDetailsService)
+        auth.authenticationProvider(authenticationProviderBean())
+            .userDetailsService(databaseUserDetailsService)
             .userDetailsPasswordManager(databaseUserDetailsPasswordService)
             .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProviderBean() throws Exception {
+        CustomAuthenticationProvider customAuthenticationProvider = new CustomAuthenticationProvider(userService);
+        customAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        customAuthenticationProvider.setUserDetailsService(databaseUserDetailsService);
+
+        return customAuthenticationProvider;
     }
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)

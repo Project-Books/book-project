@@ -39,14 +39,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -58,6 +59,8 @@ public class UserService {
     private final PredefinedShelfService predefinedShelfService;
 
     public static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
+    public static final int MAX_FAILED_ATTEMPTS = 3;
+    public static final long LOCK_TIME_DURATION = Duration.ofHours(24).toSeconds();
 
     public UserService(UserRepository userRepository,
                        RoleRepository roleRepository,
@@ -120,6 +123,10 @@ public class UserService {
 
     public Optional<User> findUserById(@NonNull Long id) {
         return userRepository.findById(id);
+    }
+
+    public Optional<User> findUserByEmail(String userEmail) {
+        return userRepository.findByEmail(userEmail);
     }
 
     private void authenticateUser(User user) {
@@ -201,5 +208,35 @@ public class UserService {
         }
 
         outerBooks.forEach(Book::removePredefinedShelf);
+    }
+
+    public User increaseFailAttempts(User user) {
+        int failedAttempts = user.getFailedAttempts();
+        user.setFailedAttempts(failedAttempts + 1);
+
+        return userRepository.save(user);
+    }
+
+    public User resetFailAttempts(User user) {
+        user.setFailedAttempts(0);
+
+        return userRepository.save(user);
+    }
+
+    public void lock(User user) {
+        user.setLocked(true);
+        user.setLockTime(LocalDateTime.now());
+
+        userRepository.save(user);
+    }
+
+    public void unlockWhenTimeExpired(User user) {
+        long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(user.getLockTime(), LocalDateTime.now());
+
+        if (elapsedTimeInSeconds > LOCK_TIME_DURATION) {
+            user.setLocked(false);
+            user.setFailedAttempts(0);
+            userRepository.save(user);
+        }
     }
 }
