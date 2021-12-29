@@ -20,6 +20,8 @@ package com.karankumar.bookproject.backend.model.account;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.karankumar.bookproject.backend.constraints.PasswordStrength;
 import com.karankumar.bookproject.backend.constraints.PasswordStrengthCheck;
+
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -75,6 +77,12 @@ public class User {
   private String password;
 
   @NotNull private boolean active;
+
+  private boolean locked;
+
+  private int failedAttempts;
+
+  private LocalDateTime lockTime;
 
   // Fetch type can be eager as there are not many roles
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
