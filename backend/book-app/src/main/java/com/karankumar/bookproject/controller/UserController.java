@@ -165,15 +165,32 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public boolean updatePassword(@RequestParam("currentPassword") String currentPassword,
                                @RequestParam("newPassword") String newPassword) throws MessagingException {
-        User user = userService.getCurrentUser();
+
+        User user;
+
+        try {
+            user = userService.getCurrentUser();
+        } catch (com.karankumar.bookproject.backend.service.CurrentUserNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    CURRENT_USER_NOT_FOUND_ERROR_MESSAGE
+            );
+        }
 
         if (passwordEncoder.matches(currentPassword, user.getPassword())) {
-            userService.changeUserPassword(user, newPassword);
-            emailService.sendMessageUsingThymeleafTemplate(
-                    user.getEmail(),
-                    EmailConstant.ACCOUNT_PASSWORD_CHANGED_SUBJECT,
-                    EmailTemplate.getChangePasswordEmailTemplate(emailService.getUsernameFromEmail(user.getEmail()))
-            );
+            try{
+                userService.changeUserPassword(user, newPassword);
+                emailService.sendMessageUsingThymeleafTemplate(
+                        user.getEmail(),
+                        EmailConstant.ACCOUNT_PASSWORD_CHANGED_SUBJECT,
+                        EmailTemplate.getChangePasswordEmailTemplate(emailService.getUsernameFromEmail(user.getEmail()))
+                );
+            }catch (ConstraintViolationException ex){
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        ex.getMessage()
+                );
+            }
             return true;
         } else {
             throw new ResponseStatusException(
