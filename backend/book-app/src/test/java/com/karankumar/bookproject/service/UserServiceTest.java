@@ -119,8 +119,8 @@ class UserServiceTest {
     @Test
     void changeUserPassword_encodesPassword_beforeSaving() {
         // given
-        String password = "password";
-        final String email = "user@user.somewhere";
+        String password = "StrongPassword007";
+        final String email = "test@gmail.com";
 
         // when
         underTest.changeUserPassword(User.builder().email(email).build(), password);
