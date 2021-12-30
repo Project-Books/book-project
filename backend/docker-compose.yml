@@ -11,11 +11,12 @@ services:
       MYSQL_DATABASE: bookproject
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: dbpassword
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./src/main/resources/db/init.sql:/data/application/init.sql
+      - ./db/init.sql:/data/application/init.sql
     command: --init-file /data/application/init.sql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
