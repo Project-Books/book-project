@@ -1,0 +1,165 @@
+{
+  "183295542": {
+    "books_id": "183295542",
+    "title": "Core Java Volume I--Fundamentals (11th Edition) (Core Series)",
+    "sortcharacter": "1",
+    "public": "1",
+    "primaryauthor": "Horstmann, Cay S.",
+    "primaryauthorrole": "Author",
+    "authors": [
+      {
+        "lf": "Horstmann, Cay S.",
+        "fl": "Cay S. Horstmann",
+        "role": "Author"
+      }
+    ],
+    "collections_idA": [
+      1,
+      7
+    ],
+    "collections": [
+      "Your library",
+      "Currently reading"
+    ],
+    "originalisbn": "0135166306",
+    "isbn": {
+      "0": "0135166306",
+      "2": "9780135166307"
+    },
+    "asin": "0135166306",
+    "ean": [
+      "0135166306"
+    ],
+    "publication": "Prentice Hall (2018), Edition: 11, 928 pages",
+    "date": "2018",
+    "summary": "Core Java Volume I--Fundamentals (11th Edition) (Core Series) by Cay S. Horstmann (2018)",
+    "language": [
+      "English"
+    ],
+    "language_codeA": [
+      "eng"
+    ],
+    "originallanguage": [
+      "English"
+    ],
+    "originallanguage_codeA": [
+      "eng"
+    ],
+    "ddc": {
+      "code": [
+        "005.133"
+      ],
+      "wording": [
+        "Computer Software",
+        "Computing And Information",
+        "General Programming Languages",
+        "Information",
+        "Languages",
+        "Programming"
+      ]
+    },
+    "lcc": {
+      "code": "QA76.73 .J38"
+    },
+    "series": [
+      "Core Java",
+      "Core Series"
+    ],
+    "source": "amazon.com books",
+    "workcode": "7490082",
+    "entrydate": "2020-05-13",
+    "format": [
+      {
+        "code": "1.1.1",
+        "text": "Paperback"
+      }
+    ],
+    "copies": "1",
+    "physical_description": "9.15 inches",
+    "height": "9.15 inches",
+    "thickness": "2.15 inches",
+    "length": "7.05 inches",
+    "dimensions": "9.15 x 7.05 x 2.15 inches",
+    "weight": "3.15481496922 pounds"
+  },
+  "183480139": {
+    "books_id": "183480139",
+    "title": "The Technology Trap: Capital, Labor, and Power in the Age of Automation",
+    "sortcharacter": "5",
+    "public": "1",
+    "primaryauthor": "Frey, Carl Benedikt",
+    "primaryauthorrole": "Author",
+    "authors": [
+      {
+        "lf": "Frey, Carl Benedikt",
+        "fl": "Carl Benedikt Frey",
+        "role": "Author"
+      }
+    ],
+    "collections_idA": [
+      1
+    ],
+    "collections": [
+      "Your library"
+    ],
+    "originalisbn": "069117279X",
+    "isbn": {
+      "0": "069117279X",
+      "2": "9780691172798"
+    },
+    "asin": "069117279X",
+    "ean": [
+      "069117279X"
+    ],
+    "publication": "Princeton University Press (2019), 480 pages",
+    "date": "2019",
+    "summary": "The Technology Trap: Capital, Labor, and Power in the Age of Automation by Carl Benedikt Frey (2019)",
+    "originallanguage": [
+      "English"
+    ],
+    "originallanguage_codeA": [
+      "eng"
+    ],
+    "ddc": {
+      "code": [
+        "338.064"
+      ],
+      "wording": [
+        "Economics",
+        "Effect Of Innovation",
+        "Efficiency",
+        "Production",
+        "Social Sciences"
+      ]
+    },
+    "lcc": [],
+    "genre": [
+      "Nonfiction",
+      "Science & Nature",
+      "History",
+      "Recent Nonfiction"
+    ],
+    "genre_id": [
+      "1247",
+      "1457",
+      "1599",
+      "8278606"
+    ],
+    "source": "amazon.com books",
+    "workcode": "23389507",
+    "entrydate": "2020-05-17",
+    "format": [
+      {
+        "code": "1.1.2",
+        "text": "Hardcover"
+      }
+    ],
+    "copies": "1",
+    "physical_description": "9.5 inches",
+    "height": "9.5 inches",
+    "thickness": "1.5 inches",
+    "length": "6.5 inches",
+    "dimensions": "9.5 x 6.5 x 1.5 inches",
+    "weight": "2.1 pounds"
+  }
+}

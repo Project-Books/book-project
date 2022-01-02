@@ -1,0 +1,244 @@
+/*
+    The book project lets a user keep track of different books they would like to read, are currently
+    reading, have read or did not finish.
+    Copyright (C) 2021  Karan Kumar
+
+    This program is free software: you can redistribute it and/or modify it under the terms of the
+    GNU General Public License as published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT ANY
+    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+    PURPOSE.  See the GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with this program.
+    If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package com.karankumar.bookproject.service;
+
+import com.karankumar.bookproject.backend.service.CurrentUserNotFoundException;
+import com.karankumar.bookproject.dto.UserToRegisterDto;
+import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.model.account.RoleType;
+import com.karankumar.bookproject.model.account.Role;
+import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.repository.RoleRepository;
+import com.karankumar.bookproject.repository.UserRepository;
+import com.karankumar.bookproject.repository.BookRepository;
+import lombok.NonNull;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final BookRepository bookRepository;
+    private final PredefinedShelfService predefinedShelfService;
+
+    public static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
+    public static final int MAX_FAILED_ATTEMPTS = 3;
+    public static final long LOCK_TIME_DURATION = Duration.ofHours(24).toSeconds();
+
+    public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
+                       PasswordEncoder passwordEncoder,
+                       AuthenticationManager authenticationManager,
+                       @Lazy PredefinedShelfService predefinedShelfService,
+                       BookRepository bookRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.predefinedShelfService = predefinedShelfService;
+        this.bookRepository = bookRepository;
+    }
+
+    public User register(@NonNull UserToRegisterDto userToRegisterDto) throws UserAlreadyRegisteredException {
+        User userToRegister = User.builder()
+                                .email(userToRegisterDto.getUsername())
+                                .password(userToRegisterDto.getPassword())
+                                .build();
+
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(userToRegister);
+
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(constraintViolations);
+        }
+        
+        if (userToRegister.getEmail() != null && isEmailInUse(userToRegister.getEmail())) {
+            throw new UserAlreadyRegisteredException(
+                    "A user with the email address " + userToRegister.getEmail() + " already exists");
+        }
+
+        userRepository.save(createNewUser(userToRegister));
+        authenticateUser(userToRegister);
+        return userToRegister;
+    }
+
+    private User createNewUser(User user) {
+        Role userRole = roleRepository.findByRole(RoleType.USER.toString())
+                                      .orElseThrow(() -> new AuthenticationServiceException(
+                                              "The default user role could not be found"));
+        return User.builder()
+                   .email(user.getEmail())
+                   .password(passwordEncoder.encode(user.getPassword()))
+                   .active(true)
+                   .roles(Set.of(userRole))
+                   .build();
+    }
+
+    public User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new CurrentUserNotFoundException("Current user could not be found"));
+    }
+
+    // TODO: this can be removed once we are no longer populating test data
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> findUserById(@NonNull Long id) {
+        return userRepository.findById(id);
+    }
+
+    public Optional<User> findUserByEmail(String userEmail) {
+        return userRepository.findByEmail(userEmail);
+    }
+
+    private void authenticateUser(User user) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        Authentication authResult =
+                authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+        if (authResult.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(authResult);
+        }
+    }
+
+    public boolean isEmailInUse(@NonNull String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public boolean emailIsNotInUse(String email) {
+        return !isEmailInUse(email);
+    }
+
+    public void changeUserEmail(@NonNull User user, @NonNull String email) {
+
+        if (user.getEmail().equalsIgnoreCase(email)) {
+            throw new UserAlreadyRegisteredException(
+                    "Given email address is same as the current one"
+            );
+        }
+
+        user.setEmail(email);
+
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(constraintViolations);
+        }
+
+        if (user.getEmail() != null && isEmailInUse(user.getEmail())) {
+            throw new UserAlreadyRegisteredException(
+                    "A user with the email address " + user.getEmail() + " already exists");
+        }
+
+        userRepository.save(user);
+    }
+
+    public void changeUserPassword(@NonNull User user, @NonNull String password) {
+        String encodedPassword = passwordEncoder.encode(password);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+    }
+
+    public void deleteUserById(@NonNull Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            // TODO: make the temporal coupling explicit -- this needs to be called before bookRepository.deleteAll()
+            removePredefinedShelfFromUserBooks();
+
+            bookRepository.deleteAll();
+            userRepository.deleteById(id);
+        } else {
+            // TODO: throw custom exception.
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, 
+                    String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)
+            );
+        }
+    }
+
+    private void removePredefinedShelfFromUserBooks() {
+        List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAllForLoggedInUser();
+
+        // Add all of the books in each predefined shelf to this set outside of the loop to
+        // avoid a concurrent modification exception
+        Set<Book> outerBooks = new HashSet<>();
+        for (PredefinedShelf p : predefinedShelves) {
+            p.removeUser();
+            outerBooks.addAll(p.getBooks());
+        }
+
+        outerBooks.forEach(Book::removePredefinedShelf);
+    }
+
+    public User increaseFailAttempts(User user) {
+        int failedAttempts = user.getFailedAttempts();
+        user.setFailedAttempts(failedAttempts + 1);
+
+        return userRepository.save(user);
+    }
+
+    public User resetFailAttempts(User user) {
+        user.setFailedAttempts(0);
+
+        return userRepository.save(user);
+    }
+
+    public void lock(User user) {
+        user.setLocked(true);
+        user.setLockTime(LocalDateTime.now());
+
+        userRepository.save(user);
+    }
+
+    public void unlockWhenTimeExpired(User user) {
+        long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(user.getLockTime(), LocalDateTime.now());
+
+        if (elapsedTimeInSeconds > LOCK_TIME_DURATION) {
+            user.setLocked(false);
+            user.setFailedAttempts(0);
+            userRepository.save(user);
+        }
+    }
+}
