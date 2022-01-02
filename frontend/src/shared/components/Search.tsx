@@ -53,26 +53,20 @@ export default function Search(): JSX.Element {
     setSearchTerm(e.target.value);
   }
 
-  function onSearchBooks(e:any) {
+  async function onSearchBooks(e:any) {
     e.preventDefault();
     if (loading)  {
-      return <div>Loading</div>;
+      return <p>Loading</p>;
     }
     if (error) {
-      return <div>error{error.message}</div>;
+      return <p>error{error.message}</p>;
     }
-
-    return (
-      <div>
-       {data.book.map((book: Title) => (
-        <div key={book.id}>
-        <p>{book.title}</p>
-        <p>{book.authors}</p>
-        </div>
-       ))};
-      </div>
-    )
+    if (data) {
+      console.log(data);
+    }
+    // Make request and console log response for now/remove mapping of data below
   }
+
   return (
     <Layout title="Search">
       <form className="search-container">
@@ -93,6 +87,17 @@ export default function Search(): JSX.Element {
           <SearchIcon className="search-icon" />
         </button>
       </form>
+      <div>
+        {data &&
+          data.map((book:any) => {
+            return  (
+              <div key={book.id}>
+                <p>{book.title}</p>
+                <p>{book.authors}</p>
+              </div>
+            );
+          })}
+      </div>
     </Layout>
   )
 }
