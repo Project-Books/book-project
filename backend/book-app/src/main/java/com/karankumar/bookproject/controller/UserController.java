@@ -14,6 +14,9 @@
 
 package com.karankumar.bookproject.controller;
 
+import com.karankumar.bookproject.constraints.PasswordStrength;
+import com.karankumar.bookproject.constraints.PasswordStrengthCheck;
+import com.karankumar.bookproject.constraints.PasswordStrengthValidator;
 import com.karankumar.bookproject.dto.UserToDeleteDto;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
@@ -22,6 +25,7 @@ import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.template.EmailTemplate;
+import com.karankumar.bookproject.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +46,8 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.mail.MessagingException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Payload;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -60,6 +66,7 @@ public class UserController {
 
     private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
     private static final String CURRENT_USER_NOT_FOUND_ERROR_MESSAGE = "Could not determine the current user";
+    private static final String PASSWORD_WEAK_ERROR_MESSAGE = "Password is too weak";
 
     @Autowired
     public UserController(UserService userService, PasswordEncoder passwordEncoder, EmailServiceImpl emailService) {
@@ -165,6 +172,13 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public boolean updatePassword(@RequestParam("currentPassword") String currentPassword,
                                @RequestParam("newPassword") String newPassword) throws MessagingException {
+
+        if (!StringUtils.checkPasswordStrength(newPassword, PasswordStrength.STRONG)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    PASSWORD_WEAK_ERROR_MESSAGE
+            );
+        }
 
         User user;
 
