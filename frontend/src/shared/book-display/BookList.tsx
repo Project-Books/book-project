@@ -150,18 +150,27 @@ function getSortingMechanism(config: SortingConfig): (book1: Book, book2: Book) 
           orderIndex * book1.bookGenre.toString().localeCompare(book2.bookGenre.toString()));
     case 'rating':
       return ((book1: Book, book2: Book) => {
-        if (isNaN(book1.rating) && isNaN(book2.rating)) {
+        if (!isRated(book1) && !isRated(book2)) {
           return 0;
         }
-        if (isNaN(book1.rating)) {
-          return orderIndex * -1;
+        if (!isRated(book1)) {
+          return 1;
         }
-        if (isNaN(book2.rating)) {
-          return orderIndex * 1;
+        if (!isRated(book2)) {
+          return -1;
         }
-        return  orderIndex * (book1.rating - book2.rating);
+        return  orderIndex * (getRating(book1) - getRating(book2));
       })
   }
+}
+
+function getRating(book: Book): number {
+  return Number(book.rating.toString().split('/')[0]);
+}
+
+
+function isRated(book: Book): boolean {
+  return book.rating.toString().includes('/');
 }
 
 function getNameToOrder(configurations: SortingConfig[]): Map<string, boolean> {
