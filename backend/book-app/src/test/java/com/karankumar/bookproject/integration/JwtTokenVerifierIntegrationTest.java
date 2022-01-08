@@ -12,13 +12,13 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.backend.integration;
+package com.karankumar.bookproject.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import com.karankumar.bookproject.backend.security.jwt.JwtConfig;
+import com.karankumar.bookproject.security.jwt.JwtConfig;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
