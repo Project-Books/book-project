@@ -42,6 +42,7 @@ For backend-related bugs, tell us your
 
 - Read our contributing guidelines first!
 - Discuss your implementation approach with us first
+- Provide us with an estimate on how long you think it will take you to complete
 - Branch from main and set main as the destination branch in your pull request
 
 Add any other context about the problem here (e.g. stack trace, branch name, commit hash, etc.).
