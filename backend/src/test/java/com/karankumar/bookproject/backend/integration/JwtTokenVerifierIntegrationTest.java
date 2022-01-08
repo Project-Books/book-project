@@ -1,7 +1,7 @@
 /*
     The book project lets a user keep track of different books they would like to read, are currently
     reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+    Copyright (C) 2021  Karan Kumar
     This program is free software: you can redistribute it and/or modify it under the terms of the
     GNU General Public License as published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
@@ -73,11 +73,11 @@ class JwtTokenVerifierIntegrationTest {
         ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = writer.writeValueAsString(map);
 
-        //when & then
+        // when & then
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                .andDo(print())
-                .andExpect(status().is4xxClientError())
-                .andDo(document("refreshToken"));
+                    .andDo(print())
+                    .andExpect(status().is4xxClientError())
+                    .andDo(document("refreshToken"));
     }
 
     @Test
@@ -85,7 +85,7 @@ class JwtTokenVerifierIntegrationTest {
         // given
         String url = "http://localhost:8080/api/books";
 
-        //when & then
+        // when & then
         this.mockMvc.perform(get(url))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
@@ -98,7 +98,7 @@ class JwtTokenVerifierIntegrationTest {
             // given
             String url = "http://localhost:8080/api/books";
 
-            //when & then
+            // when & then
             this.mockMvc.perform(get(url).header("Authorization", "Bearer abc"))
                     .andDo(print())
                     .andExpect(status().is4xxClientError())
@@ -125,8 +125,8 @@ class JwtTokenVerifierIntegrationTest {
                 .compact();
         String url = "http://localhost:8080/api/books";
 
-        //when & then
-        this.mockMvc.perform(get(url).header("Authorization", "Bearer "+token))
+        // when & then
+        this.mockMvc.perform(get(url).header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())
                 .andDo(document("login"));
@@ -149,8 +149,8 @@ class JwtTokenVerifierIntegrationTest {
                 .compact();
         String url = "http://localhost:8080/api/books";
 
-        //when & then
-        this.mockMvc.perform(get(url).header("Authorization", "Bearer "+token))
+        // when & then
+        this.mockMvc.perform(get(url).header("Authorization", "Bearer " + token))
                 .andDo(print())
                 .andExpect(status().is(401))
                 .andDo(document("login"));
@@ -180,7 +180,7 @@ class JwtTokenVerifierIntegrationTest {
         String requestJson = writer.writeValueAsString(map);
         String url = "http://localhost:8080/refreshToken";
 
-        //when & then
+        // when & then
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
                 .andDo(print())
                 .andExpect(status().is2xxSuccessful())

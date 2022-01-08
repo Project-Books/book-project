@@ -45,7 +45,7 @@ public class JwtConfig {
     }
 
     public String getToken(Authentication authResult, SecretKey key, boolean isRefreshToken) {
-        if(isRefreshToken) {
+        if (isRefreshToken) {
             return createToken(authResult, key, this.refreshExpirationAfterDays);
         }
         return createToken(authResult, key, this.tokenExpirationAfterDays);

@@ -30,6 +30,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
@@ -62,7 +63,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         String tokenPrefix = jwtConfig.getTokenPrefix();
 
         if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(tokenPrefix)) {
-            if(request.getMethod().equals("POST") &&
+            if (request.getMethod().equals(RequestMethod.POST.toString()) &&
                     request.getRequestURI().contains("refreshToken")) {
                 Map<String, String> map = readRefreshTokenMapFromRequest(request);
                 Claims body = null;
@@ -115,8 +116,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     private static Authentication getAuthentication(String username,
                               List<Map<String, String>> authorities) {
         Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
-                .map(m -> new SimpleGrantedAuthority(
-                        m.get("authority")))
+                .map(m -> new SimpleGrantedAuthority(m.get("authority")))
                 .collect(Collectors.toSet());
 
         return new UsernamePasswordAuthenticationToken(
