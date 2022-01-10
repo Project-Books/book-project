@@ -21,11 +21,11 @@ import {
   FormHelperText, 
   IconButton, 
   InputAdornment, 
-  InputLabel} from '@material-ui/core'
+  InputLabel} from '@mui/material'
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import {useState} from 'react';
-import OutlinedInput from '@material-ui/core/OutlinedInput'
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 function Password(props: PasswordProps): ReactElement {
   const [showPassword, setShowPassword] = useState(false);

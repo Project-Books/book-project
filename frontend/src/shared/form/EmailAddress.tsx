@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React, {ReactElement} from 'react'
-import TextField from '@material-ui/core/TextField'
+import TextField from '@mui/material/TextField';
 import {Typography} from "@material-ui/core";
 
 function EmailAddress(props: EmailProps): ReactElement {
@@ -28,14 +28,13 @@ function EmailAddress(props: EmailProps): ReactElement {
   return (
     <div className="rounded">
       <TextField
-        id="standard-basic"
+        id="outlined-basic"
         className={props.class}
         label="Email address"
-        variant="outlined"
+        variant= "outlined"
         required
         autoFocus
         error={isInvalid}
-        onChange={(event) => onChange(event.target.value)}
         helperText={isInvalid && <Typography
             className={props.classHelper}>
           {props.errorMessage}
