@@ -35,6 +35,7 @@ function EmailAddress(props: EmailProps): ReactElement {
         required
         autoFocus
         error={isInvalid}
+        onChange={(event) => onChange(event.target.value)}
         helperText={isInvalid && <Typography
             className={props.classHelper}>
           {props.errorMessage}
