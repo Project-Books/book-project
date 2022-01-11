@@ -80,7 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProviderBean() throws Exception {
+    public AuthenticationProvider authenticationProviderBean() {
         CustomAuthenticationProvider customAuthenticationProvider = new CustomAuthenticationProvider(userService);
         customAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         customAuthenticationProvider.setUserDetailsService(databaseUserDetailsService);
