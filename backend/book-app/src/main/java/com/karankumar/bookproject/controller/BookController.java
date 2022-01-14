@@ -14,33 +14,34 @@
 
 package com.karankumar.bookproject.controller;
 
-import com.karankumar.bookproject.dto.BookPatchDto;
-import org.modelmapper.Converter;
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.ModelMapper;
 import com.karankumar.bookproject.dto.BookDto;
+import com.karankumar.bookproject.dto.BookPatchDto;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.BookGenre;
 import com.karankumar.bookproject.model.BookFormat;
+import com.karankumar.bookproject.model.BookGenre;
 import com.karankumar.bookproject.model.PredefinedShelf;
 import com.karankumar.bookproject.service.BookService;
 import com.karankumar.bookproject.service.PredefinedShelfService;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
@@ -51,10 +52,11 @@ public class BookController {
   private final ModelMapper modelMapper;
 
   private static final String BOOK_NOT_FOUND_ERROR_MESSAGE = "Could not find book with ID %d";
+  public static final String NEGATIVE_PAGE_ERROR_MESSAGE = "Could not retrieve page with number %d";
 
   @Autowired
   public BookController(BookService bookService, PredefinedShelfService predefinedShelfService,
-      ModelMapper modelMapper) {
+                        ModelMapper modelMapper) {
     this.bookService = bookService;
     this.predefinedShelfService = predefinedShelfService;
     this.modelMapper = modelMapper;
@@ -68,18 +70,18 @@ public class BookController {
     @Override
     public PredefinedShelf convert(String predefinedShelfName) {
       Optional<PredefinedShelf.ShelfName> optionalShelfName =
-          PredefinedShelfService.getPredefinedShelfName(predefinedShelfName);
+        PredefinedShelfService.getPredefinedShelfName(predefinedShelfName);
 
       if (optionalShelfName.isEmpty()) {
         String errorMessage = String.format(
-            "%s does not match a predefined shelf",
-            predefinedShelfName
+          "%s does not match a predefined shelf",
+          predefinedShelfName
         );
         throw new IllegalStateException(errorMessage);
       }
 
       Optional<PredefinedShelf> optionalPredefinedShelf = predefinedShelfService
-          .getPredefinedShelfByPredefinedShelfName(optionalShelfName.get());
+        .getPredefinedShelfByPredefinedShelfName(optionalShelfName.get());
 
       if (optionalPredefinedShelf.isEmpty()) {
         // TODO: throw custom exception
@@ -104,17 +106,21 @@ public class BookController {
 
   @GetMapping()
   // TODO: only retrieve books that belong to the logged in user
-  public List<Book> all() {
-    return bookService.findAll();
+  public List<Book> all(@RequestParam(required = false) Integer page) {
+    if (page == null || page >= 0) {
+      return bookService.findAll(page);
+    } else {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(NEGATIVE_PAGE_ERROR_MESSAGE, page));
+    }
   }
 
   @GetMapping("/{id}")
   // TODO: only retrieve books that belong to the logged in user
   public Book findById(@PathVariable Long id) {
     return bookService.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
-        );
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
+      );
   }
 
 
@@ -130,11 +136,11 @@ public class BookController {
   @ResponseStatus(HttpStatus.OK)
   public Book update(@PathVariable Long id, @RequestBody BookPatchDto bookPatchDto) {
     final var bookToUpdate = bookService.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)
-            )
-        );
+      .orElseThrow(() -> new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)
+        )
+      );
     return bookService.updateBook(bookToUpdate, bookPatchDto);
   }
 
@@ -145,9 +151,9 @@ public class BookController {
   @DeleteMapping("/{id}")
   public void delete(@PathVariable Long id) {
     Book bookToDelete = bookService.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
-        );
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
+      );
     bookService.delete(bookToDelete);
   }
 }

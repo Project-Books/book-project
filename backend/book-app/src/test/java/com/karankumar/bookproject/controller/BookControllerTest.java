@@ -15,7 +15,6 @@
 package com.karankumar.bookproject.controller;
 
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.Shelf;
 import com.karankumar.bookproject.service.BookService;
 import com.karankumar.bookproject.service.PredefinedShelfService;
 import org.junit.jupiter.api.Test;
@@ -34,62 +33,78 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class BookControllerTest {
-    private final BookController bookController;
-    private final BookService mockedBookService;
+  private final BookController bookController;
+  private final BookService mockedBookService;
 
-    BookControllerTest() {
-        mockedBookService = mock(BookService.class);
-        PredefinedShelfService mockedPredefinedShelfService = mock(PredefinedShelfService.class);
-        ModelMapper mockedModelMapper = mock(ModelMapper.class);
-        bookController = new BookController(
-                mockedBookService,
-                mockedPredefinedShelfService,
-                mockedModelMapper
-        );
-    }
+  BookControllerTest() {
+    mockedBookService = mock(BookService.class);
+    PredefinedShelfService mockedPredefinedShelfService = mock(PredefinedShelfService.class);
+    ModelMapper mockedModelMapper = mock(ModelMapper.class);
+    bookController = new BookController(
+      mockedBookService,
+      mockedPredefinedShelfService,
+      mockedModelMapper
+    );
+  }
 
-    @Test
-    void all_returnsEmptyList_whenNoBooksExist() {
-        when(mockedBookService.findAll()).thenReturn(new ArrayList<>());
+  @Test
+  void all_returnsEmptyList_whenNoBooksExist() {
+    int page = 0;
+    when(mockedBookService.findAll(page)).thenReturn(new ArrayList<>());
 
-        assertThat(bookController.all().size()).isZero();
-    }
+    assertThat(bookController.all(page).size()).isZero();
+  }
 
-    @Test
-    void all_returnsNonEmptyList_whenBooksExist() {
-        // given
-        List<Book> books = new ArrayList<>();
-        books.add(new Book());
-        books.add(new Book());
+  @Test
+  void all_returnsBadRequest_whenNegativePage() {
+    Integer page = -1;
+    String expectedMessage = String.format(
+      "%s \"%s\"",
+      HttpStatus.BAD_REQUEST,
+      String.format(BookController.NEGATIVE_PAGE_ERROR_MESSAGE, page)
+    );
 
-        // when
-        when(mockedBookService.findAll()).thenReturn(books);
+    assertThatExceptionOfType(ResponseStatusException.class)
+      .isThrownBy(() -> bookController.all(page))
+      .withMessage(expectedMessage);
+  }
 
-        // then
-        assertThat(bookController.all().size()).isEqualTo(books.size());
-    }
+  @Test
+  void all_returnsNonEmptyList_whenBooksExist() {
+    // given
+    int page = 0;
+    List<Book> books = new ArrayList<>();
+    books.add(new Book());
+    books.add(new Book());
 
-    @Test
-    void findById_returnsBook_ifPresent() {
-        Book book = new Book();
-        when(mockedBookService.findById(any(Long.class)))
-                .thenReturn(Optional.of(book));
+    // when
+    when(mockedBookService.findAll(page)).thenReturn(books);
 
-        assertThat(bookController.findById(0L)).isEqualTo(book);
-    }
+    // then
+    assertThat(bookController.all(page).size()).isEqualTo(books.size());
+  }
 
-    @Test
-    void findById_returnsNotFound_ifBookIsEmpty() {
-        when(mockedBookService.findById(any(Long.class)))
-                .thenReturn(Optional.empty());
+  @Test
+  void findById_returnsBook_ifPresent() {
+    Book book = new Book();
+    when(mockedBookService.findById(any(Long.class)))
+      .thenReturn(Optional.of(book));
 
-        assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(() -> bookController.findById(0L));
-    }
+    assertThat(bookController.findById(0L)).isEqualTo(book);
+  }
 
-    @Test
+  @Test
+  void findById_returnsNotFound_ifBookIsEmpty() {
+    when(mockedBookService.findById(any(Long.class)))
+      .thenReturn(Optional.empty());
+
+    assertThatExceptionOfType(ResponseStatusException.class)
+      .isThrownBy(() -> bookController.findById(0L));
+  }
+
+  @Test
     // TODO: finish writing this test
-    void findByShelf_returnsNotFound_ifBookDoesNotExist() {
+  void findByShelf_returnsNotFound_ifBookDoesNotExist() {
 //        when(mockedBookService.findByShelfAndTitleOrAuthor(
 //                any(Shelf.class),
 //                any(String.class),
@@ -98,15 +113,15 @@ class BookControllerTest {
 
 //        assertThatExceptionOfType(BookNotFoundException.class)
 //                .isThrownBy(bookController.findByShelf(new CustomShelf(), "title", "author"));
-    }
+  }
 
-    @Test
+  @Test
     // TODO: finish writing this test
-    void delete_returnsNotFound_ifBookDoesNotExist() {
-        when(mockedBookService.findById(any(Long.class)))
-                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+  void delete_returnsNotFound_ifBookDoesNotExist() {
+    when(mockedBookService.findById(any(Long.class)))
+      .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
 //        assertThatExceptionOfType(BookNotFoundException.class)
 //                .isThrownBy(bookController.delete(1L));
-    }
+  }
 }

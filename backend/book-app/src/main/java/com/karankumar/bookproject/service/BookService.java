@@ -33,6 +33,8 @@ import com.karankumar.bookproject.repository.BookRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +56,7 @@ public class BookService {
   private final PredefinedShelfService predefinedShelfService;
 
   public BookService(BookRepository bookRepository, AuthorService authorService,
-      PublisherService publisherService, PredefinedShelfService predefinedShelfService) {
+                     PublisherService publisherService, PredefinedShelfService predefinedShelfService) {
     this.bookRepository = bookRepository;
     this.authorService = authorService;
     this.publisherService = publisherService;
@@ -101,13 +103,15 @@ public class BookService {
     return bookRepository.count();
   }
 
-  public List<Book> findAll() {
-    return bookRepository.findAllBooks();
+  public List<Book> findAll(Integer pageNumber) {
+    int page = pageNumber == null ? 0 : pageNumber;
+    Pageable pageable = PageRequest.of(page, 50);
+    return bookRepository.findAllBooks(pageable);
   }
 
   public List<Book> findAll(String filterText) {
     if (filterText == null || filterText.isEmpty()) {
-      return findAll();
+      return findAll(0);
     }
     return bookRepository.findByTitleContainingIgnoreCase(filterText);
   }
@@ -130,13 +134,13 @@ public class BookService {
 
   public void deleteAll() {
     LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " +
-        bookRepository.count());
+      bookRepository.count());
     bookRepository.deleteAll();
     authorService.deleteAll();
 
     LOGGER.log(
-        Level.INFO, "Deleted all books in books & authors. Book repository size = " +
-            bookRepository.count()
+      Level.INFO, "Deleted all books in books & authors. Book repository size = " +
+        bookRepository.count()
     );
   }
 
@@ -177,47 +181,47 @@ public class BookService {
 
   private void updateBookMetadata(Book book, BookPatchDto bookPatchDto) {
     Optional.ofNullable(bookPatchDto.getTitle())
-        .ifPresent(book::setTitle);
+      .ifPresent(book::setTitle);
     Optional.ofNullable(bookPatchDto.getNumberOfPages())
-        .ifPresent(book::setNumberOfPages);
+      .ifPresent(book::setNumberOfPages);
     Optional.ofNullable(bookPatchDto.getPagesRead())
-        .ifPresent(book::setPagesRead);
+      .ifPresent(book::setPagesRead);
     Optional.ofNullable(bookPatchDto.getBookFormat())
-        .map(BookFormat::valueOf)
-        .ifPresent(book::setBookFormat);
+      .map(BookFormat::valueOf)
+      .ifPresent(book::setBookFormat);
     Optional.ofNullable(bookPatchDto.getSeriesPosition())
-        .ifPresent(book::setSeriesPosition);
+      .ifPresent(book::setSeriesPosition);
     Optional.ofNullable(bookPatchDto.getEdition())
-        .ifPresent(book::setEdition);
+      .ifPresent(book::setEdition);
     Optional.ofNullable(bookPatchDto.getBookRecommendedBy())
-        .ifPresent(book::setBookRecommendedBy);
+      .ifPresent(book::setBookRecommendedBy);
     Optional.ofNullable(bookPatchDto.getIsbn())
-        .ifPresent(book::setIsbn);
+      .ifPresent(book::setIsbn);
     Optional.ofNullable(bookPatchDto.getYearOfPublication())
-        .ifPresent(book::setYearOfPublication);
+      .ifPresent(book::setYearOfPublication);
     Optional.ofNullable(bookPatchDto.getBookReview())
-        .ifPresent(book::setBookReview);
+      .ifPresent(book::setBookReview);
   }
 
   private void updateAuthor(Book book, BookPatchDto bookPatchDto) {
     Optional.ofNullable(bookPatchDto.getAuthor())
-        .ifPresent(author -> {
-          book.setAuthor(author);
-          authorService.save(book.getAuthor());
-        });
+      .ifPresent(author -> {
+        book.setAuthor(author);
+        authorService.save(book.getAuthor());
+      });
   }
 
   private void updateGenres(Book book, BookPatchDto bookPatchDto) {
     Optional.ofNullable(bookPatchDto.getBookGenres())
-        .map(genres -> genres.stream().map(BookGenre::valueOf).collect(toSet()))
-        .ifPresent(book::setBookGenre);
+      .map(genres -> genres.stream().map(BookGenre::valueOf).collect(toSet()))
+      .ifPresent(book::setBookGenre);
   }
 
   private void updatePredefinedShelf(Book book, BookPatchDto bookPatchDto) {
     Optional.ofNullable(bookPatchDto.getPredefinedShelf())
-        .map(ShelfName::valueOf)
-        .flatMap(predefinedShelfService::getPredefinedShelfByPredefinedShelfName)
-        .ifPresent(book::setPredefinedShelf);
+      .map(ShelfName::valueOf)
+      .flatMap(predefinedShelfService::getPredefinedShelfByPredefinedShelfName)
+      .ifPresent(book::setPredefinedShelf);
   }
 
 }
