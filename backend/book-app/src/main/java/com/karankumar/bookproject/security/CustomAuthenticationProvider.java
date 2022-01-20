@@ -19,6 +19,7 @@ package com.karankumar.bookproject.security;
 
 import com.karankumar.bookproject.model.account.User;
 import com.karankumar.bookproject.service.UserService;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -39,10 +40,18 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (user.isLocked()) {
-                userService.unlockWhenTimeExpired(user);
+                boolean unlocked = userService.unlockWhenTimeExpired(user);
+
+                if (!unlocked) {
+                    long hoursToUnlock = userService.hoursUntilUnlock(user) + 1;
+                    String errorMessage = String.format(
+                            "User is locked. Please wait %d hours to unlock it.", hoursToUnlock);
+                    throw new LockedException(errorMessage);
+                }
             }
         }
 
         return super.authenticate(authentication);
     }
+
 }

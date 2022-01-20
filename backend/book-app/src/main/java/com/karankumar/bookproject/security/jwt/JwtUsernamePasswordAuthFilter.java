@@ -18,8 +18,15 @@
 package com.karankumar.bookproject.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.karankumar.bookproject.exceptionhandler.ApiExceptionHandler;
+import com.karankumar.bookproject.exceptionhandler.ErrorResponse;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -30,6 +37,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -61,6 +69,9 @@ public class JwtUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
                     authenticationRequest.getPassword()
             );
             return authenticationManager.authenticate(authentication);
+        } catch (LockedException e) {
+            handleLockedException(request, response, e);
+            return null;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -82,4 +93,33 @@ public class JwtUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
         response.addHeader(jwtConfig.getAuthorizationHeader(),
                 jwtConfig.getTokenPrefix() + token);
     }
+
+    private void handleLockedException(HttpServletRequest request, HttpServletResponse response, LockedException e) {
+        try {
+            HttpStatus status = HttpStatus.FORBIDDEN;
+
+            ErrorResponse errorResponse = ApiExceptionHandler.createErrorResponse(status)
+                    .error("Authentication Error")
+                    .message(e.getMessage())
+                    .build();
+
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setCharacterEncoding("utf-8");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            String errorJson = objectMapper.writeValueAsString(errorResponse);
+
+            PrintWriter printWriter = response.getWriter();
+            printWriter.println(errorJson);
+            printWriter.flush();
+            printWriter.close();
+        }
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
 }

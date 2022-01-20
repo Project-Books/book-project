@@ -234,13 +234,20 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void unlockWhenTimeExpired(User user) {
+    public long hoursUntilUnlock(User user) {
+        return ChronoUnit.HOURS.between(LocalDateTime.now(), user.getLockTime().plusSeconds(LOCK_TIME_DURATION));
+    }
+
+    public boolean unlockWhenTimeExpired(User user) {
         long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(user.getLockTime(), LocalDateTime.now());
 
-        if (elapsedTimeInSeconds > LOCK_TIME_DURATION) {
+        boolean shouldUnlock = elapsedTimeInSeconds > LOCK_TIME_DURATION;
+        if (shouldUnlock) {
             user.setLocked(false);
             user.setFailedAttempts(0);
             userRepository.save(user);
         }
+
+        return shouldUnlock;
     }
 }
