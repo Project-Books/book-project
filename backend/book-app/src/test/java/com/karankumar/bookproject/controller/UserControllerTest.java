@@ -128,7 +128,7 @@ class UserControllerTest {
 
         // when
         ThrowableAssert.ThrowingCallable callable =
-                () -> userController.updatePassword("current", "new");
+                () -> userController.updatePassword("StrongPassword007", "StrongPassword008");
 
         // then
         assertThatExceptionOfType(ResponseStatusException.class)

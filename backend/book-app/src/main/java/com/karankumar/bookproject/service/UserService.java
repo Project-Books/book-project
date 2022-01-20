@@ -178,6 +178,15 @@ public class UserService {
     }
 
     public void changeUserPassword(@NonNull User user, @NonNull String password) {
+        user.setPassword(password);
+
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(constraintViolations);
+        }
+
         String encodedPassword = passwordEncoder.encode(password);
         user.setPassword(encodedPassword);
         userRepository.save(user);
