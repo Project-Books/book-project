@@ -1,4 +1,3 @@
-
 /*
 The book project lets a user keep track of different books they would like to read, are currently
 reading, have read or did not finish.
@@ -16,34 +15,31 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from 'react';
-import {
-  useQuery,
-  gql,
-} from "@apollo/client";
+import React from "react";
+import { useQuery, gql } from "@apollo/client";
 
 interface ISearchResultProps {
- query: string
+  query: string;
 }
 
 const FIND_BY_TITLE = gql`
   query getByTitleCase($title: String!) {
-    findByTitleIgnoreCase(title:$title) {
-        id
-        title
-        authors {
-          fullName
-        }
+    findByTitleIgnoreCase(title: $title) {
+      id
+      title
+      authors {
+        fullName
+      }
     }
   }
 `;
 
-export default function SearchResults(props:ISearchResultProps):JSX.Element {
+export default function SearchResults(props: ISearchResultProps): JSX.Element {
   const { data, loading, error } = useQuery(FIND_BY_TITLE, {
     variables: { title: props.query },
   });
 
-  if (loading)  {
+  if (loading) {
     return <p>Loading</p>;
   }
   if (error) {
@@ -52,8 +48,5 @@ export default function SearchResults(props:ISearchResultProps):JSX.Element {
   if (data) {
     console.log(data);
   }
-  return (
-    <div className="query-results-container">
-    </div>
- )
+  return <div className="query-results-container"></div>;
 }
