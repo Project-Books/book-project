@@ -30,8 +30,6 @@ export default function Search(): JSX.Element {
     setSearchTerm(e.target.value);
   }
 
-  // Method that handles default behavior of form
-  // sets the search query to be the value of the search input
   function onSearchBooks(e: any) {
     e.preventDefault();
     setSearchQuery(searchTerm);
@@ -47,7 +45,7 @@ export default function Search(): JSX.Element {
           type="search"
           className="search-input"
           id="search"
-          placeholder="Search for a book title, author, or ISBN #"
+          placeholder="Search"
           value={searchTerm}
           onChange={handleChange}
         />
