@@ -17,54 +17,24 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, { useState } from 'react'
 import SearchIcon from "@material-ui/icons/Search";
+import SearchResults from '../components/SearchResults';
 import { Layout } from '../components/Layout';
-import {
-  useQuery,
-  gql,
-} from "@apollo/client";
 import './Search.css';
-
-type Title =  {
-  id: number,
-  title: string,
-  authors: string
-}
-
-const FIND_BY_TITLE = gql`
-  query getByTitleCase($title: String!) {
-    findByTitleIgnoreCase(title:$title) {
-        id
-        title
-        authors {
-          fullName
-        }
-    }
-  }
-`;
 
 export default function Search(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('');
-  const { data, loading, error } = useQuery(FIND_BY_TITLE, {
-    variables: { title: 'A Brief History of Time' },
-  });
+  const [searchQuery, setSearchQuery] = useState('');
 
   function handleChange(e: any) {
     e.preventDefault();
     setSearchTerm(e.target.value);
   }
 
-  async function onSearchBooks(e:any) {
+  // Method that handles default behavior of form
+  // sets the search query to be the value of the search input
+  function onSearchBooks(e:any) {
     e.preventDefault();
-    if (loading)  {
-      return <p>Loading</p>;
-    }
-    if (error) {
-      return <p>error{error.message}</p>;
-    }
-    if (data) {
-      console.log(data);
-    }
-    // Make request and console log response for now/remove mapping of data below
+    setSearchQuery(searchTerm);
   }
 
   return (
@@ -88,15 +58,7 @@ export default function Search(): JSX.Element {
         </button>
       </form>
       <div>
-        {data &&
-          data.map((book:any) => {
-            return  (
-              <div key={book.id}>
-                <p>{book.title}</p>
-                <p>{book.authors}</p>
-              </div>
-            );
-          })}
+        <SearchResults query={searchQuery} />
       </div>
     </Layout>
   )
