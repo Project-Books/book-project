@@ -15,15 +15,15 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
-import SearchResults from '../components/SearchResults';
-import { Layout } from '../components/Layout';
-import './Search.css';
+import SearchResults from "../components/SearchResults";
+import { Layout } from "../components/Layout";
+import "./Search.css";
 
 export default function Search(): JSX.Element {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   function handleChange(e: any) {
     e.preventDefault();
@@ -32,7 +32,7 @@ export default function Search(): JSX.Element {
 
   // Method that handles default behavior of form
   // sets the search query to be the value of the search input
-  function onSearchBooks(e:any) {
+  function onSearchBooks(e: any) {
     e.preventDefault();
     setSearchQuery(searchTerm);
   }
@@ -40,9 +40,7 @@ export default function Search(): JSX.Element {
   return (
     <Layout title="Search">
       <form className="search-container">
-        <label
-          htmlFor="book-search"
-          className="visually-hidden">
+        <label htmlFor="book-search" className="visually-hidden">
           Search for a book title, author or ISBN #
         </label>
         <input
@@ -61,6 +59,5 @@ export default function Search(): JSX.Element {
         <SearchResults query={searchQuery} />
       </div>
     </Layout>
-  )
+  );
 }
-
