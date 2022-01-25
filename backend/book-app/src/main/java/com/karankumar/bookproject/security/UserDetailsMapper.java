@@ -32,7 +32,7 @@ public class UserDetailsMapper {
                 user.isActive(),
                 true,
                 true,
-                true,
+                !user.isLocked(),
                 user.getRoles()
                     .stream()
                     .map(role -> new SimpleGrantedAuthority(role.getRole()))
