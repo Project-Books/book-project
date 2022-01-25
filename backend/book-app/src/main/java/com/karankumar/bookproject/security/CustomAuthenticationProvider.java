@@ -40,9 +40,9 @@ public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (user.isLocked()) {
-                boolean unlocked = userService.unlockWhenTimeExpired(user);
+                boolean locked = userService.unlockWhenTimeExpired(user);
 
-                if (!unlocked) {
+                if (locked) {
                     long hoursToUnlock = userService.hoursUntilUnlock(user) + 1;
                     String errorMessage = String.format(
                             "User is locked. Please wait %d hours to unlock it.", hoursToUnlock);
