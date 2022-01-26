@@ -38,12 +38,9 @@ First, clone the repository (you'll need to fork first and then clone your fork 
 ### Running the frontend
 
 1. Install yarn: `npm install -g yarn`
-2. Navigate to the `frontend/` directory
-3. Run `yarn install` to install the dependencies
-4. Run `yarn start` to start the development server
-5. Open `localhost:3000`
-
-Note that you'll be able to use the app without running the backend by manually editing the route (URL). However, some features (e.g. creating an account and logging in) require the backend to be running.
+1. Navigate to the `frontend/` directory
+1. Run `docker-compose up`
+1. Open `localhost:3000` once the development server has started
 
 ### Running the backend
 
