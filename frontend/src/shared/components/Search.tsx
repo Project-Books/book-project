@@ -25,12 +25,12 @@ export default function Search(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  function handleChange(e: any) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setSearchTerm(e.target.value);
   }
 
-  function onSearchBooks(e: any) {
+  function onSearchBooks(e: React.SyntheticEvent) {
     e.preventDefault();
     setSearchQuery(searchTerm);
   }
