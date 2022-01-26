@@ -28,6 +28,7 @@ import MyBooks from "./my-books/MyBooks";
 import Settings from "./settings/Settings";
 import Goal from "./goal/Goal";
 import Stats from "./statistics/Stats";
+import Search from './shared/components/Search';
 import DeleteAccount from "./delete-account/DeleteAccount";
 import { theme as lightTheme, darkTheme} from './shared/theme';
 import BookOverview from "./book-overview/BookOverview";
@@ -41,8 +42,13 @@ import {
     GOAL, 
     SETTINGS, 
     DELETE_ACCOUNT, 
-    STATS
+    STATS,
+    SEARCH
 } from "./shared/routes"
+import {
+    ApolloProvider,
+} from "@apollo/client";
+import { apolloClient } from './shared/http/HttpClient';
 
 function App(): JSX.Element {
     const [theme, setTheme] = useState(lightTheme);
@@ -51,6 +57,7 @@ function App(): JSX.Element {
         theme === lightTheme ? setTheme(darkTheme) : setTheme(lightTheme)
     } 
     return (
+        <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
               <Route exact path={HOME} component={Login} />
@@ -59,6 +66,7 @@ function App(): JSX.Element {
               <Route path={BOOK_OVERVIEW + "/:id"} component={BookOverview} />
               <Route path={MY_BOOKS} component={MyBooks} />
               <Route path={GOAL} component={Goal} />
+              <Route path={SEARCH} component={Search} />
               <Route 
                 path={SETTINGS} 
                 render={() => 
@@ -68,6 +76,7 @@ function App(): JSX.Element {
               <Route path={STATS} component={Stats} />
           </BrowserRouter>
         </ThemeProvider>
+        </ApolloProvider>
     )
 }
 

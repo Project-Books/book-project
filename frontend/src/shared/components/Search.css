@@ -1,0 +1,63 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+Copyright (C) 2021 Karan Kumar
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see <https://www.gnu.org/licenses/>.
+*/
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+}
+
+.visually-hidden {
+  position: absolute;
+  left: 0;
+  top: -500px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.search-input {
+  border-radius: 26px;
+  font-size: 14pt;
+  height: 46px;
+  width: 100%;
+}
+
+.search-input::placeholder {
+  font-size: 14pt;
+  padding-left: 20px;
+}
+
+search-input:hover,
+search-input:focus {
+  border: 1 px solid black;
+  background-color: white;
+}
+
+.search-button {
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  right: 14px;
+  top: 10px;
+}
+
+.search-icon {
+  color: black;
+  cursor: pointer;
+}
