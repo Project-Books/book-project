@@ -17,10 +17,17 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React from 'react'
 import './NavBar.css'
-import { ExitToApp, MenuBook, Settings, TrackChanges, TrendingUp } from '@material-ui/icons'
+import {
+    ExitToApp,
+    MenuBook,
+    Settings,
+    TrackChanges,
+    TrendingUp,
+  } from '@material-ui/icons'
+import SearchIcon from "@material-ui/icons/Search";
 import logo from '../media/logo/logo-two-lines-white@1x.png'
 import darkLogo from '../media/logo/dark-logo.png';
-import { HOME, MY_BOOKS, GOAL, STATS, SETTINGS, SIGN_IN } from '../routes'
+import { HOME, MY_BOOKS, GOAL, STATS, SETTINGS, SIGN_IN, SEARCH} from '../routes'
 import { useTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom'
 import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
@@ -35,7 +42,8 @@ import Button from "@material-ui/core/Button";
 function NavItem(props: NavItemProps) {
     const classes = useStyles();
     return (
-          <Link to={props.goTo} style={{ textDecoration: 'none' }}>
+          <Link
+            to={props.goTo} style={{ textDecoration: 'none' }}>
             <div className="nav-item">
                 <Button className={classes.button} startIcon={props.icon}>
                       {props.itemText}
@@ -68,6 +76,7 @@ export function NavBar(): JSX.Element {
               <NavItem icon={<MenuBook />} itemText={"My books"} goTo={MY_BOOKS} />
               <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={GOAL} />
               <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={STATS} />
+              <NavItem icon={<SearchIcon />} itemText={"Search"} goTo={SEARCH} />
             </div>
             <div className="nav-links">
               <NavItem icon={<Settings />} itemText={"Settings"} goTo={SETTINGS} />
