@@ -19,4 +19,4 @@ A clear and concise description of what you want to happen.
 - Provide us with an estimate on how long you think it will take you to complete
 - Branch from `main` and set `main` as the destination branch in your pull request
 
-If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a) or our [Slack workspace](https://camo.githubusercontent.com/eef8443bce0a2fdc0706ffcd99f91181ac849a4ef423a1ed61386ca0a8b448bb/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f736c61636b2d7465616d626f6f6b70726f6a6563742d3441313534423f6c6f676f3d736c61636b)
+If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a) or our [Slack workspace](https://teambookproject.slack.com/join/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A#/shared-invite/email)
