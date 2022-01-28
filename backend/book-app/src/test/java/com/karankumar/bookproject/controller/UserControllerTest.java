@@ -14,9 +14,7 @@
 
 package com.karankumar.bookproject.controller;
 
-import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
-import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.service.EmailServiceImpl;
 import org.junit.jupiter.api.Disabled;
