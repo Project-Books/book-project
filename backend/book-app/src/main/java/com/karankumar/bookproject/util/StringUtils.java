@@ -36,10 +36,10 @@ public final class StringUtils {
     /**
      * Determine the if a password has the strength required
      * @param password the string to check its strength
-     * @param passwordStrength the password strength
      * @return true if password
      */
-    public static boolean checkPasswordStrength(String password, PasswordStrength passwordStrength) {
-        return new Zxcvbn().measure(password).getScore() >= passwordStrength.getStrengthNum();
+    public static boolean passwordStrengthIsVeryStrong(String password) {
+        return new Zxcvbn().measure(password).getScore() >=
+                PasswordStrength.VERY_STRONG.getStrengthNum();
     }
 }

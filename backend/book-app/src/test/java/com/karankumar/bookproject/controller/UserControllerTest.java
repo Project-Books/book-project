@@ -19,8 +19,9 @@ import com.karankumar.bookproject.model.account.User;
 import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.service.EmailServiceImpl;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,17 +47,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.mail.MessagingException;
 
 @SpringBootTest(classes = {UserService.class, PasswordEncoder.class})
 @ActiveProfiles("test")
 class UserControllerTest {
   
    @MockBean UserService userService;
-   @MockBean PasswordEncoder passwordEncoder;
-  
+
     private final UserController userController;
     private final UserService mockedUserService;
     private final EmailServiceImpl mockedEmailService;
+    private final PasswordEncoder mockPasswordEncoder;
 
     private final User validUser = User.builder()
                                        .email("valid@testmail.com")
@@ -64,8 +68,9 @@ class UserControllerTest {
     UserControllerTest() {
         mockedUserService = mock(UserService.class);
         mockedEmailService = mock(EmailServiceImpl.class);
+        mockPasswordEncoder = mock(PasswordEncoder.class);
         userController = new UserController(
-                mockedUserService, mock(PasswordEncoder.class), mockedEmailService,
+                mockedUserService, mockPasswordEncoder, mockedEmailService,
                 mock(Environment.class)
         );
     }
@@ -109,16 +114,16 @@ class UserControllerTest {
     }
   
     @Test
-    void updatePassword_returnsUnauthorised_ifExistingPasswordNotCorrect() {
+    void updatePassword_returnsUnauthorised_ifExistingPasswordNotCorrect() throws MessagingException {
         // given
         User user = User.builder().build();
-        Mockito.when(userService.getCurrentUser())
-               .thenReturn(user);
+        when(userService.getCurrentUser()).thenReturn(user);
 
-        Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString()))
-               .thenReturn(false);
+        String veryStrongPassword = "verystrongpasswordsd";
+        when(mockPasswordEncoder.matches(anyString(), eq(veryStrongPassword)))
+                .thenReturn(false);
         UserController userController = new UserController(
-                userService, passwordEncoder, mockedEmailService, mock(Environment.class)
+                userService, mockPasswordEncoder, mockedEmailService, mock(Environment.class)
         );
 
         String expectedMessage = String.format(
@@ -128,14 +133,25 @@ class UserControllerTest {
         );
 
         // when
-        ThrowableAssert.ThrowingCallable callable = () -> userController.updatePassword(
-                "StrongPassword007", "StrongPassword008"
+        ResponseEntity<String> response = userController.updatePassword(
+                "StrongPassword007", veryStrongPassword
         );
 
         // then
-        assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(callable)
-                .withMessage(expectedMessage);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"password", "fairpassword", "goodpassword1234", "strongpassword12345"})
+    void updatePassword_returnsBadRequest_ifPasswordIsNotVeryStrong(String newPassword)
+            throws MessagingException {
+        // when
+        ResponseEntity<String> response = userController.updatePassword(
+                "anything", newPassword
+        );
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test

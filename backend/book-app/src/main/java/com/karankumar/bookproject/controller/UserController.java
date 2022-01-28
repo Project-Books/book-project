@@ -14,9 +14,6 @@
 
 package com.karankumar.bookproject.controller;
 
-import com.karankumar.bookproject.constraints.PasswordStrength;
-import com.karankumar.bookproject.constraints.PasswordStrengthCheck;
-import com.karankumar.bookproject.constraints.PasswordStrengthValidator;
 import com.karankumar.bookproject.dto.UserToDeleteDto;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
@@ -47,8 +44,6 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.mail.MessagingException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import javax.validation.Payload;
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -143,7 +138,9 @@ public class UserController {
             emailService.sendMessageUsingThymeleafTemplate(
                     userEntity.getEmail(),
                     EmailConstant.ACCOUNT_DELETED_SUBJECT,
-                    EmailTemplate.getAccountDeletedEmailTemplate(emailService.getUsernameFromEmail(userEntity.getEmail()))
+                    EmailTemplate.getAccountDeletedEmailTemplate(
+                            emailService.getUsernameFromEmail(userEntity.getEmail())
+                    )
             );
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password.");
@@ -185,14 +182,14 @@ public class UserController {
 
     @PostMapping("/update-password")
     @ResponseStatus(HttpStatus.OK)
-    public boolean updatePassword(@RequestParam("currentPassword") String currentPassword,
-                               @RequestParam("newPassword") String newPassword) throws MessagingException {
+    public ResponseEntity<String> updatePassword(
+            @RequestParam("currentPassword") String currentPassword,
+            @RequestParam("newPassword") String newPassword) throws MessagingException {
 
-        if (!StringUtils.checkPasswordStrength(newPassword, PasswordStrength.STRONG)) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    PASSWORD_WEAK_ERROR_MESSAGE
-            );
+        // TODO: move to service
+        if (!StringUtils.passwordStrengthIsVeryStrong(newPassword)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body(PASSWORD_WEAK_ERROR_MESSAGE);
         }
 
         User user;
@@ -207,25 +204,25 @@ public class UserController {
         }
 
         if (passwordEncoder.matches(currentPassword, user.getPassword())) {
-            try{
+            try {
                 userService.changeUserPassword(user, newPassword);
                 emailService.sendMessageUsingThymeleafTemplate(
                         user.getEmail(),
                         EmailConstant.ACCOUNT_PASSWORD_CHANGED_SUBJECT,
-                        EmailTemplate.getChangePasswordEmailTemplate(emailService.getUsernameFromEmail(user.getEmail()))
+                        EmailTemplate.getChangePasswordEmailTemplate(
+                                emailService.getUsernameFromEmail(user.getEmail())
+                        )
                 );
-            }catch (ConstraintViolationException ex){
+            } catch (ConstraintViolationException ex) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
                         ex.getMessage()
                 );
             }
-            return true;
+            return ResponseEntity.status(HttpStatus.OK).body("Updated");
         } else {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    INCORRECT_PASSWORD_ERROR_MESSAGE
-            );
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                 .body(INCORRECT_PASSWORD_ERROR_MESSAGE);
         }
     }
 }
