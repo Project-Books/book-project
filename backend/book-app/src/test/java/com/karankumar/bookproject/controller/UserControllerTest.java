@@ -21,6 +21,7 @@ import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.service.EmailServiceImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
@@ -58,17 +59,14 @@ class UserControllerTest {
                                        .email("valid@testmail.com")
                                        .password("aaaaAAAA1234@")
                                        .build();
-                                       
-    private final User validUser2 = User.builder()
-                                       .email("valid2@testmail.com")
-                                       .password("aaaaAAAA1234@")
-                                       .build();
 
     UserControllerTest() {
         mockedUserService = mock(UserService.class);
         mockedEmailService = mock(EmailServiceImpl.class);
-        PasswordEncoder mockedPasswordEncoder = mock(PasswordEncoder.class);
-        userController = new UserController(mockedUserService, mockedPasswordEncoder, mockedEmailService);
+        userController = new UserController(
+                mockedUserService, mock(PasswordEncoder.class), mockedEmailService,
+                mock(Environment.class)
+        );
     }
 
     @Test
@@ -118,7 +116,9 @@ class UserControllerTest {
 
         Mockito.when(passwordEncoder.matches(Mockito.anyString(), Mockito.anyString()))
                .thenReturn(false);
-        UserController userController = new UserController(userService, passwordEncoder, mockedEmailService);
+        UserController userController = new UserController(
+                userService, passwordEncoder, mockedEmailService, mock(Environment.class)
+        );
 
         String expectedMessage = String.format(
                 "%s \"%s\"",
@@ -127,8 +127,9 @@ class UserControllerTest {
         );
 
         // when
-        ThrowableAssert.ThrowingCallable callable =
-                () -> userController.updatePassword("StrongPassword007", "StrongPassword008");
+        ThrowableAssert.ThrowingCallable callable = () -> userController.updatePassword(
+                "StrongPassword007", "StrongPassword008"
+        );
 
         // then
         assertThatExceptionOfType(ResponseStatusException.class)

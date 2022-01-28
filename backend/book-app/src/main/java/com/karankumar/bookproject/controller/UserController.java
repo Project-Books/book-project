@@ -69,14 +69,15 @@ public class UserController {
     private static final String CURRENT_USER_NOT_FOUND_ERROR_MESSAGE = "Could not determine the current user";
     private static final String PASSWORD_WEAK_ERROR_MESSAGE = "Password is too weak";
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
     @Autowired
-    public UserController(UserService userService, PasswordEncoder passwordEncoder, EmailServiceImpl emailService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder,
+                          EmailServiceImpl emailService, Environment environment) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.environment = environment;
     }
 
     @GetMapping("/users")
@@ -112,7 +113,10 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.OK).body("user created");
         } catch (UserAlreadyRegisteredException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email taken");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "That email address is taken. If you already have an account, " +
+                            "you can try logging in."
+            );
         } catch (ConstraintViolationException ex) {
             Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
             List<String> errors = new ArrayList<>();
