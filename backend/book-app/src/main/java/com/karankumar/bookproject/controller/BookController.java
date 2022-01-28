@@ -28,6 +28,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -110,7 +111,10 @@ public class BookController {
     if (page == null || page >= 0) {
       return bookService.findAll(page);
     } else {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(NEGATIVE_PAGE_ERROR_MESSAGE, page));
+      throw new ResponseStatusException(
+              HttpStatus.BAD_REQUEST,
+              String.format(NEGATIVE_PAGE_ERROR_MESSAGE, page)
+      );
     }
   }
 
@@ -118,7 +122,6 @@ public class BookController {
   public BookGenre[] getGenres() {
     return BookGenre.values();
   }
-
 
   @GetMapping("/{id}")
   // TODO: only retrieve books that belong to the logged in user
@@ -155,11 +158,16 @@ public class BookController {
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable Long id) {
-    Book bookToDelete = bookService.findById(id)
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-        String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
-      );
-    bookService.delete(bookToDelete);
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<String> delete(@PathVariable Long id) {
+    Optional<Book> bookToDeleteOp = bookService.findById(id);
+    if (bookToDeleteOp.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                           .body(String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id));
+    }
+
+    bookService.delete(bookToDeleteOp.get());
+    return ResponseEntity.status(HttpStatus.OK)
+                         .body("Deleted");
   }
 }

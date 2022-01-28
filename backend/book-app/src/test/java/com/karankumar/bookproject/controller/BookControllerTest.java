@@ -20,6 +20,7 @@ import com.karankumar.bookproject.service.PredefinedShelfService;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -116,12 +117,14 @@ class BookControllerTest {
   }
 
   @Test
-    // TODO: finish writing this test
   void delete_returnsNotFound_ifBookDoesNotExist() {
-    when(mockedBookService.findById(any(Long.class)))
-      .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+    // given
+    when(mockedBookService.findById(any(Long.class))).thenReturn(Optional.empty());
 
-//        assertThatExceptionOfType(BookNotFoundException.class)
-//                .isThrownBy(bookController.delete(1L));
+    // when
+    ResponseEntity<String> response = bookController.delete(1L);
+
+    // then
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 }
