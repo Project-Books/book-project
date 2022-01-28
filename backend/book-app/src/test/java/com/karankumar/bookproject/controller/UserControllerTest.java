@@ -126,12 +126,6 @@ class UserControllerTest {
                 userService, mockPasswordEncoder, mockedEmailService, mock(Environment.class)
         );
 
-        String expectedMessage = String.format(
-                "%s \"%s\"",
-                HttpStatus.UNAUTHORIZED,
-                UserController.INCORRECT_PASSWORD_ERROR_MESSAGE
-        );
-
         // when
         ResponseEntity<String> response = userController.updatePassword(
                 "StrongPassword007", veryStrongPassword
