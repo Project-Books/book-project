@@ -17,11 +17,12 @@
 
 package com.karankumar.bookproject.repository;
 
+import com.karankumar.bookproject.account.UserRepository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.model.Author;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

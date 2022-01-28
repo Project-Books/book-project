@@ -17,9 +17,10 @@
 
 package com.karankumar.bookproject.service;
 
+import com.karankumar.bookproject.account.UserService;
 import com.karankumar.bookproject.model.PredefinedShelfName;
 import com.karankumar.bookproject.model.UserCreatedShelf;
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.UserCreatedShelfRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

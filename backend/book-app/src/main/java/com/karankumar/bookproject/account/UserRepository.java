@@ -15,28 +15,13 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.constraints;
+package com.karankumar.bookproject.account;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import com.karankumar.bookproject.account.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import java.util.Optional;
 
-@Target({FIELD})
-@Retention(RUNTIME)
-@Documented
-@Constraint(validatedBy = { PasswordStrengthValidator.class })
-public @interface PasswordStrengthCheck {
-    
-    String message() default "The chosen password is too weak. Try mixing uppercase letters, lowercase letters, numbers and special characters.";
-    
-    Class<?>[] groups() default {};
-
-    Class<? extends Payload>[] payload() default {};
-    
-    PasswordStrength value();
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
 }

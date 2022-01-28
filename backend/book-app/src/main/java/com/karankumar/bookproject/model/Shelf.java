@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.model.User;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;

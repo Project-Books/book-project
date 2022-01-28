@@ -15,7 +15,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.account.exception;
 
 public class CurrentUserNotFoundException extends RuntimeException {
   public CurrentUserNotFoundException(final String message) {

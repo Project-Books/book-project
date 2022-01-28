@@ -12,18 +12,20 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.dto;
+package com.karankumar.bookproject.account.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public enum RoleType {
+    ADMIN("ADMIN"),
+    USER("USER");
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserToDeleteDto {
-    private String password;
+    private final String role;
+
+    RoleType(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return role;
+    }
 }

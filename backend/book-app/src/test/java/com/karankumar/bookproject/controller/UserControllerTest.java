@@ -14,13 +14,14 @@
 
 package com.karankumar.bookproject.controller;
 
-import com.karankumar.bookproject.dto.UserToRegisterDto;
-import com.karankumar.bookproject.model.account.User;
-import com.karankumar.bookproject.service.CurrentUserNotFoundException;
-import com.karankumar.bookproject.service.IncorrectPasswordException;
-import com.karankumar.bookproject.service.PasswordTooWeakException;
-import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
-import com.karankumar.bookproject.service.UserService;
+import com.karankumar.bookproject.account.UserController;
+import com.karankumar.bookproject.account.dto.UserToRegisterDto;
+import com.karankumar.bookproject.account.model.User;
+import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException;
+import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
+import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
+import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
+import com.karankumar.bookproject.account.UserService;
 import com.karankumar.bookproject.service.EmailServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

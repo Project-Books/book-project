@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.util;
 
-import com.karankumar.bookproject.constraints.PasswordStrength;
+import com.karankumar.bookproject.account.constraint.PasswordStrength;
 import com.nulabinc.zxcvbn.Zxcvbn;
 
 public final class StringUtils {

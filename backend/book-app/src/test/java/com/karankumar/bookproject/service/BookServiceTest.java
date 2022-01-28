@@ -20,7 +20,7 @@ package com.karankumar.bookproject.service;
 import com.karankumar.bookproject.model.Author;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

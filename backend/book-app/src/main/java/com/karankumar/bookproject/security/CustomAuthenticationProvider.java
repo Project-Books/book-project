@@ -17,8 +17,8 @@
 
 package com.karankumar.bookproject.security;
 
-import com.karankumar.bookproject.model.account.User;
-import com.karankumar.bookproject.service.UserService;
+import com.karankumar.bookproject.account.model.User;
+import com.karankumar.bookproject.account.UserService;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;

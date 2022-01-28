@@ -15,11 +15,10 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.account.exception;
 
-
-public class IncorrectPasswordException extends RuntimeException {
-    public IncorrectPasswordException(final String message) {
-        super(message);
-    }
+public class PasswordTooWeakException extends RuntimeException {
+  public PasswordTooWeakException(final String message) {
+    super(message);
+  }
 }

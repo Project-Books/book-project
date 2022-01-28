@@ -12,20 +12,19 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.controller;
+package com.karankumar.bookproject.account;
 
-import com.karankumar.bookproject.dto.UserToDeleteDto;
-import com.karankumar.bookproject.dto.UserToRegisterDto;
-import com.karankumar.bookproject.model.account.User;
-import com.karankumar.bookproject.service.CurrentUserNotFoundException;
+import com.karankumar.bookproject.account.dto.UserToDeleteDto;
+import com.karankumar.bookproject.account.dto.UserToRegisterDto;
+import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException;
+import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
+import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
+import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
+import com.karankumar.bookproject.controller.Mappings;
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.service.EmailServiceImpl;
-import com.karankumar.bookproject.service.IncorrectPasswordException;
-import com.karankumar.bookproject.service.PasswordTooWeakException;
-import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
-import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.template.EmailTemplate;
-import com.karankumar.bookproject.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -181,7 +180,8 @@ public class UserController {
     try {
       user = userService.getCurrentUser();
     } catch (CurrentUserNotFoundException ex) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
+//      throw new ResponseStatusException(HttpStatus.NOT_FOUND, CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
     }
 
     if (userService.passwordIsIncorrect(currentPassword)) {

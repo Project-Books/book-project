@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.service;
 
+import com.karankumar.bookproject.account.UserService;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.Shelf;
 import com.karankumar.bookproject.model.UserCreatedShelf;

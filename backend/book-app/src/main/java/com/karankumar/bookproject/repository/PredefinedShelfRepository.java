@@ -19,7 +19,7 @@
 package com.karankumar.bookproject.repository;
 
 import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.model.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -12,20 +12,19 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.model.account;
+package com.karankumar.bookproject.account.dto;
 
-public enum RoleType {
-    ADMIN("ADMIN"),
-    USER("USER");
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    private final String role;
-
-    RoleType(String role) {
-        this.role = role;
-    }
-
-    @Override
-    public String toString() {
-        return role;
-    }
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class UserToRegisterDto {
+    private String username;
+    private String password;
 }

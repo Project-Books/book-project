@@ -17,8 +17,8 @@
 
 package com.karankumar.bookproject.security;
 
-import com.karankumar.bookproject.model.account.User;
-import com.karankumar.bookproject.repository.UserRepository;
+import com.karankumar.bookproject.account.model.User;
+import com.karankumar.bookproject.account.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -15,19 +15,22 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.account;
 
-import com.karankumar.bookproject.dto.UserToRegisterDto;
+import com.karankumar.bookproject.account.dto.UserToRegisterDto;
+import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException;
+import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
+import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
+import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.account.RoleType;
-import com.karankumar.bookproject.model.account.Role;
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.model.RoleType;
+import com.karankumar.bookproject.account.model.Role;
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.RoleRepository;
-import com.karankumar.bookproject.repository.UserRepository;
 import com.karankumar.bookproject.repository.BookRepository;
+import com.karankumar.bookproject.service.PredefinedShelfService;
 import com.karankumar.bookproject.util.StringUtils;
-import com.karankumar.bookproject.service.IncorrectPasswordException;
 import lombok.NonNull;
 
 import org.springframework.context.annotation.Lazy;

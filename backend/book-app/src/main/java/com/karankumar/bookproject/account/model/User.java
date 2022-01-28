@@ -15,13 +15,13 @@
    If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.karankumar.bookproject.model.account;
+package com.karankumar.bookproject.account.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
-import com.karankumar.bookproject.constraints.PasswordStrength;
-import com.karankumar.bookproject.constraints.PasswordStrengthCheck;
+import com.karankumar.bookproject.account.constraint.PasswordStrength;
+import com.karankumar.bookproject.account.constraint.PasswordStrengthCheck;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -39,6 +39,7 @@ import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

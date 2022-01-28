@@ -25,7 +25,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 @Component
 public class UserDetailsMapper {
-    public User toUserDetails(com.karankumar.bookproject.model.account.User user) {
+    public User toUserDetails(com.karankumar.bookproject.account.model.User user) {
         return new User(
                 user.getEmail(),
                 user.getPassword(),

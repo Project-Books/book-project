@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.karankumar.bookproject.controller.Mappings;
 import com.karankumar.bookproject.controller.ReadingGoalController;
-import com.karankumar.bookproject.dto.UserToRegisterDto;
+import com.karankumar.bookproject.account.dto.UserToRegisterDto;
 import com.karankumar.bookproject.BookProjectApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.repository;
 
-import com.karankumar.bookproject.model.account.Role;
+import com.karankumar.bookproject.account.model.Role;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

@@ -17,12 +17,11 @@
 
 package com.karankumar.bookproject.service;
 
+import com.karankumar.bookproject.account.UserService;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.PredefinedShelfName;
 import com.karankumar.bookproject.model.PredefinedShelf.ShelfName;
-import com.karankumar.bookproject.model.Shelf;
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.AuthorRepository;
 import com.karankumar.bookproject.repository.BookRepository;
 import com.karankumar.bookproject.repository.PredefinedShelfRepository;

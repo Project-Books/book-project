@@ -17,7 +17,7 @@ package com.karankumar.bookproject.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.karankumar.bookproject.dto.UserToRegisterDto;
+import com.karankumar.bookproject.account.dto.UserToRegisterDto;
 import com.karankumar.bookproject.BookProjectApplication;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

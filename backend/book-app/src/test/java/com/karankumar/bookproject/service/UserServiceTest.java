@@ -14,7 +14,7 @@
 
 package com.karankumar.bookproject.service;
 
-import static com.karankumar.bookproject.service.UserService.USER_NOT_FOUND_ERROR_MESSAGE;
+import static com.karankumar.bookproject.account.UserService.USER_NOT_FOUND_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -24,10 +24,11 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.UserService;
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.BookRepository;
 import com.karankumar.bookproject.repository.RoleRepository;
-import com.karankumar.bookproject.repository.UserRepository;
+import com.karankumar.bookproject.account.UserRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

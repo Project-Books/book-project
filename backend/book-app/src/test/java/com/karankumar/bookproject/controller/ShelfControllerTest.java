@@ -16,7 +16,7 @@ package com.karankumar.bookproject.controller;
 
 import com.karankumar.bookproject.model.PredefinedShelf;
 import com.karankumar.bookproject.model.UserCreatedShelf;
-import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.service.PredefinedShelfService;
 import com.karankumar.bookproject.service.UserCreatedShelfService;
 import org.junit.jupiter.api.Test;
