@@ -16,6 +16,7 @@ package com.karankumar.bookproject.controller;
 
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.service.PasswordTooWeakException;
 import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.service.EmailServiceImpl;
@@ -28,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -136,6 +138,13 @@ class UserControllerTest {
     @ValueSource(strings = {"password", "fairpassword", "goodpassword1234", "strongpassword12345"})
     void updatePassword_returnsBadRequest_ifPasswordIsNotVeryStrong(String newPassword)
             throws MessagingException {
+        // given
+        User user = User.builder().build();
+        when(mockedUserService.getCurrentUser()).thenReturn(user);
+        doThrow(new PasswordTooWeakException("anything"))
+                .when(mockedUserService)
+                .changeUserPassword(any(), any());
+
         // when
         ResponseEntity<String> response = userController.updatePassword(
                 "anything", newPassword

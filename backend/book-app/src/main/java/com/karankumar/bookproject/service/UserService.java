@@ -17,7 +17,6 @@
 
 package com.karankumar.bookproject.service;
 
-import com.karankumar.bookproject.backend.service.CurrentUserNotFoundException;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.PredefinedShelf;
@@ -27,6 +26,7 @@ import com.karankumar.bookproject.model.account.User;
 import com.karankumar.bookproject.repository.RoleRepository;
 import com.karankumar.bookproject.repository.UserRepository;
 import com.karankumar.bookproject.repository.BookRepository;
+import com.karankumar.bookproject.util.StringUtils;
 import lombok.NonNull;
 
 import org.springframework.context.annotation.Lazy;
@@ -177,8 +177,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeUserPassword(@NonNull User user, @NonNull String password) {
-        user.setPassword(password);
+    public void changeUserPassword(@NonNull User user, @NonNull String newPassword) {
+        if (StringUtils.isPasswordTooWeak(newPassword)) {
+            throw new PasswordTooWeakException("Password strength is too weak.");
+        }
+        user.setPassword(newPassword);
 
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
@@ -187,7 +190,7 @@ public class UserService {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        String encodedPassword = passwordEncoder.encode(password);
+        String encodedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
         userRepository.save(user);
     }

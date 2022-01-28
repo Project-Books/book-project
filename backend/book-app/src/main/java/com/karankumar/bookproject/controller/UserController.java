@@ -17,7 +17,9 @@ package com.karankumar.bookproject.controller;
 import com.karankumar.bookproject.dto.UserToDeleteDto;
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.service.CurrentUserNotFoundException;
 import com.karankumar.bookproject.service.EmailServiceImpl;
+import com.karankumar.bookproject.service.PasswordTooWeakException;
 import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.constant.EmailConstant;
@@ -158,7 +160,7 @@ public class UserController {
 
     try {
       user = userService.getCurrentUser();
-    } catch (com.karankumar.bookproject.backend.service.CurrentUserNotFoundException ex) {
+    } catch (CurrentUserNotFoundException ex) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
     }
 
@@ -179,23 +181,18 @@ public class UserController {
       @RequestParam("currentPassword") String currentPassword,
       @RequestParam("newPassword") String newPassword)
       throws MessagingException {
-
-    // TODO: move to service
-    if (!StringUtils.isPasswordStrengthVeryStrong(newPassword)) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(PASSWORD_WEAK_ERROR_MESSAGE);
-    }
-
     User user;
 
     try {
       user = userService.getCurrentUser();
-    } catch (com.karankumar.bookproject.backend.service.CurrentUserNotFoundException ex) {
+    } catch (CurrentUserNotFoundException ex) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
     }
 
     if (userService.passwordIsIncorrect(currentPassword)) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(INCORRECT_PASSWORD_ERROR_MESSAGE);
     }
+
     try {
       userService.changeUserPassword(user, newPassword);
       emailService.sendMessageUsingThymeleafTemplate(
@@ -203,8 +200,10 @@ public class UserController {
           EmailConstant.ACCOUNT_PASSWORD_CHANGED_SUBJECT,
           EmailTemplate.getChangePasswordEmailTemplate(
               emailService.getUsernameFromEmail(user.getEmail())));
+    } catch (PasswordTooWeakException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(PASSWORD_WEAK_ERROR_MESSAGE);
     } catch (ConstraintViolationException ex) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
     return ResponseEntity.status(HttpStatus.OK).body("Updated");
   }
