@@ -106,7 +106,7 @@ class Register extends Component<Record<string, unknown>, IState> {
             isEmailInvalid: this.state.email === '',
             isPasswordInvalid: this.state.password === ''
         })
-
+        
         if (!this.state.isEmailInvalid && !this.state.isPasswordInvalid
             && this.checkPasswordsMatch() &&
             this.state.passwordStrengthScore === PassStrengthEnum.VERY_STRONG) {
@@ -122,7 +122,7 @@ class Register extends Component<Record<string, unknown>, IState> {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: this.state.email,
+                username: this.state.email,
                 password: this.state.password
             })
         }
