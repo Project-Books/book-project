@@ -19,6 +19,7 @@ import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
 import com.karankumar.bookproject.service.CurrentUserNotFoundException;
 import com.karankumar.bookproject.service.EmailServiceImpl;
+import com.karankumar.bookproject.service.IncorrectPasswordException;
 import com.karankumar.bookproject.service.PasswordTooWeakException;
 import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
@@ -63,7 +64,7 @@ public class UserController {
   private final EmailServiceImpl emailService;
 
   private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
-  private static final String CURRENT_USER_NOT_FOUND_ERROR_MESSAGE =
+  public static final String CURRENT_USER_NOT_FOUND_ERROR_MESSAGE =
       "Could not determine the current user";
   private static final String PASSWORD_WEAK_ERROR_MESSAGE = "Password is too weak";
 
@@ -151,28 +152,26 @@ public class UserController {
   }
 
   @PostMapping("/update-email")
-  @ResponseStatus(HttpStatus.OK)
-  public void updateEmail(
+  public ResponseEntity<String> updateEmail(
       @RequestParam("newEmail") String newEmail,
       @RequestParam("currentPassword") String currentPassword) {
-
     User user;
 
     try {
       user = userService.getCurrentUser();
     } catch (CurrentUserNotFoundException ex) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
     }
 
-    if (passwordEncoder.matches(currentPassword, user.getPassword())) {
-      try {
-        userService.changeUserEmail(user, newEmail);
-      } catch (ConstraintViolationException | UserAlreadyRegisteredException ex) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-      }
-    } else {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, INCORRECT_PASSWORD_ERROR_MESSAGE);
+    try {
+      userService.changeUserEmail(user, currentPassword, newEmail);
+    } catch (IncorrectPasswordException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(INCORRECT_PASSWORD_ERROR_MESSAGE);
+    } catch (ConstraintViolationException | UserAlreadyRegisteredException ex) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    return ResponseEntity.status(HttpStatus.OK).body("Updated");
   }
 
   @PostMapping("/update-password")

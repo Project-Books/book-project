@@ -27,6 +27,7 @@ import com.karankumar.bookproject.repository.RoleRepository;
 import com.karankumar.bookproject.repository.UserRepository;
 import com.karankumar.bookproject.repository.BookRepository;
 import com.karankumar.bookproject.util.StringUtils;
+import com.karankumar.bookproject.service.IncorrectPasswordException;
 import lombok.NonNull;
 
 import org.springframework.context.annotation.Lazy;
@@ -152,7 +153,11 @@ public class UserService {
         return !isEmailInUse(email);
     }
 
-    public void changeUserEmail(@NonNull User user, @NonNull String email) {
+    public void changeUserEmail(@NonNull User user, @NonNull String currentPassword,
+                                @NonNull String email) {
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IncorrectPasswordException("The password you entered is not correct");
+        }
 
         if (user.getEmail().equalsIgnoreCase(email)) {
             throw new UserAlreadyRegisteredException(

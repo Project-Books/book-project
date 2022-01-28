@@ -16,6 +16,8 @@ package com.karankumar.bookproject.controller;
 
 import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.service.CurrentUserNotFoundException;
+import com.karankumar.bookproject.service.IncorrectPasswordException;
 import com.karankumar.bookproject.service.PasswordTooWeakException;
 import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
@@ -29,13 +31,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
@@ -48,11 +51,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.mail.MessagingException;
+import javax.validation.ConstraintViolationException;
 
 @SpringBootTest(classes = {UserService.class, PasswordEncoder.class})
 @ActiveProfiles("test")
 class UserControllerTest {
-  
+
    @MockBean UserService userService;
 
     private final UserController userController;
@@ -112,7 +116,70 @@ class UserControllerTest {
         assertThatExceptionOfType(ResponseStatusException.class)
             .isThrownBy(() -> userController.getUser(0L));
     }
-  
+
+    @Test
+    void updateEmail_returns404_ifUserNotFound() {
+        // given
+        when(mockedUserService.getCurrentUser()).thenThrow(new CurrentUserNotFoundException("a"));
+
+        // when
+        ResponseEntity<String> response = userController.updateEmail(
+                "anything", "anything"
+        );
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            softly.assertThat(response.getBody())
+                  .isEqualTo(UserController.CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
+        });
+    }
+
+    @Test
+    void updateEmail_returns401_ifPasswordIncorrect() {
+        // given
+        doThrow(new IncorrectPasswordException("anything"))
+                .when(mockedUserService).changeUserEmail(any(), anyString(), anyString());
+
+        // when
+        ResponseEntity<String> response = userController.updateEmail(
+                "anything", "anything"
+        );
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    void updateEmail_returns400_ifNewEmailSameAsCurrent() {
+        // given
+        doThrow(new UserAlreadyRegisteredException("anything"))
+                .when(mockedUserService).changeUserEmail(any(), anyString(), anyString());
+
+        // when
+        ResponseEntity<String> response = userController.updateEmail(
+                "anything", "anything"
+        );
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void updateEmail_returns400_ifConstraintViolated() {
+        // given
+        doThrow(new ConstraintViolationException(new HashSet<>()))
+                .when(mockedUserService).changeUserEmail(any(), anyString(), anyString());
+
+        // when
+        ResponseEntity<String> response = userController.updateEmail(
+                "anything", "anything"
+        );
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     @Test
     void updatePassword_returnsUnauthorised_ifExistingPasswordNotCorrect() throws MessagingException {
         // given
@@ -131,7 +198,11 @@ class UserControllerTest {
         );
 
         // then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertSoftly(softly -> {
+            softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+            softly.assertThat(response.getBody())
+                  .isEqualTo(UserController.INCORRECT_PASSWORD_ERROR_MESSAGE);
+        });
     }
 
     @ParameterizedTest
