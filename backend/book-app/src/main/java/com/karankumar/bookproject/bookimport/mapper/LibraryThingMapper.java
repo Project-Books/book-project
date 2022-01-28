@@ -15,11 +15,11 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.mapper;
+package com.karankumar.bookproject.bookimport.mapper;
 
 import com.karankumar.bookproject.model.Author;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.bookImport.libraryThing.LibraryThingBookImport;
+import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookImport;
 import org.springframework.stereotype.Component;
 
 @Component

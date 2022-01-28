@@ -15,11 +15,13 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.bookimport;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
-import com.karankumar.bookproject.dto.GoodreadsBookImport;
+import com.karankumar.bookproject.bookimport.GoodreadsBookImport;
+import com.karankumar.bookproject.bookimport.ImportService;
 import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

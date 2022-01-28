@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.dto;
 
+import com.karankumar.bookproject.bookimport.GoodreadsBookImport;
 import com.karankumar.bookproject.model.PredefinedShelf;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

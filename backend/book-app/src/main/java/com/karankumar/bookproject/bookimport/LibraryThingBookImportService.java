@@ -15,16 +15,18 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.bookimport;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
-import com.karankumar.bookproject.mapper.LibraryThingMapper;
+import com.karankumar.bookproject.bookimport.mapper.LibraryThingMapper;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.bookImport.libraryThing.LibraryThingBookImport;
+import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookImport;
 import java.util.List;
 import java.util.Optional;
+
+import com.karankumar.bookproject.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

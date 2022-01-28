@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.util;
 
-import com.karankumar.bookproject.dto.GoodreadsBookImport;
+import com.karankumar.bookproject.bookimport.GoodreadsBookImport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -15,13 +15,12 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.controller;
+package com.karankumar.bookproject.bookimport;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.karankumar.bookproject.service.ImportServiceDelegate;
-import com.karankumar.bookproject.model.bookImport.libraryThing.LibraryThingBookDataImport;
-import com.karankumar.bookproject.model.bookImport.libraryThing.LibraryThingBookImport;
+import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookDataImport;
+import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookImport;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.validation.constraints.NotNull;

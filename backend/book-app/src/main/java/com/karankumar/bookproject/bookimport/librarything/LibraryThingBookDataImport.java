@@ -15,28 +15,22 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.bookimport.librarything;
 
-import static java.util.Collections.emptyList;
-
-import com.karankumar.bookproject.model.bookImport.libraryThing.LibraryThingBookDataImport;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@Data
 @RequiredArgsConstructor
-public class ImportServiceDelegate {
+public class LibraryThingBookDataImport {
 
-  private final LibraryThingBookImportService libraryThingBookImportService;
-  private final ImportService goodreadsBookImportService;
+  private final Map<String, LibraryThingBookImport> books;
 
-  public void importFromLibraryThing(LibraryThingBookDataImport bookDataImport) {
-    libraryThingBookImportService.importBooksFrom(bookDataImport.asList());
-  }
-
-  public void importFromGoodreads() {
-    // TODO: Pass data from endpoint
-    goodreadsBookImportService.importGoodreadsBooks(emptyList());
+  public List<LibraryThingBookImport> asList() {
+    return new ArrayList<>(books.values());
   }
 
 }

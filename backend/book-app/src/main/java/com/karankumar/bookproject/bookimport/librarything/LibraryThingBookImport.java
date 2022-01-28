@@ -15,22 +15,30 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.model.bookImport.libraryThing;
+package com.karankumar.bookproject.bookimport.librarything;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
-public class LibraryThingBookDataImport {
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class LibraryThingBookImport {
 
-  private final Map<String, LibraryThingBookImport> books;
+  @JsonProperty("title")
+  private String title;
+  
+  @JsonProperty("primaryauthor")
+  private String author;
+  
+  @JsonProperty("date")
+  private Integer publicationYear;
 
-  public List<LibraryThingBookImport> asList() {
-    return new ArrayList<>(books.values());
-  }
+  @JsonProperty("originalisbn")
+  private String isbn;
 
 }

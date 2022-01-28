@@ -15,30 +15,28 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.model.bookImport.libraryThing;
+package com.karankumar.bookproject.bookimport;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import static java.util.Collections.emptyList;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class LibraryThingBookImport {
+import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookDataImport;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-  @JsonProperty("title")
-  private String title;
-  
-  @JsonProperty("primaryauthor")
-  private String author;
-  
-  @JsonProperty("date")
-  private Integer publicationYear;
+@Service
+@RequiredArgsConstructor
+public class ImportServiceDelegate {
 
-  @JsonProperty("originalisbn")
-  private String isbn;
+  private final LibraryThingBookImportService libraryThingBookImportService;
+  private final ImportService goodreadsBookImportService;
+
+  public void importFromLibraryThing(LibraryThingBookDataImport bookDataImport) {
+    libraryThingBookImportService.importBooksFrom(bookDataImport.asList());
+  }
+
+  public void importFromGoodreads() {
+    // TODO: Pass data from endpoint
+    goodreadsBookImportService.importGoodreadsBooks(emptyList());
+  }
 
 }
