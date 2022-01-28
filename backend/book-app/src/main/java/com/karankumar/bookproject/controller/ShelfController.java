@@ -35,6 +35,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,16 +95,18 @@ public class ShelfController {
 
   @DeleteMapping("/{shelfName}")
   @ResponseStatus(HttpStatus.OK)
-  public void delete(@PathVariable String shelfName) {
-    try {
-      UserCreatedShelf customShelf =
-          userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName).get();
-      userCreatedShelfService.delete(customShelf);
-    } catch (NoSuchElementException e) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified shelf does not exist");
-    } catch (NullPointerException | IllegalArgumentException e) {
-      throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "Shelf name cannot be null or empty");
+  public ResponseEntity<String> delete(@PathVariable String shelfName) {
+    if (shelfName == null || shelfName.isBlank()) {
+      return ResponseEntity.badRequest().body("Shelf name cannot be null or empty");
     }
+
+    Optional<UserCreatedShelf> shelfOptional =
+            userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName);
+    if (shelfOptional.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Specified shelf does not exist");
+    }
+
+    userCreatedShelfService.delete(shelfOptional.get());
+    return ResponseEntity.ok("Deleted");
   }
 }

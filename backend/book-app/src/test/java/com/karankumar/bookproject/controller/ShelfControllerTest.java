@@ -228,37 +228,29 @@ class ShelfControllerTest {
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"", "    ", "\t", "\n"})
-    void deleteShelf_ThrowsIfNoNameOrEmptyNameSpecifiedForLocatingShelf(String oldName) {
-        // given
-        // Allow calling the real method, because that's where the "lookup by name cannot be null/empty" is validated
-        when(mockedUserCreatedShelfService.findByShelfNameAndLoggedInUser(oldName)).thenCallRealMethod();
-        try {
-            // when
-            shelfController.delete(oldName);
-            fail("Should have thrown an exception for this empty-string case!");
-        } catch (ResponseStatusException e) {
-            assertSoftly(softly -> {
-                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-                softly.assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
-            });
-        }
+    void deleteShelf_returnsBadRequest_ifShelfNameIsBlank(String name) {
+        ResponseEntity<String> response = shelfController.delete(name);
+
+        assertSoftly(softly -> {
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+            assertThat(response.getBody()).isEqualTo("Shelf name cannot be null or empty");
+        });
     }
 
     @Test
-    void deleteShelf_ThrowsIfUserCreatedShelfDoesNotExist() {
+    void deleteShelf_returnsBadRequest_ifUserCreatedShelfDoesNotExist() {
         // given
         String shelfName = "someShelfName";
         when(mockedUserCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName))
                 .thenReturn(Optional.empty());
-        try {
-            // when
-            shelfController.delete(shelfName);
-            fail("Should have thrown an exception when the specified shelf does not exist!");
-        } catch (ResponseStatusException e) {
-            assertSoftly(softly -> {
-                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-                softly.assertThat(e.getReason()).isEqualTo("Specified shelf does not exist");
-            });
-        }
+
+        // when
+        ResponseEntity<String> response = shelfController.delete(shelfName);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            softly.assertThat(response.getBody()).isEqualTo("Specified shelf does not exist");
+        });
     }
 }
