@@ -209,6 +209,10 @@ public class UserService {
         }
     }
 
+    public boolean passwordIsIncorrect(String password) {
+        return !passwordEncoder.matches(getCurrentUser().getPassword(), password);
+    }
+
     private void removePredefinedShelfFromUserBooks() {
         List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAllForLoggedInUser();
 

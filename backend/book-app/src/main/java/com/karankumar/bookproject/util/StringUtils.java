@@ -38,7 +38,7 @@ public final class StringUtils {
      * @param password the string to check its strength
      * @return true if password
      */
-    public static boolean passwordStrengthIsVeryStrong(String password) {
+    public static boolean isPasswordStrengthVeryStrong(String password) {
         return new Zxcvbn().measure(password).getScore() >=
                 PasswordStrength.VERY_STRONG.getStrengthNum();
     }

@@ -40,8 +40,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.assertj.core.api.ThrowableAssert;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -117,13 +115,12 @@ class UserControllerTest {
     void updatePassword_returnsUnauthorised_ifExistingPasswordNotCorrect() throws MessagingException {
         // given
         User user = User.builder().build();
-        when(userService.getCurrentUser()).thenReturn(user);
+        when(mockedUserService.getCurrentUser()).thenReturn(user);
 
         String veryStrongPassword = "verystrongpasswordsd";
-        when(mockPasswordEncoder.matches(anyString(), eq(veryStrongPassword)))
-                .thenReturn(false);
+        when(mockedUserService.passwordIsIncorrect(anyString())).thenReturn(true);
         UserController userController = new UserController(
-                userService, mockPasswordEncoder, mockedEmailService, mock(Environment.class)
+                mockedUserService, mockPasswordEncoder, mockedEmailService, mock(Environment.class)
         );
 
         // when
