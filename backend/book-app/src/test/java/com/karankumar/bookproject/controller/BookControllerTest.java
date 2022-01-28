@@ -117,6 +117,11 @@ class BookControllerTest {
   }
 
   @Test
+  void getGenres_alwaysReturnsNonEmptyArray() {
+    assertThat(bookController.getGenres()).isNotEmpty();
+  }
+
+  @Test
   void delete_returnsNotFound_ifBookDoesNotExist() {
     // given
     when(mockedBookService.findById(any(Long.class))).thenReturn(Optional.empty());
@@ -126,5 +131,17 @@ class BookControllerTest {
 
     // then
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+  }
+
+  @Test
+  void delete_returnsOk_ifBookExists() {
+    // given
+    when(mockedBookService.findById(any(Long.class))).thenReturn(Optional.of(new Book()));
+
+    // when
+    ResponseEntity<String> response = bookController.delete(1L);
+
+    // then
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 }

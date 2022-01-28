@@ -132,7 +132,6 @@ public class BookController {
       );
   }
 
-
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public Optional<Book> addBook(@RequestBody BookDto bookDto) {
