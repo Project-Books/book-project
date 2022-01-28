@@ -42,6 +42,9 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/api/shelf")
 public class ShelfController {
+  private static final String NULL_OR_EMPTY_SHELF_NAME = "Shelf name cannot be null or empty";
+  private static final String SHELF_NOT_FOUND_MESSAGE = "Specified shelf does not exist";
+
   private final UserCreatedShelfService userCreatedShelfService;
   private final PredefinedShelfService predefinedShelfService;
 
@@ -66,13 +69,15 @@ public class ShelfController {
   @PostMapping("/{shelfName}")
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<String> create(@PathVariable String shelfName) {
+    if (shelfName == null || shelfName.isBlank()) {
+      return ResponseEntity.badRequest().body(NULL_OR_EMPTY_SHELF_NAME);
+    }
+
     try {
       userCreatedShelfService.createCustomShelf(shelfName);
       return ResponseEntity.ok("Created");
     } catch (ShelfNameExistsException e) {
       return ResponseEntity.badRequest().body("Shelf name already exists");
-    } catch (NullPointerException | IllegalArgumentException e) {
-      return ResponseEntity.badRequest().body("Shelf name cannot be null or empty");
     }
   }
 
@@ -85,14 +90,14 @@ public class ShelfController {
         || newShelfName == null
         || newShelfName.isBlank()) {
       throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "Shelf name cannot be null or empty");
+          HttpStatus.BAD_REQUEST, NULL_OR_EMPTY_SHELF_NAME);
     }
 
     Optional<UserCreatedShelf> shelfOptional =
         userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName);
 
     if (shelfOptional.isEmpty()) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified shelf does not exist");
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, SHELF_NOT_FOUND_MESSAGE);
     }
 
     UserCreatedShelf customShelf = shelfOptional.get();
@@ -103,13 +108,13 @@ public class ShelfController {
   @DeleteMapping("/{shelfName}")
   public ResponseEntity<String> delete(@PathVariable String shelfName) {
     if (shelfName == null || shelfName.isBlank()) {
-      return ResponseEntity.badRequest().body("Shelf name cannot be null or empty");
+      return ResponseEntity.badRequest().body(NULL_OR_EMPTY_SHELF_NAME);
     }
 
     Optional<UserCreatedShelf> shelfOptional =
         userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName);
     if (shelfOptional.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Specified shelf does not exist");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(SHELF_NOT_FOUND_MESSAGE);
     }
 
     userCreatedShelfService.delete(shelfOptional.get());
