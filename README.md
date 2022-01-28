@@ -81,7 +81,7 @@ If you're running the backend, you will need a JWT token for subsequent requests
 
 ### Access database
 
-To access the MySQL database when docker-compose is running:
+To access the MySQL database when docker-compose is running with the phpmyadmin container:
 
 1. Go to `http://localhost:8081/`
 2. Log in with the details below:
