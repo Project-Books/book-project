@@ -107,8 +107,6 @@ class Register extends Component<Record<string, unknown>, IState> {
             isPasswordInvalid: this.state.password === ''
         })
         
-        console.log('here')
-
         if (!this.state.isEmailInvalid && !this.state.isPasswordInvalid
             && this.checkPasswordsMatch() &&
             this.state.passwordStrengthScore === PassStrengthEnum.VERY_STRONG) {
