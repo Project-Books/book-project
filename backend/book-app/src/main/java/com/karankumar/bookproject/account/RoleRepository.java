@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.repository;
+package com.karankumar.bookproject.account;
 
 import com.karankumar.bookproject.account.model.Role;
 import org.springframework.data.repository.CrudRepository;

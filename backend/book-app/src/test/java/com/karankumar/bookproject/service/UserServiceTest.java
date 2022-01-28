@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import com.karankumar.bookproject.account.UserService;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.BookRepository;
-import com.karankumar.bookproject.repository.RoleRepository;
+import com.karankumar.bookproject.account.RoleRepository;
 import com.karankumar.bookproject.account.UserRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;

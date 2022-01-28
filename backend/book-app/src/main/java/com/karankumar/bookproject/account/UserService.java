@@ -27,7 +27,6 @@ import com.karankumar.bookproject.model.PredefinedShelf;
 import com.karankumar.bookproject.account.model.RoleType;
 import com.karankumar.bookproject.account.model.Role;
 import com.karankumar.bookproject.account.model.User;
-import com.karankumar.bookproject.repository.RoleRepository;
 import com.karankumar.bookproject.repository.BookRepository;
 import com.karankumar.bookproject.service.PredefinedShelfService;
 import com.karankumar.bookproject.util.StringUtils;
