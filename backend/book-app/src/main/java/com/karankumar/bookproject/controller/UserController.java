@@ -111,7 +111,7 @@ public class UserController {
                 );
             }
 
-            return ResponseEntity.status(HttpStatus.OK).body("user created");
+            return ResponseEntity.status(HttpStatus.OK).body("User created");
         } catch (UserAlreadyRegisteredException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     "That email address is taken. If you already have an account, " +

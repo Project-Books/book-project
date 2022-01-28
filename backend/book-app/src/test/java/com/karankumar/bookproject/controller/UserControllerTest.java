@@ -14,13 +14,16 @@
 
 package com.karankumar.bookproject.controller;
 
+import com.karankumar.bookproject.dto.UserToRegisterDto;
 import com.karankumar.bookproject.model.account.User;
+import com.karankumar.bookproject.service.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.service.UserService;
 import com.karankumar.bookproject.service.EmailServiceImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -136,8 +139,14 @@ class UserControllerTest {
     }
 
     @Test
-    @Disabled
     void register_throwsBadRequest_whenEmailTaken() {
-        // TODO: implement
+        when(mockedUserService.register(any(UserToRegisterDto.class)))
+                .thenThrow(new UserAlreadyRegisteredException("Taken"));
+
+        ResponseEntity<Object> response = userController.register(
+                new UserToRegisterDto("a@b.com", "b")
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
