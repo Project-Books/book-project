@@ -15,7 +15,7 @@
    If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.karankumar.bookproject.model;
+package com.karankumar.bookproject.goal;
 
 import java.util.Objects;
 import javax.persistence.Entity;

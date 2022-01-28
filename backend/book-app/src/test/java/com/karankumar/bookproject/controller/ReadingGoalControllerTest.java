@@ -15,8 +15,9 @@
 
 package com.karankumar.bookproject.controller;
 
-import com.karankumar.bookproject.model.ReadingGoal;
-import com.karankumar.bookproject.service.ReadingGoalService;
+import com.karankumar.bookproject.goal.ReadingGoalController;
+import com.karankumar.bookproject.goal.ReadingGoal;
+import com.karankumar.bookproject.goal.ReadingGoalService;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.karankumar.bookproject.model.ReadingGoal.GoalType.BOOKS;
+import static com.karankumar.bookproject.goal.ReadingGoal.GoalType.BOOKS;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;

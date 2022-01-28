@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 package com.karankumar.bookproject.util;
 
-import com.karankumar.bookproject.service.ReadingGoalService;
+import com.karankumar.bookproject.goal.ReadingGoalService;
 
 public class ReadingGoalTestUtils {
     private ReadingGoalTestUtils() {}

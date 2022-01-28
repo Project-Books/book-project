@@ -15,10 +15,10 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.goal;
 
-import com.karankumar.bookproject.model.ReadingGoal;
-import com.karankumar.bookproject.repository.ReadingGoalRepository;
+import com.karankumar.bookproject.goal.ReadingGoal;
+import com.karankumar.bookproject.goal.ReadingGoalRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 

@@ -24,7 +24,7 @@ import com.karankumar.bookproject.util.DateUtils;
 
 import javax.validation.constraints.NotNull;
 
-import static com.karankumar.bookproject.model.ReadingGoal.GoalType;
+import static com.karankumar.bookproject.goal.ReadingGoal.GoalType;
 import static com.karankumar.bookproject.util.DateUtils.WEEKS_IN_YEAR;
 
 public final class ReadingGoalCalculator {

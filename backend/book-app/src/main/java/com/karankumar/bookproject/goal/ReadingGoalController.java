@@ -12,11 +12,9 @@
  * If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package com.karankumar.bookproject.controller;
+package com.karankumar.bookproject.goal;
 
-import com.karankumar.bookproject.model.ReadingGoal;
-import com.karankumar.bookproject.service.ReadingGoalService;
-import org.modelmapper.ModelMapper;
+import com.karankumar.bookproject.controller.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,7 +48,7 @@ public class ReadingGoalController {
     }
 
     @Autowired
-    ReadingGoalController(ReadingGoalService readingGoalService) {
+    public ReadingGoalController(ReadingGoalService readingGoalService) {
         this.readingGoalService = readingGoalService;
     }
 

@@ -17,8 +17,9 @@
 
 package com.karankumar.bookproject.service;
 
-import com.karankumar.bookproject.model.ReadingGoal;
-import com.karankumar.bookproject.repository.ReadingGoalRepository;
+import com.karankumar.bookproject.goal.ReadingGoal;
+import com.karankumar.bookproject.goal.ReadingGoalRepository;
+import com.karankumar.bookproject.goal.ReadingGoalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
