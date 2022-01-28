@@ -82,11 +82,6 @@ public class UserController {
     this.environment = environment;
   }
 
-  @GetMapping("/users")
-  public List<User> getAllUsers() {
-    return userService.findAll();
-  }
-
   @GetMapping("/user/{id}")
   public User getUser(@PathVariable Long id) {
     return userService

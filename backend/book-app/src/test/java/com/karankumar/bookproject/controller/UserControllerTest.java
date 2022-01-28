@@ -80,26 +80,6 @@ class UserControllerTest {
     }
 
     @Test
-    void getAllUsers_returnsEmptyList_whenNoUsersExist() {
-        when(mockedUserService.findAll()).thenReturn(new ArrayList<>());
-        assertThat(userController.getAllUsers().size()).isZero();
-    }
-
-    @Test
-    void getAllUsers_returnNonEmptyList_whenUserExist() {
-        // given
-        List<User> users = new ArrayList<>();
-        users.add(validUser);
-        users.add(validUser);
-
-        // when
-        when(mockedUserService.findAll()).thenReturn(users);
-
-        // then
-        assertThat(userController.getAllUsers().size()).isEqualTo(users.size());
-    }
-
-    @Test
     void getUser_returnsUser_ifPresent() {
         User user = validUser;
         when(mockedUserService.findUserById(any(Long.class)))
@@ -166,7 +146,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updateEmail_returns400_ifConstraintViolated() {
+    void updateEmail_returnsBadRequest_ifConstraintViolated() {
         // given
         doThrow(new ConstraintViolationException(new HashSet<>()))
                 .when(mockedUserService).changeUserEmail(any(), anyString(), anyString());
@@ -181,7 +161,7 @@ class UserControllerTest {
     }
 
     @Test
-    void updatePassword_returnsUnauthorised_ifExistingPasswordNotCorrect() throws MessagingException {
+    void updatePassword_returns401_ifExistingPasswordNotCorrect() throws MessagingException {
         // given
         User user = User.builder().build();
         when(mockedUserService.getCurrentUser()).thenReturn(user);
