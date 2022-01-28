@@ -28,6 +28,7 @@ import com.karankumar.bookproject.template.EmailTemplate;
 import com.karankumar.bookproject.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -69,6 +70,9 @@ public class UserController {
     private static final String PASSWORD_WEAK_ERROR_MESSAGE = "Password is too weak";
 
     @Autowired
+    private Environment environment;
+
+    @Autowired
     public UserController(UserService userService, PasswordEncoder passwordEncoder, EmailServiceImpl emailService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -94,11 +98,18 @@ public class UserController {
     public ResponseEntity<Object> register(@RequestBody UserToRegisterDto user) {
         try {
             userService.register(user);
-            emailService.sendMessageUsingThymeleafTemplate(
-                    user.getUsername(),
-                    EmailConstant.ACCOUNT_CREATED_SUBJECT,
-                    EmailTemplate.getAccountCreatedEmailTemplate(emailService.getUsernameFromEmail(user.getUsername()))
-            );
+
+            String activeProfile = this.environment.getActiveProfiles()[0];
+            if (!activeProfile.equals("dev")) {
+                emailService.sendMessageUsingThymeleafTemplate(
+                        user.getUsername(),
+                        EmailConstant.ACCOUNT_CREATED_SUBJECT,
+                        EmailTemplate.getAccountCreatedEmailTemplate(
+                                emailService.getUsernameFromEmail(user.getUsername())
+                        )
+                );
+            }
+
             return ResponseEntity.status(HttpStatus.OK).body("user created");
         } catch (UserAlreadyRegisteredException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email taken");
