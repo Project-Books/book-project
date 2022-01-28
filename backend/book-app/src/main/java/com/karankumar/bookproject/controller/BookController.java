@@ -114,6 +114,12 @@ public class BookController {
     }
   }
 
+  @GetMapping("/genres")
+  public BookGenre[] getGenres() {
+    return BookGenre.values();
+  }
+
+
   @GetMapping("/{id}")
   // TODO: only retrieve books that belong to the logged in user
   public Book findById(@PathVariable Long id) {
