@@ -20,9 +20,8 @@ package com.karankumar.bookproject.security.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.karankumar.bookproject.exceptionhandler.ApiExceptionHandler;
-import com.karankumar.bookproject.exceptionhandler.ErrorResponse;
-import io.jsonwebtoken.Jwts;
+import com.karankumar.bookproject.security.jwt.exceptionhandler.ApiExceptionHandler;
+import com.karankumar.bookproject.security.jwt.exceptionhandler.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -39,8 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.util.Date;
 import javax.servlet.http.Cookie;
 
 public class JwtUsernamePasswordAuthFilter extends UsernamePasswordAuthenticationFilter {

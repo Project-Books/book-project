@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.exceptionhandler;
+package com.karankumar.bookproject.security.jwt.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
