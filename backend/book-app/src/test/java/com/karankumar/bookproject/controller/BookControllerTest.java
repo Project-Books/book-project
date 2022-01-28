@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -54,7 +55,7 @@ class BookControllerTest {
   @Test
   void all_pageNumberIsOptional() {
     bookController.all(null);
-    verify(mockedBookService, times(1));
+    verify(mockedBookService, times(1)).findAll((Integer) null);
   }
 
   @Test
