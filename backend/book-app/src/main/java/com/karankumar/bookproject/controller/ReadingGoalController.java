@@ -40,6 +40,7 @@ public class ReadingGoalController {
     public static final String TARGET_BAD_REQUEST = "Minimum target value is 1.";
 
     public static class Endpoints {
+        private Endpoints() { }
         public static final String ADD_BOOKS = "/add/books";
         public static final String ADD_PAGES = "/add/pages";
         public static final String UPDATE_PAGES = "/update/pages";
