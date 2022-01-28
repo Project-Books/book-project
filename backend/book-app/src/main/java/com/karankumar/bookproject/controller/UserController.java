@@ -87,9 +87,10 @@ public class UserController {
     return userService
         .findUserById(id)
         .orElseThrow(
-            () ->
-                new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)));
+            () -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)
+            )
+        );
   }
 
   @PostMapping

@@ -119,16 +119,17 @@ class UserServiceTest {
     @Test
     void changeUserPassword_encodesPassword_beforeSaving() {
         // given
-        String password = "StrongPassword007";
+        String veryStrongPassword = "VeryStrongPassword007";
         final String email = "test@gmail.com";
 
         // when
-        underTest.changeUserPassword(User.builder().email(email).build(), password);
+        underTest.changeUserPassword(User.builder().email(email).build(), veryStrongPassword);
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
-        User expected = User.builder().email(email).password(passwordEncoder.encode(password)).build();
+        User expected = User.builder().email(email)
+                            .password(passwordEncoder.encode(veryStrongPassword)).build();
         assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
     }
 
