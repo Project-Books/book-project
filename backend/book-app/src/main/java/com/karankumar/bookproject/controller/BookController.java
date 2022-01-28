@@ -143,7 +143,7 @@ public class BookController {
   @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public Book update(@PathVariable Long id, @RequestBody BookPatchDto bookPatchDto) {
-    final var bookToUpdate = bookService.findById(id)
+    final Book bookToUpdate = bookService.findById(id)
       .orElseThrow(() -> new ResponseStatusException(
           HttpStatus.NOT_FOUND,
           String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)

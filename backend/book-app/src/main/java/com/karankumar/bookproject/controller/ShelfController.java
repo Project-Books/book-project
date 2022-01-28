@@ -22,6 +22,7 @@ import com.karankumar.bookproject.service.ShelfNameExistsException;
 import com.karankumar.bookproject.service.UserCreatedShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,84 +41,69 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/api/shelf")
 public class ShelfController {
-    private final UserCreatedShelfService userCreatedShelfService;
-    private final PredefinedShelfService predefinedShelfService;
+  private final UserCreatedShelfService userCreatedShelfService;
+  private final PredefinedShelfService predefinedShelfService;
 
-    @Autowired
-    public ShelfController(
-            UserCreatedShelfService userCreatedShelfService,
-            PredefinedShelfService predefinedShelfService
-    ) {
-        this.userCreatedShelfService = userCreatedShelfService;
-        this.predefinedShelfService = predefinedShelfService;
+  @Autowired
+  public ShelfController(
+      UserCreatedShelfService userCreatedShelfService,
+      PredefinedShelfService predefinedShelfService) {
+    this.userCreatedShelfService = userCreatedShelfService;
+    this.predefinedShelfService = predefinedShelfService;
+  }
+
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  public List<Shelf> all() {
+    List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAllForLoggedInUser();
+    List<UserCreatedShelf> userCreatedShelves = userCreatedShelfService.findAllForLoggedInUser();
+
+    return Stream.concat(predefinedShelves.stream(), userCreatedShelves.stream())
+        .collect(Collectors.toList());
+  }
+
+  @PostMapping("/{shelfName}")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<String> create(@PathVariable String shelfName) {
+    try {
+      userCreatedShelfService.createCustomShelf(shelfName);
+      return ResponseEntity.ok("Created");
+    } catch (ShelfNameExistsException e) {
+      return ResponseEntity.badRequest().body("Shelf name already exists");
+    } catch (NullPointerException | IllegalArgumentException e) {
+      return ResponseEntity.badRequest().body("Shelf name cannot be null or empty");
     }
+  }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<Shelf> all() {
-        List<PredefinedShelf> predefinedShelves = predefinedShelfService.findAllForLoggedInUser();
-        List<UserCreatedShelf> userCreatedShelves = userCreatedShelfService.findAllForLoggedInUser();
-
-        return Stream.concat(
-                predefinedShelves.stream(),
-                userCreatedShelves.stream()
-        ).collect(Collectors.toList());
+  @PutMapping("/{shelfName}/{newShelfName}")
+  @ResponseStatus(HttpStatus.OK)
+  public UserCreatedShelf rename(
+      @PathVariable String shelfName, @PathVariable String newShelfName) {
+    try {
+      UserCreatedShelf customShelf =
+          userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName).get();
+      customShelf.setShelfName(newShelfName);
+      return userCreatedShelfService.save(customShelf);
+    } catch (NoSuchElementException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified shelf does not exist");
+    } catch (NullPointerException | IllegalArgumentException e) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "Shelf name cannot be null or empty");
     }
+  }
 
-    @PostMapping("/{shelfName}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserCreatedShelf create(@PathVariable String shelfName) {
-        try {
-            UserCreatedShelf customShelf = userCreatedShelfService.createCustomShelf(shelfName);
-            return userCreatedShelfService.save(customShelf);
-        } catch (ShelfNameExistsException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Shelf name already exists"
-            );
-        } catch (NullPointerException | IllegalArgumentException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Shelf name cannot be null or empty"
-            );
-        }
+  @DeleteMapping("/{shelfName}")
+  @ResponseStatus(HttpStatus.OK)
+  public void delete(@PathVariable String shelfName) {
+    try {
+      UserCreatedShelf customShelf =
+          userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName).get();
+      userCreatedShelfService.delete(customShelf);
+    } catch (NoSuchElementException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified shelf does not exist");
+    } catch (NullPointerException | IllegalArgumentException e) {
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST, "Shelf name cannot be null or empty");
     }
-
-    @PutMapping("/{shelfName}/{newShelfName}")
-    @ResponseStatus(HttpStatus.OK)
-    public UserCreatedShelf rename(@PathVariable String shelfName, @PathVariable String newShelfName) {
-        try {
-            UserCreatedShelf customShelf = userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName).get();
-            customShelf.setShelfName(newShelfName);
-            return userCreatedShelfService.save(customShelf);
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Specified shelf does not exist"
-            );
-        } catch (NullPointerException | IllegalArgumentException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Shelf name cannot be null or empty"
-            );
-        }
-    }
-
-    @DeleteMapping("/{shelfName}")
-    @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable String shelfName) {
-        try {
-            UserCreatedShelf customShelf = userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName).get();
-            userCreatedShelfService.delete(customShelf);
-        } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Specified shelf does not exist"
-            );
-        } catch (NullPointerException | IllegalArgumentException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Shelf name cannot be null or empty"
-            );
-        }
-    }
+  }
 }

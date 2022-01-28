@@ -18,12 +18,14 @@ import com.karankumar.bookproject.model.PredefinedShelf;
 import com.karankumar.bookproject.model.UserCreatedShelf;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.service.PredefinedShelfService;
+import com.karankumar.bookproject.service.ShelfNameExistsException;
 import com.karankumar.bookproject.service.UserCreatedShelfService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -31,8 +33,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -118,27 +123,48 @@ class ShelfControllerTest {
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(shelfController.all().size()).isEqualTo(userCreatedShelves.size() + predefinedShelves.size());
-            softly.assertThat(shelfController.all()).containsExactlyInAnyOrder(userCreatedShelf1, userCreatedShelf2, predefinedShelf1, predefinedShelf2);
+            softly.assertThat(shelfController.all().size())
+                  .isEqualTo(userCreatedShelves.size() + predefinedShelves.size());
+            softly.assertThat(shelfController.all()).containsExactlyInAnyOrder(
+                    userCreatedShelf1,
+                    userCreatedShelf2,
+                    predefinedShelf1,
+                    predefinedShelf2
+            );
+        });
+    }
+
+    @Test
+    void create_returnsBadRequest_ifShelfNameTaken() {
+        // given
+        when(mockedUserCreatedShelfService.createCustomShelf(anyString()))
+                .thenThrow(new ShelfNameExistsException("anything"));
+
+        // when
+        ResponseEntity<String> response = shelfController.create("anything");
+
+        assertSoftly(softly -> {
+            softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+            softly.assertThat(response.getBody()).isEqualTo("Shelf name already exists");
         });
     }
 
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"", "    ", "\t", "\n"})
-    void addShelf_ThrowsIfNoNameOrEmptyNameSpecified(String specifiedName) {
-        // Allow calling the real method, because that's where the "name cannot be null/empty" validation happens
-        when(shelfController.create(specifiedName)).thenCallRealMethod();
-        try {
-            // when
-            shelfController.create(specifiedName);
-            fail("Should have thrown an exception for this empty-string case!");
-        } catch (ResponseStatusException e) {
-            assertSoftly(softly -> {
-                softly.assertThat(e.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-                softly.assertThat(e.getReason()).isEqualTo("Shelf name cannot be null or empty");
-            });
-        }
+    void create_throws_ifNoNameOrEmptyNameSpecified(String specifiedName) {
+        // given
+        when(mockedUserCreatedShelfService.createCustomShelf(any()))
+                .thenThrow(new NullPointerException());
+
+        // when
+        ResponseEntity<String> response = shelfController.create(specifiedName);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+            softly.assertThat(response.getBody()).isEqualTo("Shelf name cannot be null or empty");
+        });
     }
 
     @ParameterizedTest

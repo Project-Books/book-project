@@ -30,7 +30,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class BookControllerTest {
@@ -46,6 +49,12 @@ class BookControllerTest {
       mockedPredefinedShelfService,
       mockedModelMapper
     );
+  }
+
+  @Test
+  void all_pageNumberIsOptional() {
+    bookController.all(null);
+    verify(mockedBookService, times(1));
   }
 
   @Test
