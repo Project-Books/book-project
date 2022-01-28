@@ -80,28 +80,34 @@ public class ShelfController {
   @ResponseStatus(HttpStatus.OK)
   public UserCreatedShelf rename(
       @PathVariable String shelfName, @PathVariable String newShelfName) {
-    try {
-      UserCreatedShelf customShelf =
-          userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName).get();
-      customShelf.setShelfName(newShelfName);
-      return userCreatedShelfService.save(customShelf);
-    } catch (NoSuchElementException e) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified shelf does not exist");
-    } catch (NullPointerException | IllegalArgumentException e) {
+    if (shelfName == null
+        || shelfName.isBlank()
+        || newShelfName == null
+        || newShelfName.isBlank()) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST, "Shelf name cannot be null or empty");
     }
+
+    Optional<UserCreatedShelf> shelfOptional =
+        userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName);
+
+    if (shelfOptional.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified shelf does not exist");
+    }
+
+    UserCreatedShelf customShelf = shelfOptional.get();
+    customShelf.setShelfName(newShelfName);
+    return userCreatedShelfService.save(customShelf);
   }
 
   @DeleteMapping("/{shelfName}")
-  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<String> delete(@PathVariable String shelfName) {
     if (shelfName == null || shelfName.isBlank()) {
       return ResponseEntity.badRequest().body("Shelf name cannot be null or empty");
     }
 
     Optional<UserCreatedShelf> shelfOptional =
-            userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName);
+        userCreatedShelfService.findByShelfNameAndLoggedInUser(shelfName);
     if (shelfOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Specified shelf does not exist");
     }
