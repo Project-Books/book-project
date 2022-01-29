@@ -28,6 +28,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
+import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.book.repository.BookRepository;
@@ -146,6 +147,20 @@ class UserServiceTest {
                 .isThrownBy(() ->
                         underTest.changeUserEmail(user, "a", "email@email.com")
                 ).withMessage("The password you entered is incorrect");
+        then(mockUserRepository).shouldHaveNoInteractions();
+    }
+
+    @Test
+    void changeUserEmail_throwsUserAlreadyRegisteredException_ifPasswordIncorrect() {
+        String email = "email@email.com";
+        User user = User.builder().email(email).password("anything").build();
+
+        when(mockPasswordEncoder.matches(anyString(), anyString())).thenReturn(true);
+
+        assertThatExceptionOfType(UserAlreadyRegisteredException.class)
+                .isThrownBy(() ->
+                        underTest.changeUserEmail(user, "a", email)
+                ).withMessage("The email address you provided is the same as your current one.");
         then(mockUserRepository).shouldHaveNoInteractions();
     }
 

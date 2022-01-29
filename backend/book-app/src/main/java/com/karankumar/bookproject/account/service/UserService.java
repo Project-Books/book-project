@@ -162,7 +162,7 @@ public class UserService {
 
         if (user.getEmail().equalsIgnoreCase(email)) {
             throw new UserAlreadyRegisteredException(
-                    "Given email address is same as the current one"
+                    "The email address you provided is the same as your current one."
             );
         }
 
