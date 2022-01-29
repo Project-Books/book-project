@@ -100,7 +100,8 @@ public class ReadingGoalController {
         if (target <= 0) {
             return ResponseEntity.badRequest().body(TARGET_BAD_REQUEST);
         }
-        ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
+
+        ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.BOOKS);
         readingGoalService.save(readingGoal);
         return ResponseEntity.ok("Updated");
     }

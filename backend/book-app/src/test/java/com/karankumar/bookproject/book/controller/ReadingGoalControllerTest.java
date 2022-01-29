@@ -22,7 +22,6 @@ import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
@@ -35,18 +34,21 @@ import java.util.List;
 import static com.karankumar.bookproject.goal.ReadingGoal.GoalType.BOOKS;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @TestPropertySource(locations = "classpath:application-test.properties")
 class ReadingGoalControllerTest {
     private final ReadingGoalService readingGoalService;
-    private final ReadingGoalController readingGoalController;
+    private final ReadingGoalController underTest;
     private final List<ReadingGoal> readingGoalList = new ArrayList<>();
 
     ReadingGoalControllerTest() {
         readingGoalService = mock(ReadingGoalService.class);
-        readingGoalController = new ReadingGoalController(readingGoalService);
+        underTest = new ReadingGoalController(readingGoalService);
 
         this.readingGoalList.add(new ReadingGoal(5, BOOKS));
     }
@@ -56,7 +58,7 @@ class ReadingGoalControllerTest {
         when(readingGoalService.findAll()).thenReturn(Collections.emptyList());
 
         ThrowableAssert.ThrowingCallable callable =
-                readingGoalController::getExistingReadingGoal;
+                underTest::getExistingReadingGoal;
 
         assertThatExceptionOfType(ResponseStatusException.class)
                 .isThrownBy(callable)
@@ -70,29 +72,42 @@ class ReadingGoalControllerTest {
     @ParameterizedTest
     @ValueSource(ints = {-1, 0})
     void updateBooksReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
-        ResponseEntity<String> response = readingGoalController.updateBooksReadingGoal(target);
+        ResponseEntity<String> response = underTest.updateBooksReadingGoal(target);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void readingGoalSaved_ifPositiveTarget() {
+        // given
+        int target = 1;
+
+        // when
+        ResponseEntity<String> response = underTest.updateBooksReadingGoal(target);
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        verify(readingGoalService, times(1)).save(any(ReadingGoal.class));
     }
 
     @Test
     void getPreviousReadingGoal_returnReadingGoal_whenPreviousGoalExists() {
         when(readingGoalService.findAll()).thenReturn(readingGoalList);
 
-        assertThat(readingGoalController.getPreviousReadingGoals()).isEqualTo(readingGoalList);
+        assertThat(underTest.getPreviousReadingGoals()).isEqualTo(readingGoalList);
     }
 
     @Test
     void getCurrentReadingGoal_returnCurrentGoal_whenReadingGoalExists() {
         when(readingGoalService.findAll()).thenReturn(readingGoalList);
 
-        assertThat(readingGoalController.getExistingReadingGoal())
+        assertThat(underTest.getExistingReadingGoal())
                 .isEqualTo(readingGoalList.get(0));
     }
 
     @Test
     void getPreviousReadingGoals_returnSizeOfReadingGoals_whenNoGoalExist() {
         when(readingGoalService.findAll()).thenReturn(Collections.emptyList());
-        assertThat(readingGoalController.getPreviousReadingGoals().size()).isZero();
+        assertThat(underTest.getPreviousReadingGoals().size()).isZero();
     }
 }

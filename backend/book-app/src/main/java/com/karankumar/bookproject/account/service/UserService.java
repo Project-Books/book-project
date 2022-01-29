@@ -188,12 +188,12 @@ public class UserService {
      * @param password the string to check its strength
      * @return true if password
      */
-    public static boolean isPasswordStrengthVeryStrong(String password) {
+    public boolean isPasswordStrengthVeryStrong(String password) {
         return new Zxcvbn().measure(password).getScore() >=
                 PasswordStrength.VERY_STRONG.getStrengthNum();
     }
 
-    private static boolean isPasswordTooWeak(String password) {
+    private boolean isPasswordTooWeak(String password) {
         return !isPasswordStrengthVeryStrong(password);
     }
 
