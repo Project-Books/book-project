@@ -14,11 +14,13 @@ If not, see <https://www.gnu.org/licenses/>.
 
 package com.karankumar.bookproject.template;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.constant.EmailConstant;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@ExcludeFromJacocoGeneratedReport
 public class EmailTemplate {
     private EmailTemplate() {
     }
