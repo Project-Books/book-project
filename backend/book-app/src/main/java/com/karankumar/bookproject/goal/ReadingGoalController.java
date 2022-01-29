@@ -61,50 +61,32 @@ public class ReadingGoalController {
         readingGoalService.deleteAll();
     }
 
+    // This endpoint will be used for both adding and updating, since at most one goal
+    // (pages or books) is allowed at a time
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(Endpoints.ADD_BOOKS)
-    public void addBookReadingGoal(@RequestParam(value = "target") int target) {
-        if (target > 0) {
-            ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.BOOKS);
-            readingGoalService.save(readingGoal);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
-        }
-    }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(Endpoints.ADD_PAGES)
-    public void addPagesReadingGoal(@RequestParam(value = "target") int target) {
-        if (target > 0) {
-            ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
-            readingGoalService.save(readingGoal);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
-        }
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping(Endpoints.UPDATE_PAGES)
-    public ResponseEntity<String> updatePagesReadingGoal(@RequestParam(value = "target") int target) {
+    public ResponseEntity<String> addBookReadingGoal(@RequestParam(value = "target") int target) {
         if (target <= 0) {
             return ResponseEntity.badRequest().body(TARGET_BAD_REQUEST);
         }
 
         ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
         readingGoalService.save(readingGoal);
-        return ResponseEntity.ok("Updated");
+        return ResponseEntity.ok("Saved");
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping(Endpoints.UPDATE_BOOKS)
-    public ResponseEntity<String> updateBooksReadingGoal(@RequestParam(value = "target") int target) {
+    // This endpoint will be used for both adding and updating, since at most one goal
+    // (pages or books) is allowed at a time
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(Endpoints.ADD_PAGES)
+    public ResponseEntity<String> addPagesReadingGoal(@RequestParam(value = "target") int target) {
         if (target <= 0) {
             return ResponseEntity.badRequest().body(TARGET_BAD_REQUEST);
         }
 
-        ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.BOOKS);
+        ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
         readingGoalService.save(readingGoal);
-        return ResponseEntity.ok("Updated");
+        return ResponseEntity.ok("Saved");
     }
 
     @ResponseStatus(HttpStatus.OK)

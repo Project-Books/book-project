@@ -71,10 +71,11 @@ class ReadingGoalControllerTest {
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 0})
-    void updatePagesReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
-        ResponseEntity<String> response = underTest.updatePagesReadingGoal(target);
+    void addPagesReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
+        ResponseEntity<String> response = underTest.addPagesReadingGoal(target);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
 
     @Test
     void pagesReadingGoalSaved_ifPositiveTarget() {
@@ -82,7 +83,7 @@ class ReadingGoalControllerTest {
         int target = 1;
 
         // when
-        ResponseEntity<String> response = underTest.updatePagesReadingGoal(target);
+        ResponseEntity<String> response = underTest.addPagesReadingGoal(target);
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -91,8 +92,8 @@ class ReadingGoalControllerTest {
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 0})
-    void updateBooksReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
-        ResponseEntity<String> response = underTest.updateBooksReadingGoal(target);
+    void addBooksReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
+        ResponseEntity<String> response = underTest.addBookReadingGoal(target);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
@@ -102,7 +103,7 @@ class ReadingGoalControllerTest {
         int target = 1;
 
         // when
-        ResponseEntity<String> response = underTest.updateBooksReadingGoal(target);
+        ResponseEntity<String> response = underTest.addBookReadingGoal(target);
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
