@@ -66,6 +66,7 @@ public class ReadingGoal {
     return Objects.hash(target, goalType);
   }
 
+  @ExcludeFromJacocoGeneratedReport
   public enum GoalType {
     PAGES("Pages"),
     BOOKS("Books");
