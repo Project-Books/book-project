@@ -29,6 +29,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+
 @RestController
 @RequestMapping(Mappings.GOAL)
 public class ReadingGoalController {
@@ -94,12 +96,11 @@ public class ReadingGoalController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(Endpoints.UPDATE_BOOKS)
     public void updateBooksReadingGoal(@RequestParam(value = "target") int target) {
-        if (target > 0) {
-            ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
-            readingGoalService.save(readingGoal);
-        } else {
+        if (target < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
         }
+        ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
+        readingGoalService.save(readingGoal);
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -43,7 +43,6 @@ class ReadingGoalControllerTest {
 
     ReadingGoalControllerTest() {
         readingGoalService = mock(ReadingGoalService.class);
-        ModelMapper modelMapper = mock(ModelMapper.class);
         readingGoalController = new ReadingGoalController(readingGoalService);
 
         this.readingGoalList.add(new ReadingGoal(5, BOOKS));
