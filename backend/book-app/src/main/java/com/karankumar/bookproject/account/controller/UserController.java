@@ -181,7 +181,6 @@ public class UserController {
     try {
       user = userService.getCurrentUser();
     } catch (CurrentUserNotFoundException ex) {
-//      throw new ResponseStatusException(HttpStatus.NOT_FOUND, CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(CURRENT_USER_NOT_FOUND_ERROR_MESSAGE);
     }
 

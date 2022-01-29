@@ -274,6 +274,7 @@ public class Book {
     return 0;
   }
 
+  @ExcludeFromJacocoGeneratedReport
   public static class BookBuilder {
     public BookBuilder edition(Integer edition) {
       this.edition = convertToBookEdition(edition);

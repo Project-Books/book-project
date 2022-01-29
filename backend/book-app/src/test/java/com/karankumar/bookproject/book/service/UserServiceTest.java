@@ -78,6 +78,20 @@ class UserServiceTest {
     }
 
     @Test
+    void findUserById_searchesRepository() {
+        long id = 1;
+        underTest.findUserById(id);
+        verify(mockUserRepository, times(1)).findById(id);
+    }
+
+    @Test
+    void findUserById_throwsNullPointerException_ifIdIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.findUserById(null));
+        then(mockUserRepository).shouldHaveNoInteractions();
+    }
+
+    @Test
     void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.isEmailInUse(null));
