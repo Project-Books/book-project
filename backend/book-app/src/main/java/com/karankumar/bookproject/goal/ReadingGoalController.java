@@ -85,13 +85,14 @@ public class ReadingGoalController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(Endpoints.UPDATE_PAGES)
-    public void updatePagesReadingGoal(@RequestParam(value = "target") int target) {
-        if (target > 0) {
-            ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
-            readingGoalService.save(readingGoal);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
+    public ResponseEntity<String> updatePagesReadingGoal(@RequestParam(value = "target") int target) {
+        if (target <= 0) {
+            return ResponseEntity.badRequest().body(TARGET_BAD_REQUEST);
         }
+
+        ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
+        readingGoalService.save(readingGoal);
+        return ResponseEntity.ok("Updated");
     }
 
     @ResponseStatus(HttpStatus.OK)

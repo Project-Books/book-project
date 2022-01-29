@@ -71,14 +71,33 @@ class ReadingGoalControllerTest {
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 0})
-    void updateBooksReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
-        ResponseEntity<String> response = underTest.updateBooksReadingGoal(target);
-
+    void updatePagesReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
+        ResponseEntity<String> response = underTest.updatePagesReadingGoal(target);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void readingGoalSaved_ifPositiveTarget() {
+    void pagesReadingGoalSaved_ifPositiveTarget() {
+        // given
+        int target = 1;
+
+        // when
+        ResponseEntity<String> response = underTest.updatePagesReadingGoal(target);
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        verify(readingGoalService, times(1)).save(any(ReadingGoal.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 0})
+    void updateBooksReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
+        ResponseEntity<String> response = underTest.updateBooksReadingGoal(target);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void booksReadingGoalSaved_ifPositiveTarget() {
         // given
         int target = 1;
 
