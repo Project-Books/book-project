@@ -1,5 +1,8 @@
 package com.karankumar.bookproject.model;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
+
+@ExcludeFromJacocoGeneratedReport
 public enum PredefinedShelfName {
     TO_READ("To read"),
     READING("Reading"),

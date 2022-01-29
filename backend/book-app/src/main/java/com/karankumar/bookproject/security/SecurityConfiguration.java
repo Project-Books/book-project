@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.security;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.account.auth.CustomAuthenticationProvider;
@@ -50,6 +51,7 @@ import java.util.List;
 
 @EnableWebSecurity
 @Configuration
+@ExcludeFromJacocoGeneratedReport
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final DatabaseUserDetailsService databaseUserDetailsService;

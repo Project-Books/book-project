@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.security.jwt;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@ExcludeFromJacocoGeneratedReport
 public class UsernamePasswordAuthRequest {
     private String username;
     private String password;

@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.security.jwt.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,13 +26,12 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@ExcludeFromJacocoGeneratedReport
 public class ErrorResponse {
-
     private int status;
     private String error;
     private String message;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime timestamp;
-
 }

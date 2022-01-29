@@ -17,6 +17,9 @@
 
 package com.karankumar.bookproject.account.constraint;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
+
+@ExcludeFromJacocoGeneratedReport
 public enum PasswordStrength {
     WEAK("Weak", 0),
     FAIR("Fair", 1),

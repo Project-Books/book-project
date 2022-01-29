@@ -19,6 +19,7 @@ package com.karankumar.bookproject.bookimport.librarything;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ExcludeFromJacocoGeneratedReport
 public class LibraryThingBookImport {
 
   @JsonProperty("title")

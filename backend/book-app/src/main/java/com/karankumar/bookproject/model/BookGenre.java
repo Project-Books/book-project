@@ -19,7 +19,9 @@
 package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 
+@ExcludeFromJacocoGeneratedReport
 public enum BookGenre {
     // This should be kept in alphabetical order
     ADVENTURE("Adventure"),

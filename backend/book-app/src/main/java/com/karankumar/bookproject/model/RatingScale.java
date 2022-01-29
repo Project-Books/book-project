@@ -19,12 +19,14 @@
 package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.extern.java.Log;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 @Log
+@ExcludeFromJacocoGeneratedReport
 public enum RatingScale {
     NO_RATING("No rating", null),
     ZERO("0/10", 0.0),

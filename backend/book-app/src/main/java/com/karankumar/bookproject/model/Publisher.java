@@ -33,6 +33,8 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
+
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,6 +52,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @NamedEntityGraph(name = "Publisher.books", attributeNodes = @NamedAttributeNode("books"))
+@ExcludeFromJacocoGeneratedReport
 public class Publisher {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

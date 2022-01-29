@@ -19,6 +19,7 @@ package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.book.json.LocalDateSerializer;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -68,6 +69,7 @@ import org.hibernate.validator.constraints.ISBN;
 @NamedEntityGraph(
     name = "Book.author",
     attributeNodes = {@NamedAttributeNode("author")})
+@ExcludeFromJacocoGeneratedReport
 public class Book {
   public static final int MAX_PAGES = 23_000;
 

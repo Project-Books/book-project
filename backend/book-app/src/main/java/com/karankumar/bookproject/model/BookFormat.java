@@ -18,6 +18,9 @@
 
 package com.karankumar.bookproject.model;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
+
+@ExcludeFromJacocoGeneratedReport
 public enum BookFormat {
     // This should be kept in alphabetical order
     EBOOK("eBook"),

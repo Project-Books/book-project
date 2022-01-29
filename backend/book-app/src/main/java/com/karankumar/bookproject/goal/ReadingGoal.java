@@ -24,6 +24,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +37,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ExcludeFromJacocoGeneratedReport
 public class ReadingGoal {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)

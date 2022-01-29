@@ -30,6 +30,8 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +44,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @NamedEntityGraph(name = "Author.books", attributeNodes = @NamedAttributeNode("books"))
+@ExcludeFromJacocoGeneratedReport
 public class Author {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

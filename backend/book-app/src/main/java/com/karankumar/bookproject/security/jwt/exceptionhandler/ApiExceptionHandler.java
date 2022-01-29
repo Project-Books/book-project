@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.security.jwt.exceptionhandler;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.LocalDateTime;
 
 @ControllerAdvice
+@ExcludeFromJacocoGeneratedReport
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
@@ -34,7 +36,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ErrorResponse errorResponse = createErrorResponse(status)
                 .error("Internal Error")
-                .message("An internal error ocurred. Please try again. If the error persists contact the support.")
+                .message("An internal error occurred. Please try again. " +
+                        "If the error persists, please contact the support.")
                 .build();
 
         return ResponseEntity.status(status).body(errorResponse);
@@ -45,5 +48,4 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .status(status.value());
     }
-
 }

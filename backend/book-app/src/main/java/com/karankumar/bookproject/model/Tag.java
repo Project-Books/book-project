@@ -30,6 +30,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +44,7 @@ import lombok.Setter;
 @NamedEntityGraph(name = "Tag.books", attributeNodes = @NamedAttributeNode("books"))
 @Getter
 @Setter
+@ExcludeFromJacocoGeneratedReport
 public class Tag {
   @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
   private final Set<Book> books = new HashSet<>();
