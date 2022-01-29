@@ -15,7 +15,7 @@
     If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.karankumar.bookproject.security;
+package com.karankumar.bookproject.account.auth;
 
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.UserService;

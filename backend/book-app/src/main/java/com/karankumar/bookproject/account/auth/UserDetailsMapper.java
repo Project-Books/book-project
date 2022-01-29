@@ -15,15 +15,28 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.security;
+package com.karankumar.bookproject.account.auth;
 
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import static java.util.stream.Collectors.toUnmodifiableList;
 
-public class CustomRequestCache extends HttpSessionRequestCache {
-    @Override
-    public void saveRequest(HttpServletRequest request, HttpServletResponse response) {
+@Component
+public class UserDetailsMapper {
+    public User toUserDetails(com.karankumar.bookproject.account.model.User user) {
+        return new User(
+                user.getEmail(),
+                user.getPassword(),
+                user.isActive(),
+                true,
+                true,
+                !user.isLocked(),
+                user.getRoles()
+                    .stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getRole()))
+                    .collect(toUnmodifiableList())
+        );
     }
 }
