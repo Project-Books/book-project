@@ -21,6 +21,7 @@ import {
     ApolloClient as ApolloClientBase,
     InMemoryCache,
 } from "@apollo/client";
+import { StringValueNode } from "graphql";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 let HttpClient: () => HttpClientBase;
@@ -62,6 +63,23 @@ class HttpClientBase {
             headers: this.headers,
         };
         return fetch(url, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw response;
+            });
+    }
+
+    post(url: string, param: string): any {
+        if (this.headers["Authorization"] === null) {
+            window.location.replace("http://localhost:3000/sign-in");
+        }
+        const requestOptions = {
+            method:Verb.POST,
+            headers: this.headers,
+        };
+        return fetch(url + "/" + param, requestOptions)
             .then(response => {
                 if (response.ok) {
                     return response.json();
