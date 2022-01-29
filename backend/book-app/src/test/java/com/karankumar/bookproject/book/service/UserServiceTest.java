@@ -17,6 +17,7 @@ package com.karankumar.bookproject.book.service;
 import static com.karankumar.bookproject.account.service.UserService.USER_NOT_FOUND_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.InstanceOfAssertFactories.LOCAL_DATE_TIME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -182,5 +183,16 @@ class UserServiceTest {
         // then
         verify(user, times(1)).setFailedAttempts(0);
         verify(mockUserRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void lock_setsToTrue_andSetsLockTime() {
+        User user = mock(User.class);
+
+        underTest.lock(user);
+
+        verify(user, times(1)).setLocked(true);
+        verify(user, times(1)).setLockTime(any());
+        verify(mockUserRepository, times(1)).save(user);
     }
 }
