@@ -135,7 +135,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public Optional<User> findUserByEmail(String userEmail) {
+    public Optional<User> findUserByEmail(@NonNull String userEmail) {
         return userRepository.findByEmail(userEmail);
     }
 

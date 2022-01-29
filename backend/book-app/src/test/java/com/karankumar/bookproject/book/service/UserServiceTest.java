@@ -92,6 +92,20 @@ class UserServiceTest {
     }
 
     @Test
+    void findUserByEmail_searchesRepository() {
+        String email = "test123@test.com";
+        underTest.findUserByEmail(email);
+        verify(mockUserRepository, times(1)).findByEmail(email);
+    }
+
+    @Test
+    void findUserByEmail_throwsNullPointerException_ifEmailIsNull() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> underTest.findUserByEmail(null));
+        then(mockUserRepository).shouldHaveNoInteractions();
+    }
+
+    @Test
     void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.isEmailInUse(null));
