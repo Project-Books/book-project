@@ -135,58 +135,6 @@ class ReadingGoalControllerIntegrationTest {
   }
 
   @Test
-  void updateBooksReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
-    mockMvc
-        .perform(
-            put(url + Mappings.GOAL + ReadingGoalController.Endpoints.UPDATE_BOOKS)
-                .header(AUTHORIZATION, jwtToken)
-                .param("target", "0"))
-        .andDo(print())
-        .andExpect(status().reason(TARGET_BAD_REQUEST))
-        .andExpect(status().isBadRequest())
-        .andReturn();
-  }
-
-  @Test
-  void updatePagesReadingGoals_returnBadRequestHttpStatus_whenWrongTargetInput() throws Exception {
-    mockMvc
-        .perform(
-            put(url + Mappings.GOAL + ReadingGoalController.Endpoints.UPDATE_PAGES)
-                .header(AUTHORIZATION, jwtToken)
-                .param("target", "0"))
-        .andDo(print())
-        .andExpect(status().reason(TARGET_BAD_REQUEST))
-        .andExpect(status().isBadRequest())
-        .andReturn();
-  }
-
-  @Test
-  void updatePagesReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput()
-      throws Exception {
-    mockMvc
-        .perform(
-            put(url + Mappings.GOAL + ReadingGoalController.Endpoints.UPDATE_PAGES)
-                .header(AUTHORIZATION, jwtToken)
-                .param("target", "1"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andReturn();
-  }
-
-  @Test
-  void updateBooksReadingGoal_returnIsOkRequestHttpStatus_whenCorrectTargetInput()
-      throws Exception {
-    mockMvc
-        .perform(
-            put(url + Mappings.GOAL + ReadingGoalController.Endpoints.UPDATE_BOOKS)
-                .header(AUTHORIZATION, jwtToken)
-                .param("target", "1"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andReturn();
-  }
-
-  @Test
   void deleteReadingGoal_returnIsOkRequestHttpStatus_whenRequestIsDone() throws Exception {
     mockMvc
         .perform(delete(url + Mappings.GOAL).header(AUTHORIZATION, jwtToken))
