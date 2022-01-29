@@ -17,12 +17,15 @@ package com.karankumar.bookproject.book.service;
 import static com.karankumar.bookproject.account.service.UserService.USER_NOT_FOUND_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.account.model.User;
@@ -49,7 +52,7 @@ class UserServiceTest {
     @Mock private PasswordEncoder passwordEncoder;
     @Mock private RoleRepository roleRepository;
     @Mock private AuthenticationManager authenticationManager;
-    @Mock private UserRepository userRepository;
+    @Mock private UserRepository mockUserRepository;
     @Mock private BookRepository bookRepository;
 
     @BeforeEach
@@ -58,7 +61,7 @@ class UserServiceTest {
         PredefinedShelfService predefinedShelfService = mock(PredefinedShelfService.class);
         underTest =
                 new UserService(
-                        userRepository,
+                        mockUserRepository,
                         roleRepository,
                         passwordEncoder,
                         authenticationManager,
@@ -70,20 +73,20 @@ class UserServiceTest {
     void register_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.register(null));
-        then(userRepository).shouldHaveNoInteractions();
+        then(mockUserRepository).shouldHaveNoInteractions();
     }
 
     @Test
     void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.isEmailInUse(null));
-        then(userRepository).shouldHaveNoInteractions();
+        then(mockUserRepository).shouldHaveNoInteractions();
     }
 
     @Test
     void returnTrueIfEmailInUse() {
         // given
-        given(userRepository.findByEmail(anyString())).willReturn(Optional.of(mock(User.class)));
+        given(mockUserRepository.findByEmail(anyString())).willReturn(Optional.of(mock(User.class)));
 
         // when
         boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
@@ -95,7 +98,7 @@ class UserServiceTest {
     @Test
     void returnFalseIfEmailInUse() {
         // given
-        given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
+        given(mockUserRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
         // when
         boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
@@ -108,7 +111,7 @@ class UserServiceTest {
     void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
-        then(userRepository).shouldHaveNoInteractions();
+        then(mockUserRepository).shouldHaveNoInteractions();
     }
 
     @Test
@@ -116,7 +119,7 @@ class UserServiceTest {
         User user = User.builder().build();
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.changeUserPassword(user, null));
-        then(userRepository).shouldHaveNoInteractions();
+        then(mockUserRepository).shouldHaveNoInteractions();
     }
 
     @Test
@@ -130,7 +133,7 @@ class UserServiceTest {
 
         // then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(userArgumentCaptor.capture());
+        verify(mockUserRepository).save(userArgumentCaptor.capture());
         User expected = User.builder().email(email)
                             .password(passwordEncoder.encode(veryStrongPassword)).build();
         assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
@@ -140,7 +143,7 @@ class UserServiceTest {
     void deleteUserById_deletesUser_ifUserExists() {
         // given
         User user = User.builder().build();
-        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+        given(mockUserRepository.findById(anyLong())).willReturn(Optional.of(user));
         Long expectedId = 1L;
 
         // when
@@ -150,14 +153,14 @@ class UserServiceTest {
         verify(bookRepository).deleteAll();
 
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-        verify(userRepository).deleteById(longArgumentCaptor.capture());
+        verify(mockUserRepository).deleteById(longArgumentCaptor.capture());
         Long actual = longArgumentCaptor.getValue();
         assertThat(actual).isEqualTo(expectedId);
     }
 
     @Test
     void deleteUserById_throwsNotFound_IfUserDoesNotExist() {
-        given(userRepository.findById(anyLong())).willReturn(Optional.empty());
+        given(mockUserRepository.findById(anyLong())).willReturn(Optional.empty());
         Long id = 1L;
         String expectedMessage = String.format(USER_NOT_FOUND_ERROR_MESSAGE, id);
 
@@ -165,6 +168,19 @@ class UserServiceTest {
                 .isThrownBy(() -> underTest.deleteUserById(id))
                 .withMessageContaining(expectedMessage);
         then(bookRepository).shouldHaveNoInteractions();
-        then(userRepository).shouldHaveNoMoreInteractions();
+        then(mockUserRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    void resetFailAttempts_setsFailedAttemptsToZero() {
+        // given
+        User user = mock(User.class);
+
+        // when
+        underTest.resetFailAttempts(user);
+
+        // then
+        verify(user, times(1)).setFailedAttempts(0);
+        verify(mockUserRepository, times(1)).save(any(User.class));
     }
 }

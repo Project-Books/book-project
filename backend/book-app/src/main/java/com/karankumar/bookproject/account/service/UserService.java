@@ -263,7 +263,6 @@ public class UserService {
 
     public User resetFailAttempts(User user) {
         user.setFailedAttempts(0);
-
         return userRepository.save(user);
     }
 
