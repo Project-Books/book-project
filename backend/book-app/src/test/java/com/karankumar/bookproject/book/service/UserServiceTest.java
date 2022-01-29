@@ -17,7 +17,6 @@ package com.karankumar.bookproject.book.service;
 import static com.karankumar.bookproject.account.service.UserService.USER_NOT_FOUND_ERROR_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.InstanceOfAssertFactories.LOCAL_DATE_TIME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -28,6 +27,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.book.repository.BookRepository;
@@ -50,7 +50,7 @@ import org.springframework.web.server.ResponseStatusException;
 class UserServiceTest {
     private UserService underTest;
 
-    @Mock private PasswordEncoder passwordEncoder;
+    @Mock private PasswordEncoder mockPasswordEncoder;
     @Mock private RoleRepository roleRepository;
     @Mock private AuthenticationManager authenticationManager;
     @Mock private UserRepository mockUserRepository;
@@ -64,7 +64,7 @@ class UserServiceTest {
                 new UserService(
                         mockUserRepository,
                         roleRepository,
-                        passwordEncoder,
+                        mockPasswordEncoder,
                         authenticationManager,
                         predefinedShelfService,
                         bookRepository);
@@ -137,6 +137,19 @@ class UserServiceTest {
     }
 
     @Test
+    void changeUserEmail_throwsIncorrectPasswordException_ifPasswordIncorrect() {
+        User user = User.builder().password("anything").build();
+
+        when(mockPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
+
+        assertThatExceptionOfType(IncorrectPasswordException.class)
+                .isThrownBy(() ->
+                        underTest.changeUserEmail(user, "a", "email@email.com")
+                ).withMessage("The password you entered is incorrect");
+        then(mockUserRepository).shouldHaveNoInteractions();
+    }
+
+    @Test
     void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
@@ -164,7 +177,7 @@ class UserServiceTest {
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(mockUserRepository).save(userArgumentCaptor.capture());
         User expected = User.builder().email(email)
-                            .password(passwordEncoder.encode(veryStrongPassword)).build();
+                            .password(mockPasswordEncoder.encode(veryStrongPassword)).build();
         assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
     }
 

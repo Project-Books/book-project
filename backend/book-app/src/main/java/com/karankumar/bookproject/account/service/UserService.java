@@ -154,14 +154,10 @@ public class UserService {
         return userRepository.findByEmail(email).isPresent();
     }
 
-    public boolean emailIsNotInUse(String email) {
-        return !isEmailInUse(email);
-    }
-
     public void changeUserEmail(@NonNull User user, @NonNull String currentPassword,
                                 @NonNull String email) {
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new IncorrectPasswordException("The password you entered is not correct");
+            throw new IncorrectPasswordException("The password you entered is incorrect");
         }
 
         if (user.getEmail().equalsIgnoreCase(email)) {
