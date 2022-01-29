@@ -42,7 +42,8 @@ public class DatabaseUserDetailsService implements UserDetailsService {
         return userRepository.findByEmail(username)
                              .map(userDetailsMapper::toUserDetails)
                              .orElseThrow(() -> new UsernameNotFoundException(
-                                     "User with the username " + username + " was not found."));
+                                     String.format("User with the email %s was not found.", username)
+                             ));
     }
 
 }
