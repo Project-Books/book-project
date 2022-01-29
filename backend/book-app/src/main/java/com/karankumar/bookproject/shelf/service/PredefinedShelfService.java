@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.shelf.service;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
@@ -117,6 +118,7 @@ public class PredefinedShelfService {
     }
 
     @PostConstruct
+    @ExcludeFromJacocoGeneratedReport
     public void populateTestData() {
         if (authorRepository.count() == 0) {
             populateAuthorRepository();

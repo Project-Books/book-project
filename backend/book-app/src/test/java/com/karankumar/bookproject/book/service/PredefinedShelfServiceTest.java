@@ -43,26 +43,27 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class PredefinedShelfServiceTest {
     private PredefinedShelfService underTest;
-    private PredefinedShelfRepository predefinedShelfRepository;
+    private PredefinedShelfRepository mockPredefinedShelfRepository;
     private UserService userService;
 
     @BeforeEach
     void setUp() {
         BookRepository bookRepository = mock(BookRepository.class);
         AuthorRepository authorRepository = mock(AuthorRepository.class);
-        predefinedShelfRepository = mock(PredefinedShelfRepository.class);
+        mockPredefinedShelfRepository = mock(PredefinedShelfRepository.class);
         TagRepository tagRepository = mock(TagRepository.class);
         userService = mock(UserService.class);
         PublisherRepository publisherRepository = mock(PublisherRepository.class);
         underTest = new PredefinedShelfService(
                 bookRepository,
                 authorRepository,
-                predefinedShelfRepository,
+                mockPredefinedShelfRepository,
                 tagRepository,
                 userService,
                 publisherRepository
@@ -73,20 +74,20 @@ class PredefinedShelfServiceTest {
     void findById_throwsNullPointerException_ifIdIsNull() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.findById(null));
-        verify(predefinedShelfRepository, never()).findById(anyLong());
+        verify(mockPredefinedShelfRepository, never()).findById(anyLong());
     }
 
     @Test
     void canFindByNonNullId() {
         underTest.findById(1L);
-        verify(predefinedShelfRepository).findById(anyLong());
+        verify(mockPredefinedShelfRepository).findById(anyLong());
     }
 
     @Test
     void save_throwsNullPointerException_ifNullPredefinedShelf() {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> underTest.save(null));
-        verify(predefinedShelfRepository, never()).save(any(PredefinedShelf.class));
+        verify(mockPredefinedShelfRepository, never()).save(any(PredefinedShelf.class));
     }
 
     @Test
@@ -100,7 +101,7 @@ class PredefinedShelfServiceTest {
         underTest.save(predefinedShelf);
 
         // then
-        verify(predefinedShelfRepository).save(any(PredefinedShelf.class));
+        verify(mockPredefinedShelfRepository).save(any(PredefinedShelf.class));
     }
 
     @Test
@@ -113,7 +114,7 @@ class PredefinedShelfServiceTest {
         underTest.findAllForLoggedInUser();
 
         // then
-        verify(predefinedShelfRepository).findAllByUser(any(User.class));
+        verify(mockPredefinedShelfRepository).findAllByUser(any(User.class));
     }
 
     @Test
@@ -126,7 +127,7 @@ class PredefinedShelfServiceTest {
         underTest.findToReadShelf();
 
         // then
-        verify(predefinedShelfRepository).findByPredefinedShelfNameAndUser(
+        verify(mockPredefinedShelfRepository).findByPredefinedShelfNameAndUser(
                 eq(PredefinedShelf.ShelfName.TO_READ), any(User.class)
         );
     }
@@ -141,7 +142,7 @@ class PredefinedShelfServiceTest {
         underTest.findReadingShelf();
 
         // then
-        verify(predefinedShelfRepository).findByPredefinedShelfNameAndUser(
+        verify(mockPredefinedShelfRepository).findByPredefinedShelfNameAndUser(
                 eq(PredefinedShelf.ShelfName.READING), any(User.class)
         );
     }
@@ -156,7 +157,7 @@ class PredefinedShelfServiceTest {
         underTest.findReadShelf();
 
         // then
-        verify(predefinedShelfRepository).findByPredefinedShelfNameAndUser(
+        verify(mockPredefinedShelfRepository).findByPredefinedShelfNameAndUser(
                 eq(PredefinedShelf.ShelfName.READ), any(User.class)
         );
     }
@@ -171,7 +172,7 @@ class PredefinedShelfServiceTest {
         underTest.findDidNotFinishShelf();
 
         // then
-        verify(predefinedShelfRepository).findByPredefinedShelfNameAndUser(
+        verify(mockPredefinedShelfRepository).findByPredefinedShelfNameAndUser(
                 eq(PredefinedShelf.ShelfName.DID_NOT_FINISH), any(User.class)
         );
     }
@@ -179,7 +180,7 @@ class PredefinedShelfServiceTest {
     @Test
     void canCount() {
         underTest.count();
-        verify(predefinedShelfRepository).count();
+        verify(mockPredefinedShelfRepository).count();
     }
 
     @Test
@@ -219,5 +220,11 @@ class PredefinedShelfServiceTest {
 
         // then
         assertThat(predefinedShelfName).isEmpty();
+    }
+
+    @Test
+    void deleteAll_callsRepository() {
+        underTest.deleteAll();
+        verify(mockPredefinedShelfRepository, times(1)).deleteAll();
     }
 }
