@@ -23,7 +23,7 @@ import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredExcepti
 import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.service.UserService;
-import com.karankumar.bookproject.service.EmailServiceImpl;
+import com.karankumar.bookproject.book.service.EmailServiceImpl;
 import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.template.EmailTemplate;
 import lombok.extern.slf4j.Slf4j;

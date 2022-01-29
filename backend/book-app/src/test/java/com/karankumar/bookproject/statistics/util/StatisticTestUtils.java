@@ -22,7 +22,7 @@ import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.BookGenre;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.model.RatingScale;
-import com.karankumar.bookproject.service.BookService;
+import com.karankumar.bookproject.book.service.BookService;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 
 import java.time.LocalDate;

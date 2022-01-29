@@ -30,9 +30,8 @@ import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.account.model.RoleType;
 import com.karankumar.bookproject.account.model.Role;
 import com.karankumar.bookproject.account.model.User;
-import com.karankumar.bookproject.repository.BookRepository;
+import com.karankumar.bookproject.book.repository.BookRepository;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
-import com.karankumar.bookproject.util.StringUtils;
 import com.nulabinc.zxcvbn.Zxcvbn;
 import lombok.NonNull;
 

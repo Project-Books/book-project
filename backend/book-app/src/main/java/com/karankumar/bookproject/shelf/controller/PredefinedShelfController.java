@@ -16,7 +16,7 @@ package com.karankumar.bookproject.shelf.controller;
 
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName;
-import com.karankumar.bookproject.service.BookService;
+import com.karankumar.bookproject.book.service.BookService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -19,7 +19,7 @@ package com.karankumar.bookproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.karankumar.bookproject.json.LocalDateSerializer;
+import com.karankumar.bookproject.book.json.LocalDateSerializer;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;

@@ -26,7 +26,7 @@ import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookImport
 import java.util.List;
 import java.util.Optional;
 
-import com.karankumar.bookproject.service.BookService;
+import com.karankumar.bookproject.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -22,7 +22,7 @@ import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.model.RatingScale;
-import com.karankumar.bookproject.service.BookService;
+import com.karankumar.bookproject.book.service.BookService;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import com.karankumar.bookproject.shelf.service.UserCreatedShelfService;
 import lombok.extern.slf4j.Slf4j;

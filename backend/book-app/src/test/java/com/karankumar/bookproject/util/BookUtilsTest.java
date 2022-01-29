@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.util;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.book.BookUtils;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import org.junit.jupiter.api.DisplayName;
