@@ -14,6 +14,9 @@
 
 package com.karankumar.bookproject.account.model;
 
+import com.karankumar.bookproject.ExcludeCodeCoverage;
+
+@ExcludeCodeCoverage
 public enum RoleType {
     ADMIN("ADMIN"),
     USER("USER");
