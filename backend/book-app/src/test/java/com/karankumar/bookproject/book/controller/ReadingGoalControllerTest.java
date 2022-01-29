@@ -20,8 +20,11 @@ import com.karankumar.bookproject.goal.ReadingGoal;
 import com.karankumar.bookproject.goal.ReadingGoalService;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -62,6 +65,14 @@ class ReadingGoalControllerTest {
                         HttpStatus.NOT_FOUND,
                         ReadingGoalController.READING_GOAL_NOT_FOUND
                 ));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 0})
+    void updateBooksReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
+        ResponseEntity<String> response = readingGoalController.updateBooksReadingGoal(target);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test

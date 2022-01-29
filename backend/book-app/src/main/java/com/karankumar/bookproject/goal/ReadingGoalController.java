@@ -17,6 +17,7 @@ package com.karankumar.bookproject.goal;
 import com.karankumar.bookproject.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -95,12 +96,13 @@ public class ReadingGoalController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(Endpoints.UPDATE_BOOKS)
-    public void updateBooksReadingGoal(@RequestParam(value = "target") int target) {
-        if (target < 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
+    public ResponseEntity<String> updateBooksReadingGoal(@RequestParam(value = "target") int target) {
+        if (target <= 0) {
+            return ResponseEntity.badRequest().body(TARGET_BAD_REQUEST);
         }
         ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
         readingGoalService.save(readingGoal);
+        return ResponseEntity.ok("Updated");
     }
 
     @ResponseStatus(HttpStatus.OK)
