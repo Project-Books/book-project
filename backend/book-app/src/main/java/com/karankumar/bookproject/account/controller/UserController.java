@@ -12,7 +12,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.account;
+package com.karankumar.bookproject.account.controller;
 
 import com.karankumar.bookproject.account.dto.UserToDeleteDto;
 import com.karankumar.bookproject.account.dto.UserToRegisterDto;
@@ -22,6 +22,7 @@ import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
 import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.account.model.User;
+import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.service.EmailServiceImpl;
 import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.template.EmailTemplate;

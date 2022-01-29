@@ -19,7 +19,7 @@ package com.karankumar.bookproject.account.auth.service;
 
 import com.karankumar.bookproject.account.auth.UserDetailsMapper;
 import com.karankumar.bookproject.account.model.User;
-import com.karankumar.bookproject.account.UserRepository;
+import com.karankumar.bookproject.account.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

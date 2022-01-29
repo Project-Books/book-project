@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.repository;
 
-import com.karankumar.bookproject.account.UserRepository;
+import com.karankumar.bookproject.account.repository.UserRepository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;

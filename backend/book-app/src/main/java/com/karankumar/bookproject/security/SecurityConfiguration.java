@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.security;
 
-import com.karankumar.bookproject.account.UserService;
+import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.account.auth.CustomAuthenticationProvider;
 import com.karankumar.bookproject.account.auth.service.DatabaseUserDetailsPasswordService;

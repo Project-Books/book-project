@@ -15,13 +15,15 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.account;
+package com.karankumar.bookproject.account.service;
 
 import com.karankumar.bookproject.account.dto.UserToRegisterDto;
 import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException;
 import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
 import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
 import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
+import com.karankumar.bookproject.account.repository.RoleRepository;
+import com.karankumar.bookproject.account.repository.UserRepository;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.account.model.RoleType;

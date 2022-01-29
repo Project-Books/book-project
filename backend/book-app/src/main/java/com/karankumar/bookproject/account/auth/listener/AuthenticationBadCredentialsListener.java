@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.account.auth.listener;
 
 import com.karankumar.bookproject.account.model.User;
-import com.karankumar.bookproject.account.UserService;
+import com.karankumar.bookproject.account.service.UserService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.stereotype.Component;

@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.util;
 
 import com.karankumar.bookproject.account.model.User;
-import com.karankumar.bookproject.account.UserRepository;
+import com.karankumar.bookproject.account.repository.UserRepository;
 
 public class SecurityTestUtils {
     private SecurityTestUtils() {}

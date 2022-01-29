@@ -15,13 +15,13 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.account;
+package com.karankumar.bookproject.account.repository;
 
-import com.karankumar.bookproject.account.model.Role;
-import org.springframework.data.repository.CrudRepository;
+import com.karankumar.bookproject.account.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface RoleRepository extends CrudRepository<Role, Long> {
-    Optional<Role> findByRole(String role);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
 }
