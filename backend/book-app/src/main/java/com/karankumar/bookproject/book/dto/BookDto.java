@@ -18,11 +18,13 @@
 package com.karankumar.bookproject.book.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.model.Author;
 import lombok.Data;
 import javax.persistence.Id;
 
 @Data
+@ExcludeFromJacocoGeneratedReport
 public class BookDto {
 	@Id
 	@JsonProperty("id")

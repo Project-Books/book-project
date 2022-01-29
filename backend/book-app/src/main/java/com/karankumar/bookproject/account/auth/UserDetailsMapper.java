@@ -17,12 +17,14 @@
 
 package com.karankumar.bookproject.account.auth;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
 
+@ExcludeFromJacocoGeneratedReport
 @Component
 public class UserDetailsMapper {
     public User toUserDetails(com.karankumar.bookproject.account.model.User user) {

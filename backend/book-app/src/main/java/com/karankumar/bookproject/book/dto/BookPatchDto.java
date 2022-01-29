@@ -19,10 +19,12 @@ package com.karankumar.bookproject.book.dto;
 
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.model.Author;
 import lombok.Data;
 
 @Data
+@ExcludeFromJacocoGeneratedReport
 public class BookPatchDto {
     @JsonProperty("title")
     private String title;

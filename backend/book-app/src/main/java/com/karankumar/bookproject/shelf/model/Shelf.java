@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.shelf.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.account.model.User;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -33,6 +34,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ExcludeFromJacocoGeneratedReport
 public abstract class Shelf {
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
   @JoinColumn(name = "user_id", referencedColumnName = "id")

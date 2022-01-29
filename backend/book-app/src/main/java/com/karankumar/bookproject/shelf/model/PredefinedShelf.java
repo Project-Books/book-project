@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.shelf.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.account.model.User;
 import java.util.HashSet;
 import java.util.Objects;
@@ -47,6 +48,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @NamedEntityGraph(name = "PredefinedShelf.books", attributeNodes = @NamedAttributeNode("books"))
+@ExcludeFromJacocoGeneratedReport
 public class PredefinedShelf extends Shelf {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

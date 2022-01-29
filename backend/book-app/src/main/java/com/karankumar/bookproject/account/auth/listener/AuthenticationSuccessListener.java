@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.account.auth.listener;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.service.UserService;
 import org.springframework.context.ApplicationListener;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@ExcludeFromJacocoGeneratedReport
 @Component
 public class AuthenticationSuccessListener implements ApplicationListener<AuthenticationSuccessEvent> {
     private final UserService userService;

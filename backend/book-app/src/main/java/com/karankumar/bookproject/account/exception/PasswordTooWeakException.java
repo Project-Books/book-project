@@ -17,6 +17,9 @@
 
 package com.karankumar.bookproject.account.exception;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
+
+@ExcludeFromJacocoGeneratedReport
 public class PasswordTooWeakException extends RuntimeException {
   public PasswordTooWeakException(final String message) {
     super(message);

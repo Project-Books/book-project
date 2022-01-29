@@ -17,7 +17,9 @@
 
 package com.karankumar.bookproject.account.exception;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 
+@ExcludeFromJacocoGeneratedReport
 public class IncorrectPasswordException extends RuntimeException {
     public IncorrectPasswordException(final String message) {
         super(message);

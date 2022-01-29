@@ -20,6 +20,8 @@ package com.karankumar.bookproject.account.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
+
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.account.constraint.PasswordStrength;
 import com.karankumar.bookproject.account.constraint.PasswordStrengthCheck;
 import java.util.HashSet;
@@ -57,6 +59,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
+@ExcludeFromJacocoGeneratedReport
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uidgenerator")

@@ -18,6 +18,7 @@
 package com.karankumar.bookproject.shelf.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.account.model.User;
 import java.util.Objects;
 import java.util.Set;
@@ -43,6 +44,7 @@ import org.apache.commons.lang3.StringUtils;
 @Getter
 @Setter
 @NamedEntityGraph(name = "CustomShelf.books", attributeNodes = @NamedAttributeNode("books"))
+@ExcludeFromJacocoGeneratedReport
 public class UserCreatedShelf extends Shelf {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCreatedShelf")
   protected Set<Book> books;

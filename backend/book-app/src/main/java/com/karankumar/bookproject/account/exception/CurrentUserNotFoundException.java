@@ -17,6 +17,9 @@
 
 package com.karankumar.bookproject.account.exception;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
+
+@ExcludeFromJacocoGeneratedReport
 public class CurrentUserNotFoundException extends RuntimeException {
   public CurrentUserNotFoundException(final String message) {
     super(message);

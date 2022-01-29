@@ -17,8 +17,10 @@
 
 package com.karankumar.bookproject.account.exception;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import org.springframework.security.core.AuthenticationException;
 
+@ExcludeFromJacocoGeneratedReport
 public class UserAlreadyRegisteredException extends AuthenticationException {
     public UserAlreadyRegisteredException(final String message) {
         super(message);

@@ -14,12 +14,14 @@
 
 package com.karankumar.bookproject.account.dto;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@ExcludeFromJacocoGeneratedReport
 @Getter
 @Setter
 @AllArgsConstructor
