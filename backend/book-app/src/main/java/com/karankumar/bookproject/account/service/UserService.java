@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.account.service;
 
+import com.karankumar.bookproject.account.constraint.PasswordStrength;
 import com.karankumar.bookproject.account.dto.UserToRegisterDto;
 import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException;
 import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
@@ -32,6 +33,7 @@ import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.BookRepository;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import com.karankumar.bookproject.util.StringUtils;
+import com.nulabinc.zxcvbn.Zxcvbn;
 import lombok.NonNull;
 
 import org.springframework.context.annotation.Lazy;
@@ -186,8 +188,22 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Determine the if a password has the strength required
+     * @param password the string to check its strength
+     * @return true if password
+     */
+    public static boolean isPasswordStrengthVeryStrong(String password) {
+        return new Zxcvbn().measure(password).getScore() >=
+                PasswordStrength.VERY_STRONG.getStrengthNum();
+    }
+
+    private static boolean isPasswordTooWeak(String password) {
+        return !isPasswordStrengthVeryStrong(password);
+    }
+
     public void changeUserPassword(@NonNull User user, @NonNull String newPassword) {
-        if (StringUtils.isPasswordTooWeak(newPassword)) {
+        if (isPasswordTooWeak(newPassword)) {
             throw new PasswordTooWeakException("Password strength is too weak.");
         }
         user.setPassword(newPassword);
@@ -260,11 +276,17 @@ public class UserService {
     }
 
     public long hoursUntilUnlock(User user) {
-        return ChronoUnit.HOURS.between(LocalDateTime.now(), user.getLockTime().plusSeconds(LOCK_TIME_DURATION));
+        return ChronoUnit.HOURS.between(
+                LocalDateTime.now(),
+                user.getLockTime().plusSeconds(LOCK_TIME_DURATION)
+        );
     }
 
     public boolean unlockWhenTimeExpired(User user) {
-        long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(user.getLockTime(), LocalDateTime.now());
+        long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(
+                user.getLockTime(),
+                LocalDateTime.now()
+        );
 
         boolean shouldUnlock = elapsedTimeInSeconds > LOCK_TIME_DURATION;
         if (shouldUnlock) {

@@ -17,9 +17,6 @@
 
 package com.karankumar.bookproject.util;
 
-import com.karankumar.bookproject.account.constraint.PasswordStrength;
-import com.nulabinc.zxcvbn.Zxcvbn;
-
 public final class StringUtils {
     private StringUtils() {}
 
@@ -31,19 +28,5 @@ public final class StringUtils {
      */
     public static String pluralize(String itemStr, int num) {
         return (num > 1) ? (itemStr + "s") : (itemStr);
-    }
-
-    /**
-     * Determine the if a password has the strength required
-     * @param password the string to check its strength
-     * @return true if password
-     */
-    private static boolean isPasswordStrengthVeryStrong(String password) {
-        return new Zxcvbn().measure(password).getScore() >=
-                PasswordStrength.VERY_STRONG.getStrengthNum();
-    }
-
-    public static boolean isPasswordTooWeak(String password) {
-        return !isPasswordStrengthVeryStrong(password);
     }
 }
