@@ -16,37 +16,39 @@
  */
 
 
-package com.karankumar.bookproject.repository;
+package com.karankumar.bookproject.shelf.repository;
 
-import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
 import com.karankumar.bookproject.account.model.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf, Long> {
-    @EntityGraph(value = "PredefinedShelf.books")
-    List<PredefinedShelf> findAllByUser(User user);
+public interface UserCreatedShelfRepository extends JpaRepository<UserCreatedShelf, Long> {
 
-    @EntityGraph(value = "PredefinedShelf.books")
-    Optional<PredefinedShelf> findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName shelfName,
-    		User user);
+    @EntityGraph(value = "CustomShelf.books")
+    List<UserCreatedShelf> findAllByUser(User user);
 
-    int countAllByUser(User user);
+    @EntityGraph(value = "CustomShelf.books")
+    Optional<UserCreatedShelf> findByShelfNameAndUser(String shelfName, User user);
 
-    @EntityGraph(value = "PredefinedShelf.books")
-    Optional<PredefinedShelf> findById(Long id);
+    @EntityGraph(value = "CustomShelf.books")
+    List<UserCreatedShelf> findByShelfName(String shelfName);
 
-    @EntityGraph(value = "PredefinedShelf.books")
-    List<PredefinedShelf> findAll();
+    @EntityGraph(value = "CustomShelf.books")
+    Optional<UserCreatedShelf> findById(Long id);
 
-    @Query("SELECT p " +
-            "FROM PredefinedShelf p " +
-            "LEFT JOIN p.books AS b " +
-            "WHERE p.predefinedShelfName = com.karankumar.bookproject.model.PredefinedShelfName.READ"
-    )
-    List<PredefinedShelf> findReadShelf2();
+    @EntityGraph(value = "CustomShelf.books")
+    List<UserCreatedShelf> findAll();
+
+    @Query("SELECT " +
+            "CASE WHEN COUNT(s) > 0 THEN TRUE " +
+            "ELSE FALSE END " +
+            "FROM UserCreatedShelf s " +
+            "WHERE LOWER(TRIM(s.shelfName)) LIKE LOWER(TRIM(:shelfName))")
+    boolean shelfNameExists(@Param("shelfName") String shelfName);
 }

@@ -12,14 +12,14 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.controller;
+package com.karankumar.bookproject.shelf.controller;
 
-import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.Shelf;
-import com.karankumar.bookproject.model.UserCreatedShelf;
-import com.karankumar.bookproject.service.PredefinedShelfService;
-import com.karankumar.bookproject.service.ShelfNameExistsException;
-import com.karankumar.bookproject.service.UserCreatedShelfService;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.Shelf;
+import com.karankumar.bookproject.shelf.ShelfNameExistsException;
+import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
+import com.karankumar.bookproject.shelf.service.UserCreatedShelfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

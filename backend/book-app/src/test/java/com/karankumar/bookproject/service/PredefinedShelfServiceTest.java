@@ -18,13 +18,14 @@
 package com.karankumar.bookproject.service;
 
 import com.karankumar.bookproject.account.UserService;
-import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.AuthorRepository;
 import com.karankumar.bookproject.repository.BookRepository;
-import com.karankumar.bookproject.repository.PredefinedShelfRepository;
+import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.repository.PublisherRepository;
 import com.karankumar.bookproject.repository.TagRepository;
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

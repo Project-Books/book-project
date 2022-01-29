@@ -17,15 +17,14 @@
 
 package com.karankumar.bookproject.bookimport;
 
-import com.karankumar.bookproject.bookimport.GoodreadsBookImport;
 import com.karankumar.bookproject.model.Author;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.UserCreatedShelf;
-import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.model.RatingScale;
 import com.karankumar.bookproject.service.BookService;
-import com.karankumar.bookproject.service.PredefinedShelfService;
-import com.karankumar.bookproject.service.UserCreatedShelfService;
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
+import com.karankumar.bookproject.shelf.service.UserCreatedShelfService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

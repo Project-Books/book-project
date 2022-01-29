@@ -19,7 +19,7 @@ package com.karankumar.bookproject.goal;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.util.DateUtils;
 
 import javax.validation.constraints.NotNull;

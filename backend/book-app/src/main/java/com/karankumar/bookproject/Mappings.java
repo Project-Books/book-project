@@ -1,4 +1,4 @@
-package com.karankumar.bookproject.controller;
+package com.karankumar.bookproject;
 
 public class Mappings {
     private Mappings() { }

@@ -14,12 +14,13 @@
 
 package com.karankumar.bookproject.controller;
 
-import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.UserCreatedShelf;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
 import com.karankumar.bookproject.account.model.User;
-import com.karankumar.bookproject.service.PredefinedShelfService;
-import com.karankumar.bookproject.service.ShelfNameExistsException;
-import com.karankumar.bookproject.service.UserCreatedShelfService;
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
+import com.karankumar.bookproject.shelf.ShelfNameExistsException;
+import com.karankumar.bookproject.shelf.service.UserCreatedShelfService;
+import com.karankumar.bookproject.shelf.controller.ShelfController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -33,7 +34,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;

@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.repository;
 
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.PredefinedShelf.ShelfName;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

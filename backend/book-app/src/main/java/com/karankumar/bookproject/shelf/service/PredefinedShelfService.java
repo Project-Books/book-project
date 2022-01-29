@@ -15,16 +15,16 @@
     If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.shelf.service;
 
 import com.karankumar.bookproject.account.UserService;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.PredefinedShelf;
-import com.karankumar.bookproject.model.PredefinedShelf.ShelfName;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.AuthorRepository;
 import com.karankumar.bookproject.repository.BookRepository;
-import com.karankumar.bookproject.repository.PredefinedShelfRepository;
+import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.repository.PublisherRepository;
 import com.karankumar.bookproject.repository.TagRepository;
 import lombok.NonNull;
@@ -40,10 +40,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.karankumar.bookproject.model.PredefinedShelf.ShelfName.DID_NOT_FINISH;
-import static com.karankumar.bookproject.model.PredefinedShelf.ShelfName.READ;
-import static com.karankumar.bookproject.model.PredefinedShelf.ShelfName.READING;
-import static com.karankumar.bookproject.model.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName.DID_NOT_FINISH;
+import static com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName.READ;
+import static com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName.READING;
+import static com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName.TO_READ;
 import static com.karankumar.bookproject.util.TestData.generateAuthors;
 import static com.karankumar.bookproject.util.TestData.generateBooks;
 import static com.karankumar.bookproject.util.TestData.generateListOfTags;

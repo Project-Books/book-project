@@ -18,7 +18,7 @@ package com.karankumar.bookproject.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.karankumar.bookproject.controller.Mappings;
+import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.goal.ReadingGoalController;
 import com.karankumar.bookproject.account.dto.UserToRegisterDto;
 import com.karankumar.bookproject.BookProjectApplication;

@@ -15,7 +15,7 @@
    If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.karankumar.bookproject.model;
+package com.karankumar.bookproject.shelf.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.karankumar.bookproject.account.model.User;

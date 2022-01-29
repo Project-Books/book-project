@@ -23,12 +23,12 @@ import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
 import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
 import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.account.model.RoleType;
 import com.karankumar.bookproject.account.model.Role;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.repository.BookRepository;
-import com.karankumar.bookproject.service.PredefinedShelfService;
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import com.karankumar.bookproject.util.StringUtils;
 import lombok.NonNull;
 

@@ -20,7 +20,7 @@ package com.karankumar.bookproject.statistics;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.model.BookGenre;
 import com.karankumar.bookproject.model.RatingScale;
-import com.karankumar.bookproject.service.PredefinedShelfService;
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 
 import java.util.ArrayList;
 import java.util.Collections;

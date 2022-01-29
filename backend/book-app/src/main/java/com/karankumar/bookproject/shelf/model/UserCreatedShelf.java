@@ -15,7 +15,7 @@
    If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.karankumar.bookproject.model;
+package com.karankumar.bookproject.shelf.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.karankumar.bookproject.account.model.User;
@@ -29,6 +29,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+
+import com.karankumar.bookproject.model.Book;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

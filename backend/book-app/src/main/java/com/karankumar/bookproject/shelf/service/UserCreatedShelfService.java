@@ -15,17 +15,19 @@
    If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.shelf.service;
 
 import com.karankumar.bookproject.account.UserService;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.Shelf;
-import com.karankumar.bookproject.model.UserCreatedShelf;
-import com.karankumar.bookproject.repository.UserCreatedShelfRepository;
+import com.karankumar.bookproject.shelf.repository.UserCreatedShelfRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import com.karankumar.bookproject.shelf.model.Shelf;
+import com.karankumar.bookproject.shelf.ShelfNameExistsException;
+import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
 import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;

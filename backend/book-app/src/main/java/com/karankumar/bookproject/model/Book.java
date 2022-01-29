@@ -43,6 +43,9 @@ import javax.persistence.NamedEntityGraph;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

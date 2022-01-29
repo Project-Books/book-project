@@ -19,7 +19,8 @@ package com.karankumar.bookproject.repository;
 
 import com.karankumar.bookproject.account.UserRepository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
-import com.karankumar.bookproject.model.UserCreatedShelf;
+import com.karankumar.bookproject.shelf.repository.UserCreatedShelfRepository;
+import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
 import com.karankumar.bookproject.account.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

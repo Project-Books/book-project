@@ -12,7 +12,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.service;
+package com.karankumar.bookproject.shelf;
 
 public class ShelfNameExistsException extends IllegalArgumentException {
     public ShelfNameExistsException (final String shelfName) {

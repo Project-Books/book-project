@@ -30,6 +30,8 @@ import com.karankumar.bookproject.repository.BookRepository;
 import com.karankumar.bookproject.account.RoleRepository;
 import com.karankumar.bookproject.account.UserRepository;
 import java.util.Optional;
+
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

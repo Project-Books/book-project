@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.security;
 
 import com.karankumar.bookproject.account.UserService;
-import com.karankumar.bookproject.controller.Mappings;
+import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.security.jwt.JwtConfig;
 import com.karankumar.bookproject.security.jwt.JwtTokenVerifier;
 import com.karankumar.bookproject.security.jwt.JwtUsernamePasswordAuthFilter;

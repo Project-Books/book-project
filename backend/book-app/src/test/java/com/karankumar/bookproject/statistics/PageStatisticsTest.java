@@ -20,9 +20,9 @@ package com.karankumar.bookproject.statistics;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.model.Author;
 import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.service.BookService;
-import com.karankumar.bookproject.service.PredefinedShelfService;
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import com.karankumar.bookproject.statistics.util.StatisticTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;

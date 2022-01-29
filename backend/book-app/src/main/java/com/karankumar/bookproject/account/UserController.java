@@ -20,7 +20,7 @@ import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException
 import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
 import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
 import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
-import com.karankumar.bookproject.controller.Mappings;
+import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.service.EmailServiceImpl;
 import com.karankumar.bookproject.constant.EmailConstant;

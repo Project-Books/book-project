@@ -19,7 +19,8 @@ package com.karankumar.bookproject.repository;
 
 import com.karankumar.bookproject.account.UserRepository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
-import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.account.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.karankumar.bookproject.model.PredefinedShelf.ShelfName.TO_READ;
+import static com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName.TO_READ;
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static com.karankumar.bookproject.util.SecurityTestUtils.insertTestUser;
 import static org.assertj.core.api.Assertions.assertThat;

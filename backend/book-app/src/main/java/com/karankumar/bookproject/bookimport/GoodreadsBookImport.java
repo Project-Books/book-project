@@ -20,7 +20,7 @@ package com.karankumar.bookproject.bookimport;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.karankumar.bookproject.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 

@@ -16,7 +16,7 @@ package com.karankumar.bookproject.controller;
 
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.service.BookService;
-import com.karankumar.bookproject.service.PredefinedShelfService;
+import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -30,8 +30,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
