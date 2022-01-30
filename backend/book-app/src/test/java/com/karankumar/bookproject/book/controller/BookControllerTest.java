@@ -14,10 +14,12 @@
 
 package com.karankumar.bookproject.book.controller;
 
+import com.karankumar.bookproject.book.dto.BookPatchDto;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.book.service.BookService;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -122,6 +125,38 @@ class BookControllerTest {
 
 //        assertThatExceptionOfType(BookNotFoundException.class)
 //                .isThrownBy(bookController.findByShelf(new CustomShelf(), "title", "author"));
+  }
+
+  @Test
+  void update_callsService_ifBookPresent() {
+    // given
+    Book book = new Book();
+    BookPatchDto bookPatchDto = new BookPatchDto();
+    when(mockedBookService.findById(anyLong())).thenReturn(Optional.of(book));
+
+    // when
+    bookController.update(1L, bookPatchDto);
+
+    // then
+    ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
+    ArgumentCaptor<BookPatchDto> bookPatchDtoArgumentCaptor =
+            ArgumentCaptor.forClass(BookPatchDto.class);
+    verify(mockedBookService).updateBook(
+            bookArgumentCaptor.capture(),
+            bookPatchDtoArgumentCaptor.capture()
+    );
+    assertThat(bookArgumentCaptor.getValue()).isEqualTo(book);
+    assertThat(bookPatchDtoArgumentCaptor.getValue()).isEqualTo(bookPatchDto);
+  }
+
+  @Test
+  void update_throwsNotFoundException_ifBookNotPresent() {
+    when(mockedBookService.findById(anyLong())).thenReturn(Optional.empty());
+    long id = 1;
+    String expectedMessage = String.format("404 NOT_FOUND \"Could not find book with ID %d\"", id);
+    assertThatExceptionOfType(ResponseStatusException.class)
+            .isThrownBy(() -> bookController.update(id, new BookPatchDto()))
+            .withMessage(expectedMessage);
   }
 
   @Test

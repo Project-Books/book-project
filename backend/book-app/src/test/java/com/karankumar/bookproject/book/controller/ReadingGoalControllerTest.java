@@ -71,11 +71,11 @@ class ReadingGoalControllerTest {
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 0})
-    void addPagesReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
-        ResponseEntity<String> response = underTest.addPagesReadingGoal(target);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    void addPagesReadingGoal_throwssBadRequest_ifTargetNotPositive(int target) {
+        assertThatExceptionOfType(ResponseStatusException.class)
+                .isThrownBy(() -> underTest.addPagesReadingGoal(target))
+                .withMessage("400 BAD_REQUEST \"Minimum target value is 1.\"");
     }
-
 
     @Test
     void pagesReadingGoalSaved_ifPositiveTarget() {
@@ -83,18 +83,18 @@ class ReadingGoalControllerTest {
         int target = 1;
 
         // when
-        ResponseEntity<String> response = underTest.addPagesReadingGoal(target);
+        underTest.addPagesReadingGoal(target);
 
         // then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(readingGoalService, times(1)).save(any(ReadingGoal.class));
     }
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 0})
-    void addBooksReadingGoal_returnsBadRequest_ifTargetNotPositive(int target) {
-        ResponseEntity<String> response = underTest.addBookReadingGoal(target);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    void addBooksReadingGoal_throwsBadRequest_ifTargetNotPositive(int target) {
+        assertThatExceptionOfType(ResponseStatusException.class)
+                .isThrownBy(() -> underTest.addBookReadingGoal(target))
+                .withMessage("400 BAD_REQUEST \"Minimum target value is 1.\"");
     }
 
     @Test
@@ -103,10 +103,9 @@ class ReadingGoalControllerTest {
         int target = 1;
 
         // when
-        ResponseEntity<String> response = underTest.addBookReadingGoal(target);
+        underTest.addBookReadingGoal(target);
 
         // then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         verify(readingGoalService, times(1)).save(any(ReadingGoal.class));
     }
 

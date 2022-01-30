@@ -20,11 +20,13 @@ package com.karankumar.bookproject.bookimport.librarything;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-@Data
 @RequiredArgsConstructor
+@ExcludeFromJacocoGeneratedReport
 public class LibraryThingBookDataImport {
 
   private final Map<String, LibraryThingBookImport> books;
@@ -32,5 +34,4 @@ public class LibraryThingBookDataImport {
   public List<LibraryThingBookImport> asList() {
     return new ArrayList<>(books.values());
   }
-
 }
