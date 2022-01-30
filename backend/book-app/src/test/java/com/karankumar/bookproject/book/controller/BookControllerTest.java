@@ -14,6 +14,7 @@
 
 package com.karankumar.bookproject.book.controller;
 
+import com.karankumar.bookproject.book.dto.BookPatchDto;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.book.service.BookService;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
@@ -30,6 +31,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -122,6 +124,16 @@ class BookControllerTest {
 
 //        assertThatExceptionOfType(BookNotFoundException.class)
 //                .isThrownBy(bookController.findByShelf(new CustomShelf(), "title", "author"));
+  }
+
+  @Test
+  void update_throwsNotFoundException_ifBookNotPresent() {
+    when(mockedBookService.findById(anyLong())).thenReturn(Optional.empty());
+    long id = 1;
+    String expectedMessage = String.format("404 NOT_FOUND \"Could not find book with ID %d\"", id);
+    assertThatExceptionOfType(ResponseStatusException.class)
+            .isThrownBy(() -> bookController.update(id, new BookPatchDto()))
+            .withMessage(expectedMessage);
   }
 
   @Test
