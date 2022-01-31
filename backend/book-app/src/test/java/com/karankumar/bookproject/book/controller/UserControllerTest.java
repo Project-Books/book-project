@@ -20,6 +20,7 @@ import com.karankumar.bookproject.account.exception.*;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.book.service.EmailService;
+import com.karankumar.bookproject.book.service.IncorrectPasswordException;
 import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.template.EmailTemplate;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 @SpringBootTest(classes = {UserService.class, PasswordEncoder.class})
 @ActiveProfiles("test")
