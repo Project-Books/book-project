@@ -21,9 +21,7 @@ import com.icegreen.greenmail.util.ServerSetupTest;
 import com.karankumar.bookproject.configuration.EmailConfiguration;
 import com.karankumar.bookproject.configuration.ThymeleafConfiguration;
 import com.karankumar.bookproject.mock.MockEmailTemplate;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,9 +31,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = {EmailConfiguration.class, ThymeleafConfiguration.class, EmailServiceImpl.class})
 class EmailServiceTest {

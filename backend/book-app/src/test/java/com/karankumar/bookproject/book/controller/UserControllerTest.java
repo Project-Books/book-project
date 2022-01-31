@@ -16,22 +16,26 @@ package com.karankumar.bookproject.book.controller;
 
 import com.karankumar.bookproject.account.controller.UserController;
 import com.karankumar.bookproject.account.dto.UserToRegisterDto;
+import com.karankumar.bookproject.account.exception.*;
 import com.karankumar.bookproject.account.model.User;
-import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException;
-import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
-import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
-import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.account.service.UserService;
-import com.karankumar.bookproject.book.service.EmailServiceImpl;
+import com.karankumar.bookproject.book.service.EmailService;
+import com.karankumar.bookproject.constant.EmailConstant;
+import com.karankumar.bookproject.template.EmailTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.mail.MessagingException;
+import javax.validation.ConstraintViolationException;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -40,17 +44,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import org.springframework.test.context.ActiveProfiles;
-
-import javax.mail.MessagingException;
-import javax.validation.ConstraintViolationException;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = {UserService.class, PasswordEncoder.class})
 @ActiveProfiles("test")
@@ -60,7 +54,7 @@ class UserControllerTest {
 
     private final UserController userController;
     private final UserService mockedUserService;
-    private final EmailServiceImpl mockedEmailService;
+    private final EmailService mockedEmailService;
     private final PasswordEncoder mockPasswordEncoder;
 
     private final User validUser = User.builder()
@@ -70,7 +64,7 @@ class UserControllerTest {
 
     UserControllerTest() {
         mockedUserService = mock(UserService.class);
-        mockedEmailService = mock(EmailServiceImpl.class);
+        mockedEmailService = mock(EmailService.class);
         mockPasswordEncoder = mock(PasswordEncoder.class);
         userController = new UserController(
                 mockedUserService, mockPasswordEncoder, mockedEmailService,
@@ -214,5 +208,18 @@ class UserControllerTest {
         );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void register__should_check_if_email_service_is_called() throws MessagingException {
+        UserToRegisterDto userDTO = new UserToRegisterDto("michael@jackson.com", "jacksonMichael@123");
+
+        when(mockedEmailService.getUsernameFromEmail(userDTO.getUsername())).thenReturn("michael jackson");
+
+        userController.register(new UserToRegisterDto("michael@jackson.com", "jacksonMichael@123"));
+
+        verify(mockedEmailService, times(1)).sendMessageUsingThymeleafTemplate(userDTO.getUsername(),
+                EmailConstant.ACCOUNT_CREATED_SUBJECT,
+                EmailTemplate.getAccountCreatedEmailTemplate(mockedEmailService.getUsernameFromEmail(userDTO.getUsername())));
     }
 }
