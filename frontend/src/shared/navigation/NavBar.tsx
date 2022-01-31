@@ -73,8 +73,8 @@ export function NavBar(): JSX.Element {
               </Link>
             </div>
             <div className="nav-links" id="nav-links-top">
-              <NavItem icon={<MenuBook />} itemText={"My books"} goTo={MY_BOOKS} />
-              <NavItem icon={<TrackChanges />} itemText={"Goal"} goTo={GOAL} />
+              <NavItem icon={<MenuBook />} itemText={"My Books"} goTo={MY_BOOKS} />
+              <NavItem icon={<TrackChanges />} itemText={"Goals"} goTo={GOAL} />
               <NavItem icon={<TrendingUp />} itemText={"Statistics"} goTo={STATS} />
               <NavItem icon={<SearchIcon />} itemText={"Search"} goTo={SEARCH} />
             </div>
