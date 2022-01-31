@@ -20,7 +20,7 @@ import com.karankumar.bookproject.account.exception.*;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.book.service.EmailService;
-import com.karankumar.bookproject.book.service.IncorrectPasswordException;
+import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
 import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.template.EmailTemplate;
 import org.junit.jupiter.api.Test;
