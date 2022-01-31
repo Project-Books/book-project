@@ -22,4 +22,9 @@ public interface EmailService {
     void sendSimpleMessage(String from, String to, String message);
     void sendMessageUsingThymeleafTemplate(String to, String subject, Map<String, Object> templateModel)
             throws MessagingException;
+
+
+    default public String getUsernameFromEmail(String email){
+        return email.substring(0, email.indexOf("@"));
+    }
 }
