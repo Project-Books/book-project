@@ -47,8 +47,10 @@ interface IState {
     isPasswordDirty: boolean,
     isEmailInvalid: boolean,
     isPasswordInvalid: boolean,
-    serverError: boolean
+    serverError: boolean,
+    passStrength: boolean
 }
+
 
 class Register extends Component<Record<string, unknown>, IState> {
     constructor(props: RegisterProps) {
@@ -63,7 +65,8 @@ class Register extends Component<Record<string, unknown>, IState> {
             isPasswordDirty: false,
             isEmailInvalid: false,
             isPasswordInvalid: false,
-            serverError: false
+            serverError: false,
+            passStrength: true
         }
 
         this.handlePasswordChanged = this.handlePasswordChanged.bind(this)
@@ -106,11 +109,20 @@ class Register extends Component<Record<string, unknown>, IState> {
             isEmailInvalid: this.state.email === '',
             isPasswordInvalid: this.state.password === ''
         })
+
+        if(this.state.passwordStrengthScore !== PassStrengthEnum.VERY_STRONG) {
+            this.setState({
+                passStrength: false
+            })
+            return;
+        }
         
         if (!this.state.isEmailInvalid && !this.state.isPasswordInvalid
-            && this.checkPasswordsMatch() &&
-            this.state.passwordStrengthScore === PassStrengthEnum.VERY_STRONG) {
-            this.sendRegisterRequest()
+            && this.checkPasswordsMatch()) {
+                this.setState({
+                    passStrength: true
+                })
+                this.sendRegisterRequest()
         }
     }
 
@@ -154,8 +166,17 @@ class Register extends Component<Record<string, unknown>, IState> {
             <p className="error-message">
               Something went wrong. Please try again later.
             </p>
-     )
- }  
+        )
+    }  
+
+    // function to display password strength error
+    renderPasswordError(): ReactElement {
+        return (
+            <p className="error-message">
+            Your password is too weak, only very strong passwords are allowed. Please try again.
+            </p>
+        )
+    }  
 
     render(): ReactElement {
         return (
@@ -191,7 +212,7 @@ class Register extends Component<Record<string, unknown>, IState> {
 
                         <PasswordStrengthMeter score={this.state.passwordStrengthScore} />
 
-                        <br />
+                        {!this.state.passStrength && this.renderPasswordError()}   
 
                         <Password
                             placeholderText={'Confirm password'}
