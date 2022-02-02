@@ -27,22 +27,30 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-@SpringBootTest(classes = {EmailConfiguration.class, ThymeleafConfiguration.class, EmailServiceImpl.class})
+@SpringBootTest(classes = {EmailConfiguration.class, ThymeleafConfiguration.class})
 class EmailServiceTest {
 
-    @Autowired
     EmailServiceImpl emailService;
     String messageBody;
     String recipient;
     String subject;
     Map<String, Object> thymeleafModel;
+
+    @Autowired
+    private SpringTemplateEngine templateEngine;
+
+    @Resource
+    JavaMailSenderImpl javaMailSender;
 
     @RegisterExtension
     static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
@@ -54,6 +62,7 @@ class EmailServiceTest {
         messageBody = "This is test message";
         recipient = "test@karankumar.com";
         subject = "Test subject";
+        emailService = new EmailServiceImpl(javaMailSender, templateEngine);
         thymeleafModel = MockEmailTemplate.getTestTemplate(emailService.getUsernameFromEmail(recipient));
     }
 
