@@ -53,10 +53,10 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
         }
         HttpClient.post(Endpoints.shelf, shelfName).then(() => {
             this.setState({showError: false, showInfo: true, msg: "Shelf saved successfully"});  
-                     }).catch((error: Record<string, string>) => {
-                         console.error(error);
-                this.setState({showError: true, showInfo: false, msg: "Some error occurred"});    
-                     });
+        }).catch((error: Record<string, string>) => {
+            console.error(error);
+            this.setState({showError: true, showInfo: false, msg: "Some error occurred"});    
+        });
     };
 
     render(): JSX.Element {
