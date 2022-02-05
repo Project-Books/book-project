@@ -65,6 +65,11 @@ Next, follow one of the approaches below:
     - phpmyadmin is optional
 4. Run the project from your IDE
 
+
+### Run Books API (optional)
+
+If you are running the frontend, you may also want to run the [Books API](https://github.com/Project-Books/books-api). This is where we fetch the data from our own catalogue of books.
+
 ### Fixing Lombok errors
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
