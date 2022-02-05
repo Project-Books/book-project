@@ -70,6 +70,23 @@ class HttpClientBase {
             });
     }
 
+    post(url: string, param: string): Promise<Response> {
+        if (this.headers["Authorization"] === null) {
+            window.location.replace("http://localhost:3000/sign-in");
+        }
+        const requestOptions = {
+            method:Verb.POST,
+            headers: this.headers,
+        };
+        return fetch(url + "/" + param, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw response;
+            });
+    }
+
     getHeaders() {
         if (this.headers["Authorization"] === null) {
             window.location.replace("http://localhost:3000/sign-in");
