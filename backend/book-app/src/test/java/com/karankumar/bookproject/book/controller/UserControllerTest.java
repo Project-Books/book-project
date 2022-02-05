@@ -16,7 +16,9 @@ package com.karankumar.bookproject.book.controller;
 
 import com.karankumar.bookproject.account.controller.UserController;
 import com.karankumar.bookproject.account.dto.UserToRegisterDto;
-import com.karankumar.bookproject.account.exception.*;
+import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException;
+import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
+import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.book.service.EmailService;
