@@ -1,5 +1,6 @@
 package com.karankumar.bookproject.book.service;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 @Profile({"dev", "test"})
 @Component
+@ExcludeFromJacocoGeneratedReport
 public class FakeEmailService implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FakeEmailService.class);
