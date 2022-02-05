@@ -70,7 +70,7 @@ class HttpClientBase {
             });
     }
 
-    post(url: string, param: string): any {
+    post(url: string, param: string): Promise<Response> {
         if (this.headers["Authorization"] === null) {
             window.location.replace("http://localhost:3000/sign-in");
         }
