@@ -21,7 +21,6 @@ import {
     ApolloClient as ApolloClientBase,
     InMemoryCache,
 } from "@apollo/client";
-import { StringValueNode } from "graphql";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 let HttpClient: () => HttpClientBase;

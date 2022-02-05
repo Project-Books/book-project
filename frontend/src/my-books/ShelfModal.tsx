@@ -24,7 +24,6 @@ import "./ShelfModal.css";
 import Hidden from "@material-ui/core/Hidden";
 import HttpClient from "../shared/http/HttpClient";
 import Endpoints from "../shared/api/endpoints";
-import { FlashOnRounded } from "@material-ui/icons";
 
 type MyState = { name: string, showError: boolean, showInfo: boolean, msg: string };
 export default class ShelfModal extends Component<IModalProps, MyState> {
