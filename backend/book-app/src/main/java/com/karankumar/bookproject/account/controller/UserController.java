@@ -68,18 +68,13 @@ public class UserController {
       "Could not determine the current user";
   private static final String PASSWORD_WEAK_ERROR_MESSAGE = "Password is too weak";
 
-  private final Environment environment;
 
   @Autowired
-  public UserController(
-      UserService userService,
-      PasswordEncoder passwordEncoder,
-      EmailService emailService,
-      Environment environment) {
+  public UserController(UserService userService, PasswordEncoder passwordEncoder,
+                        EmailService emailService) {
     this.userService = userService;
     this.passwordEncoder = passwordEncoder;
     this.emailService = emailService;
-    this.environment = environment;
   }
 
   @GetMapping("/user/{id}")

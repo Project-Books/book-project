@@ -30,7 +30,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -74,8 +73,7 @@ class UserControllerTest {
         mockedEmailService = mock(EmailService.class);
         mockPasswordEncoder = mock(PasswordEncoder.class);
         userController = new UserController(
-                mockedUserService, mockPasswordEncoder, mockedEmailService,
-                mock(Environment.class)
+                mockedUserService, mockPasswordEncoder, mockedEmailService
         );
     }
 
@@ -169,7 +167,7 @@ class UserControllerTest {
         String veryStrongPassword = "verystrongpasswordsd";
         when(mockedUserService.passwordIsIncorrect(anyString())).thenReturn(true);
         UserController userController = new UserController(
-                mockedUserService, mockPasswordEncoder, mockedEmailService, mock(Environment.class)
+                mockedUserService, mockPasswordEncoder, mockedEmailService
         );
 
         // when
