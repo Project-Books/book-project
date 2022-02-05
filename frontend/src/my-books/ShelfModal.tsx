@@ -19,25 +19,46 @@ import React, { Component } from "react";
 import Modal, { IModalProps } from "../shared/components/Modal";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Alert from "@material-ui/lab/Alert";
 import "./ShelfModal.css";
 import Hidden from "@material-ui/core/Hidden";
+import HttpClient from "../shared/http/HttpClient";
+import Endpoints from "../shared/api/endpoints";
 
-type MyState = { name: string };
+type MyState = { name: string, showError: boolean, showInfo: boolean, msg: string };
 export default class ShelfModal extends Component<IModalProps, MyState> {
     constructor(props: never) {
         super(props);
-        this.state = { name: "" };
+        this.state = {
+              name: "",
+              showError: false,
+              showInfo: false,
+              msg: ""
+          };
         this.submitShelf = this.submitShelf.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ name: event.target.value });
+        this.setState( { name : event.target.value });
+        
     };
 
     submitShelf = (event: React.MouseEvent<HTMLButtonElement>): void => {
         event.preventDefault();
+        const shelfName = this.state.name;
+        if(shelfName.length > 0 && shelfName.toString().length > 20){
+            this.setState({showError: true, msg: "Shelf name is too long"});
+            return;
+        }
+        HttpClient.post(Endpoints.shelf, shelfName).then(() => {
+            this.setState({showError: false, showInfo: true, msg: "Shelf saved successfully"});  
+        }).catch((error: Record<string, string>) => {
+            console.error(error);
+            this.setState({showError: true, showInfo: false, msg: "Some error occurred"});    
+        });
     };
+
     render(): JSX.Element {
         return (
             <div>
@@ -95,7 +116,17 @@ export default class ShelfModal extends Component<IModalProps, MyState> {
                                 Add shelf
                             </Button>
                         </div>
+                        <div>
+                         { (this.state.showError || this.state.showInfo) ?
+                         
+                        <Alert variant="filled" severity={this.state.showError? "error" : "info"}>
+                            {this.state.msg}
+                        </Alert>
+                        : <></>
+                        }
+                      </div>
                     </div>
+                    
                 </Modal>
             </div>
         );
