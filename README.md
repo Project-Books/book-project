@@ -22,7 +22,7 @@ Book tracker web app made with Spring Boot and React (Typescript).
 
 *The image above is from our mockup designs, so this may look slightly different to the app. If major changes are made, we will upload a new image.*
 
-## Setup locally
+# Getting started locally
 
 Prerequisites:
 - JDK 11
@@ -35,20 +35,22 @@ First, clone the repository (you'll need to fork first and then clone your fork 
 Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
 
  
-### Running the frontend
+## Running the frontend
 
 1. Navigate to the `frontend/` directory
 1. Run `docker-compose up` to start the frontend container
    - If you encounter any errors, you can try rebuilding the image with `docker-compose up -d --build`
 1. Open `localhost:3000` once the development server has started
 
-### Running the database
+## Running the database
 
-1. Start the MySQL database using docker-compose up -d mysql phpmyadmin
+1. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
    - May need to add sudo to this command
    - phpmyadmin is optional
 
-### Running the backend
+## Running the backend
+
+The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the section above.
 
 You can either run the `BookProjectApplication.java` main class from your IDE (import as a Maven project) or follow the approach below:
 
@@ -85,15 +87,15 @@ To access the MySQL database when docker-compose is running with the phpmyadmin 
 
 Alternatively, you can access the database inside [IntelliJ Ultimate](https://project-books.github.io/docs/development/how-to/database-intellij/).
 
-## Contributing
+# Contributing
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
 
-### Help
+## Help
 
 If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a). Alternatively, feel free to chat with us on the #book-project channel on our [Slack workspace](https://teambookproject.slack.com/join/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A#/shared-invite/email).
 
-## Further information
+# Further information
 
 For more information, such as a roadmap and the project's underlying principles, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
 
