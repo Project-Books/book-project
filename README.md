@@ -44,28 +44,16 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
 
 ### Running the database
 
-
+1. Start the MySQL database using docker-compose up -d mysql phpmyadmin
+   - May need to add sudo to this command
+   - phpmyadmin is optional
 
 ### Running the backend
 
-1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
+You can either run the `BookProjectApplication.java` main class from your IDE (import as a Maven project) or follow the approach below:
 
-Next, follow one of the approaches below:
-
-#### 1. Start locally with MySQL and phpMyAdmin running in docker
-
-3. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-    - May need to add `sudo` to this command
-5. Start the application using `java -jar target/book-project-0.2.0.jar` 
-    
-#### 2. Start locally in your IDE
-
-3. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-    - May need to add `sudo` to this command
-    - phpmyadmin is optional
-4. Run the project from your IDE
-
+1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
+1. Start the application using `java -jar target/book-project-0.2.0.jar` 
 
 ### Run Books API (optional)
 
