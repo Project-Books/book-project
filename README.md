@@ -27,8 +27,8 @@ Book tracker web app made with Spring Boot and React (Typescript).
 Prerequisites:
 - JDK 11
 - Docker
-  - Windows or macOS: install Docker Desktop
-  - Linux: install Docker Engine and Docker Compose
+  - Windows or macOS: install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+  - Linux: install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/)
 
 First, clone the repository (you'll need to fork first and then clone your fork if you're contributing). 
 
@@ -38,7 +38,7 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
 
 1. Navigate to the [frontend/](https://github.com/Project-Books/book-project/tree/main/frontend) directory in a terminal
 1. Run `docker-compose up` to start the frontend container
-   - If you encounter any errors, you can try rebuilding the image with `docker-compose up -d --build`
+   - If you encounter any errors, you can try rebuilding the image with `docker-compose up --build`
 1. Open `localhost:3000` once the development server has started
 
 ### Run Books API (optional)
