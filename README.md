@@ -58,7 +58,7 @@ The backend depends on the database, so please ensure you have started our MySQL
 You can either run the `BookProjectApplication.java` main class from your IDE (import as a Maven project) or follow the approach below:
 
 1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-1. Start the application using `java -jar target/book-project-0.2.0.jar` 
+1. Start the application using `java -jar book-app/target/book-app-0.2.0.jar` 
 
 ### Test user
 
