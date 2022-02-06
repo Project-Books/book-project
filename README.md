@@ -37,8 +37,7 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
 ## Running the frontend
 
 1. Navigate to the [frontend/](https://github.com/Project-Books/book-project/tree/main/frontend) directory in a terminal
-1. Run `docker-compose up` to start the frontend container
-   - If you encounter any errors, you can try rebuilding the image with `docker-compose up --build`
+1. Run `docker-compose up --build` to build and start the frontend container
 1. Open `localhost:3000` once the development server has started
 
 ### Run Books API (optional)
