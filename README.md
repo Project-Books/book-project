@@ -36,7 +36,6 @@ First, clone the repository (you'll need to fork first and then clone your fork 
  
 ### Running the frontend
 
-1. Install yarn: `npm install -g yarn`
 1. Navigate to the `frontend/` directory
 1. Run `docker-compose up` to start the frontend container
    - If you encounter any errors, you can try rebuilding the image with `docker-compose up -d --build`
