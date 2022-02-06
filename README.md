@@ -61,7 +61,7 @@ To access the MySQL database when docker-compose is running with the phpmyadmin 
     - Password: `rootpassword`
 3. Click on connect
 
-Alternatively, you can access the database inside [IntelliJ Ultimate](https://project-books.github.io/docs/development/how-to/database-intellij/).
+Alternatively, you can access the database inside [IntelliJ Ultimate or DataGrip](https://project-books.github.io/docs/development/how-to/database-intellij/).
 
 ## Running the backend
 
