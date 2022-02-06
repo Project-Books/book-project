@@ -73,7 +73,7 @@ You can either run the `BookProjectApplication.java` main class from your IDE (i
 1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 1. Start the application using `java -jar book-app/target/book-app-0.2.0.jar` 
 
-### Test user
+## Log in with our test user
 
 When running the frontend and backend, or only the backend, you can use the following test user:
 - Email address: `user@user.user`
