@@ -26,7 +26,6 @@ Book tracker web app made with Spring Boot and React (Typescript).
 
 Prerequisites:
 - JDK 11
-- Node >= 10 for React
 - MySQL 8.0.* or (better) Docker
   - Windows or macOS: install Docker Desktop
   - Linux: install Docker Engine and Docker Compose
