@@ -85,7 +85,7 @@ If you're running the backend, you will need a JWT token for subsequent requests
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). We work hard to make our project approachable to everyone -- from those new to open-source looking to make their first contribution to seasoned developers.
 
-## Fixing Lombok errors
+## Backend: fixing Lombok errors
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
 You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
