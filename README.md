@@ -89,7 +89,7 @@ Alternatively, you can access the database inside [IntelliJ Ultimate](https://pr
 
 # Contributing
 
-If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
+If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). We work hard to make our project approachable to everyone -- from those to new open source looking to make their first contribution to seasoned developers.
 
 ## Help
 
