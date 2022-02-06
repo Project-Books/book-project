@@ -50,7 +50,7 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
 
 ## Running the backend
 
-The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the section above.
+The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
 
 You can either run the `BookProjectApplication.java` main class from your IDE (import as a Maven project) or follow the approach below:
 
