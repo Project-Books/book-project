@@ -26,13 +26,14 @@ Book tracker web app made with Spring Boot and React (Typescript).
 
 Prerequisites:
 - JDK 11
-- MySQL 8.0.* or (better) Docker
+- Docker
   - Windows or macOS: install Docker Desktop
   - Linux: install Docker Engine and Docker Compose
 
-As Docker is our recommended approach, our instructions will assume you're following this route.
+First, clone the repository (you'll need to fork first and then clone your fork if you're contributing). 
 
-First, clone the repository (you'll need to fork first and then clone your fork if you're contributing).
+Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
+
  
 ### Running the frontend
 
@@ -41,13 +42,14 @@ First, clone the repository (you'll need to fork first and then clone your fork 
    - If you encounter any errors, you can try rebuilding the image with `docker-compose up -d --build`
 1. Open `localhost:3000` once the development server has started
 
+### Running the database
+
+
+
 ### Running the backend
 
 1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
-2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
 
-If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
-  
 Next, follow one of the approaches below:
 
 #### 1. Start locally with MySQL and phpMyAdmin running in docker
