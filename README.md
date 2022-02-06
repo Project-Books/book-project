@@ -65,7 +65,7 @@ Alternatively, you can access the database inside [IntelliJ Ultimate or DataGrip
 
 ## Running the backend
 
-The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
+**Note:** The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
 
 You can either run [BookProjectApplication.java](https://github.com/Project-Books/book-project/blob/main/backend/book-app/src/main/java/com/karankumar/bookproject/BookProjectApplication.java#L39) from your IDE (import as a Maven project) or run the steps below in a terminal:
 
@@ -82,7 +82,9 @@ If you're running the backend, you will need a JWT token for subsequent requests
 
 # Contributing
 
-If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). We work hard to make our project approachable to everyone -- from those new to open-source looking to make their first contribution to seasoned developers.
+If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). 
+
+We work hard to make our project approachable to everyone -- from those new to open-source looking to make their first contribution to seasoned developers.
 
 ## Backend: fixing Lombok errors
 
