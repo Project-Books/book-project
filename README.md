@@ -47,9 +47,22 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 
 ## Running the database
 
+1. Navigate to the [backend](https://github.com/Project-Books/book-project/tree/main/backend) directory
 1. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
    - May need to add sudo to this command
    - phpmyadmin is optional
+
+### Access database (optional)
+
+To access the MySQL database when docker-compose is running with the phpmyadmin container:
+
+1. Go to `http://localhost:8081/`
+2. Log in with the details below:
+    - Username: `root`
+    - Password: `rootpassword`
+3. Click on connect
+
+Alternatively, you can access the database inside [IntelliJ Ultimate](https://project-books.github.io/docs/development/how-to/database-intellij/).
 
 ## Running the backend
 
@@ -67,18 +80,6 @@ When running the frontend and backend, or only the backend, you can use the foll
 - Password: `password`
 
 If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
-
-### Access database
-
-To access the MySQL database when docker-compose is running with the phpmyadmin container:
-
-1. Go to `http://localhost:8081/`
-2. Log in with the details below:
-    - Username: `root`
-    - Password: `rootpassword`
-3. Click on connect
-
-Alternatively, you can access the database inside [IntelliJ Ultimate](https://project-books.github.io/docs/development/how-to/database-intellij/).
 
 # Contributing
 
