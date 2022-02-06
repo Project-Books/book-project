@@ -36,7 +36,7 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
  
 ## Running the frontend
 
-1. Navigate to the `frontend/` directory
+1. Navigate to the [frontend/](https://github.com/Project-Books/book-project/tree/main/frontend) directory in a terminal
 1. Run `docker-compose up` to start the frontend container
    - If you encounter any errors, you can try rebuilding the image with `docker-compose up -d --build`
 1. Open `localhost:3000` once the development server has started
@@ -47,7 +47,7 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 
 ## Running the database
 
-1. Navigate to the [backend](https://github.com/Project-Books/book-project/tree/main/backend) directory
+1. Navigate to the [backend/](https://github.com/Project-Books/book-project/tree/main/backend) directory in a terminal
 1. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
    - May need to add sudo to this command
    - phpmyadmin is optional
@@ -68,7 +68,7 @@ Alternatively, you can access the database inside [IntelliJ Ultimate](https://pr
 
 The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
 
-You can either run the `BookProjectApplication.java` main class from your IDE (import as a Maven project) or follow the approach below:
+You can either run the `BookProjectApplication.java` main class from your IDE (import as a Maven project) or run the steps below in a terminal:
 
 1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 1. Start the application using `java -jar book-app/target/book-app-0.2.0.jar` 
