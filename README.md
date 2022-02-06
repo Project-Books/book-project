@@ -60,12 +60,6 @@ You can either run the `BookProjectApplication.java` main class from your IDE (i
 1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 1. Start the application using `java -jar target/book-project-0.2.0.jar` 
 
-### Fixing Lombok errors
-
-You may find lots of errors for things like the log statements, or the entities not having constructors. 
-You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
-Other common errors and solutions are also on the troubleshooting page.
-
 ### Test user
 
 When running the frontend and backend, or only the backend, you can use the following test user:
@@ -88,7 +82,13 @@ Alternatively, you can access the database inside [IntelliJ Ultimate](https://pr
 
 # Contributing
 
-If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). We work hard to make our project approachable to everyone -- from those to new open source looking to make their first contribution to seasoned developers.
+If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). We work hard to make our project approachable to everyone -- from those new to open-source looking to make their first contribution to seasoned developers.
+
+## Fixing Lombok errors
+
+You may find lots of errors for things like the log statements, or the entities not having constructors. 
+You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+Other common errors and solutions are also on the troubleshooting page.
 
 ## Help
 
