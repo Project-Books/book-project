@@ -33,7 +33,6 @@ Prerequisites:
 First, clone the repository (you'll need to fork first and then clone your fork if you're contributing). 
 
 Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
-
  
 ## Running the frontend
 
@@ -41,6 +40,10 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
 1. Run `docker-compose up` to start the frontend container
    - If you encounter any errors, you can try rebuilding the image with `docker-compose up -d --build`
 1. Open `localhost:3000` once the development server has started
+
+### Run Books API (optional)
+
+You may want to also want to run our [Books API](https://github.com/Project-Books/books-api) to avoid seeing an error on the search page.
 
 ## Running the database
 
@@ -56,10 +59,6 @@ You can either run the `BookProjectApplication.java` main class from your IDE (i
 
 1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 1. Start the application using `java -jar target/book-project-0.2.0.jar` 
-
-### Run Books API (optional)
-
-If you are running the frontend, you may also want to run the [Books API](https://github.com/Project-Books/books-api). This is where we fetch the data from our own catalogue of books.
 
 ### Fixing Lombok errors
 
