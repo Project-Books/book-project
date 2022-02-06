@@ -68,7 +68,7 @@ Alternatively, you can access the database inside [IntelliJ Ultimate](https://pr
 
 The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
 
-You can either run the `BookProjectApplication.java` main class from your IDE (import as a Maven project) or run the steps below in a terminal:
+You can either run [BookProjectApplication.java](https://github.com/Project-Books/book-project/blob/main/backend/book-app/src/main/java/com/karankumar/bookproject/BookProjectApplication.java#L39) from your IDE (import as a Maven project) or run the steps below in a terminal:
 
 1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
 1. Start the application using `java -jar book-app/target/book-app-0.2.0.jar` 
