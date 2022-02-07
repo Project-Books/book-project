@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, gql } from "@apollo/client";
 
 interface ISearchResultProps {
@@ -40,13 +40,22 @@ export default function SearchResults(props: ISearchResultProps): JSX.Element {
   });
 
   if (loading) {
-    return <p>Loading</p>;
+    return <p>Loading...</p>;
   }
   if (error) {
     return <p>error{error.message}</p>;
   }
-  if (data) {
-    console.log(data);
-  }
-  return <div className="query-results-container"></div>;
+
+  console.log("checking type of data", typeof data);
+  console.log("data is", data);
+  return (
+    <main className="query-results-container">
+      {Object.entries(data).map((book: any, id: any) => (
+        <div className="book" key={id}>
+          <div> {book.title}</div>
+          <div key={id}>{book.authors}</div>
+        </div>
+      ))}
+    </main>
+  );
 }
