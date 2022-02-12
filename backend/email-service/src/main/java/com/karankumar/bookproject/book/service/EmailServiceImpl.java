@@ -15,6 +15,7 @@ If not, see <https://www.gnu.org/licenses/>.
 package com.karankumar.bookproject.book.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -26,8 +27,9 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
+@Profile("prod")
 @Service
-public class EmailServiceImpl implements EmailService{
+public class EmailServiceImpl implements EmailService {
     public static final String NOREPLY_ADDRESS = "noreply@karankumar.com";
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine thymeleafTemplateEngine;
@@ -39,7 +41,7 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public void sendSimpleMessage(String to, String subject, String text){
+    public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(NOREPLY_ADDRESS);
         message.setTo(to);
@@ -49,9 +51,7 @@ public class EmailServiceImpl implements EmailService{
         emailSender.send(message);
     }
 
-    public void sendMessageUsingThymeleafTemplate(
-            String to, String subject, Map<String, Object> templateModel)
-            throws MessagingException {
+    public void sendMessageUsingThymeleafTemplate(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
 
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(templateModel);
@@ -71,9 +71,4 @@ public class EmailServiceImpl implements EmailService{
         helper.setText(htmlBody, true);
         emailSender.send(message);
     }
-
-    public String getUsernameFromEmail(String email){
-        return email.substring(0, email.indexOf("@"));
-    }
-
 }
