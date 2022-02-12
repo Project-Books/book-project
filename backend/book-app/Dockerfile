@@ -1,5 +1,5 @@
 FROM openjdk:11-jre-slim
-ARG DEFAULT_PATH=target/book-project*.jar
+ARG DEFAULT_PATH=target/book-app-*.jar
 WORKDIR /
 ENV JAR_PATH=$DEFAULT_PATH
 COPY ${JAR_PATH} app.jar
