@@ -14,6 +14,10 @@
   <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A">
     <img src="https://img.shields.io/badge/slack-teambookproject-4A154B?logo=slack" alt="Slack" />
   </a>
+
+  <a href="hhttps://opencollective.com/book-project">
+    <img src="https://img.shields.io/badge/open%20collective-donate-2ecc71" alt="Slack" />
+  </a>
 </p>
 
 Book tracker web app made with Spring Boot and React (Typescript).
@@ -103,3 +107,15 @@ When asking for help on Slack, we always recommend asking on our [#book-project]
 For more information, such as a roadmap and the project's underlying principles, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
 
 To see a list of the open-source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)
+
+# Donations
+<p align="center">	
+
+  <a href="hhttps://opencollective.com/book-project">
+    <img src="https://img.shields.io/badge/open%20collective-donate-2ecc71" alt="Slack" />
+  </a>
+</p>
+
+If you are able and willing to support us financially, it will go a long way to help us achieve our goals and become more sustainable. We hate to ask for money, but running cloud server costs are not free.
+
+We currently only accept donations through Open Collective.
