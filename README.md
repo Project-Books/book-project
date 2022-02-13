@@ -51,21 +51,17 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 ## Running the database
 
 1. Navigate to the [backend/](https://github.com/Project-Books/book-project/tree/main/backend) directory in a terminal
-1. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
+1. Start the PostgreSQL database using `docker-compose up -d db`
    - May need to add sudo to this command
-   - phpmyadmin is optional
 
 ### Access database (optional)
 
-To access the MySQL database when docker-compose is running with the phpmyadmin container:
-
-1. Go to `http://localhost:8081/`
-2. Log in with the details below:
-    - Username: `root`
-    - Password: `rootpassword`
-3. Click on connect
-
-Alternatively, you can access the database inside [IntelliJ Ultimate or DataGrip](https://project-books.github.io/docs/development/how-to/database-intellij/).
+Using your favourite SQL client (e.g. [DataGrip or within IntelliJ Ultimate]((https://project-books.github.io/docs/development/how-to/database-intellij/))), use the following settings:
+- Host: `localhost`
+- Port: `5432`
+- User: `dbuser`
+- Password: `dbpassword`
+- Database name: `book_project_db`
 
 ## Running the backend
 
