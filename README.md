@@ -56,12 +56,16 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 
 ### Access database (optional)
 
-Using your favourite SQL client (e.g. [DataGrip or within IntelliJ Ultimate](https://project-books.github.io/docs/development/how-to/database-intellij/)), use the following settings:
+Using your favourite SQL client, use the following settings:
 - Host: `localhost`
 - Port: `5433`
 - User: `dbuser`
 - Password: `dbpassword`
 - Database name: `book_project_db`
+
+For example, in DataGrip or IntelliJ Ultimate:
+
+![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
 
 ## Running the backend
 
