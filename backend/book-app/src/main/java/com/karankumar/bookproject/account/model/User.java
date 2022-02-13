@@ -50,7 +50,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /** Represents a single User */
-@Entity
+@Entity(name = "bp_user")
 @Table(name = "bp_user")
 @Builder
 @Getter
