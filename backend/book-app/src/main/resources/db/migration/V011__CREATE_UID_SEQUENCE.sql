@@ -1,6 +1,1 @@
-CREATE TABLE uid_sequence (
-    next_val BIGINT
-);
-
-INSERT INTO uid_sequence
-VALUES (1);
+CREATE SEQUENCE uid_sequence INCREMENT 50 START 1;
