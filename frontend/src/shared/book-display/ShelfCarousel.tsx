@@ -23,10 +23,8 @@ import { Component } from 'react';
 
 function ShelfBook(props: BookProps): JSX.Element {
     const bookClass = 'book' + (props.img === "" ? '' : ' image');
-    const titleClass = 'book-title' + (props.img === "" ? '' : ' hide');
     const displayTitle = props.title.length > 12 ? 
                         (props.title.substring(0, 12) + "...") : props.title;
-                        console.log(displayTitle);
 
     return (
         <Paper className={bookClass} variant="elevation" square={false}>
