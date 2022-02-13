@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.book.repository;
 
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName;
 import org.springframework.data.domain.Pageable;
@@ -76,4 +77,17 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     "WHERE s.predefinedShelfName = :predefinedShelfName")
   List<Book> findAllBooksByPredefinedShelfShelfName(
     @Param("predefinedShelfName") ShelfName predefinedShelfName);
+
+  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @Query("SELECT b " +
+          "FROM Book b " +
+          "INNER JOIN FETCH b.author " +
+          "INNER JOIN FETCH b.predefinedShelf pds " +
+          "LEFT JOIN FETCH b.bookGenre " +
+          "LEFT JOIN FETCH b.publishers " +
+          "LEFT JOIN FETCH b.tags " +
+          "LEFT JOIN FETCH b.userCreatedShelf ucs " +
+          "WHERE pds.user = :user " +
+          "AND (ucs is NULL OR ucs.user = :user)")
+  List<Book> findAllBooksForUser(@Param("user") User user);
 }
