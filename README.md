@@ -58,7 +58,7 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 
 Using your favourite SQL client (e.g. [DataGrip or within IntelliJ Ultimate](https://project-books.github.io/docs/development/how-to/database-intellij/)), use the following settings:
 - Host: `localhost`
-- Port: `5432`
+- Port: `5433`
 - User: `dbuser`
 - Password: `dbpassword`
 - Database name: `book_project_db`
