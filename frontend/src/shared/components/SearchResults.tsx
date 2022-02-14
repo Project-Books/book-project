@@ -48,6 +48,8 @@ export default function SearchResults(props: ISearchResultProps): JSX.Element {
 
   console.log("checking type of data", typeof data);
   console.log("data is", data);
+  // TODO: do not need to map books now, instead just show 8 of the same book that is returned
+  // in the data object (since the query will not return more than 1 book currently)
   return (
     <main className="query-result-container">
       {Object.entries(data).map((book: any, id: any) => (
