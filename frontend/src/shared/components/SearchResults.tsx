@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useQuery, gql } from "@apollo/client";
 
 interface ISearchResultProps {
@@ -52,14 +52,12 @@ export default function SearchResults(props: ISearchResultProps): JSX.Element {
   // in the data object (since the query will not return more than 1 book currently)
   return (
     <main className="query-result-container">
-      {Object.entries(data).map((book: any, id: any) => (
+      {Object.entries(data).map((book, id) => (
         <div className="query-result-book" key={id}>
           {/* Should be replaced with img tag once we get thumbnails from db */}
           <div className="query-result-book-image"></div>
-          <div className="query-result-book-title"> {book.title}</div>
-          <div key={id} className="query-result-book-author">
-            {book.authors}
-          </div>
+          <div className="query-result-book-title"></div>
+          <div key={id} className="query-result-book-author"></div>
         </div>
       ))}
     </main>
