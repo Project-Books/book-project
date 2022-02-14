@@ -40,7 +40,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 .search-input::placeholder {
   font-size: 14pt;
-  padding-left: 20px;
+  padding-left: 10px;
+}
+
+.search-input[value] {
+  padding-left: 10px;
 }
 
 search-input:hover,

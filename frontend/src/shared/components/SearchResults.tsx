@@ -49,11 +49,15 @@ export default function SearchResults(props: ISearchResultProps): JSX.Element {
   console.log("checking type of data", typeof data);
   console.log("data is", data);
   return (
-    <main className="query-results-container">
+    <main className="query-result-container">
       {Object.entries(data).map((book: any, id: any) => (
-        <div className="book" key={id}>
-          <div> {book.title}</div>
-          <div key={id}>{book.authors}</div>
+        <div className="query-result-book" key={id}>
+          {/* Should be replaced with img tag once we get thumbnails from db */}
+          <div className="query-result-book-image"></div>
+          <div className="query-result-book-title"> {book.title}</div>
+          <div key={id} className="query-result-book-author">
+            {book.authors}
+          </div>
         </div>
       ))}
     </main>
