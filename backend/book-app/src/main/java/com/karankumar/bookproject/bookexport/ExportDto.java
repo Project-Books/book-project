@@ -14,11 +14,13 @@
 
 package com.karankumar.bookproject.bookexport;
 
+import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.model.Book;
 import lombok.Data;
 
 import java.util.List;
 
+@ExcludeFromJacocoGeneratedReport
 @Data
 public class ExportDto {
   private final List<Book> books;
