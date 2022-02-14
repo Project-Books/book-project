@@ -32,8 +32,10 @@ public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf
     List<PredefinedShelf> findAllByUser(User user);
 
     @EntityGraph(value = "PredefinedShelf.books")
-    Optional<PredefinedShelf> findByPredefinedShelfNameAndUser(PredefinedShelf.ShelfName shelfName,
-    		User user);
+    Optional<PredefinedShelf> findByPredefinedShelfNameAndUser(
+            PredefinedShelf.ShelfName shelfName,
+    		User user
+    );
 
     int countAllByUser(User user);
 

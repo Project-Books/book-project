@@ -1,42 +1,25 @@
 version: '3'
 
 services:
-  mysql:
-    image: mysql:latest
-#    platform: linux/amd64 # uncomment this if using Apple silicon
-    hostname: mysql
+  db:
+    image: postgres:14 # 14 is the latest Flyway supported version
+    container_name: book_project_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: bookproject
-      MYSQL_USER: dbuser
-      MYSQL_PASSWORD: dbpassword
-      MYSQL_ROOT_HOST: '%'
+      - POSTGRES_DB=book_project_db
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=dbpassword
     ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./db/init.sql:/data/application/init.sql
-    command: --init-file /data/application/init.sql
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    links:
-      - mysql:db
-    ports:
-      - "8081:80"
+      - "5433:5432"
   bookapp:
     build: ./
     restart: on-failure      
     ports: 
       - "8080:8080"
     environment:
-      - WAIT_HOSTS=mysql:3306
-      - WAIT_HOSTS_TIMEOUT=300
-      - WAIT_SLEEP_INTERVAL=30
-      - WAIT_HOST_CONNECT_TIMEOUT=30
-      #- DEFAULT_PATH=<Target path in windows> 
-    depends_on:
-      - mysql
-      - phpmyadmin
-volumes:
-  db_data:
+      - POSTGRES_DATABASE=book_project_db
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=dbpassword
+      - POSTGRES_HOSTNAME=db
+      - POSTGRES_PORT=5433
+

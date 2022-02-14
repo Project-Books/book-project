@@ -1,2 +1,2 @@
-ALTER TABLE user
+ALTER TABLE bp_user
 DROP COLUMN username;

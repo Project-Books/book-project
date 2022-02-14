@@ -10,12 +10,14 @@ on:
     paths:
       - 'backend/**/*.java'
       - 'backend/**/pom.xml'
+      - 'backend/**/*.sql'
   pull_request:
     branches:
       - main
     paths:
       - 'backend/**/*.java'
       - 'backend/**/pom.xml'
+      - 'backend/**/*.sql'
 
 jobs:
   build:
