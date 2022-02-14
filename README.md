@@ -50,7 +50,7 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 
 ## Running the database
 
-1. Navigate to the [backend/](https://github.com/Project-Books/book-project/tree/main/backend) directory in a terminal
+1. Navigate to the [backend/book-app](https://github.com/Project-Books/book-project/tree/main/backend/book-app) directory in a terminal
 1. Start the PostgreSQL database using `docker-compose up -d db`
    - May need to add sudo to this command
 
@@ -69,7 +69,7 @@ For example, in DataGrip or IntelliJ Ultimate:
 
 ## Running the backend
 
-**Note:** The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
+**Note:** The backend depends on the database, so please ensure you have started our PostgreSQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
 
 You can either run [BookProjectApplication.java](https://github.com/Project-Books/book-project/blob/main/backend/book-app/src/main/java/com/karankumar/bookproject/BookProjectApplication.java#L39) from your IDE (import as a Maven project) or run the steps below in a terminal:
 
