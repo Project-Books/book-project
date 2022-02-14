@@ -1,9 +1,10 @@
 version: '3'
 
 services:
-  db:
-    image: postgres:14 # 14 is the latest Flyway supported version
-    container_name: book_project_db
+  mysql:
+    image: mysql:latest
+    platform: linux/amd64
+    hostname: mysql
     restart: always
     environment:
       - POSTGRES_DB=book_project_db
