@@ -16,6 +16,7 @@
     "@types/react-dom": "^17.0.0",
     "bootstrap": "^5.1.1",
     "graphql": "^15.6.1",
+    "http-proxy-middleware": "^2.0.3",
     "react": "^17.0.1",
     "react-bootstrap": "^2.0.0-rc.0",
     "react-dom": "^17.0.1",
@@ -27,14 +28,13 @@
     "zxcvbn": "^4.4.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --ignore client",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext=.ts,.tsx",
     "tsc": "tsc"
   },
-  "proxy": "http://localhost:8080",
   "eslintConfig": {
     "extends": [
       "react-app",
