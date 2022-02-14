@@ -1,6 +1,6 @@
 ---
-name: Blank template
-about: Use this blank template rather than GitHub's
+name: Generic template
+about: Use this template if the others are not suitable
 title: ''
 labels:
 assignees: ''
