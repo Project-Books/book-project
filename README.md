@@ -66,7 +66,7 @@ If you find this runs slowly (takes up too much of your computer's resources), y
 Using your favourite SQL client, use the following settings:
 - Host: `localhost`
 - Port: `5433`
-- User: `dbus
+- User: `dbuser`
 - Password: `dbpassword`
 - Database name: `book_project_db`
 
