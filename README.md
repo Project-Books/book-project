@@ -47,11 +47,13 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
 
 You may want to also want to run our [Books API](https://github.com/Project-Books/books-api) to avoid seeing an error on the search page.
 
-## Running the database
+## Running the backend and database
 
-1. Navigate to the [backend/](https://github.com/Project-Books/book-project/tree/main/backend) directory in a terminal
-1. Start the PostgreSQL database using `docker-compose up -d db`
-   - May need to add sudo to this command
+1. Build the Docker images in the `backend/` directory using `docker-compose build`
+1. Start the backend and database containers using `docker-compose up` 
+1. When finished, run `docker-compose down` to stop and remove the containers
+
+If you are contributing to the backend, please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
 
 ### Access database (optional)
 
@@ -66,14 +68,6 @@ For example, in DataGrip or IntelliJ Ultimate:
 
 ![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
 
-## Running the backend
-
-**Note:** The backend depends on the database, so please ensure you have started our MySQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
-
-1. Build the Docker images in the `backend/` directory using `docker-compose build`
-1. Start the containers using `docker-compose up` 
-
-If you are contributing to the backend, please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
 
 ## Log in with our test user
 
