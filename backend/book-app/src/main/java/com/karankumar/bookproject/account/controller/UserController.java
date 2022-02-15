@@ -49,6 +49,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -67,6 +68,7 @@ public class UserController {
   public static final String CURRENT_USER_NOT_FOUND_ERROR_MESSAGE =
       "Could not determine the current user";
   private static final String PASSWORD_WEAK_ERROR_MESSAGE = "Password is too weak";
+  private static final String EMAIL_NOT_FOUND = "Email is not registered with us";
 
 
   @Autowired
@@ -86,6 +88,16 @@ public class UserController {
                     HttpStatus.NOT_FOUND, String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)
             )
         );
+  }
+
+  @GetMapping("/user/email/{email}")
+  public ResponseEntity<String> checkIfEmailExists(@PathVariable String email) {
+      Optional<User> user = userService.findUserByEmail(email);
+      if (user.isPresent()) {
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
+      } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EMAIL_NOT_FOUND);
+      }
   }
 
   @PostMapping
