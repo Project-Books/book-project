@@ -1,3 +1,7 @@
-#*
-#!target/book-project*.jar
+# IntelliJ
+.idea
+ide
 
+**/target/
+
+**/.md
