@@ -29,8 +29,7 @@ Book tracker web app made with Spring Boot and React (Typescript).
 # Getting started locally
 
 Prerequisites:
-- JDK 11
-- Docker
+- Docker with [Buildkit enabled](https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds)
   - Windows or macOS: install [Docker Desktop](https://www.docker.com/products/docker-desktop)
   - Linux: install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/)
 
@@ -43,16 +42,25 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
 1. Navigate to the [frontend/](https://github.com/Project-Books/book-project/tree/main/frontend) directory in a terminal
 1. Run `docker-compose up --build` to build and start the frontend container
 1. Open `localhost:3000` once the development server has started
+1. When finished, run `docker-compose down` to stop and remove the frontend container
 
 ### Run Books API (optional)
 
 You may want to also want to run our [Books API](https://github.com/Project-Books/books-api) to avoid seeing an error on the search page.
 
-## Running the database
+## Running the backend and database
 
-1. Navigate to the [backend/book-app](https://github.com/Project-Books/book-project/tree/main/backend/book-app) directory in a terminal
-1. Start the PostgreSQL database using `docker-compose up -d db`
-   - May need to add sudo to this command
+1. Build the Docker images in the `backend/` directory using `docker-compose build`
+1. Start the backend and database containers using `docker-compose up` 
+1. When finished, run `docker-compose down` to stop and remove the containers
+
+If you find this runs slowly (takes up too much of your computer's resources), you can try:
+- Start the PostgreSQL database inside a container (`docker-compose up db`) but run the backend as a Maven app in your IDE. You will need to uncomment and comment the relevant lines in application-dev.properties [INSERT LINK]
+   - note: if asking us for help, please ensure you use Docker
+- Using something more lightweight than an IDE like IntelliJ, such as VS Code
+
+> Note for backend contributors: Please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
+
 
 ### Access database (optional)
 
@@ -67,22 +75,13 @@ For example, in DataGrip or IntelliJ Ultimate:
 
 ![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
 
-## Running the backend
-
-**Note:** The backend depends on the database, so please ensure you have started our PostgreSQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
-
-You can either run [BookProjectApplication.java](https://github.com/Project-Books/book-project/blob/main/backend/book-app/src/main/java/com/karankumar/bookproject/BookProjectApplication.java#L39) from your IDE (import as a Maven project) or run the steps below in a terminal:
-
-1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-1. Start the application using `java -jar book-app/target/book-app-0.2.0.jar` 
-
 ## Log in with our test user
 
 When running the frontend and backend, or only the backend, you can use the following test user:
 - Email address: `user@user.user`
 - Password: `password`
 
-If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
+Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
 
 # Contributing
 
