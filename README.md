@@ -29,7 +29,7 @@ Book tracker web app made with Spring Boot and React (Typescript).
 # Getting started locally
 
 Prerequisites:
-- Docker
+- Docker with [Buildkit enabled](https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds)
   - Windows or macOS: install [Docker Desktop](https://www.docker.com/products/docker-desktop)
   - Linux: install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/)
 
