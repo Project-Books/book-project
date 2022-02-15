@@ -73,6 +73,8 @@ For example, in DataGrip or IntelliJ Ultimate:
 1. Build the Docker images in the `backend/` directory using `docker-compose build`
 1. Start the containers using `docker-compose up` 
 
+If you are contributing to the backend, please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
+
 ## Log in with our test user
 
 When running the frontend and backend, or only the backend, you can use the following test user:
