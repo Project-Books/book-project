@@ -61,6 +61,7 @@ If you find this runs slowly (takes up too much of your computer's resources), y
 
 > Note for backend contributors: Please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
 
+
 ### Access database (optional)
 
 Using your favourite SQL client, use the following settings:
@@ -73,7 +74,6 @@ Using your favourite SQL client, use the following settings:
 For example, in DataGrip or IntelliJ Ultimate:
 
 ![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
-
 
 ## Log in with our test user
 
