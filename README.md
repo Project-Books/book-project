@@ -42,6 +42,7 @@ Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you'r
 1. Navigate to the [frontend/](https://github.com/Project-Books/book-project/tree/main/frontend) directory in a terminal
 1. Run `docker-compose up --build` to build and start the frontend container
 1. Open `localhost:3000` once the development server has started
+1. When finished, run `docker-compose down` to stop and remove the frontend container
 
 ### Run Books API (optional)
 
@@ -54,18 +55,18 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 1. When finished, run `docker-compose down` to stop and remove the containers
 
 If you find this runs slowly (takes up too much of your computer's resources), you can try:
-- Start the PostgreSQL database inside a container (`docker-compose up db`) but run the backend as a Maven app in your IDE
+- Start the PostgreSQL database inside a container (`docker-compose up db`) but run the backend as a Maven app in your IDE. You will need to uncomment and comment the relevant lines in application-dev.properties [INSERT LINK]
    - note: if asking us for help, please ensure you use Docker
 - Using something more lightweight than an IDE like IntelliJ, such as VS Code
 
-> If you are contributing to the backend, please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
+> Note for backend contributors: Please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
 
 ### Access database (optional)
 
 Using your favourite SQL client, use the following settings:
 - Host: `localhost`
 - Port: `5433`
-- User: `dbuser`
+- User: `dbus
 - Password: `dbpassword`
 - Database name: `book_project_db`
 
