@@ -36,26 +36,25 @@ Prerequisites:
 First, clone the repository (you'll need to fork first and then clone your fork if you're contributing). 
 
 1. Start Docker engine (Linux) or Docker desktop (macOS or Windows). 
-   -If you're using an Apple silicon chip (e.g. M1), you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
+   - If you're using an Apple silicon chip (e.g. M1), you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
 1. In the root of the project, run `docker-compose build` to build the database, backend and frontend services
 1. Run `docker-compose up` to start the containers
-1. Open `localhost:3000` once the development server has started
+1. Open `localhost:3000` once the development server has started (you'll get notified in the output of `docker-compose up`)
 1. When finished, run `docker-compose down` to stop and remove the containers
 
 You may want to also want to run our [Books API](https://github.com/Project-Books/books-api) to avoid seeing an error on the search page on the frontend.
 
 > Note for backend contributors: Please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
  
-## Running the backend and database
+## Docker running slowly: Windows users
+ 
+Create a `.wslconfig` file at the root of your user folder: C:\Users\<your-username>:
 
-1. Build the Docker images in the `backend/` directory using `docker-compose build`
-1. Start the backend and database containers using `docker-compose up` 
-1. When finished, run `docker-compose down` to stop and remove the containers
-
-If you find this runs slowly (takes up too much of your computer's resources), you can try:
-- Start the PostgreSQL database inside a container (`docker-compose up db`) but run the backend as a Maven app in your IDE. You will need to uncomment and comment the relevant lines in [application-dev.properties](https://github.com/Project-Books/book-project/blob/main/backend/book-app/src/main/resources/application-dev.properties)
-   - note: if asking us for help, please ensure you use Docker
-- Using something more lightweight than an IDE like IntelliJ, such as VS Code
+```
+[wsl2]
+memory=2GB   # Limits VM memory in WSL 2 up to 2GB
+processors=2# Makes the WSL 2 VM use two virtual processors
+```
 
 ### Access database (optional)
 
