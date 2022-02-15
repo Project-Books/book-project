@@ -55,7 +55,7 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 1. When finished, run `docker-compose down` to stop and remove the containers
 
 If you find this runs slowly (takes up too much of your computer's resources), you can try:
-- Start the PostgreSQL database inside a container (`docker-compose up db`) but run the backend as a Maven app in your IDE. You will need to uncomment and comment the relevant lines in application-dev.properties [INSERT LINK]
+- Start the PostgreSQL database inside a container (`docker-compose up db`) but run the backend as a Maven app in your IDE. You will need to uncomment and comment the relevant lines in [application-dev.properties](https://github.com/Project-Books/book-project/blob/main/backend/book-app/src/main/resources/application-dev.properties)
    - note: if asking us for help, please ensure you use Docker
 - Using something more lightweight than an IDE like IntelliJ, such as VS Code
 
