@@ -27,4 +27,6 @@ services:
       - POSTGRES_PASSWORD=dbpassword
       - POSTGRES_HOSTNAME=db
       - POSTGRES_PORT=5433
+    depends_on:
+      - db
 
