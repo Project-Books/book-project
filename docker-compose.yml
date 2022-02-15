@@ -1,6 +1,17 @@
-version: '3'
+version: "3.8"
 
 services:
+  frontend:
+    container_name: book_project_frontend
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
   db:
     image: postgres:14 # 14 is the latest Flyway supported version
     container_name: book_project_db
@@ -11,10 +22,10 @@ services:
       - POSTGRES_PASSWORD=dbpassword
     ports:
       - "5433:5432"
-  bookapp:
+  backend:
     container_name: book_project_backend
     build:
-      context: .
+      context: ./backend
       dockerfile: ./Dockerfile
       args:
         mvn_arg: clean package -DskipTests
