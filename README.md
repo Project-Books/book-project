@@ -53,7 +53,12 @@ You may want to also want to run our [Books API](https://github.com/Project-Book
 1. Start the backend and database containers using `docker-compose up` 
 1. When finished, run `docker-compose down` to stop and remove the containers
 
-If you are contributing to the backend, please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
+If you find this runs slowly (takes up too much of your computer's resources), you can try:
+- Start the PostgreSQL database inside a container (`docker-compose up db`) but run the backend as a Maven app in your IDE
+   - note: if asking us for help, please ensure you use Docker
+- Using something more lightweight than an IDE like IntelliJ, such as VS Code
+
+> If you are contributing to the backend, please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
 
 ### Access database (optional)
 
@@ -75,7 +80,7 @@ When running the frontend and backend, or only the backend, you can use the foll
 - Email address: `user@user.user`
 - Password: `password`
 
-If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
+Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
 
 # Contributing
 
