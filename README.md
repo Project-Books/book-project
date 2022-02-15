@@ -29,32 +29,31 @@ Book tracker web app made with Spring Boot and React (Typescript).
 # Getting started locally
 
 Prerequisites:
-- JDK 11
-- Docker
+- Docker with [Buildkit enabled](https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds)
   - Windows or macOS: install [Docker Desktop](https://www.docker.com/products/docker-desktop)
   - Linux: install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/)
 
-First, clone the repository (you'll need to fork first and then clone your fork if you're contributing). 
+1. Clone the repository (if you're contributing, you'll need to first fork the repository and then clone your fork)
+1. Start Docker engine (Linux) or Docker desktop (macOS or Windows). 
+   - If you're using an Apple silicon chip (e.g. M1), you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
+1. In the root of the project, run `docker-compose build` to build the database, backend and frontend services
+1. Run `docker-compose up` to start the containers
+1. Once the development server has started (you'll get notified in the output of `docker-compose up`), go to `localhost:3000` in your web browser to access the frontend
+1. When finished, run `docker-compose down` to stop and remove the containers
 
-Next, start Docker engine (Linux) or Docker desktop (macOS or Windows). If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
+You may want to also want to run our [Books API](https://github.com/Project-Books/books-api) to avoid seeing an error on the search page on the frontend.
+
+> Note for backend contributors: Please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
+
+## Log in with our test user
+
+When running the frontend and backend, or only the backend, you can use the following test user:
+- Email address: `user@user.user`
+- Password: `password`
+
+Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
  
-## Running the frontend
-
-1. Navigate to the [frontend/](https://github.com/Project-Books/book-project/tree/main/frontend) directory in a terminal
-1. Run `docker-compose up --build` to build and start the frontend container
-1. Open `localhost:3000` once the development server has started
-
-### Run Books API (optional)
-
-You may want to also want to run our [Books API](https://github.com/Project-Books/books-api) to avoid seeing an error on the search page.
-
-## Running the database
-
-1. Navigate to the [backend/book-app](https://github.com/Project-Books/book-project/tree/main/backend/book-app) directory in a terminal
-1. Start the PostgreSQL database using `docker-compose up -d db`
-   - May need to add sudo to this command
-
-### Access database (optional)
+## Access database (optional)
 
 Using your favourite SQL client, use the following settings:
 - Host: `localhost`
@@ -67,22 +66,7 @@ For example, in DataGrip or IntelliJ Ultimate:
 
 ![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
 
-## Running the backend
 
-**Note:** The backend depends on the database, so please ensure you have started our PostgreSQL database with the instructions in the [section above](https://github.com/Project-Books/book-project#running-the-database).
-
-You can either run [BookProjectApplication.java](https://github.com/Project-Books/book-project/blob/main/backend/book-app/src/main/java/com/karankumar/bookproject/BookProjectApplication.java#L39) from your IDE (import as a Maven project) or run the steps below in a terminal:
-
-1. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-1. Start the application using `java -jar book-app/target/book-app-0.2.0.jar` 
-
-## Log in with our test user
-
-When running the frontend and backend, or only the backend, you can use the following test user:
-- Email address: `user@user.user`
-- Password: `password`
-
-If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
 
 # Contributing
 
@@ -95,6 +79,18 @@ We work hard to make our project approachable to everyone -- from those new to o
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
 You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
 Other common errors and solutions are also on the troubleshooting page.
+
+## Docker running slowly: Windows users
+ 
+Create a `.wslconfig` file at the root of your user folder: `C:\Users\<your-username>`:
+
+```
+[wsl2]
+memory=4GB   # Limits VM memory in WSL 2 up to 4GB
+processors=2# Makes the WSL 2 VM use two virtual processors
+```
+
+Update the values as appropriate for your system.
 
 ## Help
 
