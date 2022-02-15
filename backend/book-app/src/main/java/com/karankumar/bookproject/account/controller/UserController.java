@@ -90,7 +90,7 @@ public class UserController {
         );
   }
 
-  @GetMapping("/user/email/{email}")
+  @GetMapping("/email/{email}")
   public ResponseEntity<String> checkIfEmailExists(@PathVariable String email) {
       Optional<User> user = userService.findUserByEmail(email);
       if (user.isPresent()) {
