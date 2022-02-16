@@ -102,7 +102,7 @@ When asking for help on Slack, we always recommend asking on our [#book-project]
 
 # Further information
 
-For more information, such as a roadmap and the project's underlying principles, see our [documentation site](https://project-books.github.io/docs/).
+For more information, such as a roadmap and the project's underlying principles, see our [documentation site](https://project-books.github.io).
 
 To see a list of the open-source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)
 
