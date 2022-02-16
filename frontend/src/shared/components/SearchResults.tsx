@@ -17,10 +17,17 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
+import "../components/SearchResults.css";
 
 interface ISearchResultProps {
   query: string;
 }
+
+// interface IBookDetails {
+//   fullName: string;
+//   title: string;
+//   id: string;
+// }
 
 const FIND_BY_TITLE = gql`
   query getByTitleCase($title: String!) {
@@ -46,18 +53,31 @@ export default function SearchResults(props: ISearchResultProps): JSX.Element {
     return <p>error{error.message}</p>;
   }
 
-  console.log("checking type of data", typeof data);
-  console.log("data is", data);
-  // TODO: do not need to map books now, instead just show 8 of the same book that is returned
-  // in the data object (since the query will not return more than 1 book currently)
+  const bookData = Object.values(data);
+
   return (
     <main className="query-result-container">
-      {Object.entries(data).map((book, id) => (
-        <div className="query-result-book" key={id}>
-          {/* Should be replaced with img tag once we get thumbnails from db */}
-          <div className="query-result-book-image"></div>
-          <div className="query-result-book-title"></div>
-          <div key={id} className="query-result-book-author"></div>
+      <div className="query-result-book-image-container">
+        {/* Placeholder image should be replaced
+         with thumbnails from db once we have them available */}
+        <img
+          className="query-result-book-image"
+          src="https://images-na.ssl-images-amazon.com/images/I/A1xkFZX5k-L.jpg"
+          alt="Stephen Hawking on cover of his book Brief History of Time"
+        />
+      </div>
+
+      {/* Todo: fix 'any' and replace with appropriate type */}
+      {bookData.map((bookDetail: any) => (
+        <div className="query-results-book" key={bookDetail.id}>
+          <div className="query-result-book-title">
+            <div>{bookDetail.title}</div>
+            {bookDetail.authors.map((author: any) => (
+              <div className="query-result-book-author" key={bookDetail.id}>
+                <div>{author.fullName}</div>
+              </div>
+            ))}
+          </div>
         </div>
       ))}
     </main>
