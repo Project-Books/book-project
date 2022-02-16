@@ -51,7 +51,7 @@ When running the frontend and backend, or only the backend, you can use the foll
 - Email address: `user@user.user`
 - Password: `password`
 
-Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
+Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://project-books.github.io/docs/development/how-to/backend-postman/) wiki page.
  
 ## Access database (optional)
 
