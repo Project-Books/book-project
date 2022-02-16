@@ -75,7 +75,7 @@ We work hard to make our project approachable to everyone -- from those new to o
 ## Backend: fixing Lombok errors
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
-You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting page](https://project-books.github.io/docs/development/how-to/troubleshoot/). 
 Other common errors and solutions are also on the troubleshooting page.
 
 ## Docker running slowly: Windows users
