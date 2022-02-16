@@ -1,0 +1,2 @@
+ALTER TABLE bp_user
+ALTER COLUMN email DROP NOT NULL;

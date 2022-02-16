@@ -23,7 +23,7 @@ import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredExcepti
 import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.service.UserService;
-import com.karankumar.bookproject.book.service.EmailServiceImpl;
+import com.karankumar.bookproject.book.service.EmailService;
 import com.karankumar.bookproject.constant.EmailConstant;
 import com.karankumar.bookproject.template.EmailTemplate;
 import lombok.extern.slf4j.Slf4j;
@@ -61,25 +61,20 @@ public class UserController {
 
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
-  private final EmailServiceImpl emailService;
+  private final EmailService emailService;
 
   private static final String USER_NOT_FOUND_ERROR_MESSAGE = "Could not find the user with ID %d";
   public static final String CURRENT_USER_NOT_FOUND_ERROR_MESSAGE =
       "Could not determine the current user";
   private static final String PASSWORD_WEAK_ERROR_MESSAGE = "Password is too weak";
 
-  private final Environment environment;
 
   @Autowired
-  public UserController(
-      UserService userService,
-      PasswordEncoder passwordEncoder,
-      EmailServiceImpl emailService,
-      Environment environment) {
+  public UserController(UserService userService, PasswordEncoder passwordEncoder,
+                        EmailService emailService) {
     this.userService = userService;
     this.passwordEncoder = passwordEncoder;
     this.emailService = emailService;
-    this.environment = environment;
   }
 
   @GetMapping("/user/{id}")
@@ -99,14 +94,11 @@ public class UserController {
     try {
       userService.register(user);
 
-      String activeProfile = this.environment.getActiveProfiles()[0];
-      if (!activeProfile.equals("dev")) {
-        emailService.sendMessageUsingThymeleafTemplate(
-            user.getUsername(),
-            EmailConstant.ACCOUNT_CREATED_SUBJECT,
-            EmailTemplate.getAccountCreatedEmailTemplate(
-                emailService.getUsernameFromEmail(user.getUsername())));
-      }
+      emailService.sendMessageUsingThymeleafTemplate(
+          user.getUsername(),
+          EmailConstant.ACCOUNT_CREATED_SUBJECT,
+          EmailTemplate.getAccountCreatedEmailTemplate(
+              emailService.getUsernameFromEmail(user.getUsername())));
 
       return ResponseEntity.status(HttpStatus.OK).body("User created");
     } catch (UserAlreadyRegisteredException e) {
@@ -127,7 +119,7 @@ public class UserController {
     }
   }
 
-  @DeleteMapping()
+  @DeleteMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteCurrentUser(@RequestBody UserToDeleteDto user) throws MessagingException {
     String password = user.getPassword();

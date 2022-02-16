@@ -14,6 +14,10 @@
   <a href="https://join.slack.com/t/teambookproject/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A">
     <img src="https://img.shields.io/badge/slack-teambookproject-4A154B?logo=slack" alt="Slack" />
   </a>
+
+  <a href="hhttps://opencollective.com/book-project">
+    <img src="https://img.shields.io/badge/open%20collective-donate-2ecc71" alt="Slack" />
+  </a>
 </p>
 
 Book tracker web app made with Spring Boot and React (Typescript).
@@ -22,85 +26,94 @@ Book tracker web app made with Spring Boot and React (Typescript).
 
 *The image above is from our mockup designs, so this may look slightly different to the app. If major changes are made, we will upload a new image.*
 
-## Setup locally
+# Getting started locally
 
 Prerequisites:
-- JDK 11
-- Node >= 10 for React
-- MySQL 8.0.* or (better) Docker
-  - Windows or macOS: install Docker Desktop
-  - Linux: install Docker Engine and Docker Compose
+- Docker with [Buildkit enabled](https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds)
+  - Windows or macOS: install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+  - Linux: install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/)
 
-As Docker is our recommended approach, our instructions will assume you're following this route.
+1. Clone the repository (if you're contributing, you'll need to first fork the repository and then clone your fork)
+1. Start Docker engine (Linux) or Docker desktop (macOS or Windows). 
+   - If you're using an Apple silicon chip (e.g. M1), you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
+1. In the root of the project, run `docker-compose build` to build the database, backend and frontend services
+1. Run `docker-compose up` to start the containers
+1. Once the development server has started (you'll get notified in the output of `docker-compose up`), go to `localhost:3000` in your web browser to access the frontend
+1. When finished, run `docker-compose down` to stop and remove the containers
 
-First, clone the repository (you'll need to fork first and then clone your fork if you're contributing).
- 
-### Running the frontend
+You may want to also want to run our [Books API](https://github.com/Project-Books/books-api) to avoid seeing an error on the search page on the frontend.
 
-1. Install yarn: `npm install -g yarn`
-1. Navigate to the `frontend/` directory
-1. Run `docker-compose up`
-1. Open `localhost:3000` once the development server has started
+> Note for backend contributors: Please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
 
-### Running the backend
-
-1. Import the `backend` directory as a Maven project into your favourite IDE (or run Maven on the terminal)
-2. Start Docker engine (Linux) or Docker desktop (Windows or macOS)
-
-If you're using an Apple silicon chip, you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
-  
-Next, follow one of the approaches below:
-
-#### 1. Start locally with MySQL and phpMyAdmin running in docker
-
-3. Build the project in the `backend/` directory using `./mvnw clean install` (Unix) or `mvnw.cmd clean install` (Windows)
-4. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-    - May need to add `sudo` to this command
-5. Start the application using `java -jar target/book-project-0.2.0.jar` 
-    
-#### 2. Start locally in your IDE
-
-3. Start the MySQL database using `docker-compose up -d mysql phpmyadmin`
-    - May need to add `sudo` to this command
-    - phpmyadmin is optional
-4. Run the project from your IDE
-
-### Fixing Lombok errors
-
-You may find lots of errors for things like the log statements, or the entities not having constructors. 
-You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
-Other common errors and solutions are also on the troubleshooting page.
-
-### Test user
+## Log in with our test user
 
 When running the frontend and backend, or only the backend, you can use the following test user:
 - Email address: `user@user.user`
 - Password: `password`
 
-If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
+Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
+ 
+## Access database (optional)
 
-### Access database
+Using your favourite SQL client, use the following settings:
+- Host: `localhost`
+- Port: `5433`
+- User: `dbuser`
+- Password: `dbpassword`
+- Database name: `book_project_db`
 
-To access the MySQL database when docker-compose is running with the phpmyadmin container:
+For example, in DataGrip or IntelliJ Ultimate:
 
-1. Go to `http://localhost:8081/`
-2. Log in with the details below:
-    - Username: `root`
-    - Password: `rootpassword`
-3. Click on connect
+![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
 
-Alternatively, you can access the database inside [IntelliJ Ultimate](https://project-books.github.io/docs/development/how-to/database-intellij/).
+# Contributing
 
-## Contributing
+If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). 
 
-If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md).
+We work hard to make our project approachable to everyone -- from those new to open-source looking to make their first contribution to seasoned developers.
 
-### Help
+## Backend: fixing Lombok errors
 
-If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a). Alternatively, feel free to chat with us on the #book-project channel on our [Slack workspace](https://teambookproject.slack.com/join/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A#/shared-invite/email).
+You may find lots of errors for things like the log statements, or the entities not having constructors. 
+You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+Other common errors and solutions are also on the troubleshooting page.
 
-## Further information
+## Docker running slowly: Windows users
+
+If you are notice that the Vmmem process is consuming too much of your CPU and RAM, you can adjust the maximum limit that Docker can use.
+
+![image](https://user-images.githubusercontent.com/11173328/154207932-d7ffaf70-0d1a-4362-bba8-ca23cb147692.png)
+
+If using the WSL 2 backend (see the image above: go to Docker Desktop > Settings > Resources), create a `.wslconfig` file at the root of your user folder: `C:\Users\<your-username>`:
+
+```
+[wsl2]
+memory=4GB   # Limits VM memory in WSL 2 up to 4GB
+processors=2# Makes the WSL 2 VM use two virtual processors
+```
+
+Update the values as appropriate for your system. See the [documentation](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#configure-global-options-with-wslconfig) for more information
+
+## Help
+
+If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a). Alternatively, feel free to chat with us on the [#book-project](https://teambookproject.slack.com/archives/C01AGDC5X1S) channel on our [Slack workspace](https://teambookproject.slack.com/join/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A#/shared-invite/email).
+
+When asking for help on Slack, we always recommend asking on our [#book-project](https://teambookproject.slack.com/archives/C01AGDC5X1S) channel, rather than contacting a maintainer directly. This is so that others can offer help and the answer may help someone else.
+
+# Further information
 
 For more information, such as a roadmap and the project's underlying principles, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
 
 To see a list of the open-source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)
+
+# Donations
+<p align="center">	
+
+  <a href="hhttps://opencollective.com/book-project">
+    <img src="https://img.shields.io/badge/open%20collective-donate-2ecc71" alt="Slack" />
+  </a>
+</p>
+
+If you are able and willing to support us financially, it will go a long way to help us achieve our goals and become more sustainable. We hate to ask for money, but running cloud server costs are not free.
+
+We currently only accept donations through Open Collective.

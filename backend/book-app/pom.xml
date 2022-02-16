@@ -6,6 +6,10 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -18,17 +22,11 @@
         <artifactId>flyway-maven-plugin</artifactId>
         <version>${flyway-maven-plugin.version}</version>
         <configuration>
-          <url>jdbc:mysql://localhost:3306/bookproject?useSsl=false</url>
-          <user>root</user>
-          <password>rootpassword</password>
+          <driver>org.postgresql.Driver</driver>
+          <url>jdbc:postgresql://localhost:5433/book_project_db?useSsl=false</url>
+          <user>dbuser</user>
+          <password>dbpassword</password>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
   </build>
@@ -55,6 +53,11 @@
       <groupId>com.karankumar</groupId>
       <artifactId>email-service</artifactId>
       <version>0.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.flywaydb</groupId>

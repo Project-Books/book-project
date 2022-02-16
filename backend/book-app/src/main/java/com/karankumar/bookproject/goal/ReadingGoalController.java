@@ -44,8 +44,6 @@ public class ReadingGoalController {
         private Endpoints() { }
         public static final String ADD_BOOKS = "/add/books";
         public static final String ADD_PAGES = "/add/pages";
-        public static final String UPDATE_PAGES = "/update/pages";
-        public static final String UPDATE_BOOKS = "/update/books";
         public static final String PREVIOUS = "/previous";
         public static final String CURRENT = "/current";
     }
@@ -65,28 +63,26 @@ public class ReadingGoalController {
     // (pages or books) is allowed at a time
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(Endpoints.ADD_BOOKS)
-    public ResponseEntity<String> addBookReadingGoal(@RequestParam(value = "target") int target) {
+    public void addBookReadingGoal(@RequestParam(value = "target") int target) {
         if (target <= 0) {
-            return ResponseEntity.badRequest().body(TARGET_BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
         }
 
         ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
         readingGoalService.save(readingGoal);
-        return ResponseEntity.ok("Saved");
     }
 
     // This endpoint will be used for both adding and updating, since at most one goal
     // (pages or books) is allowed at a time
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(Endpoints.ADD_PAGES)
-    public ResponseEntity<String> addPagesReadingGoal(@RequestParam(value = "target") int target) {
+    public void addPagesReadingGoal(@RequestParam(value = "target") int target) {
         if (target <= 0) {
-            return ResponseEntity.badRequest().body(TARGET_BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
         }
 
         ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
         readingGoalService.save(readingGoal);
-        return ResponseEntity.ok("Saved");
     }
 
     @ResponseStatus(HttpStatus.OK)

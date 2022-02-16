@@ -30,7 +30,7 @@ If applicable, add screenshots to help explain your problem.
 
 If it's frontend-related, tell us which 
 - Browser and browser version you see the bug on
-- your Node and npm versions
+- your Node and npm versions (if you are not running the frontend in a Docker container)
 
 For backend-related bugs, tell us your 
 - operating system
