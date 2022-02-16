@@ -66,8 +66,6 @@ For example, in DataGrip or IntelliJ Ultimate:
 
 ![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
 
-
-
 # Contributing
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). 
@@ -81,8 +79,12 @@ You can find instructions on fixing this for IntelliJ and Eclipse in our [troubl
 Other common errors and solutions are also on the troubleshooting page.
 
 ## Docker running slowly: Windows users
- 
-Create a `.wslconfig` file at the root of your user folder: `C:\Users\<your-username>`:
+
+If you are notice that the Vmmem process is consuming too much of your CPU and RAM, you can adjust the maximum limit that Docker can use.
+
+![image](https://user-images.githubusercontent.com/11173328/154207932-d7ffaf70-0d1a-4362-bba8-ca23cb147692.png)
+
+If using the WSL 2 backend (see the image above: go to Docker Desktop > Settings > Resources), create a `.wslconfig` file at the root of your user folder: `C:\Users\<your-username>`:
 
 ```
 [wsl2]
@@ -90,7 +92,7 @@ memory=4GB   # Limits VM memory in WSL 2 up to 4GB
 processors=2# Makes the WSL 2 VM use two virtual processors
 ```
 
-Update the values as appropriate for your system.
+Update the values as appropriate for your system. See the [documentation](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#configure-global-options-with-wslconfig) for more information
 
 ## Help
 
