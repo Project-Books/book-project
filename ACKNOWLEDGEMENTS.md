@@ -14,6 +14,4 @@ Open source software we use:
 
 [JaCoCo](https://github.com/jacoco/jacoco) - [Eclipse Public License Version 2.0](https://www.eclipse.org/legal/epl-2.0/)
 
-[Checkstyle](https://github.com/checkstyle/checkstyle) - [GNU LGPL v2.1](https://github.com/checkstyle/checkstyle/blob/master/LICENSE)
-
 [Apache Commons Lang](https://github.com/apache/commons-lang) - [Apache License v2](https://github.com/apache/commons-lang/blob/master/LICENSE.txt)
