@@ -324,5 +324,6 @@
     <modules>
         <module>book-app</module>
         <module>email-service</module>
+        <module>commons</module>
     </modules>
 </project>
