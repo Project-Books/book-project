@@ -51,7 +51,7 @@ When running the frontend and backend, or only the backend, you can use the foll
 - Email address: `user@user.user`
 - Password: `password`
 
-Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://github.com/Project-Books/book-project/wiki/Connecting-to-the-backend-via-Postman) wiki page.
+Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://project-books.github.io/docs/development/how-to/backend-postman/) wiki page.
  
 ## Access database (optional)
 
@@ -66,8 +66,6 @@ For example, in DataGrip or IntelliJ Ultimate:
 
 ![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
 
-
-
 # Contributing
 
 If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). 
@@ -77,12 +75,16 @@ We work hard to make our project approachable to everyone -- from those new to o
 ## Backend: fixing Lombok errors
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
-You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting wiki page](https://github.com/knjk04/book-project/wiki/Troubleshooting). 
+You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting page](https://project-books.github.io/development/how-to/troubleshoot/). 
 Other common errors and solutions are also on the troubleshooting page.
 
 ## Docker running slowly: Windows users
- 
-Create a `.wslconfig` file at the root of your user folder: `C:\Users\<your-username>`:
+
+If you are notice that the Vmmem process is consuming too much of your CPU and RAM, you can adjust the maximum limit that Docker can use.
+
+![image](https://user-images.githubusercontent.com/11173328/154207932-d7ffaf70-0d1a-4362-bba8-ca23cb147692.png)
+
+If using the WSL 2 backend (see the image above: go to Docker Desktop > Settings > Resources), create a `.wslconfig` file at the root of your user folder: `C:\Users\<your-username>`:
 
 ```
 [wsl2]
@@ -90,7 +92,7 @@ memory=4GB   # Limits VM memory in WSL 2 up to 4GB
 processors=2# Makes the WSL 2 VM use two virtual processors
 ```
 
-Update the values as appropriate for your system.
+Update the values as appropriate for your system. See the [documentation](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#configure-global-options-with-wslconfig) for more information
 
 ## Help
 
@@ -100,7 +102,7 @@ When asking for help on Slack, we always recommend asking on our [#book-project]
 
 # Further information
 
-For more information, such as a roadmap and the project's underlying principles, see the [Book Project wiki](https://github.com/knjk04/book-project/wiki).
+For more information, such as a roadmap and the project's underlying principles, see our [documentation site](https://project-books.github.io).
 
 To see a list of the open-source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)
 
