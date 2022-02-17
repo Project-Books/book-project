@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.book.service;
 
-import com.karankumar.bookproject.model.Tag;
+import com.karankumar.bookproject.book.model.Tag;
 import com.karankumar.bookproject.book.repository.TagRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

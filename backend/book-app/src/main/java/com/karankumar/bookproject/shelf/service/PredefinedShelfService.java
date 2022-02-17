@@ -19,7 +19,7 @@ package com.karankumar.bookproject.shelf.service;
 
 import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.account.service.UserService;
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.account.model.User;

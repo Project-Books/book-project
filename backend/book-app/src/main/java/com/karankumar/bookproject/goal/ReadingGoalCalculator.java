@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.goal;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.util.DateUtils;
 

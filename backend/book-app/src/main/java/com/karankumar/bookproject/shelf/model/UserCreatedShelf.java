@@ -31,7 +31,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

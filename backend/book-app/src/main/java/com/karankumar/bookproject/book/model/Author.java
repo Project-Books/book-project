@@ -15,77 +15,68 @@
    If not, see <https://www.gnu.org/licenses/>.
 */
 
-package com.karankumar.bookproject.model;
+package com.karankumar.bookproject.book.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(
-    name = "publisher",
-    uniqueConstraints = {@UniqueConstraint(name = "publisher_name_unique", columnNames = "name")})
 @Getter
 @Setter
 @JsonIgnoreProperties(value = {"id", "books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@NamedEntityGraph(name = "Publisher.books", attributeNodes = @NamedAttributeNode("books"))
+@NamedEntityGraph(name = "Author.books", attributeNodes = @NamedAttributeNode("books"))
 @ExcludeFromJacocoGeneratedReport
-public class Publisher {
+public class Author {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Setter(AccessLevel.NONE)
   private Long id;
 
-  @NotBlank
-  @Column(unique = true)
-  private String name;
+  @NotBlank private String fullName;
 
-  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "publishers")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+  @Setter
   @ToString.Exclude
   private Set<Book> books = new HashSet<>();
 
-  public Publisher(@NotBlank String name) {
-    this.name = name;
+  public Author(String fullName) {
+    this.fullName = fullName;
   }
 
   @Override
   public String toString() {
-    return this.name;
+    return fullName;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Publisher publisher = (Publisher) o;
-    return name.equals(publisher.name);
+    Author author = (Author) o;
+    return fullName.equals(author.fullName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name);
+    return Objects.hash(fullName);
   }
 }

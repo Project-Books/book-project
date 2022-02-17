@@ -25,7 +25,7 @@ import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
 import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
 import com.karankumar.bookproject.account.repository.RoleRepository;
 import com.karankumar.bookproject.account.repository.UserRepository;
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.account.model.RoleType;
 import com.karankumar.bookproject.account.model.Role;

@@ -17,8 +17,8 @@
 
 package com.karankumar.bookproject.bookimport.mapper;
 
-import com.karankumar.bookproject.model.Author;
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Author;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookImport;
 import org.springframework.stereotype.Component;
 

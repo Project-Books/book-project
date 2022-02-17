@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.book.service;
 
-import com.karankumar.bookproject.model.Author;
+import com.karankumar.bookproject.book.model.Author;
 import com.karankumar.bookproject.book.repository.AuthorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

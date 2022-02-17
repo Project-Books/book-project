@@ -16,7 +16,7 @@
  */
 
 
-package com.karankumar.bookproject.model;
+package com.karankumar.bookproject.book.model;
 
 import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 
