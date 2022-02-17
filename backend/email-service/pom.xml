@@ -36,6 +36,11 @@
   <dependencies>
     <!-- https://mvnrepository.com/artifact/com.icegreen/greenmail -->
     <dependency>
+      <groupId>com.karankumar</groupId>
+      <artifactId>commons</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+    <dependency>
       <groupId>com.icegreen</groupId>
       <artifactId>greenmail-junit5</artifactId>
       <version>${greenmail.version}</version>
