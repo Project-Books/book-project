@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.book.repository;
 
-import com.karankumar.bookproject.model.Publisher;
+import com.karankumar.bookproject.book.model.Publisher;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

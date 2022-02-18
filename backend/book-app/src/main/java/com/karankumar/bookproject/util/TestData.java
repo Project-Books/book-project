@@ -17,13 +17,13 @@
 
 package com.karankumar.bookproject.util;
 
-import com.karankumar.bookproject.model.Author;
-import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.BookGenre;
+import com.karankumar.bookproject.book.model.Author;
+import com.karankumar.bookproject.book.model.Book;
+import com.karankumar.bookproject.book.model.BookGenre;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
-import com.karankumar.bookproject.model.Publisher;
-import com.karankumar.bookproject.model.RatingScale;
-import com.karankumar.bookproject.model.Tag;
+import com.karankumar.bookproject.book.model.Publisher;
+import com.karankumar.bookproject.book.model.RatingScale;
+import com.karankumar.bookproject.book.model.Tag;
 
 import java.time.LocalDate;
 import java.util.Arrays;

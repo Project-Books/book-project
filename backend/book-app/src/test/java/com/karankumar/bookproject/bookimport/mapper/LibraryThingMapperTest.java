@@ -19,7 +19,7 @@ package com.karankumar.bookproject.bookimport.mapper;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookImport;
 import org.junit.jupiter.api.Test;
 

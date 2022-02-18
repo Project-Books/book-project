@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.book.service;
 
-import com.karankumar.bookproject.model.Publisher;
+import com.karankumar.bookproject.book.model.Publisher;
 import com.karankumar.bookproject.book.repository.PublisherRepository;
 import lombok.NonNull;
 import lombok.extern.java.Log;

@@ -21,7 +21,7 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 import com.karankumar.bookproject.bookimport.mapper.LibraryThingMapper;
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookImport;
 import java.util.List;
 import java.util.Optional;

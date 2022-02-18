@@ -14,7 +14,7 @@
 
 package com.karankumar.bookproject.shelf.controller;
 
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf.ShelfName;
 import com.karankumar.bookproject.book.service.BookService;
 import java.util.List;

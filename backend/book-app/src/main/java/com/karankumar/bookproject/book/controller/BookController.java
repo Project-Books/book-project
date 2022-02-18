@@ -16,9 +16,9 @@ package com.karankumar.bookproject.book.controller;
 
 import com.karankumar.bookproject.book.dto.BookDto;
 import com.karankumar.bookproject.book.dto.BookPatchDto;
-import com.karankumar.bookproject.model.Book;
-import com.karankumar.bookproject.model.BookFormat;
-import com.karankumar.bookproject.model.BookGenre;
+import com.karankumar.bookproject.book.model.Book;
+import com.karankumar.bookproject.book.model.BookFormat;
+import com.karankumar.bookproject.book.model.BookGenre;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.book.service.BookService;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
