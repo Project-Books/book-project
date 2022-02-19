@@ -1,1 +1,1 @@
-See [Code of Conduct](https://project-books.github.io/docs/code-of-conduct/)
+See [Code of Conduct](https://project-books.github.io/conduct/code-of-conduct/)
