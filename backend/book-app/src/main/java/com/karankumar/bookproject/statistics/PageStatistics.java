@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.statistics;
 
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 
 import java.util.ArrayList;

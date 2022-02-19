@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.book.repository;
 
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
-import com.karankumar.bookproject.model.Author;
+import com.karankumar.bookproject.book.model.Author;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

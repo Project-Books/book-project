@@ -21,8 +21,8 @@ import static com.karankumar.bookproject.goal.ReadingGoalCalculator.calculatePro
 import static com.karankumar.bookproject.goal.ReadingGoalCalculator.howFarAheadOrBehindSchedule;
 import static com.karankumar.bookproject.goal.ReadingGoalCalculator.booksToReadFromStartOfYear;
 
-import com.karankumar.bookproject.model.Author;
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Author;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.util.DateUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -30,14 +30,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @DisplayName("ReadingGoalCalculator should")

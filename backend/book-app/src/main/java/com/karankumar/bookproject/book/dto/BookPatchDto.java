@@ -20,7 +20,7 @@ package com.karankumar.bookproject.book.dto;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
-import com.karankumar.bookproject.model.Author;
+import com.karankumar.bookproject.book.model.Author;
 import lombok.Data;
 
 @Data

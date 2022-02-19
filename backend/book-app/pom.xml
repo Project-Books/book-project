@@ -6,6 +6,10 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -45,6 +49,11 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.karankumar</groupId>
+      <artifactId>commons</artifactId>
+      <version>0.2.0</version>
+    </dependency>
     <dependency>
       <groupId>com.karankumar</groupId>
       <artifactId>email-service</artifactId>
