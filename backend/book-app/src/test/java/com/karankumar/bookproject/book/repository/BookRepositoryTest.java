@@ -17,6 +17,7 @@
 
 package com.karankumar.bookproject.book.repository;
 
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.repository.UserRepository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.book.model.Author;
@@ -154,4 +155,19 @@ class BookRepositoryTest {
                   .isOne();
         });
     }
+
+  @Test
+  void canGetAllBooksForUser() {
+    // given
+    User user = getTestUser(userRepository);
+
+    // when
+    List<Book> books = bookRepository.findAllBooksForUser(user);
+
+    // then
+    assertSoftly(softly -> {
+        assertThat(books).isNotEmpty();
+        assertThat(books.size()).isOne();
+    });
+  }
 }

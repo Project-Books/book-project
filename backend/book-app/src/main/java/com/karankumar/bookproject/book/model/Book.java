@@ -89,7 +89,7 @@ public class Book {
   @ElementCollection(targetClass = BookGenre.class, fetch = FetchType.EAGER)
   @CollectionTable(name = "book_genre", joinColumns = @JoinColumn(name = "book_id"))
   @Column(name = "genre")
-  private Set<BookGenre> bookGenre;
+  private Set<BookGenre> bookGenre = new HashSet<>();
 
   private BookFormat bookFormat;
 
