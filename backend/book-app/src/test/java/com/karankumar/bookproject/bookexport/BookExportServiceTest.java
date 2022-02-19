@@ -15,8 +15,8 @@
 package com.karankumar.bookproject.bookexport;
 
 import com.karankumar.bookproject.account.model.User;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.book.repository.BookRepository;
-import com.karankumar.bookproject.model.Book;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

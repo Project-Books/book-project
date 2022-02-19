@@ -15,7 +15,7 @@
 package com.karankumar.bookproject.bookexport;
 
 import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 import lombok.Data;
 
 import java.util.List;
