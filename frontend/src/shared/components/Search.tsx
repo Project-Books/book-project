@@ -15,15 +15,37 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see <https://www.gnu.org/licenses/>.
 */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import SearchResults from "../components/SearchResults";
+import { useLazyQuery, gql } from "@apollo/client";
 import { Layout } from "../components/Layout";
 import "./Search.css";
 
+const FIND_BY_TITLE = gql`
+  query getByTitleCase($title: String!) {
+    findByTitleIgnoreCase(title: $title) {
+      id
+      title
+      authors {
+        fullName
+      }
+    }
+  }
+`;
+
 export default function Search(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
+  const [getQueryResults, { data, loading, error }] =
+    useLazyQuery(FIND_BY_TITLE);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>error{error.message}</p>;
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -32,7 +54,8 @@ export default function Search(): JSX.Element {
 
   function onSearchBooks(e: React.SyntheticEvent) {
     e.preventDefault();
-    setSearchQuery(searchTerm);
+    // setSearchQuery(searchTerm);
+    getQueryResults({ variables: { title: searchTerm } });
   }
 
   return (
@@ -54,7 +77,7 @@ export default function Search(): JSX.Element {
         </button>
       </form>
       <div>
-        <SearchResults query={searchQuery} />
+        <SearchResults queryResult={data} />
       </div>
     </Layout>
   );
