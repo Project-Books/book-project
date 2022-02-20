@@ -16,70 +16,55 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from "react";
-import { useQuery, gql } from "@apollo/client";
+import booksNotFoundImage from "../../images/book-not-found.png";
 import "../components/SearchResults.css";
 
 interface ISearchResultProps {
   query: string;
 }
 
-// interface IBookDetails {
-//   fullName: string;
-//   title: string;
-//   id: string;
-// }
+interface IQueryResultProps {
+  queryResult: {
+    id: string;
+    title: string;
+    authors: [fullName: string];
+  };
+}
 
-const FIND_BY_TITLE = gql`
-  query getByTitleCase($title: String!) {
-    findByTitleIgnoreCase(title: $title) {
-      id
-      title
-      authors {
-        fullName
-      }
-    }
-  }
-`;
-
-export default function SearchResults(props: ISearchResultProps): JSX.Element {
-  const { data, loading, error } = useQuery(FIND_BY_TITLE, {
-    variables: { title: props.query },
-  });
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-  if (error) {
-    return <p>error{error.message}</p>;
-  }
-
-  const bookData = Object.values(data);
+export default function SearchResults(props: IQueryResultProps): JSX.Element {
+  console.log(props.queryResult);
+  const booksToRender = Array(8).fill(props.queryResult);
+  console.log(booksToRender);
 
   return (
     <main className="query-result-container">
-      <div className="query-result-book-image-container">
-        {/* Placeholder image should be replaced
-         with thumbnails from db once we have them available */}
-        <img
-          className="query-result-book-image"
-          src="https://images-na.ssl-images-amazon.com/images/I/A1xkFZX5k-L.jpg"
-          alt="Stephen Hawking on cover of his book Brief History of Time"
-        />
-      </div>
-
-      {/* Todo: fix 'any' and replace with appropriate type */}
-      {bookData.map((bookDetail: any) => (
-        <div className="query-results-book" key={bookDetail.id}>
-          <div className="query-result-book-title">
-            <div>{bookDetail.title}</div>
+      {/* {booksToRender ? (
+        booksToRender.map((bookDetail: any) => (
+          <div className="query-result-book" key={bookDetail.id}>
+            <img
+              className="query-result-book-image"
+              src="https://images-na.ssl-images-amazon.com/images/I/A1xkFZX5k-L.jpg"
+              alt="Stephen Hawking on cover of his book Brief History of Time"
+            />
+            <div className="query-result-book-title">
+              <p>{bookDetail.title}</p>
+            </div>
             {bookDetail.authors.map((author: any) => (
-              <div className="query-result-book-author" key={bookDetail.id}>
-                <div>{author.fullName}</div>
+              <div className="query-result-book-author" key={bookDetail.index}>
+                <p>{author.fullName}</p>
               </div>
             ))}
           </div>
+        ))
+      ) : (
+        <div className="results-not-found-container">
+          <img
+            className="no-books-found-image"
+            src={booksNotFoundImage}
+            alt="Question mark shown along with empty pages shown to signify no books found"
+          />
         </div>
-      ))}
+      )} */}
     </main>
   );
 }
