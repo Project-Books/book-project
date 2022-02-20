@@ -1,8 +1,17 @@
-.query-result-book-image-container {
-  margin-top: 80px;
+.query-result-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1f);
+  grid-template-rows: repeat(2, 4fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  margin-top: 40px;
+}
+
+.query-result-book {
+  margin: 20px;
 }
 
 .query-result-book-image {
-  width: 200px;
+  width: 250px;
   border-radius: 2%;
 }
