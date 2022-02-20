@@ -48,7 +48,7 @@ public interface PredefinedShelfRepository extends JpaRepository<PredefinedShelf
     @Query("SELECT p " +
             "FROM PredefinedShelf p " +
             "LEFT JOIN p.books AS b " +
-            "WHERE p.predefinedShelfName = com.karankumar.bookproject.model.PredefinedShelfName.READ"
+            "WHERE p.predefinedShelfName = com.karankumar.bookproject.book.model.PredefinedShelfName.READ"
     )
     List<PredefinedShelf> findReadShelf2();
 }

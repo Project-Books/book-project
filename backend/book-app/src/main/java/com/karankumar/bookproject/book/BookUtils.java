@@ -17,7 +17,7 @@
 
 package com.karankumar.bookproject.book;
 
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Book;
 
 import java.util.Optional;
 

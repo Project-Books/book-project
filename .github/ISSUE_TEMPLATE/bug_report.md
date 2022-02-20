@@ -28,15 +28,13 @@ If applicable, add screenshots to help explain your problem.
 
 **Your system**
 
+Tell us:
+- Your OS and version of Docker desktop/engine and compose you are using
+
 If it's frontend-related, tell us which 
 - Browser and browser version you see the bug on
-- your Node and npm versions (if you are not running the frontend in a Docker container)
 
-For backend-related bugs, tell us your 
-- operating system
-- which type of JDK you're running (e.g. Oracle JDK or OpenJDK)
-- JDK version number (including the minor and patch version) 
-- which IDE and version you're using (if relevant)
+And anything else that may be related.
 
 **Additional context**
 

@@ -17,11 +17,11 @@
 
 package com.karankumar.bookproject.bookimport;
 
-import com.karankumar.bookproject.model.Author;
-import com.karankumar.bookproject.model.Book;
+import com.karankumar.bookproject.book.model.Author;
+import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
-import com.karankumar.bookproject.model.RatingScale;
+import com.karankumar.bookproject.book.model.RatingScale;
 import com.karankumar.bookproject.book.service.BookService;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import com.karankumar.bookproject.shelf.service.UserCreatedShelfService;
