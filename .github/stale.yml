@@ -19,4 +19,4 @@ jobs:
         exempt-pr-assignees: 'knjk04'
         exempt-draft-pr: true
         # don't mark issues as stale:
-        days-before-issue-stale: -1
+        only: pulls
