@@ -28,8 +28,16 @@
 }
 
 .view-all {
-  text-transform: uppercase;
-  font-size: 17.5px;
+  position: relative;
+  top: -2.5px;
+  border-radius: 55px;
+  border: 1.5px solid #D3D3D3;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 12px;
+  padding-left: 12px;
+  width: 250px;
+  height: 50px;
 }
 
 .books-and-shelf {
