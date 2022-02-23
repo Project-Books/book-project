@@ -83,7 +83,7 @@ export default class ShelfCarousel extends Component<ShelfCarouselProps, IShelfC
         return (
             <div className="shelf-container">
                 <span className="shelf-title">{this.state.title}</span>
-                <span className="view-all">View all</span>
+                <span className="view-all">View All</span>
                 <div className="clear" />
                 <div className="books-and-shelf">
                     <div className="book-wrap">
