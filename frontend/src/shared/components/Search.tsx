@@ -45,7 +45,7 @@ export default function Search(): JSX.Element {
           type="search"
           className="search-input"
           id="search"
-          placeholder="Search"
+          placeholder="Search for book title, author or ISBN 13"
           value={searchTerm}
           onChange={handleChange}
         />
