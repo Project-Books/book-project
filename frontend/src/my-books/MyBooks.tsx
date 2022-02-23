@@ -27,7 +27,6 @@ import HttpClient from '../shared/http/HttpClient';
 import Endpoints from '../shared/api/endpoints';
 import "./MyBooks.css";
 import ShelfView from "../shared/book-display/ShelfView";
-import { FilterationLayout } from "./FilterationLayout";
 
 
 interface IState {
@@ -176,9 +175,6 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             </Button>
             </div>}>
                 <NavBar />
-                <FilterationLayout onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                        this.setState({searchVal: event.target.value});
-                    }} />
                 <div>
                     {
                         this.state.showListView ? (
