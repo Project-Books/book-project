@@ -28,8 +28,13 @@
 }
 
 .view-all {
-  text-transform: uppercase;
-  font-size: 17.5px;
+  position: relative;
+  top: -2.5px;
+  border-radius: 55px;
+  border: 1px solid #ebebeb;
+  padding: 8px 12px;
+  width: 250px;
+  height: 50px;
 }
 
 .books-and-shelf {
@@ -50,11 +55,11 @@
 }
 
 .shelf {
-  border-radius: 4px 4px 999px 999px;
+  border-radius: 4px;
   background-color: white;
-  box-shadow: 0px 10px 20px 9px rgba(197, 197, 197, 0.5);
+  box-shadow: 0px 10px 20px 9px rgba(197, 197, 197, 0.25);
   position: relative;
-  height: 15px;
+  height: 24px;
 }
 
 /* Styles for Book */

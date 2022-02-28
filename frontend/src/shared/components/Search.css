@@ -36,6 +36,8 @@ If not, see <https://www.gnu.org/licenses/>.
   font-size: 14pt;
   height: 46px;
   width: 100%;
+  border: 1px solid #E5E5E5;
+  padding: 12px 16px;
 }
 
 .search-input::placeholder {
