@@ -236,7 +236,7 @@ public class UserService {
   
 
   public boolean passwordIsIncorrect(String password) {
-    return !passwordEncoder.matches(getCurrentUser().getPassword(), password);
+    return !passwordEncoder.matches(password, getCurrentUser().getPassword());
   }
 
   private void removePredefinedShelfFromUserBooks() {
