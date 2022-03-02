@@ -24,6 +24,7 @@ import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.account.auth.CustomAuthenticationProvider;
 import com.karankumar.bookproject.account.auth.service.DatabaseUserDetailsPasswordService;
 import com.karankumar.bookproject.account.auth.service.DatabaseUserDetailsService;
+import com.karankumar.bookproject.account.repository.UserRepository;
 import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.security.jwt.JwtConfig;
 import com.karankumar.bookproject.security.jwt.JwtTokenVerifier;
@@ -54,6 +55,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private final UserService userService;
+  private final UserRepository userRepository;
   private final DatabaseUserDetailsService databaseUserDetailsService;
   private final DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService;
   private final SecretKey secretKey;
@@ -61,11 +63,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   public SecurityConfiguration(
       @Lazy UserService userService,
+      UserRepository userRepository,
       DatabaseUserDetailsService databaseUserDetailsService,
       DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService,
       SecretKey secretKey,
       JwtConfig jwtConfig) {
     this.userService = userService;
+    this.userRepository = userRepository;
     this.databaseUserDetailsService = databaseUserDetailsService;
     this.databaseUserDetailsPasswordService = databaseUserDetailsPasswordService;
     this.secretKey = secretKey;
@@ -126,7 +130,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .addFilter(new JwtUsernamePasswordAuthFilter(authenticationManager(), jwtConfig,
             secretKey))
-        .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),
+        .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig, userRepository),
             JwtUsernamePasswordAuthFilter.class)
         .authorizeRequests()
         .antMatchers(HttpMethod.POST, Mappings.USER).permitAll()

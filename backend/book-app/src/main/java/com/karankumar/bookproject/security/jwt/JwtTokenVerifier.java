@@ -19,12 +19,18 @@ package com.karankumar.bookproject.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
+import com.karankumar.bookproject.account.model.User;
+import com.karankumar.bookproject.account.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +41,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,15 +50,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@RequiredArgsConstructor
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
   private final SecretKey secretKey;
   private final JwtConfig jwtConfig;
-
-  public JwtTokenVerifier(SecretKey secretKey, JwtConfig jwtConfig) {
-    this.secretKey = secretKey;
-    this.jwtConfig = jwtConfig;
-  }
+  private final UserRepository userRepository;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request,
@@ -86,13 +90,15 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     try {
       Claims body = getJwsClaims(token);
       String username = body.getSubject();
+      Date issuedAt = body.getIssuedAt();
+      checkForPotentiallyBlacklistedToken(username, issuedAt);
 
       var authorities = (List<Map<String, String>>) body.get("authorities");
 
       Authentication authentication = getAuthentication(username, authorities);
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    } catch (ExpiredJwtException e) {
+    } catch (ExpiredJwtException | BlacklistedTokenUsedException e) {
       response.setStatus(HttpStatus.UNAUTHORIZED.value());
       return;
     } catch (JwtException e) {
@@ -100,6 +106,17 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     }
 
     filterChain.doFilter(request, response);
+  }
+
+  private void checkForPotentiallyBlacklistedToken(String email, Date issuedAt) {
+    final User user = userRepository.findByEmail(email).orElseThrow();
+    final LocalDateTime tokenCreationDate = Instant.ofEpochMilli(issuedAt.getTime())
+        .atOffset(ZoneOffset.UTC)
+        .toLocalDateTime();
+    final LocalDateTime lastPasswordChangeTime = user.getLastPasswordChangeTime();
+    if (lastPasswordChangeTime != null && tokenCreationDate.isBefore(lastPasswordChangeTime)) {
+      throw new BlacklistedTokenUsedException();
+    }
   }
 
   private void updateResponseWithJwtAndRefreshToken(HttpServletResponse response,

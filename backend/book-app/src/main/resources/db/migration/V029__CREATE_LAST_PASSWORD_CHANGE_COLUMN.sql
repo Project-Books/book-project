@@ -1,0 +1,1 @@
+ALTER TABLE bp_user ADD COLUMN last_password_change_time TIMESTAMP;

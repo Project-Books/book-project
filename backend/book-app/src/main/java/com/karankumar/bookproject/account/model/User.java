@@ -88,6 +88,8 @@ public class User {
 
   private LocalDateTime lockTime;
 
+  private LocalDateTime lastPasswordChangeTime;
+
   // Fetch type can be eager as there are not many roles
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
   @JoinTable(
