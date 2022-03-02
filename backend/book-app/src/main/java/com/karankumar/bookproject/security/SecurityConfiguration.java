@@ -17,15 +17,18 @@
 
 package com.karankumar.bookproject.security;
 
+import static java.util.List.of;
+
 import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
-import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.Mappings;
 import com.karankumar.bookproject.account.auth.CustomAuthenticationProvider;
 import com.karankumar.bookproject.account.auth.service.DatabaseUserDetailsPasswordService;
 import com.karankumar.bookproject.account.auth.service.DatabaseUserDetailsService;
+import com.karankumar.bookproject.account.service.UserService;
 import com.karankumar.bookproject.security.jwt.JwtConfig;
 import com.karankumar.bookproject.security.jwt.JwtTokenVerifier;
 import com.karankumar.bookproject.security.jwt.JwtUsernamePasswordAuthFilter;
+import javax.crypto.SecretKey;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -45,14 +48,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.crypto.SecretKey;
-import java.util.Arrays;
-import java.util.List;
-
 @EnableWebSecurity
 @Configuration
 @ExcludeFromJacocoGeneratedReport
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
   private final UserService userService;
   private final DatabaseUserDetailsService databaseUserDetailsService;
   private final DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService;
@@ -88,7 +88,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean
   public AuthenticationProvider authenticationProviderBean() {
     CustomAuthenticationProvider customAuthenticationProvider =
-        new CustomAuthenticationProvider(userService);
+        new CustomAuthenticationProvider(
+        userService);
     customAuthenticationProvider.setPasswordEncoder(passwordEncoder());
     customAuthenticationProvider.setUserDetailsService(databaseUserDetailsService);
 
@@ -103,36 +104,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(WebSecurity web) {
-    web.ignoring()
-        .antMatchers(
-            "/favicon.ico",
-            "/robots.txt",
-            "/manifest.webmanifest",
-            "/sw.js",
-            "/offline.html",
-            "/icons/**",
-            "/images/**",
-            "/styles/**",
-            "/frontend/**",
-            "/frontend-es5/**",
-            "/frontend-es6/**");
+    web.ignoring().antMatchers(
+        "/favicon.ico",
+        "/robots.txt",
+        "/manifest.webmanifest",
+        "/sw.js",
+        "/offline.html",
+        "/icons/**",
+        "/images/**",
+        "/styles/**",
+        "/frontend/**",
+        "/frontend-es5/**", "/frontend-es6/**");
   }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.cors()
         .and()
-        .csrf()
-        .disable()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .addFilter(new JwtUsernamePasswordAuthFilter(authenticationManager(), jwtConfig, secretKey))
-        .addFilterAfter(
-            new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthFilter.class)
+        .addFilter(new JwtUsernamePasswordAuthFilter(authenticationManager(), jwtConfig,
+            secretKey))
+        .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig),
+            JwtUsernamePasswordAuthFilter.class)
         .authorizeRequests()
-        .antMatchers(HttpMethod.POST, Mappings.USER)
-        .permitAll()
+        .antMatchers(HttpMethod.POST, Mappings.USER).permitAll()
         .anyRequest()
         .authenticated();
   }
@@ -140,10 +137,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
-    config.setAllowedOrigins(List.of("http://localhost:3000"));
-    config.setAllowedMethods(List.of("OPTIONS", "GET", "PUT", "POST", "DELETE"));
-    config.setAllowedHeaders(List.of("*"));
-    config.setExposedHeaders(Arrays.asList("Authorization"));
+    config.setAllowedOrigins(of("http://localhost:3000"));
+    config.setAllowedMethods(of("OPTIONS", "GET", "PUT", "POST", "DELETE"));
+    config.setAllowedHeaders(of("*"));
+    config.setExposedHeaders(of("Authorization"));
     config.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

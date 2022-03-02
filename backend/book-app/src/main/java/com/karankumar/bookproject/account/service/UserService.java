@@ -23,18 +23,28 @@ import com.karankumar.bookproject.account.exception.CurrentUserNotFoundException
 import com.karankumar.bookproject.account.exception.IncorrectPasswordException;
 import com.karankumar.bookproject.account.exception.PasswordTooWeakException;
 import com.karankumar.bookproject.account.exception.UserAlreadyRegisteredException;
+import com.karankumar.bookproject.account.model.Role;
+import com.karankumar.bookproject.account.model.RoleType;
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.repository.RoleRepository;
 import com.karankumar.bookproject.account.repository.UserRepository;
+import com.karankumar.bookproject.book.repository.BookRepository;
 import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
-import com.karankumar.bookproject.account.model.RoleType;
-import com.karankumar.bookproject.account.model.Role;
-import com.karankumar.bookproject.account.model.User;
-import com.karankumar.bookproject.book.repository.BookRepository;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import com.nulabinc.zxcvbn.Zxcvbn;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import lombok.NonNull;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,20 +56,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 @Service
 public class UserService {
+
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
   private final PasswordEncoder passwordEncoder;
@@ -88,11 +87,10 @@ public class UserService {
 
   public User register(@NonNull UserToRegisterDto userToRegisterDto)
       throws UserAlreadyRegisteredException {
-    User userToRegister =
-        User.builder()
-            .email(userToRegisterDto.getUsername())
-            .password(userToRegisterDto.getPassword())
-            .build();
+    User userToRegister = User.builder()
+        .email(userToRegisterDto.getUsername())
+        .password(userToRegisterDto.getPassword())
+        .build();
 
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
     Set<ConstraintViolation<User>> constraintViolations = validator.validate(userToRegister);
@@ -112,12 +110,9 @@ public class UserService {
   }
 
   private User createNewUser(User user) {
-    Role userRole =
-        roleRepository
-            .findByRole(RoleType.USER.toString())
-            .orElseThrow(
-                () ->
-                    new AuthenticationServiceException("The default user role could not be found"));
+    Role userRole = roleRepository.findByRole(RoleType.USER.toString())
+        .orElseThrow(() -> new AuthenticationServiceException(
+            "The default user role could not be found"));
     return User.builder()
         .email(user.getEmail())
         .password(passwordEncoder.encode(user.getPassword()))
@@ -128,9 +123,8 @@ public class UserService {
 
   public User getCurrentUser() {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
-    return userRepository
-        .findByEmail(email)
-        .orElseThrow(() -> new CurrentUserNotFoundException("Current user could not be found"));
+    return userRepository.findByEmail(email).orElseThrow(() ->
+        new CurrentUserNotFoundException("Current user could not be found"));
   }
 
   // TODO: this can be removed once we are no longer populating test data
@@ -161,8 +155,8 @@ public class UserService {
     return userRepository.findByEmail(email).isPresent();
   }
 
-  public void changeUserEmail(
-      @NonNull User user, @NonNull String currentPassword, @NonNull String email) {
+  public void changeUserEmail(@NonNull User user, @NonNull String currentPassword,
+      @NonNull String email) {
     if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
       throw new IncorrectPasswordException("The password you entered is incorrect");
     }
@@ -170,6 +164,7 @@ public class UserService {
     if (user.getEmail().equalsIgnoreCase(email)) {
       throw new UserAlreadyRegisteredException(
           "The email address you provided is the same as your current one.");
+      
     }
 
     user.setEmail(email);
@@ -196,8 +191,8 @@ public class UserService {
    * @return true if password
    */
   public boolean isPasswordStrengthVeryStrong(String password) {
-    return new Zxcvbn().measure(password).getScore()
-        >= PasswordStrength.VERY_STRONG.getStrengthNum();
+    return new Zxcvbn().measure(password).getScore() 
+        >=PasswordStrength.VERY_STRONG.getStrengthNum();
   }
 
   private boolean isPasswordTooWeak(String password) {
@@ -234,9 +229,11 @@ public class UserService {
     } else {
       // TODO: throw custom exception.
       throw new ResponseStatusException(
-          HttpStatus.NOT_FOUND, String.format(USER_NOT_FOUND_ERROR_MESSAGE, id));
+          HttpStatus.NOT_FOUND,
+          String.format(USER_NOT_FOUND_ERROR_MESSAGE, id));
+      }
     }
-  }
+  
 
   public boolean passwordIsIncorrect(String password) {
     return !passwordEncoder.matches(getCurrentUser().getPassword(), password);
@@ -277,11 +274,16 @@ public class UserService {
 
   public long hoursUntilUnlock(User user) {
     return ChronoUnit.HOURS.between(
-        LocalDateTime.now(), user.getLockTime().plusSeconds(LOCK_TIME_DURATION));
+        LocalDateTime.now(),
+        user.getLockTime().plusSeconds(LOCK_TIME_DURATION));
+    
   }
 
   public boolean unlockWhenTimeExpired(User user) {
-    long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(user.getLockTime(), LocalDateTime.now());
+    long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(
+        user.getLockTime(),
+        LocalDateTime.now()
+    );
 
     boolean shouldUnlock = elapsedTimeInSeconds > LOCK_TIME_DURATION;
     if (shouldUnlock) {
