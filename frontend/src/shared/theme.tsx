@@ -15,9 +15,9 @@ you should have received a copy of the gnu general public license along with thi
 if not, see <https://www.gnu.org/licenses/>.
 */
 
-import { createMuiTheme } from '@material-ui/core/styles'
+import { createTheme } from '@material-ui/core/styles'
 
-export const theme  = createMuiTheme({
+export const theme  = createTheme({
     palette: {
         primary: {
             main: "#000000",
@@ -35,7 +35,7 @@ export const theme  = createMuiTheme({
     }
 })
 
-export const darkTheme = createMuiTheme({
+export const darkTheme = createTheme({
     palette: {
       background: {
         default: "#fafafa",

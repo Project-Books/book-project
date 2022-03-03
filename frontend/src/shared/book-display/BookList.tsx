@@ -21,8 +21,7 @@ import './BookList.css';
 import { BOOK_OVERVIEW } from '../routes'
 import { Link } from 'react-router-dom';
 import {ArrowDropDown, ArrowDropUp} from "@material-ui/icons";
-
-const CHAR_LIMIT = 40;
+import ShelfBook from './ShelfBook';
 
 export interface BookListProps {
   bookListData: Book[];
@@ -92,7 +91,7 @@ export default class BookList extends Component <BookListProps, BookListProps> {
     return (
         <div className="booklist-container">
           <div className="booklist-container-headers booklist-book">
-            <div className="booklist-book-thumbnail"></div>
+          <div className="booklist-book-thumbnail"></div>
             <div className="booklist-book-title" onClick={()=> this.sortBy('title')}>
               Title{getSortingIcon('title', this.nameToOrder)}
             </div>
@@ -113,11 +112,7 @@ export default class BookList extends Component <BookListProps, BookListProps> {
               <Link to={ BOOK_OVERVIEW + "/" + book.id }
                     style={{ textDecoration: 'none', color: 'black' }} key={book.id}>
                 <div className="booklist-book">
-
-                  <div className="booklist-book-thumbnail">
-                    {book.title.length > CHAR_LIMIT ?
-                        book.title.substring(0, CHAR_LIMIT) + "..." : book.title}
-                  </div>
+                <ShelfBook key={book.id} title={book.title} img={book.img} />
                   <div className="booklist-book-title">{book.title}</div>
                   <div className="booklist-book-author">{book.author.fullName}</div>
                   <div className="booklist-book-shelf">{book.predefinedShelf.shelfName}</div>

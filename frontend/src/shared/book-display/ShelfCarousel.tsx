@@ -17,27 +17,10 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, { ReactElement } from 'react'
 import './ShelfCarousel.css'
-import { Icon, Paper } from '@material-ui/core';
+import { Icon } from '@material-ui/core';
 import { Book } from '../types/Book';
 import { Component } from 'react';
-
-function ShelfBook(props: BookProps): JSX.Element {
-    const bookClass = 'book' + (props.img === "" ? '' : ' image');
-    const displayTitle = props.title.length > 12 ? 
-                        (props.title.substring(0, 12) + "...") : props.title;
-
-    return (
-        <Paper className={bookClass} variant="elevation" square={false}>
-            {(bookClass !== "book") && <div className="book-spine"></div>}
-            {displayTitle}
-        </Paper>
-    )
-}
-
-type BookProps = {
-    title: string;
-    img: string;
-}
+import ShelfBook from './ShelfBook';
 
 interface IShelfCarouselState {
     title: string;
