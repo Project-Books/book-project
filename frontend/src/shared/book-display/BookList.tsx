@@ -91,7 +91,7 @@ export default class BookList extends Component <BookListProps, BookListProps> {
     return (
         <div className="booklist-container">
           <div className="booklist-container-headers booklist-book">
-          <div className="booklist-book-thumbnail"></div>
+            <div className="booklist-book-thumbnail"></div>
             <div className="booklist-book-title" onClick={()=> this.sortBy('title')}>
               Title{getSortingIcon('title', this.nameToOrder)}
             </div>

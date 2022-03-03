@@ -120,7 +120,6 @@ class MyBooks extends Component<Record<string, unknown>, IState> {
             this.setState({
                 bookList: response
             });
-            console.log("Booklist " + this.state.bookList);
         })
             .catch((error: Record<string, string>) => {
                 console.error('error: ', error);
