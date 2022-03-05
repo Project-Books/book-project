@@ -16,7 +16,6 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 import React from "react";
-import booksNotFoundImage from "../../images/book-not-found.png";
 import "./SearchResults.css";
 
 interface ISearchResultProps {
@@ -32,12 +31,11 @@ export interface IQueryResult {
 }
 
 export default function SearchResults(props: ISearchResultProps): JSX.Element {
-  console.log(props);
   const { query } = props;
 
   return (
     <main className="query-result-container">
-      {query ? (
+      {query &&
         query.map((bookDetail: IQueryResult) => (
           <div className="query-result-book" key={bookDetail.id}>
             <div className="image-wrapper">
@@ -54,16 +52,7 @@ export default function SearchResults(props: ISearchResultProps): JSX.Element {
               </div>
             ))}
           </div>
-        ))
-      ) : (
-        <div className="results-not-found-container">
-          <img
-            className="no-books-found-image"
-            src={booksNotFoundImage}
-            alt="Question mark shown along with empty pages shown to signify no books found"
-          />
-        </div>
-      )}
+        ))}
     </main>
   );
 }

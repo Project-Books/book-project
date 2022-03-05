@@ -36,7 +36,7 @@ If not, see <https://www.gnu.org/licenses/>.
   font-size: 14pt;
   height: 46px;
   width: 100%;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #e5e5e5;
   padding: 12px 16px;
 }
 
@@ -66,4 +66,19 @@ search-input:focus {
 .search-icon {
   color: black;
   cursor: pointer;
+}
+
+.results-not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.results-not-found-title-text {
+  font-size: 18pt;
+  font-weight: bold;
+}
+
+.results-not-found-image {
+  margin-top: 30px;
 }

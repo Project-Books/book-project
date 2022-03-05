@@ -17,6 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, { useState, useEffect } from "react";
 import SearchIcon from "@material-ui/icons/Search";
+import resultsNotFoundImage from "../../images/book-not-found.png";
 import SearchResults, { IQueryResult } from "../components/SearchResults";
 import { useLazyQuery, gql } from "@apollo/client";
 import { Layout } from "../components/Layout";
@@ -44,6 +45,9 @@ export default function Search(): JSX.Element {
 
   useEffect(() => {
     if (!data) {
+      return;
+    }
+    if (data.findByTitleIgnoreCase === null) {
       return;
     }
     const duplicateDataCount = 8;
@@ -90,6 +94,21 @@ export default function Search(): JSX.Element {
       </form>
       <div>
         <SearchResults query={reformattedQueryData} />
+        {data !== undefined && data.findByTitleIgnoreCase === null && (
+          <div className="results-not-found-container">
+            <p className="results-not-found-title-text">
+              It looks like we couldn&apos;t find what you&apos;re looking for
+            </p>
+            <p className="results-not-found-change-query-text">
+              Try changing your search query
+            </p>
+            <img
+              className="results-not-found-image"
+              src={resultsNotFoundImage}
+              alt="Question mark shown along with empty pages shown to signify no books found"
+            />
+          </div>
+        )}
       </div>
     </Layout>
   );
