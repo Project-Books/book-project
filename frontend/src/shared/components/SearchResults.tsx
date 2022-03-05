@@ -20,26 +20,25 @@ import booksNotFoundImage from "../../images/book-not-found.png";
 import "../components/SearchResults.css";
 
 interface ISearchResultProps {
-  query: string;
+  query: IQueryResult[];
 }
 
-interface IQueryResultProps {
-  queryResult: {
-    id: string;
-    title: string;
-    authors: [fullName: string];
-  };
+export interface IQueryResult {
+  id: string;
+  title: string;
+  authors: {
+    fullName: string;
+  }[];
 }
 
-export default function SearchResults(props: IQueryResultProps): JSX.Element {
-  console.log(props.queryResult);
-  const booksToRender = Array(8).fill(props.queryResult);
-  console.log(booksToRender);
+export default function SearchResults(props: ISearchResultProps): JSX.Element {
+  console.log(props);
+  const { query } = props;
 
   return (
     <main className="query-result-container">
-      {/* {booksToRender ? (
-        booksToRender.map((bookDetail: any) => (
+      {query ? (
+        query.map((bookDetail: IQueryResult) => (
           <div className="query-result-book" key={bookDetail.id}>
             <img
               className="query-result-book-image"
@@ -49,8 +48,8 @@ export default function SearchResults(props: IQueryResultProps): JSX.Element {
             <div className="query-result-book-title">
               <p>{bookDetail.title}</p>
             </div>
-            {bookDetail.authors.map((author: any) => (
-              <div className="query-result-book-author" key={bookDetail.index}>
+            {bookDetail.authors.map((author) => (
+              <div className="query-result-book-author" key={author.fullName}>
                 <p>{author.fullName}</p>
               </div>
             ))}
@@ -64,7 +63,7 @@ export default function SearchResults(props: IQueryResultProps): JSX.Element {
             alt="Question mark shown along with empty pages shown to signify no books found"
           />
         </div>
-      )} */}
+      )}
     </main>
   );
 }
