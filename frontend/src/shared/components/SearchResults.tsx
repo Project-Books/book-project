@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React from "react";
 import booksNotFoundImage from "../../images/book-not-found.png";
-import "../components/SearchResults.css";
+import "./SearchResults.css";
 
 interface ISearchResultProps {
   query: IQueryResult[];
@@ -40,17 +40,17 @@ export default function SearchResults(props: ISearchResultProps): JSX.Element {
       {query ? (
         query.map((bookDetail: IQueryResult) => (
           <div className="query-result-book" key={bookDetail.id}>
-            <img
-              className="query-result-book-image"
-              src="https://images-na.ssl-images-amazon.com/images/I/A1xkFZX5k-L.jpg"
-              alt="Stephen Hawking on cover of his book Brief History of Time"
-            />
-            <div className="query-result-book-title">
-              <p>{bookDetail.title}</p>
+            <div className="image-wrapper">
+              <img
+                className="query-result-book-image"
+                src="https://images-na.ssl-images-amazon.com/images/I/A1xkFZX5k-L.jpg"
+                alt="Stephen Hawking on cover of his book Brief History of Time"
+              />
             </div>
+            <div className="query-result-book-title">{bookDetail.title}</div>
             {bookDetail.authors.map((author) => (
               <div className="query-result-book-author" key={author.fullName}>
-                <p>{author.fullName}</p>
+                {author.fullName}
               </div>
             ))}
           </div>
