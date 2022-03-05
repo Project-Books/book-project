@@ -1,6 +1,6 @@
 .query-result-container {
   display: grid;
-  grid-template-columns: repeat(4, 1f);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 4fr);
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -9,9 +9,26 @@
 
 .query-result-book {
   margin: 20px;
+  text-align: center;
+}
+
+.query-result-book-title {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.query-result-book-author {
+  font-style: italic;
+  font-size: 12pt;
 }
 
 .query-result-book-image {
-  width: 250px;
+  width: 100%;
   border-radius: 2%;
+}
+
+.image-wrapper {
+  background-color: rgb(246, 244, 244);
+  padding: 32px;
+  border-radius: 20px;
 }
