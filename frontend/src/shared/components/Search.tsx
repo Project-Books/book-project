@@ -17,7 +17,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 import React, { useState, useEffect } from "react";
 import SearchIcon from "@material-ui/icons/Search";
-import SearchResults from "../components/SearchResults";
+import SearchResults, { IQueryResult } from "../components/SearchResults";
 import { useLazyQuery, gql } from "@apollo/client";
 import { Layout } from "../components/Layout";
 import "./Search.css";
@@ -36,9 +36,22 @@ const FIND_BY_TITLE = gql`
 
 export default function Search(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState("");
-  // const [searchQuery, setSearchQuery] = useState("");
   const [getQueryResults, { data, loading, error }] =
     useLazyQuery(FIND_BY_TITLE);
+  const [reformattedQueryData, setReformattedQueryData] = useState<
+    IQueryResult[]
+  >([]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    const duplicateDataCount = 8;
+    const booksToRender: IQueryResult[] = Array(duplicateDataCount).fill(
+      data.findByTitleIgnoreCase
+    );
+    setReformattedQueryData(booksToRender);
+  }, [data]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -54,7 +67,6 @@ export default function Search(): JSX.Element {
 
   function onSearchBooks(e: React.SyntheticEvent) {
     e.preventDefault();
-    // setSearchQuery(searchTerm);
     getQueryResults({ variables: { title: searchTerm } });
   }
 
@@ -77,7 +89,7 @@ export default function Search(): JSX.Element {
         </button>
       </form>
       <div>
-        <SearchResults queryResult={data} />
+        <SearchResults query={reformattedQueryData} />
       </div>
     </Layout>
   );
