@@ -98,7 +98,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
       Authentication authentication = getAuthentication(username, authorities);
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    } catch (ExpiredJwtException | BlacklistedTokenUsedException e) {
+    } catch (ExpiredJwtException | BlacklistedTokenUsedException | TokenNotMatchingWithAnyUserException e) {
       response.setStatus(HttpStatus.UNAUTHORIZED.value());
       return;
     } catch (JwtException e) {
@@ -109,7 +109,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
   }
 
   private void checkForPotentiallyBlacklistedToken(String email, Date issuedAt) {
-    final User user = userRepository.findByEmail(email).orElseThrow();
+    final User user = userRepository.findByEmail(email)
+        .orElseThrow(TokenNotMatchingWithAnyUserException::new);
     final LocalDateTime tokenCreationDate = Instant.ofEpochMilli(issuedAt.getTime())
         .atOffset(ZoneOffset.UTC)
         .toLocalDateTime();
