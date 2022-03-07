@@ -37,11 +37,8 @@ const FIND_BY_TITLE = gql`
 
 export default function Search(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState("");
-  const [getQueryResults, { data, loading, error }] =
-    useLazyQuery(FIND_BY_TITLE);
-  const [reformattedQueryData, setReformattedQueryData] = useState<
-    IQueryResult[]
-  >([]);
+  const [getQueryResults, { data, loading, error }] = useLazyQuery(FIND_BY_TITLE);
+  const [reformattedQueryData, setReformattedQueryData] = useState<IQueryResult[]>([]);
 
   useEffect(() => {
     if (!data) {
