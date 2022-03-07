@@ -49,13 +49,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
+
   private UserService underTest;
 
-  @Mock private PasswordEncoder mockPasswordEncoder;
-  @Mock private RoleRepository roleRepository;
-  @Mock private AuthenticationManager authenticationManager;
-  @Mock private UserRepository mockUserRepository;
-  @Mock private BookRepository bookRepository;
+  @Mock
+  private PasswordEncoder mockPasswordEncoder;
+  @Mock
+  private RoleRepository roleRepository;
+  @Mock
+  private AuthenticationManager authenticationManager;
+  @Mock
+  private UserRepository mockUserRepository;
+  @Mock
+  private BookRepository bookRepository;
 
   @BeforeEach
   void setUp() {
@@ -144,7 +150,8 @@ class UserServiceTest {
     when(mockPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
     assertThatExceptionOfType(IncorrectPasswordException.class)
-        .isThrownBy(() -> underTest.changeUserEmail(user, "a", "email@email.com"))
+        .isThrownBy(() ->
+            underTest.changeUserEmail(user, "a", "email@email.com"))
         .withMessage("The password you entered is incorrect");
     then(mockUserRepository).shouldHaveNoInteractions();
   }
@@ -157,7 +164,8 @@ class UserServiceTest {
     when(mockPasswordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
     assertThatExceptionOfType(UserAlreadyRegisteredException.class)
-        .isThrownBy(() -> underTest.changeUserEmail(user, "a", email))
+        .isThrownBy(() ->
+            underTest.changeUserEmail(user, "a", email))
         .withMessage("The email address you provided is the same as your current one.");
     then(mockUserRepository).shouldHaveNoInteractions();
   }
