@@ -180,20 +180,24 @@ class UserServiceTest {
   @Test
   void changeUserPassword_encodesPassword_beforeSaving() {
     // given
-    String veryStrongPassword = "VeryStrongPassword007";
+    final String oldPassword = "VeryStrongPassword007Old";
+    final String newPassword = "VeryStrongPassword007New";
     final String email = "test@gmail.com";
+    final User user = User.builder()
+        .email(email)
+        .password(oldPassword)
+        .build();
 
     // when
-    underTest.changeUserPassword(User.builder().email(email).build(), veryStrongPassword);
+    underTest.changeUserPassword(user, newPassword);
 
     // then
-    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+    final ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
     verify(mockUserRepository).save(userArgumentCaptor.capture());
-    User expected =
-        User.builder()
-            .email(email)
-            .password(mockPasswordEncoder.encode(veryStrongPassword))
-            .build();
+    final User expected = User.builder()
+        .email(email)
+        .password(mockPasswordEncoder.encode(newPassword))
+        .build();
     assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
   }
 
