@@ -12,7 +12,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.karankumar.bookproject.book.controller;
+package com.karankumar.bookproject.account.controller;
 
 import com.karankumar.bookproject.account.controller.UserController;
 import com.karankumar.bookproject.account.dto.UserToRegisterDto;
@@ -93,6 +93,32 @@ class UserControllerTest {
 
         assertThatExceptionOfType(ResponseStatusException.class)
             .isThrownBy(() -> userController.getUser(0L));
+    }
+
+    @Test
+    void emailExists_returnsOk_ifTrue() {
+        // given
+        when(mockedUserService.findUserByEmail(anyString()))
+                .thenReturn(Optional.of(mock(User.class)));
+
+        // when
+        ResponseEntity<String> response = userController.emailExists("test@email.com");
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    void emailExists_returnsNotFound_ifFalse() {
+        // given
+        when(mockedUserService.findUserByEmail(anyString()))
+                .thenReturn(Optional.empty());
+
+        // when
+        ResponseEntity<String> response = userController.emailExists("test@email.com");
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test

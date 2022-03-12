@@ -91,13 +91,13 @@ public class UserController {
   }
 
   @GetMapping("/email/{email}")
-  public ResponseEntity<String> checkIfEmailExists(@PathVariable String email) {
+  public ResponseEntity<String> emailExists(@PathVariable String email) {
       Optional<User> user = userService.findUserByEmail(email);
-      if (user.isPresent()) {
-        return ResponseEntity.status(HttpStatus.OK).body("Success");
-      } else {
+      if (user.isEmpty()) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EMAIL_NOT_FOUND);
       }
+
+      return ResponseEntity.status(HttpStatus.OK).body("Success");
   }
 
   @PostMapping
