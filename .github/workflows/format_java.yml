@@ -1,0 +1,17 @@
+# Formats Java files to adhere to the Java style guide
+name: Format Java
+
+on: [pull_request]
+
+jobs:
+
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # v2 minimum required
+      - uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--skip-sorting-imports --replace"
+          # Recommended if you use MacOS:
+          # githubToken: ${{ secrets.GITHUB_TOKEN }}
+          
