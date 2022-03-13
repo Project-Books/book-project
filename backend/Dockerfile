@@ -24,9 +24,6 @@ ENV db_username_env ${DB_USERNAME}
 ARG DB_PASSWORD
 ENV db_password_env ${DB_PASSWORD}
 
-RUN echo ${DB_HOSTNAME}
-RUN echo ${db_hostname_env}
-
 COPY --from=builder $JAR_FILE /opt/bookapp/app.jar
 WORKDIR /opt/bookapp/
 
