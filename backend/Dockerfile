@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . /app
 ARG mvn_arg="clean package -DskipTests"
 
-RUN --mount=type=cache,target=/root/.m2 mvn -f /app/pom.xml $mvn_arg
+RUN target=/root/.m2 mvn -f /app/pom.xml $mvn_arg
 
 # Run jar
 FROM openjdk:11-jre-slim
