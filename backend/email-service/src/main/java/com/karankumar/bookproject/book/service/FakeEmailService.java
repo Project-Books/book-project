@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Profile({"local", "test"})
+@Profile({"local", "dev", "test"})
 @Component
 @ExcludeFromJacocoGeneratedReport
 public class FakeEmailService implements EmailService {
