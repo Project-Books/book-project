@@ -305,9 +305,9 @@
             </build>
         </profile>
         <profile>
-            <id>dev</id>
+            <id>local</id>
             <properties>
-                <activatedProperties>dev</activatedProperties>
+                <activatedProperties>local</activatedProperties>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>

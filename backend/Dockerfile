@@ -15,4 +15,4 @@ WORKDIR /opt/bookapp/
 RUN useradd -m myuser
 USER myuser
 EXPOSE 8080
-CMD ["java", "-jar", "-Dspring.profiles.active=dev", "app.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=local", "app.jar"]
