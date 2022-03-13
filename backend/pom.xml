@@ -314,9 +314,9 @@
             </activation>
         </profile>
         <profile>
-            <id>prod</id>
+            <id>dev</id>
             <properties>
-                <activatedProperties>prod</activatedProperties>
+                <activatedProperties>dev</activatedProperties>
             </properties>
         </profile>
     </profiles>
