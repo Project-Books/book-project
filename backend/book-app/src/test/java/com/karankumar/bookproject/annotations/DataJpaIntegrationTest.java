@@ -19,6 +19,8 @@ package com.karankumar.bookproject.annotations;
 
 import com.karankumar.bookproject.BookProjectApplication;
 import org.junit.jupiter.api.Tag;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -36,4 +38,6 @@ import java.lang.annotation.Target;
 @DataJpaTest
 @ActiveProfiles("test")
 @ContextConfiguration(classes = BookProjectApplication.class)
-public @interface DataJpaIntegrationTest {}
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+public @interface DataJpaIntegrationTest {
+}

@@ -21,6 +21,7 @@ import com.karankumar.bookproject.BookProjectApplication;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -44,5 +45,6 @@ import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
 @ActiveProfiles("test")
 @WithMockUser(TEST_USER_EMAIL)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
-public @interface IntegrationTest {}
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+public @interface IntegrationTest {
+}
