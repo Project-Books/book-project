@@ -18,8 +18,8 @@ services:
     restart: always
     environment:
       - POSTGRES_DB=book_project_db
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=dbpassword
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - "5433:5432"
   backend:
@@ -34,10 +34,10 @@ services:
       - "8080:8080"
     environment:
       - POSTGRES_DATABASE=book_project_db
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=dbpassword
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_HOSTNAME=db
-      - POSTGRES_PORT=5433
+      - POSTGRES_PORT=${DB_PORT}
     depends_on:
       - db
 
