@@ -13,7 +13,7 @@ EXPOSE 3000
 ARG PROFILE
 ENV profile_env ${PROFILE}
 
+RUN apk add --no-cache --upgrade bash
+
 # CMD ["yarn", "start"]
 CMD ["./start.sh", "${profile_env}"]
-
-
