@@ -30,7 +30,7 @@ services:
       args:
         mvn_arg: clean package -DskipTests
         PROFILE: ${PROFILE}
-        DB_HOSTNAME: book_project_db
+        DB_HOSTNAME: ${DB_HOSTNAME}
         DB_PORT: ${DB_PORT}
         DB_NAME: ${DB_NAME}
         DB_USERNAME: ${DB_USERNAME}
@@ -43,7 +43,7 @@ services:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_HOSTNAME=db
-      - POSTGRES_PORT=5433
+      - POSTGRES_PORT=${DB_PORT}
     depends_on:
       - db
 

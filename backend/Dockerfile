@@ -30,4 +30,4 @@ WORKDIR /opt/bookapp/
 RUN useradd -m myuser
 USER myuser
 EXPOSE 8080
-CMD ["java", "-jar", "-Dspring.profiles.active=${profile_env}", "-Dspring.datasource.url=jdbc:postgresql://${db_hostname_env}:5432/${db_name_env}", "-Dspring.datasource.username=${db_username_env}", "-Dspring.datasource.password=${db_password_env}", "app.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=${profile_env}", "-Dspring.datasource.url=jdbc:postgresql://${db_hostname_env}:${db_port_env}/${db_name_env}", "-Dspring.datasource.username=${db_username_env}", "-Dspring.datasource.password=${db_password_env}", "app.jar"]
