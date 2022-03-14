@@ -29,6 +29,7 @@ services:
       dockerfile: ./Dockerfile
       args:
         mvn_arg: clean package -DskipTests
+        PROFILE: ${PROFILE}
         DB_HOSTNAME: book_project_db
         DB_PORT: ${DB_PORT}
         DB_NAME: ${DB_NAME}

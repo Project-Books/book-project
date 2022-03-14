@@ -10,7 +10,7 @@ RUN target=/root/.m2 mvn -f /app/pom.xml $mvn_arg
 FROM openjdk:11-jre-slim
 
 ARG JAR_FILE=/app/book-app/target/book-app-*.jar
-ARG PROFILE="local"
+ARG PROFILE
 ENV profile_env ${PROFILE}
 
 ARG DB_HOSTNAME
