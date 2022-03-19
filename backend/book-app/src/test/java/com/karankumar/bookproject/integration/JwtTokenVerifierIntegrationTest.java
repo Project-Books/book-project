@@ -17,20 +17,24 @@ package com.karankumar.bookproject.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
+import com.karankumar.bookproject.BookProjectApplication;
 import com.karankumar.bookproject.security.jwt.JwtConfig;
+import com.karankumar.bookproject.util.BookPostgreSQLContainer;
 import io.jsonwebtoken.Jwts;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.crypto.SecretKey;
@@ -45,16 +49,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(classes = BookProjectApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "target/snippets")
 @Tag("Integration")
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class JwtTokenVerifierIntegrationTest {
 
-  @Autowired private MockMvc mockMvc;
-  @Autowired private JwtConfig jwtConfig;
-  @Autowired private AuthenticationManager authenticationManager;
-  @Autowired private SecretKey key;
+    @BeforeAll
+    static void dbSetup() {
+        BookPostgreSQLContainer.getInstance().start();
+    }
+
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private JwtConfig jwtConfig;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private SecretKey key;
 
   @Test
   void shouldReturnUnauthorizedIfIncorrectRefreshTokenPassed() throws Exception {

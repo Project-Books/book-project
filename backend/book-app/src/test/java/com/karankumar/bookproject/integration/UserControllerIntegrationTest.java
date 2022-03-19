@@ -17,15 +17,20 @@ package com.karankumar.bookproject.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.karankumar.bookproject.account.dto.UserToRegisterDto;
 import com.karankumar.bookproject.BookProjectApplication;
-import org.junit.jupiter.api.Tag;
+import com.karankumar.bookproject.account.dto.UserToRegisterDto;
+import com.karankumar.bookproject.annotations.IntegrationTest;
+import com.karankumar.bookproject.util.BookPostgreSQLContainer;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -36,14 +41,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = BookProjectApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "../target/snippets")
-@Tag("Integration")
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class UserControllerIntegrationTest {
   @Autowired private MockMvc mockMvc;
 
-  @Test
-  void canLoginWithTestUser() throws Exception {
-    // given
-    String url = "http://localhost:8080/login";
+    @BeforeAll
+    static void dbSetup() {
+        BookPostgreSQLContainer.getInstance().start();
+    }
+
+    @Test
+    void canLoginWithTestUser() throws Exception {
+        // given
+        String url = "http://localhost:8080/login";
 
     UserToRegisterDto userToRegisterDto = new UserToRegisterDto("user@user.user", "password");
 
