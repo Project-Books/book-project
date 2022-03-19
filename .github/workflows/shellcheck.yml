@@ -8,7 +8,7 @@ on:
     paths:
      - '**/*.sh'
      
-name: 'Trigger: Push action'
+name: 'shellcheck'
 
 jobs:
   shellcheck:
