@@ -23,6 +23,9 @@ public class BookPostgreSQLContainer extends PostgreSQLContainer<BookPostgreSQLC
 	@Override
 	public void start() {
 		super.start();
+		System.setProperty("BOOK_PROJECT_DB_URL", container.getJdbcUrl());
+		System.setProperty("BOOK_PROJECT_DB_USERNAME", container.getUsername());
+		System.setProperty("BOOK_PROJECT_DB_PASSWORD", container.getPassword());
 	}
 
 	@Override
