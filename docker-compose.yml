@@ -6,6 +6,8 @@ services:
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
+      args:
+        PROFILE: ${PROFILE}
     volumes:
       - ./frontend/src:/app/src
     ports:
