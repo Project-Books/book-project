@@ -20,6 +20,8 @@ package com.karankumar.bookproject.bookimport;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.book.service.BookService;
+import com.karankumar.bookproject.util.BookPostgreSQLContainer;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,11 +41,17 @@ class ImportServiceTest {
   private final ImportService importService;
   private final BookService bookService;
 
-  @Autowired
-  ImportServiceTest(ImportService importService, BookService bookService) {
-    this.importService = importService;
-    this.bookService = bookService;
-  }
+    @BeforeAll
+    static void dbSetup() {
+        BookPostgreSQLContainer.getInstance().start();
+    }
+
+
+    @Autowired
+    ImportServiceTest(ImportService importService, BookService bookService) {
+        this.importService = importService;
+        this.bookService = bookService;
+    }
 
   @BeforeEach
   public void setUp() {

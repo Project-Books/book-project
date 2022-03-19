@@ -20,12 +20,12 @@ package com.karankumar.bookproject.util;
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.book.model.Author;
 import com.karankumar.bookproject.book.model.Book;
-import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
-import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import com.karankumar.bookproject.book.service.BookService;
-import com.karankumar.bookproject.shelf.service.UserCreatedShelfService;
+import com.karankumar.bookproject.shelf.model.PredefinedShelf;
+import com.karankumar.bookproject.shelf.model.UserCreatedShelf;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
-import static org.assertj.core.api.Assertions.assertThat;
+import com.karankumar.bookproject.shelf.service.UserCreatedShelfService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @DisplayName("CustomShelfUtils should")
@@ -48,62 +50,17 @@ class UserCreatedShelfUtilsTest {
 
   private Set<Book> booksInCustomShelf1;
 
-  @Autowired
-  UserCreatedShelfUtilsTest(
-      BookService bookService,
-      UserCreatedShelfService userCreatedShelfService,
-      PredefinedShelfService predefinedShelfService) {
-    this.bookService = bookService;
-    this.userCreatedShelfService = userCreatedShelfService;
-    this.predefinedShelfService = predefinedShelfService;
-  }
+    @BeforeAll
+    static void dbSetup() {
+        BookPostgreSQLContainer.getInstance().start();
+    }
 
-  @BeforeEach
-  public void setUp() {
-    resetServices();
-
-    userCreatedShelf1 = userCreatedShelfService.createCustomShelf("CustomShelf1");
-    userCreatedShelf2 = userCreatedShelfService.createCustomShelf("CustomShelf2");
-    userCreatedShelfWithNoBooks = userCreatedShelfService.createCustomShelf("CustomShelf3");
-    saveCustomShelves(userCreatedShelf1, userCreatedShelf2, userCreatedShelfWithNoBooks);
-
-    addBooksToCustomShelves(predefinedShelfService.findToReadShelf());
-  }
-
-  private void resetServices() {
-    bookService.deleteAll();
-    userCreatedShelfService.deleteAll();
-  }
-
-  private HashSet<Book> createSetOfBooks(
-      String title1,
-      String title2,
-      PredefinedShelf predefinedShelf,
-      UserCreatedShelf userCreatedShelf) {
-    return new HashSet<>(
-        List.of(
-            createAndSaveBook(title1, predefinedShelf, userCreatedShelf),
-            createAndSaveBook(title2, predefinedShelf, userCreatedShelf)));
-  }
-
-  private Book createAndSaveBook(
-      String title, PredefinedShelf predefinedShelf, UserCreatedShelf userCreatedShelf) {
-    Book book = new Book(title, new Author("John Doe"), predefinedShelf);
-    book.setUserCreatedShelf(userCreatedShelf);
-    bookService.save(book);
-    return book;
-  }
-
-  private void addBooksToCustomShelves(PredefinedShelf predefinedShelf) {
-    booksInCustomShelf1 = createSetOfBooks("Title1", "Title2", predefinedShelf, userCreatedShelf1);
-    userCreatedShelf1.setBooks(booksInCustomShelf1);
-    userCreatedShelf2.setBooks(
-        createSetOfBooks("Title3", "Title4", predefinedShelf, userCreatedShelf2));
-  }
-
-  private void saveCustomShelves(UserCreatedShelf... customShelves) {
-    for (UserCreatedShelf c : customShelves) {
-      userCreatedShelfService.save(c);
+    @Autowired
+    UserCreatedShelfUtilsTest(BookService bookService, UserCreatedShelfService userCreatedShelfService,
+                              PredefinedShelfService predefinedShelfService) {
+        this.bookService = bookService;
+        this.userCreatedShelfService = userCreatedShelfService;
+        this.predefinedShelfService = predefinedShelfService;
     }
   }
 

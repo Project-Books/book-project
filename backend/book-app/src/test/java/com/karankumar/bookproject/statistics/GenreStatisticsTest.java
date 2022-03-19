@@ -22,6 +22,8 @@ import com.karankumar.bookproject.book.model.BookGenre;
 import com.karankumar.bookproject.book.service.BookService;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import com.karankumar.bookproject.statistics.util.StatisticTestUtils;
+import com.karankumar.bookproject.util.BookPostgreSQLContainer;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -37,16 +39,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("GenreStatistics should")
 @Transactional
 class GenreStatisticsTest {
-  private final BookService bookService;
-  private final PredefinedShelfService predefinedShelfService;
 
-  private static GenreStatistics genreStatistics;
+	@BeforeAll
+	static void dbSetup() {
+		BookPostgreSQLContainer.getInstance().start();
+	}
 
-  @Autowired
-  GenreStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
-    this.bookService = bookService;
-    this.predefinedShelfService = predefinedShelfService;
-  }
+	private final BookService bookService;
+	private final PredefinedShelfService predefinedShelfService;
+
+	private static GenreStatistics genreStatistics;
+
+	@Autowired
+	GenreStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+		this.bookService = bookService;
+		this.predefinedShelfService = predefinedShelfService;
+    }
 
   @BeforeEach
   public void setUp() {

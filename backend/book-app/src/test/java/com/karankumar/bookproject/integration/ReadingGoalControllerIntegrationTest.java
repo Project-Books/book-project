@@ -18,27 +18,30 @@ package com.karankumar.bookproject.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.karankumar.bookproject.Mappings;
-import com.karankumar.bookproject.goal.ReadingGoalController;
-import com.karankumar.bookproject.account.dto.UserToRegisterDto;
 import com.karankumar.bookproject.BookProjectApplication;
+import com.karankumar.bookproject.Mappings;
+import com.karankumar.bookproject.account.dto.UserToRegisterDto;
+import com.karankumar.bookproject.goal.ReadingGoalController;
+import com.karankumar.bookproject.util.BookPostgreSQLContainer;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static com.karankumar.bookproject.goal.ReadingGoalController.TARGET_BAD_REQUEST;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,8 +49,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "../target/snippets")
 @Tag("Integration")
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class ReadingGoalControllerIntegrationTest {
   @Autowired private MockMvc mockMvc;
+
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
   private final String AUTHORIZATION = "Authorization";
   private final String url = "http://localhost:8080";

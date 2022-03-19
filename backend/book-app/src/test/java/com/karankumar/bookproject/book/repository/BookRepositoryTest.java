@@ -22,9 +22,11 @@ import com.karankumar.bookproject.account.repository.UserRepository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
 import com.karankumar.bookproject.book.model.Author;
 import com.karankumar.bookproject.book.model.Book;
-import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
-import com.karankumar.bookproject.account.model.User;
+import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
+import com.karankumar.bookproject.util.BookPostgreSQLContainer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -60,15 +62,21 @@ class BookRepositoryTest {
     this.predefinedShelfRepository = predefinedShelfRepository;
   }
 
-  @BeforeEach
-  void init() {
-    bookRepository.deleteAll();
-    User user = getTestUser(userRepository);
-    author = authorRepository.save(new Author("firstName lastName"));
-    read =
-        predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ, user));
-    bookRepository.save(new Book("title", author, read));
-  }
+    @BeforeAll
+    static void dbSetup() {
+        BookPostgreSQLContainer.getInstance().start();
+    }
+
+    @BeforeEach
+    void init() {
+        bookRepository.deleteAll();
+        User user = getTestUser(userRepository);
+        author = authorRepository.save(new Author("firstName lastName"));
+        read = predefinedShelfRepository.save(
+                new PredefinedShelf(PredefinedShelf.ShelfName.READ, user)
+        );
+        bookRepository.save(new Book("title", author, read));
+    }
 
   @Test
   void successfullyDeleteABook_whenAuthorHasOtherBooks() {

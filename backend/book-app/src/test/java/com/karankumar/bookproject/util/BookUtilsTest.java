@@ -21,6 +21,7 @@ import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.book.BookUtils;
 import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,16 @@ class BookUtilsTest {
   private final String bookTitle = "Title";
   private final Book book; // = new Book(bookTitle, null, null);
 
-  @Autowired
-  BookUtilsTest(PredefinedShelfService predefinedShelfService) {
-    // TODO: mock predefinedShelfService
-    book = new Book(bookTitle, null, predefinedShelfService.findById(1L).get());
-  }
+	@BeforeAll
+	static void dbSetup() {
+		BookPostgreSQLContainer.getInstance().start();
+	}
+
+    @Autowired
+    BookUtilsTest(PredefinedShelfService predefinedShelfService) {
+        // TODO: mock predefinedShelfService
+        book = new Book(bookTitle, null, predefinedShelfService.findById(1L).get());
+    }
 
   @Test
   void notShowSeriesPositionIfBookIsNotInSeries() {

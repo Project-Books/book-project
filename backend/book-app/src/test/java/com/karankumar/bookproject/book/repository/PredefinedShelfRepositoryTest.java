@@ -17,11 +17,13 @@
 
 package com.karankumar.bookproject.book.repository;
 
+import com.karankumar.bookproject.account.model.User;
 import com.karankumar.bookproject.account.repository.UserRepository;
 import com.karankumar.bookproject.annotations.DataJpaIntegrationTest;
-import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
-import com.karankumar.bookproject.account.model.User;
+import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
+import com.karankumar.bookproject.util.BookPostgreSQLContainer;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -56,12 +58,17 @@ class PredefinedShelfRepositoryTest {
     this.repository = repository;
   }
 
-  @BeforeEach
-  void setup() {
-    user = getTestUser(userRepository);
-    createShelvesForUser(user);
-    createShelvesForUser(insertTestUser(userRepository));
-  }
+	@BeforeAll
+	static void dbSetup() {
+		BookPostgreSQLContainer.getInstance().start();
+	}
+
+	@BeforeEach
+    void setup() {
+        user = getTestUser(userRepository);
+        createShelvesForUser(user);
+        createShelvesForUser(insertTestUser(userRepository));
+    }
 
   @Test
   void findCorrectShelf() {

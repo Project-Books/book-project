@@ -22,6 +22,8 @@ import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.book.service.BookService;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import com.karankumar.bookproject.statistics.util.StatisticTestUtils;
+import com.karankumar.bookproject.util.BookPostgreSQLContainer;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,12 +47,18 @@ class YearStatisticsTest {
     this.predefinedShelfService = predefinedShelfService;
   }
 
-  @BeforeEach
-  public void setUp() {
-    bookService.deleteAll(); // reset
-    StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
-    bookWithLowestRatingThisYear = StatisticTestUtils.getBookWithLowestRatingThisYear();
-    bookWithHighestRatingThisYear = StatisticTestUtils.getBookWithHighestRatingThisYear();
+    @BeforeAll
+    static void dbSetup() {
+        BookPostgreSQLContainer.getInstance().start();
+    }
+
+
+    @BeforeEach
+    public void setUp() {
+        bookService.deleteAll(); // reset
+        StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
+        bookWithLowestRatingThisYear = StatisticTestUtils.getBookWithLowestRatingThisYear();
+        bookWithHighestRatingThisYear = StatisticTestUtils.getBookWithHighestRatingThisYear();
 
     yearStatistic = new YearStatistics(predefinedShelfService);
   }
