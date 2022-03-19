@@ -2,9 +2,12 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**/*.sh'
   pull_request:
+    paths:
+     - '**/*.sh'
      
-
 name: 'Trigger: Push action'
 
 jobs:
