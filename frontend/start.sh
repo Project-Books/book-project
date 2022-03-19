@@ -2,18 +2,20 @@
 
 echo "Starting the frontend..."
 
-# TODO: check which environment we should run in
-echo "$1"
+profile="$(printenv profile_env)"
+echo "$profile"
 
-if [ "$1" == "local" ]
+if [ "$profile" == "local" ]
 then
-    echo "local env"
+    echo "Starting the local environment..."
     yarn start
-elif [ "$1" == "dev" ]
+elif [ "$profile" == "dev" ]
 then
-    echo "dev env"
+    echo "Starting the dev environment..."
     yarn build
+else
+    echo "environment not supported"
+    exit
 fi
-
 
 echo "end"
