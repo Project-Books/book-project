@@ -36,8 +36,7 @@ let HttpClient: () => HttpClientBase;
     }
 })();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type HttpReponse = Promise<Record <string,any>>
+type HttpReponse = Promise<Response>
 
 // Base class for managing HTTP requests
 class HttpClientBase {
