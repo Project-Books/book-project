@@ -1,6 +1,6 @@
 {
   "name": "book-project",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.4.16",
@@ -17,7 +17,6 @@
     "@types/react-dom": "^17.0.0",
     "bootstrap": "^5.1.1",
     "graphql": "^15.6.1",
-    "http-proxy-middleware": "^2.0.3",
     "react": "^17.0.1",
     "react-bootstrap": "^2.0.0-rc.0",
     "react-dom": "^17.0.1",
@@ -36,6 +35,7 @@
     "lint": "eslint . --ext=.ts,.tsx",
     "tsc": "tsc"
   },
+  "proxy": "http://backend:8080/",
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -6,6 +6,8 @@ services:
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
+      args:
+        PROFILE: ${PROFILE}
     volumes:
       - ./frontend/src:/app/src
     ports:
@@ -17,9 +19,9 @@ services:
     container_name: book_project_db
     restart: always
     environment:
-      - POSTGRES_DB=book_project_db
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=dbpassword
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - "5433:5432"
   backend:
@@ -29,13 +31,18 @@ services:
       dockerfile: ./Dockerfile
       args:
         mvn_arg: clean package -DskipTests
+        DB_HOSTNAME: book_project_db
+        DB_PORT: ${DB_PORT}
+        DB_NAME: ${DB_NAME}
+        DB_USERNAME: ${DB_USERNAME}
+        DB_PASSWORD: ${DB_PASSWORD}
     restart: "no"
     ports:
       - "8080:8080"
     environment:
-      - POSTGRES_DATABASE=book_project_db
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=dbpassword
+      - POSTGRES_DATABASE=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_HOSTNAME=db
       - POSTGRES_PORT=5433
     depends_on:
