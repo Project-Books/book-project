@@ -30,24 +30,24 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class DatabaseUserDetailsServiceTest {
-    private final UserRepository mockUserRepository;
-    private final DatabaseUserDetailsService underTest;
+  private final UserRepository mockUserRepository;
+  private final DatabaseUserDetailsService underTest;
 
-    DatabaseUserDetailsServiceTest() {
-        mockUserRepository = mock(UserRepository.class);
-        UserDetailsMapper mockUserDetailsMapper = mock(UserDetailsMapper.class);
-        underTest = new DatabaseUserDetailsService(mockUserRepository, mockUserDetailsMapper);
-    }
+  DatabaseUserDetailsServiceTest() {
+    mockUserRepository = mock(UserRepository.class);
+    UserDetailsMapper mockUserDetailsMapper = mock(UserDetailsMapper.class);
+    underTest = new DatabaseUserDetailsService(mockUserRepository, mockUserDetailsMapper);
+  }
 
-    @Test
-    void loadUserByUsername_throwsUsernameNotFoundException_ifUserNotFound() {
-        String email = "abc@test.com";
-        String expectedErrorMessage = String.format("User with the email %s was not found.", email);
+  @Test
+  void loadUserByUsername_throwsUsernameNotFoundException_ifUserNotFound() {
+    String email = "abc@test.com";
+    String expectedErrorMessage = String.format("User with the email %s was not found.", email);
 
-        when(mockUserRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+    when(mockUserRepository.findByEmail(anyString())).thenReturn(Optional.empty());
 
-        assertThatExceptionOfType(UsernameNotFoundException.class)
-                .isThrownBy(() -> underTest.loadUserByUsername(email))
-                .withMessage(expectedErrorMessage);
-    }
+    assertThatExceptionOfType(UsernameNotFoundException.class)
+        .isThrownBy(() -> underTest.loadUserByUsername(email))
+        .withMessage(expectedErrorMessage);
+  }
 }

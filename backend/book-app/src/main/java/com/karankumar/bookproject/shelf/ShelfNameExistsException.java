@@ -15,7 +15,7 @@
 package com.karankumar.bookproject.shelf;
 
 public class ShelfNameExistsException extends IllegalArgumentException {
-    public ShelfNameExistsException (final String shelfName) {
-        super(String.format("%s is already used as a shelf name", shelfName));
-    }
+  public ShelfNameExistsException(final String shelfName) {
+    super(String.format("%s is already used as a shelf name", shelfName));
+  }
 }

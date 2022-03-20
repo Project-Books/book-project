@@ -42,91 +42,87 @@ import static org.mockito.Mockito.when;
 
 @TestPropertySource(locations = "classpath:application-test.properties")
 class ReadingGoalControllerTest {
-    private final ReadingGoalService readingGoalService;
-    private final ReadingGoalController underTest;
-    private final List<ReadingGoal> readingGoalList = new ArrayList<>();
+  private final ReadingGoalService readingGoalService;
+  private final ReadingGoalController underTest;
+  private final List<ReadingGoal> readingGoalList = new ArrayList<>();
 
-    ReadingGoalControllerTest() {
-        readingGoalService = mock(ReadingGoalService.class);
-        underTest = new ReadingGoalController(readingGoalService);
+  ReadingGoalControllerTest() {
+    readingGoalService = mock(ReadingGoalService.class);
+    underTest = new ReadingGoalController(readingGoalService);
 
-        this.readingGoalList.add(new ReadingGoal(5, BOOKS));
-    }
+    this.readingGoalList.add(new ReadingGoal(5, BOOKS));
+  }
 
-    @Test
-    void getCurrentReadingGoal_returnResponseStatusException_whenNoReadingGoalExists() {
-        when(readingGoalService.findAll()).thenReturn(Collections.emptyList());
+  @Test
+  void getCurrentReadingGoal_returnResponseStatusException_whenNoReadingGoalExists() {
+    when(readingGoalService.findAll()).thenReturn(Collections.emptyList());
 
-        ThrowableAssert.ThrowingCallable callable =
-                underTest::getExistingReadingGoal;
+    ThrowableAssert.ThrowingCallable callable = underTest::getExistingReadingGoal;
 
-        assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(callable)
-                .withMessage(String.format(
-                        "%s \"%s\"",
-                        HttpStatus.NOT_FOUND,
-                        ReadingGoalController.READING_GOAL_NOT_FOUND
-                ));
-    }
+    assertThatExceptionOfType(ResponseStatusException.class)
+        .isThrownBy(callable)
+        .withMessage(
+            String.format(
+                "%s \"%s\"", HttpStatus.NOT_FOUND, ReadingGoalController.READING_GOAL_NOT_FOUND));
+  }
 
-    @ParameterizedTest
-    @ValueSource(ints = {-1, 0})
-    void addPagesReadingGoal_throwssBadRequest_ifTargetNotPositive(int target) {
-        assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(() -> underTest.addPagesReadingGoal(target))
-                .withMessage("400 BAD_REQUEST \"Minimum target value is 1.\"");
-    }
+  @ParameterizedTest
+  @ValueSource(ints = {-1, 0})
+  void addPagesReadingGoal_throwssBadRequest_ifTargetNotPositive(int target) {
+    assertThatExceptionOfType(ResponseStatusException.class)
+        .isThrownBy(() -> underTest.addPagesReadingGoal(target))
+        .withMessage("400 BAD_REQUEST \"Minimum target value is 1.\"");
+  }
 
-    @Test
-    void pagesReadingGoalSaved_ifPositiveTarget() {
-        // given
-        int target = 1;
+  @Test
+  void pagesReadingGoalSaved_ifPositiveTarget() {
+    // given
+    int target = 1;
 
-        // when
-        underTest.addPagesReadingGoal(target);
+    // when
+    underTest.addPagesReadingGoal(target);
 
-        // then
-        verify(readingGoalService, times(1)).save(any(ReadingGoal.class));
-    }
+    // then
+    verify(readingGoalService, times(1)).save(any(ReadingGoal.class));
+  }
 
-    @ParameterizedTest
-    @ValueSource(ints = {-1, 0})
-    void addBooksReadingGoal_throwsBadRequest_ifTargetNotPositive(int target) {
-        assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(() -> underTest.addBookReadingGoal(target))
-                .withMessage("400 BAD_REQUEST \"Minimum target value is 1.\"");
-    }
+  @ParameterizedTest
+  @ValueSource(ints = {-1, 0})
+  void addBooksReadingGoal_throwsBadRequest_ifTargetNotPositive(int target) {
+    assertThatExceptionOfType(ResponseStatusException.class)
+        .isThrownBy(() -> underTest.addBookReadingGoal(target))
+        .withMessage("400 BAD_REQUEST \"Minimum target value is 1.\"");
+  }
 
-    @Test
-    void booksReadingGoalSaved_ifPositiveTarget() {
-        // given
-        int target = 1;
+  @Test
+  void booksReadingGoalSaved_ifPositiveTarget() {
+    // given
+    int target = 1;
 
-        // when
-        underTest.addBookReadingGoal(target);
+    // when
+    underTest.addBookReadingGoal(target);
 
-        // then
-        verify(readingGoalService, times(1)).save(any(ReadingGoal.class));
-    }
+    // then
+    verify(readingGoalService, times(1)).save(any(ReadingGoal.class));
+  }
 
-    @Test
-    void getPreviousReadingGoal_returnReadingGoal_whenPreviousGoalExists() {
-        when(readingGoalService.findAll()).thenReturn(readingGoalList);
+  @Test
+  void getPreviousReadingGoal_returnReadingGoal_whenPreviousGoalExists() {
+    when(readingGoalService.findAll()).thenReturn(readingGoalList);
 
-        assertThat(underTest.getPreviousReadingGoals()).isEqualTo(readingGoalList);
-    }
+    assertThat(underTest.getPreviousReadingGoals()).isEqualTo(readingGoalList);
+  }
 
-    @Test
-    void getCurrentReadingGoal_returnCurrentGoal_whenReadingGoalExists() {
-        when(readingGoalService.findAll()).thenReturn(readingGoalList);
+  @Test
+  void getCurrentReadingGoal_returnCurrentGoal_whenReadingGoalExists() {
+    when(readingGoalService.findAll()).thenReturn(readingGoalList);
 
-        assertThat(underTest.getExistingReadingGoal())
-                .isEqualTo(readingGoalList.get(0));
-    }
+    assertThat(underTest.getExistingReadingGoal()).isEqualTo(readingGoalList.get(0));
+  }
 
-    @Test
-    void getPreviousReadingGoals_returnSizeOfReadingGoals_whenNoGoalExist() {
-        when(readingGoalService.findAll()).thenReturn(Collections.emptyList());
-        assertThat(underTest.getPreviousReadingGoals().size()).isZero();
-    }
+  @Test
+  void getPreviousReadingGoals_returnSizeOfReadingGoals_whenNoGoalExist() {
+    when(readingGoalService.findAll()).thenReturn(Collections.emptyList());
+    assertThat(underTest.getPreviousReadingGoals().size()).isZero();
+  }
 }

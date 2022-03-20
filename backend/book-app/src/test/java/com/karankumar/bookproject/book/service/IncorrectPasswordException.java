@@ -18,7 +18,7 @@
 package com.karankumar.bookproject.book.service;
 
 public class IncorrectPasswordException extends RuntimeException {
-    public IncorrectPasswordException(final String message) {
-        super(message);
-    }
+  public IncorrectPasswordException(final String message) {
+    super(message);
+  }
 }

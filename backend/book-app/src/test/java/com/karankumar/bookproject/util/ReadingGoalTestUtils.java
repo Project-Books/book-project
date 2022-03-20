@@ -21,9 +21,9 @@ package com.karankumar.bookproject.util;
 import com.karankumar.bookproject.goal.ReadingGoalService;
 
 public class ReadingGoalTestUtils {
-    private ReadingGoalTestUtils() {}
+  private ReadingGoalTestUtils() {}
 
-    public static void resetGoalService(ReadingGoalService goalService) {
-        goalService.deleteAll();
-    }
+  public static void resetGoalService(ReadingGoalService goalService) {
+    goalService.deleteAll();
+  }
 }

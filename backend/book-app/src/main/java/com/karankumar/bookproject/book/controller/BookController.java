@@ -56,8 +56,10 @@ public class BookController {
   public static final String NEGATIVE_PAGE_ERROR_MESSAGE = "Could not retrieve page with number %d";
 
   @Autowired
-  public BookController(BookService bookService, PredefinedShelfService predefinedShelfService,
-                        ModelMapper modelMapper) {
+  public BookController(
+      BookService bookService,
+      PredefinedShelfService predefinedShelfService,
+      ModelMapper modelMapper) {
     this.bookService = bookService;
     this.predefinedShelfService = predefinedShelfService;
     this.modelMapper = modelMapper;
@@ -67,43 +69,45 @@ public class BookController {
     this.modelMapper.addConverter(bookFormatConverter);
   }
 
-  Converter<String, PredefinedShelf> predefinedShelfConverter = new AbstractConverter<>() {
-    @Override
-    public PredefinedShelf convert(String predefinedShelfName) {
-      Optional<PredefinedShelf.ShelfName> optionalShelfName =
-        PredefinedShelfService.getPredefinedShelfName(predefinedShelfName);
+  Converter<String, PredefinedShelf> predefinedShelfConverter =
+      new AbstractConverter<>() {
+        @Override
+        public PredefinedShelf convert(String predefinedShelfName) {
+          Optional<PredefinedShelf.ShelfName> optionalShelfName =
+              PredefinedShelfService.getPredefinedShelfName(predefinedShelfName);
 
-      if (optionalShelfName.isEmpty()) {
-        String errorMessage = String.format(
-          "%s does not match a predefined shelf",
-          predefinedShelfName
-        );
-        throw new IllegalStateException(errorMessage);
-      }
+          if (optionalShelfName.isEmpty()) {
+            String errorMessage =
+                String.format("%s does not match a predefined shelf", predefinedShelfName);
+            throw new IllegalStateException(errorMessage);
+          }
 
-      Optional<PredefinedShelf> optionalPredefinedShelf = predefinedShelfService
-        .getPredefinedShelfByPredefinedShelfName(optionalShelfName.get());
+          Optional<PredefinedShelf> optionalPredefinedShelf =
+              predefinedShelfService.getPredefinedShelfByPredefinedShelfName(
+                  optionalShelfName.get());
 
-      if (optionalPredefinedShelf.isEmpty()) {
-        // TODO: throw custom exception
-        throw new IllegalStateException();
-      }
+          if (optionalPredefinedShelf.isEmpty()) {
+            // TODO: throw custom exception
+            throw new IllegalStateException();
+          }
 
-      return optionalPredefinedShelf.get();
-    }
-  };
+          return optionalPredefinedShelf.get();
+        }
+      };
 
-  Converter<String, BookGenre> bookGenreConverter = new AbstractConverter<>() {
-    public BookGenre convert(String bookGenreString) {
-      return BookGenre.valueOf(bookGenreString);
-    }
-  };
+  Converter<String, BookGenre> bookGenreConverter =
+      new AbstractConverter<>() {
+        public BookGenre convert(String bookGenreString) {
+          return BookGenre.valueOf(bookGenreString);
+        }
+      };
 
-  Converter<String, BookFormat> bookFormatConverter = new AbstractConverter<>() {
-    public BookFormat convert(String bookFormatString) {
-      return BookFormat.valueOf(bookFormatString);
-    }
-  };
+  Converter<String, BookFormat> bookFormatConverter =
+      new AbstractConverter<>() {
+        public BookFormat convert(String bookFormatString) {
+          return BookFormat.valueOf(bookFormatString);
+        }
+      };
 
   @GetMapping()
   // TODO: only retrieve books that belong to the logged in user
@@ -112,9 +116,7 @@ public class BookController {
       return bookService.findAll(page);
     } else {
       throw new ResponseStatusException(
-              HttpStatus.BAD_REQUEST,
-              String.format(NEGATIVE_PAGE_ERROR_MESSAGE, page)
-      );
+          HttpStatus.BAD_REQUEST, String.format(NEGATIVE_PAGE_ERROR_MESSAGE, page));
     }
   }
 
@@ -126,29 +128,33 @@ public class BookController {
   @GetMapping("/{id}")
   // TODO: only retrieve books that belong to the logged in user
   public Book findById(@PathVariable Long id) {
-    return bookService.findById(id)
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-        String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id))
-      );
+    return bookService
+        .findById(id)
+        .orElseThrow(
+            () ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)));
   }
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public Optional<Book> addBook(@RequestBody BookDto bookDto) {
     Book bookToAdd = convertToBook(bookDto);
-    // TODO: check whether the book to save has a title, an author and a predefined shelf. If not, throw a 400-level exception
+    // TODO: check whether the book to save has a title, an author and a predefined shelf. If not,
+    // throw a 400-level exception
     return bookService.save(bookToAdd);
   }
 
   @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public Book update(@PathVariable Long id, @RequestBody BookPatchDto bookPatchDto) {
-    final Book bookToUpdate = bookService.findById(id)
-      .orElseThrow(() -> new ResponseStatusException(
-          HttpStatus.NOT_FOUND,
-          String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)
-        )
-      );
+    final Book bookToUpdate =
+        bookService
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id)));
     return bookService.updateBook(bookToUpdate, bookPatchDto);
   }
 
@@ -162,11 +168,10 @@ public class BookController {
     Optional<Book> bookToDeleteOp = bookService.findById(id);
     if (bookToDeleteOp.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                           .body(String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id));
+          .body(String.format(BOOK_NOT_FOUND_ERROR_MESSAGE, id));
     }
 
     bookService.delete(bookToDeleteOp.get());
-    return ResponseEntity.status(HttpStatus.OK)
-                         .body("Deleted");
+    return ResponseEntity.status(HttpStatus.OK).body("Deleted");
   }
 }

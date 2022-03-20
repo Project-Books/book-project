@@ -1,19 +1,19 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+   The book project lets a user keep track of different books they would like to read, are currently
+   reading, have read or did not finish.
+   Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+   This program is free software: you can redistribute it and/or modify it under the terms of the
+   GNU General Public License as published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+   PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
- */
+   You should have received a copy of the GNU General Public License along with this program.
+   If not, see <https://www.gnu.org/licenses/>.
+*/
 
 package com.karankumar.bookproject.book.service;
 
@@ -56,8 +56,11 @@ public class BookService {
   private final PublisherService publisherService;
   private final PredefinedShelfService predefinedShelfService;
 
-  public BookService(BookRepository bookRepository, AuthorService authorService,
-                     PublisherService publisherService, PredefinedShelfService predefinedShelfService) {
+  public BookService(
+      BookRepository bookRepository,
+      AuthorService authorService,
+      PublisherService publisherService,
+      PredefinedShelfService predefinedShelfService) {
     this.bookRepository = bookRepository;
     this.authorService = authorService;
     this.publisherService = publisherService;
@@ -66,7 +69,7 @@ public class BookService {
 
   public Optional<Book> findById(@NonNull Long id) {
     return bookRepository.findBookById(id);
-//        return bookRepository.findById(id);
+    //        return bookRepository.findById(id);
   }
 
   public Optional<Book> save(@NonNull Book book) {
@@ -134,15 +137,15 @@ public class BookService {
   }
 
   public void deleteAll() {
-    LOGGER.log(Level.INFO, "Deleting all in books & authors. Book repository size = " +
-      bookRepository.count());
+    LOGGER.log(
+        Level.INFO,
+        "Deleting all in books & authors. Book repository size = " + bookRepository.count());
     bookRepository.deleteAll();
     authorService.deleteAll();
 
     LOGGER.log(
-      Level.INFO, "Deleted all books in books & authors. Book repository size = " +
-        bookRepository.count()
-    );
+        Level.INFO,
+        "Deleted all books in books & authors. Book repository size = " + bookRepository.count());
   }
 
   public String getJsonRepresentationForBooksAsString() throws JsonProcessingException {
@@ -159,12 +162,12 @@ public class BookService {
   // TODO: split into findByShelfAndTitle and findShelfAndAuthor queries, and then merge result sets
   public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName) {
     throw new NotImplementedException();
-//        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
+    //        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
   }
 
   public List<Book> findByTitleOrAuthor(String title, String authorsName) {
     throw new NotImplementedException();
-//        return bookRepository.findByTitleOrAuthor(title, authorsName);
+    //        return bookRepository.findByTitleOrAuthor(title, authorsName);
   }
 
   public List<Book> findAllBooksByPredefinedShelfName(ShelfName predefinedShelfName) {
@@ -181,48 +184,39 @@ public class BookService {
   }
 
   private void updateBookMetadata(Book book, BookPatchDto bookPatchDto) {
-    Optional.ofNullable(bookPatchDto.getTitle())
-      .ifPresent(book::setTitle);
-    Optional.ofNullable(bookPatchDto.getNumberOfPages())
-      .ifPresent(book::setNumberOfPages);
-    Optional.ofNullable(bookPatchDto.getPagesRead())
-      .ifPresent(book::setPagesRead);
+    Optional.ofNullable(bookPatchDto.getTitle()).ifPresent(book::setTitle);
+    Optional.ofNullable(bookPatchDto.getNumberOfPages()).ifPresent(book::setNumberOfPages);
+    Optional.ofNullable(bookPatchDto.getPagesRead()).ifPresent(book::setPagesRead);
     Optional.ofNullable(bookPatchDto.getBookFormat())
-      .map(BookFormat::valueOf)
-      .ifPresent(book::setBookFormat);
-    Optional.ofNullable(bookPatchDto.getSeriesPosition())
-      .ifPresent(book::setSeriesPosition);
-    Optional.ofNullable(bookPatchDto.getEdition())
-      .ifPresent(book::setEdition);
-    Optional.ofNullable(bookPatchDto.getBookRecommendedBy())
-      .ifPresent(book::setBookRecommendedBy);
-    Optional.ofNullable(bookPatchDto.getIsbn())
-      .ifPresent(book::setIsbn);
-    Optional.ofNullable(bookPatchDto.getYearOfPublication())
-      .ifPresent(book::setYearOfPublication);
-    Optional.ofNullable(bookPatchDto.getBookReview())
-      .ifPresent(book::setBookReview);
+        .map(BookFormat::valueOf)
+        .ifPresent(book::setBookFormat);
+    Optional.ofNullable(bookPatchDto.getSeriesPosition()).ifPresent(book::setSeriesPosition);
+    Optional.ofNullable(bookPatchDto.getEdition()).ifPresent(book::setEdition);
+    Optional.ofNullable(bookPatchDto.getBookRecommendedBy()).ifPresent(book::setBookRecommendedBy);
+    Optional.ofNullable(bookPatchDto.getIsbn()).ifPresent(book::setIsbn);
+    Optional.ofNullable(bookPatchDto.getYearOfPublication()).ifPresent(book::setYearOfPublication);
+    Optional.ofNullable(bookPatchDto.getBookReview()).ifPresent(book::setBookReview);
   }
 
   private void updateAuthor(Book book, BookPatchDto bookPatchDto) {
     Optional.ofNullable(bookPatchDto.getAuthor())
-      .ifPresent(author -> {
-        book.setAuthor(author);
-        authorService.save(book.getAuthor());
-      });
+        .ifPresent(
+            author -> {
+              book.setAuthor(author);
+              authorService.save(book.getAuthor());
+            });
   }
 
   private void updateGenres(Book book, BookPatchDto bookPatchDto) {
     Optional.ofNullable(bookPatchDto.getBookGenres())
-      .map(genres -> genres.stream().map(BookGenre::valueOf).collect(toSet()))
-      .ifPresent(book::setBookGenre);
+        .map(genres -> genres.stream().map(BookGenre::valueOf).collect(toSet()))
+        .ifPresent(book::setBookGenre);
   }
 
   private void updatePredefinedShelf(Book book, BookPatchDto bookPatchDto) {
     Optional.ofNullable(bookPatchDto.getPredefinedShelf())
-      .map(ShelfName::valueOf)
-      .flatMap(predefinedShelfService::getPredefinedShelfByPredefinedShelfName)
-      .ifPresent(book::setPredefinedShelf);
+        .map(ShelfName::valueOf)
+        .flatMap(predefinedShelfService::getPredefinedShelfByPredefinedShelfName)
+        .ifPresent(book::setPredefinedShelf);
   }
-
 }

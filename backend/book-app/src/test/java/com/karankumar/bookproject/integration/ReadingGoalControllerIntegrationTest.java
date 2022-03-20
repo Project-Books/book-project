@@ -79,7 +79,8 @@ class ReadingGoalControllerIntegrationTest {
   @Test
   void getPreviousReadingGoals_returnHttpStatus_whenReadingGoalExists() throws Exception {
     mockMvc
-        .perform(get(url + Mappings.GOAL + ReadingGoalController.Endpoints.PREVIOUS)
+        .perform(
+            get(url + Mappings.GOAL + ReadingGoalController.Endpoints.PREVIOUS)
                 .header(AUTHORIZATION, jwtToken))
         .andDo(print())
         .andExpect(status().isOk())

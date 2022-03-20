@@ -28,24 +28,25 @@ import java.util.Optional;
 
 @ExcludeFromJacocoGeneratedReport
 @Component
-public class AuthenticationBadCredentialsListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
-    private final UserService userService;
+public class AuthenticationBadCredentialsListener
+    implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
+  private final UserService userService;
 
-    public AuthenticationBadCredentialsListener(UserService userService) {
-        this.userService = userService;
+  public AuthenticationBadCredentialsListener(UserService userService) {
+    this.userService = userService;
+  }
+
+  @Override
+  public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {
+    String userEmail = event.getAuthentication().getName();
+    Optional<User> userOpt = userService.findUserByEmail(userEmail);
+
+    if (userOpt.isPresent()) {
+      User user = userService.increaseFailAttempts(userOpt.get());
+
+      if (user.getFailedAttempts() >= UserService.MAX_FAILED_ATTEMPTS) {
+        userService.lock(user);
+      }
     }
-
-    @Override
-    public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {
-        String userEmail = event.getAuthentication().getName();
-        Optional<User> userOpt = userService.findUserByEmail(userEmail);
-
-        if (userOpt.isPresent()) {
-            User user = userService.increaseFailAttempts(userOpt.get());
-
-            if (user.getFailedAttempts() >= UserService.MAX_FAILED_ATTEMPTS) {
-                userService.lock(user);
-            }
-        }
-    }
+  }
 }

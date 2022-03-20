@@ -44,137 +44,142 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 class ImportService {
-    private static final double GOODREADS_RATING_SCALE_FACTOR = 2;
+  private static final double GOODREADS_RATING_SCALE_FACTOR = 2;
 
-    private final BookService bookService;
-    private final PredefinedShelfService predefinedShelfService;
-    private final UserCreatedShelfService userCreatedShelfService;
+  private final BookService bookService;
+  private final PredefinedShelfService predefinedShelfService;
+  private final UserCreatedShelfService userCreatedShelfService;
 
-    public ImportService(BookService bookService,
-                         PredefinedShelfService predefinedShelfService,
-                         UserCreatedShelfService userCreatedShelfService) {
-        this.bookService = bookService;
-        this.predefinedShelfService = predefinedShelfService;
-        this.userCreatedShelfService = userCreatedShelfService;
+  public ImportService(
+      BookService bookService,
+      PredefinedShelfService predefinedShelfService,
+      UserCreatedShelfService userCreatedShelfService) {
+    this.bookService = bookService;
+    this.predefinedShelfService = predefinedShelfService;
+    this.userCreatedShelfService = userCreatedShelfService;
+  }
+
+  /**
+   * Imports the books which are in Goodreads format
+   *
+   * @param goodreadsBookImports the books to import
+   * @return the list of books saved successfully
+   */
+  public List<Book> importGoodreadsBooks(
+      Collection<? extends GoodreadsBookImport> goodreadsBookImports) {
+    if (CollectionUtils.isEmpty(goodreadsBookImports)) {
+      LOGGER.info("Goodreads imports is empty");
+      return Collections.emptyList();
     }
 
-    /**
-     * Imports the books which are in Goodreads format
-     *
-     * @param goodreadsBookImports the books to import
-     * @return the list of books saved successfully
-     */
-    public List<Book> importGoodreadsBooks(
-            Collection<? extends GoodreadsBookImport> goodreadsBookImports) {
-        if (CollectionUtils.isEmpty(goodreadsBookImports)) {
-            LOGGER.info("Goodreads imports is empty");
-            return Collections.emptyList();
-        }
+    List<Book> books = toBooks(goodreadsBookImports);
 
-        List<Book> books = toBooks(goodreadsBookImports);
+    List<Book> savedBooks =
+        books.stream()
+            .map(bookService::save)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(Collectors.toList());
+    savedBooks.forEach(b -> LOGGER.info("Book: {} saved successfully", b));
 
-        List<Book> savedBooks = books.stream()
-                                     .map(bookService::save)
-                                     .filter(Optional::isPresent)
-                                     .map(Optional::get)
-                                     .collect(Collectors.toList());
-        savedBooks.forEach(b -> LOGGER.info("Book: {} saved successfully", b));
+    return savedBooks;
+  }
 
-        return savedBooks;
+  private List<Book> toBooks(Collection<? extends GoodreadsBookImport> goodreadsBookImports) {
+    return goodreadsBookImports.stream()
+        .map(this::toBook)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .collect(Collectors.toList());
+  }
+
+  private Optional<Book> toBook(GoodreadsBookImport goodreadsBookImport) {
+    if (StringUtils.isBlank(goodreadsBookImport.getTitle())) {
+      LOGGER.error("Title is blank for import: {}", goodreadsBookImport);
+      return Optional.empty();
     }
 
-    private List<Book> toBooks(Collection<? extends GoodreadsBookImport> goodreadsBookImports) {
-        return goodreadsBookImports.stream()
-                                   .map(this::toBook)
-                                   .filter(Optional::isPresent)
-                                   .map(Optional::get)
-                                   .collect(Collectors.toList());
+    Optional<Author> author = toAuthor(goodreadsBookImport.getAuthor());
+    if (author.isEmpty()) {
+      LOGGER.error("Author is null for import: {}", goodreadsBookImport);
+      return Optional.empty();
     }
 
-    private Optional<Book> toBook(GoodreadsBookImport goodreadsBookImport) {
-        if (StringUtils.isBlank(goodreadsBookImport.getTitle())) {
-            LOGGER.error("Title is blank for import: {}", goodreadsBookImport);
-            return Optional.empty();
-        }
-
-        Optional<Author> author = toAuthor(goodreadsBookImport.getAuthor());
-        if (author.isEmpty()) {
-            LOGGER.error("Author is null for import: {}", goodreadsBookImport);
-            return Optional.empty();
-        }
-
-        Optional<PredefinedShelf> predefinedShelf =
-                toPredefinedShelf(goodreadsBookImport.getBookshelves(),
-                        goodreadsBookImport.getDateRead(),
-                        GoodreadsBookImport::toPredefinedShelfName);
-        if (predefinedShelf.isEmpty()) {
-            LOGGER.error("Predefined shelf is null for import: {}", goodreadsBookImport);
-            return Optional.empty();
-        }
-
-        Book book = new Book(goodreadsBookImport.getTitle(), author.get(), predefinedShelf.get());
-
-        Optional<UserCreatedShelf> customShelf = toCustomShelf(goodreadsBookImport.getBookshelves(),
-                GoodreadsBookImport::toPredefinedShelfName);
-        customShelf.ifPresent(book::setUserCreatedShelf);
-
-        Optional<RatingScale> ratingScale =
-                toRatingScale(goodreadsBookImport.getRating(), GOODREADS_RATING_SCALE_FACTOR);
-        ratingScale.ifPresent(book::setRating);
-
-        return Optional.of(book);
+    Optional<PredefinedShelf> predefinedShelf =
+        toPredefinedShelf(
+            goodreadsBookImport.getBookshelves(),
+            goodreadsBookImport.getDateRead(),
+            GoodreadsBookImport::toPredefinedShelfName);
+    if (predefinedShelf.isEmpty()) {
+      LOGGER.error("Predefined shelf is null for import: {}", goodreadsBookImport);
+      return Optional.empty();
     }
 
-    private Optional<Author> toAuthor(String name) {
-        if (StringUtils.isBlank(name)) {
-            return Optional.empty();
-        }
+    Book book = new Book(goodreadsBookImport.getTitle(), author.get(), predefinedShelf.get());
 
-        return Optional.of(new Author(name));
+    Optional<UserCreatedShelf> customShelf =
+        toCustomShelf(
+            goodreadsBookImport.getBookshelves(), GoodreadsBookImport::toPredefinedShelfName);
+    customShelf.ifPresent(book::setUserCreatedShelf);
+
+    Optional<RatingScale> ratingScale =
+        toRatingScale(goodreadsBookImport.getRating(), GOODREADS_RATING_SCALE_FACTOR);
+    ratingScale.ifPresent(book::setRating);
+
+    return Optional.of(book);
+  }
+
+  private Optional<Author> toAuthor(String name) {
+    if (StringUtils.isBlank(name)) {
+      return Optional.empty();
     }
 
-    private Optional<PredefinedShelf> toPredefinedShelf(
-            String shelves, LocalDate dateRead,
-            Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
-        if (Objects.nonNull(dateRead)) {
-            return Optional.of(predefinedShelfService.findReadShelf());
-        }
-        if (StringUtils.isBlank(shelves)) {
-            return Optional.empty();
-        }
-        String[] shelvesArray = shelves.trim().split(",");
+    return Optional.of(new Author(name));
+  }
 
-        return Arrays.stream(shelvesArray)
-                     .map(predefinedShelfNameMapper)
-                     .filter(Optional::isPresent)
-                     .findFirst()
-                     .map(Optional::get)
-                     .map(predefinedShelfService::findByPredefinedShelfNameAndLoggedInUser)
-                     .map(Optional::get);
+  private Optional<PredefinedShelf> toPredefinedShelf(
+      String shelves,
+      LocalDate dateRead,
+      Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
+    if (Objects.nonNull(dateRead)) {
+      return Optional.of(predefinedShelfService.findReadShelf());
     }
-
-    private Optional<UserCreatedShelf> toCustomShelf(
-            String shelves,
-            Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
-        if (StringUtils.isBlank(shelves)) {
-            return Optional.empty();
-        }
-        String[] shelvesArray = shelves.trim().split(",");
-
-        Predicate<String> isNotPredefinedShelf =
-                s -> predefinedShelfNameMapper.andThen(Optional::isEmpty).apply(s);
-
-        return Arrays.stream(shelvesArray)
-                     .filter(isNotPredefinedShelf)
-                     .findFirst()
-                     .map(String::trim)
-                     .map(userCreatedShelfService::findOrCreate);
+    if (StringUtils.isBlank(shelves)) {
+      return Optional.empty();
     }
+    String[] shelvesArray = shelves.trim().split(",");
 
-    private Optional<RatingScale> toRatingScale(Double ratingValue, double scaleFactor) {
-        if (Objects.isNull(ratingValue)) {
-            return Optional.of(RatingScale.NO_RATING);
-        }
-        return RatingScale.of(ratingValue * scaleFactor);
+    return Arrays.stream(shelvesArray)
+        .map(predefinedShelfNameMapper)
+        .filter(Optional::isPresent)
+        .findFirst()
+        .map(Optional::get)
+        .map(predefinedShelfService::findByPredefinedShelfNameAndLoggedInUser)
+        .map(Optional::get);
+  }
+
+  private Optional<UserCreatedShelf> toCustomShelf(
+      String shelves,
+      Function<String, Optional<PredefinedShelf.ShelfName>> predefinedShelfNameMapper) {
+    if (StringUtils.isBlank(shelves)) {
+      return Optional.empty();
     }
+    String[] shelvesArray = shelves.trim().split(",");
+
+    Predicate<String> isNotPredefinedShelf =
+        s -> predefinedShelfNameMapper.andThen(Optional::isEmpty).apply(s);
+
+    return Arrays.stream(shelvesArray)
+        .filter(isNotPredefinedShelf)
+        .findFirst()
+        .map(String::trim)
+        .map(userCreatedShelfService::findOrCreate);
+  }
+
+  private Optional<RatingScale> toRatingScale(Double ratingValue, double scaleFactor) {
+    if (Objects.isNull(ratingValue)) {
+      return Optional.of(RatingScale.NO_RATING);
+    }
+    return RatingScale.of(ratingValue * scaleFactor);
+  }
 }
