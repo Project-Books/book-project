@@ -1,0 +1,133 @@
+/*
+The book project lets a user keep track of different books they would like to read, are currently
+reading, have read or did not finish.
+copyright (c) 2020  karan kumar
+
+this program is free software: you can redistribute it and/or modify it under the terms of the
+gnu general public license as published by the free software foundation, either version 3 of the
+license, or (at your option) any later version.
+
+this program is distributed in the hope that it will be useful, but without any
+warranty; without even the implied warranty of merchantability or fitness for a particular
+purpose.  see the gnu general public license for more details.
+
+you should have received a copy of the gnu general public license along with this program.
+if not, see <https://www.gnu.org/licenses/>.
+*/
+
+
+.books-list{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+
+
+/* Each book styling */
+.book-container{
+    background-color: #f5f4f5;
+    width: 21%;
+    padding: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.book-title{
+    margin: 0;
+    padding: 0;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+
+.image{
+    width: 60%;
+    margin: 10px;
+    border-radius: 3px;
+    background: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 91.58%, rgba(255, 255, 255, 0.16) 93.2%, rgba(255, 255, 255, 0) 94.81%, rgba(255, 255, 255, 0) 96.2%, rgba(255, 255, 255, 0.2) 98.17%);
+    box-shadow: 0 0 5px -1px #0d0d0d, inset -1px 1px 2px rgb(255 255 255 / 50%);
+    float: left;
+}
+
+.book-rating{
+    background-color: #29bc5c;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    padding-left: 13px;
+    padding-right: 13px;
+    border-radius: 50px;
+}
+
+.star-icon{
+    color: white;
+    margin: 0px;
+}
+
+.red{
+    background-color: #d6263d;
+}
+
+.black{
+    background-color: #000000;
+}
+
+.rating-number{
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* stats */
+
+.statistics-container{
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 82%;
+    grid-gap: 11px 71px;
+    margin-bottom: 10px;
+}
+/* each statistics box */
+.stat-container{
+    border: 1px solid #e3e2e26e;
+    width: 100%;
+    padding: 13px;
+    border-radius: 11px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.content{
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.stat-icon{
+    margin-left: 10px;
+}
+.content-heading{
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+.content-desc{
+    margin: 0%;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
