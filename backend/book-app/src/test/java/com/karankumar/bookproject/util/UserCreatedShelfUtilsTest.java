@@ -50,17 +50,67 @@ class UserCreatedShelfUtilsTest {
 
   private Set<Book> booksInCustomShelf1;
 
-    @BeforeAll
-    static void dbSetup() {
-        BookPostgreSQLContainer.getInstance().start();
-    }
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-    @Autowired
-    UserCreatedShelfUtilsTest(BookService bookService, UserCreatedShelfService userCreatedShelfService,
-                              PredefinedShelfService predefinedShelfService) {
-        this.bookService = bookService;
-        this.userCreatedShelfService = userCreatedShelfService;
-        this.predefinedShelfService = predefinedShelfService;
+  @Autowired
+  UserCreatedShelfUtilsTest(
+      BookService bookService,
+      UserCreatedShelfService userCreatedShelfService,
+      PredefinedShelfService predefinedShelfService) {
+    this.bookService = bookService;
+    this.userCreatedShelfService = userCreatedShelfService;
+    this.predefinedShelfService = predefinedShelfService;
+  }
+
+  @BeforeEach
+  public void setUp() {
+    resetServices();
+
+    userCreatedShelf1 = userCreatedShelfService.createCustomShelf("CustomShelf1");
+    userCreatedShelf2 = userCreatedShelfService.createCustomShelf("CustomShelf2");
+    userCreatedShelfWithNoBooks = userCreatedShelfService.createCustomShelf("CustomShelf3");
+    saveCustomShelves(userCreatedShelf1, userCreatedShelf2, userCreatedShelfWithNoBooks);
+
+    addBooksToCustomShelves(predefinedShelfService.findToReadShelf());
+  }
+
+  private void resetServices() {
+    bookService.deleteAll();
+    userCreatedShelfService.deleteAll();
+  }
+
+  private HashSet<Book> createSetOfBooks(
+      String title1,
+      String title2,
+      PredefinedShelf predefinedShelf,
+      UserCreatedShelf userCreatedShelf) {
+    return new HashSet<>(
+        List.of(
+            createAndSaveBook(title1, predefinedShelf, userCreatedShelf),
+            createAndSaveBook(title2, predefinedShelf, userCreatedShelf)));
+  }
+
+  private Book createAndSaveBook(
+      String title, PredefinedShelf predefinedShelf, UserCreatedShelf userCreatedShelf) {
+    Book book = new Book(title, new Author("John Doe"), predefinedShelf);
+    book.setUserCreatedShelf(userCreatedShelf);
+    bookService.save(book);
+    return book;
+  }
+
+  private void addBooksToCustomShelves(PredefinedShelf predefinedShelf) {
+    booksInCustomShelf1 = createSetOfBooks("Title1", "Title2", predefinedShelf, userCreatedShelf1);
+    userCreatedShelf1.setBooks(booksInCustomShelf1);
+    userCreatedShelf2.setBooks(
+        createSetOfBooks("Title3", "Title4", predefinedShelf, userCreatedShelf2));
+  }
+
+  private void saveCustomShelves(UserCreatedShelf... customShelves) {
+    for (UserCreatedShelf c : customShelves) {
+      userCreatedShelfService.save(c);
     }
   }
 

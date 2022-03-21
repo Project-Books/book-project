@@ -47,17 +47,17 @@ class PageStatisticsTest {
     this.predefinedShelfService = predefinedShelfService;
   }
 
-    @BeforeAll
-    static void dbSetup() {
-        BookPostgreSQLContainer.getInstance().start();
-    }
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-    @BeforeEach
-    public void setUp() {
-        bookService.deleteAll();
-        StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
-        PageStatisticsTest.pageStatistics = new PageStatistics(predefinedShelfService);
-    }
+  @BeforeEach
+  public void setUp() {
+    bookService.deleteAll();
+    StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
+    PageStatisticsTest.pageStatistics = new PageStatistics(predefinedShelfService);
+  }
 
   @Test
   void findBookWithMostPages() {

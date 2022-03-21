@@ -58,17 +58,17 @@ class PredefinedShelfRepositoryTest {
     this.repository = repository;
   }
 
-	@BeforeAll
-	static void dbSetup() {
-		BookPostgreSQLContainer.getInstance().start();
-	}
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-	@BeforeEach
-    void setup() {
-        user = getTestUser(userRepository);
-        createShelvesForUser(user);
-        createShelvesForUser(insertTestUser(userRepository));
-    }
+  @BeforeEach
+  void setup() {
+    user = getTestUser(userRepository);
+    createShelvesForUser(user);
+    createShelvesForUser(insertTestUser(userRepository));
+  }
 
   @Test
   void findCorrectShelf() {

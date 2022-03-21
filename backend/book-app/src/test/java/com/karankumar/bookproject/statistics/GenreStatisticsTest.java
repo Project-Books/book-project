@@ -40,21 +40,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class GenreStatisticsTest {
 
-	@BeforeAll
-	static void dbSetup() {
-		BookPostgreSQLContainer.getInstance().start();
-	}
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-	private final BookService bookService;
-	private final PredefinedShelfService predefinedShelfService;
+  private final BookService bookService;
+  private final PredefinedShelfService predefinedShelfService;
 
-	private static GenreStatistics genreStatistics;
+  private static GenreStatistics genreStatistics;
 
-	@Autowired
-	GenreStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
-		this.bookService = bookService;
-		this.predefinedShelfService = predefinedShelfService;
-    }
+  @Autowired
+  GenreStatisticsTest(BookService bookService, PredefinedShelfService predefinedShelfService) {
+    this.bookService = bookService;
+    this.predefinedShelfService = predefinedShelfService;
+  }
 
   @BeforeEach
   public void setUp() {

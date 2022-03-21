@@ -41,17 +41,16 @@ class ImportServiceTest {
   private final ImportService importService;
   private final BookService bookService;
 
-    @BeforeAll
-    static void dbSetup() {
-        BookPostgreSQLContainer.getInstance().start();
-    }
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-
-    @Autowired
-    ImportServiceTest(ImportService importService, BookService bookService) {
-        this.importService = importService;
-        this.bookService = bookService;
-    }
+  @Autowired
+  ImportServiceTest(ImportService importService, BookService bookService) {
+    this.importService = importService;
+    this.bookService = bookService;
+  }
 
   @BeforeEach
   public void setUp() {

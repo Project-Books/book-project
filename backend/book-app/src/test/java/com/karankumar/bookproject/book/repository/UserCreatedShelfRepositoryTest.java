@@ -60,18 +60,17 @@ class UserCreatedShelfRepositoryTest {
     this.underTest = userCreatedShelfRepository;
   }
 
-	@BeforeAll
-	static void dbSetup() {
-		BookPostgreSQLContainer.getInstance().start();
-	}
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-
-	@BeforeEach
-	void setUp() {
-		user = getTestUser(userRepository);
-		createShelvesForUser(user);
-		createShelvesForUser(insertTestUser(userRepository));
-	}
+  @BeforeEach
+  void setUp() {
+    user = getTestUser(userRepository);
+    createShelvesForUser(user);
+    createShelvesForUser(insertTestUser(userRepository));
+  }
 
   @Test
   @Disabled

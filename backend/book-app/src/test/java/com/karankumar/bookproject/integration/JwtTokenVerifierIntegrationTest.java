@@ -57,19 +57,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 class JwtTokenVerifierIntegrationTest {
 
-    @BeforeAll
-    static void dbSetup() {
-        BookPostgreSQLContainer.getInstance().start();
-    }
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private JwtConfig jwtConfig;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private SecretKey key;
+  @Autowired private MockMvc mockMvc;
+  @Autowired private JwtConfig jwtConfig;
+  @Autowired private AuthenticationManager authenticationManager;
+  @Autowired private SecretKey key;
 
   @Test
   void shouldReturnUnauthorizedIfIncorrectRefreshTokenPassed() throws Exception {

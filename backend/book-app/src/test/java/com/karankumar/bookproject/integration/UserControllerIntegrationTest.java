@@ -46,15 +46,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerIntegrationTest {
   @Autowired private MockMvc mockMvc;
 
-    @BeforeAll
-    static void dbSetup() {
-        BookPostgreSQLContainer.getInstance().start();
-    }
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-    @Test
-    void canLoginWithTestUser() throws Exception {
-        // given
-        String url = "http://localhost:8080/login";
+  @Test
+  void canLoginWithTestUser() throws Exception {
+    // given
+    String url = "http://localhost:8080/login";
 
     UserToRegisterDto userToRegisterDto = new UserToRegisterDto("user@user.user", "password");
 

@@ -47,18 +47,17 @@ class YearStatisticsTest {
     this.predefinedShelfService = predefinedShelfService;
   }
 
-    @BeforeAll
-    static void dbSetup() {
-        BookPostgreSQLContainer.getInstance().start();
-    }
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-
-    @BeforeEach
-    public void setUp() {
-        bookService.deleteAll(); // reset
-        StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
-        bookWithLowestRatingThisYear = StatisticTestUtils.getBookWithLowestRatingThisYear();
-        bookWithHighestRatingThisYear = StatisticTestUtils.getBookWithHighestRatingThisYear();
+  @BeforeEach
+  public void setUp() {
+    bookService.deleteAll(); // reset
+    StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
+    bookWithLowestRatingThisYear = StatisticTestUtils.getBookWithLowestRatingThisYear();
+    bookWithHighestRatingThisYear = StatisticTestUtils.getBookWithHighestRatingThisYear();
 
     yearStatistic = new YearStatistics(predefinedShelfService);
   }

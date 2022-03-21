@@ -34,16 +34,16 @@ class BookUtilsTest {
   private final String bookTitle = "Title";
   private final Book book; // = new Book(bookTitle, null, null);
 
-	@BeforeAll
-	static void dbSetup() {
-		BookPostgreSQLContainer.getInstance().start();
-	}
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-    @Autowired
-    BookUtilsTest(PredefinedShelfService predefinedShelfService) {
-        // TODO: mock predefinedShelfService
-        book = new Book(bookTitle, null, predefinedShelfService.findById(1L).get());
-    }
+  @Autowired
+  BookUtilsTest(PredefinedShelfService predefinedShelfService) {
+    // TODO: mock predefinedShelfService
+    book = new Book(bookTitle, null, predefinedShelfService.findById(1L).get());
+  }
 
   @Test
   void notShowSeriesPositionIfBookIsNotInSeries() {

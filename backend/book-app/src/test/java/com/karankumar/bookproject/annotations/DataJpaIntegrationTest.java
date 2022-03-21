@@ -39,5 +39,4 @@ import java.lang.annotation.Target;
 @ActiveProfiles("test")
 @ContextConfiguration(classes = BookProjectApplication.class)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-public @interface DataJpaIntegrationTest {
-}
+public @interface DataJpaIntegrationTest {}

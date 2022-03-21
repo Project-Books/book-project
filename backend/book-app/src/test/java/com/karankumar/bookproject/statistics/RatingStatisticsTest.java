@@ -48,18 +48,17 @@ class RatingStatisticsTest {
     this.predefinedShelfService = predefinedShelfService;
   }
 
-	@BeforeAll
-	static void dbSetup() {
-		BookPostgreSQLContainer.getInstance().start();
-	}
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-
-	@BeforeEach
-    public void setUp() {
-        bookService.deleteAll(); // reset
-        StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
-        bookWithNoRating = StatisticTestUtils.getBookWithLowestRating();
-        bookWithHighestRating = StatisticTestUtils.getBookWithHighestRating();
+  @BeforeEach
+  public void setUp() {
+    bookService.deleteAll(); // reset
+    StatisticTestUtils.populateReadBooks(bookService, predefinedShelfService);
+    bookWithNoRating = StatisticTestUtils.getBookWithLowestRating();
+    bookWithHighestRating = StatisticTestUtils.getBookWithHighestRating();
 
     ratingStatistics = new RatingStatistics(predefinedShelfService);
   }

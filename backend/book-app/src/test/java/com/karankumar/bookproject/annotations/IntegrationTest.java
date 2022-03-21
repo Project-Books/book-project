@@ -46,5 +46,4 @@ import static com.karankumar.bookproject.util.SecurityTestUtils.TEST_USER_EMAIL;
 @WithMockUser(TEST_USER_EMAIL)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-public @interface IntegrationTest {
-}
+public @interface IntegrationTest {}

@@ -31,22 +31,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaIntegrationTest
 class AuthorRepositoryTest {
-	@Autowired
-	private AuthorRepository underTest;
-	@Autowired
-	private BookRepository bookRepository;
+  @Autowired private AuthorRepository underTest;
+  @Autowired private BookRepository bookRepository;
 
-	@BeforeAll
-	static void dbSetup() {
-		BookPostgreSQLContainer.getInstance().start();
-	}
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-	@BeforeEach
-	void setUp() {
-		// foreign key errors
-		bookRepository.deleteAll();
-		underTest.deleteAll();
-	}
+  @BeforeEach
+  void setUp() {
+    // foreign key errors
+    bookRepository.deleteAll();
+    underTest.deleteAll();
+  }
 
   @Test
   void canFindAll() {

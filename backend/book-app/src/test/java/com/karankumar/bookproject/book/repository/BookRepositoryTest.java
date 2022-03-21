@@ -62,21 +62,20 @@ class BookRepositoryTest {
     this.predefinedShelfRepository = predefinedShelfRepository;
   }
 
-    @BeforeAll
-    static void dbSetup() {
-        BookPostgreSQLContainer.getInstance().start();
-    }
+  @BeforeAll
+  static void dbSetup() {
+    BookPostgreSQLContainer.getInstance().start();
+  }
 
-    @BeforeEach
-    void init() {
-        bookRepository.deleteAll();
-        User user = getTestUser(userRepository);
-        author = authorRepository.save(new Author("firstName lastName"));
-        read = predefinedShelfRepository.save(
-                new PredefinedShelf(PredefinedShelf.ShelfName.READ, user)
-        );
-        bookRepository.save(new Book("title", author, read));
-    }
+  @BeforeEach
+  void init() {
+    bookRepository.deleteAll();
+    User user = getTestUser(userRepository);
+    author = authorRepository.save(new Author("firstName lastName"));
+    read =
+        predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ, user));
+    bookRepository.save(new Book("title", author, read));
+  }
 
   @Test
   void successfullyDeleteABook_whenAuthorHasOtherBooks() {
