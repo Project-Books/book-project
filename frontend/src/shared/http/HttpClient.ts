@@ -42,23 +42,21 @@ type HttpReponse = Promise<Response>
 class HttpClientBase {
     baseUrl = 'http://localhost:8080/';
     mode: "cors" | "navigate" | "no-cors" | "same-origin" | undefined = "cors";
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    headers: any = {
-         // eslint-disable-next-line @typescript-eslint/naming-convention
-        "Authorization": null,
+    headers: Record<string, string> = {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "Content-Type": "application/json",
         // eslint-disable-next-line @typescript-eslint/naming-convention
         "Access-Control-Allow-Origin": "*",
     };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    get(url: string): any {
-        if (this.headers["Authorization"] === null) {
+    get(url: string): Promise<any> {
+        if ("Authorization" in this.headers === false) {
             window.location.replace("http://localhost:3000/sign-in");
         }
-        const requestOptions = {
+        const requestOptions: RequestInit = {
             method:Verb.GET,
-            headers: this.headers,
+            headers: this.headers as HeadersInit,
         };
         return fetch(url, requestOptions)
             .then(response => {
@@ -69,13 +67,14 @@ class HttpClientBase {
             });
     }
 
-    post(url: string, param: string): Promise<Response> {
-        if (this.headers["Authorization"] === null) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    post(url: string, param: string): Promise<any> {
+        if ("Authorization" in this.headers === false) {
             window.location.replace("http://localhost:3000/sign-in");
         }
-        const requestOptions = {
+        const requestOptions: RequestInit = {
             method:Verb.POST,
-            headers: this.headers,
+            headers: this.headers as HeadersInit,
         };
         return fetch(url + "/" + param, requestOptions)
             .then(response => {
@@ -87,7 +86,7 @@ class HttpClientBase {
     }
 
     getHeaders() {
-        if (this.headers["Authorization"] === null) {
+        if ("Authorization" in this.headers === false) {
             window.location.replace("http://localhost:3000/sign-in");
         } else {
             return this.headers;
@@ -106,7 +105,6 @@ class HttpClientBase {
                 'Content-Type': 'application/json',
                  // eslint-disable-next-line @typescript-eslint/naming-convention
                 "Access-Control-Allow-Origin": "*"
-                // eslint-disable-next-line @typescript-eslint/naming-convention
             },
             body: JSON.stringify({
                 username: email,
@@ -116,7 +114,7 @@ class HttpClientBase {
         return fetch(this.baseUrl + Endpoints.login, requestOptions)
         .then(response => {
             const headers = response.headers;
-            this.headers['Authorization'] = headers.get('Authorization');
+            this.headers['Authorization'] = headers.get('Authorization') as string
             return response;
         });
     }
@@ -134,7 +132,7 @@ class HttpClientBase {
         return fetch(this.baseUrl + Endpoints.user, requestOptions)
         .then(response => {
             if (response.ok) {
-                this.headers['Authorization'] = null;
+                delete this.headers['Authorization'];
             }
             return response;
         });
@@ -145,7 +143,7 @@ const httpClientInstance = HttpClient();
 export const apolloClient = new ApolloClientBase({
     uri: 'http://localhost:8082/graphql',
     cache: new InMemoryCache(),
-    headers:httpClientInstance.headers
+    headers: httpClientInstance.headers
 });
 
 export default httpClientInstance;

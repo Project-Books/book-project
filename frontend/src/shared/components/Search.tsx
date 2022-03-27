@@ -49,7 +49,7 @@ export default function Search(): JSX.Element {
     }
     const duplicateDataCount = 8;
     const booksToRender: IQueryResult[] = Array(duplicateDataCount).fill(
-      data.findByTitleIgnoreCase
+      data[0]
     );
     setReformattedQueryData(booksToRender);
   }, [data]);
