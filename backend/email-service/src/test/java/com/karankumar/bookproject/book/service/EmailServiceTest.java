@@ -40,69 +40,74 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @SpringBootTest(classes = {EmailConfiguration.class, ThymeleafConfiguration.class})
 class EmailServiceTest {
 
-    EmailServiceImpl emailService;
-    String messageBody;
-    String recipient;
-    String subject;
-    Map<String, Object> thymeleafModel;
+  EmailServiceImpl emailService;
+  String messageBody;
+  String recipient;
+  String subject;
+  Map<String, Object> thymeleafModel;
 
-    @Autowired
-    private SpringTemplateEngine templateEngine;
+  @Autowired private SpringTemplateEngine templateEngine;
 
-    @Resource
-    JavaMailSenderImpl javaMailSender;
+  @Resource JavaMailSenderImpl javaMailSender;
 
-    @RegisterExtension
-    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
-            .withConfiguration(GreenMailConfiguration.aConfig().withUser("test", "test"))
-            .withPerMethodLifecycle(true);
+  @RegisterExtension
+  static GreenMailExtension greenMail =
+      new GreenMailExtension(ServerSetupTest.SMTP)
+          .withConfiguration(GreenMailConfiguration.aConfig().withUser("test", "test"))
+          .withPerMethodLifecycle(true);
 
-    @BeforeEach
-    void setUp() {
-        messageBody = "This is test message";
-        recipient = "test@karankumar.com";
-        subject = "Test subject";
-        emailService = new EmailServiceImpl(javaMailSender, templateEngine);
-        thymeleafModel = MockEmailTemplate.getTestTemplate(emailService.getUsernameFromEmail(recipient));
-    }
+  @BeforeEach
+  void setUp() {
+    messageBody = "This is test message";
+    recipient = "test@karankumar.com";
+    subject = "Test subject";
+    emailService = new EmailServiceImpl(javaMailSender, templateEngine);
+    thymeleafModel =
+        MockEmailTemplate.getTestTemplate(emailService.getUsernameFromEmail(recipient));
+  }
 
-    @Test
-    void GivenRecipientSubjectBody_WhenSendSimpleMessage_ThenSendMessage() {
-        emailService.sendSimpleMessage(recipient,subject, messageBody);
+  @Test
+  void GivenRecipientSubjectBody_WhenSendSimpleMessage_ThenSendMessage() {
+    emailService.sendSimpleMessage(recipient, subject, messageBody);
 
-        MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
+    MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
 
     assertSoftly(
         softly -> {
           softly.assertThat(messageBody).isEqualTo(GreenMailUtil.getBody(receivedMessage));
           try {
             softly.assertThat(receivedMessage.getAllRecipients().length).isOne();
-            softly.assertThat(recipient).isEqualTo(receivedMessage.getAllRecipients()[0].toString());
+            softly
+                .assertThat(recipient)
+                .isEqualTo(receivedMessage.getAllRecipients()[0].toString());
             softly.assertThat(subject).isEqualTo(receivedMessage.getSubject());
           } catch (MessagingException e) {
             Assertions.fail("Messaging exception thrown");
           }
         });
-    }
+  }
 
-    @Test
-    void GivenRecipientSubjectBody_WhenSendMessageUsingThymeleafTemplate_ThenSendMessage()
-            throws MessagingException {
-        emailService.sendMessageUsingThymeleafTemplate(recipient, subject,thymeleafModel);
+  @Test
+  void GivenRecipientSubjectBody_WhenSendMessageUsingThymeleafTemplate_ThenSendMessage()
+      throws MessagingException {
+    emailService.sendMessageUsingThymeleafTemplate(recipient, subject, thymeleafModel);
 
-        MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
+    MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
 
-        assertSoftly(softly -> {
-            softly.assertThat(GreenMailUtil.getBody(receivedMessage))
-                  .contains("<p>" + messageBody + "</p>");
-            try {
-                softly.assertThat(receivedMessage.getAllRecipients().length).isOne();
-                softly.assertThat(recipient)
-                      .isEqualTo(receivedMessage.getAllRecipients()[0].toString());
-                softly.assertThat(subject).isEqualTo(receivedMessage.getSubject());
-            } catch (MessagingException e) {
-                Assertions.fail("Messaging exception thrown");
-            }
+    assertSoftly(
+        softly -> {
+          softly
+              .assertThat(GreenMailUtil.getBody(receivedMessage))
+              .contains("<p>" + messageBody + "</p>");
+          try {
+            softly.assertThat(receivedMessage.getAllRecipients().length).isOne();
+            softly
+                .assertThat(recipient)
+                .isEqualTo(receivedMessage.getAllRecipients()[0].toString());
+            softly.assertThat(subject).isEqualTo(receivedMessage.getSubject());
+          } catch (MessagingException e) {
+            Assertions.fail("Messaging exception thrown");
+          }
         });
-    }
+  }
 }

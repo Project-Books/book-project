@@ -18,17 +18,17 @@ import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 
 @ExcludeFromJacocoGeneratedReport
 public enum RoleType {
-    ADMIN("ADMIN"),
-    USER("USER");
+  ADMIN("ADMIN"),
+  USER("USER");
 
-    private final String role;
+  private final String role;
 
-    RoleType(String role) {
-        this.role = role;
-    }
+  RoleType(String role) {
+    this.role = role;
+  }
 
-    @Override
-    public String toString() {
-        return role;
-    }
+  @Override
+  public String toString() {
+    return role;
+  }
 }

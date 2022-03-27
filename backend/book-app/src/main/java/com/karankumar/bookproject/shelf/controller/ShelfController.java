@@ -88,8 +88,7 @@ public class ShelfController {
         || shelfName.isBlank()
         || newShelfName == null
         || newShelfName.isBlank()) {
-      throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, NULL_OR_EMPTY_SHELF_NAME);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, NULL_OR_EMPTY_SHELF_NAME);
     }
 
     Optional<UserCreatedShelf> shelfOptional =

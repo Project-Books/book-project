@@ -49,206 +49,207 @@ import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    private UserService underTest;
+  private UserService underTest;
 
-    @Mock private PasswordEncoder mockPasswordEncoder;
-    @Mock private RoleRepository roleRepository;
-    @Mock private AuthenticationManager authenticationManager;
-    @Mock private UserRepository mockUserRepository;
-    @Mock private BookRepository bookRepository;
+  @Mock private PasswordEncoder mockPasswordEncoder;
+  @Mock private RoleRepository roleRepository;
+  @Mock private AuthenticationManager authenticationManager;
+  @Mock private UserRepository mockUserRepository;
+  @Mock private BookRepository bookRepository;
 
-    @BeforeEach
-    void setUp() {
-        bookRepository = mock(BookRepository.class);
-        PredefinedShelfService predefinedShelfService = mock(PredefinedShelfService.class);
-        underTest =
-                new UserService(
-                        mockUserRepository,
-                        roleRepository,
-                        mockPasswordEncoder,
-                        authenticationManager,
-                        predefinedShelfService,
-                        bookRepository);
-    }
+  @BeforeEach
+  void setUp() {
+    bookRepository = mock(BookRepository.class);
+    PredefinedShelfService predefinedShelfService = mock(PredefinedShelfService.class);
+    underTest =
+        new UserService(
+            mockUserRepository,
+            roleRepository,
+            mockPasswordEncoder,
+            authenticationManager,
+            predefinedShelfService,
+            bookRepository);
+  }
 
-    @Test
-    void register_throwsNullPointerException_ifUserIsNull() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.register(null));
-        then(mockUserRepository).shouldHaveNoInteractions();
-    }
+  @Test
+  void register_throwsNullPointerException_ifUserIsNull() {
+    assertThatExceptionOfType(NullPointerException.class)
+        .isThrownBy(() -> underTest.register(null));
+    then(mockUserRepository).shouldHaveNoInteractions();
+  }
 
-    @Test
-    void findUserById_searchesRepository() {
-        long id = 1;
-        underTest.findUserById(id);
-        verify(mockUserRepository, times(1)).findById(id);
-    }
+  @Test
+  void findUserById_searchesRepository() {
+    long id = 1;
+    underTest.findUserById(id);
+    verify(mockUserRepository, times(1)).findById(id);
+  }
 
-    @Test
-    void findUserById_throwsNullPointerException_ifIdIsNull() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.findUserById(null));
-        then(mockUserRepository).shouldHaveNoInteractions();
-    }
+  @Test
+  void findUserById_throwsNullPointerException_ifIdIsNull() {
+    assertThatExceptionOfType(NullPointerException.class)
+        .isThrownBy(() -> underTest.findUserById(null));
+    then(mockUserRepository).shouldHaveNoInteractions();
+  }
 
-    @Test
-    void findUserByEmail_searchesRepository() {
-        String email = "test123@test.com";
-        underTest.findUserByEmail(email);
-        verify(mockUserRepository, times(1)).findByEmail(email);
-    }
+  @Test
+  void findUserByEmail_searchesRepository() {
+    String email = "test123@test.com";
+    underTest.findUserByEmail(email);
+    verify(mockUserRepository, times(1)).findByEmail(email);
+  }
 
-    @Test
-    void findUserByEmail_throwsNullPointerException_ifEmailIsNull() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.findUserByEmail(null));
-        then(mockUserRepository).shouldHaveNoInteractions();
-    }
+  @Test
+  void findUserByEmail_throwsNullPointerException_ifEmailIsNull() {
+    assertThatExceptionOfType(NullPointerException.class)
+        .isThrownBy(() -> underTest.findUserByEmail(null));
+    then(mockUserRepository).shouldHaveNoInteractions();
+  }
 
-    @Test
-    void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.isEmailInUse(null));
-        then(mockUserRepository).shouldHaveNoInteractions();
-    }
+  @Test
+  void isEmailInUse_throwsNullPointerException_ifEmailIsNull() {
+    assertThatExceptionOfType(NullPointerException.class)
+        .isThrownBy(() -> underTest.isEmailInUse(null));
+    then(mockUserRepository).shouldHaveNoInteractions();
+  }
 
-    @Test
-    void returnTrueIfEmailInUse() {
-        // given
-        given(mockUserRepository.findByEmail(anyString())).willReturn(Optional.of(mock(User.class)));
+  @Test
+  void returnTrueIfEmailInUse() {
+    // given
+    given(mockUserRepository.findByEmail(anyString())).willReturn(Optional.of(mock(User.class)));
 
-        // when
-        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
+    // when
+    boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
 
-        // then
-        assertThat(emailInUse).isTrue();
-    }
+    // then
+    assertThat(emailInUse).isTrue();
+  }
 
-    @Test
-    void returnFalseIfEmailInUse() {
-        // given
-        given(mockUserRepository.findByEmail(anyString())).willReturn(Optional.empty());
+  @Test
+  void returnFalseIfEmailInUse() {
+    // given
+    given(mockUserRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
-        // when
-        boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
+    // when
+    boolean emailInUse = underTest.isEmailInUse("test@gmail.com");
 
-        // then
-        assertThat(emailInUse).isFalse();
-    }
+    // then
+    assertThat(emailInUse).isFalse();
+  }
 
-    @Test
-    void changeUserEmail_throwsIncorrectPasswordException_ifPasswordIncorrect() {
-        User user = User.builder().password("anything").build();
+  @Test
+  void changeUserEmail_throwsIncorrectPasswordException_ifPasswordIncorrect() {
+    User user = User.builder().password("anything").build();
 
-        when(mockPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
+    when(mockPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
-        assertThatExceptionOfType(IncorrectPasswordException.class)
-                .isThrownBy(() ->
-                        underTest.changeUserEmail(user, "a", "email@email.com")
-                ).withMessage("The password you entered is incorrect");
-        then(mockUserRepository).shouldHaveNoInteractions();
-    }
+    assertThatExceptionOfType(IncorrectPasswordException.class)
+        .isThrownBy(() -> underTest.changeUserEmail(user, "a", "email@email.com"))
+        .withMessage("The password you entered is incorrect");
+    then(mockUserRepository).shouldHaveNoInteractions();
+  }
 
-    @Test
-    void changeUserEmail_throwsUserAlreadyRegisteredException_ifPasswordIncorrect() {
-        String email = "email@email.com";
-        User user = User.builder().email(email).password("anything").build();
+  @Test
+  void changeUserEmail_throwsUserAlreadyRegisteredException_ifPasswordIncorrect() {
+    String email = "email@email.com";
+    User user = User.builder().email(email).password("anything").build();
 
-        when(mockPasswordEncoder.matches(anyString(), anyString())).thenReturn(true);
+    when(mockPasswordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
-        assertThatExceptionOfType(UserAlreadyRegisteredException.class)
-                .isThrownBy(() ->
-                        underTest.changeUserEmail(user, "a", email)
-                ).withMessage("The email address you provided is the same as your current one.");
-        then(mockUserRepository).shouldHaveNoInteractions();
-    }
+    assertThatExceptionOfType(UserAlreadyRegisteredException.class)
+        .isThrownBy(() -> underTest.changeUserEmail(user, "a", email))
+        .withMessage("The email address you provided is the same as your current one.");
+    then(mockUserRepository).shouldHaveNoInteractions();
+  }
 
-    @Test
-    void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
-        then(mockUserRepository).shouldHaveNoInteractions();
-    }
+  @Test
+  void changeUserPassword_throwsNullPointerException_ifUserIsNull() {
+    assertThatExceptionOfType(NullPointerException.class)
+        .isThrownBy(() -> underTest.changeUserPassword(null, "test"));
+    then(mockUserRepository).shouldHaveNoInteractions();
+  }
 
-    @Test
-    void changeUserPassword_throwsNullPointerException_ifPasswordIsNull() {
-        User user = User.builder().build();
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> underTest.changeUserPassword(user, null));
-        then(mockUserRepository).shouldHaveNoInteractions();
-    }
+  @Test
+  void changeUserPassword_throwsNullPointerException_ifPasswordIsNull() {
+    User user = User.builder().build();
+    assertThatExceptionOfType(NullPointerException.class)
+        .isThrownBy(() -> underTest.changeUserPassword(user, null));
+    then(mockUserRepository).shouldHaveNoInteractions();
+  }
 
-    @Test
-    void changeUserPassword_encodesPassword_beforeSaving() {
-        // given
-        String veryStrongPassword = "VeryStrongPassword007";
-        final String email = "test@gmail.com";
+  @Test
+  void changeUserPassword_encodesPassword_beforeSaving() {
+    // given
+    String veryStrongPassword = "VeryStrongPassword007";
+    final String email = "test@gmail.com";
 
-        // when
-        underTest.changeUserPassword(User.builder().email(email).build(), veryStrongPassword);
+    // when
+    underTest.changeUserPassword(User.builder().email(email).build(), veryStrongPassword);
 
-        // then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-        verify(mockUserRepository).save(userArgumentCaptor.capture());
-        User expected = User.builder().email(email)
-                            .password(mockPasswordEncoder.encode(veryStrongPassword)).build();
-        assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
-    }
+    // then
+    ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+    verify(mockUserRepository).save(userArgumentCaptor.capture());
+    User expected =
+        User.builder()
+            .email(email)
+            .password(mockPasswordEncoder.encode(veryStrongPassword))
+            .build();
+    assertThat(userArgumentCaptor.getValue()).isEqualTo(expected);
+  }
 
-    @Test
-    void deleteUserById_deletesUser_ifUserExists() {
-        // given
-        User user = User.builder().build();
-        given(mockUserRepository.findById(anyLong())).willReturn(Optional.of(user));
-        Long expectedId = 1L;
+  @Test
+  void deleteUserById_deletesUser_ifUserExists() {
+    // given
+    User user = User.builder().build();
+    given(mockUserRepository.findById(anyLong())).willReturn(Optional.of(user));
+    Long expectedId = 1L;
 
-        // when
-        underTest.deleteUserById(expectedId);
+    // when
+    underTest.deleteUserById(expectedId);
 
-        // then
-        verify(bookRepository).deleteAll();
+    // then
+    verify(bookRepository).deleteAll();
 
-        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-        verify(mockUserRepository).deleteById(longArgumentCaptor.capture());
-        Long actual = longArgumentCaptor.getValue();
-        assertThat(actual).isEqualTo(expectedId);
-    }
+    ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+    verify(mockUserRepository).deleteById(longArgumentCaptor.capture());
+    Long actual = longArgumentCaptor.getValue();
+    assertThat(actual).isEqualTo(expectedId);
+  }
 
-    @Test
-    void deleteUserById_throwsNotFound_IfUserDoesNotExist() {
-        given(mockUserRepository.findById(anyLong())).willReturn(Optional.empty());
-        Long id = 1L;
-        String expectedMessage = String.format(USER_NOT_FOUND_ERROR_MESSAGE, id);
+  @Test
+  void deleteUserById_throwsNotFound_IfUserDoesNotExist() {
+    given(mockUserRepository.findById(anyLong())).willReturn(Optional.empty());
+    Long id = 1L;
+    String expectedMessage = String.format(USER_NOT_FOUND_ERROR_MESSAGE, id);
 
-        assertThatExceptionOfType(ResponseStatusException.class)
-                .isThrownBy(() -> underTest.deleteUserById(id))
-                .withMessageContaining(expectedMessage);
-        then(bookRepository).shouldHaveNoInteractions();
-        then(mockUserRepository).shouldHaveNoMoreInteractions();
-    }
+    assertThatExceptionOfType(ResponseStatusException.class)
+        .isThrownBy(() -> underTest.deleteUserById(id))
+        .withMessageContaining(expectedMessage);
+    then(bookRepository).shouldHaveNoInteractions();
+    then(mockUserRepository).shouldHaveNoMoreInteractions();
+  }
 
-    @Test
-    void resetFailAttempts_setsFailedAttemptsToZero() {
-        // given
-        User user = mock(User.class);
+  @Test
+  void resetFailAttempts_setsFailedAttemptsToZero() {
+    // given
+    User user = mock(User.class);
 
-        // when
-        underTest.resetFailAttempts(user);
+    // when
+    underTest.resetFailAttempts(user);
 
-        // then
-        verify(user, times(1)).setFailedAttempts(0);
-        verify(mockUserRepository, times(1)).save(any(User.class));
-    }
+    // then
+    verify(user, times(1)).setFailedAttempts(0);
+    verify(mockUserRepository, times(1)).save(any(User.class));
+  }
 
-    @Test
-    void lock_setsToTrue_andSetsLockTime() {
-        User user = mock(User.class);
+  @Test
+  void lock_setsToTrue_andSetsLockTime() {
+    User user = mock(User.class);
 
-        underTest.lock(user);
+    underTest.lock(user);
 
-        verify(user, times(1)).setLocked(true);
-        verify(user, times(1)).setLockTime(any());
-        verify(mockUserRepository, times(1)).save(user);
-    }
+    verify(user, times(1)).setLocked(true);
+    verify(user, times(1)).setLockTime(any());
+    verify(mockUserRepository, times(1)).save(user);
+  }
 }

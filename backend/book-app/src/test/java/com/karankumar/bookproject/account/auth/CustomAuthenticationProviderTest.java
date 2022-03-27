@@ -33,31 +33,30 @@ import static org.mockito.Mockito.when;
 
 class CustomAuthenticationProviderTest {
 
-    private final UserService mockUserService;
-    private final CustomAuthenticationProvider underTest;
+  private final UserService mockUserService;
+  private final CustomAuthenticationProvider underTest;
 
-    CustomAuthenticationProviderTest() {
-        mockUserService = mock(UserService.class);
-        underTest = new CustomAuthenticationProvider(mockUserService);
-    }
+  CustomAuthenticationProviderTest() {
+    mockUserService = mock(UserService.class);
+    underTest = new CustomAuthenticationProvider(mockUserService);
+  }
 
-    @Test
-    void authenticate_throwsLockedException_ifAccountLocked() {
-        long zeroIndexedHours = 3L;
-        User user = User.builder().locked(true).build();
-        when(mockUserService.findUserByEmail(anyString())).thenReturn(Optional.of(user));
-        when(mockUserService.hoursUntilUnlock(any(User.class))).thenReturn(zeroIndexedHours);
-        when(mockUserService.unlockWhenTimeExpired(any(User.class))).thenReturn(true);
+  @Test
+  void authenticate_throwsLockedException_ifAccountLocked() {
+    long zeroIndexedHours = 3L;
+    User user = User.builder().locked(true).build();
+    when(mockUserService.findUserByEmail(anyString())).thenReturn(Optional.of(user));
+    when(mockUserService.hoursUntilUnlock(any(User.class))).thenReturn(zeroIndexedHours);
+    when(mockUserService.unlockWhenTimeExpired(any(User.class))).thenReturn(true);
 
-        Authentication mockAuth = mock(Authentication.class);
-        when(mockAuth.getName()).thenReturn("test");
+    Authentication mockAuth = mock(Authentication.class);
+    when(mockAuth.getName()).thenReturn("test");
 
-        // when/then
-        String expectedMessage = String.format("User is locked. Please wait %d hours to unlock it.",
-                zeroIndexedHours + 1
-        );
-        assertThatExceptionOfType(LockedException.class)
-                .isThrownBy(() -> underTest.authenticate(mockAuth))
-                .withMessage(expectedMessage);
-    }
+    // when/then
+    String expectedMessage =
+        String.format("User is locked. Please wait %d hours to unlock it.", zeroIndexedHours + 1);
+    assertThatExceptionOfType(LockedException.class)
+        .isThrownBy(() -> underTest.authenticate(mockAuth))
+        .withMessage(expectedMessage);
+  }
 }

@@ -48,10 +48,12 @@ import lombok.Setter;
 public class Tag {
   @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
   private final Set<Book> books = new HashSet<>();
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Setter(AccessLevel.NONE)
   private Long id;
+
   @Column(nullable = false, unique = true)
   private String name;
 

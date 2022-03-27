@@ -28,22 +28,23 @@ import java.util.Optional;
 
 @ExcludeFromJacocoGeneratedReport
 @Component
-public class AuthenticationSuccessListener implements ApplicationListener<AuthenticationSuccessEvent> {
-    private final UserService userService;
+public class AuthenticationSuccessListener
+    implements ApplicationListener<AuthenticationSuccessEvent> {
+  private final UserService userService;
 
-    public AuthenticationSuccessListener(UserService userService) {
-        this.userService = userService;
+  public AuthenticationSuccessListener(UserService userService) {
+    this.userService = userService;
+  }
+
+  @Override
+  public void onApplicationEvent(AuthenticationSuccessEvent event) {
+    Optional<User> userOpt = userService.findUserByEmail(event.getAuthentication().getName());
+
+    if (userOpt.isPresent()) {
+      User user = userOpt.get();
+      if (user.getFailedAttempts() > 0) {
+        userService.resetFailAttempts(user);
+      }
     }
-
-    @Override
-    public void onApplicationEvent(AuthenticationSuccessEvent event) {
-        Optional<User> userOpt = userService.findUserByEmail(event.getAuthentication().getName());
-
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            if (user.getFailedAttempts() > 0) {
-                userService.resetFailAttempts(user);
-            }
-        }
-    }
+  }
 }

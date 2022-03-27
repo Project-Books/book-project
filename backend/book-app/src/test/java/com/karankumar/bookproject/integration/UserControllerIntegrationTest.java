@@ -38,48 +38,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs(outputDir = "../target/snippets")
 @Tag("Integration")
 class UserControllerIntegrationTest {
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Test
-    void canLoginWithTestUser() throws Exception {
-        // given
-        String url = "http://localhost:8080/login";
+  @Test
+  void canLoginWithTestUser() throws Exception {
+    // given
+    String url = "http://localhost:8080/login";
 
-        UserToRegisterDto userToRegisterDto = new UserToRegisterDto(
-                "user@user.user",
-                "password"
-        );
+    UserToRegisterDto userToRegisterDto = new UserToRegisterDto("user@user.user", "password");
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = writer.writeValueAsString(userToRegisterDto);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+    ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+    String requestJson = writer.writeValueAsString(userToRegisterDto);
 
-        // when & then
-        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andDo(document("login"));
-    }
+    // when & then
+    this.mockMvc
+        .perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andDo(document("login"));
+  }
 
-    @Test
-    void shouldNotLoginIfWrongCredentials() throws Exception {
-        String url = "http://localhost:8080/login";
-        UserToRegisterDto userToRegisterDto = new UserToRegisterDto(
-                "user@user.user",
-                "userPassword"
-        );
+  @Test
+  void shouldNotLoginIfWrongCredentials() throws Exception {
+    String url = "http://localhost:8080/login";
+    UserToRegisterDto userToRegisterDto = new UserToRegisterDto("user@user.user", "userPassword");
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = writer.writeValueAsString(userToRegisterDto);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+    ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+    String requestJson = writer.writeValueAsString(userToRegisterDto);
 
-        // when & then
-        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
-                .andDo(print())
-                .andExpect(status().is4xxClientError())
-                .andDo(document("login"));
-    }
+    // when & then
+    this.mockMvc
+        .perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
+        .andDo(print())
+        .andExpect(status().is4xxClientError())
+        .andDo(document("login"));
+  }
 }

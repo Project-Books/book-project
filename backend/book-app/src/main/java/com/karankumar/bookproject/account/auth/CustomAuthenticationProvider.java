@@ -27,31 +27,30 @@ import org.springframework.security.core.AuthenticationException;
 import java.util.Optional;
 
 public class CustomAuthenticationProvider extends DaoAuthenticationProvider {
-    private final UserService userService;
+  private final UserService userService;
 
-    public CustomAuthenticationProvider(UserService userService) {
-        this.userService = userService;
-    }
+  public CustomAuthenticationProvider(UserService userService) {
+    this.userService = userService;
+  }
 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        Optional<User> userOpt = userService.findUserByEmail(authentication.getName());
+  @Override
+  public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    Optional<User> userOpt = userService.findUserByEmail(authentication.getName());
 
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            if (user.isLocked()) {
-                boolean locked = userService.unlockWhenTimeExpired(user);
+    if (userOpt.isPresent()) {
+      User user = userOpt.get();
+      if (user.isLocked()) {
+        boolean locked = userService.unlockWhenTimeExpired(user);
 
-                if (locked) {
-                    long hoursToUnlock = userService.hoursUntilUnlock(user) + 1;
-                    String errorMessage = String.format(
-                            "User is locked. Please wait %d hours to unlock it.", hoursToUnlock);
-                    throw new LockedException(errorMessage);
-                }
-            }
+        if (locked) {
+          long hoursToUnlock = userService.hoursUntilUnlock(user) + 1;
+          String errorMessage =
+              String.format("User is locked. Please wait %d hours to unlock it.", hoursToUnlock);
+          throw new LockedException(errorMessage);
         }
-
-        return super.authenticate(authentication);
+      }
     }
 
+    return super.authenticate(authentication);
+  }
 }

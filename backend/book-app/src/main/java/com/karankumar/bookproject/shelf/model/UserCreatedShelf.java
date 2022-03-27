@@ -48,6 +48,7 @@ import org.apache.commons.lang3.StringUtils;
 public class UserCreatedShelf extends Shelf {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "userCreatedShelf")
   protected Set<Book> books;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Setter(AccessLevel.NONE)

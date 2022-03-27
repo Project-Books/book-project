@@ -22,7 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 @ExcludeFromJacocoGeneratedReport
 public class EmailService {
-    public static void main(String[] args) {
-        SpringApplication.run(EmailService.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(EmailService.class, args);
+  }
 }

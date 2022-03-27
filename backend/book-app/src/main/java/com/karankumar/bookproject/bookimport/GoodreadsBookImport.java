@@ -31,35 +31,35 @@ import java.util.Optional;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GoodreadsBookImport {
 
-    @JsonProperty("Title")
-    private String title;
+  @JsonProperty("Title")
+  private String title;
 
-    @JsonProperty("Author")
-    private String author;
+  @JsonProperty("Author")
+  private String author;
 
-    @JsonProperty("My Rating")
-    private Double rating;
+  @JsonProperty("My Rating")
+  private Double rating;
 
-    @JsonProperty("Date Read")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    private LocalDate dateRead;
+  @JsonProperty("Date Read")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+  private LocalDate dateRead;
 
-    @JsonProperty("Bookshelves")
-    private String bookshelves;
+  @JsonProperty("Bookshelves")
+  private String bookshelves;
 
-    public static Optional<PredefinedShelf.ShelfName> toPredefinedShelfName(String shelfName) {
-        if (StringUtils.isBlank(shelfName)) {
-            return Optional.empty();
-        }
-        switch (shelfName.trim().toLowerCase().replace(",", "")) {
-            case "to-read":
-                return Optional.of(PredefinedShelf.ShelfName.TO_READ);
-            case "currently-reading":
-                return Optional.of(PredefinedShelf.ShelfName.READING);
-            case "read":
-                return Optional.of(PredefinedShelf.ShelfName.READ);
-            default:
-                return Optional.empty();
-        }
+  public static Optional<PredefinedShelf.ShelfName> toPredefinedShelfName(String shelfName) {
+    if (StringUtils.isBlank(shelfName)) {
+      return Optional.empty();
     }
+    switch (shelfName.trim().toLowerCase().replace(",", "")) {
+      case "to-read":
+        return Optional.of(PredefinedShelf.ShelfName.TO_READ);
+      case "currently-reading":
+        return Optional.of(PredefinedShelf.ShelfName.READING);
+      case "read":
+        return Optional.of(PredefinedShelf.ShelfName.READ);
+      default:
+        return Optional.empty();
+    }
+  }
 }

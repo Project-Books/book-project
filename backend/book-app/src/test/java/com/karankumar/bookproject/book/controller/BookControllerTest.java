@@ -46,11 +46,8 @@ class BookControllerTest {
     mockedBookService = mock(BookService.class);
     PredefinedShelfService mockedPredefinedShelfService = mock(PredefinedShelfService.class);
     ModelMapper mockedModelMapper = mock(ModelMapper.class);
-    bookController = new BookController(
-      mockedBookService,
-      mockedPredefinedShelfService,
-      mockedModelMapper
-    );
+    bookController =
+        new BookController(mockedBookService, mockedPredefinedShelfService, mockedModelMapper);
   }
 
   @Test
@@ -70,15 +67,15 @@ class BookControllerTest {
   @Test
   void all_returnsBadRequest_whenNegativePage() {
     Integer page = -1;
-    String expectedMessage = String.format(
-      "%s \"%s\"",
-      HttpStatus.BAD_REQUEST,
-      String.format(BookController.NEGATIVE_PAGE_ERROR_MESSAGE, page)
-    );
+    String expectedMessage =
+        String.format(
+            "%s \"%s\"",
+            HttpStatus.BAD_REQUEST,
+            String.format(BookController.NEGATIVE_PAGE_ERROR_MESSAGE, page));
 
     assertThatExceptionOfType(ResponseStatusException.class)
-      .isThrownBy(() -> bookController.all(page))
-      .withMessage(expectedMessage);
+        .isThrownBy(() -> bookController.all(page))
+        .withMessage(expectedMessage);
   }
 
   @Test
@@ -99,32 +96,30 @@ class BookControllerTest {
   @Test
   void findById_returnsBook_ifPresent() {
     Book book = new Book();
-    when(mockedBookService.findById(any(Long.class)))
-      .thenReturn(Optional.of(book));
+    when(mockedBookService.findById(any(Long.class))).thenReturn(Optional.of(book));
 
     assertThat(bookController.findById(0L)).isEqualTo(book);
   }
 
   @Test
   void findById_returnsNotFound_ifBookIsEmpty() {
-    when(mockedBookService.findById(any(Long.class)))
-      .thenReturn(Optional.empty());
+    when(mockedBookService.findById(any(Long.class))).thenReturn(Optional.empty());
 
     assertThatExceptionOfType(ResponseStatusException.class)
-      .isThrownBy(() -> bookController.findById(0L));
+        .isThrownBy(() -> bookController.findById(0L));
   }
 
   @Test
-    // TODO: finish writing this test
+  // TODO: finish writing this test
   void findByShelf_returnsNotFound_ifBookDoesNotExist() {
-//        when(mockedBookService.findByShelfAndTitleOrAuthor(
-//                any(Shelf.class),
-//                any(String.class),
-//                any(String.class))
-//        ).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+    //        when(mockedBookService.findByShelfAndTitleOrAuthor(
+    //                any(Shelf.class),
+    //                any(String.class),
+    //                any(String.class))
+    //        ).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-//        assertThatExceptionOfType(BookNotFoundException.class)
-//                .isThrownBy(bookController.findByShelf(new CustomShelf(), "title", "author"));
+    //        assertThatExceptionOfType(BookNotFoundException.class)
+    //                .isThrownBy(bookController.findByShelf(new CustomShelf(), "title", "author"));
   }
 
   @Test
@@ -140,11 +135,9 @@ class BookControllerTest {
     // then
     ArgumentCaptor<Book> bookArgumentCaptor = ArgumentCaptor.forClass(Book.class);
     ArgumentCaptor<BookPatchDto> bookPatchDtoArgumentCaptor =
-            ArgumentCaptor.forClass(BookPatchDto.class);
-    verify(mockedBookService).updateBook(
-            bookArgumentCaptor.capture(),
-            bookPatchDtoArgumentCaptor.capture()
-    );
+        ArgumentCaptor.forClass(BookPatchDto.class);
+    verify(mockedBookService)
+        .updateBook(bookArgumentCaptor.capture(), bookPatchDtoArgumentCaptor.capture());
     assertThat(bookArgumentCaptor.getValue()).isEqualTo(book);
     assertThat(bookPatchDtoArgumentCaptor.getValue()).isEqualTo(bookPatchDto);
   }
@@ -155,8 +148,8 @@ class BookControllerTest {
     long id = 1;
     String expectedMessage = String.format("404 NOT_FOUND \"Could not find book with ID %d\"", id);
     assertThatExceptionOfType(ResponseStatusException.class)
-            .isThrownBy(() -> bookController.update(id, new BookPatchDto()))
-            .withMessage(expectedMessage);
+        .isThrownBy(() -> bookController.update(id, new BookPatchDto()))
+        .withMessage(expectedMessage);
   }
 
   @Test

@@ -35,66 +35,68 @@ import static org.mockito.Mockito.mock;
 @RestController
 @RequestMapping(Mappings.GOAL)
 public class ReadingGoalController {
-    private final ReadingGoalService readingGoalService;
+  private final ReadingGoalService readingGoalService;
 
-    public static final String READING_GOAL_NOT_FOUND = "Reading goal not found.";
-    public static final String TARGET_BAD_REQUEST = "Minimum target value is 1.";
+  public static final String READING_GOAL_NOT_FOUND = "Reading goal not found.";
+  public static final String TARGET_BAD_REQUEST = "Minimum target value is 1.";
 
-    public static class Endpoints {
-        private Endpoints() { }
-        public static final String ADD_BOOKS = "/add/books";
-        public static final String ADD_PAGES = "/add/pages";
-        public static final String PREVIOUS = "/previous";
-        public static final String CURRENT = "/current";
+  public static class Endpoints {
+    private Endpoints() {}
+
+    public static final String ADD_BOOKS = "/add/books";
+    public static final String ADD_PAGES = "/add/pages";
+    public static final String PREVIOUS = "/previous";
+    public static final String CURRENT = "/current";
+  }
+
+  @Autowired
+  public ReadingGoalController(ReadingGoalService readingGoalService) {
+    this.readingGoalService = readingGoalService;
+  }
+
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping()
+  public void deleteReadingGoal() {
+    readingGoalService.deleteAll();
+  }
+
+  // This endpoint will be used for both adding and updating, since at most one goal
+  // (pages or books) is allowed at a time
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(Endpoints.ADD_BOOKS)
+  public void addBookReadingGoal(@RequestParam(value = "target") int target) {
+    if (target <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
     }
 
-    @Autowired
-    public ReadingGoalController(ReadingGoalService readingGoalService) {
-        this.readingGoalService = readingGoalService;
+    ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
+    readingGoalService.save(readingGoal);
+  }
+
+  // This endpoint will be used for both adding and updating, since at most one goal
+  // (pages or books) is allowed at a time
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(Endpoints.ADD_PAGES)
+  public void addPagesReadingGoal(@RequestParam(value = "target") int target) {
+    if (target <= 0) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping()
-    public void deleteReadingGoal() {
-        readingGoalService.deleteAll();
-    }
+    ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
+    readingGoalService.save(readingGoal);
+  }
 
-    // This endpoint will be used for both adding and updating, since at most one goal
-    // (pages or books) is allowed at a time
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(Endpoints.ADD_BOOKS)
-    public void addBookReadingGoal(@RequestParam(value = "target") int target) {
-        if (target <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
-        }
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping(Endpoints.PREVIOUS)
+  public List<ReadingGoal> getPreviousReadingGoals() {
+    return readingGoalService.findAll();
+  }
 
-        ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
-        readingGoalService.save(readingGoal);
-    }
-
-    // This endpoint will be used for both adding and updating, since at most one goal
-    // (pages or books) is allowed at a time
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(Endpoints.ADD_PAGES)
-    public void addPagesReadingGoal(@RequestParam(value = "target") int target) {
-        if (target <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, TARGET_BAD_REQUEST);
-        }
-
-        ReadingGoal readingGoal = new ReadingGoal(target, ReadingGoal.GoalType.PAGES);
-        readingGoalService.save(readingGoal);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(Endpoints.PREVIOUS)
-    public List<ReadingGoal> getPreviousReadingGoals() {
-        return readingGoalService.findAll();
-    }
-
-    @GetMapping(Endpoints.CURRENT)
-    public ReadingGoal getExistingReadingGoal() {
-        return readingGoalService.findAll().stream().findFirst().orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, READING_GOAL_NOT_FOUND)
-        );
-    }
+  @GetMapping(Endpoints.CURRENT)
+  public ReadingGoal getExistingReadingGoal() {
+    return readingGoalService.findAll().stream()
+        .findFirst()
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, READING_GOAL_NOT_FOUND));
+  }
 }

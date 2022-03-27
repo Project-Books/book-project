@@ -70,10 +70,9 @@ public class UserController {
   private static final String PASSWORD_WEAK_ERROR_MESSAGE = "Password is too weak";
   private static final String EMAIL_NOT_FOUND = "Email is not registered with us";
 
-
   @Autowired
-  public UserController(UserService userService, PasswordEncoder passwordEncoder,
-                        EmailService emailService) {
+  public UserController(
+      UserService userService, PasswordEncoder passwordEncoder, EmailService emailService) {
     this.userService = userService;
     this.passwordEncoder = passwordEncoder;
     this.emailService = emailService;
@@ -84,20 +83,19 @@ public class UserController {
     return userService
         .findUserById(id)
         .orElseThrow(
-            () -> new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)
-            )
-        );
+            () ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, String.format(USER_NOT_FOUND_ERROR_MESSAGE, id)));
   }
 
   @GetMapping("/email/{email}")
   public ResponseEntity<String> emailExists(@PathVariable String email) {
-      Optional<User> user = userService.findUserByEmail(email);
-      if (user.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EMAIL_NOT_FOUND);
-      }
+    Optional<User> user = userService.findUserByEmail(email);
+    if (user.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EMAIL_NOT_FOUND);
+    }
 
-      return ResponseEntity.status(HttpStatus.OK).body("Success");
+    return ResponseEntity.status(HttpStatus.OK).body("Success");
   }
 
   @PostMapping

@@ -26,46 +26,50 @@ import javax.persistence.Id;
 @Data
 @ExcludeFromJacocoGeneratedReport
 public class BookDto {
-	@Id
-	@JsonProperty("id")
-	private Long id;
-	
-    @JsonProperty("title")
-    private String title;
+  @Id
+  @JsonProperty("id")
+  private Long id;
 
-    @JsonProperty("numberOfPages")
-    private Integer numberOfPages;
+  @JsonProperty("title")
+  private String title;
 
-    @JsonProperty("pagesRead")
-    private Integer pagesRead;
+  @JsonProperty("numberOfPages")
+  private Integer numberOfPages;
 
-    @JsonProperty("bookGenre")
-    private String bookGenre;	//currently need to use the constant names in request body (use "HORROR" vs "Horror")
-    
-    @JsonProperty("bookFormat")
-    private String bookFormat;	//currently need to use the constant names in request body (use "EBOOK" vs "eBook")
-    
-    @JsonProperty("seriesPosition")
-    private Integer seriesPosition;
-    
-    @JsonProperty("edition")
-    private Integer edition;
-    
-    @JsonProperty("bookRecommendedBy")
-    private String bookRecommendedBy;
+  @JsonProperty("pagesRead")
+  private Integer pagesRead;
 
-    @JsonProperty("isbn")
-    private String isbn;
+  @JsonProperty("bookGenre")
+  private String
+      bookGenre; // currently need to use the constant names in request body (use "HORROR" vs
+                 // "Horror")
 
-    @JsonProperty("yearofPublication")
-    private Integer yearOfPublication;
+  @JsonProperty("bookFormat")
+  private String
+      bookFormat; // currently need to use the constant names in request body (use "EBOOK" vs
+                  // "eBook")
 
-    @JsonProperty("author")
-    private Author author;
-    
-    @JsonProperty("predefinedShelf")
-    private String predefinedShelf;
-    
-    @JsonProperty("bookReview")
-    private String bookReview;
+  @JsonProperty("seriesPosition")
+  private Integer seriesPosition;
+
+  @JsonProperty("edition")
+  private Integer edition;
+
+  @JsonProperty("bookRecommendedBy")
+  private String bookRecommendedBy;
+
+  @JsonProperty("isbn")
+  private String isbn;
+
+  @JsonProperty("yearofPublication")
+  private Integer yearOfPublication;
+
+  @JsonProperty("author")
+  private Author author;
+
+  @JsonProperty("predefinedShelf")
+  private String predefinedShelf;
+
+  @JsonProperty("bookReview")
+  private String bookReview;
 }

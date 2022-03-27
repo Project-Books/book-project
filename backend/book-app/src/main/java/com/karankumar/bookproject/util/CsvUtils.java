@@ -29,20 +29,20 @@ import java.util.List;
 
 @Slf4j
 public final class CsvUtils {
-    public static final String TEXT_CSV = "text/csv";
-    private static final CsvMapper csvMapper;
+  public static final String TEXT_CSV = "text/csv";
+  private static final CsvMapper csvMapper;
 
-    static {
-        csvMapper = new CsvMapper();
-        csvMapper.registerModule(new JavaTimeModule());
-    }
+  static {
+    csvMapper = new CsvMapper();
+    csvMapper.registerModule(new JavaTimeModule());
+  }
 
-    private CsvUtils() {}
+  private CsvUtils() {}
 
-    public static <T> List<T> read(InputStream inputStream, Class<T> classType) throws IOException {
-        CsvSchema schema = CsvSchema.emptySchema().withHeader();
-        MappingIterator<T> iterator =
-                csvMapper.readerFor(classType).with(schema).readValues(inputStream);
-        return iterator.readAll();
-    }
+  public static <T> List<T> read(InputStream inputStream, Class<T> classType) throws IOException {
+    CsvSchema schema = CsvSchema.emptySchema().withHeader();
+    MappingIterator<T> iterator =
+        csvMapper.readerFor(classType).with(schema).readValues(inputStream);
+    return iterator.readAll();
+  }
 }

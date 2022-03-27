@@ -1,19 +1,19 @@
 /*
- * The book project lets a user keep track of different books they would like to read, are currently
- * reading, have read or did not finish.
- * Copyright (C) 2021  Karan Kumar
+* The book project lets a user keep track of different books they would like to read, are currently
+* reading, have read or did not finish.
+* Copyright (C) 2021  Karan Kumar
 
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU General Public License as published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify it under the terms of the
+* GNU General Public License as published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE.  See the GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful, but WITHOUT ANY
+* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+* PURPOSE.  See the GNU General Public License for more details.
 
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <https://www.gnu.org/licenses/>.
- */
+* You should have received a copy of the GNU General Public License along with this program.
+* If not, see <https://www.gnu.org/licenses/>.
+*/
 
 package com.karankumar.bookproject.book.service;
 
@@ -44,8 +44,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
-  @Mock
-  private BookRepository bookRepository;
+  @Mock private BookRepository bookRepository;
   private BookService bookService;
 
   @BeforeEach
@@ -53,13 +52,14 @@ class BookServiceTest {
     AuthorService authorService = mock(AuthorService.class);
     PublisherService publisherService = mock(PublisherService.class);
     PredefinedShelfService predefinedShelfService = mock(PredefinedShelfService.class);
-    bookService = new BookService(bookRepository, authorService, publisherService, predefinedShelfService);
+    bookService =
+        new BookService(bookRepository, authorService, publisherService, predefinedShelfService);
   }
 
   @Test
   void findById_throwsException_ifIdIsNull() {
     assertThatExceptionOfType(NullPointerException.class)
-      .isThrownBy(() -> bookService.findById(null));
+        .isThrownBy(() -> bookService.findById(null));
     verify(bookRepository, never()).findById(anyLong());
   }
 
@@ -71,8 +71,7 @@ class BookServiceTest {
 
   @Test
   void save_throwsException_ifBookIsNull() {
-    assertThatExceptionOfType(NullPointerException.class)
-      .isThrownBy(() -> bookService.save(null));
+    assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> bookService.save(null));
     verify(bookRepository, never()).save(any(Book.class));
   }
 
@@ -81,11 +80,7 @@ class BookServiceTest {
     // given
     User user = User.builder().build();
     PredefinedShelf predefinedShelf = new PredefinedShelf(PredefinedShelf.ShelfName.READ, user);
-    Book book = new Book(
-      "title",
-      null,
-      predefinedShelf
-    );
+    Book book = new Book("title", null, predefinedShelf);
 
     // when
     Optional<Book> actual = bookService.save(book);
@@ -102,11 +97,7 @@ class BookServiceTest {
     // given
     User user = User.builder().build();
     PredefinedShelf predefinedShelf = new PredefinedShelf(PredefinedShelf.ShelfName.READ, user);
-    Book book = new Book(
-      "title",
-      new Author("test"),
-      predefinedShelf
-    );
+    Book book = new Book("title", new Author("test"), predefinedShelf);
 
     // when
     Optional<Book> actual = bookService.save(book);
@@ -160,7 +151,7 @@ class BookServiceTest {
   @Test
   void delete_throwsException_ifBookIsNull() {
     assertThatExceptionOfType(NullPointerException.class)
-      .isThrownBy(() -> bookService.delete(null));
+        .isThrownBy(() -> bookService.delete(null));
   }
 
   @Test
@@ -169,9 +160,9 @@ class BookServiceTest {
     verify(bookRepository).deleteAll();
   }
 
-//    @Test
-//    void canFindByTitleOrAuthor() {
-//        bookService.findByTitleOrAuthor("test", "author");
-//        verify(bookRepository).findByTitleOrAuthor(anyString(), anyString());
-//    }
+  //    @Test
+  //    void canFindByTitleOrAuthor() {
+  //        bookService.findByTitleOrAuthor("test", "author");
+  //        verify(bookRepository).findByTitleOrAuthor(anyString(), anyString());
+  //    }
 }

@@ -1,19 +1,19 @@
 /*
-    The book project lets a user keep track of different books they would like to read, are currently
-    reading, have read or did not finish.
-    Copyright (C) 2020  Karan Kumar
+   The book project lets a user keep track of different books they would like to read, are currently
+   reading, have read or did not finish.
+   Copyright (C) 2020  Karan Kumar
 
-    This program is free software: you can redistribute it and/or modify it under the terms of the
-    GNU General Public License as published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+   This program is free software: you can redistribute it and/or modify it under the terms of the
+   GNU General Public License as published by the Free Software Foundation, either version 3 of the
+   License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-    PURPOSE.  See the GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+   PURPOSE.  See the GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License along with this program.
-    If not, see <https://www.gnu.org/licenses/>.
- */
+   You should have received a copy of the GNU General Public License along with this program.
+   If not, see <https://www.gnu.org/licenses/>.
+*/
 
 package com.karankumar.bookproject.security;
 
@@ -53,94 +53,101 @@ import java.util.List;
 @Configuration
 @ExcludeFromJacocoGeneratedReport
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final UserService userService;
-    private final DatabaseUserDetailsService databaseUserDetailsService;
-    private final DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService;
-    private final SecretKey secretKey;
-    private final JwtConfig jwtConfig;
+  private final UserService userService;
+  private final DatabaseUserDetailsService databaseUserDetailsService;
+  private final DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService;
+  private final SecretKey secretKey;
+  private final JwtConfig jwtConfig;
 
-    public SecurityConfiguration(@Lazy UserService userService,
-                                 DatabaseUserDetailsService databaseUserDetailsService,
-                                 DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService,
-                                 SecretKey secretKey,
-                                 JwtConfig jwtConfig) {
-        this.userService = userService;
-        this.databaseUserDetailsService = databaseUserDetailsService;
-        this.databaseUserDetailsPasswordService = databaseUserDetailsPasswordService;
-        this.secretKey = secretKey;
-        this.jwtConfig = jwtConfig;
-    }
+  public SecurityConfiguration(
+      @Lazy UserService userService,
+      DatabaseUserDetailsService databaseUserDetailsService,
+      DatabaseUserDetailsPasswordService databaseUserDetailsPasswordService,
+      SecretKey secretKey,
+      JwtConfig jwtConfig) {
+    this.userService = userService;
+    this.databaseUserDetailsService = databaseUserDetailsService;
+    this.databaseUserDetailsPasswordService = databaseUserDetailsPasswordService;
+    this.secretKey = secretKey;
+    this.jwtConfig = jwtConfig;
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProviderBean())
-            .userDetailsService(databaseUserDetailsService)
-            .userDetailsPasswordManager(databaseUserDetailsPasswordService)
-            .passwordEncoder(passwordEncoder());
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.authenticationProvider(authenticationProviderBean())
+        .userDetailsService(databaseUserDetailsService)
+        .userDetailsPasswordManager(databaseUserDetailsPasswordService)
+        .passwordEncoder(passwordEncoder());
+  }
 
-    @Bean
-    public AuthenticationProvider authenticationProviderBean() {
-        CustomAuthenticationProvider customAuthenticationProvider = new CustomAuthenticationProvider(userService);
-        customAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        customAuthenticationProvider.setUserDetailsService(databaseUserDetailsService);
+  @Bean
+  public AuthenticationProvider authenticationProviderBean() {
+    CustomAuthenticationProvider customAuthenticationProvider =
+        new CustomAuthenticationProvider(userService);
+    customAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+    customAuthenticationProvider.setUserDetailsService(databaseUserDetailsService);
 
-        return customAuthenticationProvider;
-    }
+    return customAuthenticationProvider;
+  }
 
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(
-                "/favicon.ico",
-                "/robots.txt",
-                "/manifest.webmanifest",
-                "/sw.js",
-                "/offline.html",
-                "/icons/**",
-                "/images/**",
-                "/styles/**",
-                "/frontend/**",
-                "/frontend-es5/**", "/frontend-es6/**");
-    }
+  @Override
+  public void configure(WebSecurity web) {
+    web.ignoring()
+        .antMatchers(
+            "/favicon.ico",
+            "/robots.txt",
+            "/manifest.webmanifest",
+            "/sw.js",
+            "/offline.html",
+            "/icons/**",
+            "/images/**",
+            "/styles/**",
+            "/frontend/**",
+            "/frontend-es5/**",
+            "/frontend-es6/**");
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
-            .and()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .addFilter(new JwtUsernamePasswordAuthFilter(authenticationManager(), jwtConfig,
-                    secretKey))
-            .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthFilter.class)
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, Mappings.USER).permitAll()
-            .anyRequest()
-            .authenticated();
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.cors()
+        .and()
+        .csrf()
+        .disable()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .addFilter(new JwtUsernamePasswordAuthFilter(authenticationManager(), jwtConfig, secretKey))
+        .addFilterAfter(
+            new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernamePasswordAuthFilter.class)
+        .authorizeRequests()
+        .antMatchers(HttpMethod.POST, Mappings.USER)
+        .permitAll()
+        .anyRequest()
+        .authenticated();
+  }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
-        config.setAllowedMethods(List.of("OPTIONS", "GET", "PUT", "POST", "DELETE"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(Arrays.asList("Authorization"));
-        config.setAllowCredentials(true);
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowedOrigins(List.of("http://localhost:3000"));
+    config.setAllowedMethods(List.of("OPTIONS", "GET", "PUT", "POST", "DELETE"));
+    config.setAllowedHeaders(List.of("*"));
+    config.setExposedHeaders(Arrays.asList("Authorization"));
+    config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+    return source;
+  }
 }

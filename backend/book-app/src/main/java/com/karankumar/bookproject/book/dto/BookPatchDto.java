@@ -26,42 +26,42 @@ import lombok.Data;
 @Data
 @ExcludeFromJacocoGeneratedReport
 public class BookPatchDto {
-    @JsonProperty("title")
-    private String title;
+  @JsonProperty("title")
+  private String title;
 
-    @JsonProperty("numberOfPages")
-    private Integer numberOfPages;
+  @JsonProperty("numberOfPages")
+  private Integer numberOfPages;
 
-    @JsonProperty("pagesRead")
-    private Integer pagesRead;
+  @JsonProperty("pagesRead")
+  private Integer pagesRead;
 
-    @JsonProperty("bookGenres")
-    private Set<String> bookGenres;
+  @JsonProperty("bookGenres")
+  private Set<String> bookGenres;
 
-    @JsonProperty("bookFormat")
-    private String bookFormat;
+  @JsonProperty("bookFormat")
+  private String bookFormat;
 
-    @JsonProperty("seriesPosition")
-    private Integer seriesPosition;
+  @JsonProperty("seriesPosition")
+  private Integer seriesPosition;
 
-    @JsonProperty("edition")
-    private Integer edition;
+  @JsonProperty("edition")
+  private Integer edition;
 
-    @JsonProperty("bookRecommendedBy")
-    private String bookRecommendedBy;
+  @JsonProperty("bookRecommendedBy")
+  private String bookRecommendedBy;
 
-    @JsonProperty("isbn")
-    private String isbn;
+  @JsonProperty("isbn")
+  private String isbn;
 
-    @JsonProperty("yearofPublication")
-    private Integer yearOfPublication;
+  @JsonProperty("yearofPublication")
+  private Integer yearOfPublication;
 
-    @JsonProperty("author")
-    private Author author;
+  @JsonProperty("author")
+  private Author author;
 
-    @JsonProperty("predefinedShelf")
-    private String predefinedShelf;
+  @JsonProperty("predefinedShelf")
+  private String predefinedShelf;
 
-    @JsonProperty("bookReview")
-    private String bookReview;
+  @JsonProperty("bookReview")
+  private String bookReview;
 }

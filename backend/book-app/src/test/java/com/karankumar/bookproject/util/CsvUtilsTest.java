@@ -30,22 +30,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("CsvUtils should")
 class CsvUtilsTest {
 
-    @Test
-    @DisplayName("read successfully when input stream is CSV")
-    void readSuccessfullyWhenInputStreamIsCsv() throws IOException {
-        // given
-        InputStream inputStream = getResourceInputStream("goodreadsBooksImportSample.csv");
+  @Test
+  @DisplayName("read successfully when input stream is CSV")
+  void readSuccessfullyWhenInputStreamIsCsv() throws IOException {
+    // given
+    InputStream inputStream = getResourceInputStream("goodreadsBooksImportSample.csv");
 
-        // when
-        List<GoodreadsBookImport> goodreadsBookImports =
-                CsvUtils.read(inputStream, GoodreadsBookImport.class);
+    // when
+    List<GoodreadsBookImport> goodreadsBookImports =
+        CsvUtils.read(inputStream, GoodreadsBookImport.class);
 
-        // then
-        int expected = 559;
-        assertThat(goodreadsBookImports.size()).isEqualTo(expected);
-    }
+    // then
+    int expected = 559;
+    assertThat(goodreadsBookImports.size()).isEqualTo(expected);
+  }
 
-    private InputStream getResourceInputStream(String file) {
-        return Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
-    }
+  private InputStream getResourceInputStream(String file) {
+    return Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+  }
 }

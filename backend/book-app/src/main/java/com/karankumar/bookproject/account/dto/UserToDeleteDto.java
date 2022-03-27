@@ -21,12 +21,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @ExcludeFromJacocoGeneratedReport
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserToDeleteDto {
-    private String password;
+  private String password;
 }

@@ -31,22 +31,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class DatabaseUserDetailsPasswordServiceTest {
-    private final DatabaseUserDetailsPasswordService underTest;
-    private final UserRepository mockUserRepository;
+  private final DatabaseUserDetailsPasswordService underTest;
+  private final UserRepository mockUserRepository;
 
-    DatabaseUserDetailsPasswordServiceTest() {
-        mockUserRepository = mock(UserRepository.class);
-        UserDetailsMapper userDetailsMapper = mock(UserDetailsMapper.class);
-        underTest = new DatabaseUserDetailsPasswordService(mockUserRepository, userDetailsMapper);
-    }
+  DatabaseUserDetailsPasswordServiceTest() {
+    mockUserRepository = mock(UserRepository.class);
+    UserDetailsMapper userDetailsMapper = mock(UserDetailsMapper.class);
+    underTest = new DatabaseUserDetailsPasswordService(mockUserRepository, userDetailsMapper);
+  }
 
-    @Test
-    void updatePassword_throwsUsernameNotFoundException_ifUserNotFound() {
-        when(mockUserRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-        UserDetails userDetails = mock(UserDetails.class);
-        when(userDetails.getUsername()).thenReturn("test");
+  @Test
+  void updatePassword_throwsUsernameNotFoundException_ifUserNotFound() {
+    when(mockUserRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+    UserDetails userDetails = mock(UserDetails.class);
+    when(userDetails.getUsername()).thenReturn("test");
 
-        assertThatExceptionOfType(UsernameNotFoundException.class)
-                .isThrownBy(() -> underTest.updatePassword(userDetails, "anything"));
-    }
+    assertThatExceptionOfType(UsernameNotFoundException.class)
+        .isThrownBy(() -> underTest.updatePassword(userDetails, "anything"));
+  }
 }
