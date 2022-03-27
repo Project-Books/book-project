@@ -31,7 +31,7 @@ Book tracker web app made with Spring Boot and React (Typescript).
 Prerequisites:
 - Docker with [Buildkit enabled](https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds)
   - Windows or macOS: install [Docker Desktop](https://www.docker.com/products/docker-desktop)
-  - Linux: install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/)
+  - Linux: install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/). Follow the [post installation guide](https://docs.docker.com/engine/install/linux-postinstall/) to add your user to the `docker` group
 
 1. Clone the repository (if you're contributing, you'll need to first fork the repository and then clone your fork)
 1. Start Docker engine (Linux) or Docker desktop (macOS or Windows). 
