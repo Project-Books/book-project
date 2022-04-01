@@ -15,7 +15,7 @@ services:
     depends_on:
       - backend
   db:
-    image: postgres:14 # 14 is the latest Flyway supported version
+    image: postgres:12 # 14 is the latest Flyway supported version
     container_name: book_project_db
     restart: always
     environment:
