@@ -28,7 +28,9 @@ function Stats(): JSX.Element {
             <div className="books-list">
                 <div className='book-container'>
                     <h3 className='book-title'>Most liked book</h3>
-                    <img src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" className='image' />
+                    <img 
+                       src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" 
+                       className='image' />
                     <div className="book-rating">
                         <StarOutlined className='star-icon' fontSize='small' />
                         <p className='rating-number'>8</p>
@@ -36,7 +38,9 @@ function Stats(): JSX.Element {
                 </div>
                 <div className='book-container'>
                     <h3 className='book-title'>Least liked book</h3>
-                    <img src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" className='image' />
+                    <img 
+                        src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" 
+                        className='image' />
                     <div className="book-rating red">
                         <StarOutlined className='star-icon' fontSize='small' />
                         <p className='rating-number'>3</p>
@@ -44,7 +48,9 @@ function Stats(): JSX.Element {
                 </div>
                 <div className='book-container'>
                     <h3 className='book-title'>Longest book read</h3>
-                    <img src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" className='image' />
+                    <img 
+                        src="https://inliterature.net/wp-content/uploads/2014/04/harry-potter-1-709x1024.jpg" 
+                        className='image' />
                     <div className="book-rating black">
                         <p className='rating-number'>628 pages</p>
                     </div>
