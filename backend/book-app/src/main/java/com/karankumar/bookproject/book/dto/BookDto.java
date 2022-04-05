@@ -64,6 +64,7 @@ public class BookDto {
   @JsonProperty("yearofPublication")
   private Integer yearOfPublication;
 
+  // Change to array
   @JsonProperty("author")
   private Author author;
 
