@@ -53,7 +53,7 @@ public class Author {
 
   @NotBlank private String fullName;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "author")
   @Setter
   @ToString.Exclude
   private Set<Book> books = new HashSet<>();

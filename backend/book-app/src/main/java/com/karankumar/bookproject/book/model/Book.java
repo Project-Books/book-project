@@ -103,17 +103,24 @@ public class Book {
 
   private Integer yearOfPublication;
 
-  @ManyToOne(
+  @ManyToMany(
       fetch = FetchType.LAZY,
-      cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-  @JoinColumn(
-      name = "author_id",
-      nullable = false,
-      referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "book_author_id_fk"))
+      cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+  @JoinTable(
+      name = "book_author",
+      joinColumns =
+          @JoinColumn(
+              name = "book_id",
+              referencedColumnName = "id",
+              foreignKey = @ForeignKey(name = "book_author_book_id_fk")),
+      inverseJoinColumns =
+          @JoinColumn(
+              name = "author_id",
+              referencedColumnName = "id",
+              foreignKey = @ForeignKey(name = "book_author_author_id_fk")))
   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
   @ToString.Exclude
-  private Author author;
+  private Set<Author> authors = new HashSet<>();
 
   @ManyToOne(
       fetch = FetchType.LAZY,
@@ -172,16 +179,16 @@ public class Book {
 
   private String bookReview;
 
-  public Book(String title, Author author, PredefinedShelf predefinedShelf) {
+  public Book(String title, Set<Author> authors, PredefinedShelf predefinedShelf) {
     this.title = title;
-    this.author = author;
+    this.authors = authors;
     addPredefinedShelf(predefinedShelf);
   }
 
   public Book(
-      String title, Author author, PredefinedShelf predefinedShelf, Set<Publisher> publishers) {
+      String title, Set<Author> authors, PredefinedShelf predefinedShelf, Set<Publisher> publishers) {
     this.title = title;
-    this.author = author;
+    this.authors = authors;
     addPredefinedShelf(predefinedShelf);
     this.publishers = publishers;
   }
@@ -233,9 +240,9 @@ public class Book {
     predefinedShelf = null;
   }
 
-  public void removeAuthor() {
+  public void removeAuthor(@NonNull Author author) {
+    authors.remove(author);
     author.getBooks().remove(this);
-    author = null;
   }
 
   public void setPublicationYear(Integer yearOfPublication) {
