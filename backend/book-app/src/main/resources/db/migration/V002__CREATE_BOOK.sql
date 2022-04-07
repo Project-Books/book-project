@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS book (
     id                    BIGSERIAL NOT NULL PRIMARY KEY,
-    author_id             BIGINT,
     book_recommended_by   VARCHAR(255),
     date_finished_reading DATE,
     date_started_reading  DATE,
