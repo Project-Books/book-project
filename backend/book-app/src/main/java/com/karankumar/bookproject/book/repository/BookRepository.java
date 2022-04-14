@@ -30,38 +30,38 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @EntityGraph(value = "Book.authors", type = EntityGraph.EntityGraphType.LOAD)
   @Query(
       "SELECT b "
           + "FROM Book b "
-          + "INNER JOIN FETCH b.author "
+          + "INNER JOIN FETCH b.authors "
           + "INNER JOIN FETCH b.predefinedShelf "
           + "INNER JOIN FETCH b.tags "
           + "INNER JOIN FETCH b.publishers")
   List<Book> findAllBooks(Pageable pageable);
 
-  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @EntityGraph(value = "Book.authors", type = EntityGraph.EntityGraphType.LOAD)
   List<Book> findAll();
 
-  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @EntityGraph(value = "Book.authors", type = EntityGraph.EntityGraphType.LOAD)
   @Query(
       "SELECT b "
           + "FROM Book b "
-          + "INNER JOIN FETCH b.author "
+          + "INNER JOIN FETCH b.authors "
           + "INNER JOIN FETCH b.predefinedShelf "
           + "INNER JOIN FETCH b.tags "
           + "INNER JOIN FETCH b.publishers "
           + "WHERE b.id = :id")
   Optional<Book> findBookById(@Param("id") Long id);
 
-  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @EntityGraph(value = "Book.authors", type = EntityGraph.EntityGraphType.LOAD)
   List<Book> findByTitleContainingIgnoreCase(String title);
 
-  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @EntityGraph(value = "Book.authors", type = EntityGraph.EntityGraphType.LOAD)
   @Query(
       "SELECT b "
           + "FROM Book b "
-          + "INNER JOIN FETCH b.author AS a "
+          + "INNER JOIN FETCH b.authors AS a "
           + "INNER JOIN FETCH b.predefinedShelf "
           + "INNER JOIN FETCH b.tags "
           + "INNER JOIN FETCH b.publishers "
@@ -81,11 +81,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
   List<Book> findAllBooksByPredefinedShelfShelfName(
       @Param("predefinedShelfName") ShelfName predefinedShelfName);
 
-  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @EntityGraph(value = "Book.authors", type = EntityGraph.EntityGraphType.LOAD)
   @Query(
       "SELECT b "
           + "FROM Book b "
-          + "INNER JOIN FETCH b.author "
+          + "INNER JOIN FETCH b.authors "
           + "INNER JOIN FETCH b.predefinedShelf pds "
           + "LEFT JOIN FETCH b.bookGenre "
           + "LEFT JOIN FETCH b.publishers "

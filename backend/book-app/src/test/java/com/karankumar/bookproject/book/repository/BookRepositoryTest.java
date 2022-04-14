@@ -46,6 +46,7 @@ class BookRepositoryTest {
   private final UserRepository userRepository;
   private final PredefinedShelfRepository predefinedShelfRepository;
   private Author author;
+  private Set<Author> authors = new HashSet<>(Arrays.asList(author));
   private PredefinedShelf read;
 
   @Autowired
@@ -64,16 +65,20 @@ class BookRepositoryTest {
   void init() {
     bookRepository.deleteAll();
     User user = getTestUser(userRepository);
-    author = authorRepository.save(new Author("firstName lastName"));
+    firstAuthor = authorRepository.save(new Author("firstName1 lastName1"));
+    secondAuthor = authorRepository.save(new Author("firstName2 lastName2"));
+    Set<Author> authors = new HashSet<>();
+    authors.add(firstAuthor);
+    authors.add(secondAuthor); 
     read =
         predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ, user));
-    bookRepository.save(new Book("title", author, read));
+    bookRepository.save(new Book("title", authors, read));
   }
 
   @Test
   void successfullyDeleteABook_whenAuthorHasOtherBooks() {
     // given
-    Book book = new Book("Book2", author, read);
+    Book book = new Book("Book2", authors, read);
     bookRepository.saveAndFlush(book);
     Long id = book.getId();
 
