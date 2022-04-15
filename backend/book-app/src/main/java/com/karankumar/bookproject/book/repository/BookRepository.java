@@ -61,19 +61,19 @@ public interface BookRepository extends JpaRepository<Book, Long> {
   @Query(
       "SELECT b "
           + "FROM Book b "
-          + "INNER JOIN FETCH b.authors AS a "
+          + "INNER JOIN FETCH b.authors auth "
           + "INNER JOIN FETCH b.predefinedShelf "
           + "INNER JOIN FETCH b.tags "
           + "INNER JOIN FETCH b.publishers "
           + "WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%')) OR "
-          + "LOWER(a.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%'))")
+          + "LOWER(auth.fullName) LIKE LOWER(CONCAT('%', :titleOrAuthor, '%'))")
   List<Book> findByTitleOrAuthor(@Param("titleOrAuthor") String titleOrAuthor);
 
-  @EntityGraph(value = "Book.author", type = EntityGraph.EntityGraphType.LOAD)
+  @EntityGraph(value = "Book.authors", type = EntityGraph.EntityGraphType.LOAD)
   @Query(
       "SELECT b "
           + "FROM Book b "
-          + "INNER JOIN FETCH b.author "
+          + "INNER JOIN FETCH b.authors "
           + "INNER JOIN FETCH b.predefinedShelf s "
           + "INNER JOIN FETCH b.tags "
           + "INNER JOIN FETCH b.publishers "

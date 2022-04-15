@@ -97,7 +97,8 @@ class BookServiceTest {
     // given
     User user = User.builder().build();
     PredefinedShelf predefinedShelf = new PredefinedShelf(PredefinedShelf.ShelfName.READ, user);
-    Book book = new Book("title", new Author("test"), predefinedShelf);
+    Set<Author> authors = new HashSet<>(Arrays.asList(new Author("test")));
+    Book book = new Book("title", authors, predefinedShelf);
 
     // when
     Optional<Book> actual = bookService.save(book);

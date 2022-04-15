@@ -87,10 +87,14 @@ public class BookService {
   }
 
   private void addBookToAuthor(Book book) {
-    Author author = book.getAuthor();
-    Set<Book> authorBooks = author.getBooks();
-    authorBooks.add(book);
-    author.setBooks(authorBooks);
+    Set<Author> authors = book.getAuthors();
+    if (authors != null && !authors.isEmpty()) {
+      for (Author author : authors) {
+        Set<Book> authorBooks = author.getBooks();
+        authorBooks.add(book);
+        author.setBooks(authorBooks);
+      }
+    }
   }
 
   private void addBookToPublisher(Book book) {
@@ -124,9 +128,11 @@ public class BookService {
     bookRepository.delete(book);
 
     if (!bookRepository.existsById(book.getId())) {
-      Author author = book.getAuthor();
+      Set<Author> authors = book.getAuthors();
       // TODO: fix method. It returns lazy initialization exception
-      removeAuthorWithoutBooks(author);
+      for (Author author : authors) {
+        removeAuthorWithoutBooks(author);
+      }
     }
   }
 
@@ -198,6 +204,7 @@ public class BookService {
     Optional.ofNullable(bookPatchDto.getBookReview()).ifPresent(book::setBookReview);
   }
 
+  // TO-DO: update with many-to-many
   private void updateAuthor(Book book, BookPatchDto bookPatchDto) {
     Optional.ofNullable(bookPatchDto.getAuthor())
         .ifPresent(

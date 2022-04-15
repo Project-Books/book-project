@@ -67,8 +67,8 @@ import org.hibernate.validator.constraints.ISBN;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @NamedEntityGraph(
-    name = "Book.author",
-    attributeNodes = {@NamedAttributeNode("author")})
+    name = "Book.authors",
+    attributeNodes = {@NamedAttributeNode("authors")})
 @ExcludeFromJacocoGeneratedReport
 public class Book {
   public static final int MAX_PAGES = 23_000;
@@ -253,6 +253,21 @@ public class Book {
     bookGenre.add(genre);
   }
 
+  public void addAuthor(@NonNull Author author) {
+    authors.add(author);
+    author.getBooks().add(this);
+  }
+
+  public void removeAuthor(@NonNull Author author) {
+    for (Author bookAuthor : authors) {
+      if(bookAuthor.getId().equals(author.getId())) {
+        bookAuthor.getBooks().remove(this);
+        break;
+      }
+    }
+    authors.remove(author);
+  }
+  
   public void addPublisher(@NonNull Publisher publisher) {
     publishers.add(publisher);
     publisher.getBooks().add(this);

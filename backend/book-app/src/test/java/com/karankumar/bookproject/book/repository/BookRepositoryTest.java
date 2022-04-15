@@ -31,6 +31,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import jdk.jfr.Timestamp;
+
 import java.util.List;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
@@ -45,8 +47,7 @@ class BookRepositoryTest {
   private final AuthorRepository authorRepository;
   private final UserRepository userRepository;
   private final PredefinedShelfRepository predefinedShelfRepository;
-  private Author author;
-  private Set<Author> authors = new HashSet<>(Arrays.asList(author));
+  private Set<Author> authors = new HashSet<>();
   private PredefinedShelf read;
 
   @Autowired
@@ -65,11 +66,8 @@ class BookRepositoryTest {
   void init() {
     bookRepository.deleteAll();
     User user = getTestUser(userRepository);
-    firstAuthor = authorRepository.save(new Author("firstName1 lastName1"));
-    secondAuthor = authorRepository.save(new Author("firstName2 lastName2"));
-    Set<Author> authors = new HashSet<>();
-    authors.add(firstAuthor);
-    authors.add(secondAuthor); 
+    singleAuthor = authorRepository.save(new Author("firstName lastName"));
+    authors = new HashSet<>(Arrays.asList(singleAuthor));
     read =
         predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ, user));
     bookRepository.save(new Book("title", authors, read));
@@ -104,7 +102,7 @@ class BookRepositoryTest {
   @Test
   void canFindBookByTitle() {
     // given
-    bookRepository.saveAndFlush(new Book("someTitle", author, read));
+    bookRepository.saveAndFlush(new Book("someTitle", authors, read));
 
     // when
     List<Book> actual1 = bookRepository.findByTitleContainingIgnoreCase("someTitle");
@@ -135,20 +133,18 @@ class BookRepositoryTest {
   }
 
   @Test
-  @Disabled // TODO: re-enable. This is disabled until implemented
   void canFindBookByTitleOrAuthor() {
     // given
     String title = "title";
 
     // when
-    bookRepository.saveAndFlush(new Book("anotherBook", author, read));
+    bookRepository.saveAndFlush(new Book("anotherBook", authors, read));
 
     // then
     assertThat(bookRepository.findByTitleOrAuthor(title).size()).isOne();
   }
 
   @Test
-  @Disabled // TODO: re-enable. This is disabled until implemented
   void canFindBookByAuthor() {
     String firstName = "firstName";
     String lastName = "lastName";
@@ -158,6 +154,21 @@ class BookRepositoryTest {
           softly.assertThat(bookRepository.findByTitleOrAuthor(firstName).size()).isOne();
           softly.assertThat(bookRepository.findByTitleOrAuthor(lastName).size()).isOne();
         });
+  }
+
+  @Test
+  void canFindBookWithMultipleAuthors() {
+    // given
+    secondAuthorName = "firstName2 lastName2";
+    secondAuthor = authorRepository.save(new Author(secondAuthorName));
+    authors.add(secondAuthor);
+
+    // when
+    bookRepository.saveAndFlush(new Book("thirdBook", authors, read));
+
+    // then
+    assertThat(bookRepository.findByTitleOrAuthor(secondAuthorName).size()).isOne();
+
   }
 
   @Test
