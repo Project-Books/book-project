@@ -22,6 +22,10 @@ import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
 import com.karankumar.bookproject.book.model.Author;
 import lombok.Data;
 import javax.persistence.Id;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @ExcludeFromJacocoGeneratedReport
@@ -31,6 +35,7 @@ public class BookDto {
   private Long id;
 
   @JsonProperty("title")
+  @NotBlank
   private String title;
 
   @JsonProperty("numberOfPages")
@@ -65,9 +70,12 @@ public class BookDto {
   private Integer yearOfPublication;
 
   @JsonProperty("author")
+  @Valid
+  @NotNull
   private Author author;
 
   @JsonProperty("predefinedShelf")
+  @NotBlank
   private String predefinedShelf;
 
   @JsonProperty("bookReview")

@@ -51,7 +51,8 @@ public class Author {
   @Setter(AccessLevel.NONE)
   private Long id;
 
-  @NotBlank private String fullName;
+  @NotBlank
+  private String fullName;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
   @Setter
