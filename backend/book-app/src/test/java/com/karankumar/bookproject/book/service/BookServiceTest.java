@@ -32,7 +32,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
@@ -80,7 +83,7 @@ class BookServiceTest {
     // given
     User user = User.builder().build();
     PredefinedShelf predefinedShelf = new PredefinedShelf(PredefinedShelf.ShelfName.READ, user);
-    Book book = new Book("title", null, predefinedShelf);
+    Book book = new Book("title", new Author("name"), predefinedShelf);
 
     // when
     Optional<Book> actual = bookService.save(book);

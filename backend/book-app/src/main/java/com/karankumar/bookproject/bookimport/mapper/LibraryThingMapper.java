@@ -22,15 +22,25 @@ import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.bookimport.librarything.LibraryThingBookImport;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class LibraryThingMapper {
 
   public Book toBook(LibraryThingBookImport importBook) {
     final Book book = new Book();
+    
     book.setTitle(importBook.getTitle());
-    book.setAuthor(new Author(importBook.getAuthor()));
+    
+    Set<Author> importBookAuthors = new HashSet<>();
+    importBookAuthors.add(new Author(importBook.getAuthor()));
+    book.setAuthors(importBookAuthors);
+    
     book.setYearOfPublication(importBook.getPublicationYear());
+    
     book.setIsbn(importBook.getIsbn());
+    
     return book;
   }
 }

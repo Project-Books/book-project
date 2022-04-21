@@ -105,7 +105,7 @@ public final class TestData {
     Book book =
         new Book(
             title,
-            generateRandomAuthor(authors),
+            generateRandomAuthors(authors),
             generateRandomPredefinedShelf(predefinedShelves),
             generateRandomPublishers(publishers));
 
@@ -122,8 +122,10 @@ public final class TestData {
     return book;
   }
 
-  private static Author generateRandomAuthor(List<Author> authors) {
-    return authors.get(threadLocalRandom.nextInt(authors.size()));
+  private static Set<Author> generateRandomAuthors(List<Author> authors) {
+    Set<Author> authorSet = new HashSet<>();
+    authorSet.add(authors.get(threadLocalRandom.nextInt(authors.size())));
+    return authorSet;
   }
 
   private static Set<Publisher> generateRandomPublishers(List<Publisher> publishers) {

@@ -34,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import jdk.jfr.Timestamp;
 
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.karankumar.bookproject.util.SecurityTestUtils.getTestUser;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,8 +68,8 @@ class BookRepositoryTest {
   void init() {
     bookRepository.deleteAll();
     User user = getTestUser(userRepository);
-    singleAuthor = authorRepository.save(new Author("firstName lastName"));
-    authors = new HashSet<>(Arrays.asList(singleAuthor));
+    Author singleAuthor = authorRepository.save(new Author("firstName lastName"));
+    authors.add(singleAuthor);
     read =
         predefinedShelfRepository.save(new PredefinedShelf(PredefinedShelf.ShelfName.READ, user));
     bookRepository.save(new Book("title", authors, read));
@@ -159,8 +161,8 @@ class BookRepositoryTest {
   @Test
   void canFindBookWithMultipleAuthors() {
     // given
-    secondAuthorName = "firstName2 lastName2";
-    secondAuthor = authorRepository.save(new Author(secondAuthorName));
+    String secondAuthorName = "firstName2 lastName2";
+    Author secondAuthor = authorRepository.save(new Author(secondAuthorName));
     authors.add(secondAuthor);
 
     // when

@@ -179,6 +179,12 @@ public class Book {
 
   private String bookReview;
 
+  public Book(String title, Author author, PredefinedShelf predefinedShelf) {
+    this.title = title;
+    addAuthor(author);
+    addPredefinedShelf(predefinedShelf);
+  }
+
   public Book(String title, Set<Author> authors, PredefinedShelf predefinedShelf) {
     this.title = title;
     this.authors = authors;
@@ -241,8 +247,13 @@ public class Book {
   }
 
   public void removeAuthor(@NonNull Author author) {
+    for (Author bookAuthor : authors) {
+      if(bookAuthor.getId().equals(author.getId())) {
+        bookAuthor.getBooks().remove(this);
+        break;
+      }
+    }
     authors.remove(author);
-    author.getBooks().remove(this);
   }
 
   public void setPublicationYear(Integer yearOfPublication) {
@@ -256,16 +267,6 @@ public class Book {
   public void addAuthor(@NonNull Author author) {
     authors.add(author);
     author.getBooks().add(this);
-  }
-
-  public void removeAuthor(@NonNull Author author) {
-    for (Author bookAuthor : authors) {
-      if(bookAuthor.getId().equals(author.getId())) {
-        bookAuthor.getBooks().remove(this);
-        break;
-      }
-    }
-    authors.remove(author);
   }
   
   public void addPublisher(@NonNull Publisher publisher) {

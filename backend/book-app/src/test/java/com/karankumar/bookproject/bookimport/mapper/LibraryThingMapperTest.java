@@ -40,7 +40,7 @@ class LibraryThingMapperTest {
     assertSoftly(
         softly -> {
           softly.assertThat(book.getTitle()).isEqualTo(bookImport.getTitle());
-          softly.assertThat(book.getAuthor().getFullName()).isEqualTo(bookImport.getAuthor());
+          softly.assertThat(book.getAuthors().contains(bookImport.getAuthor()));
           softly.assertThat(book.getYearOfPublication()).isEqualTo(bookImport.getPublicationYear());
           softly.assertThat(book.getIsbn()).isEqualTo(bookImport.getIsbn());
         });

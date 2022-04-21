@@ -37,6 +37,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 
 @DisplayName("ReadingGoalCalculator should")
 class ReadingGoalCalculatorTest {
@@ -300,7 +302,7 @@ class ReadingGoalCalculatorTest {
   }
 
   private Book.BookBuilder createBook() {
-    return Book.builder().title("title").author(new Author("J.K. Rowling")).predefinedShelf(null);
+    return Book.builder().title("title").authors(new HashSet<Author>(Arrays.asList(new Author("J.K. Rowling")))).predefinedShelf(null);
   }
 
   @Test

@@ -30,7 +30,7 @@ services:
       context: ./backend
       dockerfile: ./Dockerfile
       args:
-        mvn_arg: clean package -DskipTests
+        mvn_arg: clean package # -DskipTests
         DB_HOSTNAME: book_project_db
         DB_PORT: ${DB_PORT}
         DB_NAME: ${DB_NAME}

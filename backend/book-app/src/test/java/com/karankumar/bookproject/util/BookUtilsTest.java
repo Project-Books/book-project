@@ -19,6 +19,7 @@ package com.karankumar.bookproject.util;
 
 import com.karankumar.bookproject.annotations.IntegrationTest;
 import com.karankumar.bookproject.book.BookUtils;
+import com.karankumar.bookproject.book.model.Author;
 import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.service.PredefinedShelfService;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +37,7 @@ class BookUtilsTest {
   @Autowired
   BookUtilsTest(PredefinedShelfService predefinedShelfService) {
     // TODO: mock predefinedShelfService
-    book = new Book(bookTitle, null, predefinedShelfService.findById(1L).get());
+    book = new Book(bookTitle, new Author("name"), predefinedShelfService.findById(1L).get());
   }
 
   @Test

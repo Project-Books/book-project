@@ -76,14 +76,17 @@ public class BookService {
     if (bookHasAuthorAndPredefinedShelf(book)) {
       addBookToAuthor(book);
       addBookToPublisher(book);
-      authorService.save(book.getAuthor());
+      Set<Author> bookAuthors = book.getAuthors();
+      for(Author author : bookAuthors){
+        authorService.save(author);
+      }
       return Optional.of(bookRepository.save(book));
     }
     return Optional.empty();
   }
 
   private boolean bookHasAuthorAndPredefinedShelf(Book book) {
-    return book.getAuthor() != null && book.getPredefinedShelf() != null;
+    return book.getAuthors() != null && book.getPredefinedShelf() != null;
   }
 
   private void addBookToAuthor(Book book) {
@@ -209,8 +212,8 @@ public class BookService {
     Optional.ofNullable(bookPatchDto.getAuthor())
         .ifPresent(
             author -> {
-              book.setAuthor(author);
-              authorService.save(book.getAuthor());
+              book.addAuthor(author);
+              authorService.save(author);
             });
   }
 
