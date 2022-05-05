@@ -32,25 +32,46 @@ import { useTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom'
 import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-  
+
   const useStyles = makeStyles({
     button: {
       textTransform: "none",
     },
   });
 
+const redStyles = makeStyles({
+    button: {
+        textTransform: "none",
+        color: "red"
+    },
+});
+
 function NavItem(props: NavItemProps) {
-    const classes = useStyles();
-    return (
-          <Link
-            to={props.goTo} style={{ textDecoration: 'none' }}>
-            <div className="nav-item">
-                <Button className={classes.button} startIcon={props.icon}>
-                      {props.itemText}
-                </Button>
-            </div>
-         </Link>
-    )
+    if (props.itemText == "Log out") {
+        const classes = redStyles();
+        return (
+            <Link
+                to={props.goTo} style={{textDecoration: 'none'}}>
+                <div className="nav-item">
+                    <Button className={classes.button} startIcon={props.icon}>
+                        {props.itemText}
+                    </Button>
+                </div>
+            </Link>
+        )
+    } else {
+        const classes = useStyles();
+        return (
+            <Link
+                to={props.goTo} style={{textDecoration: 'none'}}>
+                <div className="nav-item">
+                    <Button className={classes.button} startIcon={props.icon}>
+                        {props.itemText}
+                    </Button>
+                </div>
+            </Link>
+        )
+    }
 }
 
 type NavItemProps = {
@@ -62,7 +83,6 @@ type NavItemProps = {
 export function NavBar(): JSX.Element {
     const theme = useTheme();
     const navClass = 'nav-bar ' + (theme.palette.type === 'dark' ? 'nav-bar-dark' : 'nav-bar-light')
-
     return (
         <MuiThemeProvider theme={theme}>
         <div className={navClass}>
