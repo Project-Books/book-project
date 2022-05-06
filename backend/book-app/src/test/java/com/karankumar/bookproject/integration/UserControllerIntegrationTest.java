@@ -105,4 +105,27 @@ class UserControllerIntegrationTest {
                 .andDo(document("register-with-weak-password"));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"bzoYMvAhIGSP", "hsdtcaslaqcyxiisa", "fmL9398#i^Uo", "2E^U9|Dg56", "-^XhKFWcwJ",
+            "r1lz8BmAVt", "PL!MeS34#*", "Pa332w0r9", "ISDJFISOPS", "&^=?$&?%-!", "1434987243", "23&?7&^96",
+            "password11298735", "hello there", "kermit the frog"})
+    void canRegisterWithStrongPassword(String password) throws Exception {
+        String url = "http://localhost:8080/api/user";
+
+        // set up user with given username and password
+        UserToRegisterDto userToRegisterDto = new UserToRegisterDto("user@user.user", password);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = writer.writeValueAsString(userToRegisterDto);
+
+        // expect strong password to be accepted
+        this.mockMvc
+                .perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("register-with-strong-password"));
+    }
+
 }

@@ -17,4 +17,9 @@ include::{snippets}/register-with-weak-password/http-request.adoc[]
 .response
 include::{snippets}/register-with-weak-password/http-response.adoc[]
 
+== Register with strong password
+.request
+include::{snippets}/register-with-strong-password/http-request.adoc[]
 
+.response
+include::{snippets}/register-with-strong-password/http-response.adoc[]
