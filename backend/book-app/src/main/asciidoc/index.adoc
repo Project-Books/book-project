@@ -9,3 +9,17 @@ include::{snippets}/login/http-request.adoc[]
 include::{snippets}/login/http-response.adoc[]
 
 As you can see the format is very simple, and in fact you always get the same message.
+
+== Register with weak password
+.request
+include::{snippets}/register-with-weak-password/http-request.adoc[]
+
+.response
+include::{snippets}/register-with-weak-password/http-response.adoc[]
+
+== Register with strong password
+.request
+include::{snippets}/register-with-strong-password/http-request.adoc[]
+
+.response
+include::{snippets}/register-with-strong-password/http-response.adoc[]
