@@ -128,4 +128,5 @@ class UserControllerIntegrationTest {
                 .andDo(document("register-with-strong-password"));
     }
 
+
 }
