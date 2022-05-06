@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest
+@SpringBootTest(classes = BookProjectApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "../target/snippets")
 @Tag("Integration")
