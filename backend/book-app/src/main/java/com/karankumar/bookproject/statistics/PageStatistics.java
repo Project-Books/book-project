@@ -44,6 +44,13 @@ public class PageStatistics extends Statistics {
     }
     return Optional.ofNullable(bookWithMostPages);
   }
+  public Optional<Book> findMostReadBookinTime() {
+    if (readBooksThisYear.isEmpty()){
+      return Optional.empty();
+    }
+    readBooksThisYear.sort(Comparator.comparing(Book::getNumberOfPages));
+    return Optional.ofNullable(bookWithMostPages)
+  }
 
   private List<Book> findBooksWithPageCountSpecified() {
     List<Book> booksWithNonEmptyPageCount = new ArrayList<>();

@@ -55,6 +55,13 @@ public class YearStatistics extends Statistics {
     readBooksThisYear.sort(Comparator.comparing(Book::getRating));
     return Optional.of(readBooksThisYear.get(0));
   }
+  public Optional<Book> findMostReadBookinTime() {
+    if (readBooksThisYear.isEmpty()){
+      return Optional.empty();
+    }
+    readBooksThisYear.sort(Comparator.comparing(Book::getNumberOfPages));
+    return Optional.ofNullable(bookWithMostPages)
+  }
 
   public Optional<Book> findMostLikedBookThisYear() {
     if (readBooksThisYear.isEmpty()) {
