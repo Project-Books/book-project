@@ -1,39 +1,22 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: backend-build
-
+name: Build
 on:
   push:
     branches:
       - main
-    paths:
-      - 'backend/**/*.java'
-      - 'backend/**/pom.xml'
-      - 'backend/**/*.sql'
   pull_request:
-    branches:
-      - main
-    paths:
-      - 'backend/**/*.java'
-      - 'backend/**/pom.xml'
-      - 'backend/**/*.sql'
-
+    types: [opened, synchronize, reopened]
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up JDK 11
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v1
         with:
-          java-version: '11'
-          distribution: 'adopt'
-          cache: maven
+          java-version: 11
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
@@ -50,4 +33,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -f backend/pom.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=JuanOliveros_book-project
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=JuanOliveros_book-project
