@@ -19,6 +19,19 @@
   box-shadow: 0px 14px 46px rgba(128, 128, 128, 0.25);
 }
 
+.current-goal-container {
+  text-align: center;
+  border-radius: 8px;
+  padding: 25px 0;
+  box-shadow: 0px 14px 46px rgba(128, 128, 128, 0.25);
+}
+
+.current-goal-container {
+  text-align: center;
+  border-radius: 8px;
+  padding: 25px 0;
+  box-shadow: 0px 14px 46px rgba(128, 128, 128, 0.25);
+}
 
 .goal-modal-inner {
   width: 100%;
