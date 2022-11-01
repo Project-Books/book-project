@@ -41,6 +41,10 @@ public class ReadingGoalService {
     return goalRepository.findAll();
   }
 
+  public List<ReadingGoal> findAll2() {
+    return goalRepository.findAll();
+  }
+
   public void save(@NonNull ReadingGoal goal) {
     overwritePreviouslySetGoal(goal);
   }
