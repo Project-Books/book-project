@@ -25,7 +25,6 @@
           <driver>org.postgresql.Driver</driver>
           <url>jdbc:postgresql://localhost:5433/book_project_db?useSsl=false</url>
           <user>dbuser</user>
-          <password>dbpassword</password>
         </configuration>
       </plugin>
     </plugins>
