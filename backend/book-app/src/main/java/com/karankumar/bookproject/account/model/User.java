@@ -43,7 +43,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -68,11 +68,7 @@ public class User {
   @Setter(AccessLevel.NONE)
   private Long id;
 
-  // For the RegExp see https://owasp.org/www-community/OWASP_Validation_Regex_Repository
-  @Pattern(
-      regexp = "^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:a-zA-Z0-9-+\.)+[a-zA-Z]{2,7}$",
-      flags = Pattern.Flag.CASE_INSENSITIVE,
-      message = "The email must conform to OWASP Validation Regex for email address")
+  @Email
   @NotBlank
   private String email;
 
