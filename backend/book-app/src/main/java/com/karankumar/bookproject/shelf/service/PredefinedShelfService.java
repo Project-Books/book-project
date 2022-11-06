@@ -83,8 +83,6 @@ public class PredefinedShelfService {
     return predefinedShelfRepository.findById(id);
   }
 
-  // TODO: make private. We should create predefined shelves when a user registers and then not
-  // allow further predefined shelves to be created
   public void save(@NonNull PredefinedShelf shelf) {
     predefinedShelfRepository.save(shelf);
   }
@@ -195,7 +193,6 @@ public class PredefinedShelfService {
       return Optional.empty();
     }
 
-    // TODO: throw exception if there is more than one
     return Optional.of(shelfFound.get(0)); // there should only be one
   }
 

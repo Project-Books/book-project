@@ -69,7 +69,6 @@ public class BookService {
 
   public Optional<Book> findById(@NonNull Long id) {
     return bookRepository.findBookById(id);
-    //        return bookRepository.findById(id);
   }
 
   public Optional<Book> save(@NonNull Book book) {
@@ -125,7 +124,6 @@ public class BookService {
 
     if (!bookRepository.existsById(book.getId())) {
       Author author = book.getAuthor();
-      // TODO: fix method. It returns lazy initialization exception
       removeAuthorWithoutBooks(author);
     }
   }
@@ -159,15 +157,12 @@ public class BookService {
     return jsonWriter.writeValueAsString(books);
   }
 
-  // TODO: split into findByShelfAndTitle and findShelfAndAuthor queries, and then merge result sets
   public List<Book> findByShelfAndTitleOrAuthor(Shelf shelf, String title, String authorsName) {
     throw new NotImplementedException();
-    //        return bookRepository.findByShelfAndTitleOrAuthor(shelf, title, authorsName);
   }
 
   public List<Book> findByTitleOrAuthor(String title, String authorsName) {
     throw new NotImplementedException();
-    //        return bookRepository.findByTitleOrAuthor(title, authorsName);
   }
 
   public List<Book> findAllBooksByPredefinedShelfName(ShelfName predefinedShelfName) {
