@@ -25,6 +25,7 @@ import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
 import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,46 +111,6 @@ class BookRepositoryTest {
           softly.assertThat(actual1.size()).isOne();
           softly.assertThat(actual2.size()).isOne();
           softly.assertThat(actual3.size()).isEqualTo(2);
-        });
-  }
-
-  @Test
-  @Ignore("TODO: re-enable. This is disabled until implemented") // 
-  void allBooksFoundWhenNoFilterPassed() {
-    // given
-    int allBooks = bookRepository.findAll().size();
-
-    // when
-    String WILDCARD = "%";
-    int actual = bookRepository.findByTitleOrAuthor(WILDCARD).size();
-
-    // then
-    assertThat(actual).isEqualTo(allBooks);
-  }
-
-  @Test
-  @Ignore("TODO: re-enable. This is disabled until implemented") // 
-  void canFindBookByTitleOrAuthor() {
-    // given
-    String title = "title";
-
-    // when
-    bookRepository.saveAndFlush(new Book("anotherBook", author, read));
-
-    // then
-    assertThat(bookRepository.findByTitleOrAuthor(title).size()).isOne();
-  }
-
-  @Test
-  @Ignore("TODO: re-enable. This is disabled until implemented") // 
-  void canFindBookByAuthor() {
-    String firstName = "firstName";
-    String lastName = "lastName";
-
-    assertSoftly(
-        softly -> {
-          softly.assertThat(bookRepository.findByTitleOrAuthor(firstName).size()).isOne();
-          softly.assertThat(bookRepository.findByTitleOrAuthor(lastName).size()).isOne();
         });
   }
 
