@@ -24,9 +24,7 @@ import com.karankumar.bookproject.book.model.Author;
 import com.karankumar.bookproject.book.model.Book;
 import com.karankumar.bookproject.shelf.repository.PredefinedShelfRepository;
 import com.karankumar.bookproject.shelf.model.PredefinedShelf;
-import com.karankumar.bookproject.account.model.User;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +114,7 @@ class BookRepositoryTest {
   }
 
   @Test
-  @Disabled // TODO: re-enable. This is disabled until implemented
+  @Ignore("TODO: re-enable. This is disabled until implemented") // 
   void allBooksFoundWhenNoFilterPassed() {
     // given
     int allBooks = bookRepository.findAll().size();
@@ -130,7 +128,7 @@ class BookRepositoryTest {
   }
 
   @Test
-  @Disabled // TODO: re-enable. This is disabled until implemented
+  @Ignore("TODO: re-enable. This is disabled until implemented") // 
   void canFindBookByTitleOrAuthor() {
     // given
     String title = "title";
@@ -143,7 +141,7 @@ class BookRepositoryTest {
   }
 
   @Test
-  @Disabled // TODO: re-enable. This is disabled until implemented
+  @Ignore("TODO: re-enable. This is disabled until implemented") // 
   void canFindBookByAuthor() {
     String firstName = "firstName";
     String lastName = "lastName";
