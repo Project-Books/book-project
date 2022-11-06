@@ -69,7 +69,6 @@ public class BookService {
 
   public Optional<Book> findById(@NonNull Long id) {
     return bookRepository.findBookById(id);
-    //        return bookRepository.findById(id);
   }
 
   public Optional<Book> save(@NonNull Book book) {
