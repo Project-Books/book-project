@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.karankumar.bookproject.ExcludeFromJacocoGeneratedReport;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
