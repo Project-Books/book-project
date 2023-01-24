@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/statitics")
+@RequestMapping("/api/statistics")
 public class StatisticsController {
 
   @Autowired
