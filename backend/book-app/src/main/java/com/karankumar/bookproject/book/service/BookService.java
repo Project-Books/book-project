@@ -219,4 +219,15 @@ public class BookService {
         .flatMap(predefinedShelfService::getPredefinedShelfByPredefinedShelfName)
         .ifPresent(book::setPredefinedShelf);
   }
+
+  public Book findLongestBookRead() {
+	  //get the list of books with an order by Pages Read Descending
+	  List<Book> listOfBooks = bookRepository.findAllBooksOrderByPagesReadDesc();
+    if (listOfBooks != null && !listOfBooks.isEmpty()) {
+      return listOfBooks.get(0);
+    } else {
+    	return null;
+    }
+  }
+
 }

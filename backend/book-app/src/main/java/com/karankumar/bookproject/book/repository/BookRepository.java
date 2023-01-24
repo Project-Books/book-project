@@ -94,4 +94,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
           + "WHERE pds.user = :user "
           + "AND (ucs is NULL OR ucs.user = :user)")
   List<Book> findAllBooksForUser(@Param("user") User user);
+
+List<Book> findAllBooksOrderByPagesReadDesc();
 }
