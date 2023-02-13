@@ -1,6 +1,6 @@
-  <p align="center">
+<p align="center">
 	<img src="/media/banner/book_project_newlogo_2x.png" alt="Logo"/>
-  </p>
+</p>
 
 <p align="center">	
   <a href="https://github.com/Project-Books/book-project/actions/workflows/build.yml">
@@ -20,39 +20,132 @@
   </a>
 </p>
 
-Book tracker web app made with Spring Boot and React (Typescript).
-
 ![image](https://user-images.githubusercontent.com/11173328/112493885-739b0d80-8d7a-11eb-85a1-b4c500dc61ab.png)
 
-*The image above is from our mockup designs, so this may look slightly different to the app. If major changes are made, we will upload a new image.*
+<p align="center">
+  <i>
+    This layout is based off our mockup design, which may differ from the app display. 
+    Subject to change once significant modifications are made.
+  </i>
+</p>
 
-# Getting started locally
+---
+<a name="table-of-contents"></a>
+# **Table of Contents**
 
-Prerequisites:
-- Docker with [Buildkit enabled](https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds)
-  - Windows or macOS: install [Docker Desktop](https://www.docker.com/products/docker-desktop)
-  - Linux: install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/). Follow the [post installation guide](https://docs.docker.com/engine/install/linux-postinstall/) to add your user to the `docker` group
+* [**Overview**](#overview)
+   * [Description](#description)
+   * [Next Steps](#next-steps)
+* [**Getting started locally**](#getting-started-locally)
+   * [Prerequisites](#prerequisites)
+   * [Log in with our test user](#log-in-with-our-test-user)
+   * [Access database (optional)](#access-database-optional)
+* [**Contributing**](#contributing)
+   * [Backend: Fixing Lombok Errors](#backend-fixing-lombok-errors)
+   * [Docker Running Slowly: Windows](#docker-running-slowly-windows)
+   * [Help](#help)
+* [**Further Information**](#further-information)
+* [**Donations**](#donations)
 
-1. Clone the repository (if you're contributing, you'll need to first fork the repository and then clone your fork)
-1. Start Docker engine (Linux) or Docker desktop (macOS or Windows). 
-   - If you're using an Apple silicon chip (e.g. M1), you'll need to uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6). 
-1. In the root of the project, run `docker-compose build` to build the database, backend and frontend services
-1. Run `docker-compose --env-file .env up` to start the containers
-1. Once the development server has started (you'll get notified in the output of `docker-compose up`), go to `localhost:3000` in your web browser to access the frontend
-1. When finished, run `docker-compose down` to stop and remove the containers
+---
+<a name="overview"></a>
+# **Overview**
 
-You may want to also want to run our [Books API](https://github.com/Project-Books/books-api) to avoid seeing an error on the search page on the frontend.
+<a name="decription"></a>
+## Description
 
-> Note for backend contributors: Please ensure you run the unit tests manually (we supply the `-DskipTests` flag with Docker by default for convenience).
+  &nbsp;&nbsp;&nbsp;
+  The **Book Project** is a book tracker web app, made with [***Spring Boot***](https://spring.io/) and [***React***](https://reactjs.org/), that allows its users to track books in 4 ways:  
 
-## Log in with our test user
+  * books you *would like to read*
+  * books you *are currently reading*
+  * books you *have read*
+  * books you *left unfinished*
+
+[⏏ table-of-contents](#table-of-contents)
+
+<a name="next-steps"></a>
+## Next Steps
+
+&nbsp;&nbsp;&nbsp;
+We are looking to expand the **Book Project** to become an interactive book recommendation platform for readers.
+
+[⏏ table-of-contents](#table-of-contents)
+
+---
+<a name="getting-started-locally"></a>
+# **Getting started locally** 
+
+<a name="prerequisites"></a>
+## Prerequisites 
+
+> ### Docker with [Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds) enabled
+> #### &nbsp;&nbsp;&nbsp; **Windows or macOS**
+  > * Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+> #### &nbsp;&nbsp;&nbsp; **Linux**
+  > * Install [Docker Engine](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/)
+  > * Follow the [post installation guide](https://docs.docker.com/engine/install/linux-postinstall/) to add your user to the `docker` group
+
+1. Clone the repository.
+   #### **Non-contributors**
+   ```
+   $ git clone https://github.com/Project-Books/book-project
+   ```
+   #### **Contributors**
+   Fork this repository then clone your fork
+   ```
+   $ git clone https://github.com/YOUR-USERNAME/book-project
+   ```
+
+2. Start Docker Engine (Linux) or Docker Desktop (macOS or Windows).
+   #### **Apple Silicon Chip Users**
+   Uncomment [this line](https://github.com/Project-Books/book-project/blob/0.2.0/backend/docker-compose.yml#L6)
+
+   Terminal navigation:
+   ```
+   $ cd PATH/TO/REPO/backend/docker-compose.yml
+   ```
+
+3. In the root of the project, run `docker-compose build` to build the database, backend and frontend services.
+   ```
+   $ cd PATH/TO/REPO
+   $ docker-compose build
+   ```
+4. In the root of the project, run `docker-compose --env-file .env up` to start the containers.
+   ```
+   $ cd PATH/TO/REPO
+   $ docker-compose --env-file .env up
+   ```
+5. Once development server has started (notified in the output of `docker-compose up`), to access the frontend, go to `localhost:3000` in your web browser
+
+6. When finished, run `docker-compose down` in the root of the project to stop and remove the containers.
+   ```
+   $ cd PATH/TO/REPO
+   $ docker-compose down
+   ```
+
+> #### **NOTES**
+> * To avoid error display on search page, consider running our [Books API](https://github.com/Project-Books/books-api)
+> * **Backend Contributors** 
+>   * Please ensure you run the unit tests manually
+>   * We supply the `-DskipTests` flag with Docker by default for convenience
+
+[⏏ table-of-contents](#table-of-contents)
+
+<a name="log-in-test-user"></a>
+## Log in with our test user 
 
 When running the frontend and backend, or only the backend, you can use the following test user:
-- Email address: `user@user.user`
+- Email: `user@user.user`
 - Password: `password`
 
-Note: If you're running the backend, you will need a JWT token for subsequent requests after logging in or creating an account; see our [connecting to the backend](https://project-books.github.io/development/how-to/backend-postman/) wiki page.
+> #### **NOTES**
+> *   If running the backend, a JWT token will be needed for subsequent requests after logging in or creating and account
+>   * Please refer to our [connecting to the backend guide](https://project-books.github.io/development/how-to/backend-postman/)
+
+[⏏ table-of-contents](#table-of-contents)
  
+<a name="access-db"></a>
 ## Access database (optional)
 
 Using your favourite SQL client, use the following settings:
@@ -66,19 +159,27 @@ For example, in DataGrip or IntelliJ Ultimate:
 
 ![image](https://user-images.githubusercontent.com/11173328/153755219-051627c5-f052-4db9-a223-091acb4b2e76.png)
 
-# Contributing
+[⏏ table-of-contents](#table-of-contents)
 
-If you wish to contribute (thanks!), please first see the [contributing document](https://github.com/knjk04/book-project/blob/master/CONTRIBUTING.md). 
+---
+<a name="contributing"></a>
+# **Contributing**
+
+If you wish to contribute (thanks!), please review our [contribution guidelines](https://project-books.github.io/development/contributing/). 
 
 We work hard to make our project approachable to everyone -- from those new to open-source looking to make their first contribution to seasoned developers.
 
-## Backend: fixing Lombok errors
+<a name="backend-fix-lombok-err"></a>
+## Backend: Fixing Lombok Errors 
 
 You may find lots of errors for things like the log statements, or the entities not having constructors. 
 You can find instructions on fixing this for IntelliJ and Eclipse in our [troubleshooting page](https://project-books.github.io/development/how-to/troubleshoot/). 
 Other common errors and solutions are also on the troubleshooting page.
 
-## Docker running slowly: Windows users
+[⏏ table-of-contents](#table-of-contents)
+
+<a name="docker-runs-slow-windows"></a>
+## Docker Running Slowly: Windows
 
 If you are notice that the Vmmem process is consuming too much of your CPU and RAM, you can adjust the maximum limit that Docker can use.
 
@@ -94,22 +195,34 @@ processors=2# Makes the WSL 2 VM use two virtual processors
 
 Update the values as appropriate for your system. See the [documentation](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#configure-global-options-with-wslconfig) for more information
 
+<a name="help"></a>
+
+[⏏ table-of-contents](#table-of-contents)
+
 ## Help
 
 If you need help with anything, we'll be happy to help you over a [GitHub Q&A discussion](https://github.com/Project-Books/book-project/discussions/categories/q-a). Alternatively, feel free to chat with us on the [#book-project](https://teambookproject.slack.com/archives/C01AGDC5X1S) channel on our [Slack workspace](https://teambookproject.slack.com/join/shared_invite/zt-punc8os7-Iz9PTCAkYcO_0S~XwtO5_A#/shared-invite/email).
 
 When asking for help on Slack, we always recommend asking on our [#book-project](https://teambookproject.slack.com/archives/C01AGDC5X1S) channel, rather than contacting a maintainer directly. This is so that others can offer help and the answer may help someone else.
 
-# Further information
+[⏏ table-of-contents](#table-of-contents)
+
+---
+<a name="further-info"></a>
+# **Further Information** 
 
 For more information, such as a roadmap and the project's underlying principles, see our [documentation site](https://project-books.github.io).
 
 To see a list of the open-source software we use, refer to our [Acknowledgements file](https://github.com/Project-Books/book-project/blob/master/ACKNOWLEDGEMENTS.md)
 
-# Donations
+[⏏ table-of-contents](#table-of-contents)
+
+---
+<a name="donations"></a>
+# **Donations** 
 <p align="center">	
 
-  <a href="hhttps://opencollective.com/book-project">
+  <a href="https://opencollective.com/book-project">
     <img src="https://img.shields.io/badge/open%20collective-donate-2ecc71" alt="Slack" />
   </a>
 </p>
@@ -117,3 +230,5 @@ To see a list of the open-source software we use, refer to our [Acknowledgements
 If you are able and willing to support us financially, it will go a long way to help us achieve our goals and become more sustainable. We hate to ask for money, but running cloud server costs are not free.
 
 We currently only accept donations through Open Collective.
+
+[⏏ table-of-contents](#table-of-contents)
