@@ -13,6 +13,4 @@ EXPOSE 3000
 ARG PROFILE
 ENV profile_env ${PROFILE}
 
-RUN apk add --no-cache --upgrade bash
-
-CMD ["./start.sh"]
+CMD ["sh", "./start.sh"]
